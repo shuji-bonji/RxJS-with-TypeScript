@@ -1,4 +1,4 @@
-# TypeScript で　RxJS
+# TypeScript で RxJS
 TypeScriptでの利用を前提とした、RxJS の学び場です。
 
 ## 環境構築

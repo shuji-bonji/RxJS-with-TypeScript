@@ -7,12 +7,12 @@ export default defineConfig({
   themeConfig: {
     nav: [
       { text: 'ホーム', link: '/' },
-      { text: 'ガイド', link: '/guide/introduction' },
+      { text: 'ガイド', link: '/guide/' },
     ],
     sidebar: [
       {
         text: '導入',
-        items: [{ text: 'はじめに', link: '/guide/' }],
+        items: [{ text: 'はじめに', link: '/guide/introduction' }],
       },
       {
         text: '1. 基本概念',
