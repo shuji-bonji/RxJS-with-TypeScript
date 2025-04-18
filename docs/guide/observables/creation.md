@@ -1,10 +1,10 @@
 # Observableの作成方法
 
-RxJSでは、Observableを作成するための様々な方法が提供されています。以下に主な作成方法を紹介します。
+このページでは、RxJSでのObservableの作成方法について、基本的な構文から実践的な用途までを網羅的に紹介します。
 
 ## 1. `new Observable()`を使用する方法
 
-最も基本的な方法は、`Observable`コンストラクタを直接使用することです。
+最も基本的な方法は、`Observable`コンストラクタを直接使用することです。この方法はカスタムなObservableロジックを定義したい場合に最も柔軟です。明示的な `next`, `error`, `complete` 呼び出しによって細かな挙動制御が可能です。
 
 ```ts
 import { Observable } from 'rxjs';
@@ -36,7 +36,7 @@ observable$.subscribe({
 
 ## 2. 作成操作子（Creation Operators）を使用する方法
 
-RxJSは、Observable作成を簡単にするための様々な作成操作子を提供しています。
+より簡潔で用途に特化したObservable作成には、RxJSが提供する「作成操作子（creation operator）」が便利です。繰り返し使われるユースケースにはこれらを使うことでコードが簡素化されます。
 
 ### `of()` - 指定した値をシーケンスとして発行
 
@@ -82,6 +82,7 @@ iterable$.subscribe({
   complete: () => console.log('完了')
 });
 ```
+
 #### 実行結果
 ```sh
 配列値: 1
@@ -105,6 +106,7 @@ clicks$.subscribe({
   complete: () => console.log('完了')
 });
 ```
+
 #### 実行結果
 ```sh
 クリックイベント: PointerEvent {isTrusted: true, pointerId: 1, width: 1, height: 1, pressure: 0, …}
@@ -147,6 +149,8 @@ timer$.subscribe({
 .
 
 ```
+`interval()` と `timer()` は時間制御に関する処理で頻繁に使われ、特にアニメーション、ポーリング、非同期イベント遅延などに適しています。
+
 
 ### `ajax()` - HTTPリクエスト用Observable
 
@@ -191,6 +195,7 @@ deferred$.subscribe(value => console.log(value));
 50%以下の値:
 0.3141403962502316
 ```
+`defer()` は副作用のある処理をObservable作成時ではなく購読時に遅延させたい場合に有効です。ランダム生成や現在時刻の取得などの用途に適しています。
 
 ## 4. `Subject` - ObservableとObserverの両方の特性を持つ
 
@@ -220,10 +225,11 @@ Observer 1: 3
 Observer 2: 3
 ```
 
-`Subject` は、複数の購読者に同じデータを同時に送信したい場合に利用されます。  
-また、`next()` メソッドを通じて外部から任意のタイミングでデータを発行できるため、双方向通信に適しています。
+`Subject` は「ホットObservable」として動作するため、購読タイミングによっては過去の値を受け取れない点に注意が必要です。
 
 ### 5. 特殊な Observable の生成
+
+実行制御や例外処理、学習用として役立つ特殊なObservableもRxJSには用意されています。
 
 ```ts
 import { EMPTY, throwError, NEVER } from 'rxjs';
@@ -256,20 +262,19 @@ never$.subscribe({
 main.ts:18 エラー: エラー発生
 ```
 
-
 RxJSのストリームは、従来のJavaScriptのイベント処理やAJAX通信などを統一的なインターフェイスで扱えるようにします。特に時間的に変化するデータを扱う場合や、複数のイベントソースを組み合わせる場合に威力を発揮します。
 
 ## Observable作成手法まとめ表
 
 | 操作子 / API | 主な用途 | 特徴 |
 |--------------|----------|------|
-| [`of()` ](#of---指定した値をシーケンスとして発行) | 単純な値の列 | 完了も発行される |
-| [`from()`](#from---配列やpromiseなどからobservableを作成) | 配列/Promiseなど | 複数データソースに対応 |
-| [`fromEvent()`](#fromevent---domイベントからobservableを作成)| DOMイベント | UI連携に便利 |
-| [`interval()`](#interval-と-timer---時間ベースのobservable)| 定期的なイベント | 時間ベース |
-| [`timer()`](#interval-と-timer---時間ベースのobservable) | 遅延 + 定期イベント | `interval`の上位版 |
-| [`defer()`](#3-defer---observableファクトリの遅延実行) | 実行タイミングを遅延 | 購読ごとに新しいObservable |
-| [`Subject`](#4-subject---observableとobserverの両方の特性を持つ)    | 双方向通信 / マルチキャスト | `next()`手動発火が可能 |
-| [`EMPTY`](#5-特殊な-observable-の生成) | すぐ完了する | `next()`は呼ばれない |
-| [`NEVER`](#5-特殊な-observable-の生成) | 何もしない | 学習用途に便利 |
-| [`throwError()`](#5-特殊な-observable-の生成) | エラーを即発行 | エラーハンドリング検証に便利 |
+| `of()`       | 単純な値の列 | 完了も発行される |
+| `from()`     | 配列/Promiseなど | 複数データソースに対応 |
+| `fromEvent()`| DOMイベント | UI連携に便利 |
+| `interval()` | 定期的なイベント | 時間ベース |
+| `timer()`    | 遅延 + 定期イベント | `interval`の上位版 |
+| `defer()`    | 実行タイミングを遅延 | 購読ごとに新しいObservable |
+| `Subject`    | 双方向通信 / マルチキャスト | `next()`手動発火が可能 |
+| `EMPTY`      | すぐ完了する | `next()`は呼ばれない |
+| `NEVER`      | 何もしない | 学習用途に便利 |
+| `throwError()` | エラーを即発行 | エラーハンドリング検証に便利 |

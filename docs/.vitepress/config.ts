@@ -34,6 +34,10 @@ export default defineConfig({
             text: 'Observableのライフサイクル',
             link: '/guide/observables/observable-lifecycle',
           },
+          {
+            text: 'コールドObservableとホットObservable',
+            link: '/guide/observables/cold-and-hot-observables',
+          },
         ],
       },
       {
