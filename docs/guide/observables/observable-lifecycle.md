@@ -134,85 +134,10 @@ setTimeout(() => {
 // 購読解除済み
 ```
 
-## 4. コールドObservableとホットObservable
 
-Observableには「コールド」と「ホット」の2種類があります。
+## 4. エラー処理
 
-多くの初心者が混乱するポイントですが、コールドとホットの違いは「Observableがデータ発行の責任を持つか（コールド）」「外部のソースに依存しているか（ホット）」の違いです。
-
-### コールドObservable
-
-- 各サブスクライバーにデータ全体を個別に提供
-- 購読時に実行を開始（遅延実行）
-- 例：HTTP請求、ファイル読み込み
-
-```ts
-import { Observable } from 'rxjs';
-
-// コールドObservableの例
-const cold$ = new Observable<number>(subscriber => {
-  console.log('コールドObservable: 新しい実行開始');
-  subscriber.next(Math.random());
-  subscriber.next(Math.random());
-  subscriber.complete();
-});
-
-// 各購読は独立した実行となる
-cold$.subscribe(value => console.log('購読1:', value));
-cold$.subscribe(value => console.log('購読2:', value));
-```
-
-#### 実行結果
-```sh
-コールドObservable: 新しい実行開始
-購読1: 0.03912496521668085
-購読1: 0.8440782776650437
-コールドObservable: 新しい実行開始
-購読2: 0.8044049888785694
-購読2: 0.7575254235814185
-```
-
-### ホットObservable
-
-- すべてのサブスクライバーに同じデータを共有
-- 購読の有無に関わらず実行される可能性がある
-- 例：マウスクリック、WebSocket
-
-```ts
-import { Subject } from 'rxjs';
-
-// ホットObservableの例（Subject）
-const hot$ = new Subject<number>();
-
-// 購読
-hot$.subscribe(value => console.log('購読1:', value));
-
-// データ発行
-hot$.next(1);
-hot$.next(2);
-
-// 2番目の購読（後からの購読）
-hot$.subscribe(value => console.log('購読2:', value));
-
-// 更にデータ発行
-hot$.next(3);
-hot$.complete();
-```
-#### 実行結果
-```sh
-購読1: 1
-購読1: 2
-購読1: 3
-購読2: 3
-```
-
-## 5. エラーと完了の動作の違い
-
-Observableは `error()` を呼び出すと直ちにストリームが終了し、`complete()` は呼び出されません。このため、`catchError` の使用や `retry` の設計は重要です。
-
-## 5. エラー処理
-
-Observableのライフサイクルでは、エラー処理も重要です。
+Observableのライフサイクルでは、 `error()` を呼び出すと直ちにストリームが終了し、`complete()` は呼び出されません。このため、`catchError` の使用や `retry` の設計は重要です。
 
 ```ts
 import { Observable, throwError, of } from 'rxjs';
@@ -257,7 +182,7 @@ failingObservable$.pipe(
 完了
 ```
 
-## 6. 完了のライフサイクル
+## 5. 完了のライフサイクル
 
 Observableの完了は、明示的に`complete()`が呼ばれるか、有限のストリームが終了した場合に発生します。
 
