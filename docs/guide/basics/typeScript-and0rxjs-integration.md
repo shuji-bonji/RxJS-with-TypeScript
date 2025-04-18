@@ -1,5 +1,15 @@
 # TypeScriptとRxJSの統合
 
+この文書では、TypeScriptでRxJSを型安全に使うためのさまざまなテクニックやベストプラクティスを紹介します。
+
+## このドキュメントで学べること
+
+- TypeScriptでのObservable型の扱い方
+- カスタムオペレーターの型定義方法
+- 条件型・ユーティリティ型の活用
+- RxJSを使った型安全な状態管理
+- tsconfig.jsonの推奨設定と理由
+
 TypeScriptとRxJSを組み合わせることで、型安全性を保ちながら非同期プログラミングを行うことができます。  
 この文書では、TypeScriptでRxJSを効果的に活用するための方法を紹介します。
 
@@ -57,6 +67,8 @@ of(1, 2, 3).pipe(
 ```
 
 ## インターフェースと型エイリアス
+
+複雑なイベント駆動の設計では、イベント構造を型定義しておくことで、RxJSとの統合が非常に効率的になります。
 
 複雑なデータ構造を扱う場合、インターフェースや型エイリアスを定義すると便利です。
 
@@ -197,6 +209,8 @@ RxJSとTypeScriptを効果的に使用するには、適切なtsconfig.jsonの�
 
 以下の設定が特に重要です。
 
+💡 特に `"strict": true` はRxJSの恩恵を最大限に引き出すために必須の設定です。
+
 - `strict`: 型チェックを厳格にし、RxJSの型安全性を最大限に活用します
 - `noImplicitAny`: 暗黙のany型を禁止します
 - `strictNullChecks`: null/undefinedを明示的に扱う必要があります
@@ -211,53 +225,9 @@ import { Observable, of, from } from 'rxjs';
 import { map, filter, catchError } from 'rxjs/operators';
 ```
 
-## ジェネリックス活用例
+## 状態管理のためのRxJSパターン（Reduxレス構成）
 
-複雑なデータフローでは、より高度なジェネリック型が役立ちます。
-
-```ts
-// HTTPリクエストをラップするサービス
-class ApiService {
-  // ジェネリックメソッド
-  get<T>(url: string): Observable<T> {
-    return fromFetch(url).pipe(
-      switchMap(response => {
-        if (response.ok) {
-          return response.json() as Promise<T>;
-        } else {
-          return throwError(() => new Error(`Error ${response.status}`));
-        }
-      }),
-      retry(3),
-      catchError(err => this.handleError<T>(err))
-    );
-  }
-  
-  private handleError<T>(error: Error): Observable<T> {
-    console.error('API error:', error);
-    return EMPTY;
-  }
-}
-
-// 使用例
-interface Product {
-  id: string;
-  name: string;
-  price: number;
-}
-
-const apiService = new ApiService();
-const products$ = apiService.get<Product[]>('/api/products');
-
-products$.subscribe(products => {
-  // products は Product[] 型として扱われる
-  products.forEach(p => console.log(`${p.name}: ${p.price}円`));
-});
-```
-
-## 状態管理とTypeScript
-
-RxJSを使った状態管理はTypeScriptと相性が良いです。
+このセクションでは、ReduxやNgRxを使わずに、RxJSのみで状態管理を構築する方法を紹介します。
 
 ```ts
 // アプリケーションの状態インターフェース
@@ -322,6 +292,52 @@ const isLoading$ = state$.pipe(
 isLoading$.subscribe(isLoading => {
   console.log(`Loading状態: ${isLoading}`);
 });
+```
+
+## ジェネリックス活用例
+
+複雑なデータフローでは、より高度なジェネリック型が役立ちます。
+
+```ts
+// HTTPリクエストをラップするサービス
+class ApiService {
+  // ジェネリックメソッド
+  get<T>(url: string): Observable<T> {
+    return fromFetch(url).pipe(
+      switchMap(response => {
+        if (response.ok) {
+          return response.json() as Promise<T>;
+        } else {
+          return throwError(() => new Error(`Error ${response.status}`));
+        }
+      }),
+      retry(3),
+      catchError(err => this.handleError<T>(err))
+    );
+  }
+  
+  private handleError<T>(error: Error): Observable<T> {
+    console.error('API error:', error);
+    return EMPTY;
+  }
+}
+
+// 使用例
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+}
+
+const apiService = new ApiService();
+const products$ = apiService.get<Product[]>('/api/products');
+
+products$.subscribe(products => {
+  // products は Product[] 型として扱われる
+  products.forEach(p => console.log(`${p.name}: ${p.price}円`));
+});
+
+// このようにジェネリック型を用いることで、APIのレスポンス型を再利用可能な形で定義し、サービスクラスを汎用化できます。
 ```
 
 ## まとめ
