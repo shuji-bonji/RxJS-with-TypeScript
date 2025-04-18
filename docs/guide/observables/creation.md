@@ -263,13 +263,13 @@ RxJSのストリームは、従来のJavaScriptのイベント処理やAJAX通�
 
 | 操作子 / API | 主な用途 | 特徴 |
 |--------------|----------|------|
-| `of()`       | 単純な値の列 | 完了も発行される |
-| `from()`     | 配列/Promiseなど | 複数データソースに対応 |
-| `fromEvent()`| DOMイベント | UI連携に便利 |
-| `interval()` | 定期的なイベント | 時間ベース |
-| `timer()`    | 遅延 + 定期イベント | `interval`の上位版 |
-| `defer()`    | 実行タイミングを遅延 | 購読ごとに新しいObservable |
-| `Subject`    | 双方向通信 / マルチキャスト | `next()`手動発火が可能 |
-| `EMPTY`      | すぐ完了する | `next()`は呼ばれない |
-| `NEVER`      | 何もしない | 学習用途に便利 |
-| `throwError()` | エラーを即発行 | エラーハンドリング検証に便利 |
+| [`of()` ](#of---指定した値をシーケンスとして発行) | 単純な値の列 | 完了も発行される |
+| [`from()`](#from---配列やpromiseなどからobservableを作成) | 配列/Promiseなど | 複数データソースに対応 |
+| [`fromEvent()`](#fromevent---domイベントからobservableを作成)| DOMイベント | UI連携に便利 |
+| [`interval()`](#interval-と-timer---時間ベースのobservable)| 定期的なイベント | 時間ベース |
+| [`timer()`](#interval-と-timer---時間ベースのobservable) | 遅延 + 定期イベント | `interval`の上位版 |
+| [`defer()`](#3-defer---observableファクトリの遅延実行) | 実行タイミングを遅延 | 購読ごとに新しいObservable |
+| [`Subject`](#4-subject---observableとobserverの両方の特性を持つ)    | 双方向通信 / マルチキャスト | `next()`手動発火が可能 |
+| [`EMPTY`](#5-特殊な-observable-の生成) | すぐ完了する | `next()`は呼ばれない |
+| [`NEVER`](#5-特殊な-observable-の生成) | 何もしない | 学習用途に便利 |
+| [`throwError()`](#5-特殊な-observable-の生成) | エラーを即発行 | エラーハンドリング検証に便利 |
