@@ -31,6 +31,10 @@ fromEvent(document, 'click').subscribe(event => {
 | キャンセル可能 | `Subscription.unsubscribe()` によりストリームの中断が可能 |
 | 多様なオペレーター | `debounceTime`, `mergeMap`, `combineLatest` など多数の演算子で変換や合成が可能 |
 
+> 宣言的コード - 「どういう結果が欲しいのか」を素直に書くコード  
+> 手続き的コード - 対比として「どういう計算を行っていけば欲しい結果が手に入るのか」を書くコード
+
+
 ## ユースケース
 
 RxJSは以下のような状況で特に役立ちます。

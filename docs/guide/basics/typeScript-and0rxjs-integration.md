@@ -48,22 +48,29 @@ const userNames$: Observable<string> = users$.pipe(
 カスタムオペレーターを作成する際も、型を適切に扱うことができます。
 
 ```ts
-import { Observable, OperatorFunction } from 'rxjs';
+import { Observable, of, OperatorFunction } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 // OperatorFunctionを使用して型安全なカスタムオペレーターを定義
-function doubleMap<T, R>(project: (value: T, index: number) => R): OperatorFunction<T, R> {
-  return (source: Observable<T>) => 
-    source.pipe(
-      map((value, index) => project(value, index)),
-      map((value, index) => project(value, index))
-    );
+function doubleMap<T, R, S>(
+  first: (value: T, index: number) => R,
+  second: (value: R, index: number) => S
+): OperatorFunction<T, S> {
+  return (source: Observable<T>) => source.pipe(map(first), map(second));
 }
 
 // 使用例
-of(1, 2, 3).pipe(
-  doubleMap(x => x * 2)
-).subscribe(console.log); // 出力: 4, 8, 12
+of(1, 2, 3)
+  .pipe(
+    doubleMap(
+      (x) => x * 2,
+      (x) => `Result: ${x}`
+    )
+  )
+  .subscribe(console.log);
+// Result: 2
+// Result: 4
+// Result: 6
 ```
 
 ## インターフェースと型エイリアス
@@ -106,8 +113,8 @@ eventBus$.next({
   type: 'USER_LOGIN',
   payload: {
     userId: 'user123',
-    timestamp: Date.now()
-  }
+    timestamp: Date.now(),
+  },
 });
 
 // 型安全なイベントフィルタリング
@@ -115,7 +122,7 @@ const userLoginEvents$ = eventBus$.pipe(
   filter((event): event is UserLoginEvent => event.type === 'USER_LOGIN')
 );
 
-userLoginEvents$.subscribe(event => {
+userLoginEvents$.subscribe((event) => {
   // ここでは event.payload.userId が型安全にアクセス可能
   console.log(`User logged in: ${event.payload.userId}`);
 });
@@ -162,6 +169,8 @@ function updateUser(id: number, update: UserUpdate): Observable<User> {
 より複雑なケースでは、条件型やマッピング型を使用できます。
 
 ```ts
+import { filter, map, Observable} from 'rxjs';
+
 // APIレスポンスの型
 type ApiResponse<T> = 
   | { status: 'success'; data: T; }

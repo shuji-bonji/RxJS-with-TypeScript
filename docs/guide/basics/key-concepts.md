@@ -6,11 +6,11 @@ RxJSを理解するには、その中核となる概念を把握することが�
 
 |用語|説明|
 |---|---|
-|[Observable](#observable)|時間の経過とともにデータを発行するストリーム（ストリーミングデータの源）|
+|[Observable](#observable)|時間の経過とともにデータを発行するストリーム<br>（ストリーミングデータの源）|
 |[Observer](#observer)|Observableからの通知（データ）を受け取る存在|
 |[Subscription](#subscription)|Observable の購読。データを受け取り始める操作|
-|[Operator](#operator)|ストリームを変換・フィルター・合成などする関数群（例：map, filter, mergeMap）|
-|[Subject](#subject)|Observer でもあり Observable でもあるハイブリッドな存在。複数購読者に同じ値を流すときに使う|
+|[Operator](#operator)|ストリームを変換・フィルター・合成などする関数群<br>（例：map, filter, mergeMap）|
+|[Subject](#subject)|Observer でもあり Observable でもあるハイブリッドな存在。<br>複数購読者に同じ値を流すときに使う|
 |[Scheduler](#scheduler)|実行タイミングやスレッド制御を行う仕組み（高度な制御用途）|
 
 ## オペレーターの分類と用途
@@ -47,26 +47,68 @@ const observable = new Observable<number>(subscriber => {
 
 Observableは`subscribe()`を呼び出すまで何も実行されない「遅延評価」の特性を持ちます。
 
+```ts
+// 先のコードの続き
+observable.subscribe(console.log); // ここで初めて処理される
+// 処理結果:
+// 1
+// 2
+// 3
+// 4
+```
+
+
 ### Observableの作成
 
 RxJSでは、さまざまな方法でObservableを作成できます。
 
+####  固定値からのObservable
 ```ts
-import { of, from, fromEvent, interval } from 'rxjs';
+import { of } from 'rxjs';
 
-// 固定値からのObservable
 const ofObservable = of(1, 2, 3);
-
-// 配列からのObservable
-const arrayObservable = from([1, 2, 3]);
-
-// DOMイベントからのObservable
-const clickObservable = fromEvent(document, 'click');
-
-// 定期的な間隔でのObservable
-const intervalObservable = interval(1000); // 1秒ごとに値を発行
+ofObservable.subscribe(console.log);
+// 処理結果:
+// 1
+// 2
+// 3
 ```
 
+#### 配列からのObservable
+```ts
+import { from } from 'rxjs';
+
+const arrayObservable = from([1, 2, 3]);
+arrayObservable.subscribe(console.log);
+// 処理結果:
+// 1
+// 2
+// 3
+```
+
+#### DOMイベントからのObservable
+```ts
+import { fromEvent } from 'rxjs';
+
+const clickObservable = fromEvent(document, 'click');
+clickObservable.subscribe(console.log);
+// 処理結果:
+// PointerEvent {isTrusted: true, pointerId: 1, width: 1, height: 1, pressure: 0, …}
+```
+
+#### 定期的な間隔でのObservable
+```ts
+import { interval } from 'rxjs';
+
+const intervalObservable = interval(1000); // 1秒ごとに値を発行
+intervalObservable.subscribe(console.log);
+// 処理結果:
+// 0
+// 1
+// 2
+// .
+// . 続く
+```
 ## Observer
 
 Observerは、Observableから発行される値を受け取るインターフェースです。三つの主要なコールバック関数があります。
@@ -96,8 +138,7 @@ observable.subscribe(observer);
 受信した値: 4
 完了通知を受信
 ```
-
-上記以外に、[Observableの作成](#observableの作成) のサンプルコード例のそれぞれの Observable の値を試しに受け取ってみるのも良い。
+[Observableの作成](#observableの作成)では、`console.log`でそのまま出力しただけだが、これらのサンプルコード例のそれぞれの Observable の値を試しに受け取ってみるのも良い。
 
 ## Subscription
 
@@ -110,11 +151,11 @@ import { interval } from 'rxjs';
 const observable = interval(1000);
 
 // 購読開始
-const subscription = observable.subscribe(value => console.log(value)); // 👈
+const subscription = observable.subscribe(value => console.log(value)); // 👈 Subscription
 
 // 5秒後に購読を解除（キャンセル）
 setTimeout(() => {
-  subscription.unsubscribe();
+  subscription.unsubscribe(); // 👈 購読解除（キャンセル）
   console.log('購読を解除しました');
 }, 5000);
 ```
@@ -136,71 +177,171 @@ setTimeout(() => {
 オペレーターは、Observableを変換するための関数です。パイプ(`pipe()`)を使用して、複数のオペレーターを連鎖させることができます。
 
 ### 変換オペレーター
-
+#### `map`
 ```ts
 import { of } from 'rxjs';
-import { map, scan } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 const source = of(1, 2, 3, 4, 5);
 
 source.pipe(
-  map(x => x * 2) // 各値を2倍に変換 👈 map オペレーター
+  map(x => x * 2) // 各値を2倍に変換
 ).subscribe(value => console.log(`map: ${value}`));
-// 出力: map: 2, map: 4, map: 6, map: 8, map: 10
+// 処理結果:
+// map: 2
+// map: 4
+// map: 6
+// map: 8
+// map: 10
+```
+
+#### `scan`
+```ts
+import { of } from 'rxjs';
+import { scan } from 'rxjs/operators';
+
+const source = of(1, 2, 3, 4, 5);
 
 source.pipe(
-  scan((acc, curr) => acc + curr, 0) // 累積値を計算 👈 scan オペレーター
+  scan((acc, curr) => acc + curr, 0) // 累積値を計算
 ).subscribe(value => console.log(`scan: ${value}`));
-// 出力: scan: 1, scan: 3, scan: 6, scan: 10, scan: 15
+// 処理結果:
+// scan: 1
+// scan: 3
+// scan: 6
+// scan: 10
+// scan: 15
 ```
 
 ### フィルタリングオペレーター
-
+#### `filter`
 ```ts
 import { of } from 'rxjs';
-import { filter, take, debounceTime } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 
 const source = of(1, 2, 3, 4, 5);
 
-source.pipe(
-  filter(x => x % 2 === 0) // 偶数のみをフィルタリング 👈 filter オペレーター
-).subscribe(value => console.log(`filter: ${value}`));
-// 出力: filter: 2, filter: 4
+source
+  .pipe(
+    filter((x) => x % 2 === 0) // 偶数のみをフィルタリング
+  )
+  .subscribe((value) => console.log(`filter: ${value}`));
+// 処理結果:
+// filter: 2
+// filter: 4
+```
 
-source.pipe(
-  take(3) // 最初のn個の値だけを取得 👈 take オペレーター
-).subscribe(value => console.log(`take: ${value}`));
-// 出力: take: 1, take: 2, take: 3
+#### `take`
+```ts
+import { of } from 'rxjs';
+import { take } from 'rxjs/operators';
 
+const source = of(1, 2, 3, 4, 5);
+
+source
+  .pipe(
+    take(3) // 最初のn個の値だけを取得
+  )
+  .subscribe((value) => console.log(`take: ${value}`));
+// 処理結果:
+// take: 1
+// take: 2
+// take: 3
+```
+
+#### `debounceTime`
+```ts
+import { fromEvent } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+
+document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
+  <div>
+    <input id="searchInput"></input>
+    <button id="submit">submit</button>
+    </div>
+  </div>
+`;
+
+const inputElement = document.querySelector('#searchInput')!;
 // フォームの入力などに有用
-fromEvent(inputElement, 'input').pipe(
-  debounceTime(300) // 300ms間隔をあけてイベントを発行 👈 debounceTime オペレーター
-).subscribe();
+fromEvent(inputElement, 'input')
+  .pipe(
+    debounceTime(300) // 300ms間隔をあけてイベントを発行 👈 debounceTime オペレーター
+  )
+  .subscribe((value) => console.log((value as InputEvent).data));
+// 処理結果:
+// a
+// b
+// c
 ```
 
 ### 結合オペレーター
-
+#### `combineLatest`
 ```ts
-import { combineLatest, merge, concat } from 'rxjs';
+import { combineLatest, interval } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-const observable1 = interval(1000).pipe(map(x => `First: ${x}`));
-const observable2 = interval(1500).pipe(map(x => `Second: ${x}`));
+const observable1 = interval(1000).pipe(map((x) => `First: ${x}`));
+const observable2 = interval(1500).pipe(map((x) => `Second: ${x}`));
 
 // 最新の値を組み合わせる
-combineLatest([observable1, observable2]).subscribe(
-  ([first, second]) => console.log(`Combine Latest: ${first}, ${second}`)
+combineLatest([observable1, observable2]).subscribe(([first, second]) =>
+  console.log(`Combine Latest: ${first}, ${second}`)
 );
+// 処理結果:
+// Combine Latest: First: 0, Second: 0
+// Combine Latest: First: 1, Second: 0
+// Combine Latest: First: 2, Second: 0
+// Combine Latest: First: 2, Second: 1
+// Combine Latest: First: 3, Second: 1
+// Combine Latest: First: 3, Second: 2
+// Combine Latest: First: 4, Second: 2
+// Combine Latest: First: 5, Second: 2
+// ... 続く
+```
+
+#### `merge`
+```ts
+import { merge, interval } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+const observable1 = interval(1000).pipe(map((x) => `First: ${x}`));
+const observable2 = interval(1500).pipe(map((x) => `Second: ${x}`));
 
 // 複数のObservableをマージする
-merge(observable1, observable2).subscribe(
-  value => console.log(`Merged: ${value}`)
+merge(observable1, observable2).subscribe((value) =>
+  console.log(`Merged: ${value}`)
 );
+// 処理結果:
+// Merged: First: 0
+// Merged: Second: 0
+// Merged: First: 1
+// Merged: First: 2
+// Merged: Second: 1
+// Merged: First: 3
+// Merged: Second: 2
+// Merged: First: 4
+// ... 続く
+```
+
+#### `concat`
+```ts
+import { concat, interval } from 'rxjs';
+import { map, take } from 'rxjs/operators';
+
+const observable1 = interval(1000).pipe(map((x) => `First: ${x}`));
+const observable2 = interval(1500).pipe(map((x) => `Second: ${x}`));
 
 // Observableを順番に連結する
 concat(observable1.pipe(take(3)), observable2.pipe(take(2))).subscribe(
-  value => console.log(`Concatenated: ${value}`)
+  (value) => console.log(`Concatenated: ${value}`)
 );
+// 処理結果:
+// Concatenated: First: 0
+// Concatenated: First: 1
+// Concatenated: First: 2
+// Concatenated: Second: 0
+// Concatenated: Second: 1
 ```
 
 ## Subject
@@ -220,7 +361,7 @@ subject.subscribe(value => console.log(`Observer B: ${value}`));
 subject.next(1);
 subject.next(2);
 
-// 出力:
+// 処理結果:
 // Observer A: 1
 // Observer B: 1
 // Observer A: 2
@@ -231,8 +372,9 @@ subject.next(2);
 
 RxJSには、特殊な動作をする複数のSubject変種があります：
 
+#### `BehaviorSubject`
 ```ts
-import { BehaviorSubject, ReplaySubject, AsyncSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 // 初期値を持ち、最新の値を新しい購読者に提供する
 const behaviorSubject = new BehaviorSubject<number>(0);
@@ -240,6 +382,11 @@ behaviorSubject.subscribe(value => console.log(`Behavior Observer: ${value}`));
 // 出力: Behavior Observer: 0
 behaviorSubject.next(1);
 // 出力: Behavior Observer: 1
+```
+
+#### `ReplaySubject`
+```ts
+import { ReplaySubject } from 'rxjs';
 
 // 指定された数の過去の値を新しい購読者に再生する
 const replaySubject = new ReplaySubject<number>(2); // 最新の2つの値を保持
@@ -247,7 +394,14 @@ replaySubject.next(1);
 replaySubject.next(2);
 replaySubject.next(3);
 replaySubject.subscribe(value => console.log(`Replay Observer: ${value}`));
-// 出力: Replay Observer: 2, Replay Observer: 3
+// 処理結果:
+// Replay Observer: 2
+// Replay Observer: 3
+```
+
+#### `AsyncSubject`
+```ts
+import { AsyncSubject } from 'rxjs';
 
 // completeが呼ばれた時点で最後の値のみを発行する
 const asyncSubject = new AsyncSubject<number>();
@@ -300,7 +454,7 @@ import { catchError, retry } from 'rxjs/operators';
 const source = throwError(() => new Error('エラーが発生しました'));
 
 source.pipe(
-  catchError(error => {
+  catchError(error => { // 👈
     console.log(`エラーをキャッチしました: ${error.message}`);
     return of('エラー後のフォールバック値');
   })
@@ -309,12 +463,10 @@ source.pipe(
   error: err => console.log(`エラー: ${err.message}`),
   complete: () => console.log('完了')
 });
-
-// HTTPリクエストの再試行の例
-httpGet('/api/data').pipe(
-  retry(3), // 失敗した場合、3回再試行
-  catchError(error => of({ error: true }))
-).subscribe();
+// 処理結果:
+// エラーをキャッチしました: エラーが発生しました
+// 次の値: エラー後のフォールバック値
+// 完了
 ```
 
 ## まとめ
