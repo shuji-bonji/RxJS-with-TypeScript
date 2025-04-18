@@ -19,7 +19,10 @@ export default defineConfig({
         items: [
           { text: 'RxJSとは何か', link: '/guide/basics/what-is-rxjs' },
           { text: 'RxJSの主要概念', link: '/guide/basics/key-concepts' },
-          { text: 'TypeScriptでの環境構築', link: '/guide/basics/setup' },
+          {
+            text: 'TypeScriptとRxJSの統合',
+            link: '/guide/basics/typeScript-and0rxjs-integration',
+          },
         ],
       },
       {

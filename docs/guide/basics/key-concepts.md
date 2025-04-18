@@ -13,7 +13,14 @@ RxJSを理解するには、その中核となる概念を把握することが�
 |[Subject](#subject)|Observer でもあり Observable でもあるハイブリッドな存在。複数購読者に同じ値を流すときに使う|
 |[Scheduler](#scheduler)|実行タイミングやスレッド制御を行う仕組み（高度な制御用途）|
 
+## オペレーターの分類と用途
 
+| 種類 | 代表オペレーター | 用途の例 |
+|------|------------------|---------|
+| 変換 | map, scan | 値を変換したり、累積処理を行う |
+| フィルタ | filter, take, debounceTime | 条件に合う値のみを通す、入力制御など |
+| 結合 | merge, concat, combineLatest | 複数のObservableを結合・合成 |
+| エラー処理 | catchError, retry | エラー発生時のフォールバックや再試行 |
 
 ## Observable
 
@@ -37,6 +44,8 @@ const observable = new Observable<number>(subscriber => {
   }, 1000);
 });
 ```
+
+Observableは`subscribe()`を呼び出すまで何も実行されない「遅延評価」の特性を持ちます。
 
 ### Observableの作成
 
@@ -109,6 +118,8 @@ setTimeout(() => {
   console.log('購読を解除しました');
 }, 5000);
 ```
+
+メモリリークを防ぐために、不要になったObservableは確実に`unsubscribe()`することが重要です。
 
 #### 実行結果
 ```sh
@@ -248,6 +259,8 @@ asyncSubject.complete();
 // 出力: Async Observer: 3
 ```
 
+Subjectは、フォームやユーザー操作イベントの中継、状態管理などでも広く利用されます。
+
 ## Scheduler
 
 スケジューラーは、Observableの実行コンテキストを制御します。これにより、コードが実行されるタイミングと場所を制御できます。
@@ -307,3 +320,4 @@ httpGet('/api/data').pipe(
 ## まとめ
 
 RxJSの主要概念を理解することで、複雑な非同期処理を効果的に管理できるようになります。これらの概念は、実際のアプリケーション開発において強力なツールとなります。
+
