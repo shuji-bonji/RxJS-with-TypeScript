@@ -30,10 +30,9 @@ export default defineConfig({
         items: [
           { text: 'Observableの作成方法', link: '/guide/observables/creation' },
           { text: 'イベントのストリーム化', link: '/guide/observables/events' },
-          { text: '購読と解除', link: '/guide/observables/subscription' },
           {
-            text: 'Hot vs Cold Observable',
-            link: '/guide/observables/hot-cold',
+            text: 'Observableのライフサイクル',
+            link: '/guide/observables/observable-lifecycle',
           },
         ],
       },
