@@ -20,8 +20,8 @@ export default defineConfig({
           { text: 'RxJSとは何か', link: '/guide/basics/what-is-rxjs' },
           { text: 'RxJSの主要概念', link: '/guide/basics/key-concepts' },
           {
-            text: 'TypeScriptとRxJSの統合',
-            link: '/guide/basics/typeScript-and0rxjs-integration',
+            text: 'TypeScriptとRxJSの基本連携',
+            link: '/guide/basics/typescript-and-rxjs-basics',
           },
         ],
       },
@@ -50,6 +50,18 @@ export default defineConfig({
             link: '/guide/operators/filtering',
           },
           { text: '結合オペレーター', link: '/guide/operators/combination' },
+          {
+            text: 'ユーティリティオペレーター',
+            link: '/guide/operators/utility',
+          },
+          {
+            text: '条件オペレーター',
+            link: '/guide/operators/conditional',
+          },
+          {
+            text: 'マルチキャスティング',
+            link: '/guide/operators/multicasting',
+          },
         ],
       },
       {
@@ -88,16 +100,23 @@ export default defineConfig({
         ],
       },
       {
-        text: '7. TypeScript特有の利点',
+        text: '7. TypeScriptとRxJSの高度な連携',
         items: [
           {
             text: '型安全なObservableチェーン',
-            link: '/guide/typescript/type-safety',
+            link: '/guide/typescript-advanced/type-safety',
           },
-          { text: 'ジェネリクスの活用', link: '/guide/typescript/generics' },
           {
-            text: 'インターフェースとの連携',
-            link: '/guide/typescript/interfaces',
+            text: 'ジェネリクスの活用',
+            link: '/guide/typescript-advanced/generics',
+          },
+          {
+            text: 'カスタムオペレーターと型定義',
+            link: '/guide/typescript-advanced/custom-operators',
+          },
+          {
+            text: '条件型とマッピング型の活用',
+            link: '/guide/typescript-advanced/conditional-types',
           },
         ],
       },
@@ -114,15 +133,15 @@ export default defineConfig({
             link: '/guide/patterns/debounce-throttle',
           },
           { text: 'キャッシュ戦略', link: '/guide/patterns/caching' },
+          {
+            text: 'メモリリークの防止',
+            link: '/guide/patterns/memory-leak-prevention',
+          },
         ],
       },
       {
         text: '9. パフォーマンス最適化',
         items: [
-          {
-            text: 'メモリリークの防止',
-            link: '/guide/performance/memory-leaks',
-          },
           {
             text: '購読の適切な管理',
             link: '/guide/performance/subscription-management',
@@ -131,14 +150,19 @@ export default defineConfig({
             text: '効率的なオペレーター選択',
             link: '/guide/performance/operator-selection',
           },
+          {
+            text: 'ストリームの設計パターン',
+            link: '/guide/performance/stream-design',
+          },
         ],
       },
       {
-        text: '10. 応用例',
+        text: '10. フレームワークとの統合',
         items: [
-          { text: 'Angularとの連携', link: '/guide/applications/angular' },
-          { text: 'TypeScriptでのSPA開発', link: '/guide/applications/spa' },
-          { text: 'Web APIとの連携', link: '/guide/applications/web-api' },
+          { text: 'Angularとの連携', link: '/guide/frameworks/angular' },
+          { text: 'Reactとの連携', link: '/guide/frameworks/react' },
+          { text: 'Vueとの連携', link: '/guide/frameworks/vue' },
+          { text: 'Web APIとの連携', link: '/guide/frameworks/web-api' },
         ],
       },
     ],
