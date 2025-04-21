@@ -1,4 +1,3 @@
-// docs/.vitepress/config.ts
 import { defineConfig } from 'vitepress';
 import footnote from 'markdown-it-footnote';
 
@@ -12,23 +11,19 @@ export default defineConfig({
     ],
     sidebar: [
       {
-        text: '導入',
-        items: [{ text: 'はじめに', link: '/guide/introduction' }],
-      },
-      {
-        text: '1. 基本概念',
+        text: '1. RxJS入門',
         items: [
+          { text: 'はじめに', link: '/guide/introduction' },
           { text: 'RxJSとは何か', link: '/guide/basics/what-is-rxjs' },
-          { text: 'RxJSの主要概念', link: '/guide/basics/key-concepts' },
-          {
-            text: 'TypeScriptとRxJSの基本連携',
-            link: '/guide/basics/typescript-and-rxjs-basics',
-          },
         ],
       },
       {
         text: '2. Observableの基礎',
         items: [
+          {
+            text: 'Observableとは',
+            link: '/guide/observables/what-is-observable',
+          },
           { text: 'Observableの作成方法', link: '/guide/observables/creation' },
           { text: 'イベントのストリーム化', link: '/guide/observables/events' },
           {
@@ -42,7 +37,19 @@ export default defineConfig({
         ],
       },
       {
-        text: '3. オペレーターの理解',
+        text: '3. Subjectとマルチキャスト',
+        items: [
+          { text: 'Subjectとは', link: '/guide/subjects/what-is-subject' },
+          { text: 'Subjectの種類', link: '/guide/subjects/types-of-subject' },
+          {
+            text: 'Multicastingの仕組み',
+            link: '/guide/subjects/multicasting',
+          },
+          { text: 'Subjectのユースケース', link: '/guide/subjects/use-cases' },
+        ],
+      },
+      {
+        text: '4. オペレーターの理解',
         items: [
           { text: 'パイプラインの概念', link: '/guide/operators/pipeline' },
           { text: '変換オペレーター', link: '/guide/operators/transformation' },
@@ -66,7 +73,7 @@ export default defineConfig({
         ],
       },
       {
-        text: '4. エラーハンドリング',
+        text: '5. エラーハンドリング',
         items: [
           { text: 'エラー処理戦略', link: '/guide/error-handling/strategies' },
           {
@@ -80,7 +87,7 @@ export default defineConfig({
         ],
       },
       {
-        text: '5. スケジューラーの活用',
+        text: '6. スケジューラーの活用',
         items: [
           { text: '非同期処理の制御', link: '/guide/schedulers/async-control' },
           {
@@ -90,7 +97,7 @@ export default defineConfig({
         ],
       },
       {
-        text: '6. テスト手法',
+        text: '7. テスト手法',
         items: [
           { text: 'RxJSのユニットテスト', link: '/guide/testing/unit-tests' },
           {
@@ -101,10 +108,10 @@ export default defineConfig({
         ],
       },
       {
-        text: '7. TypeScriptとRxJSの高度な連携',
+        text: '8. TypeScriptとRxJSの高度な連携',
         items: [
           {
-            text: '型安全なObservableチェーン',
+            text: 'TypeScriptとRxJSの基本連携',
             link: '/guide/typescript-advanced/type-safety',
           },
           {
@@ -122,7 +129,7 @@ export default defineConfig({
         ],
       },
       {
-        text: '8. 実践パターン',
+        text: '9. 実践パターン',
         items: [
           {
             text: '状態管理パターン',
@@ -141,7 +148,7 @@ export default defineConfig({
         ],
       },
       {
-        text: '9. パフォーマンス最適化',
+        text: '10. パフォーマンス最適化',
         items: [
           {
             text: '購読の適切な管理',
@@ -158,7 +165,7 @@ export default defineConfig({
         ],
       },
       {
-        text: '10. フレームワークとの統合',
+        text: '11. フレームワークとの統合',
         items: [
           { text: 'Angularとの連携', link: '/guide/frameworks/angular' },
           { text: 'Reactとの連携', link: '/guide/frameworks/react' },

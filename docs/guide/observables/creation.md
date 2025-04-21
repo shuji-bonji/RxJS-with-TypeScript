@@ -216,7 +216,7 @@ subject$.complete();
 ```
 
 #### 実行結果
-```ts
+```sh
 Observer 1: 1
 Observer 2: 1
 Observer 1: 2
