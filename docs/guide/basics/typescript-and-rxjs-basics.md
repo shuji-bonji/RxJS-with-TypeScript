@@ -1,14 +1,7 @@
 # TypeScriptとRxJSの基本連携
 
-この文書では、TypeScriptでRxJSを使い始めるための基本的な連携方法について説明します。
-
-## このドキュメントで学べること
-
-- TypeScriptでのObservable型の扱い方
-- 型安全なRxJSプログラミングの基礎
-- TypeScriptの型システムがRxJSにもたらす利点
-
-TypeScriptとRxJSを組み合わせることで、型安全性を保ちながら非同期プログラミングを行うことができます。この文書では、TypeScriptでRxJSを基本的に活用するための方法を紹介します。
+この文書では、TypeScriptでRxJSを使い始めるための基本的な連携方法について説明します。  
+TypeScriptとRxJSを組み合わせることで、型安全性を保ちながら非同期プログラミングを行うことができます。
 
 ## 型定義の活用
 
@@ -40,13 +33,15 @@ const userNames$: Observable<string> = users$.pipe(
 );
 ```
 
-TypeScriptでは、変数名に`$`サフィックスを付けることで、それがObservableであることを視覚的に示す慣習があります。これは必須ではありませんが、コードの読みやすさを向上させるのに役立ちます。
+TypeScriptでは `number$`のように、変数名に`$`サフィックスを付けることで、それがObservableであることを視覚的に示す慣習があります。これは必須ではありませんが、コードの読みやすさを向上させるのに役立ちます。
 
 ## インターフェースと型エイリアス
 
 複雑なデータ構造を扱う場合、インターフェースや型エイリアスを定義すると便利です。
 
 ```ts
+import { Subject } from 'rxjs';
+
 // イベントの型定義
 interface AppEvent {
   type: string;
@@ -80,8 +75,8 @@ eventBus$.next({
   type: 'USER_LOGIN',
   payload: {
     userId: 'user123',
-    timestamp: Date.now()
-  }
+    timestamp: Date.now(),
+  },
 });
 ```
 
@@ -100,7 +95,7 @@ import { map, filter, catchError } from 'rxjs/operators';
 例として、ユーザー検索機能を作成してみましょう。TypeScriptの型システムによって、コード補完や型チェックが可能になります。
 
 ```ts
-import { fromEvent, Observable } from 'rxjs';
+import { fromEvent, Observable, of } from 'rxjs';
 import { map, filter, debounceTime, switchMap } from 'rxjs/operators';
 
 // ユーザー型の定義
@@ -115,12 +110,14 @@ function searchUsers(term: string): Observable<User[]> {
   // 実際のAPIリクエストの代わりに、モックデータを返す
   return of([
     { id: 1, name: '山田太郎', email: 'yamada@example.com' },
-    { id: 2, name: '佐藤花子', email: 'sato@example.com' }
+    { id: 2, name: '佐藤花子', email: 'sato@example.com' },
   ]).pipe(
     // 検索語に基づいてフィルタリング
-    map(users => users.filter(user => 
-      user.name.includes(term) || user.email.includes(term)
-    ))
+    map((users) =>
+      users.filter(
+        (user) => user.name.includes(term) || user.email.includes(term)
+      )
+    )
   );
 }
 
@@ -129,28 +126,30 @@ const searchInput = document.querySelector<HTMLInputElement>('#search');
 if (searchInput) {
   // 入力イベントのストリーム
   const searchTerms$ = fromEvent<InputEvent>(searchInput, 'input').pipe(
-    map(event => (event.target as HTMLInputElement).value),
-    filter(term => term.length > 2),  // 3文字以上の場合のみ
-    debounceTime(300)  // タイピング中のリクエスト防止
+    map((event) => (event.target as HTMLInputElement).value),
+    filter((term) => term.length > 2), // 3文字以上の場合のみ
+    debounceTime(300) // タイピング中のリクエスト防止
   );
 
   // 検索結果の購読
-  const subscription = searchTerms$.pipe(
-    switchMap(term => searchUsers(term))
-  ).subscribe({
-    next: (users) => {
-      console.log('検索結果:', users);
-      // ここで結果をUIに表示
-    },
-    error: (err) => console.error('検索エラー:', err)
-  });
+  const subscription = searchTerms$
+    .pipe(switchMap((term) => searchUsers(term)))
+    .subscribe({
+      next: (users) => {
+        console.log('検索結果:', users);
+        // ここで結果をUIに表示
+      },
+      error: (err) => console.error('検索エラー:', err),
+    });
 
   // コンポーネントのクリーンアップ時に購読解除
   // componentWillUnmount() {
   //   subscription.unsubscribe();
   // }
 }
+
 ```
+
 
 ## tsconfig.jsonの基本設定
 
@@ -189,4 +188,4 @@ TypeScriptとRxJSを組み合わせることで、次のような利点があり
 - コンパイル時の型チェックによるエラーの早期発見
 - 自己文書化されたコード
 
-高度な型機能やカスタムオペレーターの定義など、さらに進んだトピックについては、「7. TypeScriptとRxJSの高度な連携」セクションで詳しく説明します。
+高度な型機能やカスタムオペレーターの定義など、さらに進んだトピックについては、[『7. TypeScriptとRxJSの高度な連携』](../typescript-advanced/)セクションで詳しく説明します。

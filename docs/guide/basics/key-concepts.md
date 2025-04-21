@@ -13,14 +13,6 @@ RxJSを理解するには、その中核となる概念を把握することが�
 |[Subject](#subject)|Observer でもあり Observable でもあるハイブリッドな存在。<br>複数購読者に同じ値を流すときに使う|
 |[Scheduler](#scheduler)|実行タイミングやスレッド制御を行う仕組み（高度な制御用途）|
 
-## オペレーターの分類と用途
-
-| 種類 | 代表オペレーター | 用途の例 |
-|------|------------------|---------|
-| 変換 | map, scan | 値を変換したり、累積処理を行う |
-| フィルタ | filter, take, debounceTime | 条件に合う値のみを通す、入力制御など |
-| 結合 | merge, concat, combineLatest | 複数のObservableを結合・合成 |
-| エラー処理 | catchError, retry | エラー発生時のフォールバックや再試行 |
 
 ## Observable
 
@@ -57,15 +49,16 @@ observable.subscribe(console.log); // ここで初めて処理される
 // 4
 ```
 
-
 ### Observableの作成
 
-RxJSでは、さまざまな方法でObservableを作成できます。
+RxJSでは、さまざまな方法でObservableを作成できます。ここでは、主要なものを挙げておきます。  
+詳細については、[こちら『Observableの作成方法』](../observables/creation.md)を参照してください。
 
-####  固定値からのObservable
+####  主要な Observableの作成方法
 ```ts
 import { of } from 'rxjs';
 
+//  固定値からのObservable
 const ofObservable = of(1, 2, 3);
 ofObservable.subscribe(console.log);
 // 処理結果:
@@ -92,7 +85,7 @@ import { fromEvent } from 'rxjs';
 
 const clickObservable = fromEvent(document, 'click');
 clickObservable.subscribe(console.log);
-// 処理結果:
+// クリック時の出力結果:
 // PointerEvent {isTrusted: true, pointerId: 1, width: 1, height: 1, pressure: 0, …}
 ```
 
@@ -111,7 +104,8 @@ intervalObservable.subscribe(console.log);
 ```
 ## Observer
 
-Observerは、Observableから発行される値を受け取るインターフェースです。三つの主要なコールバック関数があります。
+Observerは、Observableから発行される値を受け取るインターフェースです。  
+三つの主要なコールバック関数があります。
 
 ```ts
 import { Observable } from 'rxjs';
@@ -138,7 +132,28 @@ observable.subscribe(observer);
 受信した値: 4
 完了通知を受信
 ```
-[Observableの作成](#observableの作成)では、`console.log`でそのまま出力しただけだが、これらのサンプルコード例のそれぞれの Observable の値を試しに受け取ってみるのも良い。
+[Observableの作成](#observableの作成)では `console.log`でそのまま値を出力しただけだが、これらのサンプルコード例のそれぞれの Observable の値を試しに受け取ってみるのも良い。
+
+#### 例）　DOMイベントからのObservable
+```ts
+import { fromEvent } from 'rxjs';
+
+const clickObservable = fromEvent(document, 'click');
+clickObservable.subscribe(console.log);
+
+// Observer で値を受け取る 👈
+const observer = {
+  next: (value: any) => console.log('受信した値:', value),
+  error: (error: any) => console.error('エラー発生:', error),
+  complete: () => console.log('完了通知を受信')
+};
+// Observerを使用してObservableを購読
+clickObservable.subscribe(observer);
+
+// クリック時の出力結果:
+// 受信した値: PointerEvent {isTrusted: true, pointerId: 1, width: 1, height: 1, pressure: 0, …}
+```
+
 
 ## Subscription
 
@@ -150,31 +165,32 @@ import { interval } from 'rxjs';
 // 1秒ごとに値を発行するObservable
 const observable = interval(1000);
 
-// 購読開始
-const subscription = observable.subscribe(value => console.log(value)); // 👈 Subscription
+// 購読開始し、Subscriptionを受け取る
+const subscription = observable.subscribe((value) => console.log(value)); // 👈
 
 // 5秒後に購読を解除（キャンセル）
 setTimeout(() => {
-  subscription.unsubscribe(); // 👈 購読解除（キャンセル）
+  subscription.unsubscribe(); // 👈 購読解除（キャンセル）する
   console.log('購読を解除しました');
 }, 5000);
+
+// 実行結果:
+// 0
+// 1
+// 2
+// 3
+// 4
+購読を解除しました
 ```
 
 メモリリークを防ぐために、不要になったObservableは確実に`unsubscribe()`することが重要です。
 
-#### 実行結果
-```sh
-0
-1
-2
-3
-4
-購読を解除しました
-```
 
 ## Operator
 
-オペレーターは、Observableを変換するための関数です。パイプ(`pipe()`)を使用して、複数のオペレーターを連鎖させることができます。
+オペレーターは、Observableを変換するための関数です。パイプ(`pipe()`)を使用して、複数のオペレーターを連鎖させることができます。ここでは、最もポピュラーなものを挙げておきます。  
+詳細については、[こちら『オペレーターの理解』](../operators)を参照してください。
+
 
 ### 変換オペレーター
 #### `map`
@@ -418,7 +434,7 @@ Subjectは、フォームやユーザー操作イベントの中継、状態管�
 ## Scheduler
 
 スケジューラーは、Observableの実行コンテキストを制御します。これにより、コードが実行されるタイミングと場所を制御できます。
-
+#### `asyncScheduler`
 ```ts
 import { of, asyncScheduler } from 'rxjs';
 import { observeOn } from 'rxjs/operators';
@@ -447,6 +463,7 @@ console.log('購読後');
 
 RxJSでは、エラー処理も非常に重要です。`catchError`オペレーターを使用してエラーを処理できます。
 
+#### `catchError`
 ```ts
 import { of, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
