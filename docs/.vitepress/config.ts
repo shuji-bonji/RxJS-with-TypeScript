@@ -1,5 +1,6 @@
 // docs/.vitepress/config.ts
 import { defineConfig } from 'vitepress';
+import footnote from 'markdown-it-footnote';
 
 export default defineConfig({
   title: 'RxJS with TypeScript',
@@ -173,5 +174,10 @@ export default defineConfig({
         link: 'https://github.com/shuji-bonji/RxJS-with-TypeScript',
       },
     ],
+  },
+  markdown: {
+    config: (md) => {
+      md.use(footnote);
+    },
   },
 });

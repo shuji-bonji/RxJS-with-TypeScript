@@ -1,5 +1,6 @@
 {
-  "name": "vitepress-project",
+  "name": "rxjs-with-typescript",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,14 +10,11 @@
     "docs:preview": "vitepress preview docs"
   },
   "devDependencies": {
-    "vue": "3.2.44",
-    "vitepress": "1.0.0-alpha.28"
+    "vitepress": "^1.6.3"
   },
-  "pnpm": {
-    "peerDependencyRules": {
-      "ignoreMissing": [
-        "@algolia/client-search"
-      ]
-    }
+  "dependencies": {
+    "markdown-it-footnote": "^4.0.0",
+    "mermaid": "^11.6.0",
+    "vitepress-plugin-mermaid": "^2.0.17"
   }
 }
