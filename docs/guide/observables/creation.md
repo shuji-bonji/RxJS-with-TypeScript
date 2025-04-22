@@ -420,6 +420,8 @@ Observer 2: 3
 > Hot Observableであることに注意  
 > - `Subject` は購読者に「同時に」通知されるため、`from()` や `of()` などの Cold Observable とは異なり、**購読タイミングによって値を受け取れないことがあります**。
 
+詳しくは、[「Subjectとは」](../subjects/what-is-subject.md)を参照してください。
+
 ## コールバック変換
 
 RxJSには、コールバックベースの非同期関数をObservableに変換するための関数として `bindCallback()` および `bindNodeCallback()` が用意されています。

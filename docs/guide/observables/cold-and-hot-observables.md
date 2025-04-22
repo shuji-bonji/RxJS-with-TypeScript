@@ -136,11 +136,17 @@ Cold Observable と Hot Observable の違いを、以下の表にまとめます
 
 ## 4. コールドObservableをホットに変換する方法
 
-実際のアプリケーション開発では、コールドObservableをホットに変換して複数のサブスクライバー間でデータを共有したい場合があります。
+RxJSでは、Cold ObservableをHotに変換する手段として主に以下の2つが使われます。
+
+- `share()`：内部的に`multicast`と`refCount`を組み合わせた簡易ホット化演算子
+- `multicast()`：低レベルなマルチキャスト変換。明示的にSubjectを渡す必要がある
+
 
 ### share()オペレーター
 
 `share()`オペレーターは、コールドObservableをホットObservableに変換する最も一般的な方法です。
+- 複数購読を共有したいが、内部の複雑さを意識したくない場合に便利
+- 自動で購読開始・停止の制御（refCount）を行う
 
 ```ts
 import { interval, Observable } from 'rxjs';
@@ -252,6 +258,30 @@ setTimeout(() => {
 購読者2: 1 👈　キャッシュされた値（最後の2つ）
 購読者2: 2 👈　キャッシュされた値（最後の2つ）
 ```
+
+### `multicast()`（柔軟だが複雑）
+
+```ts
+import { interval, Subject } from 'rxjs';
+import { multicast, refCount, take } from 'rxjs/operators';
+
+const source$ = interval(1000).pipe(take(3));
+
+const multicasted$ = source$.pipe(
+  multicast(() => new Subject()),
+  refCount()
+);
+
+multicasted$.subscribe(val => console.log('購読者1:', val));
+setTimeout(() => {
+  multicasted$.subscribe(val => console.log('購読者2:', val));
+}, 1500);
+```
+
+> [!NOTE]
+> `multicast()` は柔軟ですが、`share()` の方が簡潔で実用的なケースが多いため、通常は `share()` を使用するのが推奨されます。
+
+実際のアプリケーション開発では、コールドObservableをホットに変換して複数のサブスクライバー間でデータを共有したい場合があります。
 
 ## 5. 使用するタイミング
 

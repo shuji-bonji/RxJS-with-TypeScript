@@ -1,0 +1,146 @@
+# Subjectとは
+
+## 概要
+
+Subjectは、RxJSにおいて特殊な種類のObservableです。通常のObservableが単方向のデータフローを提供するのに対し、Subjectは「Observable」と「Observer」の両方の性質を持つハイブリッドな存在です。
+
+Subjectは以下の特徴を持ちます。
+
+- データを発行できる（Observer機能）
+- データを購読できる（Observable機能）
+- 複数の購読者に同じ値を届けられる（マルチキャスト）
+- 購読後に発生した値のみを受け取る（Hot Observable的性質）
+
+## Subjectの基本的な使い方
+
+```typescript
+import { Subject } from 'rxjs';
+
+// Subject（主体）を作成
+const subject = new Subject<number>();
+
+// Observerとして購読
+subject.subscribe(value => console.log('Observer A:', value));
+subject.subscribe(value => console.log('Observer B:', value));
+
+// Observableとして値を発行
+subject.next(1); // 両方の購読者に値を発行
+subject.next(2); // 両方の購読者に値を発行
+
+// 新たな購読者を追加（遅延購読）
+subject.subscribe(value => console.log('Observer C:', value));
+
+subject.next(3); // 全ての購読者に値を発行
+
+// 完了を通知
+subject.complete();
+```
+
+#### 実行結果
+```
+Observer A: 1
+Observer B: 1
+Observer A: 2
+Observer B: 2
+Observer A: 3
+Observer B: 3
+Observer C: 3
+```
+
+## 通常のObservableとの違い
+
+一般的なObservable（コールドObservable）とSubject（ホットObservable）の違いを表にまとめます。
+
+| 特徴 | Observable（cold） | Subject（hot） |
+|------|-------------------|---------------|
+| 値の発行タイミング | 購読時に開始 | 購読の有無に関わらず発行 |
+| 購読者間の共有 | 各購読者に個別のストリームを提供 | 全ての購読者で同一のストリームを共有 |
+| 値の発行能力 | 内部のロジックで定義 | 外部から`.next()`で自由に値を発行可能 |
+| 過去の値 | 全ての値を受け取れる | 購読後の値のみ受け取れる |
+
+## Subjectとマルチキャスティング
+
+Subjectの重要な機能の一つが「マルチキャスティング」です。これは一つのデータソースを複数の購読者に効率的に配信する機能です。
+
+```typescript
+import { Subject, interval } from 'rxjs';
+import { take } from 'rxjs/operators';
+
+// データソース
+const source$ = interval(1000).pipe(take(3));
+
+// マルチキャスト用のSubject
+const subject = new Subject<number>();
+
+// ソースをSubjectに接続
+source$.subscribe(subject); // Subjectが購読者として機能
+
+// 複数の観測者がSubjectを購読
+subject.subscribe(value => console.log('Observer 1:', value));
+subject.subscribe(value => console.log('Observer 2:', value));
+```
+
+#### 実行結果
+```
+Observer 1: 0
+Observer 2: 0
+Observer 1: 1
+Observer 2: 1
+Observer 1: 2
+Observer 2: 2
+```
+
+このパターンはシングルソース・マルチキャストとも呼ばれ、一つのデータソースを複数の購読者に効率的に配信する際に使用されます。
+
+## Subjectの実践的なユースケース
+
+Subjectは以下のようなシナリオで特に有用です。
+
+1. **ステート管理** - アプリケーションの状態を共有・更新
+2. **イベントバス** - コンポーネント間の通信
+3. **HTTP応答の共有** - 同一APIコールの結果を複数コンポーネントで共有
+4. **UIイベントの集中管理** - 様々なUI操作を一か所で処理
+
+例。イベントバスの実装
+```typescript
+import { Subject } from 'rxjs';
+import { filter } from 'rxjs/operators';
+
+interface AppEvent {
+  type: string;
+  payload: any;
+}
+
+// アプリケーション全体のイベントバス
+const eventBus = new Subject<AppEvent>();
+
+// 特定のイベントタイプを購読
+eventBus.pipe(
+  filter(event => event.type === 'USER_LOGGED_IN')
+).subscribe(event => {
+  console.log('ユーザーログイン:', event.payload);
+});
+
+// 別のイベントタイプを購読
+eventBus.pipe(
+  filter(event => event.type === 'DATA_UPDATED')
+).subscribe(event => {
+  console.log('データ更新:', event.payload);
+});
+
+// イベント発行
+eventBus.next({ type: 'USER_LOGGED_IN', payload: { userId: '123', username: 'test_user' } });
+eventBus.next({ type: 'DATA_UPDATED', payload: { items: [1, 2, 3] } });
+```
+
+## まとめ
+
+Subjectは、RxJSエコシステムにおいて以下の役割を果たす重要な構成要素です。
+
+- Observer（観測者）とObservable（被観測者）の両方の特性を持つ
+- コールドなObservableをホットに変換する手段を提供
+- 複数の購読者に同じデータストリームを効率的に配信
+- コンポーネント間やサービス間の通信を容易にする
+- 状態管理やイベント処理のための基盤を提供
+
+Subject系には、この基本Subject以外にも、BehaviorSubject、ReplaySubject、AsyncSubjectなど特化型のSubjectも存在します。それらについては[Subjectの種類](./types-of-subject.md)で詳しく解説します。
