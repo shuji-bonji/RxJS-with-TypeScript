@@ -4,7 +4,7 @@
 
 ## 従来のイベント処理とRxJSの比較
 
-### クリックイベントの処理
+### クリックイベント
 #### ◇ 従来のDOMイベント処理
 
 ```ts
@@ -29,8 +29,7 @@ clicks$.subscribe(event => console.log('RxJSクリック:', event));
 // RxJSクリック: PointerEvent {isTrusted: true, pointerId: 1, width: 1, height: 1, pressure: 0, …}
 ```
 
-### マウス移動イベントの処理
-
+### マウス移動イベント
 #### ◇ 従来のDOMイベント処理
 ```ts
 document.addEventListener('mousemove', (event) => {
@@ -61,8 +60,7 @@ mouseMove$.subscribe(position => console.log('マウス位置:', position));
 // マウス位置: {x: 1239, y: 297}
 ```
 
-### キーボードイベントの処理
-
+### キーボードイベント
 #### ◇ 従来のDOMイベント処理
 ```ts
 document.addEventListener('keydown', (event) => {
