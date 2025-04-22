@@ -14,7 +14,7 @@ Subjectは以下の特徴を持ちます。
 
 ## Subjectの基本的な使い方
 
-```typescript
+```ts
 import { Subject } from 'rxjs';
 
 // Subject（主体）を作成
@@ -63,7 +63,7 @@ Subjectは **Hot Observable** であり、通常のCold Observableとは以下�
 Subjectの重要な機能の一つが「マルチキャスティング」です。  
 これは一つのデータソースを複数の購読者に効率的に配信する機能です。
 
-```typescript
+```ts
 import { Subject, interval } from 'rxjs';
 import { take } from 'rxjs/operators';
 
@@ -154,7 +154,7 @@ Subjectは以下のようなシナリオで特に有用です。
 4. **UIイベントの集中管理** - 様々なUI操作を一か所で処理
 
 #### 例: イベントバスの実装
-```typescript
+```ts
 import { Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
