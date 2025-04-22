@@ -16,7 +16,14 @@ Observableのライフサイクルは、以下のフェーズで構成されて�
 |3|実行（Execution）|<li>`next()`: データの発行</li><li>`error()`: エラー通知</li><li>`complete()`: 完了通知</li>|
 |4|解除（Disposal）|`unsubscribe()`メソッドによる購読解除|
 
-Observableは「遅延実行（lazy）」であり、`subscribe()`を呼び出すまで実行されません。また、`complete()` または `error()` が呼ばれるとストリームは終了し、それ以上の `next()` 呼び出しは無視されます。
+Observableは「遅延実行（lazy）」であり、`subscribe()` を呼び出すまでストリームは発行されません。また、`complete()` または `error()` が呼ばれるとストリームは終了し、それ以上の `next()` 呼び出しは無視されます。
+
+> [!CAUTION]
+> `subscribe()` によって直接的に何かの「処理」が実行されるわけではありません。  
+> よく『`subscribe()`を呼び出すまで実行されません。』という表現が使われますが、  
+> 正確には「Observableの内部ロジック（通知処理）」は `subscribe()` によって初めてトリガーされます。  
+> 
+> `pipe()` などのオペレーターは評価チェーンを構築するだけで、実行はObserverのコールバックによって開始されます。
 
 #### Observableのライフサイクルの例
 ```ts
