@@ -11,6 +11,7 @@ Subjectは以下の特徴を持ちます。
 - 複数の購読者に同じ値を届けられる（マルチキャスト）
 - 購読後に発生した値のみを受け取る（Hot Observable的性質）
 
+
 ## Subjectの基本的な使い方
 
 ```typescript
@@ -47,20 +48,20 @@ Observer B: 3
 Observer C: 3
 ```
 
-## 通常のObservableとの違い
+### 通常のObservableとの違い
 
-一般的なObservable（コールドObservable）とSubject（ホットObservable）の違いを表にまとめます。
+Subjectは **Hot Observable** であり、通常のCold Observableとは以下の点で異なります。
 
-| 特徴 | Observable（cold） | Subject（hot） |
-|------|-------------------|---------------|
-| 値の発行タイミング | 購読時に開始 | 購読の有無に関わらず発行 |
-| 購読者間の共有 | 各購読者に個別のストリームを提供 | 全ての購読者で同一のストリームを共有 |
-| 値の発行能力 | 内部のロジックで定義 | 外部から`.next()`で自由に値を発行可能 |
-| 過去の値 | 全ての値を受け取れる | 購読後の値のみ受け取れる |
+- 購読の有無にかかわらずデータが発行される
+- 複数の購読者に同じ値を共有できる（マルチキャスト）
+- `.next()` で外部から値を発行できる
+- 過去の値は保持されず、購読後の値のみを受け取る
+
 
 ## Subjectとマルチキャスティング
 
-Subjectの重要な機能の一つが「マルチキャスティング」です。これは一つのデータソースを複数の購読者に効率的に配信する機能です。
+Subjectの重要な機能の一つが「マルチキャスティング」です。  
+これは一つのデータソースを複数の購読者に効率的に配信する機能です。
 
 ```typescript
 import { Subject, interval } from 'rxjs';
@@ -92,6 +93,57 @@ Observer 2: 2
 
 このパターンはシングルソース・マルチキャストとも呼ばれ、一つのデータソースを複数の購読者に効率的に配信する際に使用されます。
 
+
+## Subjectの2つの使い方
+
+Subjectには主に2つの使い方があります。それぞれ、用途やふるまいが異なります。
+
+### 1. 自分で `.next()` を呼ぶパターン
+
+Subjectが **データ発行の主体（Observable）** として使われます。  
+このパターンはイベント通知や状態更新のような「明示的な値の送信」に適しています。
+
+```ts
+const subject = new Subject<string>();
+
+subject.subscribe(val => console.log('Observer A:', val));
+subject.next('Hello');
+subject.next('World');
+```
+
+> Observer A: Hello  
+> Observer A: World
+
+---
+
+### 2. Observableを中継するパターン（マルチキャスト）
+
+Subjectが **ObserverとしてObservableから値を受け取り、中継する** 役割を果たします。  
+この使い方は、**Cold ObservableをHotに変換してマルチキャスト** するのに便利です。
+
+```ts
+const source$ = interval(1000).pipe(take(3));
+const subject = new Subject<number>();
+
+// Observable → Subject（中継）
+source$.subscribe(subject);
+
+// Subject → 複数購読者へ配信
+subject.subscribe(val => console.log('Observer 1:', val));
+subject.subscribe(val => console.log('Observer 2:', val));
+```
+
+> Observer 1: 0  
+> Observer 2: 0  
+> Observer 1: 1  
+> Observer 2: 1  
+> Observer 1: 2  
+> Observer 2: 2
+
+> [!TIP]
+> `.next()`を自分で呼ぶ場合は「自ら話す人」、Observableから受け取って中継する場合は「他人の話をマイクで拡声する人」のようにイメージすると理解しやすくなります。
+
+
 ## Subjectの実践的なユースケース
 
 Subjectは以下のようなシナリオで特に有用です。
@@ -101,7 +153,7 @@ Subjectは以下のようなシナリオで特に有用です。
 3. **HTTP応答の共有** - 同一APIコールの結果を複数コンポーネントで共有
 4. **UIイベントの集中管理** - 様々なUI操作を一か所で処理
 
-例。イベントバスの実装
+#### 例: イベントバスの実装
 ```typescript
 import { Subject } from 'rxjs';
 import { filter } from 'rxjs/operators';
