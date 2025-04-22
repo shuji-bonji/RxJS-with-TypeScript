@@ -10,20 +10,21 @@ RxJSでは、カスタムObservableの作成や、イベント・配列・HTTP�
 
 | 操作子 / API | 主な用途 | 特徴 |
 |--------------|----------|------|
-| [`new Observable()`](#1-new-observableを使用する方法) | 任意のロジックで自由に定義 | 柔軟だが記述量が多い |
-| [`of()`](#指定した値を値からobservableを作成-of)       | 単純な値の列 | 完了も発行される |
-| [`from()`](#配列やpromiseなどからobservableを作成-from)     | 配列/Promiseなど | 複数データソースに対応 |
-| [`fromEvent()`](#domイベントからobservableを作成-fromevent)| DOMイベント | UI連携に便利 |
-| [`interval()`](#時間ベースでデータ送信するobservableを作成-interval-と-timer) | 定期的なイベント | 時間ベース |
-| [`timer()`](#時間ベースでデータ送信するobservableを作成-interval-と-timer) | 遅延 + 定期イベント | `interval`の上位版 |
-| [`defer()`](#3-observableファクトリの遅延実行-defer)    | 実行タイミングを遅延 | 購読ごとに新しいObservable |
-| [`Subject`](#4-observableとobserverの両方の特性を持つ-subject)    | 双方向通信 / マルチキャスト | `next()`手動発火が可能 |
-| [`EMPTY`](#5-特殊な-observable-の生成) | すぐ完了する | `next()`は呼ばれない |
-| [`NEVER`](#5-特殊な-observable-の生成) | 何もしない | 学習用途に便利 |
-| [`throwError()`](#5-特殊な-observable-の生成) | エラーを即発行 | エラーハンドリング検証に便利 |
+| [`new Observable()`](#newObservable) | 任意のロジックで自由に定義 | 柔軟だが記述量が多い |
+| [`of()`](#of)       | 単純な値の列 | 完了も発行される |
+| [`from()`](#from)     | 配列/Promiseなど | 複数データソースに対応 |
+| [`fromEvent()`](#fromEvent) | DOMイベント | UI連携に便利 |
+| [`interval()`](#intervalAndTimer) | 定期的なイベント | 時間ベース |
+| [`timer()`](#intervalAndTimer) | 遅延 + 定期イベント | `interval`の上位版 |
+| [`ajax()`](#ajax) | HTTPリクエストをObservable化 | レスポンスの自動JSON変換なども可能 |
+| [`defer()`](#defer)    | 実行タイミングを遅延 | 購読ごとに新しいObservable |
+| [`Subject`](#subject)    | 双方向通信 / マルチキャスト | `next()`手動発火が可能 |
+| [`EMPTY`](#specialObservabler) | すぐ完了する | `next()`は呼ばれない |
+| [`NEVER`](#specialObservable) | 何もしない | 学習用途に便利 |
+| [`throwError()`](#specialObservable) | エラーを即発行 | エラーハンドリング検証に便利 |
 
 
-## 1. `new Observable()`を使用する方法
+## 1. Observableコンストラクタの使用 {#newObservable}
 
 最も基本的な方法は、`Observable`コンストラクタを直接使用することです。この方法はカスタムなObservableロジックを定義したい場合に最も柔軟です。明示的な `next`, `error`, `complete` 呼び出しによって細かな挙動制御が可能です。
 
@@ -58,12 +59,20 @@ observable$.subscribe({
 > [!CAUTION]
 > `new Observable()` を使う場合は、明示的なリソース解放が必要です。  
 > `return () => { ... }` により、`unsubscribe()` でタイマーやイベントリスナーの解除処理などを行えます。
+> ```ts
+>  const subscription = observable$.subscribe({
+>  //省略...
+>  });
+>
+>  subscription.unsubscribe(); // 👈 
+> ```
 
-## 2. 作成操作子（Creation Operators）を使用する方法
+## 2. 作成操作子（Creation Operators） {#creationOperators}
 
 より簡潔で用途に特化したObservable作成には、RxJSが提供する「作成操作子（creation operator）」が便利です。繰り返し使われるユースケースにはこれらを使うことでコードが簡素化されます。
 
-### 指定した値を値からObservableを作成 `of()`
+### 2.1 `of()` {#of}
+
 ```ts
 import { of } from 'rxjs';
 
@@ -83,7 +92,7 @@ values$.subscribe({
 > - `from([1, 2, 3])` → 個別の値 `1`, `2`, `3` を順に発行します。  
 > - よく混同されるので注意が必要です。
 
-### 配列やPromiseなどからObservableを作成 `from()`
+### 2.2 `from()` {#from}
 
 ```ts
 import { from } from 'rxjs';
@@ -118,13 +127,16 @@ iterable$.subscribe({
 配列値: 1
 配列値: 2
 配列値: 3
+完了
 イテラブル値: 1
 イテラブル値: 2
 イテラブル値: 3
+完了
 Promise結果: Promiseの結果
+完了
 ```
 
-### DOMイベントからObservableを作成 `fromEvent()`
+### 2.3 `fromEvent()` {#fromEvent}
 
 ```ts
 import { fromEvent } from 'rxjs';
@@ -147,7 +159,8 @@ clicks$.subscribe({
 > - `fromEvent()` はブラウザ環境でのみ利用でき、Node.jsでは利用できません。  
 > - 複数回購読すると、複数のイベントリスナーが追加される可能性があります。
 
-###  時間ベースでデータ送信するObservableを作成 `interval()` と `timer()`
+### 2.4 `interval()` と `timer()` {#intervalAndTimer}
+
 ```ts
 import { interval, timer } from 'rxjs';
 
@@ -190,7 +203,7 @@ timer$.subscribe({
 > - `interval()` や `timer()` は Cold Observable であり、購読のたびに独立して実行されます。  
 > - 必要に応じて `share()` などでHot化することも検討できます。
 
-### HTTPリクエスト用Observable `ajax()`
+### 2.5 `ajax()` {#ajax}
 
 ```ts
 import { ajax } from 'rxjs/ajax';
@@ -209,7 +222,7 @@ APIレスポンス: {userId: 1, id: 1, title: 'delectus aut autem', completed: f
  API完了
 ```
 
-## 3. Observableファクトリの遅延実行 `defer()`
+## 3. `defer()` による遅延生成 {#defer}
 
 ```ts
 import { defer, of } from 'rxjs';
@@ -240,7 +253,7 @@ deferred$.subscribe(value => console.log(value));
 > - `of()` は作成時点で値が確定します。  
 > - `defer()` は購読時に初めて処理されるため、購読するたびに値が変わるような処理に適しています。
 
-## 4. ObservableとObserverの両方の特性を持つ `Subject`
+## 4. Subjectによる手動通知とマルチキャスト {#subject}
 
 ```ts
 import { Subject } from 'rxjs';
@@ -272,7 +285,7 @@ Observer 2: 3
 > Hot Observableであることに注意  
 > - `Subject` は購読者に「同時に」通知されるため、`from()` や `of()` などの Cold Observable とは異なり、**購読タイミングによって値を受け取れないことがあります**。
 
-### 5. 特殊な Observable の生成
+## 5. 特殊Observable（EMPTY / NEVER / throwError） {#specialObservable}
 
 実行制御や例外処理、学習用として役立つ特殊なObservableもRxJSには用意されています。
 
@@ -304,11 +317,13 @@ never$.subscribe({
 #### 実行結果
 ```sh
 即座に完了
-main.ts:18 エラー: エラー発生
+エラー: エラー発生
 ```
 
 > [!IMPORTANT]
 > 主に制御・検証・学習用途  
 > - `EMPTY`, `NEVER`, `throwError()` は、通常のデータストリームではなく、**フロー制御や例外ハンドリングの検証**、または学習用途で活用されます。
+
+## まとめ {#summary}
 
 RxJSのストリームは、従来のJavaScriptのイベント処理やAJAX通信などを統一的なインターフェイスで扱えるようにします。特に時間的に変化するデータを扱う場合や、複数のイベントソースを組み合わせる場合に威力を発揮します。

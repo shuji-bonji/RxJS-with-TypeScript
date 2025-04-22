@@ -4,6 +4,26 @@ import footnote from 'markdown-it-footnote';
 export default defineConfig({
   title: 'RxJS with TypeScript',
   description: 'TypeScriptプログラマのためのRxJS入門',
+  base: '/RxJS-with-TypeScript/',
+  lang: 'ja',
+  head: [
+    ['meta', { property: 'og:title', content: 'RxJS with TypeScript' }],
+    [
+      'meta',
+      {
+        property: 'og:description',
+        content: 'TypeScript で RxJS',
+      },
+    ],
+    [
+      'meta',
+      {
+        property: 'og:image',
+        content:
+          'https://github.com/shuji-bonji/RxJS-with-TypeScript/blob/main/docs/public/images/ts-de-rxjs.png',
+      },
+    ],
+  ],
   themeConfig: {
     nav: [
       { text: 'ホーム', link: '/' },

@@ -27,12 +27,12 @@ RxJSを使いこなすには、以下の中核的な構成要素を理解する�
 
 | 構成要素 | 概要 |
 |------|------|
-| Observable | 非同期または時間に沿って発生するデータを表すストリームの源です。 |
-| Observer | Observableからデータを購読して受け取る側の存在です。 |
-| Subscription | Observableの購読と解除の管理を行います。 |
-| Operator | Observableを変換・合成・制御するための関数群です。 |
-| Subject[^1] | ObservableとObserverの両方の性質を持つ中継器です。 |
-| Scheduler[^2]| Observableの実行タイミングを制御する仕組みです。 |
+| `Observable` | 非同期または時間に沿って発生するデータを表すストリームの源です。 |
+| `Observer` | Observableからデータを購読して受け取る側の存在です。 |
+| `Subscription` | Observableの購読と解除の管理を行います。 |
+| `Operator` | Observableを変換・合成・制御するための関数群です。 |
+| `Subject`[^1] | ObservableとObserverの両方の性質を持つ中継器です。 |
+| `Scheduler`[^2]| Observableの実行タイミングを制御する仕組みです。 |
 
 これらはそれぞれ独立した機能を持ちながらも連携して動作します。  
 たとえば、Observableが値を発行し、それをObserverが購読し、Operatorで変換し、Schedulerで制御する、といった形で、全体としてストリーム処理を構成します。
