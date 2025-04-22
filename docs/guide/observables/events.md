@@ -133,6 +133,11 @@ capturedClicks$.subscribe((event) => console.log('ページ クリック:', even
 // ページ クリック: PointerEvent {isTrusted: true, pointerId: 1, width: 1, height: 1, pressure: 0, …}
 ```
 
+> [!NOTE]
+> DOMイベントの伝播には「キャプチャ」と「バブリング」の2つのフェーズがあります。
+> 通常は「バブリング」（イベントが子要素から親要素へ伝播）ですが、`capture: true` を指定すると「キャプチャフェーズ」（親要素から子要素へ伝播）でリスニングします。
+> これにより、子要素が処理する前に、親要素でイベントを検出することができます。
+
 ## 複数のイベントソースの処理
 
 RxJSでは複数のイベントソースを `merge` や `combineLatest` によって統合し、共通のロジックに集約することが可能です。

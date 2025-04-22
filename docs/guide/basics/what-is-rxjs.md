@@ -11,6 +11,11 @@ RxJS（Reactive Extensions for JavaScript）とは、「リアクティブプロ
 
 > Observableとは、イベントや非同期データの流れ（ストリーム）を表現するRxJSの中核的な構成要素です。値が「流れてくる」源であり、購読（subscribe）によって値を受け取ることができます。Observableとは、時間の経過とともに値を発行する「データの流れ（ストリーム）」です。購読（subscribe）することで、その値を受け取ることができます。
 
+
+> [!TIP]
+> 「ストリームってそもそも何？」という方は、[ストリームとは？](/guide/basics/what-is-a-stream) も参照してみてください。
+
+
 ## 簡単な使用例
 
 ```ts
@@ -27,12 +32,12 @@ RxJSを使いこなすには、以下の中核的な構成要素を理解する�
 
 | 構成要素 | 概要 |
 |------|------|
-| `Observable` | 非同期または時間に沿って発生するデータを表すストリームの源です。 |
-| `Observer` | Observableからデータを購読して受け取る側の存在です。 |
-| `Subscription` | Observableの購読と解除の管理を行います。 |
-| `Operator` | Observableを変換・合成・制御するための関数群です。 |
-| `Subject`[^1] | ObservableとObserverの両方の性質を持つ中継器です。 |
-| `Scheduler`[^2]| Observableの実行タイミングを制御する仕組みです。 |
+| [`Observable`](../observables/what-is-observable.md) | 非同期または時間に沿って発生するデータを表すストリームの源です。 |
+| [`Observer`](../observables/observable-lifecycle.md#2-observerオブザーバー)| Observableからデータを購読して受け取る側の存在です。 |
+| [`Subscription`](../observables/observable-lifecycle.md#3-subscriptionサブスクリプション) | Observableの購読と解除の管理を行います。 |
+| [`Operator`](../operators/index.md) | Observableを変換・合成・制御するための関数群です。 |
+| [`Subject`](../subjects/what-is-subject.md)[^1] | ObservableとObserverの両方の性質を持つ中継器です。 |
+| [`Scheduler`](../schedulers/)[^2]| Observableの実行タイミングを制御する仕組みです。 |
 
 これらはそれぞれ独立した機能を持ちながらも連携して動作します。  
 たとえば、Observableが値を発行し、それをObserverが購読し、Operatorで変換し、Schedulerで制御する、といった形で、全体としてストリーム処理を構成します。
@@ -70,4 +75,3 @@ RxJSは以下のような状況で特に役立ちます。
 ## まとめ
 
 RxJSは、非同期およびイベントベースのプログラミングに対する強力なアプローチを提供します。Observableを中心としたデータストリームの考え方は、複雑な非同期処理を扱う際に特に役立ちます。
-

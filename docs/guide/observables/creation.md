@@ -5,26 +5,25 @@ RxJSでは、カスタムObservableの作成や、イベント・配列・HTTP�
 
 このページでは、RxJSでのObservableの作成方法について、基本的な構文から実践的な用途までを網羅的に紹介します.
 
+## Observable作成手法の分類
 
-## Observable作成手法の一覧
+以下は主な作成手法のカテゴリ別一覧です。
 
-| 操作子 / API | 主な用途 | 特徴 |
-|--------------|----------|------|
-| [`new Observable()`](#newObservable) | 任意のロジックで自由に定義 | 柔軟だが記述量が多い |
-| [`of()`](#of)       | 単純な値の列 | 完了も発行される |
-| [`from()`](#from)     | 配列/Promiseなど | 複数データソースに対応 |
-| [`fromEvent()`](#fromEvent) | DOMイベント | UI連携に便利 |
-| [`interval()`](#intervalAndTimer) | 定期的なイベント | 時間ベース |
-| [`timer()`](#intervalAndTimer) | 遅延 + 定期イベント | `interval`の上位版 |
-| [`ajax()`](#ajax) | HTTPリクエストをObservable化 | レスポンスの自動JSON変換なども可能 |
-| [`defer()`](#defer)    | 実行タイミングを遅延 | 購読ごとに新しいObservable |
-| [`Subject`](#subject)    | 双方向通信 / マルチキャスト | `next()`手動発火が可能 |
-| [`EMPTY`](#specialObservable) | すぐ完了する | `next()`は呼ばれない |
-| [`NEVER`](#specialObservable) | 何もしない | 学習用途に便利 |
-| [`throwError()`](#specialObservable) | エラーを即発行 | エラーハンドリング検証に便利 |
+| カテゴリ | 主な手法 | 説明 |
+|----------|----------|------|
+| カスタム作成 | [`new Observable()`](#new-observable) | 自由度が高いが記述量も多い。手動でクリーンアップが必要 |
+| 作成演算子 | [`of()`](#of), [`from()`](#from), [`fromEvent()`](#fromevent), [`interval()`](#interval-timer), [`timer()`](#interval-timer), [`ajax()`](#ajax) | よく使われるデータ・イベント・時間ベースの生成関数群 |
+| 特殊な作成演算子 | [`defer()`](#defer), [`range()`](#range), [`generate()`](#generate), [`iif()`](#iif) | 制御的・ループ的な生成、条件による切り替えなど |
+| 特殊Observable | [`EMPTY`](#empty-never-throwerror), [`NEVER`](#empty-never-throwerror), [`throwError()`](#empty-never-throwerror) | 完了・何もしない・エラー発行用 |
+| Subject系 | [`Subject`](#subject-behaviorsubject-など), [`BehaviorSubject`](#subject-behaviorsubject-など) | 観測者としても送信者としても機能する特殊なObservable |
+| コールバック変換 | [`bindCallback()`](#bindcallback), [`bindNodeCallback()`](#bindnodecallback) | コールバックベースの関数をObservableに変換 |
+| WebSocket | [`webSocket()`](#websocket) | WebSocket通信を双方向Observableとして扱う |
 
 
-## 1. Observableコンストラクタの使用 {#newObservable}
+
+## カスタム作成
+
+### new Observable()
 
 最も基本的な方法は、`Observable`コンストラクタを直接使用することです。この方法はカスタムなObservableロジックを定義したい場合に最も柔軟です。明示的な `next`, `error`, `complete` 呼び出しによって細かな挙動制御が可能です。
 
@@ -85,11 +84,11 @@ observable$.subscribe({
 > - 購読解除を忘れると、イベントリスナーやタイマーが動き続けるため、メモリリークや予期せぬ副作用の原因になります。
 
 
-## 2. 作成操作子（Creation Operators） {#creationOperators}
+## 作成演算子
 
 より簡潔で用途に特化したObservable作成には、RxJSが提供する「作成操作子（creation operator）」が便利です。繰り返し使われるユースケースにはこれらを使うことでコードが簡素化されます。
 
-### 2.1 `of()` {#of}
+### of()
 
 ```ts
 import { of } from 'rxjs';
@@ -110,7 +109,7 @@ values$.subscribe({
 > - `from([1, 2, 3])` → 個別の値 `1`, `2`, `3` を順に発行します。  
 > - よく混同されるので注意が必要です。
 
-### 2.2 `from()` {#from}
+### from()
 
 ```ts
 import { from } from 'rxjs';
@@ -154,7 +153,7 @@ Promise結果: Promiseの結果
 完了
 ```
 
-### 2.3 `fromEvent()` {#fromEvent}
+### fromEvent()
 
 ```ts
 import { fromEvent } from 'rxjs';
@@ -177,9 +176,9 @@ clicks$.subscribe({
 > - `fromEvent()` はブラウザ環境でのみ利用でき、Node.jsでは利用できません。  
 > - 複数回購読すると、複数のイベントリスナーが追加される可能性があります。
 
-> 👉 より詳細なイベントストリームの活用例については、[イベントのストリーム化](/guide/observables/events) を参照してください。
+> 👉 より詳細なイベントストリームの活用例については、[イベントのストリーム化](../observables/events) を参照してください。
 
-### 2.4 `interval()` と `timer()` {#intervalAndTimer}
+### interval(), timer()
 
 ```ts
 import { interval, timer } from 'rxjs';
@@ -223,7 +222,7 @@ timer$.subscribe({
 > - `interval()` や `timer()` は Cold Observable であり、購読のたびに独立して実行されます。  
 > - 必要に応じて `share()` などでHot化することも検討できます。
 
-### 2.5 `ajax()` {#ajax}
+### ajax()
 
 ```ts
 import { ajax } from 'rxjs/ajax';
@@ -242,7 +241,9 @@ APIレスポンス: {userId: 1, id: 1, title: 'delectus aut autem', completed: f
  API完了
 ```
 
-## 3. `defer()` による遅延生成 {#defer}
+## 特殊な作成演算子
+
+### defer()
 
 ```ts
 import { defer, of } from 'rxjs';
@@ -273,39 +274,79 @@ deferred$.subscribe(value => console.log(value));
 > - `of()` は作成時点で値が確定します。  
 > - `defer()` は購読時に初めて処理されるため、購読するたびに値が変わるような処理に適しています。
 
-## 4. Subjectによる手動通知とマルチキャスト {#subject}
+### range()
 
 ```ts
-import { Subject } from 'rxjs';
+import { range } from 'rxjs';
 
-const subject$ = new Subject<number>();
-
-// Observerとして使用
-subject$.subscribe(value => console.log('Observer 1:', value));
-subject$.subscribe(value => console.log('Observer 2:', value));
-
-// Observableとして使用
-subject$.next(1);
-subject$.next(2);
-subject$.next(3);
-subject$.complete();
+const range$ = range(5, 3); // 5から3つ → 5, 6, 7
+range$.subscribe({
+  next: val => console.log('range:', val),
+  complete: () => console.log('完了')
+});
 ```
 
 #### 実行結果
 ```sh
-Observer 1: 1
-Observer 2: 1
-Observer 1: 2
-Observer 2: 2
-Observer 1: 3
-Observer 2: 3
+range: 5
+range: 6
+range: 7
+完了
 ```
 
-> [!IMPORTANT]
-> Hot Observableであることに注意  
-> - `Subject` は購読者に「同時に」通知されるため、`from()` や `of()` などの Cold Observable とは異なり、**購読タイミングによって値を受け取れないことがあります**。
+### generate()
 
-## 5. 特殊Observable（EMPTY / NEVER / throwError） {#specialObservable}
+```ts
+import { generate } from 'rxjs';
+
+const generate$ = generate({
+  initialState: 0,
+  condition: x => x < 5,
+  iterate: x => x + 1
+});
+
+generate$.subscribe({
+  next: val => console.log('generate:', val),
+  complete: () => console.log('完了')
+});
+```
+
+#### 実行結果
+```sh
+generate: 0
+generate: 1
+generate: 2
+generate: 3
+generate: 4
+完了
+```
+
+### iif()
+
+```ts
+import { iif, of, EMPTY } from 'rxjs';
+
+const condition = true;
+const iif$ = iif(() => condition, of('条件はtrue'), EMPTY);
+
+iif$.subscribe({
+  next: val => console.log('iif:', val),
+  complete: () => console.log('完了')
+});
+```
+
+#### 実行結果
+```sh
+iif: 条件はtrue
+完了
+```
+
+> [!NOTE]
+> `iif()` は条件によって返すObservableを動的に切り替えることができます。フロー制御に便利です。
+
+## 特殊Observable
+
+### EMPTY, NEVER, throwError()
 
 実行制御や例外処理、学習用として役立つ特殊なObservableもRxJSには用意されています。
 
@@ -344,6 +385,106 @@ never$.subscribe({
 > 主に制御・検証・学習用途  
 > - `EMPTY`, `NEVER`, `throwError()` は、通常のデータストリームではなく、**フロー制御や例外ハンドリングの検証**、または学習用途で活用されます。
 
-## まとめ {#summary}
+
+## Subject系
+
+### Subject, BehaviorSubject など
+
+```ts
+import { Subject } from 'rxjs';
+
+const subject$ = new Subject<number>();
+
+// Observerとして使用
+subject$.subscribe(value => console.log('Observer 1:', value));
+subject$.subscribe(value => console.log('Observer 2:', value));
+
+// Observableとして使用
+subject$.next(1);
+subject$.next(2);
+subject$.next(3);
+subject$.complete();
+```
+
+#### 実行結果
+```sh
+Observer 1: 1
+Observer 2: 1
+Observer 1: 2
+Observer 2: 2
+Observer 1: 3
+Observer 2: 3
+```
+
+> [!IMPORTANT]
+> Hot Observableであることに注意  
+> - `Subject` は購読者に「同時に」通知されるため、`from()` や `of()` などの Cold Observable とは異なり、**購読タイミングによって値を受け取れないことがあります**。
+
+## コールバック変換
+
+RxJSには、コールバックベースの非同期関数をObservableに変換するための関数として `bindCallback()` および `bindNodeCallback()` が用意されています。
+
+### bindCallback()
+
+```ts
+import { bindCallback } from 'rxjs';
+
+function asyncFn(input: string, callback: (result: string) => void) {
+  setTimeout(() => callback(`Hello, ${input}`), 1000);
+}
+
+const observableFn = bindCallback(asyncFn);
+const result$ = observableFn('RxJS');
+
+result$.subscribe({
+  next: val => console.log(val), // Hello, RxJS
+  complete: () => console.log('完了')
+});
+```
+
+### bindNodeCallback()
+
+```ts
+import { bindNodeCallback } from 'rxjs';
+import { readFile } from 'fs';
+
+const readFile$ = bindNodeCallback(readFile);
+readFile__('./some.txt', 'utf8').subscribe({
+  next: data => console.log('内容:', data),
+  error: err => console.error('エラー:', err)
+});
+```
+
+> [!NOTE]
+> `bindNodeCallback()` は Node.js の `(err, result)` 型の非同期関数に対応しています。
+
+---
+
+## WebSocket()
+
+RxJSの `rxjs/webSocket` モジュールには、WebSocketをObservable/Observerとして扱える `webSocket()` 関数が用意されています。
+
+```ts
+import { webSocket } from 'rxjs/webSocket';
+
+const socket$ = webSocket('wss://echo.websocket.org');
+
+socket$.subscribe({
+  next: msg => console.log('受信:', msg),
+  error: err => console.error('エラー:', err),
+  complete: () => console.log('完了')
+});
+
+// メッセージ送信（Observerとしての機能）
+socket$.next('Hello WebSocket!');
+```
+
+> [!IMPORTANT]
+> `webSocket()` は双方向通信が可能な Observable/Observer ハイブリッドです。
+> WebSocketの接続・送信・受信を簡単にObservableとして扱えるため、リアルタイム通信に便利です。
+
+
+## まとめ
 
 RxJSのストリームは、従来のJavaScriptのイベント処理やAJAX通信などを統一的なインターフェイスで扱えるようにします。特に時間的に変化するデータを扱う場合や、複数のイベントソースを組み合わせる場合に威力を発揮します。
+

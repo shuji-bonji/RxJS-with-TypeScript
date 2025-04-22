@@ -35,6 +35,7 @@ export default defineConfig({
         items: [
           { text: 'はじめに', link: '/guide/introduction' },
           { text: 'RxJSとは何か', link: '/guide/basics/what-is-rxjs' },
+          { text: 'ストリームとは？', link: '/guide/basics/what-is-a-stream' },
         ],
       },
       {
