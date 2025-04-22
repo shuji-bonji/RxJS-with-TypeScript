@@ -57,8 +57,23 @@ observable$.subscribe({
 ```
 
 > [!CAUTION]
-> `new Observable()` を使う場合は、明示的なリソース解放が必要です。  
-> `return () => { ... }` により、`unsubscribe()` でタイマーやイベントリスナーの解除処理などを行えます。
+> `new Observable()` を使う場合は、明示的なリソース解放（クリーンアップ処理）を自分で記述する必要があります。
+> ```ts
+> const obs$ = new Observable(subscriber => {
+>   const id = setInterval(() => subscriber.next(Date.now()), 1000);
+>   return () => {
+>     clearInterval(id); // 明示的なリソース解放
+>   };
+> });
+> ```
+> 一方、`fromEvent()` や `interval()` などRxJSのビルトイン作成関数は、内部に適切なクリーンアップ処理を持ちます。
+> ```ts
+> const click$ = fromEvent(document, 'click');
+> const timer$ = interval(1000);
+> ```
+> これらは内部で `addEventListener` や `setInterval` を使用していて、`unsubscribe()` 時に RxJS が自動で `removeEventListener` や `clearInterval()` を呼ぶように設計されています。
+> 
+> なお、RxJSの内部でクリーンアップ処理が実装されていても、`unsubscribe()`を呼ばなければその処理は実行されないため注意が必要です。
 > ```ts
 >  const subscription = observable$.subscribe({
 >  //省略...
@@ -66,6 +81,9 @@ observable$.subscribe({
 >
 >  subscription.unsubscribe(); // 👈 
 > ```
+> - どのObservableの作成方法でも、不要になったら必ず`unsubscribe()`する習慣を持ちましょう。
+> - 購読解除を忘れると、イベントリスナーやタイマーが動き続けるため、メモリリークや予期せぬ副作用の原因になります。
+
 
 ## 2. 作成操作子（Creation Operators） {#creationOperators}
 
