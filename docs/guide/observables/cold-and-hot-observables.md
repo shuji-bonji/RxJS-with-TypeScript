@@ -1,6 +1,6 @@
 # コールドObservableとホットObservable
 
-このページでは、RxJSにおける Cold Observable と Hot Observable の違いと、それぞれの振る舞いや使用例を比較しながら解説します。
+ここでは、RxJSにおける Cold Observable と Hot Observable の違いと、それぞれの振る舞いや使用例を比較しながら解説します。
 
 RxJSを使用する上で重要な概念の一つが、「コールドObservable」と「ホットObservable」の区別です。この違いを理解することは、効率的なObservableの使い方を習得するために不可欠です。
 
