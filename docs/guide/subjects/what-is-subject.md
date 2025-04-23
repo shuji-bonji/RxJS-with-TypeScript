@@ -1,7 +1,5 @@
 # Subjectとは
 
-## 概要
-
 Subjectは、RxJSにおいて特殊な種類のObservableです。通常のObservableが単方向のデータフローを提供するのに対し、Subjectは「Observable」と「Observer」の両方の性質を持つハイブリッドな存在です。
 
 Subjectは以下の特徴を持ちます。

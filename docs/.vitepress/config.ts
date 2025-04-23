@@ -7,20 +7,35 @@ export default defineConfig({
   base: '/RxJS-with-TypeScript/',
   lang: 'ja',
   head: [
+    // Open Graph
     ['meta', { property: 'og:title', content: 'RxJS with TypeScript' }],
-    [
-      'meta',
-      {
-        property: 'og:description',
-        content: 'TypeScript で RxJS',
-      },
-    ],
+    ['meta', { property: 'og:description', content: 'TypeScript で RxJS' }],
     [
       'meta',
       {
         property: 'og:image',
         content:
-          'https://github.com/shuji-bonji/RxJS-with-TypeScript/blob/main/docs/public/images/ts-de-rxjs.png',
+          'https://shuji-bonji.github.io/RxJS-with-TypeScript/images/ts-de-rxjs.png',
+      },
+    ],
+    [
+      'meta',
+      {
+        property: 'og:url',
+        content: 'https://shuji-bonji.github.io/RxJS-with-TypeScript/',
+      },
+    ],
+
+    // Twitter Card
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+    ['meta', { name: 'twitter:title', content: 'RxJS with TypeScript' }],
+    ['meta', { name: 'twitter:description', content: 'TypeScript で RxJS' }],
+    [
+      'meta',
+      {
+        name: 'twitter:image',
+        content:
+          'https://shuji-bonji.github.io/RxJS-with-TypeScript/images/ts-de-rxjs.png',
       },
     ],
   ],
@@ -202,6 +217,15 @@ export default defineConfig({
         link: 'https://github.com/shuji-bonji/RxJS-with-TypeScript',
       },
     ],
+
+    search: {
+      provider: 'local',
+    },
+
+    footer: {
+      message: 'Released under the CC-BY-4.0 license.',
+      copyright: 'Copyright © 2025 shuji-bonji',
+    },
   },
   markdown: {
     config: (md) => {
