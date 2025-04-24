@@ -47,59 +47,69 @@ numbers$.pipe(
 // 結果: 4
 // 結果: 8
 ```
+
 ### 複雑なデータ処理
 
 ```ts
-import {
-  fromEvent,
-  debounceTime,
-  map,
-  distinctUntilChanged,
-  switchMap,
-} from 'rxjs';
+import { fromEvent, map, switchMap } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 
-interface User {
+type User = {
   id: number;
   name: string;
   username: string;
   email: string;
-}
+};
+type Post = {
+  userId: number;
+  id: number;
+  title: string;
+  body: string;
+};
 
-// 検索フィールドの取得
-const searchInput = document.createElement('input');
-searchInput.id = 'search-input';
-document.body.appendChild(searchInput);
+// DOM要素を作成
+const searchButton = document.createElement('button');
+searchButton.innerText = '検索';
+document.body.appendChild(searchButton);
 
-// 入力イベントをObservable化
-const input$ = fromEvent<InputEvent>(searchInput, 'input');
+const resultBox = document.createElement('div');
+resultBox.id = 'results';
+document.body.appendChild(resultBox);
 
-input$
+// ボタンクリック時にAPIリクエスト
+fromEvent(searchButton, 'click')
   .pipe(
-    map((event) => (event.target as HTMLInputElement).value),
-    debounceTime(300),
-    distinctUntilChanged(),
-    switchMap((term) => {
-      return ajax.getJSON<User[]>(
-        `https://jsonplaceholder.typicode.com/users?id=${term}`
-      );
-    })
+    switchMap(() =>
+      // 最初のAPI呼び出し
+      ajax.getJSON<User>('https://jsonplaceholder.typicode.com/users/1').pipe(
+        // ユーザーの投稿を取得する2つ目のAPI呼び出し
+        switchMap((user) => {
+          const header = document.createElement('h3');
+          header.textContent = `ユーザー: ${user.name}`;
+          resultBox.innerHTML = ''; // 前回の結果をクリア
+          resultBox.appendChild(header);
+
+          return ajax.getJSON<Post[]>(
+            `https://jsonplaceholder.typicode.com/posts?userId=${user.id}`
+          );
+        }),
+        // 最初の3つの投稿だけを取得
+        map((posts) => posts.slice(0, 3))
+      )
+    )
   )
-  .subscribe((results) => {
-    console.log('検索結果:', results);
-    const resultBox =
-      document.getElementById('results') ?? document.createElement('div');
-    resultBox.id = 'results';
-    resultBox.innerHTML = '';
-    results.forEach((user) => {
+  .subscribe((posts) => {
+    // 画面に投稿を表示する処理
+    resultBox.innerHTML += '<h4>投稿一覧:</h4>';
+    posts.forEach((post) => {
       const div = document.createElement('div');
-      div.textContent = user.name;
+      div.innerHTML = `<strong>${post.title}</strong><p>${post.body}</p>`;
       resultBox.appendChild(div);
     });
-    document.body.appendChild(resultBox);
   });
 
 ```
+
 
 ## パイプラインの利点
 
@@ -348,14 +358,14 @@ observable$.pipe(
 ### 1. オペレーターの順序間違い
 
 ```ts
-// 問題: debounceTimeより先にfilterを適用すると、
+// ❌ debounceTimeより先にfilterを適用すると、
 // 入力ごとにfilterが実行され、debounceの効果が減少
 inputEvents$.pipe(
   filter(text => text.length > 2),
   debounceTime(300)
 )
 
-// 修正: 先にdebounceTimeを適用する
+// ✅ 先にdebounceTimeを適用する
 inputEvents$.pipe(
   debounceTime(300),
   filter(text => text.length > 2)
@@ -365,7 +375,7 @@ inputEvents$.pipe(
 ### 2. パイプライン内での副作用
 
 ```ts
-// 問題: パイプライン内で副作用を直接実行
+// ❌ パイプライン内で副作用を直接実行
 observable$.pipe(
   map(data => {
     // 副作用（良くない例）
@@ -375,7 +385,7 @@ observable$.pipe(
   })
 )
 
-// 修正: tapオペレーターを使用する
+// ✅ tapオペレーターを使用する
 observable$.pipe(
   tap(data => {
     console.log(data);
