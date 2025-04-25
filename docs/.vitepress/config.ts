@@ -1,7 +1,9 @@
-import { defineConfig } from 'vitepress';
+// import { defineConfig } from 'vitepress';
 import footnote from 'markdown-it-footnote';
+import { withMermaid } from 'vitepress-plugin-mermaid';
 
-export default defineConfig({
+// export default defineConfig({
+export default withMermaid({
   title: 'RxJS with TypeScript',
   description: 'TypeScriptプログラマのためのRxJS入門',
   base: '/RxJS-with-TypeScript/',
@@ -96,7 +98,17 @@ export default defineConfig({
           { text: '結合オペレーター', link: '/guide/operators/combination' },
           {
             text: 'ユーティリティオペレーター',
-            link: '/guide/operators/utility',
+            link: '/guide/operators/utility/',
+            items: [
+              { text: 'tap', link: '/guide/operators/utility/tap' },
+              { text: 'delay', link: '/guide/operators/utility/delay' },
+              { text: 'timeout', link: '/guide/operators/utility/timeout' },
+              { text: 'finalize', link: '/guide/operators/utility/finalize' },
+              { text: 'repeat', link: '/guide/operators/utility/repeat' },
+              { text: 'retry', link: '/guide/operators/utility/retry' },
+              { text: 'startWith', link: '/guide/operators/utility/startWith' },
+              { text: 'toArray', link: '/guide/operators/utility/toArray' },
+            ],
           },
           {
             text: '条件オペレーター',
