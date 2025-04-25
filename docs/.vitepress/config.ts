@@ -51,6 +51,7 @@ export default withMermaid({
         text: '1. RxJS入門',
         items: [
           { text: 'はじめに', link: '/guide/introduction' },
+          { text: '学習用の実行環境構築', link: '/guide/starter-kid.md' },
           { text: 'RxJSとは何か', link: '/guide/basics/what-is-rxjs' },
           { text: 'ストリームとは？', link: '/guide/basics/what-is-a-stream' },
         ],
@@ -108,11 +109,29 @@ export default withMermaid({
               { text: 'retry', link: '/guide/operators/utility/retry' },
               { text: 'startWith', link: '/guide/operators/utility/startWith' },
               { text: 'toArray', link: '/guide/operators/utility/toArray' },
+              {
+                text: '実用的なユースケース',
+                link: '/guide/operators/utility/practical-use-cases.md',
+              },
             ],
           },
           {
             text: '条件オペレーター',
-            link: '/guide/operators/conditional',
+            link: '/guide/operators/conditional/',
+            items: [
+              { text: 'iif', link: '/guide/operators/conditional/iif' },
+              { text: 'defer', link: '/guide/operators/conditional/defer' },
+              {
+                text: 'defaultIfEmpty',
+                link: '/guide/operators/conditional/defaultIfEmpty',
+              },
+              { text: 'every', link: '/guide/operators/conditional/every' },
+              { text: 'isEmpty', link: '/guide/operators/conditional/isEmpty' },
+              {
+                text: '実用的なユースケース',
+                link: '/guide/operators/conditional/practical-use-cases.md',
+              },
+            ],
           },
           {
             text: 'マルチキャスティング',
