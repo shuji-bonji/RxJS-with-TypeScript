@@ -90,7 +90,48 @@ export default withMermaid({
         text: '4. オペレーターの理解',
         items: [
           { text: 'パイプラインの概念', link: '/guide/operators/pipeline' },
-          { text: '変換オペレーター', link: '/guide/operators/transformation' },
+          {
+            text: '変換オペレーター',
+            link: '/guide/operators/transformation/',
+            items: [
+              { text: 'map', link: '/guide/operators/transformation/map' },
+              { text: 'scan', link: '/guide/operators/transformation/scan' },
+              { text: 'pluck', link: '/guide/operators/transformation/pluck' },
+              { text: 'mapTo', link: '/guide/operators/transformation/mapTo' },
+              {
+                text: 'mergeMap',
+                link: '/guide/operators/transformation/mergeMap',
+              },
+              {
+                text: 'switchMap',
+                link: '/guide/operators/transformation/switchMap',
+              },
+              {
+                text: 'concatMap',
+                link: '/guide/operators/transformation/concatMap',
+              },
+              {
+                text: 'exhaustMap',
+                link: '/guide/operators/transformation/exhaustMap',
+              },
+              {
+                text: 'bufferTime',
+                link: '/guide/operators/transformation/bufferTime',
+              },
+              {
+                text: 'bufferCount',
+                link: '/guide/operators/transformation/bufferCount',
+              },
+              {
+                text: 'windowTime',
+                link: '/guide/operators/transformation/windowTime',
+              },
+              {
+                text: '実用的なユースケース',
+                link: '/guide/operators/transformation/practical-use-cases.md',
+              },
+            ],
+          },
           {
             text: 'フィルタリングオペレーター',
             link: '/guide/operators/filtering/',
