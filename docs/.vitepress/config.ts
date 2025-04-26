@@ -27,7 +27,6 @@ export default withMermaid({
         content: 'https://shuji-bonji.github.io/RxJS-with-TypeScript/',
       },
     ],
-
     // Twitter Card
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:title', content: 'RxJS with TypeScript' }],
@@ -96,7 +95,32 @@ export default withMermaid({
             text: 'フィルタリングオペレーター',
             link: '/guide/operators/filtering',
           },
-          { text: '結合オペレーター', link: '/guide/operators/combination' },
+          {
+            text: '結合オペレーター',
+            link: '/guide/operators/combination/',
+            items: [
+              { text: 'concat', link: '/guide/operators/combination/concat' },
+              { text: 'merge', link: '/guide/operators/combination/merge' },
+              {
+                text: 'combineLatest',
+                link: '/guide/operators/combination/combineLatest',
+              },
+              { text: 'zip', link: '/guide/operators/combination/zip' },
+              {
+                text: 'withLatestFrom',
+                link: '/guide/operators/combination/withLatestFrom',
+              },
+              {
+                text: 'forkJoin',
+                link: '/guide/operators/combination/forkJoin',
+              },
+              { text: 'race', link: '/guide/operators/combination/race' },
+              {
+                text: '実用的なユースケース',
+                link: '/guide/operators/combination/practical-use-cases.md',
+              },
+            ],
+          },
           {
             text: 'ユーティリティオペレーター',
             link: '/guide/operators/utility/',
