@@ -93,7 +93,33 @@ export default withMermaid({
           { text: '変換オペレーター', link: '/guide/operators/transformation' },
           {
             text: 'フィルタリングオペレーター',
-            link: '/guide/operators/filtering',
+            link: '/guide/operators/filtering/',
+            items: [
+              { text: 'filter', link: '/guide/operators/filtering/filter' },
+              { text: 'take', link: '/guide/operators/filtering/take' },
+              { text: 'first', link: '/guide/operators/filtering/first' },
+              { text: 'last', link: '/guide/operators/filtering/last' },
+              {
+                text: 'debounceTime',
+                link: '/guide/operators/filtering/debounceTime',
+              },
+              {
+                text: 'throttleTime',
+                link: '/guide/operators/filtering/throttleTime',
+              },
+              {
+                text: 'distinctUntilChanged',
+                link: '/guide/operators/filtering/distinctUntilChanged',
+              },
+              {
+                text: 'distinctUntilKeyChanged',
+                link: '/guide/operators/filtering/distinctUntilKeyChanged',
+              },
+              {
+                text: '実用的なユースケース',
+                link: '/guide/operators/filtering/practical-use-cases.md',
+              },
+            ],
           },
           {
             text: '結合オペレーター',
