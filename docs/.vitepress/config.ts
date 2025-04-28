@@ -88,6 +88,7 @@ export default withMermaid({
       },
       {
         text: '4. オペレーターの理解',
+        link: '/guide/operators/',
         items: [
           { text: 'パイプラインの概念', link: '/guide/operators/pipeline' },
           {
