@@ -2,7 +2,9 @@
 
 RxJSを使ったコードは非同期処理が多く、従来のテスト手法とは異なるアプローチが必要です。このガイドでは、RxJSを使ったコードを効果的にテストするための基本的な手法から高度なテクニックまでを解説します。
 
-## 同期的なObservableのテスト
+## 基本的なテスト手法
+
+### 同期的なObservableのテスト
 
 最も単純なケースとして、同期的に完了するObservableのテストから始めましょう。
 
@@ -39,7 +41,7 @@ describe('基本的なObservableのテスト', () => {
 });
 ```
 
-## 非同期Observableをテストする方法
+### 非同期Observableをテストする方法
 
 非同期のObservableの場合は、テストフレームワークの非同期サポートを活用します。
 
@@ -73,7 +75,7 @@ describe('非同期Observableのテスト', () => {
 });
 ```
 
-## Promise変換による非同期テスト
+### Promise変換による非同期テスト
 
 Observableを`toPromise()`や`lastValueFrom()`を使ってPromiseに変換し、modern JS/TSのasync/awaitを活用する方法もあります。
 
@@ -106,7 +108,99 @@ describe('Promise変換を使ったテスト', () => {
 });
 ```
 
-# TestSchedulerの活用
+## モックとスタブの活用
+
+### 依存サービスのモック化
+
+RxJSを使ったサービスをテストする場合、外部依存をモック化することがよくあります。
+
+```ts
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { describe, it, expect, vi } from 'vitest';
+
+type User = {
+  id: number;
+  name: string;
+  active: boolean;
+}
+
+// テスト対象のサービス
+class UserService {
+  constructor(private apiService: { fetchUsers: Function }) {}
+  
+  getUsers(): Observable<User[]> {
+    return this.apiService.fetchUsers().pipe(
+      map((users: User[]) => users.filter(user => user.active))
+    );
+  }
+}
+
+describe('サービスのテスト', () => {
+  it('アクティブユーザーのみをフィルタリングする', () => {
+    // モックAPIサービス
+    const mockApiService = {
+      fetchUsers: vi.fn().mockReturnValue(of([
+        { id: 1, name: '田中', active: true },
+        { id: 2, name: '佐藤', active: false },
+        { id: 3, name: '山田', active: true }
+      ]))
+    };
+    
+    const userService = new UserService(mockApiService);
+    const result$ = userService.getUsers();
+    
+    // 検証
+    result$.subscribe(users => {
+      expect(users.length).toBe(2);
+      expect(users[0].name).toBe('田中');
+      expect(users[1].name).toBe('山田');
+      expect(mockApiService.fetchUsers).toHaveBeenCalledTimes(1);
+    });
+  });
+});
+```
+
+### サブスクリプションのスパイ
+
+サブスクリプションが正しく行われているか検証するためにスパイを使用できます。
+
+```ts
+import { Subject } from 'rxjs';
+import { describe, it, expect, vi } from 'vitest';
+
+describe('サブスクリプションのテスト', () => {
+  it('適切なハンドラーで購読している', () => {
+    const subject = new Subject();
+    
+    // ハンドラーのスパイを作成
+    const nextSpy = vi.fn();
+    const errorSpy = vi.fn();
+    const completeSpy = vi.fn();
+    
+    // 購読
+    subject.subscribe({
+      next: nextSpy,
+      error: errorSpy,
+      complete: completeSpy
+    });
+    
+    // 値を発行
+    subject.next('value1');
+    subject.next('value2');
+    subject.complete();
+    
+    // 検証
+    expect(nextSpy).toHaveBeenCalledTimes(2);
+    expect(nextSpy).toHaveBeenCalledWith('value1');
+    expect(nextSpy).toHaveBeenCalledWith('value2');
+    expect(errorSpy).not.toHaveBeenCalled();
+    expect(completeSpy).toHaveBeenCalledTimes(1);
+  });
+});
+```
+
+## TestSchedulerを使ったテスト
 
 RxJSは`TestScheduler`という特別なスケジューラーを提供しており、これを使って時間ベースのオペレーターのテストを効率的に行えます。
 
@@ -144,87 +238,6 @@ describe('TestSchedulerの使用', () => {
 > マーブルテスト記法
 > `TestScheduler`を使用する際、マーブル図を使用して時間の経過を表現します。
 
-## 時間を操作可能にする
-
-時間に依存したコード（delay, debounceTimeなど）をテストする場合は、`TestScheduler`を使用して時間を制御します。
-
-```ts
-import { TestScheduler } from 'rxjs/testing';
-import { interval } from 'rxjs';
-import { take, map } from 'rxjs/operators';
-import { describe, it, beforeEach } from 'vitest';
-
-describe('時間の制御', () => {
-  let testScheduler: TestScheduler;
-  
-  beforeEach(() => {
-    testScheduler = new TestScheduler((actual, expected) => {
-      expect(actual).toEqual(expected);
-    });
-  });
-  
-  it('時間を早送りしてテスト', () => {
-    testScheduler.run(({ expectObservable }) => {
-      const source = interval(1000).pipe(
-        take(3),
-        map(x => x + 1)
-      );
-      
-      // 実際は3秒かかるが、テスト環境では即時実行される
-      const expected = '1s a 999ms b 999ms (c|)';
-      const values = { a: 1, b: 2, c: 3 };
-      
-      expectObservable(source).toBe(expected, values);
-    });
-  });
-});
-```
-
-## エラー処理のテスト（TestScheduler版）
-
-エラーが発生した場合のObservableの挙動をテストすることも重要です。
-
-```ts
-import { TestScheduler } from 'rxjs/testing';
-import { throwError, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-
-describe('エラー処理のテスト', () => {
-  let testScheduler: TestScheduler;
-
-  beforeEach(() => {
-    testScheduler = new TestScheduler((actual, expected) => {
-      expect(actual).toEqual(expected);
-    });
-  });
-
-  it('Observableがエラーを通知する場合', () => {
-    testScheduler.run(({ cold, expectObservable }) => {
-      const source = cold('  --a--b--#');
-      const expected =     '--a--b--#';
-
-      expectObservable(source).toBe(expected);
-    });
-  });
-
-  it('catchErrorでエラーを補足して値に置き換える場合', () => {
-    testScheduler.run(({ cold, expectObservable }) => {
-      const source = cold('  --a--b--#');
-      const handled = source.pipe(
-        catchError(() => of('X'))
-      );
-
-      const expected =     '--a--b--(X|)';
-
-      expectObservable(handled).toBe(expected);
-    });
-  });
-});
-```
-
-# マーブルテスト
-
-複雑なストリームのテストには、マーブル図を使って直感的にテスト期待値を表現します。
 
 ### Hot Observable vs Cold Observable
 
@@ -305,108 +318,103 @@ describe('Hot vs Cold Observable テスト', () => {
 > [!NOTE]
 > Cold Observableは購読するたびに独立してデータを生成しますが、Hot Observableはデータを共有して配信します。
 
-# モックとスタブの活用
+## エラー処理のテスト
 
-## 依存サービスのモック化
-
-RxJSを使ったサービスをテストする場合、外部依存をモック化することがよくあります。
+エラーが発生した場合のObservableの挙動をテストすることも重要です。
 
 ```ts
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { describe, it, expect, vi } from 'vitest';
+import { TestScheduler } from 'rxjs/testing';
+import { throwError, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
-type User = {
-  id: number;
-  name: string;
-  active: boolean;
-}
+describe('エラー処理のテスト', () => {
+  let testScheduler: TestScheduler;
 
-// テスト対象のサービス
-class UserService {
-  constructor(private apiService: { fetchUsers: Function }) {}
+  beforeEach(() => {
+    testScheduler = new TestScheduler((actual, expected) => {
+      expect(actual).toEqual(expected);
+    });
+  });
+
+  it('Observableがエラーを通知する場合', () => {
+    testScheduler.run(({ cold, expectObservable }) => {
+      const source = cold('  --a--b--#');
+      const expected =     '--a--b--#';
+
+      expectObservable(source).toBe(expected);
+    });
+  });
+
+  it('catchErrorでエラーを補足して値に置き換える場合', () => {
+    testScheduler.run(({ cold, expectObservable }) => {
+      const source = cold('  --a--b--#');
+      const handled = source.pipe(
+        catchError(() => of('X'))
+      );
+
+      const expected =     '--a--b--(X|)';
+
+      expectObservable(handled).toBe(expected);
+    });
+  });
+});
+```
+
+## ベストプラクティス
+
+### 1. 単一責任の原則を守る
+
+テスト可能なコードを書くために、各関数やクラスが単一の責任を持つようにします。こうすることで、テストもシンプルになります。
+
+### 2. 外部依存をモック化する
+
+httpリクエストやタイマーなどの外部依存はモック化して、予測可能な環境でテストを行います。
+
+### 3. 非同期コードには適切なテクニックを使う
+
+非同期テストには、TestScheduler、done()コールバック、またはasync/awaitなど、適切な方法を選択します。
+
+### 4. 時間を操作可能にする
+
+時間に依存したコード（delay, debounceTimeなど）をテストする場合は、TestSchedulerを使用して時間を制御します。
+
+```ts
+import { TestScheduler } from 'rxjs/testing';
+import { interval } from 'rxjs';
+import { take, map } from 'rxjs/operators';
+import { describe, it, beforeEach } from 'vitest';
+
+describe('時間の制御', () => {
+  let testScheduler: TestScheduler;
   
-  getUsers(): Observable<User[]> {
-    return this.apiService.fetchUsers().pipe(
-      map((users: User[]) => users.filter(user => user.active))
-    );
-  }
-}
-
-describe('サービスのテスト', () => {
-  it('アクティブユーザーのみをフィルタリングする', () => {
-    // モックAPIサービス
-    const mockApiService = {
-      fetchUsers: vi.fn().mockReturnValue(of([
-        { id: 1, name: '田中', active: true },
-        { id: 2, name: '佐藤', active: false },
-        { id: 3, name: '山田', active: true }
-      ]))
-    };
-    
-    const userService = new UserService(mockApiService);
-    const result$ = userService.getUsers();
-    
-    // 検証
-    result$.subscribe(users => {
-      expect(users.length).toBe(2);
-      expect(users[0].name).toBe('田中');
-      expect(users[1].name).toBe('山田');
-      expect(mockApiService.fetchUsers).toHaveBeenCalledTimes(1);
+  beforeEach(() => {
+    testScheduler = new TestScheduler((actual, expected) => {
+      expect(actual).toEqual(expected);
+    });
+  });
+  
+  it('時間を早送りしてテスト', () => {
+    testScheduler.run(({ expectObservable }) => {
+      const source = interval(1000).pipe(
+        take(3),
+        map(x => x + 1)
+      );
+      
+      // 実際は3秒かかるが、テスト環境では即時実行される
+      const expected = '1s a 999ms b 999ms (c|)';
+      const values = { a: 1, b: 2, c: 3 };
+      
+      expectObservable(source).toBe(expected, values);
     });
   });
 });
 ```
 
-## サブスクリプションのスパイ
+### 5. マーブルテストを活用する
 
-サブスクリプションが正しく行われているか検証するためにスパイを使用できます。
+複雑なストリームのテストには、マーブル図を使って直感的にテスト期待値を表現します。
 
-```ts
-import { Subject } from 'rxjs';
-import { describe, it, expect, vi } from 'vitest';
-
-describe('サブスクリプションのテスト', () => {
-  it('適切なハンドラーで購読している', () => {
-    const subject = new Subject();
-    
-    // ハンドラーのスパイを作成
-    const nextSpy = vi.fn();
-    const errorSpy = vi.fn();
-    const completeSpy = vi.fn();
-    
-    // 購読
-    subject.subscribe({
-      next: nextSpy,
-      error: errorSpy,
-      complete: completeSpy
-    });
-    
-    // 値を発行
-    subject.next('value1');
-    subject.next('value2');
-    subject.complete();
-    
-    // 検証
-    expect(nextSpy).toHaveBeenCalledTimes(2);
-    expect(nextSpy).toHaveBeenCalledWith('value1');
-    expect(nextSpy).toHaveBeenCalledWith('value2');
-    expect(errorSpy).not.toHaveBeenCalled();
-    expect(completeSpy).toHaveBeenCalledTimes(1);
-  });
-});
-```
-
-# ベストプラクティス
-
-|ベストプラクティス|説明|
-|---|---|
-|単一責任の原則を守る|テスト可能なコードを書くために、各関数やクラスが単一の責任を持つようにします。こうすることで、テストもシンプルになります。|
-|外部依存をモック化する|httpリクエストやタイマーなどの外部依存はモック化して、予測可能な環境でテストを行います。|
-|非同期コードには適切なテクニックを使う|非同期テストには、TestScheduler、done()コールバック、またはasync/awaitなど、適切な方法を選択します。|
-|マーブルテストを活用する|複雑なストリームのテストには、マーブル図を使って直感的にテスト期待値を表現します。
-
-# まとめ
+## まとめ
 
 RxJSコードのテストは、同期/非同期の性質や時間に依存する動作など、従来のJavaScriptコードとは異なる側面があります。適切なテスト手法を選択することで、高品質なリアクティブコードを安心して開発することができます。特に以下の点を心がけましょう：
 

@@ -39,9 +39,9 @@ TypeScript環境でRxJSを体系的に学ぶためのガイドです。
 - [補足:タスクとスケジューラーの基礎知識](/guide/schedulers/task-and-scheduler-basics)
 
 ### 7. テスト手法
-<!-- - [RxJSのユニットテスト](/guide/testing/unit-tests)
+- [RxJSのユニットテスト](/guide/testing/unit-tests)
 - [TestSchedulerの活用](/guide/testing/test-scheduler)
-- [マーブルテスト](/guide/testing/marble-testing) -->
+- [マーブルテスト](/guide/testing/marble-testing) 
 
 ---
 
