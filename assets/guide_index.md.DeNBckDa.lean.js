@@ -1,1 +1,0 @@
-import{_ as a,c as i,o as t,a2 as r}from"./chunks/framework.BvXV5w7a.js";const p=JSON.parse('{"title":"ガイド","description":"","frontmatter":{},"headers":[],"relativePath":"guide/index.md","filePath":"guide/index.md"}'),l={name:"guide/index.md"};function h(s,e,c,o,u,d){return t(),i("div",null,e[0]||(e[0]=[r("",18)]))}const n=a(l,[["render",h]]);export{p as __pageData,n as default};
