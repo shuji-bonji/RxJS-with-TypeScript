@@ -47,5 +47,3 @@ npm run preview
 ```sh
 npm run serve
 ```
-
-## デプロイ
