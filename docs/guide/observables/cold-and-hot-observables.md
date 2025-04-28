@@ -4,7 +4,7 @@
 
 RxJSを使用する上で重要な概念の一つが、「コールドObservable」と「ホットObservable」の区別です。この違いを理解することは、効率的なObservableの使い方を習得するために不可欠です。
 
-## 1. コールドObservableとは
+## コールドObservableとは
 
 コールドObservableは、各サブスクライバー（購読者）に対して独立したデータストリームを提供します。
 
@@ -58,7 +58,7 @@ cold$.subscribe(value => console.log('購読者2:', value));
 - `ajax()` によるHTTPリクエスト
 - `interval()`, `timer()` などの時間オペレーター
 
-## 2. ホットObservableとは
+## ホットObservableとは
 
 ホットObservableは、すべてのサブスクライバーが同一のデータストリームを共有します。
 
@@ -120,7 +120,7 @@ hot$.complete();
 - WebSocket接続
 - ブロードキャストチャネル
 
-## 3. Cold ObservableとHot Observableの違い
+## Cold ObservableとHot Observableの違い
 
 Cold Observable と Hot Observable の違いを、以下の表にまとめます。
 
@@ -134,7 +134,7 @@ Cold Observable と Hot Observable の違いを、以下の表にまとめます
 
 > 💡 判断基準：各購読者に対して処理を再実行すべきか？それともストリームを共有すべきか？
 
-## 4. コールドObservableをホットに変換する方法
+## コールドObservableをホットに変換する方法
 
 RxJSでは、Cold ObservableをHotに変換する手段として主に以下の2つが使われます。
 
@@ -283,7 +283,7 @@ setTimeout(() => {
 
 実際のアプリケーション開発では、コールドObservableをホットに変換して複数のサブスクライバー間でデータを共有したい場合があります。
 
-## 5. 使用するタイミング
+## 使用するタイミング
 
 ### コールドObservableを使用するタイミング
 

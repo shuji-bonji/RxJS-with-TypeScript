@@ -13,7 +13,7 @@ RxJSには基本的な`Subject`の他に、特定のユースケースに特化�
 | [`ReplaySubject`](#replaysubject) | 指定した数の過去の値を新規購読者に再生 | 操作履歴、最近の更新情報 |
 | [`AsyncSubject`](#asyncsubject) | 完了時の最後の値のみを発行 | HTTP/APIリクエストの結果 |
 
-## 1. 標準`Subject` {#subject}
+## 標準`Subject` {#subject}
 
 最もシンプルなタイプのSubjectで、購読後に発生した値のみを受け取ります。
 
@@ -43,7 +43,7 @@ Observer 1: 3
 Observer 2: 3
 ```
 
-## 2. `BehaviorSubject`  {#behaviorsubject}
+## BehaviorSubject`  {#behaviorsubject}
 
 初期値を必要とし、常に最新の値を保持します。  
 新しい購読者は購読時に直ちに最新の値を受け取ります。
@@ -130,7 +130,7 @@ logout();
 未ログイン状態
 ```
 
-## 3. `ReplaySubject` {#replaysubject}
+## `ReplaySubject` {#replaysubject}
 
 指定した数の過去の値を記憶し、新しい購読者に再送信します。  
 バッファサイズとタイムウィンドウを設定可能です。
@@ -243,7 +243,7 @@ Angular
 React
 ```
 
-## 4. `AsyncSubject` {#asyncsubject}
+## `AsyncSubject` {#asyncsubject}
 
 完了時に最後の値のみを発行するSubjectです。完了前の値は発行されません。
 

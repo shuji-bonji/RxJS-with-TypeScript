@@ -252,6 +252,10 @@ export default withMermaid({
             text: 'スケジューラーの種類と使い分け',
             link: '/guide/schedulers/types',
           },
+          {
+            text: '補足:タスクとスケジューラーの基礎知識',
+            link: '/guide/schedulers/task-and-scheduler-basics',
+          },
         ],
       },
       {
@@ -267,69 +271,69 @@ export default withMermaid({
       },
       {
         text: '8. TypeScriptとRxJSの高度な連携',
-        items: [
-          {
-            text: 'TypeScriptとRxJSの基本連携',
-            link: '/guide/typescript-advanced/type-safety',
-          },
-          {
-            text: 'ジェネリクスの活用',
-            link: '/guide/typescript-advanced/generics',
-          },
-          {
-            text: 'カスタムオペレーターと型定義',
-            link: '/guide/typescript-advanced/custom-operators',
-          },
-          {
-            text: '条件型とマッピング型の活用',
-            link: '/guide/typescript-advanced/conditional-types',
-          },
-        ],
+        // items: [
+        //   {
+        //     text: 'TypeScriptとRxJSの基本連携',
+        //     link: '/guide/typescript-advanced/type-safety',
+        //   },
+        //   {
+        //     text: 'ジェネリクスの活用',
+        //     link: '/guide/typescript-advanced/generics',
+        //   },
+        //   {
+        //     text: 'カスタムオペレーターと型定義',
+        //     link: '/guide/typescript-advanced/custom-operators',
+        //   },
+        //   {
+        //     text: '条件型とマッピング型の活用',
+        //     link: '/guide/typescript-advanced/conditional-types',
+        //   },
+        // ],
       },
       {
         text: '9. 実践パターン',
-        items: [
-          {
-            text: '状態管理パターン',
-            link: '/guide/patterns/state-management',
-          },
-          { text: '非同期データフェッチ', link: '/guide/patterns/async-data' },
-          {
-            text: 'デバウンスとスロットル',
-            link: '/guide/patterns/debounce-throttle',
-          },
-          { text: 'キャッシュ戦略', link: '/guide/patterns/caching' },
-          {
-            text: 'メモリリークの防止',
-            link: '/guide/patterns/memory-leak-prevention',
-          },
-        ],
+        // items: [
+        //   {
+        //     text: '状態管理パターン',
+        //     link: '/guide/patterns/state-management',
+        //   },
+        //   { text: '非同期データフェッチ', link: '/guide/patterns/async-data' },
+        //   {
+        //     text: 'デバウンスとスロットル',
+        //     link: '/guide/patterns/debounce-throttle',
+        //   },
+        //   { text: 'キャッシュ戦略', link: '/guide/patterns/caching' },
+        //   {
+        //     text: 'メモリリークの防止',
+        //     link: '/guide/patterns/memory-leak-prevention',
+        //   },
+        // ],
       },
       {
         text: '10. パフォーマンス最適化',
-        items: [
-          {
-            text: '購読の適切な管理',
-            link: '/guide/performance/subscription-management',
-          },
-          {
-            text: '効率的なオペレーター選択',
-            link: '/guide/performance/operator-selection',
-          },
-          {
-            text: 'ストリームの設計パターン',
-            link: '/guide/performance/stream-design',
-          },
-        ],
+        // items: [
+        //   {
+        //     text: '購読の適切な管理',
+        //     link: '/guide/performance/subscription-management',
+        //   },
+        //   {
+        //     text: '効率的なオペレーター選択',
+        //     link: '/guide/performance/operator-selection',
+        //   },
+        //   {
+        //     text: 'ストリームの設計パターン',
+        //     link: '/guide/performance/stream-design',
+        //   },
+        // ],
       },
       {
         text: '11. フレームワークとの統合',
-        items: [
-          { text: 'Angularとの連携', link: '/guide/frameworks/angular' },
-          { text: 'Reactとの連携', link: '/guide/frameworks/react' },
-          { text: 'Vueとの連携', link: '/guide/frameworks/vue' },
-          { text: 'Web APIとの連携', link: '/guide/frameworks/web-api' },
-        ],
+        // items: [
+        //   { text: 'Angularとの連携', link: '/guide/frameworks/angular' },
+        //   { text: 'Reactとの連携', link: '/guide/frameworks/react' },
+        //   { text: 'Vueとの連携', link: '/guide/frameworks/vue' },
+        //   { text: 'Web APIとの連携', link: '/guide/frameworks/web-api' },
+        // ],
       },
     ],
 
