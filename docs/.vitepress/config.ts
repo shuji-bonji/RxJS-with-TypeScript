@@ -359,4 +359,7 @@ export default withMermaid({
       md.use(footnote);
     },
   },
+  sitemap: {
+    hostname: 'https://shuji-bonji.github.io/RxJS-with-TypeScript/',
+  },
 });
