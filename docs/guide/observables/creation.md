@@ -45,14 +45,12 @@ observable$.subscribe({
   error: err => console.error('エラー:', err),
   complete: () => console.log('完了')
 });
-```
-#### 実行結果
-```sh
-値: 1
-値: 2
-値: 3
-値: 4
-完了
+// 出力:
+// 値: 1
+// 値: 2
+// 値: 3
+// 値: 4
+// 完了
 ```
 
 > [!CAUTION]
@@ -107,7 +105,8 @@ values$.subscribe({
 > `of()` と `from()` の違い  
 > - `of([1, 2, 3])` → 1つの配列を発行します。  
 > - `from([1, 2, 3])` → 個別の値 `1`, `2`, `3` を順に発行します。  
-> - よく混同されるので注意が必要です。
+>
+> よく混同されるので注意が必要です。
 
 ### from()
 
@@ -137,20 +136,18 @@ iterable$.subscribe({
   error: err => console.error('エラー:', err),
   complete: () => console.log('完了')
 });
-```
 
-#### 実行結果
-```sh
-配列値: 1
-配列値: 2
-配列値: 3
-完了
-イテラブル値: 1
-イテラブル値: 2
-イテラブル値: 3
-完了
-Promise結果: Promiseの結果
-完了
+// 出力:
+// 配列値: 1
+// 配列値: 2
+// 配列値: 3
+// 完了
+// イテラブル値: 1
+// イテラブル値: 2
+// イテラブル値: 3
+// 完了
+// Promise結果: Promiseの結果
+// 完了
 ```
 
 ### fromEvent()
@@ -164,11 +161,9 @@ clicks$.subscribe({
   error: err => console.error('エラー:', err),
   complete: () => console.log('完了')
 });
-```
 
-#### 実行結果
-```sh
-クリックイベント: PointerEvent {isTrusted: true, pointerId: 1, width: 1, height: 1, pressure: 0, …}
+// 出力:
+// クリックイベント: PointerEvent {isTrusted: true, pointerId: 1, width: 1, height: 1, pressure: 0, …}
 ```
 
 > [!CAUTION]
@@ -198,22 +193,18 @@ timer$.subscribe({
   error: err => console.error('エラー:', err),
   complete: () => console.log('完了')
 });
-```
 
-#### 実行結果
-```sh
-インターバル: 0
-インターバル: 1
-インターバル: 2
-タイマー: 0
-インターバル: 3
-タイマー: 1
-インターバル: 4
-タイマー: 2
-.
-.
-.
-
+// 出力:
+// インターバル: 0
+// インターバル: 1
+// インターバル: 2
+// タイマー: 0
+// インターバル: 3
+// タイマー: 1
+// インターバル: 4
+// タイマー: 2
+// .
+// .
 ```
 `interval()` と `timer()` は時間制御に関する処理で頻繁に使われ、特にアニメーション、ポーリング、非同期イベント遅延などに適しています。
 
@@ -233,12 +224,10 @@ api$.subscribe({
   error: error => console.error('APIエラー:', error),
   complete: () => console.log('API完了')
 });
-```
 
-#### 実行結果
-```sh
-APIレスポンス: {userId: 1, id: 1, title: 'delectus aut autem', completed: false}
- API完了
+// 出力:
+// APIレスポンス: {userId: 1, id: 1, title: 'delectus aut autem', completed: false}
+//  API完了
 ```
 
 ## 特殊な作成演算子
@@ -258,14 +247,12 @@ const deferred$ = defer(() => {
 // 購読するごとに新しいObservableが作成される
 deferred$.subscribe(value => console.log(value));
 deferred$.subscribe(value => console.log(value));
-```
 
-#### 実行結果
-```sh
-50%以下の値:
-0.08011364416212319
-50%以下の値:
-0.3141403962502316
+// 出力:
+// 50%以下の値:
+// 0.08011364416212319
+// 50%以下の値:
+// 0.3141403962502316
 ```
 `defer()` は副作用のある処理をObservable作成時ではなく購読時に遅延させたい場合に有効です。ランダム生成や現在時刻の取得などの用途に適しています。
 
@@ -284,14 +271,12 @@ range$.subscribe({
   next: val => console.log('range:', val),
   complete: () => console.log('完了')
 });
-```
 
-#### 実行結果
-```sh
-range: 5
-range: 6
-range: 7
-完了
+// 出力:
+// range: 5
+// range: 6
+// range: 7
+// 完了
 ```
 
 ### generate()
@@ -309,16 +294,14 @@ generate$.subscribe({
   next: val => console.log('generate:', val),
   complete: () => console.log('完了')
 });
-```
 
-#### 実行結果
-```sh
-generate: 0
-generate: 1
-generate: 2
-generate: 3
-generate: 4
-完了
+// 出力:
+// generate: 0
+// generate: 1
+// generate: 2
+// generate: 3
+// generate: 4
+// 完了
 ```
 
 ### iif()
@@ -333,12 +316,10 @@ iif$.subscribe({
   next: val => console.log('iif:', val),
   complete: () => console.log('完了')
 });
-```
 
-#### 実行結果
-```sh
-iif: 条件はtrue
-完了
+// 出力:
+// iif: 条件はtrue
+// 完了
 ```
 
 > [!NOTE]
@@ -374,11 +355,10 @@ never$.subscribe({
   next: () => console.log('これは表示されない'),
   complete: () => console.log('これも表示されない')
 });
-```
-#### 実行結果
-```sh
-即座に完了
-エラー: エラー発生
+
+// 出力:
+// 即座に完了
+// エラー: エラー発生
 ```
 
 > [!IMPORTANT]
@@ -404,16 +384,14 @@ subject$.next(1);
 subject$.next(2);
 subject$.next(3);
 subject$.complete();
-```
 
-#### 実行結果
-```sh
-Observer 1: 1
-Observer 2: 1
-Observer 1: 2
-Observer 2: 2
-Observer 1: 3
-Observer 2: 3
+// 出力:
+// Observer 1: 1
+// Observer 2: 1
+// Observer 1: 2
+// Observer 2: 2
+// Observer 1: 3
+// Observer 2: 3
 ```
 
 > [!IMPORTANT]
@@ -460,7 +438,6 @@ readFile__('./some.txt', 'utf8').subscribe({
 > [!NOTE]
 > `bindNodeCallback()` は Node.js の `(err, result)` 型の非同期関数に対応しています。
 
----
 
 ## WebSocket()
 

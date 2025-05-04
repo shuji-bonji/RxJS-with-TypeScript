@@ -7,7 +7,18 @@
 
 この方法はカスタムなObservableロジックを定義したい場合に最も柔軟です。明示的な `next`, `error`, `complete` 呼び出しによって細かな挙動制御が可能です。
 
-### Observableのライフサイクルの構成
+### 🔄 Observableのライフサイクル図（状態遷移）
+
+```mermaid
+graph TD
+  A[Observable作成] --> B[購読開始]
+  B --> C[next を発行]
+  C --> D[complete または error]
+  D --> E[購読解除とリソース解放]
+```
+
+
+## Observableのライフサイクルの構成
 Observableのライフサイクルは、以下のフェーズで構成されています。
 
 |順番|フェーズ|内容|
@@ -26,7 +37,7 @@ Observableは「遅延実行（lazy）」であり、`subscribe()` を呼び出�
 > 
 > `pipe()` などのオペレーターは評価チェーンを構築するだけで、実行はObserverのコールバックによって開始されます。
 
-#### Observableのライフサイクルの例
+### Observableのライフサイクルの例
 ```ts
 import { Observable } from 'rxjs';
 
