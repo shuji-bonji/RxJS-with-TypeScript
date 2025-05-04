@@ -73,7 +73,7 @@ setTimeout(() => {
 // クリーンアップ実行
 ```
 
-## Observer（オブザーバー）
+## Observer（オブザーバー）　 {#observer}
 
 より簡潔で用途に特化したObservable作成には、RxJSが提供する「作成操作子（creation operator）」が便利です。繰り返し使われるユースケースにはこれらを使うことでコードが簡素化されます。
 
@@ -119,7 +119,7 @@ observable$.subscribe(
 // 完了
 ```
 
-## Subscription（サブスクリプション）
+## Subscription（サブスクリプション）  {#subscription}
 
 サブスクリプションはObservableの実行を表し、主に購読解除`unsubscribe()`のために使用されます。
 
