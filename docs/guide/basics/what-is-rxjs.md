@@ -39,13 +39,60 @@ RxJSを使いこなすには、以下の中核的な構成要素を理解する�
 | [`Subject`](../subjects/what-is-subject.md)[^1] | ObservableとObserverの両方の性質を持つ中継器です。 |
 | [`Scheduler`](../schedulers/async-control.md)[^2]| Observableの実行タイミングを制御する仕組みです。 |
 
+[^1]: Subjectは、値を発行するObservableであると同時に、値を受け取るObserverとしても振る舞える特殊な存在です。
+[^2]: Schedulerは、非同期処理の実行タイミングやコンテキストを制御するために使われ、デバッグやパフォーマンス管理にも役立ちます。
+
 これらはそれぞれ独立した機能を持ちながらも連携して動作します。  
 たとえば、Observableが値を発行し、それをObserverが購読し、Operatorで変換し、Schedulerで制御する、といった形で、全体としてストリーム処理を構成します。
 
 ※ 各構成要素の詳細な使い方や例については、それぞれの専用章で個別に解説します。
 
-[^1]: Subjectは、値を発行するObservableであると同時に、値を受け取るObserverとしても振る舞える特殊な存在です。
-[^2]: Schedulerは、非同期処理の実行タイミングやコンテキストを制御するために使われ、デバッグやパフォーマンス管理にも役立ちます。
+### 構成クラス図
+```mermaid
+classDiagram
+    class Observable~T~ {
+        +subscribe(observer)
+        +pipe(...operators)
+    }
+    
+    class Observer~T~ {
+        <<interface>>
+        +next(value)
+        +error(err)
+        +complete()
+    }
+    
+    class Subscription {
+        +unsubscribe()
+        +add(subscription)
+    }
+    
+    class Subscriber~T~ {
+        +next(value)
+        +error(err)
+        +complete()
+    }
+    
+    class OperatorFunction~T,R~ {
+        <<interface>>
+        +function(source: Observable~T~): Observable~R~
+    }
+    
+    class Subject~T~ {
+        +next(value)
+        +error(err)
+        +complete()
+        +subscribe()
+    }
+    
+    Observable~T~ --> OperatorFunction : transformed by
+    Observable --> Observer : notifies
+    Subject~T~ --|> Observable~T~ : extends
+    Subject~T~ ..|> Observer~T~ : implements
+    Subscriber --|> Subscription : extends
+    Subscriber ..|> Observer : implements
+```
+
 
 ## RxJSの利点
 
