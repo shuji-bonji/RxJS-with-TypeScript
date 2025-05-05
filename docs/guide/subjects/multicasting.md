@@ -119,6 +119,7 @@ Observer 2: 68
 RxJSでは、マルチキャスティングを実装するための専用演算子が用意されています。
 
 ### `share()` 演算子
+[📘 RxJS公式: share()](https://rxjs.dev/api/index/function/share)
 
 最も簡単にマルチキャストを実装できる演算子です。  
 内部的には`multicast()`と`refCount()`を組み合わせています。
@@ -233,6 +234,8 @@ Observer 2: 5
 この方法により、ストリームの終了や購読者がゼロになったときの挙動を明確に制御できます。
 
 ### `shareReplay()` 演算子
+
+[📘 RxJS公式: shareReplay()](https://rxjs.dev/api/index/function/shareReplay)
 
 `share()`と同様ですが、指定した数の過去の値を記憶し、後から参加した購読者にも提供します。
 

@@ -8,12 +8,14 @@ RxJSには基本的な`Subject`の他に、特定のユースケースに特化�
 
 | 種類 | 特徴 | 主なユースケース |
 |------|------|----------------|
-| [`Subject`](#subject) | 最もシンプルなSubject。購読後の値のみを受け取る | イベント通知、マルチキャスト |
+| [`Subject`](#subject) | 最もシンプルなSubject<br>購読後の値のみを受け取る | イベント通知、マルチキャスト |
 | [`BehaviorSubject`](#behaviorsubject) | 最新の値を保持し、新規購読時に即座に提供 | 状態管理、UIコンポーネントの現在値 |
 | [`ReplaySubject`](#replaysubject) | 指定した数の過去の値を新規購読者に再生 | 操作履歴、最近の更新情報 |
 | [`AsyncSubject`](#asyncsubject) | 完了時の最後の値のみを発行 | HTTP/APIリクエストの結果 |
 
 ## 標準`Subject` {#subject}
+
+[📘 RxJS公式: Subject](https://rxjs.dev/api/index/class/Subject)
 
 最もシンプルなタイプのSubjectで、購読後に発生した値のみを受け取ります。
 
@@ -43,7 +45,9 @@ Observer 1: 3
 Observer 2: 3
 ```
 
-## BehaviorSubject`  {#behaviorsubject}
+## BehaviorSubject  {#behaviorsubject}
+
+[📘 RxJS公式: BehaviorSubject](https://rxjs.dev/api/index/class/BehaviorSubject)
 
 初期値を必要とし、常に最新の値を保持します。  
 新しい購読者は購読時に直ちに最新の値を受け取ります。
@@ -131,6 +135,7 @@ logout();
 ```
 
 ## `ReplaySubject` {#replaysubject}
+[📘 RxJS公式: ReplaySubject](https://rxjs.dev/api/index/class/ReplaySubject)
 
 指定した数の過去の値を記憶し、新しい購読者に再送信します。  
 バッファサイズとタイムウィンドウを設定可能です。
@@ -244,6 +249,7 @@ React
 ```
 
 ## `AsyncSubject` {#asyncsubject}
+[📘 RxJS公式: AsyncSubject](https://rxjs.dev/api/index/class/AsyncSubject)
 
 完了時に最後の値のみを発行するSubjectです。完了前の値は発行されません。
 

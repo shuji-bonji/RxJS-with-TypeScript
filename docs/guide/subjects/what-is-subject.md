@@ -109,10 +109,11 @@ const subject = new Subject<string>();
 subject.subscribe(val => console.log('Observer A:', val));
 subject.next('Hello');
 subject.next('World');
-```
 
-> Observer A: Hello  
-> Observer A: World
+// 出力:
+// Observer A: Hello  
+// Observer A: World
+```
 
 ---
 
@@ -131,14 +132,17 @@ source$.subscribe(subject);
 // Subject → 複数購読者へ配信
 subject.subscribe(val => console.log('Observer 1:', val));
 subject.subscribe(val => console.log('Observer 2:', val));
+
+// 出力:
+// Observer 1: 0  
+// Observer 2: 0  
+// Observer 1: 1  
+// Observer 2: 1  
+// Observer 1: 2  
+// Observer 2: 2
 ```
 
-> Observer 1: 0  
-> Observer 2: 0  
-> Observer 1: 1  
-> Observer 2: 1  
-> Observer 1: 2  
-> Observer 2: 2
+
 
 > [!TIP]
 > `.next()`を自分で呼ぶ場合は「自ら話す人」、Observableから受け取って中継する場合は「他人の話をマイクで拡声する人」のようにイメージすると理解しやすくなります。
@@ -183,6 +187,12 @@ eventBus.pipe(
 // イベント発行
 eventBus.next({ type: 'USER_LOGGED_IN', payload: { userId: '123', username: 'test_user' } });
 eventBus.next({ type: 'DATA_UPDATED', payload: { items: [1, 2, 3] } });
+```
+
+#### 実行結果
+```
+ユーザーログイン: {userId: '123', username: 'test_user'}
+データ更新: {items: Array(3)}
 ```
 
 ## まとめ
