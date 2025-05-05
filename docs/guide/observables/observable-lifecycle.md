@@ -97,7 +97,7 @@ Observerは、Observableから通知を受け取るためのインターフェ�
 
 #### 例
 ```ts
-import { Observer } from 'rxjs';
+import { Observer, of } from 'rxjs';
 
 // 完全なObserverオブジェクト
 const observer: Observer<number> = {
@@ -108,6 +108,9 @@ const observer: Observer<number> = {
 
 const observable$ = of(1, 2, 3); // 簡易的にObervableを作成
 
+// Observerオブジェクトの利用
+observable$.subscribe(observer);
+
 // 部分的なObserverも可能
 observable$.subscribe({
   next: value => console.log('値のみ処理:', value)
@@ -115,19 +118,25 @@ observable$.subscribe({
 
 // 簡略記法
 observable$.subscribe(
-  value => console.log('値:', value),
+  value => console.log('値::', value),
   err => console.error('エラー:', err),
-  () => console.log('完了')
+  () => console.log('完了::')
+);
+
 );
 
 // 処理結果:
-// 値のみ処理: 1
-// 値のみ処理: 2
-// 値のみ処理: 3
 // 値: 1
 // 値: 2
 // 値: 3
 // 完了
+// 値のみ処理: 1
+// 値のみ処理: 2
+// 値のみ処理: 3
+// 値:: 1
+// 値:: 2
+// 値:: 3
+// 完了::
 ```
 
 ## Subscription（サブスクリプション）  {#subscription}
@@ -167,7 +176,7 @@ Observableのライフサイクルでは、 `error()` を呼び出すと直ち�
 
 #### 例
 ```ts
-import { Observable, throwError, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 
 // エラーを発生させるObservable
@@ -192,21 +201,19 @@ failingObservable$.pipe(
   error: err => console.error('ハンドリングされなかったエラー:', err),
   complete: () => console.log('完了')
 });
-```
 
-#### 実行結果
-```ts
-値: 1
-値: 2
-値: 1
-値: 2
-値: 1
-値: 2
-値: 1
-値: 2
-エラーをキャッチ: 意図的なエラー
-値: エラー後の代替値
-完了
+// 処理結果:
+// 値: 1
+// 値: 2
+// 値: 1
+// 値: 2
+// 値: 1
+// 値: 2
+// 値: 1
+// 値: 2
+// エラーをキャッチ: 意図的なエラー
+// 値: エラー後の代替値
+// 完了
 ```
 
 ## 完了のライフサイクル
@@ -246,21 +253,19 @@ manual$.subscribe({
   next: value => console.log('手動値:', value),
   complete: () => console.log('手動Observable完了')
 });
-```
 
-#### 実行結果
-```ts
-有限値: 1
-有限値: 2
-有限値: 3
-有限Observable完了
-手動値: 1
-制限付き値: 0
-制限付き値: 1
-手動値: 2
-手動Observable完了
-制限付き値: 2
-制限付きObservable完了
+// 処理結果:
+// 有限値: 1
+// 有限値: 2
+// 有限値: 3
+// 有限Observable完了
+// 手動値: 1
+// 制限付き値: 0
+// 制限付き値: 1
+// 手動値: 2
+// 手動Observable完了
+// 制限付き値: 2
+// 制限付きObservable完了
 ```
 
 ## リソース管理とメモリリーク防止
@@ -301,16 +306,14 @@ const component = new Component();
 setTimeout(() => {
   (component as any).ngOnDestroy();
 }, 5000);
-```
 
-#### 実行結果
-```
-コンポーネント内の値: 0
-コンポーネント内の値: 1
-コンポーネント内の値: 2
-コンポーネント内の値: 3
-コンポーネント内の値: 4
-コンポーネント破棄
+// 処理結果:
+// コンポーネント内の値: 0
+// コンポーネント内の値: 1
+// コンポーネント内の値: 2
+// コンポーネント内の値: 3
+// コンポーネント内の値: 4
+// コンポーネント破棄
 ```
 
 ## まとめ

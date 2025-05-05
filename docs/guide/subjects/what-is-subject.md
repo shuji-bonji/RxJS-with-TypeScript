@@ -1,11 +1,13 @@
 # Subjectとは
 
+[📘 RxJS公式: Subject](https://rxjs.dev/api/index/class/Subject)
+
 Subjectは、RxJSにおいて特殊な種類のObservableです。通常のObservableが単方向のデータフローを提供するのに対し、Subjectは「Observable」と「Observer」の両方の性質を持つハイブリッドな存在です。
 
 Subjectは以下の特徴を持ちます。
 
-- データを発行できる（Observer機能）
-- データを購読できる（Observable機能）
+- データを発行できる（Observable機能）
+- データを購読できる（Observer機能）
 - 複数の購読者に同じ値を届けられる（マルチキャスト）
 - 購読後に発生した値のみを受け取る（Hot Observable的性質）
 

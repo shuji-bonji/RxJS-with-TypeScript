@@ -1,5 +1,7 @@
 # Observableとは
- 
+
+[📘 RxJS公式: Subject](https://rxjs.dev/api/index/class/Observable)
+
 RxJSにおけるObservableとは、「時間の経過とともに発生するデータの流れ（ストリーム）」を表現する中核的な構成要素です。Observerパターンに基づいて設計されており、非同期処理やイベント駆動の処理を統一的に扱うことができます。
  
 ## Observableの役割
