@@ -22,6 +22,7 @@ RxJSのユーティリティオペレーターは、データの変換やフィ�
 |--------------|------|------------------|
 | [delay](./delay.md) | 各値の発行を指定時間遅延させる | `tap`, `concatMap` |
 | [timeout](./timeout.md) | 発行が一定時間を超えるとエラー発生 | `catchError`, `retry` |
+| [takeUntil](./takeUntil.md) | 指定Observableが通知した時点で購読終了 | `interval`, `fromEvent` |
 
 
 ### ◾ 初期値・繰り返し・配列化など

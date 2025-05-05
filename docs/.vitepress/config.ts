@@ -196,6 +196,7 @@ export default withMermaid({
               { text: 'tap', link: '/guide/operators/utility/tap' },
               { text: 'delay', link: '/guide/operators/utility/delay' },
               { text: 'timeout', link: '/guide/operators/utility/timeout' },
+              { text: 'takeUntil', link: '/guide/operators/utility/takeUntil' },
               { text: 'finalize', link: '/guide/operators/utility/finalize' },
               { text: 'repeat', link: '/guide/operators/utility/repeat' },
               { text: 'retry', link: '/guide/operators/utility/retry' },
