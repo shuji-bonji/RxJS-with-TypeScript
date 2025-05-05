@@ -21,6 +21,7 @@ of('B', 'C').pipe(
 
 このように、`startWith`は最初に `'A'` を追加し、その後ソースObservableの値が続きます。
 
+[🌐 RxJS公式ドキュメント - startWith](https://rxjs.dev/api/index/function/startWith)
 
 ## 💡 典型的な活用例
 

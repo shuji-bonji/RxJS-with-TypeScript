@@ -7,6 +7,8 @@ RxJSでは、ストリームの終了とリソース解放を適切に管理す�
 `finalize`オペレーターは、Observableが**完了・エラー・アンサブスクライブのいずれかで終了したとき**に、指定したクリーンアップコードを実行するためのオペレーターです。  
 finalizeは**ストリームの終了時に必ず一度だけ**呼び出され、複数回呼ばれることはありません。
 
+[🌐 RxJS公式ドキュメント - finalize](https://rxjs.dev/api/index/function/finalize)
+
 ### finalize の基本的な使い方
 
 ```ts
@@ -291,6 +293,8 @@ setTimeout(() => {
 // インターバル停止
 // リソースマネージャー破棄完了
 ```
+
+[📘 RxJS公式: takeUntil()](https://rxjs.dev/api/index/function/takeUntil)
 
 ## ベストプラクティス
 

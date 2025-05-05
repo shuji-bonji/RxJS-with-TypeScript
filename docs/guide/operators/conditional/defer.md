@@ -19,6 +19,8 @@ random$.subscribe(console.log);
 
 この例では、購読のたびに `Math.random()` が評価されるため、毎回異なる値が発行されます。
 
+[🌐 RxJS公式ドキュメント - defer](https://rxjs.dev/api/index/function/defer)
+
 ## 💡 典型的な活用例
 
 APIや外部リソース、現在時刻や乱数など、**実行タイミングによって結果が変わる処理**を都度行いたいときに有効です。

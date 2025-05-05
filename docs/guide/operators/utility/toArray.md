@@ -20,6 +20,7 @@ of(1, 2, 3).pipe(
 
 すべての値が1つの配列としてまとめられ、Observableの完了時に発行されます。
 
+[🌐 RxJS公式ドキュメント - toArray](https://rxjs.dev/api/index/function/toArray)
 
 ## 💡 典型的な活用例
 

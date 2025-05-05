@@ -32,6 +32,8 @@ of('response')
 TimeoutErrorImpl {stack: 'Error\n    at _super (http://localhost:5174/node_mo…s/.vite/deps/chunk-RF6VPQMH.js?v=f6400bce:583:26)', message: 'Timeout has occurred', name: 'TimeoutError', info: {…}}
 ```
 
+[🌐 RxJS公式ドキュメント - timeout](https://rxjs.dev/api/index/function/timeout)
+
 ## 💡 典型的な活用例
 
 次の例では、**ストリームが遅延して値を発行しない場合にタイムアウトを発生させる**パターンと、**正常に発行するパターン**の両方を示しています。

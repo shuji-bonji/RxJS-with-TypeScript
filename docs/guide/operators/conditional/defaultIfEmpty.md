@@ -19,6 +19,8 @@ from([]).pipe(
 
 この例では、空の配列を `from` で Observable 化したものに対し、`defaultIfEmpty` により `'値がありません'` が出力されます。
 
+[🌐 RxJS公式ドキュメント - defaultIfEmpty](https://rxjs.dev/api/index/function/defaultIfEmpty)
+
 ## 💡 典型的な活用例
 
 - ユーザーが何も入力しなかった場合

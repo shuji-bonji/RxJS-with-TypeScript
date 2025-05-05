@@ -13,6 +13,7 @@ EMPTY.pipe(isEmpty()).subscribe(console.log); // 出力: true
 of(1).pipe(isEmpty()).subscribe(console.log); // 出力: false
 ```
 
+[🌐 RxJS公式ドキュメント - isEmpty](https://rxjs.dev/api/index/function/isEmpty)
 
 ## 💡 典型的な活用例
 

@@ -29,6 +29,8 @@ from([2, 4, 5, 8])
 // 出力: false（5で止まる）
 ```
 
+[🌐 RxJS公式ドキュメント - every](https://rxjs.dev/api/index/function/every)
+
 ## 💡 典型的な活用例
 
 - **バリデーションチェック**：すべての条件が満たされたか確認

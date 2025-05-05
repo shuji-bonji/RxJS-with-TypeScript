@@ -21,6 +21,7 @@ getData(true).subscribe(console.log);
 
 条件が `true` の場合 `'YES'` が、`false` の場合 `'NO'` が返されます。
 
+[🌐 RxJS公式ドキュメント - iif](https://rxjs.dev/api/index/function/iif)
 
 ## 💡 典型的な活用例
 

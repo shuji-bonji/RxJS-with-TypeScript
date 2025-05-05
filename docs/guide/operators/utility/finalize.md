@@ -21,6 +21,8 @@ of('完了')
 この例では、`of()` で値を1つ発行した後に `finalize` の中の処理が実行されます。  
 **`complete` でも `error` でも確実に呼ばれる**のが特徴です。
 
+[🌐 RxJS公式ドキュメント - finalize](https://rxjs.dev/api/index/function/finalize)
+
 ## 💡 典型的な活用例
 
 以下は、ストリームの前後でローディング表示の切り替えを行う例です。

@@ -23,6 +23,7 @@ of('Hello')
 
 この例では、`of('Hello')` によって作られた値が 1秒遅れて `subscribe()` で受け取られます。
 
+[🌐 RxJS公式ドキュメント - delay](https://rxjs.dev/api/index/function/delay)
 
 ## 💡 典型的な活用例
 

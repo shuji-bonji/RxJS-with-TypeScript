@@ -8,10 +8,10 @@
 
 | カテゴリ | オペレーター例 | 説明 |
 |:---|:---|:---|
-| 単純な値の変換 | `map`, `pluck`, `mapTo` | 各値を変換または抽出 |
-| 累積処理 | `scan` | 値を蓄積しながら出力 |
-| 非同期変換 | `mergeMap`, `switchMap`, `concatMap`, `exhaustMap` | 非同期処理を展開・制御 |
-| バッチ処理 | `bufferTime`, `bufferCount`, `windowTime` | 一定時間・個数でまとめる |
+| 単純な値の変換 | [`map`](./map), [pluck](./pluck), [mapTo](./mapTo) | 各値を変換または抽出 |
+| 累積処理 | [scan](./scan) | 値を蓄積しながら出力 |
+| 非同期変換 | [mergeMap](./mergeMap), [switchMap](./switchMap), [concatMap](./concatMap), [exhaustMap](./exhaustMap) | 非同期処理を展開・制御 |
+| バッチ処理 | [bufferTime](./bufferTime), [bufferCount](./bufferCount), [windowTime](./windowTime) | 一定時間・個数でまとめる |
 
 
 ## 📖 各オペレーターの詳細

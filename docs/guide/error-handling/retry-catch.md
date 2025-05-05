@@ -6,6 +6,8 @@ RxJSにおけるエラー処理の中核となる二つのオペレーター、`
 
 `retry`オペレーターは、ストリームでエラーが発生した場合に、**指定した回数だけストリームの実行を再開**するためのオペレーターです。ネットワークリクエストなど、一時的に失敗する可能性がある操作に特に有効です。
 
+[🌐 RxJS公式ドキュメント - retry](https://rxjs.dev/api/index/function/retry)
+
 ### 基本パターン
 
 ```ts
@@ -83,6 +85,8 @@ simulateFlakyRequest()
 ## catchError - エラー捕捉と代替処理（基本パターン）
 
 `catchError`オペレーターは、ストリーム内で発生したエラーを捕捉し、**代替のObservableを返す**ことでエラーを処理します。これにより、エラーが発生してもストリームが中断されずに処理を継続できます。
+
+[🌐 RxJS公式ドキュメント - catchError](https://rxjs.dev/api/index/function/catchError)
 
 ### 基本パターン
 
@@ -178,6 +182,9 @@ fetchData().subscribe({
 ## 高度な再試行戦略: retryWhen
 
 より柔軟な再試行戦略が必要な場合は、`retryWhen`オペレーターを使用できます。これにより、再試行のタイミングやロジックをカスタマイズできます。
+
+
+[🌐 RxJS公式ドキュメント - retryWhen](https://rxjs.dev/api/index/function/retryWhen)
 
 ### 指数バックオフによる再試行
 

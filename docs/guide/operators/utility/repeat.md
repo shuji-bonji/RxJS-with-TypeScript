@@ -23,6 +23,8 @@ of('A', 'B')
 // B
 ```
 
+[🌐 RxJS公式ドキュメント - repeat](https://rxjs.dev/api/index/function/repeat)
+
 ## 💡 典型的な活用例
 
 たとえば、簡単なポーリング処理や、表示アニメーションの繰り返しなどに使われます。
