@@ -47,3 +47,12 @@ npm run preview
 ```sh
 npm run serve
 ```
+
+## ライセンス
+
+このプロジェクトは [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/deed.ja) ライセンスのもとで公開されています。
+
+一部のコード例や説明は以下の公式ドキュメントを参考にしています。これらは Apache License 2.0 に基づいており、原著作権表示とライセンス条項を尊重しています。
+
+- [RxJS](https://rxjs.dev) （Apache License 2.0）
+- [TypeScript](https://www.typescriptlang.org) （Apache License 2.0）
