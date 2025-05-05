@@ -1,7 +1,7 @@
 # RxJSとは何か？
 
 ## 概要
-RxJS（Reactive Extensions for JavaScript）とは、「リアクティブプログラミング」を JavaScript で行うためのライブラリです。
+[RxJS（Reactive Extensions for JavaScript）](https://rxjs.dev)とは、「リアクティブプログラミング」を JavaScript で行うためのライブラリです。
 
 > ### リアクティブプログラミングとは？
 > リアクティブプログラミングは、データの変化に応じて自動的に更新されるプログラムの作成方法です。

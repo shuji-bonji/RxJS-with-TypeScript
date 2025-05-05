@@ -12,11 +12,12 @@ RxJSでは、カスタムObservableの作成や、イベント・配列・HTTP�
 | カテゴリ | 主な手法 | 説明 |
 |----------|----------|------|
 | カスタム作成 | [`new Observable()`](#new-observable) | 自由度が高いが記述量も多い。手動でクリーンアップが必要 |
-| 作成演算子 | [`of()`](#of), [`from()`](#from), [`fromEvent()`](#fromevent), [`interval()`](#interval-timer), [`timer()`](#interval-timer), [`ajax()`](#ajax) | よく使われるデータ・イベント・時間ベースの生成関数群 |
+| 作成演算子 | [`of()`](#of), [`from()`](#from), [`fromEvent()`](#fromevent), [`interval()`](#interval-timer), [`timer()`](#interval-timer), [`ajax()`](#ajax), [`fromFetch()`](#fromfetch), [`scheduled()`](#scheduled) | よく使われるデータ・イベント・時間ベースの生成関数群 |
 | 特殊な作成演算子 | [`defer()`](#defer), [`range()`](#range), [`generate()`](#generate), [`iif()`](#iif) | 制御的・ループ的な生成、条件による切り替えなど |
 | 特殊Observable | [`EMPTY`](#empty-never-throwerror), [`NEVER`](#empty-never-throwerror), [`throwError()`](#empty-never-throwerror) | 完了・何もしない・エラー発行用 |
 | Subject系 | [`Subject`](#subject-behaviorsubject-など), [`BehaviorSubject`](#subject-behaviorsubject-など) | 観測者としても送信者としても機能する特殊なObservable |
 | コールバック変換 | [`bindCallback()`](#bindcallback), [`bindNodeCallback()`](#bindnodecallback) | コールバックベースの関数をObservableに変換 |
+| リソース制御 | [`using()`](#using) | Observableの購読と同時にリソース制御を行う |
 | WebSocket | [`webSocket()`](#websocket) | WebSocket通信を双方向Observableとして扱う |
 
 
@@ -24,6 +25,8 @@ RxJSでは、カスタムObservableの作成や、イベント・配列・HTTP�
 ## カスタム作成
 
 ### new Observable()
+[📘 RxJS公式: Observable](https://rxjs.dev/api/index/class/Observable)
+
 
 最も基本的な方法は、`Observable`コンストラクタを直接使用することです。この方法はカスタムなObservableロジックを定義したい場合に最も柔軟です。明示的な `next`, `error`, `complete` 呼び出しによって細かな挙動制御が可能です。
 
@@ -86,7 +89,15 @@ observable$.subscribe({
 
 より簡潔で用途に特化したObservable作成には、RxJSが提供する「作成操作子（creation operator）」が便利です。繰り返し使われるユースケースにはこれらを使うことでコードが簡素化されます。
 
+> [!NOTE]
+>RxJS公式ではこれらはfunctionと分類されていますが、従来(RxJS 5.x ~ 6)はcreation operatorと呼ばれることが多く、現在でもその呼称はよく使われています。
+
+
 ### of()
+[📘 RxJS公式: of()](https://rxjs.dev/api/index/function/of)
+
+複数の値を**1つずつ順に発行**するもっともシンプルなObservable作成関数です。
+
 
 ```ts
 import { of } from 'rxjs';
@@ -109,6 +120,9 @@ values$.subscribe({
 > よく混同されるので注意が必要です。
 
 ### from()
+[📘 RxJS公式: from()](https://rxjs.dev/api/index/function/from)
+
+配列・Promise・イテラブルなど、**既存のデータ構造からObservableを生成**します。
 
 ```ts
 import { from } from 'rxjs';
@@ -151,6 +165,9 @@ iterable$.subscribe({
 ```
 
 ### fromEvent()
+[📘 RxJS公式: fromEvent](https://rxjs.dev/api/index/function/fromEvent)
+
+DOMイベントなど、**イベントソースをObservableとして扱う**ための関数です。
 
 ```ts
 import { fromEvent } from 'rxjs';
@@ -174,6 +191,9 @@ clicks$.subscribe({
 > 👉 より詳細なイベントストリームの活用例については、[イベントのストリーム化](../observables/events) を参照してください。
 
 ### interval(), timer()
+[📘 RxJS公式: interval](https://rxjs.dev/api/index/function/interval), [📘 RxJS公式: timer](https://rxjs.dev/api/index/function/timer)
+
+一定間隔で連続的に値を発行したいときや、**時間制御が必要な場合**に使われます。
 
 ```ts
 import { interval, timer } from 'rxjs';
@@ -212,8 +232,13 @@ timer$.subscribe({
 > Cold Observable である点に注意  
 > - `interval()` や `timer()` は Cold Observable であり、購読のたびに独立して実行されます。  
 > - 必要に応じて `share()` などでHot化することも検討できます。
+> 
+> 詳しくは「[コールドObservableとホットObservable](./cold-and-hot-observables.md)」のセクションでを参照してください。
 
 ### ajax()
+[📘 RxJS公式: ajax](https://rxjs.dev/api/ajax/ajax)
+
+HTTP通信の結果を**Observableとして非同期的に扱う**ための関数です。
 
 ```ts
 import { ajax } from 'rxjs/ajax';
@@ -230,9 +255,69 @@ api$.subscribe({
 //  API完了
 ```
 
-## 特殊な作成演算子
+> [!NOTE]
+> RxJSのajaxは、内部的にはXMLHttpRequestを使用しています。一方、RxJSにはfromFetchというオペレーターもあり、これはFetch APIを利用してHTTPリクエストを行います。
+
+### fromFetch()
+[📘 RxJS公式: fromFetch](https://rxjs.dev/api/fetch/fromFetch)
+
+`fromFetch()` は Fetch API をラップして、HTTP リクエストを Observable として扱うことができる関数です。  
+`ajax()` と似ていますが、こちらはよりモダンで軽量です。
+
+```ts
+import { fromFetch } from 'rxjs/fetch';
+import { switchMap } from 'rxjs';
+
+const api$ = fromFetch('https://jsonplaceholder.typicode.com/todos/1');
+
+api$.pipe(
+  switchMap(response => response.json())
+).subscribe({
+  next: data => console.log('データ:', data),
+  error: err => console.error('エラー:', err),
+  complete: () => console.log('完了')
+});
+
+// 出力:
+// データ: Objectcompleted: falseid: 1title: "delectus aut autem"userId: 1[[Prototype]]: Object
+// 完了
+```
+
+> [!NOTE]
+> `fromFetch()` は Fetch API を使用しているため、`ajax()` と異なりリクエスト設定の初期化やレスポンスの `.json()` 変換は手動で行う必要があります。
+> エラーハンドリングや HTTP ステータスのチェックなども適切に行う必要があります。
+
+### scheduled()
+[📘 RxJS公式: scheduled](https://rxjs.dev/api/index/function/scheduled)
+
+`scheduled()` は `of()` や `from()` などの発行関数にスケジューラを明示的に指定できる関数です。  
+同期・非同期の実行タイミングを細かく制御したい場合に使用します。
+
+```ts
+import { scheduled, asyncScheduler } from 'rxjs';
+
+const observable$ = scheduled([1, 2, 3], asyncScheduler);
+observable$.subscribe({
+  next: val => console.log('値:', val),
+  complete: () => console.log('完了')
+});
+
+// 実行は非同期で行われる
+// 出力:
+// 値: 1
+// 値: 2
+// 値: 3
+// 完了
+```
+
+> [!NOTE]
+> `scheduled()` を使用することで、既存の同期関数（例: `of()`, `from()`）を非同期で動作させることが可能になります。
+> 非同期での処理制御が求められるテストやUIパフォーマンス最適化に役立ちます。
 
 ### defer()
+[📘 RxJS公式: defer](https://rxjs.dev/api/index/function/defer)
+
+Observableの生成を**購読時まで遅延させたいとき**に使用されます。
 
 ```ts
 import { defer, of } from 'rxjs';
@@ -262,6 +347,9 @@ deferred$.subscribe(value => console.log(value));
 > - `defer()` は購読時に初めて処理されるため、購読するたびに値が変わるような処理に適しています。
 
 ### range()
+[📘 RxJS公式: range](https://rxjs.dev/api/index/function/range)
+
+指定された範囲内の一連の数値を発行するObservableを作成します。
 
 ```ts
 import { range } from 'rxjs';
@@ -280,6 +368,9 @@ range$.subscribe({
 ```
 
 ### generate()
+[📘 RxJS公式: generate](https://rxjs.dev/api/index/function/generate)
+
+初期値・条件・更新式を指定して、**ループのように数値や状態を生成する** ための関数です。
 
 ```ts
 import { generate } from 'rxjs';
@@ -305,6 +396,9 @@ generate$.subscribe({
 ```
 
 ### iif()
+[📘 RxJS公式: iif](https://rxjs.dev/api/index/function/iif)
+
+条件に応じて、**実行するObservableを動的に切り替える** ための関数です。
 
 ```ts
 import { iif, of, EMPTY } from 'rxjs';
@@ -328,6 +422,8 @@ iif$.subscribe({
 ## 特殊Observable
 
 ### EMPTY, NEVER, throwError()
+[📘 RxJS公式: EMPTY](https://rxjs.dev/api/index/const/EMPTY), [📘 RxJS公式: NEVER](https://rxjs.dev/api/index/const/NEVER), [📘 RxJS公式: throwError](https://rxjs.dev/api/index/function/throwError)
+
 
 実行制御や例外処理、学習用として役立つ特殊なObservableもRxJSには用意されています。
 
@@ -369,6 +465,9 @@ never$.subscribe({
 ## Subject系
 
 ### Subject, BehaviorSubject など
+[📘 RxJS公式: Subject](https://rxjs.dev/api/index/class/Subject), [📘 RxJS公式: BehaviorSubject](https://rxjs.dev/api/index/class/BehaviorSubject)
+
+自ら値を発行できるObservableで、**マルチキャストや状態共有**に向いています。
 
 ```ts
 import { Subject } from 'rxjs';
@@ -400,11 +499,13 @@ subject$.complete();
 
 詳しくは、[「Subjectとは」](../subjects/what-is-subject.md)を参照してください。
 
+
 ## コールバック変換
 
 RxJSには、コールバックベースの非同期関数をObservableに変換するための関数として `bindCallback()` および `bindNodeCallback()` が用意されています。
 
 ### bindCallback()
+[📘 RxJS公式: bindCallback](https://rxjs.dev/api/index/function/bindCallback)
 
 ```ts
 import { bindCallback } from 'rxjs';
@@ -420,16 +521,21 @@ result$.subscribe({
   next: val => console.log(val), // Hello, RxJS
   complete: () => console.log('完了')
 });
+
+// 出力:
+// Hello, RxJS
+// 完了
 ```
 
 ### bindNodeCallback()
+[📘 RxJS公式: bindNodeCallback](https://rxjs.dev/api/index/function/bindNodeCallback)
 
 ```ts
 import { bindNodeCallback } from 'rxjs';
 import { readFile } from 'fs';
 
 const readFile$ = bindNodeCallback(readFile);
-readFile__('./some.txt', 'utf8').subscribe({
+readFile$('./some.txt').subscribe({
   next: data => console.log('内容:', data),
   error: err => console.error('エラー:', err)
 });
@@ -438,8 +544,74 @@ readFile__('./some.txt', 'utf8').subscribe({
 > [!NOTE]
 > `bindNodeCallback()` は Node.js の `(err, result)` 型の非同期関数に対応しています。
 
+### bindCallback() と bindNodeCallback() の違い
+bindCallback() と bindNodeCallback() の違いは、対象とするコールバック関数の形式です。
+
+|関数|対象となる関数の形式|特徴|
+|---|---|---|
+|bindCallback()|callback(result)|通常のコールバック（引数1つ）に対応|
+|bindNodeCallback()|callback(error, result) |Node.jsスタイルのエラーファースト形式に対応|
+
+#### 具体例: bindCallback() の対象
+
+```ts
+function doSomething(input: string, callback: (result: string) => void) {
+  callback(`結果: ${input}`);
+}
+```
+→ bindCallback() で変換可能
+
+
+#### 具体例:  bindNodeCallback() の対象（Node.js流）
+
+```ts
+function readFile(path: string, cb: (err: Error | null, data: string) => void) {
+  if (path === 'valid.txt') cb(null, 'file content');
+  else cb(new Error('not found'), '');
+}
+```
+→ bindNodeCallback() を使えば、エラー発生時に error がObservableとして通知される。
+
+
+> [!NOTE]
+> 使い分け
+> - コールバックの第1引数が「エラーかどうか」なら bindNodeCallback()
+> - 単純に「値だけ返す」コールバックなら bindCallback()
+
+## リソース制御
+
+### using()
+[📘 RxJS公式: using](https://rxjs.dev/api/index/function/using)
+
+`using()` は Observable のライフサイクルに合わせて、リソースの作成と解放を関連付けるための関数です。  
+WebSocket、イベントリスナー、外部リソースなどの**手動クリーンアップが必要な処理**と組み合わせると便利です。
+
+```ts
+import { using, interval, Subscription } from 'rxjs';
+
+const resource$ = using(
+  () => new Subscription(() => console.log('リソース解放')),
+  () => interval(1000)
+);
+
+const sub = resource$.subscribe(value => console.log('値:', value));
+
+// 数秒後に購読解除
+setTimeout(() => sub.unsubscribe(), 3500);
+
+// 出力:
+// 値: 0
+// 値: 1
+// 値: 2
+// リソース解放
+```
+
+> [!IMPORTANT]
+> `using()` はリソースのスコープをObservableの購読と一致させる際に便利です。  
+> `unsubscribe()` されたタイミングで、明示的なクリーンアップ処理が自動的に呼び出されます。
 
 ## WebSocket()
+[📘 RxJS公式: webSocket](https://rxjs.dev/api/webSocket/webSocket)
 
 RxJSの `rxjs/webSocket` モジュールには、WebSocketをObservable/Observerとして扱える `webSocket()` 関数が用意されています。
 
@@ -466,4 +638,3 @@ socket$.next('Hello WebSocket!');
 ## まとめ
 
 RxJSのストリームは、従来のJavaScriptのイベント処理やAJAX通信などを統一的なインターフェイスで扱えるようにします。特に時間的に変化するデータを扱う場合や、複数のイベントソースを組み合わせる場合に威力を発揮します。
-
