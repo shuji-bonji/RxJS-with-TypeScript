@@ -6,7 +6,7 @@ RxJSでは、複数の購読者に対して同じObservableの出力を共有す
 その使い分けや注意点について整理します。
 
 > ❗ マルチキャストの概念や Subject を用いた構造的な説明、具体的なコード例については  
-> [3. Subjectとマルチキャスト](/guide/subjects/multicasting) の章をご参照ください。
+> [マルチキャスティングの仕組み](/guide/subjects/multicasting) をご参照ください。
 
 ## 主なマルチキャスティング関連オペレーター
 

@@ -6,6 +6,8 @@ RxJSのSubjectは様々な実用的なシナリオで活用できます。ここ
 
 ### シンプルなストアの実装
 
+`BehaviorSubject` を使って、アプリケーションの状態を保持・更新・購読できるシンプルなストアを実装します。
+
 ```ts
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -88,6 +90,8 @@ store.setState({ theme: 'dark' });
 
 ### イベントバスの実装
 
+通知タイプごとに異なるデータ型を扱える `Subject` ベースのイベントバスを実装し、コンポーネント間通信を行います。
+
 ```ts
 import { Subject } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
@@ -159,6 +163,8 @@ eventBus.emit('NOTIFICATION', '新しいメッセージがあります');
 ## APIデータキャッシング
 
 ### リクエスト結果の共有とキャッシュ
+
+`AsyncSubject` を使って、HTTPリクエストのような一度だけ発行されるデータの共有とキャッシュを実現します。
 
 ```ts
 import { Observable, AsyncSubject, of, throwError } from 'rxjs';
@@ -267,6 +273,7 @@ AsyncSubjectを使ったこのパターンは、完了時の最後の値のみ�
 
 ## フォーム管理
 
+`BehaviorSubject` を使って、リアクティブフォームの現在値とバリデーション状態を管理します。
 ### フォーム値の双方向バインディング
 
 ```ts
@@ -381,6 +388,7 @@ submit @
 
 ## ロギングと履歴
 
+`ReplaySubject` を使って、過去の操作履歴を保持・再表示できるログ管理機構を構築します。
 ### 操作履歴の管理
 
 ```ts
@@ -464,6 +472,7 @@ ReplaySubjectを使用すると、新しい購読者に過去のログエント�
 
 ## 非同期処理の管理
 
+`Subject` と `BehaviorSubject` を使って、複数タスクの進捗状況とアクティブ状態をリアルタイムに管理します。
 ### 長時間実行タスクの進捗管理
 
 ```ts
@@ -595,6 +604,7 @@ taskManager.startTask('file-upload', (update) => {
 
 ## リアルタイム更新
 
+WebSocket の接続状態・受信メッセージ・再接続制御を、複数の Subject を使って管理します。
 ### WebSocketストリームの管理
 
 ```ts
