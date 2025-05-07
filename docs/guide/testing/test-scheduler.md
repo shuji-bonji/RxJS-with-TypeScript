@@ -137,7 +137,7 @@ describe('エラー処理のテスト', () => {
 ```
 
 
-# まとめ
+## まとめ
 
 - TestSchedulerを使うとリアル時間を待たずにテスト可能
 - Cold/Hot Observableの違いを理解して使い分ける

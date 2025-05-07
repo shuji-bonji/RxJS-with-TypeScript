@@ -106,7 +106,7 @@ describe('Promise変換を使ったテスト', () => {
 });
 ```
 
-# TestSchedulerの活用
+## TestSchedulerの活用
 
 RxJSは`TestScheduler`という特別なスケジューラーを提供しており、これを使って時間ベースのオペレーターのテストを効率的に行えます。
 
