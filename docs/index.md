@@ -7,7 +7,7 @@ hero:
   text: "RxJS with TypeScript"
   tagline: TypeScriptでRxJSを学ぶ
   image:
-    src: /images/ts-de-rxjs.png
+    src: /images/ts-de-rxjs.webp
     alt: RxJS With TypeScript
   actions:
     - theme: brand
