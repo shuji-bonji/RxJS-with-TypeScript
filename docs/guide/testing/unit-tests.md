@@ -222,7 +222,7 @@ describe('エラー処理のテスト', () => {
 });
 ```
 
-# マーブルテスト
+## マーブルテスト
 
 複雑なストリームのテストには、マーブル図を使って直感的にテスト期待値を表現します。
 
@@ -305,9 +305,9 @@ describe('Hot vs Cold Observable テスト', () => {
 > [!NOTE]
 > Cold Observableは購読するたびに独立してデータを生成しますが、Hot Observableはデータを共有して配信します。
 
-# モックとスタブの活用
+## モックとスタブの活用
 
-## 依存サービスのモック化
+### 依存サービスのモック化
 
 RxJSを使ったサービスをテストする場合、外部依存をモック化することがよくあります。
 
@@ -358,6 +358,58 @@ describe('サービスのテスト', () => {
 });
 ```
 
+### スタブ (Stub) の活用
+
+スタブはテスト対象のコードが依存する外部のデータやAPIを模倣するシンプルなオブジェクトです。  
+外部リソースへの依存を排除し、テストが独立して動作するようにします。  
+固定値を返すだけで、内部のロジックを持ちません。
+
+```ts
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { describe, it, expect } from 'vitest';
+
+type User = {
+  id: number;
+  name: string;
+  active: boolean;
+};
+
+// テスト対象のサービス
+class UserService {
+  constructor(private apiService: { fetchUsers: Function }) {}
+
+  getActiveUsers() {
+    return this.apiService.fetchUsers().pipe(
+      map((users: User[]) => users.filter(user => user.active))
+    );
+  }
+}
+
+describe('UserService のテスト', () => {
+  it('アクティブなユーザーのみを返す', () => {
+    // 🔹 スタブの作成
+    const stubApiService = {
+      fetchUsers: () => of<User[]>([
+        { id: 1, name: '田中', active: true },
+        { id: 2, name: '佐藤', active: false },
+        { id: 3, name: '山田', active: true }
+      ])
+    };
+
+    // テスト対象のサービス
+    const userService = new UserService(stubApiService);
+
+    // 結果を確認
+    userService.getActiveUsers().subscribe((users: User[]) => {
+      expect(users.length).toBe(2);
+      expect(users[0].name).toBe('田中');
+      expect(users[1].name).toBe('山田');
+    });
+  });
+});
+```
+
 ## サブスクリプションのスパイ
 
 サブスクリプションが正しく行われているか検証するためにスパイを使用できます。
@@ -397,7 +449,7 @@ describe('サブスクリプションのテスト', () => {
 });
 ```
 
-# ベストプラクティス
+## ベストプラクティス
 
 |ベストプラクティス|説明|
 |---|---|
@@ -406,9 +458,9 @@ describe('サブスクリプションのテスト', () => {
 |非同期コードには適切なテクニックを使う|非同期テストには、TestScheduler、done()コールバック、またはasync/awaitなど、適切な方法を選択します。|
 |マーブルテストを活用する|複雑なストリームのテストには、マーブル図を使って直感的にテスト期待値を表現します。
 
-# まとめ
+## まとめ
 
-RxJSコードのテストは、同期/非同期の性質や時間に依存する動作など、従来のJavaScriptコードとは異なる側面があります。適切なテスト手法を選択することで、高品質なリアクティブコードを安心して開発することができます。特に以下の点を心がけましょう：
+RxJSコードのテストは、同期/非同期の性質や時間に依存する動作など、従来のJavaScriptコードとは異なる側面があります。適切なテスト手法を選択することで、高品質なリアクティブコードを安心して開発することができます。特に以下の点を心がけましょう。
 
 - 同期的なObservableには単純なサブスクリプションテスト
 - 非同期処理にはTestSchedulerやPromise変換

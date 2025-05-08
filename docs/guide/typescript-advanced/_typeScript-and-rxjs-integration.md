@@ -351,7 +351,7 @@ products$.subscribe(products => {
 
 ## まとめ
 
-TypeScriptとRxJSを組み合わせることで、次のような利点があります：
+TypeScriptとRxJSを組み合わせることで、次のような利点があります。
 
 - 型安全な非同期プログラミング
 - IDEの支援による開発効率の向上
