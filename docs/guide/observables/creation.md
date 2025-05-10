@@ -15,7 +15,7 @@ RxJSでは、カスタムObservableの作成や、イベント・配列・HTTP�
 | 作成演算子 | [`of()`](#of), [`from()`](#from), [`fromEvent()`](#fromevent), [`interval()`](#interval-timer), [`timer()`](#interval-timer), [`ajax()`](#ajax), [`fromFetch()`](#fromfetch), [`scheduled()`](#scheduled) | よく使われるデータ・イベント・時間ベースの生成関数群 |
 | 特殊な作成演算子 | [`defer()`](#defer), [`range()`](#range), [`generate()`](#generate), [`iif()`](#iif) | 制御的・ループ的な生成、条件による切り替えなど |
 | 特殊Observable | [`EMPTY`](#empty-never-throwerror), [`NEVER`](#empty-never-throwerror), [`throwError()`](#empty-never-throwerror) | 完了・何もしない・エラー発行用 |
-| Subject系 | [`Subject`](#subject-behaviorsubject-など), [`BehaviorSubject`](#subject-behaviorsubject-など) | 観測者としても送信者としても機能する特殊なObservable |
+| Subject系 | [`Subject`](#subject-behaviorsubject), [`BehaviorSubject`](#subject-behaviorsubject) | 観測者としても送信者としても機能する特殊なObservable |
 | コールバック変換 | [`bindCallback()`](#bindcallback), [`bindNodeCallback()`](#bindnodecallback) | コールバックベースの関数をObservableに変換 |
 | リソース制御 | [`using()`](#using) | Observableの購読と同時にリソース制御を行う |
 | WebSocket | [`webSocket()`](#websocket) | WebSocket通信を双方向Observableとして扱う |
@@ -464,7 +464,7 @@ never$.subscribe({
 
 ## Subject系
 
-### Subject, BehaviorSubject など
+### Subject, BehaviorSubject など {#subject-behaviorsubject}
 [📘 RxJS公式: Subject](https://rxjs.dev/api/index/class/Subject), [📘 RxJS公式: BehaviorSubject](https://rxjs.dev/api/index/class/BehaviorSubject)
 
 自ら値を発行できるObservableで、**マルチキャストや状態共有**に向いています。
