@@ -36,7 +36,7 @@ export default withMermaid({
       {
         name: 'twitter:image',
         content:
-          'https://shuji-bonji.github.io/RxJS-with-TypeScript/images/ts-de-rxjs.webp',
+          'https://shuji-bonji.github.io/RxJS-with-TypeScript/images/ts-de-rxjs.png',
       },
     ],
   ],
