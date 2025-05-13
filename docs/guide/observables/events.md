@@ -326,6 +326,58 @@ validateForm();
 フォーム送信: {username: 'testuser', password: '123456'}
 ```
 
+## イベント一覧へのリンク
+
+すべてのイベントとその `fromEvent` での利用可否の一覧については、以下のリンクから参照できます。
+
+➡️ **[イベント一覧表](./events-list.md)**
+
+この一覧では、JavaScript の標準イベントが `fromEvent` に対応しているかどうかが明確に示されているため、RxJS を使ったリアクティブプログラミングの際に便利です。
+
+
+## fromEvent で利用できないイベント {#cannot-used-fromEvent}
+
+`fromEvent` は DOM の `EventTarget` インターフェースに依存しています。そのため、以下のイベントは直接 `fromEvent` で扱うことができません。これらは特定のオブジェクトに紐付いているか、独自のイベントリスナーを持っているためです。
+
+| イベント名         | 型                    | 理由                                             |
+| ------------------ | --------------------- | ------------------------------------------------ |
+| `beforeunload`    | `BeforeUnloadEvent`  | ウィンドウが閉じられる前に実行するイベントで、DOM イベントリスナーではなくブラウザの動作に依存 |
+| `unload`          | `Event`              | ページが完全に閉じるとリスナーも削除されるため、RxJS の Observable では無効 |
+| `message`         | `MessageEvent`       | ServiceWorker や WebWorker からのメッセージは `fromEvent` で直接キャプチャできない |
+| `popstate`        | `PopStateEvent`      | `history.pushState` や `replaceState` の変更は手動でハンドリングが必要 |
+| `storage`         | `StorageEvent`       | `localStorage` の変更は `fromEvent` では監視できない（`window.addEventListener` 経由が必要） |
+| `languagechange`  | `Event`              | ブラウザ設定の変更は `window` オブジェクトの動作に依存する |
+| `fetch`           | `Event`              | `fetch` の進行状況（`onprogress` など）は通常の DOM イベントではない |
+| `WebSocket`       | `Event`              | `onmessage`, `onopen`, `onclose` は独自のイベントリスナーを持つ |
+| `ServiceWorker`   | `Event`              | `message`, `install`, `activate` などは `fromEvent` で扱えない |
+
+### 代替手段
+これらのイベントを監視する場合、次の方法を利用してください。
+
+- `window.addEventListener('message', callback)`
+- `window.addEventListener('popstate', callback)`
+- `window.addEventListener('storage', callback)`
+- `WebSocket` の場合、`ws.addEventListener('message', callback)`
+- `ServiceWorker` の場合、`navigator.serviceWorker.addEventListener('message', callback)`
+
+RxJS でラップする場合、`fromEvent` の代わりに次のように Observable を手動で生成できます。
+
+```typescript
+import { Observable } from 'rxjs';
+
+const message$ = new Observable<MessageEvent>(observer => {
+  const handler = (event: MessageEvent) => observer.next(event);
+  window.addEventListener('message', handler);
+
+  // 解除処理
+  return () => window.removeEventListener('message', handler);
+});
+
+message$.subscribe(event => {
+  console.log('Message received:', event.data);
+});
+```
+
 ## まとめとベストプラクティス
 
 本記事では、イベントをObservable化することで得られる利点と具体的な応用方法を見てきました。
@@ -345,3 +397,4 @@ RxJSを使ったイベント処理は、以下のようなメリットがあり�
 - バックエンド通信との組み合わせは `exhaustMap` や `concatMap` などで制御可能
 
 RxJSによるイベントストリーム化は、単なるクリックやキーダウン処理を超えて、**リアクティブなUI構築全体の基本設計思想**となります。
+

@@ -65,6 +65,11 @@ export default withMermaid({
           { text: 'Observableの作成方法', link: '/guide/observables/creation' },
           { text: 'イベントのストリーム化', link: '/guide/observables/events' },
           {
+            text: 'fromEvent で利用できないイベント',
+            link: '/guide/observables/events#cannot-used-fromEvent'
+          },
+          { text: 'イベント一覧', link: '/guide/observables/events-list' },
+          {
             text: 'Observableのライフサイクル',
             link: '/guide/observables/observable-lifecycle',
           },
