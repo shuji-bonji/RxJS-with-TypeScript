@@ -1,3 +1,7 @@
+---
+description: distinctUntilChangedオペレーターは、前回と同じ値が連続した場合にスキップし、変化があった値のみを出力することで効率的なデータ処理を可能にします。
+---
+
 # distinctUntilChanged - 連続した重複値を除去する
 
 `distinctUntilChanged` オペレーターは、連続して同じ値が発行された場合に重複を除去し、直前の値と異なる場合のみ新しい値を出力します。

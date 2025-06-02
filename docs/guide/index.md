@@ -1,3 +1,7 @@
+---
+description: RxJSをTypeScript環境で体系的に学ぶためのガイド。ObservableやSubject、各種オペレーター、スケジューラー、テスト手法まで段階的に解説します。
+---
+
 # ガイド
 
 TypeScript環境でRxJSを体系的に学ぶためのガイドです。  

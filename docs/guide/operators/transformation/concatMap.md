@@ -1,3 +1,7 @@
+---
+description: concatMapは各Observableを順番に処理し、前の処理が完了するまで次を待つRxJSオペレーターで、順序が重要な処理に適しています。
+---
+
 # concatMap - 各Observableを順番に実行する
 
 `concatMap`オペレーターは、入力ストリームの各値をObservableに変換し、**それらを順番に実行して結合**します。  
@@ -69,4 +73,3 @@ fromEvent(button, 'click')
 
 - 各リクエストは必ず順番に送信・完了します。
 - 次のリクエストは前のリクエストが完了してから発行されます。
-

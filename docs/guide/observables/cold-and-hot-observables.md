@@ -1,3 +1,6 @@
+---
+description: Cold ObservableとHot Observableの違いと使い分け方、shareやshareReplayによる変換方法を実践例付きで解説します。
+---
 # コールドObservableとホットObservable
 
 ここでは、RxJSにおける Cold Observable と Hot Observable の違いと、それぞれの振る舞いや使用例を比較しながら解説します。

@@ -1,3 +1,6 @@
+---
+description: RxJSのfromEventで使用可能なJavaScriptイベントの一覧表を、種類ごとに整理して解説します。
+---
 # イベント一覧表
 
 ## 1. マウスイベント

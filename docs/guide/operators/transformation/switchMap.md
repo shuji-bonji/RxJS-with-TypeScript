@@ -1,3 +1,6 @@
+---
+description: switchMapは前のObservableをキャンセルして最新のObservableに切り替える演算子で、ライブサーチやナビゲーション切替などに最適です。
+---
 
 # switchMap - 前のObservableをキャンセルして最新のものに切り替える
 

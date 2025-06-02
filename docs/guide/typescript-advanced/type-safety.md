@@ -1,3 +1,7 @@
+---
+description: TypeScriptの型システムを活用し、RxJSで扱うObservableの型を明示的に定義することで、型安全性と開発効率を両立させる方法を解説します。
+---
+
 # TypeScriptとRxJSの基本連携
 
 TypeScriptは、JavaScriptのスーパーセットであり、型安全性を提供することで、コードの品質を向上させることができます。RxJSとTypeScriptを組み合わせることで、非同期プログラミングをより安全で、可読性の高いものにすることができます。

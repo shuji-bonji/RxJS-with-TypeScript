@@ -1,3 +1,7 @@
+---
+description: withLatestFromは、メインのObservableが値を発行するたびに、別のストリームの最新値を組み合わせて出力するためのオペレーターです。
+---
+
 # withLatestFrom - メインの発行に対して最新値を組み合わせる
 
 `withLatestFrom` オペレーターは、**メインストリームの値が発行されるたびに**、  

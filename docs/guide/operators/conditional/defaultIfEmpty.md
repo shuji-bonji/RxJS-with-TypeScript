@@ -1,3 +1,7 @@
+---
+description: defaultIfEmptyオペレーターは、Observableが値を発行しなかった場合にデフォルト値を返すための演算子で、空データ処理や初期値補完に有効です。
+---
+
 # defaultIfEmpty - ストリームが空の場合のデフォルト値
 
 `defaultIfEmpty` オペレーターは、**Observable が何も値を発行せずに complete された場合に、指定したデフォルト値を発行する**演算子です。  

@@ -1,3 +1,6 @@
+---
+description: finalizeとcompleteを用いて、RxJSにおけるストリームの完了処理とリソース解放を効果的に行う方法を解説します。
+---
 # finalize と complete - リソース解放とストリームの完了処理
 
 RxJSでは、ストリームの終了とリソース解放を適切に管理することが重要です。このページでは、`finalize`オペレーターと`complete`通知の仕組みについて解説します。

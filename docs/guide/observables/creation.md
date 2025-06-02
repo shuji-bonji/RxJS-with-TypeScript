@@ -1,3 +1,6 @@
+---
+description: RxJSでのObservableの作成方法について、ofやfrom、new Observableなどの基本から応用的な生成方法まで幅広く紹介します。
+---
 # Observableの作成方法
 
 Observableとは「データのストリーム」を定義するものであり、それを作成する方法は多岐にわたります。  

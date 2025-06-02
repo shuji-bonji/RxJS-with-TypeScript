@@ -1,3 +1,7 @@
+---
+description: deferオペレーターはObservableの生成を購読タイミングまで遅延させることで、毎回異なる処理や副作用を評価可能にします。
+---
+
 # defer - 遅延評価によるObservable作成
 
 `defer`オペレーターは、Observableのファクトリ関数を**購読時点**で実行し、その結果のObservableを返します。これにより、実際に購読されるまでObservableの作成を遅延させることができます。

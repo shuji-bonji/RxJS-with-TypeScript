@@ -1,3 +1,6 @@
+---
+description: RxJSはリアクティブプログラミングを実現するためのJavaScriptライブラリで、非同期データをObservableとして扱います。
+---
 # RxJSとは何か？
 
 ## 概要

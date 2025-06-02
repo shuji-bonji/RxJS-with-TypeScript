@@ -1,3 +1,7 @@
+---
+description: RxJSの中核であるObservableの概念を紹介し、Promiseとの違いや使用例、コールド／ホットの区別について丁寧に解説します。
+---
+
 # Observableとは
 
 [📘 RxJS公式: Subject](https://rxjs.dev/api/index/class/Observable)

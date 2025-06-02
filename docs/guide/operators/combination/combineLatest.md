@@ -1,3 +1,7 @@
+---
+description: combineLatestオペレーターを用いて複数のObservableの最新値を組み合わせる方法と、UIやフォーム入力への応用例を紹介します。
+---
+
 # combineLatest - 最新の値を組み合わせる
 
 `combineLatest` オペレーターは、複数のObservableの**最新の値をすべてまとめて出力**します。  

@@ -1,3 +1,7 @@
+---
+description: Subjectファミリーを活用した状態管理・イベント通信・キャッシュ・フォーム管理など、実践的なユースケースを豊富なコード例で解説します。
+---
+
 # Subjectのユースケース
 
 RxJSのSubjectは様々な実用的なシナリオで活用できます。ここでは、Subjectファミリー（Subject、BehaviorSubject、ReplaySubject、AsyncSubject）の実践的な使用例を紹介し、それぞれが最適な場面について解説します。

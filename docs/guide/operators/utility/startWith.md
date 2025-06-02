@@ -1,3 +1,7 @@
+---
+description: startWithオペレーターは、Observableが値を発行する前に指定した初期値を挿入する演算子で、状態初期化やUIの初期表示に適しています。
+---
+
 # startWith - 初期値の提供
 
 `startWith` オペレーターは、**ソースObservableが値を発行する前に指定した初期値を先に発行する**ための演算子です。  

@@ -1,3 +1,7 @@
+---
+description: Subjectとは何かを基礎から学び、Observableとの違いやマルチキャストの仕組み、代表的な用途についてわかりやすく解説します。
+---
+
 # Subjectとは
 
 [📘 RxJS公式: Subject](https://rxjs.dev/api/index/class/Subject)

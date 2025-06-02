@@ -1,3 +1,7 @@
+---
+description: takeUntilオペレーターは、通知用Observableが値を発行するまで元のObservableを購読し、通知された時点で購読を解除するために使われます。
+---
+
 # takeUntil
 
 `takeUntil` は、**指定した Observable（通知トリガー）が最初の値を発行するまで、元の Observable を購読し続ける** オペレーターです。通知トリガーが発行されたタイミングで、元の Observable の購読は解除されます。

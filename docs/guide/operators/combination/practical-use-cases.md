@@ -1,3 +1,6 @@
+---
+description: combineLatestやforkJoin、mergeなどを用いた実践的なユースケースを通して、RxJSの結合オペレーターの活用方法を学びます。
+---
 
 # 実践的なユースケース
 

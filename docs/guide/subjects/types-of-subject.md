@@ -1,3 +1,7 @@
+---
+description: Subjectの4種類（Subject, BehaviorSubject, ReplaySubject, AsyncSubject）それぞれの特性や活用シーン、選び方の比較を詳しく解説します。
+---
+
 # Subjectの種類
 
 RxJSには基本的な`Subject`の他に、特定のユースケースに特化した複数の派生クラスが用意されています。それぞれ異なる動作特性を持ち、適切な状況で活用することでより効果的なリアクティブプログラミングが可能になります。

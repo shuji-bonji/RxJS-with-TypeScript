@@ -1,3 +1,7 @@
+---
+description: Vite + TypeScript + RxJSで構成された学習用テンプレートのセットアップ方法と使用例を紹介。ローカル環境での実験やTDDにも最適です。
+---
+
 # ハンズオン学習用の実行環境構築方法
 
 このページでは、RxJSのコードをブラウザではなくローカル環境で即座に試せる開発テンプレート [`RxJS-with-TypeScript-Starter-Kit`](https://github.com/shuji-bonji/rxjs-with-typescript-starter-kit) の利用方法を紹介します。

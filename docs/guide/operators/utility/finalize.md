@@ -1,3 +1,6 @@
+---
+description: finalizeオペレーターは、Observableの完了・エラー・解除時に必ず呼ばれる処理を定義でき、リソース解放やUIローディング解除に適しています。
+---
 
 # finalize - 完了時の処理
 

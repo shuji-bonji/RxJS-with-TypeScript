@@ -1,3 +1,7 @@
+---
+description: mergeMapは各値をObservableに変換して並列実行するRxJSの変換オペレーターで、非同期処理の同時実行や複数リクエストの管理に便利です。
+---
+
 # mergeMap - 各値をObservableに変換し、同時並行でマージする
 
 `mergeMap`（別名 `flatMap`）オペレーターは、各値を新しいObservableに変換し、**それらを同時並行でフラットに結合**します。  

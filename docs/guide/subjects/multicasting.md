@@ -1,3 +1,7 @@
+---
+description: Subjectやshare、shareReplayを用いたRxJSのマルチキャスティングの仕組みと、API共有や状態管理における実践的な活用例を紹介します。
+---
+
 # マルチキャスティングの仕組み
 
 マルチキャスティングは、一つのObservableからのデータストリームを複数の購読者（Observer）に効率的に配信する手法です。  
