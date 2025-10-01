@@ -1,5 +1,5 @@
 ---
-description: RxJSでのマルチキャスティングに関連するshare、shareReplay、publish、multicastといった代表的オペレーターの使い分けと注意点を解説します。
+description: RxJSのマルチキャスティング関連オペレーターを解説します。share、shareReplay、publish、multicastの使い分け、それぞれの特徴と注意点、実践的なユースケースを演算子の観点から整理して紹介します。
 ---
 
 # マルチキャスティングで利用するオペレーター

@@ -1,5 +1,5 @@
 ---
-description: RxJSでのObservableの作成方法について、ofやfrom、new Observableなどの基本から応用的な生成方法まで幅広く紹介します。
+description: RxJSにおけるObservableの作成方法を、ofやfromなどの基本的な生成関数から、カスタムObservableの定義、HTTP通信、イベントストリーム化まで、実践的なコード例とともに網羅的に解説します。
 ---
 # Observableの作成方法
 

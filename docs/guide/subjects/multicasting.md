@@ -1,5 +1,5 @@
 ---
-description: Subjectやshare、shareReplayを用いたRxJSのマルチキャスティングの仕組みと、API共有や状態管理における実践的な活用例を紹介します。
+description: RxJSのマルチキャスティングの仕組みを詳しく解説します。Subjectを使った基本パターン、shareとshareReplayオペレーターの使い分け、APIリクエストの共有やキャッシュ、状態管理など実践的な設計パターンを紹介します。
 ---
 
 # マルチキャスティングの仕組み

@@ -1,5 +1,5 @@
 ---
-description: RxJSのretryとcatchErrorオペレーターを使った堅牢なエラー処理の方法とユースケースを詳しく解説します。
+description: retryとcatchErrorオペレーターを組み合わせた堅牢なエラー処理戦略を解説します。一時的な障害の再試行、指数バックオフパターン、適切なフォールバック処理など実践的なAPIリクエストの例を通して学びます。
 ---
 # retry と catchError - 効果的なエラー処理の組み合わせ
 

@@ -1,5 +1,5 @@
 ---
-description: exhaustMapは現在のObservableが完了するまで新たな入力を無視するRxJSオペレーターで、重複リクエストの防止などに効果的です。
+description: exhaustMapオペレーターは、現在処理中のObservableが完了するまで新しい入力を無視する変換演算子です。フォーム送信ボタンの多重クリック防止やAPIリクエストの重複送信防止など、並行実行を制限したい場面で効果的です。
 ---
 
 # exhaustMap - 実行中は新しい入力を無視する

@@ -1,5 +1,5 @@
 ---
-description: 複数のObservableを組み合わせて複雑なストリームを構築するための結合オペレーターの基本概念と代表的な演算子を紹介します。
+description: RxJSの結合オペレーターを使って複数のObservableを組み合わせ、複雑なストリームを構築する方法を解説します。concat、merge、combineLatest、zip、forkJoinなど代表的な演算子の使い分けと活用法を紹介します。
 ---
 
 # 結合オペレーター

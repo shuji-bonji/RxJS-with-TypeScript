@@ -1,5 +1,5 @@
 ---
-description: RxJSにおけるObservableのライフサイクル全体を、作成・購読・通知・完了・解除・リソース管理の観点から詳しく解説します。
+description: Observableのライフサイクルを作成、購読、実行、解除の段階に分けて詳しく解説します。Observer、Subscriptionの役割、next・error・completeの通知タイミング、リソース管理とメモリリーク防止の実践例まで網羅的に説明します。
 ---
 
 # Observableのライフサイクル

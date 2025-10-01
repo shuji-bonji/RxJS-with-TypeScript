@@ -1,5 +1,5 @@
 ---
-description: Cold ObservableとHot Observableの違いと使い分け方、shareやshareReplayによる変換方法を実践例付きで解説します。
+description: Cold ObservableとHot Observableの違いを詳しく解説します。購読ごとのデータストリームの独立性、shareやshareReplayによるColdからHotへの変換方法、APIリクエストのキャッシュなど実践的な活用例を紹介します。
 ---
 # コールドObservableとホットObservable
 

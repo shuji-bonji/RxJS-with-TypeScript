@@ -1,5 +1,5 @@
 ---
-description: tapやstartWith、finalizeなどのユーティリティオペレーターを使って、ローディング表示、フォーム検証、UI状態管理を行う実践的なコード例を紹介します。
+description: tap、startWith、finalize、delay、timeoutなどユーティリティオペレーターの実践的な活用例を紹介します。ローディング状態管理、リアクティブフォーム検証、API呼び出し制御などUI開発で頻繁に使われるパターンを解説します。
 ---
 
 # 実用的なユースケース

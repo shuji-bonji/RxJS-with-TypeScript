@@ -1,5 +1,5 @@
 ---
-description: Subjectとは何かを基礎から学び、Observableとの違いやマルチキャストの仕組み、代表的な用途についてわかりやすく解説します。
+description: SubjectはObservableとObserverの両方の性質を持つRxJSの特殊なクラスです。データの発行と購読を同時に行え、マルチキャストによって複数の購読者に同じ値を配信できます。基礎から使い方、実践的な活用例まで解説します。
 ---
 
 # Subjectとは

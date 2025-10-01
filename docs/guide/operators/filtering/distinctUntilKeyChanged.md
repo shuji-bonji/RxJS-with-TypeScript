@@ -1,5 +1,5 @@
 ---
-description: distinctUntilKeyChangedは、オブジェクト内の特定のキーに注目して連続した同一値をスキップし、変化した値のみを出力するRxJSオペレーターです。
+description: distinctUntilKeyChangedオペレーターは、オブジェクトストリーム内の特定プロパティに着目し、その値が前回と異なる場合のみ出力します。連続した重複データを効率的にスキップし、状態変化の検出やリスト更新の最適化に有用です。
 ---
 
 # distinctUntilKeyChanged - 特定プロパティの変更のみ検出する

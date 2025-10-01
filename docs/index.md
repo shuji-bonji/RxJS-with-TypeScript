@@ -1,4 +1,5 @@
 ---
+description: TypeScript環境でRxJSを体系的に学ぶための教材サイトです。Observableの基礎から各種オペレーター、エラー処理、テスト手法まで実践的なコード例とともに段階的に解説します。人間とAIによる共創型プロジェクトです。
 # https://vitepress.dev/reference/default-theme-home-page
 layout: home
 
