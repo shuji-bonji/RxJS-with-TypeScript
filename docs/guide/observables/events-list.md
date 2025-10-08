@@ -50,8 +50,33 @@ description: RxJSのfromEventで使用可能なJavaScriptイベントの一覧�
 | JavaScript イベント名 | HTML 属性 | 型 | 説明 | fromEventで利用可否 |
 |---|---|---|---|---|
 | keydown | onkeydown | KeyboardEvent | キーが押されたとき | ✅ |
-| keypress | onkeypress | KeyboardEvent | キーが押されている間（非推奨） | ✅ |
+| keypress | onkeypress | KeyboardEvent | ⚠️ **非推奨（Deprecated）** - `keydown`を使用してください | ✅ |
 | keyup | onkeyup | KeyboardEvent | キーが離されたとき | ✅ |
+
+::: warning keypress イベントについて
+`keypress`イベントは**Web標準で非推奨**となっています。
+
+**非推奨の理由**:
+- 国際化対応が不十分（日本語入力などで問題が発生）
+- 修飾キー（Shift、Ctrl、Alt）との組み合わせで挙動が不安定
+- モバイルデバイスでのサポートが限定的
+
+**推奨される代替方法**:
+```typescript
+// ❌ 非推奨
+fromEvent(input, 'keypress')
+  .subscribe(event => console.log(event));
+
+// ✅ 推奨: keydownを使用
+fromEvent<KeyboardEvent>(input, 'keydown')
+  .subscribe(event => console.log(event.key));
+```
+
+**ユースケース別の推奨イベント**:
+- 文字入力の検知: `input`イベント（推奨）
+- キー操作の検知: `keydown`イベント
+- キーリリースの検知: `keyup`イベント
+:::
 
 
 ## 5. フォーカス関連イベント
