@@ -389,7 +389,11 @@ import { webSocket } from 'rxjs/webSocket';
 import { asapScheduler } from 'rxjs';
 import { observeOn } from 'rxjs/operators';
 
-const socket$ = webSocket('wss://api.example.com');
+// 注: これは概念を示す疑似コードです
+const socket$ = webSocket<any>({
+  url: 'wss://your-websocket-server.com',
+  deserializer: msg => msg.data // 文字列として扱う
+});
 
 socket$
   .pipe(
@@ -399,6 +403,10 @@ socket$
   .subscribe(message => {
     handleMessage(message);
   });
+
+function handleMessage(msg: any) {
+  console.log('メッセージ受信:', msg);
+}
 ```
 
 ## パフォーマンスへの影響

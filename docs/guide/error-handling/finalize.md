@@ -206,7 +206,7 @@ function fetchData(id: string) {
   // document.getElementById('loading')!.style.display = 'block';
 
   // APIリクエスト
-  return ajax.getJSON(`https://api.example.com/data/${id}`).pipe(
+  return ajax.getJSON(`https://jsonplaceholder.typicode.com/posts/${id}`).pipe(
     catchError((error) => {
       console.error('APIエラー:', error);
       return of({ error: true, message: 'データの取得に失敗しました' });
@@ -231,7 +231,7 @@ fetchData('123').subscribe({
 //  データ: {error: true, message: 'データの取得に失敗しました'}
 //  データ取得完了
 //  ローディング状態リセット完了
-//   GET https://api.example.com/data/123 net::ERR_NAME_NOT_RESOLVED
+//   GET https://jsonplaceholder.typicode.com/posts/123 net::ERR_NAME_NOT_RESOLVED
 ```
 
 ### リソースのクリーンアップ

@@ -161,9 +161,16 @@ import { Observable } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { map, shareReplay, tap } from 'rxjs/operators';
 
+interface User {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+}
+
 class UserService {
   // ユーザー情報をキャッシュする
-  private userCache$ = ajax.getJSON<User>('https://api.example.com/user').pipe(
+  private userCache$ = ajax.getJSON<User>('https://jsonplaceholder.typicode.com/users/1').pipe(
     tap(() => console.log('APIリクエスト実行')),
     shareReplay(1) // 最新の1つの値を永続的にキャッシュ
   );
@@ -232,9 +239,9 @@ Service C: ja
 import { ajax } from 'rxjs/ajax';
 import { shareReplay, tap } from 'rxjs/operators';
 
-// 5秒間だけキャッシュする
-const weatherData$ = ajax.getJSON('https://api.example.com/weather').pipe(
-  tap(() => console.log('天気データ取得')),
+// 5秒間だけキャッシュする（TODOデータを例として使用）
+const todoData$ = ajax.getJSON('https://jsonplaceholder.typicode.com/todos/1').pipe(
+  tap(() => console.log('TODOデータ取得')),
   shareReplay({
     bufferSize: 1,
     windowTime: 5000, // 5秒間有効
@@ -243,16 +250,16 @@ const weatherData$ = ajax.getJSON('https://api.example.com/weather').pipe(
 );
 
 // 最初の購読
-weatherData$.subscribe(data => console.log('取得1:', data));
+todoData$.subscribe(data => console.log('取得1:', data));
 
 // 3秒後（キャッシュ有効）
 setTimeout(() => {
-  weatherData$.subscribe(data => console.log('取得2:', data)); // キャッシュから
+  todoData$.subscribe(data => console.log('取得2:', data)); // キャッシュから
 }, 3000);
 
 // 6秒後（キャッシュ期限切れ）
 setTimeout(() => {
-  weatherData$.subscribe(data => console.log('取得3:', data)); // 新規リクエスト
+  todoData$.subscribe(data => console.log('取得3:', data)); // 新規リクエスト
 }, 6000);
 ```
 

@@ -188,7 +188,7 @@ import { ajax } from 'rxjs/ajax';
 import { map, share, tap } from 'rxjs/operators';
 
 // ユーザー情報を取得するObservable
-const getUser$ = ajax.getJSON('https://api.example.com/user').pipe(
+const getUser$ = ajax.getJSON('https://jsonplaceholder.typicode.com/users/1').pipe(
   tap(() => console.log('APIリクエスト実行')),
   share() // 複数コンポーネントでの重複リクエストを防ぐ
 );
@@ -202,19 +202,25 @@ getUser$.subscribe(user => console.log('コンポーネント2:', user));
 // 結果: APIリクエストは1回だけ実行される
 ```
 
-### WebSocketストリームの共有
+### 定期的なデータ取得の共有
 
 ```typescript
-import { webSocket } from 'rxjs/webSocket';
-import { share } from 'rxjs/operators';
+import { timer } from 'rxjs';
+import { switchMap, share, tap } from 'rxjs/operators';
+import { ajax } from 'rxjs/ajax';
 
-const socket$ = webSocket('wss://example.com/socket').pipe(
-  share() // 複数の購読者でWebSocket接続を共有
+// 5秒ごとにTODOリストを取得（APIリクエストは共有）
+const sharedTodos$ = timer(0, 5000).pipe(
+  tap(() => console.log('APIリクエスト実行')),
+  switchMap(() => ajax.getJSON('https://jsonplaceholder.typicode.com/todos?_limit=3')),
+  share() // 複数の購読者でAPIリクエストを共有
 );
 
-// 複数コンポーネントで同じWebSocket接続を使用
-socket$.subscribe(msg => console.log('コンポーネントA:', msg));
-socket$.subscribe(msg => console.log('コンポーネントB:', msg));
+// 複数のコンポーネントで同じデータストリームを使用
+sharedTodos$.subscribe(todos => console.log('コンポーネントA:', todos));
+sharedTodos$.subscribe(todos => console.log('コンポーネントB:', todos));
+
+// 結果: 5秒ごとにAPIリクエストは1回だけ実行され、両コンポーネントが同じデータを受け取る
 ```
 
 ## ⚠️ 注意点

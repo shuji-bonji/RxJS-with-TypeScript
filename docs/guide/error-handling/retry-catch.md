@@ -260,7 +260,7 @@ let isLoading = false;
 function fetchUserData(userId: string): Observable<any> {
   isLoading = true;
 
-  return ajax.getJSON(`https://api.example.com/users/${userId}`).pipe(
+  return ajax.getJSON(`https://jsonplaceholder.typicode.com/users/${userId}`).pipe(
     // リクエストのデバッグ
     tap((response) => console.log('APIレスポンス:', response)),
     // ネットワークエラーは最大2回再試行
@@ -296,12 +296,12 @@ fetchUserData('123').subscribe({
 });
  
   
-// 出力:    
-// GET https://api.example.com/users/123 net::ERR_NAME_NOT_RESOLVED
-// GET https://api.example.com/users/123 net::ERR_NAME_NOT_RESOLVED
+// 出力:
+// GET https://jsonplaceholder.typicode.com/users/123 net::ERR_NAME_NOT_RESOLVED
+// GET https://jsonplaceholder.typicode.com/users/123 net::ERR_NAME_NOT_RESOLVED
 // 不明なエラーが発生しました
 // ローディング完了
-// GET https://api.example.com/users/123 net::ERR_NAME_NOT_RESOLVED
+// GET https://jsonplaceholder.typicode.com/users/123 net::ERR_NAME_NOT_RESOLVED
 ```
 
 ## ベストプラクティス
