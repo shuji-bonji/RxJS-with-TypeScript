@@ -16,8 +16,8 @@ RxJSでは、複数の購読者に対して同じObservableの出力を共有す
 
 | オペレーター | 特徴 | 備考 |
 |--------------|------|------|
-| `share()` | 最も簡単なマルチキャスト手段。内部で`publish().refCount()`と同等 | 多くのユースケースで十分 |
-| `shareReplay()` | マルチキャストに加え、直近の値を再購読時に提供 | 状態の再利用が必要な場合 |
+| **[share()](/guide/operators/multicasting/share)** | 最も簡単なマルチキャスト手段。内部で`publish().refCount()`と同等 | 多くのユースケースで十分 |
+| **[shareReplay()](/guide/operators/multicasting/shareReplay)** | マルチキャストに加え、直近の値を再購読時に提供 | 状態の再利用が必要な場合 |
 | `publish()` + `refCount()` | 実行タイミングを制御可能なマルチキャスト構成 | 古典的かつ柔軟な構成 |
 | `multicast()` | `Subject`を明示的に渡す低レベルAPI | カスタムSubjectを使いたい場合に有効 |
 
@@ -25,8 +25,8 @@ RxJSでは、複数の購読者に対して同じObservableの出力を共有す
 
 | オペレーター | 特徴 | ユースケース |
 |------------|------|-------------|
-| `share()` | 基本的なマルチキャスト | 複数コンポーネントでの同時利用 |
-| `shareReplay(n)` | 過去n個の値をバッファ | 遅延購読/状態共有 |
+| **[share()](/guide/operators/multicasting/share)** | 基本的なマルチキャスト | 複数コンポーネントでの同時利用 |
+| **[shareReplay(n)](/guide/operators/multicasting/shareReplay)** | 過去n個の値をバッファ | 遅延購読/状態共有 |
 | `publish() + refCount()` | より細かい制御が可能 | 高度な制御が必要な場合 |
 | `multicast(() => new Subject())` | 完全なカスタマイズ | 特殊なSubjectタイプが必要な場合 |
 

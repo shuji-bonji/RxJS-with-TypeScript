@@ -233,7 +233,11 @@ export default withMermaid({
           },
           {
             text: 'マルチキャスティング',
-            link: '/guide/operators/multicasting',
+            link: '/guide/operators/multicasting/',
+            items: [
+              { text: 'share', link: '/guide/operators/multicasting/share' },
+              { text: 'shareReplay', link: '/guide/operators/multicasting/shareReplay' },
+            ],
           },
         ],
       },

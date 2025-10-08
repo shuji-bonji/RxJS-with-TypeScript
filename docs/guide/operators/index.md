@@ -19,7 +19,7 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
 - [結合オペレーター](./combination/)
 - [ユーティリティオペレーター](./utility/)
 - [条件オペレーター](./conditional/)
-- [マルチキャスティングオペレーター](./multicasting)
+- [マルチキャスティングオペレーター](./multicasting/)
 
 それぞれのカテゴリに、多数の便利なオペレーターが含まれています。  
 詳細は各カテゴリを参照してください。
@@ -127,9 +127,9 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
       <td>値の有無や全件判定など</td>
     </tr>
     <tr>
-      <th scope="row"><a href="./multicasting">マルチキャスト</a></th>
+      <th scope="row"><a href="./multicasting/">マルチキャスト</a></th>
       <td>共有化</td>
-      <td><code>share</code>, <code>publish</code> など</td>
+      <td><a href="./multicasting/share.html">share</a>, <a href="./multicasting/shareReplay.html">shareReplay</a> など</td>
       <td>Observableのストリームを複数購読者間で共有</td>
     </tr>
   </tbody>
