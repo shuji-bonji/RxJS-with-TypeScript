@@ -209,4 +209,7 @@ Subjectは、RxJSエコシステムにおいて以下の役割を果たす重要
 - コンポーネント間やサービス間の通信を容易にする
 - 状態管理やイベント処理のための基盤を提供
 
-Subject系には、この基本Subject以外にも、BehaviorSubject、ReplaySubject、AsyncSubjectなど特化型のSubjectも存在します。それらについては[Subjectの種類](./types-of-subject.md)で詳しく解説します。
+## 🔗 関連セクション
+
+- **[よくある間違いと対処法](/guide/anti-patterns/common-mistakes#1-subject-の外部公開)** - Subject の誤用を避けるベストプラクティス
+- **[Subjectの種類](./types-of-subject)** - BehaviorSubject、ReplaySubject、AsyncSubject など

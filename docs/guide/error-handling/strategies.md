@@ -345,4 +345,7 @@ function getErrorMessage(error: any): string {
 
 RxJSにおけるエラー処理は、アプリケーションの堅牢性を確保するための重要な部分です。`catchError`、`retry`、`finalize`などのオペレーターを適切に組み合わせることで、様々なエラーシナリオに対応できます。エラーを単にキャッチするだけでなく、ユーザー体験を向上させるために総合的なエラー処理戦略を設計しましょう。
 
-次のセクションでは、`retry`と`catchError`の詳細な活用方法について、より具体的な例を交えて解説します。
+## 🔗 関連セクション
+
+- **[よくある間違いと対処法](/guide/anti-patterns/common-mistakes#9-エラーの握りつぶし)** - エラー処理に関するアンチパターンを確認
+- **[retry と catchError](/guide/error-handling/retry-catch)** - より詳細な活用方法を解説

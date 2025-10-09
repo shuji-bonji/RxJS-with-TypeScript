@@ -283,13 +283,15 @@ When editing documentation:
 
 The following operators are planned for the second documentation release, prioritized by usage frequency and practical importance.
 
-#### 🔴 High Priority Operators (Commonly used in production)
+#### ✅ Completed Operators
 
 **Transformation Operators:**
-- `buffer` - Basic buffer operator (bufferTime and bufferCount exist, but base buffer is missing)
-- `reduce` - Aggregation processing (scan exists, but reduce is different)
-- `pairwise` - Process consecutive pairs of values
-- `groupBy` - Group emissions by key
+- ✅ `buffer` - Basic buffer operator (docs/guide/operators/transformation/buffer.md)
+- ✅ `reduce` - Aggregation processing (docs/guide/operators/transformation/reduce.md)
+- ✅ `pairwise` - Process consecutive pairs of values (docs/guide/operators/transformation/pairwise.md)
+- ✅ `groupBy` - Group emissions by key (docs/guide/operators/transformation/groupBy.md)
+
+#### 🔴 High Priority Operators (Remaining)
 
 **Filtering Operators:**
 - `distinct` - Remove all duplicates (distinctUntilChanged exists for consecutive duplicates)

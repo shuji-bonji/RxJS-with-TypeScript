@@ -326,3 +326,9 @@ const safeStream$ = interval(1000).pipe(
 - `refCount`や`windowTime`で安全に使用可能
 
 状態の共有やキャッシュが必要な場合、`shareReplay()`は非常に強力なツールですが、適切なバッファサイズと期限設定を行うことが重要です。
+
+## 🔗 関連セクション
+
+- **[よくある間違いと対処法](/guide/anti-patterns/common-mistakes#4-sharereplay-の誤用)** - shareReplay の適切な使い方とメモリリーク対策
+- **[share()](/guide/operators/multicasting/share)** - シンプルなマルチキャスト
+- **[ReplaySubject](/guide/subjects/types-of-subject)** - shareReplayの基盤となるSubject

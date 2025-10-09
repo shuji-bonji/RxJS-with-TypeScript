@@ -45,7 +45,12 @@ TypeScript環境でRxJSを体系的に学ぶためのガイドです。
 ### 7. テスト手法
 - [RxJSのユニットテスト](/guide/testing/unit-tests)
 - [TestSchedulerの活用](/guide/testing/test-scheduler)
-- [マーブルテスト](/guide/testing/marble-testing) 
+- [マーブルテスト](/guide/testing/marble-testing)
+
+### 8. RxJSアンチパターン集
+- [アンチパターンとは](/guide/anti-patterns/)
+- [よくある間違いと対処法](/guide/anti-patterns/common-mistakes)
+- [アンチパターン回避チェックリスト](/guide/anti-patterns/checklist)
 
 ---
 

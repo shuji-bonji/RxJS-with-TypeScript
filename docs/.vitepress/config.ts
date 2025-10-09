@@ -288,7 +288,15 @@ export default withMermaid({
         ],
       },
       {
-        text: '8. TypeScriptとRxJSの高度な連携',
+        text: '8. RxJSアンチパターン集',
+        items: [
+          { text: 'アンチパターンとは', link: '/guide/anti-patterns/' },
+          { text: 'よくある間違いと対処法', link: '/guide/anti-patterns/common-mistakes' },
+          { text: 'アンチパターン回避チェックリスト', link: '/guide/anti-patterns/checklist' },
+        ],
+      },
+      {
+        text: '9. TypeScriptとRxJSの高度な連携',
         // items: [
         //   {
         //     text: 'TypeScriptとRxJSの基本連携',
@@ -309,7 +317,7 @@ export default withMermaid({
         // ],
       },
       {
-        text: '9. 実践パターン',
+        text: '10. 実践パターン',
         // items: [
         //   {
         //     text: '状態管理パターン',
@@ -328,7 +336,7 @@ export default withMermaid({
         // ],
       },
       {
-        text: '10. パフォーマンス最適化',
+        text: '11. パフォーマンス最適化',
         // items: [
         //   {
         //     text: '購読の適切な管理',
@@ -345,7 +353,7 @@ export default withMermaid({
         // ],
       },
       {
-        text: '11. フレームワークとの統合',
+        text: '12. フレームワークとの統合',
         // items: [
         //   { text: 'Angularとの連携', link: '/guide/frameworks/angular' },
         //   { text: 'Reactとの連携', link: '/guide/frameworks/react' },

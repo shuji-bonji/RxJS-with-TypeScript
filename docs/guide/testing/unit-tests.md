@@ -472,4 +472,8 @@ RxJSコードのテストは、同期/非同期の性質や時間に依存する
 - 外部依存はモック化して独立したテスト環境を作る
 - 単一責任の原則に従い、テスト容易なコードを設計する
 
-次の章では、より高度なマーブルテストの手法について詳しく解説します。
+## 🔗 関連セクション
+
+- **[よくある間違いと対処法](/guide/anti-patterns/common-mistakes#15-テストの欠如)** - テストに関するアンチパターンを確認
+- **[TestSchedulerの活用](/guide/testing/test-scheduler)** - より詳細なTestSchedulerの使い方
+- **[マーブルテスト](/guide/testing/marble-testing)** - 高度なマーブルテストの手法
