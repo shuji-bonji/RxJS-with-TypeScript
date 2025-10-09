@@ -98,7 +98,7 @@ const clicks$ = fromEvent(button, 'click');
 mouseMoves$.pipe(
   buffer(clicks$)
 ).subscribe(positions => {
-  const message = `記録された移動回数: ${positions.length}回`;
+  const message = `検出されたイベント数: ${positions.length}件`;
   console.log(message);
   console.log('座標データ:', positions.slice(0, 5)); // 最初の5件のみ表示
   output.textContent = message;
@@ -150,9 +150,12 @@ source$.pipe(
 - タイムアウト処理を追加
 
 ```ts
-import { race } from 'rxjs';
+import { interval, fromEvent, timer, race } from 'rxjs';
 import { buffer } from 'rxjs/operators';
 
+const source$ = interval(100);
+
+// 複数のトリガー: クリックまたは5秒経過
 const clicks$ = fromEvent(document, 'click');
 const timeout$ = timer(10000); // 最大10秒でタイムアウト
 
@@ -167,8 +170,8 @@ source$.pipe(
 
 - [`bufferTime`](./bufferTime) - 時間ベースでバッファリング
 - [`bufferCount`](./bufferCount) - 個数ベースでバッファリング
-- [`bufferToggle`](./bufferToggle) - 開始・終了のObservableでバッファリング制御
-- [`bufferWhen`](./bufferWhen) - 動的なクロージング条件でバッファリング
+- [`bufferToggle`](https://rxjs.dev/api/operators/bufferToggle) - 開始・終了のObservableでバッファリング制御
+- [`bufferWhen`](https://rxjs.dev/api/operators/bufferWhen) - 動的なクロージング条件でバッファリング
 - [`window`](./windowTime) - バッファの代わりにObservableを返す
 
 ## まとめ
