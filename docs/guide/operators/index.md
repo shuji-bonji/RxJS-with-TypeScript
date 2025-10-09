@@ -19,6 +19,7 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
 - [結合オペレーター](./combination/)
 - [ユーティリティオペレーター](./utility/)
 - [条件オペレーター](./conditional/)
+- [エラーハンドリングオペレーター](../error-handling/strategies)
 - [マルチキャスティングオペレーター](./multicasting/)
 
 それぞれのカテゴリに、多数の便利なオペレーターが含まれています。  
@@ -49,7 +50,7 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
     </tr>
     <tr>
       <td>累積処理</td>
-      <td><a href="./transformation/scan.html">scan</a></td>
+      <td><a href="./transformation/scan.html">scan</a>, <a href="./transformation/reduce.html">reduce</a></td>
       <td>値を蓄積しながら出力</td>
     </tr>
     <tr>
@@ -59,7 +60,7 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
     </tr>
     <tr>
       <td>バッチ処理</td>
-      <td style="text-align:left;"><a href="./transformation/bufferTime.html">bufferTime</a>, <a href="./transformation/bufferCount.html">bufferCount</a>, <a href="./transformation/windowTime.html">windowTime</a></td>
+      <td style="text-align:left;"><a href="./transformation/buffer.html">buffer</a>, <a href="./transformation/bufferTime.html">bufferTime</a>, <a href="./transformation/bufferCount.html">bufferCount</a>, <a href="./transformation/windowTime.html">windowTime</a></td>
       <td>一定時間・個数でまとめる</td>
     </tr>
     <tr>
@@ -125,6 +126,17 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
       <td>存在チェック</td>
       <td><a href="./conditional/defaultIfEmpty.html">defaultIfEmpty</a>, <a href="./conditional/every.html">every</a>, <a href="./conditional/isEmpty.html">isEmpty</a></td>
       <td>値の有無や全件判定など</td>
+    </tr>
+    <tr>
+      <th scope="row" rowspan="2"><a href="../error-handling/strategies.html">エラーハンドリング</a></th>
+      <td>エラー捕捉と回復</td>
+      <td><a href="../error-handling/retry-catch.html">catchError</a></td>
+      <td>エラーを捕捉してフォールバック処理</td>
+    </tr>
+    <tr>
+      <td>再試行</td>
+      <td><a href="../error-handling/retry-catch.html">retry</a>, <a href="../error-handling/retry-catch.html">retryWhen</a></td>
+      <td>失敗時の再試行戦略</td>
     </tr>
     <tr>
       <th scope="row"><a href="./multicasting/">マルチキャスト</a></th>
