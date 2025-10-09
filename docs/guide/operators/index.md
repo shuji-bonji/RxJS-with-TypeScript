@@ -55,8 +55,8 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
     </tr>
     <tr>
       <td>ペア・グループ化</td>
-      <td><a href="./transformation/pairwise.html">pairwise</a></td>
-      <td>連続する値をペアで処理</td>
+      <td><a href="./transformation/pairwise.html">pairwise</a>, <a href="./transformation/groupBy.html">groupBy</a></td>
+      <td>連続する値をペアで処理、キー別グループ化</td>
     </tr>
     <tr>
       <td>非同期変換</td>

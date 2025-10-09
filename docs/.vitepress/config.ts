@@ -104,6 +104,7 @@ export default withMermaid({
               { text: 'scan', link: '/guide/operators/transformation/scan' },
               { text: 'reduce', link: '/guide/operators/transformation/reduce' },
               { text: 'pairwise', link: '/guide/operators/transformation/pairwise' },
+              { text: 'groupBy', link: '/guide/operators/transformation/groupBy' },
               { text: 'pluck（非推奨）', link: '/guide/operators/transformation/pluck' },
               { text: 'mapTo（非推奨）', link: '/guide/operators/transformation/mapTo' },
               {
