@@ -42,7 +42,7 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
   </thead>
   <tbody>
     <tr>
-      <th scope="row" rowspan="4"><a href="./transformation/">変換</a></th>
+      <th scope="row" rowspan="5"><a href="./transformation/">変換</a></th>
       <td>単純な値の変換</td>
       <td>
         <a href="./transformation/map.html"><code>map</code></a>, <a href="./transformation/pluck.html">pluck</a>, <a href="./transformation/mapTo.html">mapTo</a></td>
@@ -52,6 +52,11 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
       <td>累積処理</td>
       <td><a href="./transformation/scan.html">scan</a>, <a href="./transformation/reduce.html">reduce</a></td>
       <td>値を蓄積しながら出力</td>
+    </tr>
+    <tr>
+      <td>ペア・グループ化</td>
+      <td><a href="./transformation/pairwise.html">pairwise</a></td>
+      <td>連続する値をペアで処理</td>
     </tr>
     <tr>
       <td>非同期変換</td>
