@@ -279,6 +279,68 @@ When editing documentation:
 2. Add practice exercises
 3. Community contribution guidelines
 
+### Second Release: Additional Operators
+
+The following operators are planned for the second documentation release, prioritized by usage frequency and practical importance.
+
+#### 🔴 High Priority Operators (Commonly used in production)
+
+**Transformation Operators:**
+- `buffer` - Basic buffer operator (bufferTime and bufferCount exist, but base buffer is missing)
+- `reduce` - Aggregation processing (scan exists, but reduce is different)
+- `pairwise` - Process consecutive pairs of values
+- `groupBy` - Group emissions by key
+
+**Filtering Operators:**
+- `distinct` - Remove all duplicates (distinctUntilChanged exists for consecutive duplicates)
+- `skip` - Skip first N emissions
+- `skipUntil` - Ignore emissions until another Observable emits
+- `takeLast` - Take last N emissions
+- `takeWhile` - Take emissions while condition is true
+- `auditTime` - Emit last value after specified time (counterpart to throttleTime)
+- `find` - Find first emission matching predicate
+
+#### 🟡 Medium Priority Operators (Used in specific scenarios)
+
+**Transformation Operators:**
+- `bufferToggle`, `bufferWhen` - Advanced buffering strategies
+- `expand` - Recursive expansion
+- `mergeScan` - Accumulation with merging
+- `partition` - Split stream by condition
+- `window`, `windowCount`, `windowToggle`, `windowWhen` - Window-based operators
+
+**Filtering Operators:**
+- `audit`, `debounce` - Custom timing control
+- `elementAt` - Get emission at specific index
+- `findIndex` - Find index of first matching emission
+- `ignoreElements` - Ignore all emissions, only complete/error
+- `sample`, `sampleTime` - Sample emissions
+- `single` - Ensure single emission
+- `skipLast`, `skipWhile` - Advanced skipping
+- `throttle` - Custom throttling
+
+**Utility Operators:**
+- `delayWhen` - Delay each emission by Observable
+- `dematerialize`, `materialize` - Notification object handling
+- `observeOn`, `subscribeOn` - Scheduler control
+- `timeInterval`, `timestamp` - Time metadata
+- `timeoutWith` - Timeout with fallback Observable
+- `repeatWhen` - Conditional repeat
+
+**Combination Operators:**
+- Higher-order flattening: `combineLatestAll`, `concatAll`, `exhaustAll`, `mergeAll`, `switchAll`, `zipAll`
+
+**Multicasting Operators:**
+- `publish`, `multicast` - Manual multicasting control (share/shareReplay already covered)
+
+**Note on Deprecated Operators:**
+The following operators are deprecated in RxJS 7 and will be removed in v8+:
+- `pluck` → Use `map` with optional chaining
+- `mapTo` → Use `map(() => value)`
+- `concatMapTo`, `switchMapTo`, `mergeMapTo` → Use base operators with constant function
+
+These deprecated operators are intentionally excluded from the second release documentation.
+
 ## Reference Resources
 
 - [RxJS Official Documentation](https://rxjs.dev)

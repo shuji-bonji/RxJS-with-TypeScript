@@ -319,7 +319,7 @@ const safeStream$ = interval(1000).pipe(
 
 ## まとめ
 
-`shareReplay()`オペレーターは：
+`shareReplay()`オペレーターは、
 - 過去の値をバッファリングして遅延購読者にも提供
 - APIレスポンスのキャッシュに最適
 - メモリリークに注意が必要

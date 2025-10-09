@@ -121,6 +121,10 @@ export default withMermaid({
                 link: '/guide/operators/transformation/exhaustMap',
               },
               {
+                text: 'buffer',
+                link: '/guide/operators/transformation/buffer',
+              },
+              {
                 text: 'bufferTime',
                 link: '/guide/operators/transformation/bufferTime',
               },

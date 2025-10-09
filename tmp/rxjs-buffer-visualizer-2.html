@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RxJS Buffer 視覚化ツール</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .demo-area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .visual-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+        }
+        
+        .section-title {
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .stream-container {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            min-height: 60px;
+            position: relative;
+            overflow-x: auto;
+            border: 1px solid #dee2e6;
+        }
+        
+        .value-item {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 5px 12px;
+            margin: 3px;
+            border-radius: 20px;
+            font-size: 14px;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .buffer-container {
+            background: #fff3cd;
+            border: 2px dashed #ffc107;
+            padding: 20px;
+            border-radius: 10px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            transition: all 0.3s ease;
+        }
+        
+        .buffer-container.has-items {
+            background: #ffeb3b;
+        }
+        
+        .output-container {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            padding: 20px;
+            border-radius: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .output-batch {
+            background: white;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .control-panel {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        button {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0 10px;
+        }
+        
+        button:hover {
+            background: #218838;
+            transform: scale(1.05);
+        }
+        
+        button:active {
+            transform: scale(0.95);
+        }
+        
+        .trigger-btn {
+            background: #dc3545;
+            font-size: 18px;
+            padding: 15px 40px;
+        }
+        
+        .trigger-btn:hover {
+            background: #c82333;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+            padding: 15px;
+            background: #e9ecef;
+            border-radius: 10px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        
+        .stat-label {
+            color: #6c757d;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .explanation {
+            background: #e7f3ff;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        
+        .emoji-demo {
+            font-size: 24px;
+            text-align: center;
+            padding: 20px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎯 RxJS Buffer オペレーター視覚化ツール</h1>
+        <p class="subtitle">マーブル図よりも直感的に理解しよう！</p>
+        
+        <div class="explanation">
+            💡 <strong>Buffer の仕組み：</strong>
+            ソースから流れてくる値を「箱（バッファ）」に貯めて、トリガーが発火したときにまとめて放出します。
+            まるで貯金箱にコインを貯めて、開けたときに全部出すような動きです。
+        </div>
+        
+        <div class="control-panel">
+            <button onclick="startStream()">▶️ ストリーム開始</button>
+            <button onclick="stopStream()">⏸️ 停止</button>
+            <button onclick="resetDemo()">🔄 リセット</button>
+        </div>
+        
+        <div class="demo-area">
+            <div class="visual-section">
+                <div class="section-title">📥 入力ストリーム（0.8秒ごと）</div>
+                <div class="stream-container" id="source-stream">
+                    <!-- 値が流れてくる -->
+                </div>
+            </div>
+            
+            <div class="visual-section">
+                <div class="section-title">📦 現在のバッファ</div>
+                <div class="buffer-container" id="buffer-display">
+                    <span style="color: #999;">空</span>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin: 30px 0;">
+            <button class="trigger-btn" onclick="triggerBuffer()">
+                🚀 バッファを放出！（クリック）
+            </button>
+        </div>
+        
+        <div class="visual-section">
+            <div class="section-title">📤 出力（バッファから放出された値）</div>
+            <div class="output-container" id="output-display">
+                <div style="color: #999; text-align: center;">まだ出力がありません</div>
+            </div>
+        </div>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value" id="total-values">0</div>
+                <div class="stat-label">発行された値の総数</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="buffer-size">0</div>
+                <div class="stat-label">現在のバッファサイズ</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="batch-count">0</div>
+                <div class="stat-label">放出回数</div>
+            </div>
+        </div>
+        
+        <div class="emoji-demo">
+            <div id="emoji-visualization">
+                🎬 上のボタンでストリームを開始してください
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/rxjs@7/dist/bundles/rxjs.umd.min.js"></script>
+    <script>
+        const { interval, Subject, buffer, share } = rxjs;
+        
+        let sourceSubscription = null;
+        let bufferSubscription = null;
+        let currentBuffer = [];
+        let totalValues = 0;
+        let batchCount = 0;
+        let valueCounter = 0;
+        
+        const trigger$ = new Subject();
+        
+        function startStream() {
+            if (sourceSubscription || bufferSubscription) return;
+            
+            updateEmojiVisualization('streaming');
+            
+            // 共有されたソースストリーム
+            const source$ = interval(800).pipe(share());
+            
+            // バッファリングの実装
+            bufferSubscription = source$.pipe(
+                buffer(trigger$)
+            ).subscribe(bufferedValues => {
+                if (bufferedValues.length > 0) {
+                    displayOutput(bufferedValues);
+                    currentBuffer = [];
+                    updateBufferDisplay();
+                    batchCount++;
+                    updateStats();
+                    updateEmojiVisualization('released');
+                }
+            });
+            
+            // ソースの値を表示（バッファに蓄積）
+            sourceSubscription = source$.subscribe(value => {
+                valueCounter++;
+                displaySourceValue(valueCounter);
+                currentBuffer.push(valueCounter);
+                totalValues++;
+                updateBufferDisplay();
+                updateStats();
+                updateEmojiVisualization('buffering');
+            });
+        }
+        
+        function stopStream() {
+            if (sourceSubscription) {
+                sourceSubscription.unsubscribe();
+                sourceSubscription = null;
+            }
+            if (bufferSubscription) {
+                bufferSubscription.unsubscribe();
+                bufferSubscription = null;
+            }
+            updateEmojiVisualization('stopped');
+        }
+        
+        function triggerBuffer() {
+            trigger$.next();
+        }
+        
+        function displaySourceValue(value) {
+            const container = document.getElementById('source-stream');
+            const item = document.createElement('span');
+            item.className = 'value-item';
+            item.textContent = value;
+            container.appendChild(item);
+            
+            // 古い値を削除
+            if (container.children.length > 15) {
+                container.firstChild.remove();
+            }
+        }
+        
+        function updateBufferDisplay() {
+            const display = document.getElementById('buffer-display');
+            if (currentBuffer.length > 0) {
+                display.innerHTML = `[${currentBuffer.join(', ')}]`;
+                display.classList.add('has-items');
+            } else {
+                display.innerHTML = '<span style="color: #999;">空</span>';
+                display.classList.remove('has-items');
+            }
+            document.getElementById('buffer-size').textContent = currentBuffer.length;
+        }
+        
+        function displayOutput(values) {
+            const container = document.getElementById('output-display');
+            if (container.querySelector('div[style*="color: #999"]')) {
+                container.innerHTML = '';
+            }
+            
+            const batch = document.createElement('div');
+            batch.className = 'output-batch';
+            batch.innerHTML = `
+                <strong>バッチ #${batchCount + 1}:</strong> 
+                [${values.join(', ')}] 
+                <span style="color: #6c757d;">(${values.length}個)</span>
+            `;
+            container.insertBefore(batch, container.firstChild);
+            
+            // 最大5件まで表示
+            while (container.children.length > 5) {
+                container.lastChild.remove();
+            }
+        }
+        
+        function updateStats() {
+            document.getElementById('total-values').textContent = totalValues;
+            document.getElementById('batch-count').textContent = batchCount;
+        }
+        
+        function updateEmojiVisualization(state) {
+            const viz = document.getElementById('emoji-visualization');
+            const bufferEmojis = '📦'.repeat(Math.min(currentBuffer.length, 10));
+            
+            switch(state) {
+                case 'streaming':
+                    viz.innerHTML = `🎬 ストリーム実行中... 値が流れています 🔵→${bufferEmojis}`;
+                    break;
+                case 'buffering':
+                    viz.innerHTML = `📥 値を受信中... バッファ: ${bufferEmojis || '(空)'}`;
+                    break;
+                case 'released':
+                    viz.innerHTML = `🎉 バッファを放出しました！ 📤✨`;
+                    setTimeout(() => {
+                        if (sourceSubscription || bufferSubscription) {
+                            updateEmojiVisualization('streaming');
+                        }
+                    }, 1000);
+                    break;
+                case 'stopped':
+                    viz.innerHTML = `⏸️ ストリーム停止中`;
+                    break;
+                default:
+                    viz.innerHTML = `🎬 上のボタンでストリームを開始してください`;
+            }
+        }
+        
+        function resetDemo() {
+            stopStream();  // これで両方の購読が解除される
+            currentBuffer = [];
+            totalValues = 0;
+            batchCount = 0;
+            valueCounter = 0;
+            document.getElementById('source-stream').innerHTML = '';
+            document.getElementById('output-display').innerHTML = '<div style="color: #999; text-align: center;">まだ出力がありません</div>';
+            updateBufferDisplay();
+            updateStats();
+            updateEmojiVisualization('reset');
+        }
+    </script>
+</body>
+</html>

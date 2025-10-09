@@ -70,7 +70,7 @@ Observer 2: 4
 
 ## 💡 share() の仕組み
 
-`share()`は内部的に`multicast()`と`refCount()`を組み合わせたものです：
+`share()`は内部的に`multicast()`と`refCount()`を組み合わせたものです。
 
 - **最初の購読時**: ソースObservableへの接続を開始
 - **購読者が追加**: 既存の接続を共有
@@ -237,7 +237,7 @@ sharedTodos$.subscribe(todos => console.log('コンポーネントB:', todos));
 
 ## まとめ
 
-`share()`オペレーターは：
+`share()`オペレーターは、
 - 複数の購読者で同じObservableを共有
 - APIリクエストや重い処理の重複実行を防ぐ
 - 簡単に使えるマルチキャスティングの基本

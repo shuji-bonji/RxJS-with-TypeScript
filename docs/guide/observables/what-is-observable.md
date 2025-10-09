@@ -71,7 +71,7 @@ RxJSのObservableには「コールド」と「ホット」の2種類があり�
 
 ## Observableとパイプライン
 
-Observableの真価は`pipe()`メソッドを使ってオペレーターと組み合わせることで発揮されます：
+Observableの真価は`pipe()`メソッドを使ってオペレーターと組み合わせることで発揮されます。
 
 ```ts
 import { of } from 'rxjs';

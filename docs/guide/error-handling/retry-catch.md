@@ -117,7 +117,7 @@ throwError(() => new Error('API呼び出しエラー')) // RxJS 7以降、関数
 
 ### エラーの再スロー
 
-エラーを記録したあとで再度スローしたい場合：
+エラーを記録したあとで再度スローしたい場合
 
 ```ts
 import { throwError } from 'rxjs';

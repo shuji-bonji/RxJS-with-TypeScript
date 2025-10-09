@@ -36,6 +36,7 @@ description: RxJSの変換オペレーターを使ってストリーム内のデ
 
 |オペレーター|説明|
 |---|---|
+|[buffer](./buffer) |別のObservableのタイミングで値をまとめる|
 |[bufferTime](./bufferTime) |一定時間ごとに値をまとめる|
 |[bufferCount](./bufferCount) |指定個数ごとにまとめる|
 |[windowTime](./windowTime) |一定時間ごとにサブObservableに分割|
