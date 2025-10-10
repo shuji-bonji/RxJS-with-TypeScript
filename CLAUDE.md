@@ -293,11 +293,11 @@ The following operators are planned for the second documentation release, priori
 
 **Filtering Operators:**
 - ✅ `distinct` - Remove all duplicates (docs/guide/operators/filtering/distinct.md)
+- ✅ `skip` - Skip first N emissions (docs/guide/operators/filtering/skip.md)
 
 #### 🔴 High Priority Operators (Remaining)
 
 **Filtering Operators:**
-- `skip` - Skip first N emissions
 - `skipUntil` - Ignore emissions until another Observable emits
 - `takeLast` - Take last N emissions
 - `takeWhile` - Take emissions while condition is true
