@@ -162,6 +162,10 @@ export default withMermaid({
                 link: '/guide/operators/filtering/throttleTime',
               },
               {
+                text: 'distinct',
+                link: '/guide/operators/filtering/distinct',
+              },
+              {
                 text: 'distinctUntilChanged',
                 link: '/guide/operators/filtering/distinctUntilChanged',
               },

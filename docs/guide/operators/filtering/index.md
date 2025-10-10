@@ -34,6 +34,7 @@ RxJSのフィルタリングオペレーターは、ストリームから必要�
 
 | オペレーター | 説明 |
 |:---|:---|
+| [distinct](./distinct) | すべての重複値を除去する（ユニークな値のみ出力） |
 | [distinctUntilChanged](./distinctUntilChanged) | 連続した重複値を除去する |
 | [distinctUntilKeyChanged](./distinctUntilKeyChanged) | 特定プロパティの変更のみ検出する |
  

@@ -291,10 +291,12 @@ The following operators are planned for the second documentation release, priori
 - ✅ `pairwise` - Process consecutive pairs of values (docs/guide/operators/transformation/pairwise.md)
 - ✅ `groupBy` - Group emissions by key (docs/guide/operators/transformation/groupBy.md)
 
+**Filtering Operators:**
+- ✅ `distinct` - Remove all duplicates (docs/guide/operators/filtering/distinct.md)
+
 #### 🔴 High Priority Operators (Remaining)
 
 **Filtering Operators:**
-- `distinct` - Remove all duplicates (distinctUntilChanged exists for consecutive duplicates)
 - `skip` - Skip first N emissions
 - `skipUntil` - Ignore emissions until another Observable emits
 - `takeLast` - Take last N emissions
