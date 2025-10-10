@@ -151,6 +151,7 @@ export default withMermaid({
             items: [
               { text: 'filter', link: '/guide/operators/filtering/filter' },
               { text: 'take', link: '/guide/operators/filtering/take' },
+              { text: 'takeLast', link: '/guide/operators/filtering/takeLast' },
               { text: 'skip', link: '/guide/operators/filtering/skip' },
               { text: 'skipUntil', link: '/guide/operators/filtering/skipUntil' },
               { text: 'first', link: '/guide/operators/filtering/first' },
