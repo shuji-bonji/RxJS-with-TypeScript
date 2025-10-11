@@ -44,7 +44,7 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
   <tbody>
     <!-- 変換オペレーター -->
     <tr>
-      <th scope="row" rowspan="15"><a href="./transformation/">変換</a></th>
+      <th scope="row" rowspan="16"><a href="./transformation/">変換</a></th>
       <td><a href="./transformation/map.html">map</a></td>
       <td>各値を変換する</td>
     </tr>
@@ -103,6 +103,10 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
     <tr>
       <td><a href="./transformation/bufferToggle.html">bufferToggle</a></td>
       <td>開始と終了を独立制御してバッファリング</td>
+    </tr>
+    <tr>
+      <td><a href="./transformation/bufferWhen.html">bufferWhen</a></td>
+      <td>終了条件を動的に制御してバッファリング</td>
     </tr>
     <!-- フィルタリングオペレーター -->
     <tr>

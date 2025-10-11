@@ -48,6 +48,7 @@ description: RxJSの変換オペレーターを使ってストリーム内のデ
 |[bufferTime](./bufferTime) |一定時間ごとに値をまとめる|
 |[bufferCount](./bufferCount) |指定個数ごとにまとめる|
 |[bufferToggle](./bufferToggle) |開始と終了を独立制御してバッファリング|
+|[bufferWhen](./bufferWhen) |終了条件を動的に制御してバッファリング|
 |[windowTime](./windowTime) |一定時間ごとにサブObservableに分割|
 
 
