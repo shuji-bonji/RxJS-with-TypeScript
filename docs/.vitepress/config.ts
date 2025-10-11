@@ -136,6 +136,10 @@ export default withMermaid({
                 link: '/guide/operators/transformation/bufferCount',
               },
               {
+                text: 'bufferToggle',
+                link: '/guide/operators/transformation/bufferToggle',
+              },
+              {
                 text: 'windowTime',
                 link: '/guide/operators/transformation/windowTime',
               },
