@@ -166,6 +166,10 @@ export default withMermaid({
                 link: '/guide/operators/filtering/throttleTime',
               },
               {
+                text: 'auditTime',
+                link: '/guide/operators/filtering/auditTime',
+              },
+              {
                 text: 'distinct',
                 link: '/guide/operators/filtering/distinct',
               },

@@ -212,7 +212,8 @@ fromEvent<KeyboardEvent>(tagInput, 'keydown').subscribe(event => {
 
 ## ⚠️ メモリ使用に関する注意
 
-`distinct` オペレーターは、内部的に **Set** を使用してすべての既出値を記憶します。
+> [!WARNING]
+> `distinct` オペレーターは、内部的に **Set** を使用してすべての既出値を記憶します。無限ストリームで使用すると、メモリリークの原因となる可能性があります。
 
 ### 問題: 無限ストリームでのメモリリーク
 

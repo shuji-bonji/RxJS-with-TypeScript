@@ -315,6 +315,9 @@ source$.pipe(
 
 ## ⚠️ よくある間違い
 
+> [!IMPORTANT]
+> `skipUntil` は通知 Observable の**最初の発火のみ**が有効です。2回目以降の発火は無視されます。
+
 ### 誤: 通知Observableが複数回発火する
 
 ```ts
