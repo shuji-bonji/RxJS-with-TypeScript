@@ -177,27 +177,27 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
     <!-- Creation Functions -->
     <tr>
       <th scope="row" rowspan="6"><a href="../creation-functions/">Creation Functions</a></th>
-      <td><a href="./combination/concat.html">concat</a></td>
+      <td><a href="../creation-functions/concat.html">concat</a></td>
       <td>複数のObservableを順番に結合する</td>
     </tr>
     <tr>
-      <td><a href="./combination/merge.html">merge</a></td>
+      <td><a href="../creation-functions/merge.html">merge</a></td>
       <td>複数のObservableを同時に結合する</td>
     </tr>
     <tr>
-      <td><a href="./combination/combineLatest.html">combineLatest</a></td>
+      <td><a href="../creation-functions/combineLatest.html">combineLatest</a></td>
       <td>各Observableの最新値を組み合わせる</td>
     </tr>
     <tr>
-      <td><a href="./combination/zip.html">zip</a></td>
+      <td><a href="../creation-functions/zip.html">zip</a></td>
       <td>各Observableから1つずつ値を取ってペアにする</td>
     </tr>
     <tr>
-      <td><a href="./combination/forkJoin.html">forkJoin</a></td>
+      <td><a href="../creation-functions/forkJoin.html">forkJoin</a></td>
       <td>すべてのObservableの完了を待って最終値を結合する</td>
     </tr>
     <tr>
-      <td><a href="./combination/race.html">race</a></td>
+      <td><a href="../creation-functions/race.html">race</a></td>
       <td>最初に値を発行したObservableのみを使用する</td>
     </tr>
     <!-- 結合オペレーター（Pipeable） -->

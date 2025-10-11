@@ -110,12 +110,12 @@ obs1$.pipe(
 
 | Function | 説明 | ユースケース |
 |----------|------|-------------|
-| **[concat](/guide/operators/combination/concat)** | 順次結合（前が完了後、次が開始） | ステップバイステップ処理 |
-| **[merge](/guide/operators/combination/merge)** | 並行結合（同時購読、発行順に出力） | 複数イベントの統合 |
-| **[combineLatest](/guide/operators/combination/combineLatest)** | 最新値を組み合わせ | フォーム入力の同期 |
-| **[zip](/guide/operators/combination/zip)** | 対応する値をペア化 | リクエストとレスポンスの対応 |
-| **[race](/guide/operators/combination/race)** | 最初に発行したものを採用 | 複数データソースの競争 |
-| **[forkJoin](/guide/operators/combination/forkJoin)** | すべての完了を待って最終値を結合 | 並列API呼び出しの完了待ち |
+| **[concat](/guide/creation-functions/concat)** | 順次結合（前が完了後、次が開始） | ステップバイステップ処理 |
+| **[merge](/guide/creation-functions/merge)** | 並行結合（同時購読、発行順に出力） | 複数イベントの統合 |
+| **[combineLatest](/guide/creation-functions/combineLatest)** | 最新値を組み合わせ | フォーム入力の同期 |
+| **[zip](/guide/creation-functions/zip)** | 対応する値をペア化 | リクエストとレスポンスの対応 |
+| **[race](/guide/creation-functions/race)** | 最初に発行したものを採用 | 複数データソースの競争 |
+| **[forkJoin](/guide/creation-functions/forkJoin)** | すべての完了を待って最終値を結合 | 並列API呼び出しの完了待ち |
 | **partition** | 条件で2つに分割 | 成功/失敗の分岐処理 |
 
 各Creation Functionの詳細は、リンクをクリックして参照してください。

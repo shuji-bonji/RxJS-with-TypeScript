@@ -84,12 +84,12 @@ export default withMermaid({
         link: '/guide/creation-functions/',
         collapsed: true,
         items: [
-          { text: 'concat', link: '/guide/operators/combination/concat' },
-          { text: 'merge', link: '/guide/operators/combination/merge' },
-          { text: 'combineLatest', link: '/guide/operators/combination/combineLatest' },
-          { text: 'zip', link: '/guide/operators/combination/zip' },
-          { text: 'race', link: '/guide/operators/combination/race' },
-          { text: 'forkJoin', link: '/guide/operators/combination/forkJoin' },
+          { text: 'concat', link: '/guide/creation-functions/concat' },
+          { text: 'merge', link: '/guide/creation-functions/merge' },
+          { text: 'combineLatest', link: '/guide/creation-functions/combineLatest' },
+          { text: 'zip', link: '/guide/creation-functions/zip' },
+          { text: 'race', link: '/guide/creation-functions/race' },
+          { text: 'forkJoin', link: '/guide/creation-functions/forkJoin' },
         ],
       },
       {

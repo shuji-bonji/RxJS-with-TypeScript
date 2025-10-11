@@ -24,12 +24,12 @@ TypeScript環境でRxJSを体系的に学ぶためのガイドです。
 
 ### 3. Creation Functions
 - [Creation Functionsとは](/guide/creation-functions/)
-- [concat - 順次結合](/guide/operators/combination/concat)
-- [merge - 並行結合](/guide/operators/combination/merge)
-- [combineLatest - 最新値の組み合わせ](/guide/operators/combination/combineLatest)
-- [zip - 対応する値のペア化](/guide/operators/combination/zip)
-- [race - 最速のストリームを採用](/guide/operators/combination/race)
-- [forkJoin - すべての完了を待つ](/guide/operators/combination/forkJoin)
+- [concat - 順次結合](/guide/creation-functions/concat)
+- [merge - 並行結合](/guide/creation-functions/merge)
+- [combineLatest - 最新値の組み合わせ](/guide/creation-functions/combineLatest)
+- [zip - 対応する値のペア化](/guide/creation-functions/zip)
+- [race - 最速のストリームを採用](/guide/creation-functions/race)
+- [forkJoin - すべての完了を待つ](/guide/creation-functions/forkJoin)
 
 ### 4. オペレーターの理解
 - [オペレーターの概要](/guide/operators/)
