@@ -287,6 +287,9 @@ The following operators are planned for the second documentation release, priori
 
 **Transformation Operators:**
 - ✅ `buffer` - Basic buffer operator (docs/guide/operators/transformation/buffer.md)
+- ✅ `bufferToggle` - Independent start/end control buffering (docs/guide/operators/transformation/bufferToggle.md)
+- ✅ `bufferWhen` - Dynamic closing control buffering (docs/guide/operators/transformation/bufferWhen.md)
+- ✅ `expand` - Recursive expansion (docs/guide/operators/transformation/expand.md)
 - ✅ `reduce` - Aggregation processing (docs/guide/operators/transformation/reduce.md)
 - ✅ `pairwise` - Process consecutive pairs of values (docs/guide/operators/transformation/pairwise.md)
 - ✅ `groupBy` - Group emissions by key (docs/guide/operators/transformation/groupBy.md)
@@ -307,8 +310,6 @@ The following operators are planned for the second documentation release, priori
 #### 🟡 Medium Priority Operators (Used in specific scenarios)
 
 **Transformation Operators:**
-- `bufferToggle`, `bufferWhen` - Advanced buffering strategies
-- `expand` - Recursive expansion
 - `mergeScan` - Accumulation with merging
 - `partition` - Split stream by condition
 - `window`, `windowCount`, `windowToggle`, `windowWhen` - Window-based operators
@@ -344,6 +345,98 @@ The following operators are deprecated in RxJS 7 and will be removed in v8+:
 - `concatMapTo`, `switchMapTo`, `mergeMapTo` → Use base operators with constant function
 
 These deprecated operators are intentionally excluded from the second release documentation.
+
+### Third Release: New Chapters (Future Enhancement)
+
+The following new chapters are proposed for future releases to enhance the practical value of the documentation.
+
+#### 🎯 Highest Priority: Chapter 8.5 - RxJSのデバッグ手法
+
+**Why Critical:**
+- RxJS debugging is one of the most challenging aspects for learners
+- No explicit debugging chapter currently exists
+- Essential skill for real-world development
+- Complements existing testing and anti-patterns chapters
+
+**Proposed Structure:**
+```
+8.5. RxJSのデバッグ手法
+├── デバッグの基本戦略
+│   ├── tap オペレーターでのログ出力
+│   ├── 開発者ツールでの確認
+│   └── RxJS DevTools の活用
+├── よくあるデバッグシナリオ
+│   ├── 値が流れてこない
+│   ├── 期待と異なる値が出力される
+│   ├── 購読が完了しない（無限ストリーム）
+│   ├── メモリリーク（購読解除忘れ）
+│   └── エラーが発生しているのに気づかない
+├── デバッグツール
+│   ├── rxjs-spy の使い方
+│   ├── RxJS DevTools（ブラウザ拡張）
+│   └── カスタムデバッグオペレーターの作成
+└── パフォーマンスデバッグ
+    ├── 購読数の確認
+    ├── 不要な再評価の検出
+    └── メモリ使用量の監視
+```
+
+**Placement:** Between Chapter 8 (Anti-patterns) and Chapter 9 (TypeScript Integration)
+- Natural progression: Implementation → Testing → Anti-patterns → **Debugging** → Advanced TypeScript
+
+#### 🔄 Medium Priority: Chapter 12 Enhancement - 状態管理との統合
+
+**Phased Approach:**
+
+**Phase 1: Basic Framework Integration (12.1)**
+- Quick start guides for each framework (5-10 min read)
+- Focus on basic RxJS usage patterns
+- Heavy use of external documentation links
+- Frameworks: Angular, React, Vue, Svelte
+
+**Phase 2: State Management Integration (12.2)** ⭐ Main Enhancement
+```
+12.2 状態管理との統合
+├── RxJS + NgRX (Angular)
+│   ├── 基本的なパターン
+│   ├── Effects と Observables
+│   └── 実践例：非同期処理の管理
+├── RxJS + Signals (Angular 19+)
+│   ├── Signals と RxJS の相互運用
+│   ├── toSignal / toObservable
+│   └── 実践例：リアクティブフォーム
+├── RxJS + Runes (Svelte 5)
+│   ├── $state と Observable の連携
+│   ├── $derived と RxJS パイプライン
+│   └── 実践例：リアルタイムデータ
+└── RxJS + 他の状態管理
+    ├── Redux Toolkit
+    ├── Zustand
+    └── Jotai
+```
+
+**Phase 3: Web API Integration (12.3)**
+- WebSocket (developer's focus area)
+- Server-Sent Events
+- IndexedDB
+
+**Implementation Strategy:**
+1. Start with NgRX + RxJS (leverage developer's Angular experience)
+2. Keep each topic at "introduction" level
+3. Provide rich external documentation links
+4. Add based on user feedback
+
+**Considerations:**
+- ⚠️ Maintain framework-agnostic foundation
+- ⚠️ Avoid scope creep (don't become a state management tutorial)
+- ⚠️ Maintenance overhead for framework updates
+- ✅ Provides unique value vs other RxJS resources
+- ✅ Reflects 2024-2025 trends (Signals, Runes)
+
+**Priority Order:**
+1. **Immediate**: Chapter 8.5 RxJSのデバッグ手法
+2. **Short-term**: Chapter 12.1 基本的なフレームワーク連携
+3. **Medium-term**: Chapter 12.2 状態管理との統合 (starting with NgRX)
 
 ## Reference Resources
 

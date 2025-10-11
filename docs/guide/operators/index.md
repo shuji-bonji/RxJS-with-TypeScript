@@ -44,7 +44,7 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
   <tbody>
     <!-- 変換オペレーター -->
     <tr>
-      <th scope="row" rowspan="16"><a href="./transformation/">変換</a></th>
+      <th scope="row" rowspan="17"><a href="./transformation/">変換</a></th>
       <td><a href="./transformation/map.html">map</a></td>
       <td>各値を変換する</td>
     </tr>
@@ -87,6 +87,10 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
     <tr>
       <td><a href="./transformation/exhaustMap.html">exhaustMap</a></td>
       <td>実行中は新しい処理を無視する</td>
+    </tr>
+    <tr>
+      <td><a href="./transformation/expand.html">expand</a></td>
+      <td>結果を再帰的に展開する</td>
     </tr>
     <tr>
       <td><a href="./transformation/buffer.html">buffer</a></td>

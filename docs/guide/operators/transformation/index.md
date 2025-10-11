@@ -39,6 +39,7 @@ description: RxJSの変換オペレーターを使ってストリーム内のデ
 |[switchMap](./switchMap) |最新のObservableに切り替え|
 |[concatMap](./concatMap) |各Observableを順番に実行|
 |[exhaustMap](./exhaustMap) |実行中は新しい入力を無視|
+|[expand](./expand) |結果を再帰的に展開|
 
 ### ◾ バッチ処理
 
