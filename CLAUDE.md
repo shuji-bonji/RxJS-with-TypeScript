@@ -298,11 +298,11 @@ The following operators are planned for the second documentation release, priori
 - ✅ `takeLast` - Take last N emissions (docs/guide/operators/filtering/takeLast.md)
 - ✅ `takeWhile` - Take emissions while condition is true (docs/guide/operators/filtering/takeWhile.md)
 - ✅ `auditTime` - Emit last value after specified time (docs/guide/operators/filtering/auditTime.md)
+- ✅ `find` - Find first emission matching predicate (docs/guide/operators/filtering/find.md)
 
 #### 🔴 High Priority Operators (Remaining)
 
-**Filtering Operators:**
-- `find` - Find first emission matching predicate
+**None remaining - all high priority operators completed!**
 
 #### 🟡 Medium Priority Operators (Used in specific scenarios)
 

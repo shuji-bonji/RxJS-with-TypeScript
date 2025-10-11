@@ -157,6 +157,7 @@ export default withMermaid({
               { text: 'skipUntil', link: '/guide/operators/filtering/skipUntil' },
               { text: 'first', link: '/guide/operators/filtering/first' },
               { text: 'last', link: '/guide/operators/filtering/last' },
+              { text: 'find', link: '/guide/operators/filtering/find' },
               {
                 text: 'debounceTime',
                 link: '/guide/operators/filtering/debounceTime',

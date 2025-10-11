@@ -102,7 +102,7 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
     </tr>
     <!-- フィルタリングオペレーター -->
     <tr>
-      <th scope="row" rowspan="14"><a href="./filtering/">フィルタリング</a></th>
+      <th scope="row" rowspan="15"><a href="./filtering/">フィルタリング</a></th>
       <td><a href="./filtering/filter.html">filter</a></td>
       <td>条件に合致する値のみ通過させる</td>
     </tr>
@@ -133,6 +133,10 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
     <tr>
       <td><a href="./filtering/last.html">last</a></td>
       <td>最後の値または条件を満たす最後の値を取得する</td>
+    </tr>
+    <tr>
+      <td><a href="./filtering/find.html">find</a></td>
+      <td>条件を満たす最初の値を見つける</td>
     </tr>
     <tr>
       <td><a href="./filtering/debounceTime.html">debounceTime</a></td>
