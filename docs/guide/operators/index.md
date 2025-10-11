@@ -101,12 +101,12 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
       <td>指定個数ごとに値をまとめて発行する</td>
     </tr>
     <tr>
-      <td><a href="./transformation/bufferToggle.html">bufferToggle</a></td>
-      <td>開始と終了を独立制御してバッファリング</td>
-    </tr>
-    <tr>
       <td><a href="./transformation/bufferWhen.html">bufferWhen</a></td>
       <td>終了条件を動的に制御してバッファリング</td>
+    </tr>
+    <tr>
+      <td><a href="./transformation/bufferToggle.html">bufferToggle</a></td>
+      <td>開始と終了を独立制御してバッファリング</td>
     </tr>
     <!-- フィルタリングオペレーター -->
     <tr>
