@@ -19,6 +19,7 @@ RxJSのフィルタリングオペレーターは、ストリームから必要�
 | [filter](./filter) | 条件に合致する値だけを通過させる |
 | [take](./take) | 最初の指定数の値だけを取得する |
 | [takeLast](./takeLast) | 最後の指定数の値を取得する |
+| [takeWhile](./takeWhile) | 条件を満たす間値を取得する |
 | [skip](./skip) | 最初の指定数の値をスキップする |
 | [skipUntil](./skipUntil) | 別のObservableが発火するまで値をスキップする |
 | [first](./first) | 最初の値、または条件を満たす最初の値を取得する |

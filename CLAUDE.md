@@ -296,11 +296,11 @@ The following operators are planned for the second documentation release, priori
 - ✅ `skip` - Skip first N emissions (docs/guide/operators/filtering/skip.md)
 - ✅ `skipUntil` - Ignore emissions until another Observable emits (docs/guide/operators/filtering/skipUntil.md)
 - ✅ `takeLast` - Take last N emissions (docs/guide/operators/filtering/takeLast.md)
+- ✅ `takeWhile` - Take emissions while condition is true (docs/guide/operators/filtering/takeWhile.md)
 
 #### 🔴 High Priority Operators (Remaining)
 
 **Filtering Operators:**
-- `takeWhile` - Take emissions while condition is true
 - `auditTime` - Emit last value after specified time (counterpart to throttleTime)
 - `find` - Find first emission matching predicate
 
