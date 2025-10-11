@@ -22,32 +22,44 @@ TypeScript環境でRxJSを体系的に学ぶためのガイドです。
 - [Observableのライフサイクル](/guide/observables/observable-lifecycle)
 - [コールドObservableとホットObservable](/guide/observables/cold-and-hot-observables)
 
-### 3. Subjectとマルチキャスト
-- [Subjectとは](/guide/subjects/what-is-subject)
-- [Subjectの種類](/guide/subjects/types-of-subject)
-- [Multicastingの仕組み](/guide/subjects/multicasting)
-- [Subjectのユースケース](/guide/subjects/use-cases)
+### 3. Creation Functions
+- [Creation Functionsとは](/guide/creation-functions/)
+- [concat - 順次結合](/guide/operators/combination/concat)
+- [merge - 並行結合](/guide/operators/combination/merge)
+- [combineLatest - 最新値の組み合わせ](/guide/operators/combination/combineLatest)
+- [zip - 対応する値のペア化](/guide/operators/combination/zip)
+- [race - 最速のストリームを採用](/guide/operators/combination/race)
+- [forkJoin - すべての完了を待つ](/guide/operators/combination/forkJoin)
 
 ### 4. オペレーターの理解
 - [オペレーターの概要](/guide/operators/)
 - [パイプラインの概念](/guide/operators/pipeline)
 
-### 5. エラーハンドリング
+### 5. Subjectとマルチキャスト
+- [Subjectとは](/guide/subjects/what-is-subject)
+- [Subjectの種類](/guide/subjects/types-of-subject)
+- [Multicastingの仕組み](/guide/subjects/multicasting)
+- [Subjectのユースケース](/guide/subjects/use-cases)
+
+### 6. エラーハンドリング
 - [エラー処理戦略](/guide/error-handling/strategies)
 - [retry と catchError](/guide/error-handling/retry-catch)
 - [finalize と complete](/guide/error-handling/finalize)
 
-### 6. スケジューラーの活用
+### 7. スケジューラーの活用
 - [非同期処理の制御](/guide/schedulers/async-control)
 - [スケジューラーの種類と使い分け](/guide/schedulers/types)
 - [補足:タスクとスケジューラーの基礎知識](/guide/schedulers/task-and-scheduler-basics)
 
-### 7. テスト手法
+### 8. RxJSのデバッグ手法
+- [デバッグ手法の概要](/guide/debugging/)
+
+### 9. テスト手法
 - [RxJSのユニットテスト](/guide/testing/unit-tests)
 - [TestSchedulerの活用](/guide/testing/test-scheduler)
 - [マーブルテスト](/guide/testing/marble-testing)
 
-### 8. RxJSアンチパターン集
+### 10. RxJSアンチパターン集
 - [アンチパターンとは](/guide/anti-patterns/)
 - [よくある間違いと対処法](/guide/anti-patterns/common-mistakes)
 - [アンチパターン回避チェックリスト](/guide/anti-patterns/checklist)

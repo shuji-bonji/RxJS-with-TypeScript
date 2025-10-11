@@ -80,15 +80,16 @@ export default withMermaid({
         ],
       },
       {
-        text: '3. Subjectとマルチキャスト',
+        text: '3. Creation Functions',
+        link: '/guide/creation-functions/',
+        collapsed: true,
         items: [
-          { text: 'Subjectとは', link: '/guide/subjects/what-is-subject' },
-          { text: 'Subjectの種類', link: '/guide/subjects/types-of-subject' },
-          {
-            text: 'Multicastingの仕組み',
-            link: '/guide/subjects/multicasting',
-          },
-          { text: 'Subjectのユースケース', link: '/guide/subjects/use-cases' },
+          { text: 'concat', link: '/guide/operators/combination/concat' },
+          { text: 'merge', link: '/guide/operators/combination/merge' },
+          { text: 'combineLatest', link: '/guide/operators/combination/combineLatest' },
+          { text: 'zip', link: '/guide/operators/combination/zip' },
+          { text: 'race', link: '/guide/operators/combination/race' },
+          { text: 'forkJoin', link: '/guide/operators/combination/forkJoin' },
         ],
       },
       {
@@ -99,6 +100,7 @@ export default withMermaid({
           {
             text: '変換オペレーター',
             link: '/guide/operators/transformation/',
+            collapsed: true,
             items: [
               { text: 'map', link: '/guide/operators/transformation/map' },
               { text: 'scan', link: '/guide/operators/transformation/scan' },
@@ -160,6 +162,7 @@ export default withMermaid({
           {
             text: 'フィルタリングオペレーター',
             link: '/guide/operators/filtering/',
+            collapsed: true,
             items: [
               { text: 'filter', link: '/guide/operators/filtering/filter' },
               { text: 'take', link: '/guide/operators/filtering/take' },
@@ -201,25 +204,14 @@ export default withMermaid({
             ],
           },
           {
-            text: '結合オペレーター',
+            text: '結合オペレーター（Pipeable）',
             link: '/guide/operators/combination/',
+            collapsed: true,
             items: [
-              { text: 'concat', link: '/guide/operators/combination/concat' },
-              { text: 'merge', link: '/guide/operators/combination/merge' },
-              {
-                text: 'combineLatest',
-                link: '/guide/operators/combination/combineLatest',
-              },
-              { text: 'zip', link: '/guide/operators/combination/zip' },
               {
                 text: 'withLatestFrom',
                 link: '/guide/operators/combination/withLatestFrom',
               },
-              {
-                text: 'forkJoin',
-                link: '/guide/operators/combination/forkJoin',
-              },
-              { text: 'race', link: '/guide/operators/combination/race' },
               {
                 text: '実用的なユースケース',
                 link: '/guide/operators/combination/practical-use-cases.md',
@@ -229,6 +221,7 @@ export default withMermaid({
           {
             text: 'ユーティリティオペレーター',
             link: '/guide/operators/utility/',
+            collapsed: true,
             items: [
               { text: 'tap', link: '/guide/operators/utility/tap' },
               { text: 'delay', link: '/guide/operators/utility/delay' },
@@ -248,6 +241,7 @@ export default withMermaid({
           {
             text: '条件オペレーター',
             link: '/guide/operators/conditional/',
+            collapsed: true,
             items: [
               { text: 'iif', link: '/guide/operators/conditional/iif' },
               { text: 'defer', link: '/guide/operators/conditional/defer' },
@@ -266,6 +260,7 @@ export default withMermaid({
           {
             text: 'マルチキャスティング',
             link: '/guide/operators/multicasting/',
+            collapsed: true,
             items: [
               { text: 'share', link: '/guide/operators/multicasting/share' },
               { text: 'shareReplay', link: '/guide/operators/multicasting/shareReplay' },
@@ -274,7 +269,19 @@ export default withMermaid({
         ],
       },
       {
-        text: '5. エラーハンドリング',
+        text: '5. Subjectとマルチキャスト',
+        items: [
+          { text: 'Subjectとは', link: '/guide/subjects/what-is-subject' },
+          { text: 'Subjectの種類', link: '/guide/subjects/types-of-subject' },
+          {
+            text: 'Multicastingの仕組み',
+            link: '/guide/subjects/multicasting',
+          },
+          { text: 'Subjectのユースケース', link: '/guide/subjects/use-cases' },
+        ],
+      },
+      {
+        text: '6. エラーハンドリング',
         items: [
           { text: 'エラー処理戦略', link: '/guide/error-handling/strategies' },
           {
@@ -288,7 +295,7 @@ export default withMermaid({
         ],
       },
       {
-        text: '6. スケジューラーの活用',
+        text: '7. スケジューラーの活用',
         items: [
           { text: '非同期処理の制御', link: '/guide/schedulers/async-control' },
           {
@@ -302,7 +309,11 @@ export default withMermaid({
         ],
       },
       {
-        text: '7. テスト手法',
+        text: '8. RxJSのデバッグ手法',
+        link: '/guide/debugging/',
+      },
+      {
+        text: '9. テスト手法',
         items: [
           { text: 'RxJSのユニットテスト', link: '/guide/testing/unit-tests' },
           {
@@ -313,7 +324,7 @@ export default withMermaid({
         ],
       },
       {
-        text: '8. RxJSアンチパターン集',
+        text: '10. RxJSアンチパターン集',
         items: [
           { text: 'アンチパターンとは', link: '/guide/anti-patterns/' },
           { text: 'よくある間違いと対処法', link: '/guide/anti-patterns/common-mistakes' },
@@ -321,7 +332,7 @@ export default withMermaid({
         ],
       },
       {
-        text: '9. TypeScriptとRxJSの高度な連携',
+        text: '11. TypeScriptとRxJSの高度な連携',
         // items: [
         //   {
         //     text: 'TypeScriptとRxJSの基本連携',
@@ -342,7 +353,7 @@ export default withMermaid({
         // ],
       },
       {
-        text: '10. 実践パターン',
+        text: '12. 実践パターン',
         // items: [
         //   {
         //     text: '状態管理パターン',
@@ -361,7 +372,7 @@ export default withMermaid({
         // ],
       },
       {
-        text: '11. パフォーマンス最適化',
+        text: '13. パフォーマンス最適化',
         // items: [
         //   {
         //     text: '購読の適切な管理',
@@ -378,7 +389,7 @@ export default withMermaid({
         // ],
       },
       {
-        text: '12. フレームワークとの統合',
+        text: '14. フレームワークとの統合',
         // items: [
         //   { text: 'Angularとの連携', link: '/guide/frameworks/angular' },
         //   { text: 'Reactとの連携', link: '/guide/frameworks/react' },

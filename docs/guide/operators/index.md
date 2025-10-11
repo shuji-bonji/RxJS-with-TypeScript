@@ -174,9 +174,9 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
       <td><a href="./filtering/distinctUntilKeyChanged.html">distinctUntilKeyChanged</a></td>
       <td>オブジェクトの特定プロパティの変更のみ検出する</td>
     </tr>
-    <!-- 結合オペレーター -->
+    <!-- Creation Functions -->
     <tr>
-      <th scope="row" rowspan="7"><a href="./combination/">結合</a></th>
+      <th scope="row" rowspan="6"><a href="../creation-functions/">Creation Functions</a></th>
       <td><a href="./combination/concat.html">concat</a></td>
       <td>複数のObservableを順番に結合する</td>
     </tr>
@@ -189,10 +189,6 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
       <td>各Observableの最新値を組み合わせる</td>
     </tr>
     <tr>
-      <td><a href="./combination/withLatestFrom.html">withLatestFrom</a></td>
-      <td>メインストリームに他の最新値を付加する</td>
-    </tr>
-    <tr>
       <td><a href="./combination/zip.html">zip</a></td>
       <td>各Observableから1つずつ値を取ってペアにする</td>
     </tr>
@@ -203,6 +199,12 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
     <tr>
       <td><a href="./combination/race.html">race</a></td>
       <td>最初に値を発行したObservableのみを使用する</td>
+    </tr>
+    <!-- 結合オペレーター（Pipeable） -->
+    <tr>
+      <th scope="row" rowspan="1"><a href="./combination/">結合（Pipeable）</a></th>
+      <td><a href="./combination/withLatestFrom.html">withLatestFrom</a></td>
+      <td>メインストリームに他の最新値を付加する</td>
     </tr>
     <!-- ユーティリティオペレーター -->
     <tr>

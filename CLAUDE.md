@@ -99,21 +99,28 @@ docs/
 
 ### Content Organization
 
-Documentation follows a structured 11-chapter curriculum:
+Documentation follows a structured 14-chapter curriculum:
 
 1. **RxJS入門** (Introduction) - Basics and streams
 2. **Observableの基礎** (Observable Basics) - Observable fundamentals, lifecycle, cold/hot
-3. **Subjectとマルチキャスト** (Subject & Multicasting) - Subject types and usage
-4. **オペレーターの理解** (Operators) - Categorized by type:
+3. **Creation Functions** - Observable creation and combination functions (concat, merge, combineLatest, zip, race, forkJoin, partition)
+4. **オペレーターの理解** (Operators) - Pipeable operators categorized by type:
    - Transformation operators (map, mergeMap, switchMap, etc.)
    - Filtering operators (filter, debounceTime, throttleTime, etc.)
-   - Combination operators (concat, merge, combineLatest, etc.)
+   - Combination operators (concatWith, mergeWith, withLatestFrom, etc.)
    - Utility operators (tap, delay, retry, etc.)
    - Conditional operators (iif, defer, etc.)
-5. **エラーハンドリング** (Error Handling) - Error strategies, retry, catchError
-6. **スケジューラーの活用** (Schedulers) - Async control and scheduler types
-7. **テスト手法** (Testing) - Unit tests, TestScheduler, marble testing
-8-11. **Advanced topics** (mostly placeholder structure for future content)
+   - Multicasting operators (share, shareReplay, etc.)
+5. **Subjectとマルチキャスト** (Subject & Multicasting) - Subject types and usage
+6. **エラーハンドリング** (Error Handling) - Error strategies, retry, catchError
+7. **スケジューラーの活用** (Schedulers) - Async control and scheduler types
+8. **RxJSのデバッグ手法** (Debugging) - Debugging strategies, common scenarios, and tools
+9. **テスト手法** (Testing) - Unit tests, TestScheduler, marble testing
+10. **RxJSアンチパターン集** (Anti-patterns) - Common mistakes and solutions
+11. **TypeScriptとRxJSの高度な連携** (Advanced TypeScript Integration) - Placeholder
+12. **実践パターン** (Practical Patterns) - Placeholder
+13. **パフォーマンス最適化** (Performance Optimization) - Placeholder
+14. **フレームワークとの統合** (Framework Integration) - Placeholder
 
 Each operator/concept page typically includes practical use cases in a `practical-use-cases.md` file.
 
@@ -335,8 +342,6 @@ The following operators are planned for the second documentation release, priori
 **Combination Operators:**
 - Higher-order flattening: `combineLatestAll`, `concatAll`, `exhaustAll`, `mergeAll`, `switchAll`, `zipAll`
 
-**Multicasting Operators:**
-- `publish`, `multicast` - Manual multicasting control (share/shareReplay already covered)
 
 **Note on Deprecated Operators:**
 The following operators are deprecated in RxJS 7 and will be removed in v8+:
@@ -346,21 +351,49 @@ The following operators are deprecated in RxJS 7 and will be removed in v8+:
 
 These deprecated operators are intentionally excluded from the second release documentation.
 
-### Third Release: New Chapters (Future Enhancement)
+### Third Release: New Chapters
 
-The following new chapters are proposed for future releases to enhance the practical value of the documentation.
+The following new chapters have been added or are planned for future releases.
 
-#### 🎯 Highest Priority: Chapter 8.5 - RxJSのデバッグ手法
+#### ✅ Chapter 3: Creation Functions (Added in restructuring)
+
+**Purpose:**
+- Clearly separate creation functions from pipeable operators
+- Teach Observable creation and combination before manipulation
+- Explain the relationship between creation functions (concat, merge) and pipeable operators (concatWith, mergeWith)
+
+**Placement:** After Observable basics, before Pipeable Operators
+- Natural progression: Basic creation (of, from) → **Advanced creation/combination** → Manipulation (operators) → Sharing (Subject)
+
+**Structure:**
+```
+3. Creation Functions
+├── Creation Functions とは
+│   ├── Pipeable Operator との違い
+│   └── 使い分けの基準
+├── 基本的な Creation Functions（2章の復習）
+│   └── of, from, interval, timer
+├── 結合系 Creation Functions
+│   ├── concat - 順次結合
+│   ├── merge - 並行結合
+│   ├── combineLatest - 最新値の組み合わせ
+│   ├── zip - 対応する値のペア化
+│   ├── race - 最速のストリームを採用
+│   ├── forkJoin - すべての完了を待つ
+│   └── partition - 条件で分割
+└── Pipeable Operator との対応関係
+```
+
+#### ✅ Chapter 8: RxJSのデバッグ手法 (Structure created, content TBD)
 
 **Why Critical:**
 - RxJS debugging is one of the most challenging aspects for learners
-- No explicit debugging chapter currently exists
 - Essential skill for real-world development
 - Complements existing testing and anti-patterns chapters
 
 **Proposed Structure:**
 ```
-8.5. RxJSのデバッグ手法
+8. RxJSのデバッグ手法
 ├── デバッグの基本戦略
 │   ├── tap オペレーターでのログ出力
 │   ├── 開発者ツールでの確認
@@ -381,8 +414,8 @@ The following new chapters are proposed for future releases to enhance the pract
     └── メモリ使用量の監視
 ```
 
-**Placement:** Between Chapter 8 (Anti-patterns) and Chapter 9 (TypeScript Integration)
-- Natural progression: Implementation → Testing → Anti-patterns → **Debugging** → Advanced TypeScript
+**Placement:** Between Chapter 7 (Schedulers) and Chapter 9 (Testing)
+- Natural progression: Implementation → Error Handling → Schedulers → **Debugging** → Testing → Anti-patterns
 
 #### 🔄 Medium Priority: Chapter 12 Enhancement - 状態管理との統合
 
@@ -434,9 +467,9 @@ The following new chapters are proposed for future releases to enhance the pract
 - ✅ Reflects 2024-2025 trends (Signals, Runes)
 
 **Priority Order:**
-1. **Immediate**: Chapter 8.5 RxJSのデバッグ手法
-2. **Short-term**: Chapter 12.1 基本的なフレームワーク連携
-3. **Medium-term**: Chapter 12.2 状態管理との統合 (starting with NgRX)
+1. **Immediate**: Chapter 8 RxJSのデバッグ手法 (structure created, content TBD)
+2. **Short-term**: Chapter 14.1 基本的なフレームワーク連携
+3. **Medium-term**: Chapter 14.2 状態管理との統合 (starting with NgRX)
 
 ## Reference Resources
 

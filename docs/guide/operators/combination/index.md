@@ -1,35 +1,70 @@
 ---
-description: RxJSの結合オペレーターを使って複数のObservableを組み合わせ、複雑なストリームを構築する方法を解説します。concat、merge、combineLatest、zip、forkJoinなど代表的な演算子の使い分けと活用法を紹介します。
+description: RxJSの結合オペレーター（Pipeable Operators）を使って複数のObservableを組み合わせる方法を解説します。withLatestFromなどのPipeable形式の演算子の使い分けと活用法を紹介します。
 ---
 
-# 結合オペレーター
+# 結合オペレーター（Pipeable Operators）
 
-RxJS の結合（Combination）オペレーターは、複数の Observable を組み合わせて新しいストリームを作り出すための強力なツールです。  
-非同期イベントの統合、複数の入力の同期処理、状態のマージなど、複雑なストリーム構造の制御に不可欠です。
+RxJS の結合（Combination）オペレーターは、複数の Observable を組み合わせて新しいストリームを作り出すための強力なツールです。
 
-## 基本概念
+> [!IMPORTANT]
+> このページでは **Pipeable Operators（パイプライン内で使用する形式）** を扱います。
+>
+> **Creation Functions（複数のObservableから新しいObservableを作成する形式）** については、
+> [3章 Creation Functions](/guide/creation-functions/) を参照してください。
 
-結合オペレーターは、複数のObservableのストリームを組み合わせて一つの新しいストリームを生成するためのRxJSのオペレーター群です。  
-これにより、異なるデータソースを効果的に連携させることができます。
+## Creation Functions vs Pipeable Operators
 
-## 演算子一覧
+結合に関連する機能は、2つの形式で提供されています。
 
-### ◾ 基本的な結合オペレーター
+### Creation Functions（3章で解説）
 
-|オペレーター|説明|
-|---|---|
-[concat](./concat)|順番にすべてのObservableを完了させながら結合します|
-|[merge](./merge)|複数のObservableを同時に進めながら結合します|
-|[combineLatest](./combineLatest)|最新の値同士を組み合わせて出力します|
-|[zip](./zip)|各Observableから順番にペアを作って出力します|
+複数のObservableを引数として受け取り、新しいObservableを作成。
 
-### ◾ 高度な結合オペレーター
+```typescript
+import { concat, merge, combineLatest, zip, race, forkJoin } from 'rxjs';
+
+// Creation Function として使用
+const combined$ = concat(obs1$, obs2$, obs3$);
+const merged$ = merge(source1$, source2$);
+```
+
+詳細は [Creation Functions](/guide/creation-functions/) を参照。
+
+### Pipeable Operators（このページで解説）
+
+既存のObservableに対して `.pipe()` 内で使用。
+
+```typescript
+import { concatWith, mergeWith, combineLatestWith } from 'rxjs/operators';
+
+// Pipeable Operator として使用
+const result$ = source$.pipe(
+  map(x => x * 2),
+  concatWith(other$),
+  filter(x => x > 10)
+);
+```
+
+## Pipeable Operators 一覧
+
+### ◾ このページで扱うオペレーター
 
 |オペレーター|説明|
 |---|---|
 |[withLatestFrom](./withLatestFrom)|メインObservableの発行に応じて、最新の他ストリームの値を組み合わせます|
-|[forkJoin](./forkJoin)|すべてのObservableが完了した時点で、最後の値をまとめて出力します|
-|[race](./race)|最初に値を発行したObservableだけを生かします|
+
+### ◾ Creation Functions として提供されるもの
+
+以下は主に Creation Function として使用されます（[3章](/guide/creation-functions/)参照）。
+
+|Function|説明|Pipeable版|
+|---|---|---|
+|[concat](./concat)|順番に結合|`concatWith` (RxJS 7+)|
+|[merge](./merge)|並行結合|`mergeWith` (RxJS 7+)|
+|[combineLatest](./combineLatest)|最新値を組み合わせ|`combineLatestWith` (RxJS 7+)|
+|[zip](./zip)|対応する値をペア化|`zipWith` (RxJS 7+)|
+|[race](./race)|最速のストリームを採用|`raceWith` (RxJS 7+)|
+|[forkJoin](./forkJoin)|すべての完了を待つ|（Pipeable版なし）|
 
 ## さらに実践的に学びたい方へ
 

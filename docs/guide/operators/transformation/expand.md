@@ -184,7 +184,7 @@ of(1).pipe(
 });
 ```
 
-より実用的なページネーション実装：
+#### より実用的なページネーション実装
 
 ```ts
 import { defer, EMPTY, lastValueFrom } from 'rxjs';
