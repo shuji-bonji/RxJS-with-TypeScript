@@ -90,6 +90,7 @@ export default withMermaid({
           { text: 'zip', link: '/guide/creation-functions/zip' },
           { text: 'race', link: '/guide/creation-functions/race' },
           { text: 'forkJoin', link: '/guide/creation-functions/forkJoin' },
+          { text: 'partition', link: '/guide/creation-functions/partition' },
         ],
       },
       {
@@ -104,6 +105,7 @@ export default withMermaid({
             items: [
               { text: 'map', link: '/guide/operators/transformation/map' },
               { text: 'scan', link: '/guide/operators/transformation/scan' },
+              { text: 'mergeScan', link: '/guide/operators/transformation/mergeScan' },
               { text: 'reduce', link: '/guide/operators/transformation/reduce' },
               { text: 'pairwise', link: '/guide/operators/transformation/pairwise' },
               { text: 'groupBy', link: '/guide/operators/transformation/groupBy' },
@@ -152,6 +154,22 @@ export default withMermaid({
               {
                 text: 'windowTime',
                 link: '/guide/operators/transformation/windowTime',
+              },
+              {
+                text: 'window',
+                link: '/guide/operators/transformation/window',
+              },
+              {
+                text: 'windowCount',
+                link: '/guide/operators/transformation/windowCount',
+              },
+              {
+                text: 'windowToggle',
+                link: '/guide/operators/transformation/windowToggle',
+              },
+              {
+                text: 'windowWhen',
+                link: '/guide/operators/transformation/windowWhen',
               },
               {
                 text: '実用的なユースケース',
@@ -208,6 +226,26 @@ export default withMermaid({
             link: '/guide/operators/combination/',
             collapsed: true,
             items: [
+              {
+                text: 'concatWith',
+                link: '/guide/operators/combination/concatWith',
+              },
+              {
+                text: 'mergeWith',
+                link: '/guide/operators/combination/mergeWith',
+              },
+              {
+                text: 'combineLatestWith',
+                link: '/guide/operators/combination/combineLatestWith',
+              },
+              {
+                text: 'zipWith',
+                link: '/guide/operators/combination/zipWith',
+              },
+              {
+                text: 'raceWith',
+                link: '/guide/operators/combination/raceWith',
+              },
               {
                 text: 'withLatestFrom',
                 link: '/guide/operators/combination/withLatestFrom',

@@ -30,6 +30,7 @@ TypeScript環境でRxJSを体系的に学ぶためのガイドです。
 - [zip - 対応する値のペア化](/guide/creation-functions/zip)
 - [race - 最速のストリームを採用](/guide/creation-functions/race)
 - [forkJoin - すべての完了を待つ](/guide/creation-functions/forkJoin)
+- [partition - 条件で2つに分割](/guide/creation-functions/partition)
 
 ### 4. オペレーターの理解
 - [オペレーターの概要](/guide/operators/)

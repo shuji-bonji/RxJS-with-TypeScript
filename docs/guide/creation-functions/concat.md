@@ -1,10 +1,10 @@
 ---
-description: concatオペレーターで複数のObservableを順番に結合する方法と、ステップ実行やUI表示への活用方法を解説します。
+description: concat Creation Functionで複数のObservableを順番に結合する方法と、ステップ実行やUI表示への活用方法を解説します。
 ---
 
 # concat - 順番にストリームを結合する
 
-`concat` オペレーターは、複数のObservableを指定された順番に**順次実行**するために使用します。  
+`concat` は、複数のObservableを指定された順番に**順次実行**するCreation Functionです。  
 前のObservableが`complete`してから、次のObservableの発行が始まります。
 
 ## 🔰 基本構文と使い方
@@ -64,3 +64,10 @@ concat(loading$, data$).subscribe((value) => {
 - 最初にローディングメッセージが3回表示され、
 - その後にデータリストが順番に表示されます。
 - **concat** を使うことで、自然な「段階的表示」が簡単に実現できます。
+
+
+## 🔗 関連オペレーター
+
+- **[concatWith](/guide/operators/combination/concatWith)** - Pipeable Operator版（パイプライン内で使用）
+- **[concatMap](/guide/operators/transformation/concatMap)** - 各値を順次マッピングして結合
+- **[merge](/guide/creation-functions/merge)** - 並行結合する Creation Function

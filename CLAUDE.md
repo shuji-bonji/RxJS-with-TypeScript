@@ -300,6 +300,11 @@ The following operators are planned for the second documentation release, priori
 - ✅ `reduce` - Aggregation processing (docs/guide/operators/transformation/reduce.md)
 - ✅ `pairwise` - Process consecutive pairs of values (docs/guide/operators/transformation/pairwise.md)
 - ✅ `groupBy` - Group emissions by key (docs/guide/operators/transformation/groupBy.md)
+- ✅ `mergeScan` - Accumulation with merging (docs/guide/operators/transformation/mergeScan.md)
+- ✅ `window` - Split by Observable trigger (docs/guide/operators/transformation/window.md)
+- ✅ `windowCount` - Split by count (docs/guide/operators/transformation/windowCount.md)
+- ✅ `windowToggle` - Independent start/end control windowing (docs/guide/operators/transformation/windowToggle.md)
+- ✅ `windowWhen` - Dynamic closing control windowing (docs/guide/operators/transformation/windowWhen.md)
 
 **Filtering Operators:**
 - ✅ `distinct` - Remove all duplicates (docs/guide/operators/filtering/distinct.md)
@@ -310,16 +315,21 @@ The following operators are planned for the second documentation release, priori
 - ✅ `auditTime` - Emit last value after specified time (docs/guide/operators/filtering/auditTime.md)
 - ✅ `find` - Find first emission matching predicate (docs/guide/operators/filtering/find.md)
 
+**Creation Functions:**
+- ✅ `partition` - Split stream by condition (docs/guide/creation-functions/partition.md)
+
+**Combination Operators (Pipeable):**
+- ✅ `concatWith` - Sequential combination in pipeline (docs/guide/operators/combination/concatWith.md)
+- ✅ `mergeWith` - Parallel combination in pipeline (docs/guide/operators/combination/mergeWith.md)
+- ✅ `combineLatestWith` - Combine latest values in pipeline (docs/guide/operators/combination/combineLatestWith.md)
+- ✅ `zipWith` - Pair corresponding values in pipeline (docs/guide/operators/combination/zipWith.md)
+- ✅ `raceWith` - Race to first emission in pipeline (docs/guide/operators/combination/raceWith.md)
+
 #### 🔴 High Priority Operators (Remaining)
 
 **None remaining - all high priority operators completed!**
 
 #### 🟡 Medium Priority Operators (Used in specific scenarios)
-
-**Transformation Operators:**
-- `mergeScan` - Accumulation with merging
-- `partition` - Split stream by condition
-- `window`, `windowCount`, `windowToggle`, `windowWhen` - Window-based operators
 
 **Filtering Operators:**
 - `audit`, `debounce` - Custom timing control

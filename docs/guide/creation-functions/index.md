@@ -116,12 +116,9 @@ obs1$.pipe(
 | **[zip](/guide/creation-functions/zip)** | 対応する値をペア化 | リクエストとレスポンスの対応 |
 | **[race](/guide/creation-functions/race)** | 最初に発行したものを採用 | 複数データソースの競争 |
 | **[forkJoin](/guide/creation-functions/forkJoin)** | すべての完了を待って最終値を結合 | 並列API呼び出しの完了待ち |
-| **partition** | 条件で2つに分割 | 成功/失敗の分岐処理 |
+| **[partition](/guide/creation-functions/partition)** | 条件で2つに分割 | 成功/失敗の分岐処理 |
 
 各Creation Functionの詳細は、リンクをクリックして参照してください。
-
-> [!NOTE]
-> `partition` のドキュメントは準備中です。
 
 ## Pipeable Operator との対応関係
 
@@ -129,14 +126,14 @@ obs1$.pipe(
 
 | Creation Function | Pipeable Operator | 備考 |
 |-------------------|-------------------|------|
-| `concat(a$, b$)` | `a$.pipe(concatWith(b$))` | RxJS 7+ |
-| `merge(a$, b$)` | `a$.pipe(mergeWith(b$))` | RxJS 7+ |
-| `zip(a$, b$)` | `a$.pipe(zipWith(b$))` | RxJS 7+ |
-| `combineLatest([a$, b$])` | `a$.pipe(combineLatestWith(b$))` | RxJS 7+ |
-| `race(a$, b$)` | `a$.pipe(raceWith(b$))` | RxJS 7+ |
+| `concat(a$, b$)` | `a$.pipe(`**[concatWith](/guide/operators/combination/concatWith)**`(b$))` | RxJS 7+ |
+| `merge(a$, b$)` | `a$.pipe(`**[mergeWith](/guide/operators/combination/mergeWith)**`(b$))` | RxJS 7+ |
+| `zip(a$, b$)` | `a$.pipe(`**[zipWith](/guide/operators/combination/zipWith)**`(b$))` | RxJS 7+ |
+| `combineLatest([a$, b$])` | `a$.pipe(`**[combineLatestWith](/guide/operators/combination/combineLatestWith)**`(b$))` | RxJS 7+ |
+| `race(a$, b$)` | `a$.pipe(`**[raceWith](/guide/operators/combination/raceWith)**`(b$))` | RxJS 7+ |
 
 > [!NOTE]
-> RxJS 7以降、`concatWith`, `mergeWith`, `zipWith`などの`~With`系オペレーターが追加され、Pipeable Operatorとしても使いやすくなりました。
+> RxJS 7以降、**[concatWith](/guide/operators/combination/concatWith)**, **[mergeWith](/guide/operators/combination/mergeWith)**, **[zipWith](/guide/operators/combination/zipWith)**, **[combineLatestWith](/guide/operators/combination/combineLatestWith)**, **[raceWith](/guide/operators/combination/raceWith)** などの`~With`系オペレーターが追加され、Pipeable Operatorとしても使いやすくなりました。
 
 ## どちらを使うべきか？
 
