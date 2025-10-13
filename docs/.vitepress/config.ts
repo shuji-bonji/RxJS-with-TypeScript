@@ -53,6 +53,7 @@ export default withMermaid({
           { text: '学習用の実行環境構築', link: '/guide/starter-kid.md' },
           { text: 'RxJSとは何か', link: '/guide/basics/what-is-rxjs' },
           { text: 'ストリームとは？', link: '/guide/basics/what-is-a-stream' },
+          { text: 'PromiseとRxJSの違い', link: '/guide/basics/promise-vs-rxjs' },
         ],
       },
       {

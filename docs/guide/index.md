@@ -14,6 +14,7 @@ TypeScript環境でRxJSを体系的に学ぶためのガイドです。
 - [学習用の実行環境構築](/guide/starter-kid.md)
 - [RxJSとは何か](/guide/basics/what-is-rxjs)
 - [ストリームとは？](/guide/basics/what-is-a-stream)
+- [PromiseとRxJSの違い](/guide/basics/promise-vs-rxjs)
 
 ### 2. Observableの基礎
 - [Observableとは](/guide/observables/what-is-observable)
