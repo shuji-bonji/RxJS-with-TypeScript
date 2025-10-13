@@ -12,8 +12,7 @@ description: share()オペレーターを使ったマルチキャスティング
 ## 🔰 基本的な使い方
 
 ```typescript
-import { interval } from 'rxjs';
-import { take, share, tap } from 'rxjs/operators';
+import { interval, share, take, tap } from 'rxjs';
 
 // インターバルでカウントするObservable
 const source$ = interval(1000).pipe(
@@ -70,20 +69,23 @@ Observer 2: 4
 
 ## 💡 share() の仕組み
 
-`share()`は内部的に`multicast()`と`refCount()`を組み合わせたものです。
+`share()`は、RxJSの標準的なマルチキャスティングオペレーターです。内部的にはSubjectを使用して複数の購読者にブロードキャストします。
 
-- **最初の購読時**: ソースObservableへの接続を開始
-- **購読者が追加**: 既存の接続を共有
-- **すべての購読者が解除**: ソースへの接続を切断
-- **再購読**: 新しい接続として開始
+> [!NOTE]
+> **RxJS v7以降の変更**: 以前は`multicast()`と`refCount()`の組み合わせとして説明されていましたが、これらのオペレーターはv7で非推奨、v8で削除されました。現在は`share()`が標準的なマルチキャスティング方法です。詳細は[RxJS公式ドキュメント - Multicasting](https://rxjs.dev/deprecations/multicasting)を参照してください。
+
+**動作の流れ**:
+- **最初の購読時**: ソースObservableへの接続を開始し、内部Subjectを作成
+- **購読者が追加**: 既存の接続を共有（Subjectを通じて値をブロードキャスト）
+- **すべての購読者が解除**: ソースへの接続を切断（`resetOnRefCountZero: true`の場合）
+- **再購読**: 新しい接続として開始（リセット設定による）
 
 ## 🎯 詳細な制御オプション（RxJS 7+）
 
 RxJS 7以降では、`share()`にオプションを渡すことで挙動を細かく制御できます。
 
 ```typescript
-import { interval } from 'rxjs';
-import { take, share, tap } from 'rxjs/operators';
+import { interval, share, take, tap } from 'rxjs';
 
 const source$ = interval(1000).pipe(
   take(6),
@@ -105,13 +107,57 @@ const source$ = interval(1000).pipe(
 | `resetOnRefCountZero` | `true` | 購読者が0になったら接続を切断 |
 | `connector` | `() => new Subject()` | カスタムSubjectを指定 |
 
+### connectorオプションを使った高度な制御
+
+`connector`オプションを使用することで、`shareReplay`と同等の挙動を実現できます。
+
+```typescript
+import { interval, ReplaySubject } from 'rxjs';
+import { take, share, tap } from 'rxjs';
+
+// ReplaySubjectを使って最新1件をバッファ
+const source$ = interval(1000).pipe(
+  take(5),
+  tap(value => console.log(`ソース: ${value}`)),
+  share({
+    connector: () => new ReplaySubject(1),
+    resetOnError: false,
+    resetOnComplete: false,
+    resetOnRefCountZero: false
+  })
+);
+
+// 最初の購読者
+source$.subscribe(value => console.log(`Observer 1: ${value}`));
+
+// 2.5秒後に購読（過去1件を受け取る）
+setTimeout(() => {
+  source$.subscribe(value => console.log(`Observer 2: ${value}`));
+}, 2500);
+```
+
+**実行結果**:
+```
+ソース: 0
+Observer 1: 0
+ソース: 1
+Observer 1: 1
+Observer 2: 1  // ← 途中参加でも直前の値を受け取る
+ソース: 2
+Observer 1: 2
+Observer 2: 2
+...
+```
+
+> [!TIP]
+> この方法は`shareReplay(1)`の代替として使用できます。`resetOnRefCountZero: false`を設定することで、参照カウントが0になっても接続を維持し、`shareReplay`の「永続的なキャッシュ」の問題を回避できます。
+
 ## 📊 share()なしとの比較
 
 ### ❌ share()を使わない場合（Cold Observable）
 
 ```typescript
-import { interval } from 'rxjs';
-import { take, tap } from 'rxjs/operators';
+import { interval, take, tap } from 'rxjs';
 
 const source$ = interval(1000).pipe(
   take(3),
@@ -148,8 +194,7 @@ Observer 2: 2
 ### ✅ share()を使った場合（Hot Observable）
 
 ```typescript
-import { interval } from 'rxjs';
-import { take, tap, share } from 'rxjs/operators';
+import { interval, share, take, tap } from 'rxjs';
 
 const source$ = interval(1000).pipe(
   take(3),
@@ -183,9 +228,8 @@ Observer 2: 2
 ### APIリクエストの重複防止
 
 ```typescript
-import { Observable } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { map, share, tap } from 'rxjs/operators';
+import { share, tap } from 'rxjs';
 
 // ユーザー情報を取得するObservable
 const getUser$ = ajax.getJSON('https://jsonplaceholder.typicode.com/users/1').pipe(
@@ -205,8 +249,7 @@ getUser$.subscribe(user => console.log('コンポーネント2:', user));
 ### 定期的なデータ取得の共有
 
 ```typescript
-import { timer } from 'rxjs';
-import { switchMap, share, tap } from 'rxjs/operators';
+import { timer, share, switchMap, tap } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 
 // 5秒ごとにTODOリストを取得（APIリクエストは共有）
@@ -232,8 +275,10 @@ sharedTodos$.subscribe(todos => console.log('コンポーネントB:', todos));
 ## 🔄 関連オペレーター
 
 - **[shareReplay()](/guide/operators/multicasting/shareReplay)** - 過去の値をバッファリングして後続の購読者にも提供
-- **[publish()](/guide/subjects/multicasting)** - より低レベルなマルチキャスト制御
-- **[multicast()](/guide/subjects/multicasting)** - カスタムSubjectを使用したマルチキャスト
+- **[Subject](/guide/subjects/what-is-subject)** - マルチキャスティングの基礎となるクラス
+
+> [!WARNING]
+> **非推奨のオペレーター**: `publish()`, `multicast()`, `refCount()`などの旧マルチキャスティングAPIはRxJS v7で非推奨、v8で削除されました。これらの代わりに`share()`または`connectable()`/`connect()`を使用してください。
 
 ## まとめ
 

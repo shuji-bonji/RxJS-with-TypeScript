@@ -49,12 +49,12 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
       <td>各値を変換する</td>
     </tr>
     <tr>
-      <td><a href="./transformation/pluck.html">pluck</a> ⚠️</td>
-      <td>オブジェクトから特定プロパティを抽出する（非推奨）</td>
+      <td><a href="./transformation/pluck.html">pluck</a> <strong>⚠️ 非推奨</strong></td>
+      <td>オブジェクトから特定プロパティを抽出する（<strong>v8で削除</strong>。代わりに<code>map</code>とoptional chainingを使用）</td>
     </tr>
     <tr>
-      <td><a href="./transformation/mapTo.html">mapTo</a> ⚠️</td>
-      <td>すべての値を固定値に変換する（非推奨）</td>
+      <td><a href="./transformation/mapTo.html">mapTo</a> <strong>⚠️ 非推奨</strong></td>
+      <td>すべての値を固定値に変換する（<strong>v9で削除予定</strong>。代わりに<code>map(() => value)</code>を使用）</td>
     </tr>
     <tr>
       <td><a href="./transformation/scan.html">scan</a></td>

@@ -264,6 +264,70 @@ When editing documentation:
 
 ## Content Priorities and TODO
 
+### Immediate Priority: Technical Corrections for RxJS v7-v8 Compliance
+
+Based on technical review, the following items need updates to align with current RxJS best practices:
+
+1. **✅ `share()` operator explanation update**
+   - Status: Completed
+   - Issue: "内部的には `multicast()` と `refCount()` の組み合わせ" is outdated
+   - Action: Update to reflect that `multicast/publish/refCount` are deprecated in v7, removed in v8
+   - Details: Explain `share` now accepts options like `connector`, and can replace `shareReplay` behavior
+   - Reference: https://rxjs.dev/deprecations/multicasting
+   - Files: `docs/guide/operators/multicasting/share.md`
+
+2. **✅ Import path modernization**
+   - Status: Pending
+   - Issue: Many examples use `import { X } from 'rxjs/operators'`
+   - Action: Change all imports to top-level `import { X } from 'rxjs'`
+   - Details: `'rxjs/operators'` exports are deprecated since v7.2+, will be removed in future
+   - Reference: https://rxjs.dev/guide/importing
+   - Files: All operator documentation pages (scan required)
+
+3. **✅ Deprecated operator badges in index/TOC**
+   - Status: Completed (Partially - index.md updated, config.ts pending)
+   - Issue: `pluck`, `mapTo`, `*MapTo` not clearly marked as deprecated in overview pages
+   - Action: Add "⚠️ 非推奨" badges in `docs/guide/operators/index.md` table
+   - Details: `pluck` removed in v8, `mapTo/mergeMapTo/concatMapTo/switchMapTo` removed in v9
+   - Alternative: Use `map(() => value)` / `mergeMap(() => inner$)` etc.
+   - Reference: https://rxjs.dev/api/operators/pluck
+   - Files: `docs/guide/operators/index.md`, sidebar in `config.ts`
+
+4. **✅ `subscribe()` three-argument form deprecation**
+   - Status: Pending
+   - Issue: Check if any examples use `subscribe(next, error, complete)`
+   - Action: Replace with observer object `{ next, error, complete }` or single function
+   - Reference: https://rxjs.dev/deprecations/subscribe-arguments
+   - Files: All documentation pages (scan required)
+
+5. **✅ `reduce` operator warning for infinite streams**
+   - Status: Completed
+   - Issue: Missing warning that `reduce` requires `complete()` to emit
+   - Action: Add prominent note that infinite streams never emit, suggest `scan` + `takeLast(1)` alternative
+   - Reference: https://rxjs.dev/api/index/function/reduce
+   - Files: `docs/guide/operators/transformation/reduce.md`
+
+6. **✅ Modern `share()` configuration examples**
+   - Status: Completed
+   - Issue: Multicasting chapter lacks modern `share({...})` recipes
+   - Action: Add example showing `share({ connector: () => new ReplaySubject(1), ... })` pattern
+   - Details: Show how to replace `shareReplay` behavior with explicit config
+   - Reference: https://rxjs.dev/deprecations/multicasting
+   - Files: `docs/guide/operators/multicasting/share.md`, `docs/guide/subjects/multicasting.md`
+
+7. **✅ Promise conversion API update**
+   - Status: Pending
+   - Issue: Check if `toPromise()` is used anywhere
+   - Action: Replace with `firstValueFrom()` / `lastValueFrom()` with default value examples
+   - Reference: https://kylenazario.com/blog/rxjs-7-changes
+   - Files: All documentation pages (scan required)
+
+**Implementation Plan:**
+- Phase 1: Scan all documentation files to identify affected pages
+- Phase 2: Update high-impact pages (share, index, commonly-used operators)
+- Phase 3: Bulk update import statements across all files
+- Phase 4: Final verification and consistency check
+
 ### High Priority
 1. **RxJS v8 Preparation**
    - Research and document new features

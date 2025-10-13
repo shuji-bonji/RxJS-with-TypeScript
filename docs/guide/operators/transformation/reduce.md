@@ -215,13 +215,14 @@ actions$.pipe(
 
 ## ⚠️ 注意点
 
-### 無限ストリームでは完了しない
+### ❌ 無限ストリームでは完了しない（重要）
 
-`reduce`はストリームが完了するまで値を出力しないため、無限ストリームでは結果が得られません。
+> [!WARNING]
+> **`reduce`は`complete()`が呼ばれるまで1件も値を出力しません。** 無限ストリーム（`interval`, `fromEvent`など）では永久に値が得られないため、実務での事故の原因となります。
 
 ```ts
 import { interval } from 'rxjs';
-import { reduce } from 'rxjs/operators';
+import { reduce } from 'rxjs';
 
 // ❌ 悪い例: 無限ストリームなので値が出力されない
 interval(1000).pipe(
@@ -230,11 +231,37 @@ interval(1000).pipe(
 // 出力なし（ストリームが完了しないため）
 ```
 
-**対策**: 無限ストリームの場合は `scan` を使用するか、`take` で終了条件を設定します。
+**対策1: ローリング集計が必要な場合は`scan`を使用**
 
 ```ts
-import { interval } from 'rxjs';
-import { take, reduce } from 'rxjs/operators';
+import { interval, scan, take } from 'rxjs';
+
+// ✅ 良い例: リアルタイムで中間結果を取得
+interval(1000).pipe(
+  take(5),
+  scan((acc, curr) => acc + curr, 0)
+).subscribe(console.log);
+// 出力: 0, 1, 3, 6, 10（累積値を毎回出力）
+```
+
+**対策2: 最終値のみ必要な場合は`scan` + `takeLast(1)`**
+
+```ts
+import { interval, scan, take, takeLast } from 'rxjs';
+
+// ✅ 良い例: scanで累積し、最終値のみ取得
+interval(1000).pipe(
+  take(5),
+  scan((acc, curr) => acc + curr, 0),
+  takeLast(1)
+).subscribe(console.log);
+// 出力: 10（最終結果のみ）
+```
+
+**対策3: `take`で終了条件を明示**
+
+```ts
+import { interval, take, reduce } from 'rxjs';
 
 // ✅ 良い例: takeで終了条件を設定
 interval(1000).pipe(
@@ -243,6 +270,12 @@ interval(1000).pipe(
 ).subscribe(console.log);
 // 出力: 10
 ```
+
+> [!TIP]
+> **選択の基準**:
+> - 中間結果が必要 → `scan`
+> - 最終結果のみ必要 & ストリーム完了が保証される → `reduce`
+> - 最終結果のみ必要 & 無限ストリーム → `scan` + `takeLast(1)` または `take` + `reduce`
 
 ### メモリ使用量
 
