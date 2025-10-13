@@ -114,7 +114,7 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
     </tr>
     <!-- フィルタリングオペレーター -->
     <tr>
-      <th scope="row" rowspan="15"><a href="./filtering/">フィルタリング</a></th>
+      <th scope="row" rowspan="22"><a href="./filtering/">フィルタリング</a></th>
       <td><a href="./filtering/filter.html">filter</a></td>
       <td>条件に合致する値のみ通過させる</td>
     </tr>
@@ -135,6 +135,14 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
       <td>最初のN個の値をスキップする</td>
     </tr>
     <tr>
+      <td><a href="./filtering/skipLast.html">skipLast</a></td>
+      <td>最後のN個の値をスキップする</td>
+    </tr>
+    <tr>
+      <td><a href="./filtering/skipWhile.html">skipWhile</a></td>
+      <td>条件を満たす間値をスキップする</td>
+    </tr>
+    <tr>
       <td><a href="./filtering/skipUntil.html">skipUntil</a></td>
       <td>別のObservableが発火するまで値をスキップする</td>
     </tr>
@@ -147,8 +155,16 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
       <td>最後の値または条件を満たす最後の値を取得する</td>
     </tr>
     <tr>
+      <td><a href="./filtering/elementAt.html">elementAt</a></td>
+      <td>指定されたインデックスの値を取得する</td>
+    </tr>
+    <tr>
       <td><a href="./filtering/find.html">find</a></td>
       <td>条件を満たす最初の値を見つける</td>
+    </tr>
+    <tr>
+      <td><a href="./filtering/findIndex.html">findIndex</a></td>
+      <td>条件を満たす最初の値のインデックスを取得する</td>
     </tr>
     <tr>
       <td><a href="./filtering/debounceTime.html">debounceTime</a></td>
@@ -161,6 +177,18 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
     <tr>
       <td><a href="./filtering/auditTime.html">auditTime</a></td>
       <td>指定時間後に最後の値を発行する</td>
+    </tr>
+    <tr>
+      <td><a href="./filtering/audit.html">audit</a></td>
+      <td>カスタムObservableで期間を制御して最後の値を発行する</td>
+    </tr>
+    <tr>
+      <td><a href="./filtering/sampleTime.html">sampleTime</a></td>
+      <td>指定時間間隔で最新値をサンプリングする</td>
+    </tr>
+    <tr>
+      <td><a href="./filtering/ignoreElements.html">ignoreElements</a></td>
+      <td>すべての値を無視して完了/エラーのみ通す</td>
     </tr>
     <tr>
       <td><a href="./filtering/distinct.html">distinct</a></td>

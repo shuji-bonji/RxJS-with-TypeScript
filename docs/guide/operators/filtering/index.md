@@ -21,11 +21,16 @@ RxJSのフィルタリングオペレーターは、ストリームから必要�
 | [takeLast](./takeLast) | 最後の指定数の値を取得する |
 | [takeWhile](./takeWhile) | 条件を満たす間値を取得する |
 | [skip](./skip) | 最初の指定数の値をスキップする |
+| [skipLast](./skipLast) | 最後の指定数の値をスキップする |
+| [skipWhile](./skipWhile) | 条件を満たす間値をスキップする |
 | [skipUntil](./skipUntil) | 別のObservableが発火するまで値をスキップする |
 | [first](./first) | 最初の値、または条件を満たす最初の値を取得する |
 | [last](./last) | 最後の値、または条件を満たす最後の値を取得する |
+| [elementAt](./elementAt) | 指定されたインデックスの値を取得する |
 | [find](./find) | 条件を満たす最初の値を見つける |
- 
+| [findIndex](./findIndex) | 条件を満たす最初の値のインデックスを取得する |
+| [ignoreElements](./ignoreElements) | すべての値を無視して完了/エラーのみ通す |
+
 
 ### ◾ 時間ベースのフィルタリングオペレーター
 
@@ -34,6 +39,8 @@ RxJSのフィルタリングオペレーターは、ストリームから必要�
 | [debounceTime](./debounceTime) | 指定時間入力がない場合に最後の値を発行する |
 | [throttleTime](./throttleTime) | 最初の値を通し、指定時間は新しい値を無視する |
 | [auditTime](./auditTime) | 指定時間後に最後の値を発行する |
+| [audit](./audit) | カスタムObservableで期間を制御して最後の値を発行する |
+| [sampleTime](./sampleTime) | 指定時間間隔で最新値をサンプリングする |
  
 
 ### ◾ 条件ベースのフィルタリングオペレーター

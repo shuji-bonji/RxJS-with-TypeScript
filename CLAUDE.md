@@ -309,11 +309,18 @@ The following operators are planned for the second documentation release, priori
 **Filtering Operators:**
 - ✅ `distinct` - Remove all duplicates (docs/guide/operators/filtering/distinct.md)
 - ✅ `skip` - Skip first N emissions (docs/guide/operators/filtering/skip.md)
+- ✅ `skipLast` - Skip last N emissions (docs/guide/operators/filtering/skipLast.md)
+- ✅ `skipWhile` - Skip while condition is true (docs/guide/operators/filtering/skipWhile.md)
 - ✅ `skipUntil` - Ignore emissions until another Observable emits (docs/guide/operators/filtering/skipUntil.md)
 - ✅ `takeLast` - Take last N emissions (docs/guide/operators/filtering/takeLast.md)
 - ✅ `takeWhile` - Take emissions while condition is true (docs/guide/operators/filtering/takeWhile.md)
-- ✅ `auditTime` - Emit last value after specified time (docs/guide/operators/filtering/auditTime.md)
+- ✅ `elementAt` - Get emission at specific index (docs/guide/operators/filtering/elementAt.md)
 - ✅ `find` - Find first emission matching predicate (docs/guide/operators/filtering/find.md)
+- ✅ `findIndex` - Find index of first matching emission (docs/guide/operators/filtering/findIndex.md)
+- ✅ `auditTime` - Emit last value after specified time (docs/guide/operators/filtering/auditTime.md)
+- ✅ `audit` - Custom Observable-controlled timing (docs/guide/operators/filtering/audit.md)
+- ✅ `sampleTime` - Sample emissions at fixed intervals (docs/guide/operators/filtering/sampleTime.md)
+- ✅ `ignoreElements` - Ignore all emissions, only complete/error (docs/guide/operators/filtering/ignoreElements.md)
 
 **Creation Functions:**
 - ✅ `partition` - Split stream by condition (docs/guide/creation-functions/partition.md)
@@ -332,14 +339,7 @@ The following operators are planned for the second documentation release, priori
 #### 🟡 Medium Priority Operators (Used in specific scenarios)
 
 **Filtering Operators:**
-- `audit`, `debounce` - Custom timing control
-- `elementAt` - Get emission at specific index
-- `findIndex` - Find index of first matching emission
-- `ignoreElements` - Ignore all emissions, only complete/error
-- `sample`, `sampleTime` - Sample emissions
-- `single` - Ensure single emission
-- `skipLast`, `skipWhile` - Advanced skipping
-- `throttle` - Custom throttling
+- `debounce`, `throttle` - Custom timing control with Observable duration
 
 **Utility Operators:**
 - `delayWhen` - Delay each emission by Observable

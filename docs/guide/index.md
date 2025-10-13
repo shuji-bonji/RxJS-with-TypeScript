@@ -35,6 +35,12 @@ TypeScript環境でRxJSを体系的に学ぶためのガイドです。
 ### 4. オペレーターの理解
 - [オペレーターの概要](/guide/operators/)
 - [パイプラインの概念](/guide/operators/pipeline)
+  - [変換オペレーター](/guide/operators/transformation/)
+  - [フィルタリングオペレーター](/guide/operators/filtering/)
+  - [結合オペレーター](/guide/operators/combination/)
+  - [ユーティリティオペレーター](/guide/operators/utility/)
+  - [条件オペレーター](/guide/operators/conditional/)
+  - [マルチキャスティング](/guide/operators/multicasting/)
 
 ### 5. Subjectとマルチキャスト
 - [Subjectとは](/guide/subjects/what-is-subject)

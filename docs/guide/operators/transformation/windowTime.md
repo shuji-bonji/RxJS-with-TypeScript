@@ -316,7 +316,7 @@ source$.pipe(
 });
 ```
 
-または、`mergeAll()`, `concatAll()`, `switchAll()`などを使用してフラット化します：
+または、`mergeAll()`, `concatAll()`, `switchAll()`などを使用してフラット化します。
 
 ```ts
 source$.pipe(
@@ -389,7 +389,7 @@ interval(100).pipe(
 
 ## まとめ
 
-`windowTime`オペレーターは、時間ベースでストリームを分割し、各時間枠を独立したObservableとして処理できる強力なツールです：
+`windowTime`オペレーターは、時間ベースでストリームを分割し、各時間枠を独立したObservableとして処理できる強力なツールです。
 
 - ✅ 一定時間ごとに自動的にウィンドウを作成
 - ✅ 各ウィンドウに対して異なる処理を適用可能
