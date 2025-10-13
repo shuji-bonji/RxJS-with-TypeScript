@@ -332,6 +332,16 @@ The following operators are planned for the second documentation release, priori
 - ✅ `zipWith` - Pair corresponding values in pipeline (docs/guide/operators/combination/zipWith.md)
 - ✅ `raceWith` - Race to first emission in pipeline (docs/guide/operators/combination/raceWith.md)
 
+**Utility Operators:**
+- ✅ `delayWhen` - Delay each emission by Observable (docs/guide/operators/utility/delayWhen.md)
+- ✅ `materialize` - Convert notifications to Notification objects (docs/guide/operators/utility/materialize.md)
+- ✅ `dematerialize` - Convert Notification objects back to notifications (docs/guide/operators/utility/dematerialize.md)
+- ✅ `observeOn` - Control emission timing with scheduler (docs/guide/operators/utility/observeOn.md)
+- ✅ `subscribeOn` - Control subscription timing with scheduler (docs/guide/operators/utility/subscribeOn.md)
+- ✅ `timestamp` - Add time metadata to each emission (docs/guide/operators/utility/timestamp.md)
+- ✅ `timeoutWith` - Timeout with fallback Observable (docs/guide/operators/utility/timeoutWith.md)
+- ✅ `repeatWhen` - Conditional repeat on completion (docs/guide/operators/utility/repeatWhen.md)
+
 #### 🔴 High Priority Operators (Remaining)
 
 **None remaining - all high priority operators completed!**
@@ -339,15 +349,9 @@ The following operators are planned for the second documentation release, priori
 #### 🟡 Medium Priority Operators (Used in specific scenarios)
 
 **Filtering Operators:**
-- `debounce`, `throttle` - Custom timing control with Observable duration
-
-**Utility Operators:**
-- `delayWhen` - Delay each emission by Observable
-- `dematerialize`, `materialize` - Notification object handling
-- `observeOn`, `subscribeOn` - Scheduler control
-- `timeInterval`, `timestamp` - Time metadata
-- `timeoutWith` - Timeout with fallback Observable
-- `repeatWhen` - Conditional repeat
+- `debounce`, `throttle` - Custom timing control
+- `sample` - Sample emissions with custom Observable
+- `single` - Ensure single emission
 
 **Combination Operators:**
 - Higher-order flattening: `combineLatestAll`, `concatAll`, `exhaustAll`, `mergeAll`, `switchAll`, `zipAll`

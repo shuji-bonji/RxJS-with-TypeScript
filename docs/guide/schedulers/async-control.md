@@ -101,6 +101,9 @@ function updateAnimation() {
 }
 ```
 
+> [!TIP]
+> `observeOn`オペレーターの詳細な説明、実践例、注意点については、[observeOn](../operators/utility/observeOn.md)オペレーターのページを参照してください。
+
 ### subscribeOn オペレーター
 
 `subscribeOn`は、ストリームの購読開始タイミングを制御します。
@@ -127,6 +130,8 @@ console.log('購読開始後');
 // タスク実行
 ```
 
+> [!TIP]
+> `subscribeOn`オペレーターの詳細な説明、実践例、`observeOn`との違いについては、[subscribeOn](../operators/utility/subscribeOn.md)オペレーターのページを参照してください。
 
 ## 非同期処理の実践的な例
 

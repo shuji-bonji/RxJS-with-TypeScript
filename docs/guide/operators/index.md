@@ -230,7 +230,7 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
     </tr>
     <!-- ユーティリティオペレーター -->
     <tr>
-      <th scope="row" rowspan="9"><a href="./utility/">ユーティリティ</a></th>
+      <th scope="row" rowspan="17"><a href="./utility/">ユーティリティ</a></th>
       <td><a href="./utility/tap.html">tap</a></td>
       <td>副作用を実行する（ログ出力など）</td>
     </tr>
@@ -243,8 +243,16 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
       <td>すべての値を指定時間遅延させる</td>
     </tr>
     <tr>
+      <td><a href="./utility/delayWhen.html">delayWhen</a></td>
+      <td>各値を別のObservableで動的に遅延させる</td>
+    </tr>
+    <tr>
       <td><a href="./utility/timeout.html">timeout</a></td>
       <td>指定時間内に値が来ない場合エラーを発行する</td>
+    </tr>
+    <tr>
+      <td><a href="./utility/timeoutWith.html">timeoutWith</a></td>
+      <td>タイムアウト時に別のObservableに切り替える</td>
     </tr>
     <tr>
       <td><a href="./utility/takeUntil.html">takeUntil</a></td>
@@ -259,12 +267,36 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
       <td>完了後に指定回数繰り返す</td>
     </tr>
     <tr>
+      <td><a href="./utility/repeatWhen.html">repeatWhen</a></td>
+      <td>完了時に別のObservableの発行を待って再購読する</td>
+    </tr>
+    <tr>
       <td><a href="./utility/startWith.html">startWith</a></td>
       <td>ストリームの最初に初期値を追加する</td>
     </tr>
     <tr>
       <td><a href="./utility/toArray.html">toArray</a></td>
       <td>すべての値を配列にまとめて発行する</td>
+    </tr>
+    <tr>
+      <td><a href="./utility/materialize.html">materialize</a></td>
+      <td>通知をNotificationオブジェクトに変換する</td>
+    </tr>
+    <tr>
+      <td><a href="./utility/dematerialize.html">dematerialize</a></td>
+      <td>Notificationオブジェクトを通常の通知に戻す</td>
+    </tr>
+    <tr>
+      <td><a href="./utility/observeOn.html">observeOn</a></td>
+      <td>値の発行タイミングをスケジューラーで制御する</td>
+    </tr>
+    <tr>
+      <td><a href="./utility/subscribeOn.html">subscribeOn</a></td>
+      <td>購読開始タイミングをスケジューラーで制御する</td>
+    </tr>
+    <tr>
+      <td><a href="./utility/timestamp.html">timestamp</a></td>
+      <td>各値にタイムスタンプを付与する</td>
     </tr>
     <!-- 条件オペレーター -->
     <tr>
