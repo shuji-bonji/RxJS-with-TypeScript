@@ -171,7 +171,7 @@ import { fromEvent } from 'rxjs';
 import { debounceTime, map, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 // リアルタイム検索（オートコンプリート）
-const searchInput = document.querySelector<HTMLInputElement>('#search');
+const searchInput = document.querySelector<HTMLInputElement>('#search') as HTMLInputElement;
 
 fromEvent(searchInput, 'input').pipe(
   map(event => (event.target as HTMLInputElement).value),
@@ -330,6 +330,22 @@ fromEvent(searchInput, 'input').pipe(
 }
 </style>
 
+## RxJSが特に活躍する分野
+
+RxJSは以下のような分野で特に強力です。Promiseだけでは実現が困難な複雑な要件を、エレガントに解決できます。
+
+| 分野 | 具体例 | Promiseとの比較 |
+|------|--------|----------------|
+| **リアルタイム通信** | WebSocket、SSE、チャット、株価更新 | Promiseは単発の通信のみ。連続的なメッセージ処理には不向き |
+| **ユーザー入力制御** | 検索オートコンプリート、フォームバリデーション | debounce、distinctUntilChangedなどが標準装備 |
+| **複数ソースの結合** | 検索条件×ソート順×フィルタの組み合わせ | combineLatest、withLatestFromで簡潔に記述可能 |
+| **オフライン対応** | PWA、ネットワーク状態監視、自動再同期 | retry、retryWhenで柔軟なリトライ制御 |
+| **ストリーミングAPI** | OpenAI、AI応答のトークン逐次出力 | 連続データをリアルタイムで処理可能 |
+| **キャンセル制御** | 長時間処理の中断、古いリクエストの破棄 | unsubscribe()で即座にキャンセル可能 |
+
+> [!NOTE]
+> RxJSの活用分野の詳細は、[RxJSとは何か - ユースケース](./what-is-rxjs.md#ユースケース)も参照してください。
+
 ## まとめ
 
 | 目的 | 推奨 |
@@ -343,9 +359,9 @@ fromEvent(searchInput, 'input').pipe(
 | シンプルなアプリケーション | Promise |
 | Angularアプリケーション | RxJS |
 
-**基本方針**:
-- 🔴 **シンプルに済むならPromise**を使う
-- 🟡 **複雑なストリーム処理が必要ならRxJS**を使う
-- 🔵 **両方を組み合わせる**のも有効（`from()`で橋渡し）
+### 基本方針
+- **シンプルに済むならPromise**を使う
+- **複雑なストリーム処理が必要ならRxJS**を使う
+- **両方を組み合わせる**のも有効（`from()`で橋渡し）
 
 RxJSは強力ですが、すべての非同期処理にRxJSを使う必要はありません。適切なツールを適切な場面で使い分けることが重要です。

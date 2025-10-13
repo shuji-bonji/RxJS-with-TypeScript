@@ -114,14 +114,125 @@ classDiagram
 
 ## ユースケース
 
-RxJSは以下のような状況で特に役立ちます。
+RxJSは「時間とともに変化するデータ」を扱うあらゆる場面で活躍します。以下に主要な活用分野を紹介します。
 
-|ユースケース|内容|
-|---|---|
-|UIイベント処理|クリック、スクロール、入力などのユーザーインタラクション|
-|HTTP要求|サーバーとの通信|
-|WebSocketの処理|リアルタイムデータストリーム|
-|状態管理|アプリケーションの状態を扱う（NgRx、Redux-Observable、またはカスタム状態管理）|
+### リアルタイム通信・ストリーミング
+
+WebSocketやServer-Sent Events(SSE)などのリアルタイム通信を扱う場合、RxJSは特に強力です。
+
+| 用途 | 説明 | 主要なオペレーター |
+|------|------|-------------------|
+| WebSocket通信 | チャット、通知、株価更新など | [`webSocket`](../operators/index.md), [`filter`](../operators/filtering/filter.md), [`map`](../operators/transformation/map.md) |
+| Server-Sent Events | サーバーからのプッシュ通知 | [`fromEvent`](../observables/events.md), [`retry`](../operators/utility/retry.md) |
+| IoTセンサー監視 | 連続的なセンサーデータの処理 | [`debounceTime`](../operators/filtering/debounceTime.md), [`distinctUntilChanged`](../operators/filtering/distinctUntilChanged.md) |
+
+#### 簡単な例
+```ts
+import { webSocket } from 'rxjs/webSocket';
+import { filter } from 'rxjs/operators';
+
+const socket$ = webSocket('wss://example.com/chat');
+
+socket$.pipe(
+  filter(msg => msg.type === 'message')
+).subscribe(msg => console.log('新着:', msg.text));
+```
+
+### UI/状態管理・フォーム制御
+
+ユーザー入力や状態の変化をリアクティブに扱うことができます。
+
+| 用途 | 説明 | 主要なオペレーター |
+|------|------|-------------------|
+| 入力フォームの制御 | 検索補完、リアルタイムバリデーション | [`debounceTime`](../operators/filtering/debounceTime.md), [`distinctUntilChanged`](../operators/filtering/distinctUntilChanged.md), [`switchMap`](../operators/transformation/switchMap.md) |
+| 複数フォーム項目の連携 | 依存する入力項目の更新 | [`combineLatest`](../creation-functions/combineLatest.md), [`withLatestFrom`](../operators/combination/withLatestFrom.md) |
+| コンポーネント間通信 | イベントバスやカスタム状態管理 | [`Subject`](../subjects/what-is-subject.md), [`share`](../operators/multicasting/share.md) |
+| UIイベント処理 | クリック、スクロール、ドラッグ&ドロップ | [`fromEvent`](../observables/events.md), [`takeUntil`](../operators/utility/takeUntil.md) |
+
+#### 簡単な例
+```ts
+import { fromEvent, combineLatest } from 'rxjs';
+import { debounceTime, map, switchMap } from 'rxjs/operators';
+
+const searchInput = document.querySelector('#search') as HTMLInputElement;
+const sortSelect = document.querySelector('#sort') as HTMLInputElement;
+
+const search$ = fromEvent(searchInput, 'input').pipe(
+  map(e => (e.target as HTMLInputElement).value)
+);
+
+const sort$ = fromEvent(sortSelect, 'change').pipe(
+  map(e => (e.target as HTMLSelectElement).value)
+);
+
+combineLatest([search$, sort$]).pipe(
+  debounceTime(300),
+  switchMap(([query, order]) =>
+    fetch(`/api/search?q=${query}&sort=${order}`).then(r => r.json())
+  )
+).subscribe(results => console.log(results));
+```
+
+### オフライン対応・PWA
+
+Progressive Web App（PWA）でのオフライン対応やネットワーク状態管理に活用できます。
+
+| 用途 | 説明 | 主要なオペレーター |
+|------|------|-------------------|
+| ネットワーク状態監視 | オンライン/オフライン検出 | [`fromEvent`](../observables/events.md), [`merge`](../creation-functions/merge.md) |
+| オフライン時の再試行 | 接続復帰時の自動再同期 | [`retry`](../operators/utility/retry.md), [`retryWhen`](../error-handling/retry-catch.md) |
+| キャッシュ制御 | Service Workerとの連携 | [`switchMap`](../operators/transformation/switchMap.md), [`catchError`](../error-handling/retry-catch.md) |
+
+#### 簡単な例
+```ts
+import { fromEvent, merge } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+
+const online$ = fromEvent(window, 'online').pipe(map(() => true));
+const offline$ = fromEvent(window, 'offline').pipe(map(() => false));
+
+merge(online$, offline$).pipe(
+  startWith(navigator.onLine)
+).subscribe(isOnline => {
+  console.log(isOnline ? 'オンライン' : 'オフライン');
+});
+```
+
+### AI/ストリーミングAPI
+
+OpenAIなどのストリーミングAPIレスポンスを扱う場合にも最適です。
+
+| 用途 | 説明 | 主要なオペレーター |
+|------|------|-------------------|
+| トークン逐次出力 | AIレスポンスのリアルタイム表示 | [`concatMap`](../operators/transformation/concatMap.md), [`scan`](../operators/transformation/scan.md) |
+| ストリーミング処理 | Server-Sent Eventsの処理 | [`fromEvent`](../observables/events.md), [`map`](../operators/transformation/map.md) |
+| バックエンド統合 | NestJS（RxJS標準搭載）での利用 | 各種オペレーター |
+
+### HTTP通信とエラー処理
+
+非同期HTTP通信をエレガントに扱えます。
+
+| 用途 | 説明 | 主要なオペレーター |
+|------|------|-------------------|
+| APIリクエスト | RESTful APIとの通信 | [`switchMap`](../operators/transformation/switchMap.md), [`mergeMap`](../operators/transformation/mergeMap.md) |
+| エラーハンドリング | リトライやフォールバック | [`catchError`](../error-handling/retry-catch.md), [`retry`](../operators/utility/retry.md) |
+| タイムアウト制御 | 応答時間の制限 | [`timeout`](../operators/utility/timeout.md) |
+| キャンセル | 不要なリクエストの中断 | [`takeUntil`](../operators/utility/takeUntil.md), `unsubscribe()` |
+
+### 状態管理・アーキテクチャ
+
+アプリケーション全体のアーキテクチャ設計にも活用できます。
+
+| 用途 | 説明 | 主要なオペレーター |
+|------|------|-------------------|
+| 状態管理ライブラリ | NgRx、Redux-Observableなど | [`scan`](../operators/transformation/scan.md), [`share`](../operators/multicasting/share.md) |
+| イベントフロー管理 | DDD（ドメイン駆動設計）での活用 | [`Subject`](../subjects/what-is-subject.md), [`shareReplay`](../operators/multicasting/shareReplay.md) |
+| データレイヤー分離 | クリーンアーキテクチャ | 各種オペレーター |
+
+---
+
+> [!TIP]
+> PromiseとRxJSの使い分けについては、[PromiseとRxJSの違い](./promise-vs-rxjs.md)も参照してください。
 
 ## まとめ
 
