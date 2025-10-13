@@ -171,7 +171,9 @@ import { fromEvent } from 'rxjs';
 import { debounceTime, map, distinctUntilChanged, switchMap } from 'rxjs';
 
 // リアルタイム検索（オートコンプリート）
-const searchInput = document.querySelector<HTMLInputElement>('#search') as HTMLInputElement;
+// ※ この例では事前に<input id="search">要素がHTMLに存在することを前提としています
+const searchInput = document.querySelector<HTMLInputElement>('#search');
+if (!searchInput) throw new Error('検索入力欄が見つかりません');
 
 fromEvent(searchInput, 'input').pipe(
   map(event => (event.target as HTMLInputElement).value),
@@ -253,7 +255,9 @@ async function searchAPI(query: string): Promise<SearchResult> {
 }
 
 // RxJSでイベントストリームを管理
-const searchInput = document.querySelector<HTMLInputElement>('#search')!;
+// ※ この例では事前に<input id="search">要素がHTMLに存在することを前提としています
+const searchInput = document.querySelector<HTMLInputElement>('#search');
+if (!searchInput) throw new Error('検索入力欄が見つかりません');
 
 fromEvent(searchInput, 'input').pipe(
   debounceTime(300),

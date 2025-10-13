@@ -268,8 +268,7 @@ of(1, 2, 3)
 遅延Observable内でエラーが発生すると、ストリーム全体がエラーになります。
 
 ```ts
-import { of, throwError } from 'rxjs';
-import { delayWhen } from 'rxjs';
+import { of, throwError, timer, delayWhen } from 'rxjs';
 
 of(1, 2, 3)
   .pipe(
