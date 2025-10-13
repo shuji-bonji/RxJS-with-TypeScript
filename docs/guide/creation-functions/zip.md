@@ -12,7 +12,7 @@ description: zip Creation Functionは複数のObservableから対応する順番
 
 ```ts
 import { zip, of, interval } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map, take } from 'rxjs';
 
 const source1$ = of('A', 'B', 'C');
 const source2$ = interval(1000).pipe(
@@ -49,7 +49,7 @@ zip(source1$, source2$).subscribe(([letter, number]) => {
 
 ```ts
 import { zip, of, interval } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map, take } from 'rxjs';
 
 // 出力エリア作成
 const output = document.createElement('div');

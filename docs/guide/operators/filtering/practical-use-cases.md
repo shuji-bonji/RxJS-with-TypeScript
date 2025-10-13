@@ -13,7 +13,7 @@ import {
   debounceTime,
   distinctUntilChanged,
   filter,
-} from 'rxjs/operators';
+} from 'rxjs';
 
 // UI構築
 const searchInput = document.createElement('input');
@@ -52,7 +52,7 @@ import {
   throttleTime,
   distinctUntilChanged,
   scan,
-} from 'rxjs/operators';
+} from 'rxjs';
 
 // UI構築
 const scrollArea = document.createElement('div');

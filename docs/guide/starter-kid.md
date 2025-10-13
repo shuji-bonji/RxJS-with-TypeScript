@@ -33,7 +33,7 @@ npm run dev
 ```ts
 // src/main.ts
 import { interval } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take } from 'rxjs';
 
 const output = document.createElement('div');
 document.body.appendChild(output);

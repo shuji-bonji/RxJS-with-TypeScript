@@ -11,7 +11,7 @@ description: groupByオペレーターは、ストリームの値を指定した
 
 ```ts
 import { from } from 'rxjs';
-import { groupBy, mergeMap, toArray, map } from 'rxjs/operators';
+import { groupBy, mergeMap, toArray, map } from 'rxjs';
 
 interface Person {
   name: string;
@@ -63,7 +63,7 @@ from(people).pipe(
 
 ```ts
 import { fromEvent, from } from 'rxjs';
-import { groupBy, mergeMap, toArray, switchMap, map } from 'rxjs/operators';
+import { groupBy, mergeMap, toArray, switchMap, map } from 'rxjs';
 
 // ボタンを作成
 const colors = ['赤', '青', '緑', '黄'];
@@ -137,7 +137,7 @@ fromEvent(calculateButton, 'click').pipe(
 
 ```ts
 import { from } from 'rxjs';
-import { groupBy, mergeMap, reduce, map } from 'rxjs/operators';
+import { groupBy, mergeMap, reduce, map } from 'rxjs';
 
 interface Product {
   name: string;
@@ -178,7 +178,7 @@ from(products).pipe(
 
 ```ts
 import { from } from 'rxjs';
-import { groupBy, map, mergeMap, toArray } from 'rxjs/operators';
+import { groupBy, map, mergeMap, toArray } from 'rxjs';
 
 interface Student {
   name: string;
@@ -222,7 +222,7 @@ TypeScriptの型推論を活用した例です。
 
 ```ts
 import { from } from 'rxjs';
-import { groupBy, mergeMap, toArray, map } from 'rxjs/operators';
+import { groupBy, mergeMap, toArray, map } from 'rxjs';
 
 type LogLevel = 'info' | 'warning' | 'error';
 
@@ -274,7 +274,7 @@ from(logs).pipe(
 
 ```ts
 import { from, of } from 'rxjs';
-import { groupBy, mergeMap, delay, map } from 'rxjs/operators';
+import { groupBy, mergeMap, delay, map } from 'rxjs';
 
 interface Task {
   id: number;
@@ -336,7 +336,7 @@ from([1, 2, 3, 4, 5]).pipe(
 
 ```ts
 import { from } from 'rxjs';
-import { groupBy, mergeMap, toArray } from 'rxjs/operators';
+import { groupBy, mergeMap, toArray } from 'rxjs';
 
 // ✅ 良い例: 各グループを適切に処理
 from([1, 2, 3, 4, 5]).pipe(

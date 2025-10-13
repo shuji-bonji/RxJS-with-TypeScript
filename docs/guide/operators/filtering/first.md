@@ -11,7 +11,7 @@ description: firstオペレーターは、ストリームから最初の値、�
 
 ```ts
 import { from } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { first } from 'rxjs';
 
 const numbers$ = from([1, 2, 3, 4, 5]);
 
@@ -50,7 +50,7 @@ numbers$.pipe(
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { first } from 'rxjs';
 
 const title = document.createElement('div');
 title.innerHTML = '<h3>first の実践例:</h3>';

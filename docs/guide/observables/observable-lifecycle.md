@@ -120,12 +120,12 @@ observable$.subscribe({
   next: value => console.log('値のみ処理:', value)
 });
 
-// 簡略記法
-observable$.subscribe(
-  value => console.log('値::', value),
-  err => console.error('エラー:', err),
-  () => console.log('完了::')
-);
+// オブジェクト形式（推奨）
+observable$.subscribe({
+  next: value => console.log('値::', value),
+  error: err => console.error('エラー:', err),
+  complete: () => console.log('完了::')
+});
 
 );
 
@@ -150,7 +150,7 @@ observable$.subscribe(
 #### 例
 ```ts
 import { interval } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take } from 'rxjs';
 
 const numbers$ = interval(1000).pipe(take(5));
 
@@ -181,7 +181,7 @@ Observableのライフサイクルでは、 `error()` を呼び出すと直ち�
 #### 例
 ```ts
 import { Observable, of } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError, retry } from 'rxjs';
 
 // エラーを発生させるObservable
 const failingObservable$ = new Observable<number>(subscriber => {
@@ -227,7 +227,7 @@ Observableの完了は、明示的に`complete()`が呼ばれるか、有限の�
 #### 例
 ```ts
 import { of, interval, Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take } from 'rxjs';
 
 // 有限のObservable（自動的に完了）
 const finite$ = of(1, 2, 3);
@@ -279,7 +279,7 @@ manual$.subscribe({
 #### 例
 ```ts
 import { interval, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs';
 
 // コンポーネントのライフサイクルを模倣
 class Component {

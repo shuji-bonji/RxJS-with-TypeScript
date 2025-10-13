@@ -14,7 +14,7 @@ RxJSのSubjectは様々な実用的なシナリオで活用できます。ここ
 
 ```ts
 import { BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 interface AppState {
   user: { name: string; role: string } | null;
@@ -98,7 +98,7 @@ store.setState({ theme: 'dark' });
 
 ```ts
 import { Subject } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter, map } from 'rxjs';
 
 type EventPayloadMap = {
   USER_LOGIN: { username: string; timestamp: number };
@@ -172,7 +172,7 @@ eventBus.emit('NOTIFICATION', '新しいメッセージがあります');
 
 ```ts
 import { Observable, AsyncSubject, of, throwError } from 'rxjs';
-import { tap, catchError, delay } from 'rxjs/operators';
+import { tap, catchError, delay } from 'rxjs';
 
 class ApiCacheService {
   private cache = new Map<string, AsyncSubject<any>>();
@@ -282,7 +282,7 @@ AsyncSubjectを使ったこのパターンは、完了時の最後の値のみ�
 
 ```ts
 import { BehaviorSubject } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 interface UserForm {
   name: string;
@@ -397,7 +397,7 @@ submit @
 
 ```ts
 import { Observable, ReplaySubject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap } from 'rxjs';
 
 interface LogEntry {
   action: string;
@@ -613,7 +613,7 @@ WebSocket の接続状態・受信メッセージ・再接続制御を、複数�
 
 ```ts
 import { Subject, BehaviorSubject, timer, Observable } from 'rxjs';
-import { takeUntil, filter, map } from 'rxjs/operators';
+import { takeUntil, filter, map } from 'rxjs';
 
 interface WebSocketMessage {
   type: string;

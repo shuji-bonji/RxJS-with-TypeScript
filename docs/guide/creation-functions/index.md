@@ -49,7 +49,7 @@ concat(obs1$, obs2$).subscribe(console.log);
 
 ```typescript
 import { of } from 'rxjs';
-import { concatWith } from 'rxjs/operators';
+import { concatWith } from 'rxjs';
 
 const obs1$ = of(1, 2, 3);
 const obs2$ = of(4, 5, 6);

@@ -48,7 +48,7 @@ console.log('End');
 
 ```ts
 import { of, asyncScheduler } from 'rxjs';
-import { observeOn } from 'rxjs/operators';
+import { observeOn } from 'rxjs';
 
 of('Hello')
   .pipe(observeOn(asyncScheduler))
@@ -82,7 +82,7 @@ console.log('End');
 
 ```ts
 import { of, asapScheduler } from 'rxjs';
-import { observeOn } from 'rxjs/operators';
+import { observeOn } from 'rxjs';
 
 of('Hi')
   .pipe(observeOn(asapScheduler))
@@ -102,7 +102,7 @@ of('Hi')
 
 ```ts
 import { of, queueScheduler } from 'rxjs';
-import { observeOn } from 'rxjs/operators';
+import { observeOn } from 'rxjs';
 
 of('Now')
   .pipe(observeOn(queueScheduler))

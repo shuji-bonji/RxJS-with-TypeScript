@@ -50,7 +50,7 @@ document.addEventListener('mousemove', (event) => {
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { map, throttleTime } from 'rxjs/operators';
+import { map, throttleTime } from 'rxjs';
 
 // マウス移動イベントのストリーム化（スロットリング付き）
 const mouseMove$ = fromEvent<MouseEvent>(document, 'mousemove').pipe(
@@ -82,7 +82,7 @@ document.addEventListener('keydown', (event) => {
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 // キーボードイベントのストリーム化
 const keyDown$ = fromEvent<KeyboardEvent>(document, 'keydown').pipe(
@@ -148,7 +148,7 @@ RxJSでは複数のイベントソースを `merge` や `combineLatest` によ�
 
 ```ts
 import { fromEvent, merge } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 // 複数のボタンからのクリックを統合
 const button1Clicks$ = fromEvent(document.querySelector('#button1')!, 'click')
@@ -182,7 +182,7 @@ import {
   filter,
   debounceTime,
   distinctUntilChanged,
-} from 'rxjs/operators';
+} from 'rxjs';
 
 // 入力フィールドの値の変更を監視
 const input$ = fromEvent<InputEvent>(
@@ -215,7 +215,7 @@ input$.subscribe((searchText) => {
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { map, switchMap, takeUntil, tap } from 'rxjs';
 
 function implementDragAndDrop(element: HTMLElement) {
   // マウスダウンイベントのストリーム
@@ -279,7 +279,7 @@ implementDragAndDrop(draggableElement);
 
 ```ts
 import { fromEvent, combineLatest } from 'rxjs';
-import { map, startWith, debounceTime } from 'rxjs/operators';
+import { map, startWith, debounceTime } from 'rxjs';
 
 function validateForm() {
   // 入力フィールドの参照

@@ -25,7 +25,7 @@ description: 実際のアプリケーションで役立つRxJSの変換オペレ
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { map, debounceTime, distinctUntilChanged } from 'rxjs';
 
 // 入力フィールド
 const emailInput = document.createElement('input');
@@ -84,7 +84,7 @@ fromEvent(emailInput, 'input')
 
 ```ts
 import { from } from 'rxjs';
-import { map, toArray } from 'rxjs/operators';
+import { map, toArray } from 'rxjs';
 
 // 売上データ
 const sales = [
@@ -141,7 +141,7 @@ from(sales)
 
 ```ts
 import { ajax } from 'rxjs/ajax';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 const resultBox = document.createElement('div');
 resultBox.id = 'normalized-results';
@@ -212,7 +212,7 @@ import {
   debounceTime,
   takeUntil,
   distinctUntilChanged,
-} from 'rxjs/operators';
+} from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 
 type User = {

@@ -14,7 +14,7 @@ description: throttleTimeオペレーターは、指定時間間隔内で最初�
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { throttleTime } from 'rxjs/operators';
+import { throttleTime } from 'rxjs';
 
 fromEvent(document, 'click')
   .pipe(throttleTime(2000))
@@ -40,7 +40,7 @@ fromEvent(document, 'click')
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { throttleTime, map } from 'rxjs/operators';
+import { throttleTime, map } from 'rxjs';
 
 // 出力エリア作成
 const container = document.createElement('div');

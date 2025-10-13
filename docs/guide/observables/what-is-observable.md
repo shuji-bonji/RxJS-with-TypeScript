@@ -75,7 +75,7 @@ Observableの真価は`pipe()`メソッドを使ってオペレーターと組�
 
 ```ts
 import { of } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
+import { map, filter } from 'rxjs';
 
 const numbers$ = of(1, 2, 3, 4, 5);
 numbers$.pipe(

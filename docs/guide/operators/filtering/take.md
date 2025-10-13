@@ -11,7 +11,7 @@ description: takeオペレーターは、Observableストリームから最初�
 
 ```ts
 import { interval } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take } from 'rxjs';
 
 const source$ = interval(1000);
 
@@ -38,7 +38,7 @@ source$.pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take } from 'rxjs';
 
 // 出力エリア作成
 const output = document.createElement('div');

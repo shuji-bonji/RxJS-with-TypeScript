@@ -12,7 +12,7 @@ description: forkJoin Creation Functionは、複数のObservableがすべて完�
 
 ```ts
 import { forkJoin, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { delay } from 'rxjs';
 
 const user$ = of('ユーザーA').pipe(delay(1000));
 const posts$ = of('投稿リスト').pipe(delay(1500));
@@ -44,7 +44,7 @@ forkJoin([user$, posts$]).subscribe(([user, posts]) => {
 
 ```ts
 import { forkJoin, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { delay } from 'rxjs';
 
 // 出力エリア作成
 const output = document.createElement('div');

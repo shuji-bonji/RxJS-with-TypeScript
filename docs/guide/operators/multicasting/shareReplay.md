@@ -14,7 +14,7 @@ description: shareReplay()オペレーターは、マルチキャスティング
 
 ```typescript
 import { interval } from 'rxjs';
-import { take, shareReplay, tap } from 'rxjs/operators';
+import { take, shareReplay, tap } from 'rxjs';
 
 // shareReplayを使用（バッファサイズ2）
 const source$ = interval(1000).pipe(
@@ -90,7 +90,7 @@ interface ShareReplayConfig {
 
 ```typescript
 import { interval } from 'rxjs';
-import { take, share, tap } from 'rxjs/operators';
+import { take, share, tap } from 'rxjs';
 
 const source$ = interval(1000).pipe(
   take(3),
@@ -122,7 +122,7 @@ Observer 2: 2  // ← 過去の値（0, 1）は受け取れない
 
 ```typescript
 import { interval } from 'rxjs';
-import { take, shareReplay, tap } from 'rxjs/operators';
+import { take, shareReplay, tap } from 'rxjs';
 
 const source$ = interval(1000).pipe(
   take(3),
@@ -159,7 +159,7 @@ Observer 2: 2
 ```typescript
 import { Observable } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { map, shareReplay, tap } from 'rxjs/operators';
+import { map, shareReplay, tap } from 'rxjs';
 
 interface User {
   id: number;
@@ -206,7 +206,7 @@ APIリクエスト実行
 
 ```typescript
 import { of } from 'rxjs';
-import { delay, shareReplay, tap } from 'rxjs/operators';
+import { delay, shareReplay, tap } from 'rxjs';
 
 // アプリケーション設定を取得（初回のみ実行）
 const appConfig$ = of({
@@ -237,7 +237,7 @@ Service C: ja
 
 ```typescript
 import { ajax } from 'rxjs/ajax';
-import { shareReplay, tap } from 'rxjs/operators';
+import { shareReplay, tap } from 'rxjs';
 
 // 5秒間だけキャッシュする（TODOデータを例として使用）
 const todoData$ = ajax.getJSON('https://jsonplaceholder.typicode.com/todos/1').pipe(

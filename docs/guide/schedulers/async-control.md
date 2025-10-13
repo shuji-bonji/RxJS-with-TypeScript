@@ -23,7 +23,7 @@ RxJSのオペレーターは、デフォルトでは可能な限り同期的に�
 
 ```ts
 import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 console.log('実行開始');
 
@@ -55,7 +55,7 @@ console.log('実行終了');
 
 ```ts
 import { of, asyncScheduler } from 'rxjs';
-import { observeOn } from 'rxjs/operators';
+import { observeOn } from 'rxjs';
 
 console.log('実行開始');
 
@@ -83,7 +83,7 @@ console.log('実行終了');
 
 ```ts
 import { interval, animationFrameScheduler } from 'rxjs';
-import { take, observeOn } from 'rxjs/operators';
+import { take, observeOn } from 'rxjs';
 
 // アニメーション用途での使用例
 interval(16)
@@ -110,7 +110,7 @@ function updateAnimation() {
 
 ```ts
 import { of, asyncScheduler } from 'rxjs';
-import { subscribeOn, tap } from 'rxjs/operators';
+import { subscribeOn, tap } from 'rxjs';
 
 console.log('購読開始前');
 
@@ -139,7 +139,7 @@ console.log('購読開始後');
 
 ```ts
 import { from, queueScheduler } from 'rxjs';
-import { mergeMap, observeOn, tap } from 'rxjs/operators';
+import { mergeMap, observeOn, tap } from 'rxjs';
 
 interface ApiRequest {
   endpoint: string;
@@ -184,7 +184,7 @@ from(requests)
 
 ```ts
 import { from, asapScheduler } from 'rxjs';
-import { observeOn, bufferCount } from 'rxjs/operators';
+import { observeOn, bufferCount } from 'rxjs';
 
 const largeDataSet = Array.from({ length: 10000 }, (_, i) => i);
 
@@ -231,7 +231,7 @@ function processBatch(
 
 ```ts
 import { TestScheduler } from 'rxjs/testing';
-import { delay } from 'rxjs/operators';
+import { delay } from 'rxjs';
 import { beforeEach, describe, expect, it } from 'vitest';
 
 describe('非同期処理のテスト', () => {
@@ -260,7 +260,7 @@ describe('非同期処理のテスト', () => {
 
 ```ts
 import { of, asyncScheduler } from 'rxjs';
-import { tap, observeOn } from 'rxjs/operators';
+import { tap, observeOn } from 'rxjs';
 
 console.log('開始');
 
@@ -292,7 +292,7 @@ console.log('終了');
 
 ```ts
 import { of, queueScheduler, asyncScheduler, asapScheduler } from 'rxjs';
-import { observeOn } from 'rxjs/operators';
+import { observeOn } from 'rxjs';
 
 console.log('1: 開始');
 

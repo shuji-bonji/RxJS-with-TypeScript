@@ -69,7 +69,7 @@ Subjectの重要な機能の一つが「マルチキャスティング」です�
 
 ```ts
 import { Subject, interval } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take } from 'rxjs';
 
 // データソース
 const source$ = interval(1000).pipe(take(3));
@@ -164,7 +164,7 @@ Subjectは以下のようなシナリオで特に有用です。
 #### 例: イベントバスの実装
 ```ts
 import { Subject } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter } from 'rxjs';
 
 interface AppEvent {
   type: string;

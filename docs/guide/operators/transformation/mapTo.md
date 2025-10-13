@@ -27,7 +27,7 @@ description: mapToオペレーターは、ストリーム内のすべての値�
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { mapTo } from 'rxjs/operators';
+import { mapTo } from 'rxjs';
 
 const clicks$ = fromEvent(document, 'click');
 
@@ -47,7 +47,7 @@ clicks$
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 const clicks$ = fromEvent(document, 'click');
 
@@ -82,7 +82,7 @@ clicks$
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { mapTo } from 'rxjs/operators';
+import { mapTo } from 'rxjs';
 
 // ボタン作成
 const button = document.createElement('button');
@@ -110,7 +110,7 @@ fromEvent(button, 'click')
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 // ボタン作成
 const button = document.createElement('button');
@@ -157,7 +157,7 @@ fromEvent(button, 'click')
 
 ```typescript
 import { fromEvent } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 // ボタン作成
 const button = document.createElement('button');

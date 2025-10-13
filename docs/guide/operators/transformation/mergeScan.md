@@ -11,7 +11,7 @@ description: mergeScanオペレーターは、非同期の累積処理を行うR
 
 ```ts
 import { interval, of } from 'rxjs';
-import { mergeScan, take,  } from 'rxjs/operators';
+import { mergeScan, take,  } from 'rxjs';
 
 interval(1000).pipe(
   take(5),
@@ -62,7 +62,7 @@ source$.pipe(
 
 ```ts
 import { fromEvent, of } from 'rxjs';
-import { mergeScan, delay, take, map } from 'rxjs/operators';
+import { mergeScan, delay, take, map } from 'rxjs';
 
 // ボタン作成
 const button = document.createElement('button');
@@ -109,7 +109,7 @@ fromEvent(button, 'click').pipe(
 
 ```ts
 import { interval, of } from 'rxjs';
-import { mergeScan, take, delay } from 'rxjs/operators';
+import { mergeScan, take, delay } from 'rxjs';
 
 interface RequestLog {
   total: number;

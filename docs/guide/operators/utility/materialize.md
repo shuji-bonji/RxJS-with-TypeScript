@@ -12,7 +12,7 @@ description: materializeオペレーターはObservableの通知（next, error, 
 
 ```ts
 import { of } from 'rxjs';
-import { materialize } from 'rxjs/operators';
+import { materialize } from 'rxjs';
 
 of(1, 2, 3)
   .pipe(materialize())
@@ -46,7 +46,7 @@ Notificationオブジェクトの `kind` プロパティ:
 
 ```ts
 import { of, throwError, concat } from 'rxjs';
-import { materialize, map } from 'rxjs/operators';
+import { materialize, map } from 'rxjs';
 
 // UI作成
 const container = document.createElement('div');
@@ -122,7 +122,7 @@ setTimeout(() => {
 
 ```ts
 import { interval, throwError } from 'rxjs';
-import { materialize, take, mergeMap } from 'rxjs/operators';
+import { materialize, take, mergeMap } from 'rxjs';
 
 // UI作成
 const container2 = document.createElement('div');
@@ -193,7 +193,7 @@ interval(500)
 
 ```ts
 import { of } from 'rxjs';
-import { materialize } from 'rxjs/operators';
+import { materialize } from 'rxjs';
 
 // 通常のストリーム
 of(1, 2, 3).subscribe({
@@ -225,7 +225,7 @@ of(1, 2, 3)
 
 ```ts
 import { of } from 'rxjs';
-import { materialize, map } from 'rxjs/operators';
+import { materialize, map } from 'rxjs';
 
 of(10, 20, 30)
   .pipe(
@@ -256,7 +256,7 @@ of(10, 20, 30)
 
 ```ts
 import { of, throwError, concat } from 'rxjs';
-import { materialize } from 'rxjs/operators';
+import { materialize } from 'rxjs';
 
 concat(
   of(1),
@@ -281,7 +281,7 @@ concat(
 
 ```ts
 import { of } from 'rxjs';
-import { materialize, dematerialize } from 'rxjs/operators';
+import { materialize, dematerialize } from 'rxjs';
 
 of(1, 2, 3)
   .pipe(

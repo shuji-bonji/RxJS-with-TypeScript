@@ -23,7 +23,7 @@ RxJSでは、Subjectやオペレーターによってこれを実現できます
 
 ```ts
 import { Observable, Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap } from 'rxjs';
 
 // データソース（コールドObservable）
 function createDataSource(): Observable<number> {
@@ -130,7 +130,7 @@ RxJSでは、マルチキャスティングを実装するための専用演算�
 
 ```ts
 import { interval } from 'rxjs';
-import { take, share, tap } from 'rxjs/operators';
+import { take, share, tap } from 'rxjs';
 
 // インターバルでカウントするObservable
 const source$ = interval(1000).pipe(
@@ -182,7 +182,7 @@ Observer 2: 4
 
 ```ts
 import { interval } from 'rxjs';
-import { take, share, tap } from 'rxjs/operators';
+import { take, share, tap } from 'rxjs';
 
 const source$ = interval(1000).pipe(
   take(6),
@@ -245,7 +245,7 @@ Observer 2: 5
 
 ```ts
 import { interval } from 'rxjs';
-import { take, shareReplay, tap } from 'rxjs/operators';
+import { take, shareReplay, tap } from 'rxjs';
 
 // shareReplayを使用（バッファサイズ2）
 const source$ = interval(1000).pipe(
@@ -306,7 +306,7 @@ Observer 2: 4
 ```ts
 import { Observable, of, throwError } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { map, catchError, shareReplay, tap } from 'rxjs/operators';
+import { map, catchError, shareReplay, tap } from 'rxjs';
 
 // APIサービスのシミュレーション
 class UserService {

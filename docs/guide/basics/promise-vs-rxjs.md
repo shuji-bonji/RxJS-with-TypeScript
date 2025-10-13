@@ -40,7 +40,7 @@ const promise = fetch('https://api.example.com/data')
 #### RxJS
 ```ts
 import { from } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError } from 'rxjs';
 import { of } from 'rxjs';
 
 // Observableは購読するまで実行されない（Lazy）
@@ -168,7 +168,7 @@ async function loadAllData(): Promise<[User[], Post[]]> {
 #### 具体例
 ```ts
 import { fromEvent } from 'rxjs';
-import { debounceTime, map, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { debounceTime, map, distinctUntilChanged, switchMap } from 'rxjs';
 
 // リアルタイム検索（オートコンプリート）
 const searchInput = document.querySelector<HTMLInputElement>('#search') as HTMLInputElement;
@@ -214,7 +214,7 @@ observable$.subscribe({
 
 ```ts
 import { of, firstValueFrom, lastValueFrom } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { delay } from 'rxjs';
 
 const observable$ = of(1, 2, 3).pipe(delay(1000));
 
@@ -236,7 +236,7 @@ console.log(lastValue); // 3
 
 ```ts
 import { fromEvent, from } from 'rxjs';
-import { debounceTime, switchMap, catchError } from 'rxjs/operators';
+import { debounceTime, switchMap, catchError } from 'rxjs';
 import { of } from 'rxjs';
 
 interface SearchResult {

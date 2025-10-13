@@ -10,7 +10,7 @@ description: windowToggleオペレーターは、開始と終了のトリガー�
 
 ```ts
 import { interval } from 'rxjs';
-import { windowToggle, mergeAll } from 'rxjs/operators';
+import { windowToggle, mergeAll } from 'rxjs';
 
 const source$ = interval(500); // 0.5秒ごとに値を発行
 
@@ -55,7 +55,7 @@ source$.pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { bufferToggle, windowToggle, mergeAll } from 'rxjs/operators';
+import { bufferToggle, windowToggle, mergeAll } from 'rxjs';
 
 const source$ = interval(500);
 const opening$ = interval(2000);
@@ -86,7 +86,7 @@ source$.pipe(
 
 ```ts
 import { fromEvent, interval } from 'rxjs';
-import { windowToggle, mergeMap, toArray, take } from 'rxjs/operators';
+import { windowToggle, mergeMap, toArray, take } from 'rxjs';
 
 // ボタン作成
 const button = document.createElement('button');
@@ -122,7 +122,7 @@ data$.pipe(
 
 ```ts
 import { interval, timer } from 'rxjs';
-import { windowToggle, mergeMap, scan, map } from 'rxjs/operators';
+import { windowToggle, mergeMap, scan, map } from 'rxjs';
 
 // センサーデータ（常時取得）
 const sensorData$ = interval(100).pipe(
@@ -175,7 +175,7 @@ sensorData$.pipe(
 
 ```ts
 import { interval, fromEvent, Subject } from 'rxjs';
-import { windowToggle, mergeMap, toArray, map } from 'rxjs/operators';
+import { windowToggle, mergeMap, toArray, map } from 'rxjs';
 
 // UI要素の作成
 const startButton = document.createElement('button');
@@ -246,7 +246,7 @@ downloadData$.pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { windowToggle, mergeMap, toArray, take } from 'rxjs/operators';
+import { windowToggle, mergeMap, toArray, take } from 'rxjs';
 
 const source$ = interval(200).pipe(take(20)); // 0-19
 
@@ -345,7 +345,7 @@ closing = () => interval(1000); // 1秒間
 
 ```ts
 import { interval, timer } from 'rxjs';
-import { windowToggle, windowWhen, mergeAll } from 'rxjs/operators';
+import { windowToggle, windowWhen, mergeAll } from 'rxjs';
 
 const source$ = interval(200);
 

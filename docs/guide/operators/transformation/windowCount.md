@@ -11,7 +11,7 @@ description: windowCountは指定した個数ごとにObservableを分割するR
 
 ```ts
 import { interval } from 'rxjs';
-import { windowCount, mergeAll } from 'rxjs/operators';
+import { windowCount, mergeAll } from 'rxjs';
 
 // 100msごとに値を発行
 const source$ = interval(100);
@@ -55,7 +55,7 @@ source$.pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { bufferCount, windowCount, mergeAll } from 'rxjs/operators';
+import { bufferCount, windowCount, mergeAll } from 'rxjs';
 
 const source$ = interval(100);
 
@@ -84,7 +84,7 @@ source$.pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { windowCount, map, mergeAll, reduce } from 'rxjs/operators';
+import { windowCount, map, mergeAll, reduce } from 'rxjs';
 
 // 出力エリア作成
 const output = document.createElement('div');
@@ -126,7 +126,7 @@ source$.pipe(
 
 ```ts
 import { range } from 'rxjs';
-import { windowCount, mergeMap, toArray } from 'rxjs/operators';
+import { windowCount, mergeMap, toArray } from 'rxjs';
 
 // 0から9までの値を発行
 range(0, 10).pipe(
@@ -158,7 +158,7 @@ windowCount(3, 4) // ギャップあり: [0,1,2], [4,5,6], [8,9,10]
 
 ```ts
 import { interval } from 'rxjs';
-import { windowCount, map, mergeAll, take } from 'rxjs/operators';
+import { windowCount, map, mergeAll, take } from 'rxjs';
 
 const source$ = interval(100);
 let windowNumber = 0;
@@ -188,7 +188,7 @@ source$.pipe(
 
 ```ts
 import { from } from 'rxjs';
-import { windowCount, mergeMap, toArray } from 'rxjs/operators';
+import { windowCount, mergeMap, toArray } from 'rxjs';
 
 // 1-20までのデータ
 const data$ = from(Array.from({ length: 20 }, (_, i) => i + 1));
@@ -239,7 +239,7 @@ source$.pipe(
 
 ```ts
 import { of } from 'rxjs';
-import { windowCount, mergeMap, toArray } from 'rxjs/operators';
+import { windowCount, mergeMap, toArray } from 'rxjs';
 
 of(1, 2, 3, 4, 5, 6, 7).pipe(
   windowCount(3),

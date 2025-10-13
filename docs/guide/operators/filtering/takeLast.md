@@ -11,7 +11,7 @@ description: takeLastオペレーターは、Observableストリームが完了�
 
 ```ts
 import { range } from 'rxjs';
-import { takeLast } from 'rxjs/operators';
+import { takeLast } from 'rxjs';
 
 const numbers$ = range(0, 10); // 0から9まで
 
@@ -36,7 +36,7 @@ numbers$.pipe(
 
 ```ts
 import { range } from 'rxjs';
-import { take, takeLast } from 'rxjs/operators';
+import { take, takeLast } from 'rxjs';
 
 const numbers$ = range(0, 10); // 0から9まで
 
@@ -64,7 +64,7 @@ numbers$.pipe(
 1. **ログの最新N件を取得**
    ```ts
    import { from } from 'rxjs';
-   import { takeLast } from 'rxjs/operators';
+   import { takeLast } from 'rxjs';
 
    interface LogEntry {
      timestamp: number;
@@ -95,7 +95,7 @@ numbers$.pipe(
 2. **リーダーボードの上位N件を取得**
    ```ts
    import { from } from 'rxjs';
-   import { takeLast } from 'rxjs/operators';
+   import { takeLast } from 'rxjs';
 
    interface Score {
      player: string;
@@ -124,7 +124,7 @@ numbers$.pipe(
 3. **データ処理完了後の最終N件のサマリー**
    ```ts
    import { interval } from 'rxjs';
-   import { take, map, takeLast } from 'rxjs/operators';
+   import { take, map, takeLast } from 'rxjs';
 
    // センサーデータのシミュレーション
    const sensorData$ = interval(100).pipe(
@@ -155,7 +155,7 @@ numbers$.pipe(
 
 ```ts
 import { fromEvent, Subject } from 'rxjs';
-import { takeLast } from 'rxjs/operators';
+import { takeLast } from 'rxjs';
 
 // UI要素の作成
 const container = document.createElement('div');
@@ -232,7 +232,7 @@ fromEvent(submitButton, 'click').subscribe(() => {
 
 ```ts
 import { interval } from 'rxjs';
-import { takeLast } from 'rxjs/operators';
+import { takeLast } from 'rxjs';
 
 // ❌ 悪い例: 無限ストリームで takeLast を使用
 interval(1000).pipe(
@@ -245,7 +245,7 @@ interval(1000).pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { take, takeLast } from 'rxjs/operators';
+import { take, takeLast } from 'rxjs';
 
 // ✅ 良い例: 有限ストリームにしてから takeLast を使用
 interval(1000).pipe(
@@ -261,7 +261,7 @@ interval(1000).pipe(
 
 ```ts
 import { range } from 'rxjs';
-import { takeLast } from 'rxjs/operators';
+import { takeLast } from 'rxjs';
 
 // ⚠️ 注意: 大量のデータをバッファに保持
 range(0, 1000000).pipe(
@@ -274,7 +274,7 @@ range(0, 1000000).pipe(
 
 ```ts
 import { range } from 'rxjs';
-import { last, takeLast } from 'rxjs/operators';
+import { last, takeLast } from 'rxjs';
 
 const numbers$ = range(0, 10);
 
@@ -309,7 +309,7 @@ TypeScript でジェネリクスを活用した型安全な実装例です。
 
 ```ts
 import { Observable, from } from 'rxjs';
-import { takeLast } from 'rxjs/operators';
+import { takeLast } from 'rxjs';
 
 interface Transaction {
   id: string;
@@ -353,7 +353,7 @@ getRecentTransactions(transactions$, 3).subscribe(tx => {
 
 ```ts
 import { range } from 'rxjs';
-import { skip, takeLast } from 'rxjs/operators';
+import { skip, takeLast } from 'rxjs';
 
 const numbers$ = range(0, 10); // 0から9まで
 

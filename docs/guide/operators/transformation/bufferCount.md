@@ -11,7 +11,7 @@ description: bufferCountは指定した個数ごとに値をまとめて配列�
 
 ```ts
 import { interval } from 'rxjs';
-import { bufferCount } from 'rxjs/operators';
+import { bufferCount } from 'rxjs';
 
 // 100msごとに値を発行
 const source$ = interval(100);
@@ -45,7 +45,7 @@ source$.pipe(
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { map, bufferCount } from 'rxjs/operators';
+import { map, bufferCount } from 'rxjs';
 
 // 出力エリア作成
 const output = document.createElement('div');

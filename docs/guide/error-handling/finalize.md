@@ -16,7 +16,7 @@ finalizeは**ストリームの終了時に必ず一度だけ**呼び出され�
 
 ```ts
 import { of } from 'rxjs';
-import { finalize, tap } from 'rxjs/operators';
+import { finalize, tap } from 'rxjs';
 
 // ローディング状態を管理する変数
 let isLoading = true;
@@ -47,7 +47,7 @@ of('データ')
 
 ```ts
 import { throwError } from 'rxjs';
-import { finalize, catchError } from 'rxjs/operators';
+import { finalize, catchError } from 'rxjs';
 
 let isLoading = true;
 
@@ -78,7 +78,7 @@ throwError(() => new Error('データ取得エラー'))
 
 ```ts
 import { interval } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize } from 'rxjs';
 
 let resource = 'アクティブ';
 
@@ -118,7 +118,7 @@ Observableが正常に終了すると、Observerの`complete`コールバック�
 
 ```ts
 import { of } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take } from 'rxjs';
 
 // 有限のシーケンスは自動的に完了する
 of(1, 2, 3).subscribe({
@@ -191,7 +191,7 @@ subject.next(3); // 完了後は無視される
 
 ```ts
 import { ajax } from 'rxjs/ajax';
-import { finalize, catchError } from 'rxjs/operators';
+import { finalize, catchError } from 'rxjs';
 import { of } from 'rxjs';
 
 // ローディング状態
@@ -238,7 +238,7 @@ fetchData('123').subscribe({
 
 ```ts
 import { interval } from 'rxjs';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs';
 import { Subject } from 'rxjs';
 
 class ResourceManager {

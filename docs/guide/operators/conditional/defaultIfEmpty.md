@@ -11,7 +11,7 @@ description: defaultIfEmptyオペレーターは、Observableが値を発行し�
 
 ```ts
 import { from } from 'rxjs';
-import { defaultIfEmpty } from 'rxjs/operators';
+import { defaultIfEmpty } from 'rxjs';
 
 from([]).pipe(
   defaultIfEmpty('値がありません')
@@ -35,7 +35,7 @@ from([]).pipe(
 
 ```ts
 import { of, EMPTY } from 'rxjs';
-import { defaultIfEmpty, delay } from 'rxjs/operators';
+import { defaultIfEmpty, delay } from 'rxjs';
 
 function mockApiCall(hasData: boolean) {
   return hasData
@@ -57,7 +57,7 @@ mockApiCall(false)
 
 ```ts
 import { from } from 'rxjs';
-import { defaultIfEmpty } from 'rxjs/operators';
+import { defaultIfEmpty } from 'rxjs';
 
 // UI構築
 const container = document.createElement('div');
@@ -101,7 +101,7 @@ nonEmptyBtn.addEventListener('click', () => {
 
 ```ts
 import { of, EMPTY } from 'rxjs';
-import { defaultIfEmpty, delay } from 'rxjs/operators';
+import { defaultIfEmpty, delay } from 'rxjs';
 
 function mockApiCall(hasData: boolean) {
   return hasData

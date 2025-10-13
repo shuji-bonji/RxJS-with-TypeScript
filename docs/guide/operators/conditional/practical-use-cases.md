@@ -11,7 +11,7 @@ RxJSの条件オペレーターを活用すると、動的な状態に応じて�
 
 ```ts
 import { iif, of, EMPTY } from 'rxjs';
-import { switchMap, tap, catchError, retry } from 'rxjs/operators';
+import { switchMap, tap, catchError, retry } from 'rxjs';
 
 // UIの作成
 const appContainer = document.createElement('div');
@@ -236,7 +236,7 @@ import {
   withLatestFrom,
   delay,
   startWith,
-} from 'rxjs/operators';
+} from 'rxjs';
 
 // UI要素の作成
 const optimizationContainer = document.createElement('div');

@@ -11,7 +11,7 @@ description: finalizeオペレーターは、Observableが完了・エラー・�
 
 ```ts
 import { of } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize } from 'rxjs';
 
 of('完了')
   .pipe(finalize(() => console.log('ストリームが終了しました')))
@@ -32,7 +32,7 @@ of('完了')
 
 ```ts
 import { of } from 'rxjs';
-import { tap, delay, finalize } from 'rxjs/operators';
+import { tap, delay, finalize } from 'rxjs';
 
 let isLoading = false;
 
@@ -59,7 +59,7 @@ of('データ')
 
 ```ts
 import { interval } from 'rxjs';
-import { take, finalize, tap } from 'rxjs/operators';
+import { take, finalize, tap } from 'rxjs';
 
 // 出力表示エリア
 const finalizeOutput = document.createElement('div');

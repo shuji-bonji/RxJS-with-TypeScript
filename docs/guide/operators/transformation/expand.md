@@ -11,7 +11,7 @@ description: expandオペレーターは、各値から新しいObservableを生
 
 ```ts
 import { of } from 'rxjs';
-import { expand, take } from 'rxjs/operators';
+import { expand, take } from 'rxjs';
 
 // 2倍にしていく再帰的処理
 of(1).pipe(
@@ -40,7 +40,7 @@ of(1).pipe(
 
 ```ts
 import { of } from 'rxjs';
-import { mergeMap, expand, take } from 'rxjs/operators';
+import { mergeMap, expand, take } from 'rxjs';
 
 const double = (x: number) => of(x * 2);
 
@@ -73,7 +73,7 @@ of(1).pipe(
 
 ```ts
 import { of, EMPTY } from 'rxjs';
-import { expand } from 'rxjs/operators';
+import { expand } from 'rxjs';
 
 // 10未満まで2倍にする
 of(1).pipe(
@@ -90,7 +90,7 @@ of(1).pipe(
 
 ```ts
 import { of, from, EMPTY } from 'rxjs';
-import { expand, mergeMap } from 'rxjs/operators';
+import { expand, mergeMap } from 'rxjs';
 
 interface TreeNode {
   id: number;
@@ -143,7 +143,7 @@ of(tree).pipe(
 
 ```ts
 import { of, EMPTY } from 'rxjs';
-import { expand, mergeMap } from 'rxjs/operators';
+import { expand, mergeMap } from 'rxjs';
 
 interface PageResponse {
   data: string[];
@@ -188,7 +188,7 @@ of(1).pipe(
 
 ```ts
 import { defer, EMPTY, lastValueFrom } from 'rxjs';
-import { expand, map, reduce, tap } from 'rxjs/operators';
+import { expand, map, reduce, tap } from 'rxjs';
 
 interface PaginatedResponse<T> {
   items: T[];
@@ -298,7 +298,7 @@ button.addEventListener('click', async () => {
 
 ```ts
 import { of, from, EMPTY } from 'rxjs';
-import { expand, tap } from 'rxjs/operators';
+import { expand, tap } from 'rxjs';
 
 interface FileSystemItem {
   name: string;
@@ -411,7 +411,7 @@ TypeScript でジェネリクスを活用した型安全な実装例です。
 
 ```ts
 import { Observable, of, from, EMPTY } from 'rxjs';
-import { expand, filter, take, defaultIfEmpty, reduce } from 'rxjs/operators';
+import { expand, filter, take, defaultIfEmpty, reduce } from 'rxjs';
 
 interface Node<T> {
   value: T;
@@ -523,7 +523,7 @@ traversal.findAllNodes(tree, value => value.length === 1).subscribe(nodes => {
 
 ```ts
 import { of, asyncScheduler } from 'rxjs';
-import { expand, take } from 'rxjs/operators';
+import { expand, take } from 'rxjs';
 
 // 同期的（デフォルト）
 console.log('同期的expand開始');
@@ -568,7 +568,7 @@ console.log('非同期expand終了');
 
 ```ts
 import { of, EMPTY } from 'rxjs';
-import { expand, map, take } from 'rxjs/operators';
+import { expand, map, take } from 'rxjs';
 
 interface FibState {
   current: number;
@@ -592,7 +592,7 @@ of({ current: 0, next: 1 } as FibState).pipe(
 
 ```ts
 import { of, EMPTY, Observable } from 'rxjs';
-import { expand, reduce } from 'rxjs/operators';
+import { expand, reduce } from 'rxjs';
 
 interface FactorialState {
   n: number;
@@ -625,7 +625,7 @@ factorial(5).subscribe(result => {
 
 ```ts
 import { of } from 'rxjs';
-import { expand } from 'rxjs/operators';
+import { expand } from 'rxjs';
 
 // ❌ 悪い例: 無限ループ
 of(1).pipe(
@@ -638,7 +638,7 @@ of(1).pipe(
 
 ```ts
 import { of, EMPTY } from 'rxjs';
-import { expand, take, takeWhile } from 'rxjs/operators';
+import { expand, take, takeWhile } from 'rxjs';
 
 // ✅ 良い例1: takeで個数制限
 of(1).pipe(

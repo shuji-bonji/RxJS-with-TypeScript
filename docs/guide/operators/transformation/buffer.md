@@ -11,7 +11,7 @@ description: bufferは別のObservableが値を発行するタイミングで、
 
 ```ts
 import { interval, fromEvent } from 'rxjs';
-import { buffer } from 'rxjs/operators';
+import { buffer } from 'rxjs';
 
 // 100msごとに値を発行
 const source$ = interval(100);
@@ -53,7 +53,7 @@ source$.pipe(
 
 ```ts
 import { interval, timer } from 'rxjs';
-import { buffer } from 'rxjs/operators';
+import { buffer } from 'rxjs';
 
 const source$ = interval(100);
 // 1秒ごとにトリガー
@@ -76,7 +76,7 @@ source$.pipe(
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { map, buffer } from 'rxjs/operators';
+import { map, buffer } from 'rxjs';
 
 // ボタンと出力エリアを作成
 const button = document.createElement('button');
@@ -114,7 +114,7 @@ mouseMoves$.pipe(
 
 ```ts
 import { interval, merge, fromEvent, timer } from 'rxjs';
-import { buffer, mapTo } from 'rxjs/operators';
+import { buffer, mapTo } from 'rxjs';
 
 const source$ = interval(100);
 
@@ -151,7 +151,7 @@ source$.pipe(
 
 ```ts
 import { interval, fromEvent, timer, race } from 'rxjs';
-import { buffer } from 'rxjs/operators';
+import { buffer } from 'rxjs';
 
 const source$ = interval(100);
 

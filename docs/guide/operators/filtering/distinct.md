@@ -11,7 +11,7 @@ description: distinctオペレーターは、すべての重複値を除去し�
 
 ```ts
 import { of } from 'rxjs';
-import { distinct } from 'rxjs/operators';
+import { distinct } from 'rxjs';
 
 const numbers$ = of(1, 2, 1, 3, 2, 4, 1, 5);
 
@@ -32,7 +32,7 @@ numbers$.pipe(
 
 ```ts
 import { of } from 'rxjs';
-import { distinct, distinctUntilChanged } from 'rxjs/operators';
+import { distinct, distinctUntilChanged } from 'rxjs';
 
 const values$ = of(1, 2, 1, 2, 3, 1, 2, 3);
 
@@ -61,7 +61,7 @@ values$.pipe(
 
 ```ts
 import { of } from 'rxjs';
-import { distinct } from 'rxjs/operators';
+import { distinct } from 'rxjs';
 
 interface User {
   id: number;
@@ -90,7 +90,7 @@ users$.pipe(
 1. **ユニークなID一覧の取得**
    ```ts
    import { from } from 'rxjs';
-   import { distinct, map } from 'rxjs/operators';
+   import { distinct, map } from 'rxjs';
 
    interface Order {
      orderId: string;
@@ -118,7 +118,7 @@ users$.pipe(
 2. **イベントログから固有のイベントタイプを抽出**
    ```ts
    import { fromEvent, merge } from 'rxjs';
-   import { map, distinct, take } from 'rxjs/operators';
+   import { map, distinct, take } from 'rxjs';
 
    // UI要素を動的に作成
    const container = document.createElement('div');
@@ -168,7 +168,7 @@ users$.pipe(
 
 ```ts
 import { fromEvent, Subject } from 'rxjs';
-import { map, distinct, scan } from 'rxjs/operators';
+import { map, distinct, scan } from 'rxjs';
 
 // UI要素の作成
 const container = document.createElement('div');
@@ -219,7 +219,7 @@ fromEvent<KeyboardEvent>(tagInput, 'keydown').subscribe(event => {
 
 ```ts
 import { interval } from 'rxjs';
-import { distinct, map } from 'rxjs/operators';
+import { distinct, map } from 'rxjs';
 
 // ❌ 悪い例: 無限ストリームで distinct を使用
 interval(100).pipe(
@@ -234,7 +234,7 @@ interval(100).pipe(
 
 ```ts
 import { interval, timer } from 'rxjs';
-import { distinct, map } from 'rxjs/operators';
+import { distinct, map } from 'rxjs';
 
 // ✅ 良い例: 定期的にSetをクリア
 interval(100).pipe(
@@ -260,7 +260,7 @@ TypeScript でジェネリクスを活用した型安全な実装例です。
 
 ```ts
 import { Observable } from 'rxjs';
-import { distinct, map } from 'rxjs/operators';
+import { distinct, map } from 'rxjs';
 
 interface Product {
   id: number;

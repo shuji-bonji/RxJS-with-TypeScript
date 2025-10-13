@@ -154,7 +154,7 @@ RxJSでは、Cold ObservableをHotに変換する手段として主に以下の2
 
 ```ts
 import { interval, Observable } from 'rxjs';
-import { share, take, tap } from 'rxjs/operators';
+import { share, take, tap } from 'rxjs';
 
 // HTTP呼び出しをシミュレート
 function makeHttpRequest(): Observable<number> {
@@ -229,7 +229,7 @@ HTTP呼び出し実行!
 
 ```ts
 import { interval } from 'rxjs';
-import { shareReplay, take, tap } from 'rxjs/operators';
+import { shareReplay, take, tap } from 'rxjs';
 
 // HTTP呼び出しをシミュレート
 const request$ = interval(1000).pipe(
@@ -267,7 +267,7 @@ setTimeout(() => {
 
 ```ts
 import { interval, Subject } from 'rxjs';
-import { multicast, refCount, take } from 'rxjs/operators';
+import { multicast, refCount, take } from 'rxjs';
 
 const source$ = interval(1000).pipe(take(3));
 
@@ -308,7 +308,7 @@ setTimeout(() => {
 
 ```ts
 import { Observable, of, throwError } from 'rxjs';
-import { catchError, shareReplay, tap, delay } from 'rxjs/operators';
+import { catchError, shareReplay, tap, delay } from 'rxjs';
 
 // データサービスのシミュレーション
 class UserService {

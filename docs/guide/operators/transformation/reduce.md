@@ -11,7 +11,7 @@ description: reduceオペレーターは、ストリームのすべての値を�
 
 ```ts
 import { of } from 'rxjs';
-import { reduce } from 'rxjs/operators';
+import { reduce } from 'rxjs';
 
 of(1, 2, 3, 4, 5)
   .pipe(reduce((acc, curr) => acc + curr, 0))
@@ -42,7 +42,7 @@ of(1, 2, 3, 4, 5)
 
 ```ts
 import { of } from 'rxjs';
-import { reduce, scan } from 'rxjs/operators';
+import { reduce, scan } from 'rxjs';
 
 const source$ = of(1, 2, 3, 4, 5);
 
@@ -65,7 +65,7 @@ source$.pipe(
 
 ```ts
 import { fromEvent, from } from 'rxjs';
-import { map, reduce, switchMap } from 'rxjs/operators';
+import { map, reduce, switchMap } from 'rxjs';
 
 // 入力フィールドを作成
 const inputs: HTMLInputElement[] = [];
@@ -115,7 +115,7 @@ fromEvent(button, 'click').pipe(
 
 ```ts
 import { from } from 'rxjs';
-import { reduce } from 'rxjs/operators';
+import { reduce } from 'rxjs';
 
 interface Product {
   category: string;
@@ -150,7 +150,7 @@ from(products).pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { take, reduce } from 'rxjs/operators';
+import { take, reduce } from 'rxjs';
 
 interval(100).pipe(
   take(5),
@@ -183,7 +183,7 @@ TypeScriptの型推論を活用した例です。
 
 ```ts
 import { from } from 'rxjs';
-import { reduce } from 'rxjs/operators';
+import { reduce } from 'rxjs';
 
 interface UserAction {
   type: 'click' | 'scroll' | 'input';

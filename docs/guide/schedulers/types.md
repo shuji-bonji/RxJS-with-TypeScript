@@ -27,7 +27,7 @@ RxJSのスケジューラーは、大きく3つのカテゴリーに分類され
 
 ```ts
 import { of, asyncScheduler } from 'rxjs';
-import { observeOn } from 'rxjs/operators';
+import { observeOn } from 'rxjs';
 
 console.log('1: 開始');
 
@@ -76,7 +76,7 @@ of(1, 2, 3)
 
 ```ts
 import { of, queueScheduler } from 'rxjs';
-import { observeOn } from 'rxjs/operators';
+import { observeOn } from 'rxjs';
 
 console.log('1: 開始');
 
@@ -96,7 +96,7 @@ console.log('3: 終了');
 
 ```ts
 import { Observable, of, queueScheduler } from 'rxjs';
-import { observeOn, expand, take, map } from 'rxjs/operators';
+import { observeOn, expand, take, map } from 'rxjs';
 
 // 再帰的な処理の最適化
 function fibonacci(n: number): Observable<number> {
@@ -120,7 +120,7 @@ fibonacci(10).subscribe(value => console.log(value));
 
 ```ts
 import { of, asapScheduler } from 'rxjs';
-import { observeOn } from 'rxjs/operators';
+import { observeOn } from 'rxjs';
 
 console.log('1: 開始');
 
@@ -140,7 +140,7 @@ console.log('2: 終了');
 
 ```ts
 import { fromEvent, asapScheduler } from 'rxjs';
-import { observeOn, map } from 'rxjs/operators';
+import { observeOn, map } from 'rxjs';
 
 // マウス移動イベントの最適化
 fromEvent(document, 'mousemove')
@@ -168,7 +168,7 @@ fromEvent(document, 'mousemove')
 
 ```ts
 import { animationFrameScheduler, interval } from 'rxjs';
-import { take, map } from 'rxjs/operators';
+import { take, map } from 'rxjs';
 
 // HTML要素を作成
 const box = document.createElement('div');
@@ -246,7 +246,7 @@ interval(0, animationFrameScheduler)
 
 ```ts
 import { fromEvent, animationFrameScheduler, interval } from 'rxjs';
-import { withLatestFrom, observeOn, map } from 'rxjs/operators';
+import { withLatestFrom, observeOn, map } from 'rxjs';
 
 // 追従する円を作成
 const circle = document.createElement('div');
@@ -300,7 +300,7 @@ interval(0, animationFrameScheduler)
 
 ```ts
 import { of, asyncScheduler, queueScheduler, asapScheduler } from 'rxjs';
-import { observeOn } from 'rxjs/operators';
+import { observeOn } from 'rxjs';
 
 console.log('1: 開始');
 
@@ -351,7 +351,7 @@ console.log('7: 終了');
 
 ```ts
 import { from, queueScheduler } from 'rxjs';
-import { mergeMap, observeOn, tap } from 'rxjs/operators';
+import { mergeMap, observeOn, tap } from 'rxjs';
 
 interface ApiRequest {
   endpoint: string;
@@ -387,7 +387,7 @@ from(requests)
 ```ts
 import { webSocket } from 'rxjs/webSocket';
 import { asapScheduler } from 'rxjs';
-import { observeOn } from 'rxjs/operators';
+import { observeOn } from 'rxjs';
 
 // 注: これは概念を示す疑似コードです
 const socket$ = webSocket<any>({
@@ -415,7 +415,7 @@ function handleMessage(msg: any) {
 
 ```ts
 import { range, asyncScheduler, pipe } from 'rxjs';
-import { bufferCount, map, observeOn, tap } from 'rxjs/operators';
+import { bufferCount, map, observeOn, tap } from 'rxjs';
 
 // ❌ 過剰なスケジューラー使用
 range(1, 1000)

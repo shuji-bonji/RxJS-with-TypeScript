@@ -35,7 +35,7 @@ const merged$ = merge(source1$, source2$);
 既存のObservableに対して `.pipe()` 内で使用。
 
 ```typescript
-import { concatWith, mergeWith, combineLatestWith } from 'rxjs/operators';
+import { concatWith, mergeWith, combineLatestWith } from 'rxjs';
 
 // Pipeable Operator として使用
 const result$ = source$.pipe(

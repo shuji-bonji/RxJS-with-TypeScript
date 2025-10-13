@@ -15,7 +15,7 @@ RxJSにおけるエラー処理の中核となる二つのオペレーター、`
 
 ```ts
 import { Observable, of } from 'rxjs';
-import { retry, map } from 'rxjs/operators';
+import { retry, map } from 'rxjs';
 
 // ランダムにエラーが発生する関数
 function getDataWithRandomError(): Observable<string> {
@@ -45,7 +45,7 @@ getDataWithRandomError()
 
 ```ts
 import { Observable, of } from 'rxjs';
-import { retry, tap, catchError, map } from 'rxjs/operators';
+import { retry, tap, catchError, map } from 'rxjs';
 
 let attempts = 0;
 
@@ -95,7 +95,7 @@ simulateFlakyRequest()
 
 ```ts
 import { of, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError } from 'rxjs';
 
 throwError(() => new Error('API呼び出しエラー')) // RxJS 7以降、関数形式推奨
   .pipe(
@@ -121,7 +121,7 @@ throwError(() => new Error('API呼び出しエラー')) // RxJS 7以降、関数
 
 ```ts
 import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError } from 'rxjs';
 
 throwError(() => new Error('元のエラー')) // RxJS 7以降、関数形式推奨
   .pipe(
@@ -148,7 +148,7 @@ throwError(() => new Error('元のエラー')) // RxJS 7以降、関数形式推
 
 ```ts
 import { of, throwError } from 'rxjs';
-import { retry, catchError, tap } from 'rxjs/operators';
+import { retry, catchError, tap } from 'rxjs';
 
 function fetchData() {
   // エラーを発生させるObservable
@@ -195,7 +195,7 @@ fetchData().subscribe({
 
 ```ts
 import { throwError, timer, of } from 'rxjs';
-import { retryWhen, tap, concatMap, catchError } from 'rxjs/operators';
+import { retryWhen, tap, concatMap, catchError } from 'rxjs';
 
 function fetchWithRetry() {
   let retryCount = 0;
@@ -252,7 +252,7 @@ fetchWithRetry().subscribe({
 ```ts
 import { Observable, of } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { retry, catchError, finalize, tap } from 'rxjs/operators';
+import { retry, catchError, finalize, tap } from 'rxjs';
 
 // ローディング状態
 let isLoading = false;

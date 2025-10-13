@@ -12,7 +12,7 @@ description: delayWhenオペレーターは各値の遅延タイミングを個�
 
 ```ts
 import { of, timer } from 'rxjs';
-import { delayWhen } from 'rxjs/operators';
+import { delayWhen } from 'rxjs';
 
 of('A', 'B', 'C')
   .pipe(
@@ -45,7 +45,7 @@ of('A', 'B', 'C')
 
 ```ts
 import { from, timer } from 'rxjs';
-import { delayWhen } from 'rxjs/operators';
+import { delayWhen } from 'rxjs';
 
 // UI作成
 const container = document.createElement('div');
@@ -139,7 +139,7 @@ from(tasks)
 
 ```ts
 import { of, fromEvent } from 'rxjs';
-import { delayWhen, take, tap } from 'rxjs/operators';
+import { delayWhen, take, tap } from 'rxjs';
 
 // UI作成
 const container2 = document.createElement('div');
@@ -207,7 +207,7 @@ of('メッセージ1', 'メッセージ2', 'メッセージ3')
 
 ```ts
 import { of, timer } from 'rxjs';
-import { delay, delayWhen } from 'rxjs/operators';
+import { delay, delayWhen } from 'rxjs';
 
 // delay - 固定時間の遅延
 of(1, 2, 3)
@@ -250,7 +250,7 @@ source$.pipe(
 
 ```ts
 import { of, NEVER } from 'rxjs';
-import { delayWhen } from 'rxjs/operators';
+import { delayWhen } from 'rxjs';
 
 // ❌ 悪い例: NEVERを返すと永遠に遅延
 of(1, 2, 3)
@@ -269,7 +269,7 @@ of(1, 2, 3)
 
 ```ts
 import { of, throwError } from 'rxjs';
-import { delayWhen } from 'rxjs/operators';
+import { delayWhen } from 'rxjs';
 
 of(1, 2, 3)
   .pipe(

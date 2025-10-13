@@ -11,7 +11,7 @@ description: exhaustMapオペレーターは、現在処理中のObservableが�
 
 ```ts
 import { fromEvent, of } from 'rxjs';
-import { exhaustMap, delay } from 'rxjs/operators';
+import { exhaustMap, delay } from 'rxjs';
 
 const clicks$ = fromEvent(document, 'click');
 
@@ -41,7 +41,7 @@ clicks$
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { exhaustMap, delay } from 'rxjs/operators';
+import { exhaustMap, delay } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 
 // ボタン作成

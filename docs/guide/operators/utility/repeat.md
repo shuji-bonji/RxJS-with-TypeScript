@@ -13,7 +13,7 @@ description: repeatオペレーターは、ソースObservableが正常完了し
 
 ```ts
 import { of } from 'rxjs';
-import { repeat } from 'rxjs/operators';
+import { repeat } from 'rxjs';
 
 of('A', 'B')
   .pipe(
@@ -35,7 +35,7 @@ of('A', 'B')
 
 ```ts
 import { of } from 'rxjs';
-import { tap, delay, repeat } from 'rxjs/operators';
+import { tap, delay, repeat } from 'rxjs';
 
 of('✅ データ取得成功')
   .pipe(
@@ -59,7 +59,7 @@ of('✅ データ取得成功')
 
 ```ts
 import { of } from 'rxjs';
-import { repeat, tap } from 'rxjs/operators';
+import { repeat, tap } from 'rxjs';
 
 // 出力表示エリア
 const repeatOutput = document.createElement('div');

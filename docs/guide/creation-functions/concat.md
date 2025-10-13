@@ -37,7 +37,7 @@ concat(obs1$, obs2$).subscribe(console.log);
 
 ```ts
 import { concat, of, timer } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map, take } from 'rxjs';
 
 // 出力エリア作成
 const output = document.createElement('div');

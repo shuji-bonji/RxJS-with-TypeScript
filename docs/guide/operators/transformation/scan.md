@@ -11,7 +11,7 @@ description: scanオペレーターは、各値を逐次的に蓄積しながら
 
 ```ts
 import { of } from 'rxjs';
-import { scan } from 'rxjs/operators';
+import { scan } from 'rxjs';
 
 of(1, 2, 3, 4, 5)
   .pipe(scan((acc, curr) => acc + curr, 0))
@@ -39,7 +39,7 @@ of(1, 2, 3, 4, 5)
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { scan, tap } from 'rxjs/operators';
+import { scan, tap } from 'rxjs';
 
 // ボタン作成
 const button = document.createElement('button');

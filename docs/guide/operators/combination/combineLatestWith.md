@@ -12,7 +12,7 @@ description: combineLatestWithは、元のObservableと他のObservableの最新
 
 ```ts
 import { interval } from 'rxjs';
-import { combineLatestWith, map, take } from 'rxjs/operators';
+import { combineLatestWith, map, take } from 'rxjs';
 
 const source1$ = interval(1000).pipe(
   map(val => `A${val}`),
@@ -56,7 +56,7 @@ source1$
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { combineLatestWith, map, startWith } from 'rxjs/operators';
+import { combineLatestWith, map, startWith } from 'rxjs';
 
 // 出力エリア作成
 const output = document.createElement('div');
@@ -142,7 +142,7 @@ combineLatest([firstName$, lastName$, age$]).subscribe(([first, last, age]) => {
 
 ```ts
 import { fromEvent, interval } from 'rxjs';
-import { combineLatestWith, map, startWith, debounceTime } from 'rxjs/operators';
+import { combineLatestWith, map, startWith, debounceTime } from 'rxjs';
 
 const searchInput = document.createElement('input');
 searchInput.placeholder = '検索...';
@@ -204,7 +204,7 @@ combineLatest([
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { combineLatestWith, map, startWith } from 'rxjs/operators';
+import { combineLatestWith, map, startWith } from 'rxjs';
 
 // スライダー作成
 const redSlider = document.createElement('input');
@@ -286,7 +286,7 @@ red$
 
 ```ts
 import { interval, NEVER } from 'rxjs';
-import { combineLatestWith, take } from 'rxjs/operators';
+import { combineLatestWith, take } from 'rxjs';
 
 interval(1000).pipe(
   take(3),
@@ -299,7 +299,7 @@ interval(1000).pipe(
 
 ```ts
 import { interval, NEVER } from 'rxjs';
-import { combineLatestWith, take, startWith } from 'rxjs/operators';
+import { combineLatestWith, take, startWith } from 'rxjs';
 
 interval(1000).pipe(
   take(3),
@@ -314,7 +314,7 @@ interval(1000).pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { combineLatestWith } from 'rxjs/operators';
+import { combineLatestWith } from 'rxjs';
 
 // 100msごとに発行されるストリーム
 const fast$ = interval(100);
@@ -333,7 +333,7 @@ fast$.pipe(
 
 ```ts
 import { throwError, interval } from 'rxjs';
-import { combineLatestWith, take, catchError } from 'rxjs/operators';
+import { combineLatestWith, take, catchError } from 'rxjs';
 import { of } from 'rxjs';
 
 interval(1000).pipe(

@@ -129,7 +129,7 @@ WebSocketやServer-Sent Events(SSE)などのリアルタイム通信を扱う場
 #### 簡単な例
 ```ts
 import { webSocket } from 'rxjs/webSocket';
-import { filter } from 'rxjs/operators';
+import { filter } from 'rxjs';
 
 const socket$ = webSocket('wss://example.com/chat');
 
@@ -152,7 +152,7 @@ socket$.pipe(
 #### 簡単な例
 ```ts
 import { fromEvent, combineLatest } from 'rxjs';
-import { debounceTime, map, switchMap } from 'rxjs/operators';
+import { debounceTime, map, switchMap } from 'rxjs';
 
 const searchInput = document.querySelector('#search') as HTMLInputElement;
 const sortSelect = document.querySelector('#sort') as HTMLInputElement;
@@ -186,7 +186,7 @@ Progressive Web App（PWA）でのオフライン対応やネットワーク状�
 #### 簡単な例
 ```ts
 import { fromEvent, merge } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { map, startWith } from 'rxjs';
 
 const online$ = fromEvent(window, 'online').pipe(map(() => true));
 const offline$ = fromEvent(window, 'offline').pipe(map(() => false));

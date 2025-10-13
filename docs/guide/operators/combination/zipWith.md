@@ -12,7 +12,7 @@ description: zipWithは、元のObservableと他のObservableから対応する�
 
 ```ts
 import { of, interval } from 'rxjs';
-import { zipWith, map, take } from 'rxjs/operators';
+import { zipWith, map, take } from 'rxjs';
 
 const letters$ = of('A', 'B', 'C', 'D');
 const numbers$ = interval(1000).pipe(
@@ -52,7 +52,7 @@ letters$
 
 ```ts
 import { from, of } from 'rxjs';
-import { zipWith, delay, concatMap } from 'rxjs/operators';
+import { zipWith, delay, concatMap } from 'rxjs';
 
 // 出力エリア作成
 const output = document.createElement('div');
@@ -123,7 +123,7 @@ zip(questions$, answers$, scores$).subscribe(([q, a, s]) => {
 
 ```ts
 import { from, interval } from 'rxjs';
-import { zipWith, map, take, filter } from 'rxjs/operators';
+import { zipWith, map, take, filter } from 'rxjs';
 
 // タスクリスト
 const tasks$ = from([
@@ -181,7 +181,7 @@ zip(
 
 ```ts
 import { from } from 'rxjs';
-import { zipWith, map, concatMap, delay } from 'rxjs/operators';
+import { zipWith, map, concatMap, delay } from 'rxjs';
 import { of } from 'rxjs';
 
 // UI作成
@@ -251,7 +251,7 @@ questions$
 
 ```ts
 import { of } from 'rxjs';
-import { zipWith } from 'rxjs/operators';
+import { zipWith } from 'rxjs';
 
 const short$ = of(1, 2, 3);
 const long$ = of('A', 'B', 'C', 'D', 'E');
@@ -267,7 +267,7 @@ short$.pipe(zipWith(long$)).subscribe(console.log);
 
 ```ts
 import { interval} from 'rxjs';
-import { zipWith, take } from 'rxjs/operators';
+import { zipWith, take } from 'rxjs';
 
 // 高速ストリーム（100msごと）
 const fast$ = interval(100).pipe(take(10));
@@ -286,7 +286,7 @@ fast$.pipe(zipWith(slow$)).subscribe(console.log);
 
 ```ts
 import { interval } from 'rxjs';
-import { zipWith, combineLatestWith, take } from 'rxjs/operators';
+import { zipWith, combineLatestWith, take } from 'rxjs';
 
 const source1$ = interval(1000).pipe(take(3));
 const source2$ = interval(1500).pipe(take(2));

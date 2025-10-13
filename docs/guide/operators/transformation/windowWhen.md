@@ -10,7 +10,7 @@ description: windowWhenオペレーターは、終了条件を動的に制御し
 
 ```ts
 import { interval } from 'rxjs';
-import { windowWhen, mergeAll, take } from 'rxjs/operators';
+import { windowWhen, mergeAll, take } from 'rxjs';
 
 const source$ = interval(500); // 0.5秒ごとに値を発行
 
@@ -55,7 +55,7 @@ source$.pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { bufferWhen, windowWhen, mergeAll, take } from 'rxjs/operators';
+import { bufferWhen, windowWhen, mergeAll, take } from 'rxjs';
 
 const source$ = interval(500);
 const closing = () => interval(1000);
@@ -91,7 +91,7 @@ source$.pipe(
 
 ```ts
 import { interval, timer } from 'rxjs';
-import { windowWhen, mergeMap, toArray, scan, map } from 'rxjs/operators';
+import { windowWhen, mergeMap, toArray, scan, map } from 'rxjs';
 
 // センサーデータ（常時生成）
 const sensorData$ = interval(100).pipe(
@@ -138,7 +138,7 @@ sensorData$.pipe(
 
 ```ts
 import { interval, timer, fromEvent } from 'rxjs';
-import { windowWhen, mergeMap, scan, map } from 'rxjs/operators';
+import { windowWhen, mergeMap, scan, map } from 'rxjs';
 
 // 出力エリア作成
 const container = document.createElement('div');
@@ -230,7 +230,7 @@ logs$.pipe(
 
 ```ts
 import { interval, timer } from 'rxjs';
-import { windowWhen, windowToggle, mergeAll } from 'rxjs/operators';
+import { windowWhen, windowToggle, mergeAll } from 'rxjs';
 
 const source$ = interval(200);
 
@@ -265,7 +265,7 @@ source$.pipe(
 
 ```ts
 import { interval, timer } from 'rxjs';
-import { windowWhen, mergeMap, toArray, map } from 'rxjs/operators';
+import { windowWhen, mergeMap, toArray, map } from 'rxjs';
 
 interface WindowStats {
   count: number;

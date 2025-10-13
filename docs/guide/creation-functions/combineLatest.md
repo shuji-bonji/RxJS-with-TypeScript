@@ -43,7 +43,7 @@ combineLatest([obs1$, obs2$]).subscribe(([val1, val2]) => {
 
 ```ts
 import { combineLatest, fromEvent } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { map, startWith } from 'rxjs';
 
 // 出力エリア作成
 const output = document.createElement('div');

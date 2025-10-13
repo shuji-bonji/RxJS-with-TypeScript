@@ -11,7 +11,7 @@ description: auditオペレーターは、カスタムObservableで制御され�
 
 ```ts
 import { fromEvent, interval } from 'rxjs';
-import { audit } from 'rxjs/operators';
+import { audit } from 'rxjs';
 
 // クリックイベント
 const clicks$ = fromEvent(document, 'click');
@@ -45,7 +45,7 @@ clicks$.pipe(
 
 ```ts
 import { fromEvent, timer } from 'rxjs';
-import { audit, auditTime } from 'rxjs/operators';
+import { audit, auditTime } from 'rxjs';
 
 const clicks$ = fromEvent(document, 'click');
 
@@ -70,7 +70,7 @@ clicks$.pipe(
 
 ```ts
 import { fromEvent, timer } from 'rxjs';
-import { audit, map } from 'rxjs/operators';
+import { audit, map } from 'rxjs';
 
 // UI作成
 const output = document.createElement('div');
@@ -130,7 +130,7 @@ moves$.pipe(
 
 ```ts
 import { fromEvent, timer } from 'rxjs';
-import { audit, map, startWith } from 'rxjs/operators';
+import { audit, map, startWith } from 'rxjs';
 
 // UI作成
 const container = document.createElement('div');
@@ -190,7 +190,7 @@ clicks$.pipe(
 
 ```ts
 import { interval, timer } from 'rxjs';
-import { audit, take } from 'rxjs/operators';
+import { audit, take } from 'rxjs';
 
 interval(100).pipe(
   audit(() => timer(1000)),
@@ -227,7 +227,7 @@ source$.pipe(
 
 ```ts
 import { interval, timer } from 'rxjs';
-import { audit } from 'rxjs/operators';
+import { audit } from 'rxjs';
 
 // 高速ストリーム（10msごと）
 interval(10).pipe(
@@ -247,7 +247,7 @@ interval(10).pipe(
 
 ```ts
 import { fromEvent, interval, timer } from 'rxjs';
-import { audit, throttle, debounce, sample } from 'rxjs/operators';
+import { audit, throttle, debounce, sample } from 'rxjs';
 
 const clicks$ = fromEvent(document, 'click');
 

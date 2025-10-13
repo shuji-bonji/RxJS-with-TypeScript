@@ -25,7 +25,7 @@ TypeScriptでRxJSを使用する最大の利点は、Observableに流れる値�
 
 ```ts
 import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 // 明示的な型定義
 const numbers$: Observable<number> = of(1, 2, 3);
@@ -53,7 +53,7 @@ const userNames$: Observable<string> = users$.pipe(
 
 ```ts
 import { Observable, of, OperatorFunction } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 // OperatorFunctionを使用して型安全なカスタムオペレーターを定義
 function doubleMap<T, R, S>(
@@ -140,7 +140,7 @@ TypeScriptのユーティリティ型を活用することで、RxJSとの統合
 
 ```ts
 import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 interface User {
   id: number;
@@ -235,7 +235,7 @@ RxJSをTypeScriptプロジェクトで使用する際、importの方法も重要
 ```ts
 // 推奨される方法
 import { Observable, of, from } from 'rxjs';
-import { map, filter, catchError } from 'rxjs/operators';
+import { map, filter, catchError } from 'rxjs';
 ```
 
 ## 状態管理のためのRxJSパターン（Reduxレス構成）

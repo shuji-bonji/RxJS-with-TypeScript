@@ -11,7 +11,7 @@ description: merge Creation Functionは複数のObservableを同時に購読し�
 
 ```ts
 import { merge, interval } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map, take } from 'rxjs';
 
 const source1$ = interval(1000).pipe(
   map(val => `ストリーム1: ${val}`),
@@ -50,7 +50,7 @@ merge(source1$, source2$).subscribe(console.log);
 
 ```ts
 import { merge, fromEvent, timer } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 // 出力エリアを作成
 const output = document.createElement('div');

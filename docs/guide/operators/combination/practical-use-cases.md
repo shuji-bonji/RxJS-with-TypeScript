@@ -13,7 +13,7 @@ UI操作やAPI通信など、実際のアプリケーション開発に役立つ
 
 ```ts
 import { combineLatest, fromEvent } from 'rxjs';
-import { map, debounceTime, startWith } from 'rxjs/operators';
+import { map, debounceTime, startWith } from 'rxjs';
 
 // フォームUI作成
 const formContainer = document.createElement('div');
@@ -182,7 +182,7 @@ import {
   Observable,
   ObservableInputTuple,
 } from 'rxjs';
-import { catchError, delay, finalize } from 'rxjs/operators';
+import { catchError, delay, finalize } from 'rxjs';
 
 // インターフェース定義
 interface User {
@@ -373,7 +373,7 @@ import {
   delay,
   catchError,
   takeUntil,
-} from 'rxjs/operators';
+} from 'rxjs';
 
 // 検索UI作成
 const searchContainer = document.createElement('div');
@@ -548,7 +548,7 @@ const search$ = fromEvent(searchInput, 'input')
 
 ```ts
 import { fromEvent, merge, interval, of } from 'rxjs';
-import { map, switchMap, take, tap } from 'rxjs/operators';
+import { map, switchMap, take, tap } from 'rxjs';
 
 // UI要素の作成
 const switchingContainer = document.createElement('div');
@@ -678,7 +678,7 @@ import {
   takeUntil,
   withLatestFrom,
   startWith,
-} from 'rxjs/operators';
+} from 'rxjs';
 
 // UI要素の作成
 const conditionalContainer = document.createElement('div');

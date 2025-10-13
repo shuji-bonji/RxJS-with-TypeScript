@@ -12,7 +12,7 @@ description: raceWithは、元のObservableと他のObservableのうち最初に
 
 ```ts
 import { timer } from 'rxjs';
-import { raceWith, map } from 'rxjs/operators';
+import { raceWith, map } from 'rxjs';
 
 const slow$ = timer(5000).pipe(map(() => 'ゆっくり (5秒)'));
 const medium$ = timer(3000).pipe(map(() => '普通 (3秒)'));
@@ -44,7 +44,7 @@ slow$
 
 ```ts
 import { fromEvent, timer } from 'rxjs';
-import { raceWith, map, take } from 'rxjs/operators';
+import { raceWith, map, take } from 'rxjs';
 
 // 出力エリア作成
 const output = document.createElement('div');
@@ -111,7 +111,7 @@ manualClick$
 
 ```ts
 import { race, timer } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 const server1$ = timer(3000).pipe(map(() => 'サーバー1からの応答'));
 const server2$ = timer(2000).pipe(map(() => 'サーバー2からの応答'));
@@ -128,7 +128,7 @@ race(server1$, server2$, server3$).subscribe(response => {
 
 ```ts
 import { fromEvent, timer, of } from 'rxjs';
-import { raceWith, map, switchMap, catchError } from 'rxjs/operators';
+import { raceWith, map, switchMap, catchError } from 'rxjs';
 
 const searchButton = document.createElement('button');
 searchButton.textContent = '検索';
@@ -181,7 +181,7 @@ race(
 
 ```ts
 import { timer, throwError } from 'rxjs';
-import { raceWith, map, mergeMap, catchError, delay } from 'rxjs/operators';
+import { raceWith, map, mergeMap, catchError, delay } from 'rxjs';
 import { of } from 'rxjs';
 
 // UI作成
@@ -240,7 +240,7 @@ button.addEventListener('click', () => {
 
 ```ts
 import { timer, fromEvent } from 'rxjs';
-import { raceWith, map, mergeMap } from 'rxjs/operators';
+import { raceWith, map, mergeMap } from 'rxjs';
 
 const output = document.createElement('div');
 output.innerHTML = '<h3>複数CDNから最速ロード</h3>';
@@ -301,7 +301,7 @@ fromEvent(loadButton, 'click').pipe(
 
 ```ts
 import { of, timer, throwError } from 'rxjs';
-import { raceWith, delay, mergeMap } from 'rxjs/operators';
+import { raceWith, delay, mergeMap } from 'rxjs';
 
 // 時間のかかる処理（3秒）
 const slowRequest$ = of('データ取得成功').pipe(delay(3000));
@@ -327,7 +327,7 @@ slowRequest$
 
 ```ts
 import { timer } from 'rxjs';
-import { raceWith, tap, map } from 'rxjs/operators';
+import { raceWith, tap, map } from 'rxjs';
 
 const slow$ = timer(3000).pipe(
   tap(() => console.log('slow$ 発火')),
@@ -352,7 +352,7 @@ slow$.pipe(raceWith(fast$)).subscribe(console.log);
 
 ```ts
 import { of } from 'rxjs';
-import { raceWith } from 'rxjs/operators';
+import { raceWith } from 'rxjs';
 
 of('A').pipe(
   raceWith(of('B'), of('C'))

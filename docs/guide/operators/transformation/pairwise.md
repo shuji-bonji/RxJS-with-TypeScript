@@ -11,7 +11,7 @@ description: pairwiseオペレーターは、連続する2つの値をペアの�
 
 ```ts
 import { interval } from 'rxjs';
-import { pairwise, take } from 'rxjs/operators';
+import { pairwise, take } from 'rxjs';
 
 interval(1000).pipe(
   take(6),
@@ -44,7 +44,7 @@ interval(1000).pipe(
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { map, pairwise } from 'rxjs/operators';
+import { map, pairwise } from 'rxjs';
 
 // 出力エリア作成
 const output = document.createElement('div');
@@ -79,7 +79,7 @@ fromEvent<MouseEvent>(document, 'mousemove').pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { map, pairwise, take } from 'rxjs/operators';
+import { map, pairwise, take } from 'rxjs';
 
 // 0, 1, 4, 9, 16, 25 (平方数)
 interval(500).pipe(
@@ -109,7 +109,7 @@ interval(500).pipe(
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { map, pairwise, throttleTime } from 'rxjs/operators';
+import { map, pairwise, throttleTime } from 'rxjs';
 
 // 固定表示される出力エリア作成
 const output = document.createElement('div');
@@ -159,7 +159,7 @@ TypeScriptの型推論を活用した例です。
 
 ```ts
 import { from } from 'rxjs';
-import { pairwise } from 'rxjs/operators';
+import { pairwise } from 'rxjs';
 
 interface Stock {
   symbol: string;
@@ -199,7 +199,7 @@ from(stockPrices).pipe(
 
 ```ts
 import { of } from 'rxjs';
-import { pairwise, bufferCount } from 'rxjs/operators';
+import { pairwise, bufferCount } from 'rxjs';
 
 const source$ = of(1, 2, 3, 4, 5);
 
@@ -224,13 +224,12 @@ source$.pipe(bufferCount(2, 1)).subscribe(console.log);
 
 ```ts
 import { of } from 'rxjs';
-import { pairwise } from 'rxjs/operators';
+import { pairwise } from 'rxjs';
 
-of(1).pipe(pairwise()).subscribe(
-  console.log,
-  null,
-  () => console.log('完了')
-);
+of(1).pipe(pairwise()).subscribe({
+  next: console.log,
+  complete: () => console.log('完了')
+});
 
 // 出力:
 // 完了
@@ -241,7 +240,7 @@ of(1).pipe(pairwise()).subscribe(
 
 ```ts
 import { of } from 'rxjs';
-import { startWith, pairwise } from 'rxjs/operators';
+import { startWith, pairwise } from 'rxjs';
 
 of(10, 20, 30).pipe(
   startWith(0),

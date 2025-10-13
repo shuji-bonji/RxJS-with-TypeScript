@@ -12,7 +12,7 @@ description: mapオペレーターは、Observable内の各値に関数を適用
 
 ```ts
 import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 of(1, 2, 3).pipe(
   map(value => value * 10)
@@ -38,7 +38,7 @@ of(1, 2, 3).pipe(
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 // 入力フィールド作成
 const input = document.createElement('input');

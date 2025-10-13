@@ -43,7 +43,7 @@ odds$.subscribe((value) => console.log('奇数:', value));
 
 ```ts
 import { partition, fromEvent } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 // 出力エリア作成
 const leftArea = document.createElement('div');
@@ -104,7 +104,7 @@ HTTPステータスコードで成功と失敗を分割する例
 
 ```ts
 import { partition, from, of } from 'rxjs';
-import { mergeMap, map, catchError, share } from 'rxjs/operators';
+import { mergeMap, map, catchError, share } from 'rxjs';
 
 interface ApiResponse {
   status: number;
@@ -173,7 +173,7 @@ failure$.subscribe((response) => {
 
 ```ts
 import { partition, interval } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map, take } from 'rxjs';
 
 const output = document.createElement('div');
 document.body.appendChild(output);
@@ -222,7 +222,7 @@ failure$.subscribe(task => {
 
 ```ts
 import { interval } from 'rxjs';
-import { map, take, filter } from 'rxjs/operators';
+import { map, take, filter } from 'rxjs';
 
 const output = document.createElement('div');
 document.body.appendChild(output);
@@ -255,7 +255,7 @@ tasks$
 
 ```ts
 import { of } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter } from 'rxjs';
 import { partition } from 'rxjs';
 
 const numbers$ = of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
@@ -280,7 +280,7 @@ odds2$.subscribe(n => console.log('奇数:', n));
 
 ```ts
 import { from } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter, map } from 'rxjs';
 
 interface User {
   id: number;
@@ -357,7 +357,7 @@ b$.subscribe(); // 購読回数: 2
 副作用を避けるには、`share()`を使用します。
 
 ```ts
-import { share } from 'rxjs/operators';
+import { share } from 'rxjs';
 
 const shared$ = source$.pipe(share());
 const [a$, b$] = partition(shared$, n => n > 0);

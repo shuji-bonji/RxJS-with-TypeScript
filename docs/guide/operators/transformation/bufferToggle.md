@@ -11,7 +11,7 @@ description: bufferToggleオペレーターは、開始と終了のトリガー�
 
 ```ts
 import { interval } from 'rxjs';
-import { bufferToggle } from 'rxjs/operators';
+import { bufferToggle } from 'rxjs';
 
 const source$ = interval(500); // 0.5秒ごとに値を発行
 
@@ -55,7 +55,7 @@ source$.pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { bufferToggle, take } from 'rxjs/operators';
+import { bufferToggle, take } from 'rxjs';
 
 const source$ = interval(300).pipe(take(10)); // 0-9を300msごとに発行
 
@@ -90,7 +90,7 @@ source$.pipe(
 1. **営業時間中のデータ収集**
    ```ts
    import { interval, timer } from 'rxjs';
-   import { bufferToggle, map } from 'rxjs/operators';
+   import { bufferToggle, map } from 'rxjs';
 
    // センサーデータ（常時取得）
    const sensorData$ = interval(100).pipe(
@@ -117,7 +117,7 @@ source$.pipe(
 2. **ボタン押下中のイベント記録**
    ```ts
    import { fromEvent, interval } from 'rxjs';
-   import { bufferToggle, map, take } from 'rxjs/operators';
+   import { bufferToggle, map, take } from 'rxjs';
 
    const button = document.createElement('button');
    button.textContent = 'ホールド';
@@ -149,7 +149,7 @@ source$.pipe(
 3. **アクティブユーザーのアクション記録**
    ```ts
    import { fromEvent, merge, timer } from 'rxjs';
-    mport { bufferToggle, map } from 'rxjs/operators';
+    mport { bufferToggle, map } from 'rxjs';
 
    // ユーザーアクション
    const clicks$ = fromEvent(document, 'click').pipe(
@@ -191,7 +191,7 @@ source$.pipe(
 
 ```ts
 import { interval, fromEvent, Subject } from 'rxjs';
-import { bufferToggle, map, take } from 'rxjs/operators';
+import { bufferToggle, map, take } from 'rxjs';
 
 // UI要素の作成
 const container = document.createElement('div');
@@ -271,7 +271,7 @@ downloadData$.pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { bufferToggle, take } from 'rxjs/operators';
+import { bufferToggle, take } from 'rxjs';
 
 const source$ = interval(200).pipe(take(20)); // 0-19
 
@@ -309,7 +309,7 @@ TypeScript でジェネリクスを活用した型安全な実装例です。
 
 ```ts
 import { Observable, Subject, interval } from 'rxjs';
-import { bufferToggle, map } from 'rxjs/operators';
+import { bufferToggle, map } from 'rxjs';
 
 interface MetricData {
   timestamp: Date;
@@ -385,7 +385,7 @@ setTimeout(() => {
 
 ```ts
 import { interval, timer } from 'rxjs';
-import { bufferToggle, bufferWhen } from 'rxjs/operators';
+import { bufferToggle, bufferWhen } from 'rxjs';
 
 const source$ = interval(200);
 
@@ -418,7 +418,7 @@ source$.pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { bufferToggle } from 'rxjs/operators';
+import { bufferToggle } from 'rxjs';
 
 const source$ = interval(100);
 
@@ -436,7 +436,7 @@ source$.pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { bufferToggle } from 'rxjs/operators';
+import { bufferToggle } from 'rxjs';
 
 const source$ = interval(100);
 

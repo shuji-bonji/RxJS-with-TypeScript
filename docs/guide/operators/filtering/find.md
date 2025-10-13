@@ -11,7 +11,7 @@ description: findオペレーターは、条件を満たす最初の値を見つ
 
 ```ts
 import { from } from 'rxjs';
-import { find } from 'rxjs/operators';
+import { find } from 'rxjs';
 
 const numbers$ = from([1, 3, 5, 7, 8, 9, 10]);
 
@@ -35,7 +35,7 @@ numbers$.pipe(
 
 ```ts
 import { from } from 'rxjs';
-import { find, first } from 'rxjs/operators';
+import { find, first } from 'rxjs';
 
 const numbers$ = from([1, 3, 5, 7, 8, 9, 10]);
 
@@ -64,7 +64,7 @@ numbers$.pipe(
 1. **ユーザー検索**
    ```ts
    import { from } from 'rxjs';
-   import { find } from 'rxjs/operators';
+   import { find } from 'rxjs';
 
    interface User {
      id: number;
@@ -94,7 +94,7 @@ numbers$.pipe(
 2. **在庫確認**
    ```ts
    import { from } from 'rxjs';
-   import { find } from 'rxjs/operators';
+   import { find } from 'rxjs';
 
    interface Product {
      id: string;
@@ -124,7 +124,7 @@ numbers$.pipe(
 3. **エラーログの検索**
    ```ts
    import { from } from 'rxjs';
-   import { find } from 'rxjs/operators';
+   import { find } from 'rxjs';
 
    interface LogEntry {
      timestamp: number;
@@ -157,7 +157,7 @@ numbers$.pipe(
 
 ```ts
 import { from, fromEvent } from 'rxjs';
-import { find } from 'rxjs/operators';
+import { find } from 'rxjs';
 
 interface Product {
   id: string;
@@ -234,7 +234,7 @@ fromEvent(searchButton, 'click').subscribe(() => {
 
 ```ts
 import { from } from 'rxjs';
-import { find, filter } from 'rxjs/operators';
+import { find, filter } from 'rxjs';
 
 const numbers$ = from([1, 3, 5, 7, 8, 9, 10]);
 
@@ -269,7 +269,7 @@ TypeScript でジェネリクスを活用した型安全な実装例です。
 
 ```ts
 import { Observable, from } from 'rxjs';
-import { find } from 'rxjs/operators';
+import { find } from 'rxjs';
 
 interface Task {
   id: number;
@@ -328,7 +328,7 @@ RxJSには `findIndex` オペレーターもあります。
 
 ```ts
 import { from } from 'rxjs';
-import { find, findIndex } from 'rxjs/operators';
+import { find, findIndex } from 'rxjs';
 
 const numbers$ = from([10, 20, 30, 40, 50]);
 
@@ -360,7 +360,7 @@ numbers$.pipe(
 
 ```ts
 import { from } from 'rxjs';
-import { find } from 'rxjs/operators';
+import { find } from 'rxjs';
 
 const numbers$ = from([1, 3, 5, 7]);
 
@@ -378,7 +378,7 @@ numbers$.pipe(
 
 ```ts
 import { from } from 'rxjs';
-import { find, first } from 'rxjs/operators';
+import { find, first } from 'rxjs';
 
 const numbers$ = from([1, 3, 5, 7]);
 

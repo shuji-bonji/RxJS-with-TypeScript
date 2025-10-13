@@ -10,7 +10,7 @@ description: skipWhileオペレーターは、指定した条件を満たす間�
 
 ```ts
 import { range } from 'rxjs';
-import { skipWhile } from 'rxjs/operators';
+import { skipWhile } from 'rxjs';
 
 const numbers$ = range(0, 10); // 0から9まで
 
@@ -44,7 +44,7 @@ numbers$.pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { skipWhile, map, take } from 'rxjs/operators';
+import { skipWhile, map, take } from 'rxjs';
 
 // UI作成
 const container = document.createElement('div');
@@ -123,7 +123,7 @@ interval(500).pipe(
 
 ```ts
 import { fromEvent, merge, Subject } from 'rxjs';
-import { skipWhile, map, tap } from 'rxjs/operators';
+import { skipWhile, map, tap } from 'rxjs';
 
 // UI作成
 const container = document.createElement('div');
@@ -223,7 +223,7 @@ fromEvent(eventButton, 'click').pipe(
 
 ```ts
 import { range } from 'rxjs';
-import { skipWhile, takeWhile, skip, filter } from 'rxjs/operators';
+import { skipWhile, takeWhile, skip, filter } from 'rxjs';
 
 const numbers$ = range(0, 10); // 0から9まで
 
@@ -284,7 +284,7 @@ takeWhile(n => n < 5):
 
 ```ts
 import { from } from 'rxjs';
-import { skipWhile, filter } from 'rxjs/operators';
+import { skipWhile, filter } from 'rxjs';
 
 const numbers$ = from([1, 2, 3, 4, 5, 4, 3, 2, 1]);
 
@@ -307,7 +307,7 @@ numbers$.pipe(
 
 ```ts
 import { range } from 'rxjs';
-import { skipWhile } from 'rxjs/operators';
+import { skipWhile } from 'rxjs';
 
 range(5, 5).pipe( // 5から9まで
   skipWhile(n => n < 3) // 最初から条件がfalse
@@ -321,7 +321,7 @@ range(5, 5).pipe( // 5から9まで
 
 ```ts
 import { range } from 'rxjs';
-import { skipWhile } from 'rxjs/operators';
+import { skipWhile } from 'rxjs';
 
 range(0, 5).pipe( // 0から4まで
   skipWhile(n => n < 10) // すべての値が条件を満たす
@@ -338,7 +338,7 @@ range(0, 5).pipe( // 0から4まで
 
 ```ts
 import { Observable, from } from 'rxjs';
-import { skipWhile } from 'rxjs/operators';
+import { skipWhile } from 'rxjs';
 
 interface User {
   id: number;
@@ -372,7 +372,7 @@ CSVなどのヘッダー行をスキップ
 
 ```ts
 import { from } from 'rxjs';
-import { skipWhile, map } from 'rxjs/operators';
+import { skipWhile, map } from 'rxjs';
 
 const csvLines$ = from([
   'Name,Age,City',     // ヘッダー行
@@ -408,7 +408,7 @@ csvLines$.pipe(
 
 ```ts
 import { from } from 'rxjs';
-import { skipWhile } from 'rxjs/operators';
+import { skipWhile } from 'rxjs';
 
 interface LogEntry {
   timestamp: Date;
@@ -440,7 +440,7 @@ logs$.pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { skipWhile, map, take } from 'rxjs/operators';
+import { skipWhile, map, take } from 'rxjs';
 
 interface SystemState {
   tick: number;

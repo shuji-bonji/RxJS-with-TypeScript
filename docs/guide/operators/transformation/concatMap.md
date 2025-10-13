@@ -11,7 +11,7 @@ description: concatMapは各Observableを順番に処理し、前の処理が完
 
 ```ts
 import { of } from 'rxjs';
-import { concatMap, delay } from 'rxjs/operators';
+import { concatMap, delay } from 'rxjs';
 
 of('A', 'B', 'C').pipe(
   concatMap(value =>
@@ -42,7 +42,7 @@ of('A', 'B', 'C').pipe(
 
 ```ts
 import { fromEvent, of } from 'rxjs';
-import { concatMap, delay } from 'rxjs/operators';
+import { concatMap, delay } from 'rxjs';
 
 // ボタン作成
 const button = document.createElement('button');

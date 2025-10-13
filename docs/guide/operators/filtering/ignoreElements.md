@@ -10,7 +10,7 @@ description: ignoreElementsオペレーターは、すべての値を無視し�
 
 ```ts
 import { of } from 'rxjs';
-import { ignoreElements } from 'rxjs/operators';
+import { ignoreElements } from 'rxjs';
 
 const source$ = of(1, 2, 3, 4, 5);
 
@@ -42,7 +42,7 @@ source$.pipe(
 
 ```ts
 import { from, forkJoin, of } from 'rxjs';
-import { ignoreElements, tap, delay, concat } from 'rxjs/operators';
+import { ignoreElements, tap, delay, concat } from 'rxjs';
 
 // UI作成
 const container = document.createElement('div');
@@ -125,7 +125,7 @@ forkJoin([
 
 ```ts
 import { from, of, concat } from 'rxjs';
-import { ignoreElements, tap, delay, mergeMap } from 'rxjs/operators';
+import { ignoreElements, tap, delay, mergeMap } from 'rxjs';
 
 // UI作成
 const container = document.createElement('div');
@@ -221,7 +221,7 @@ button.addEventListener('click', () => {
 
 ```ts
 import { of } from 'rxjs';
-import { ignoreElements, filter, take } from 'rxjs/operators';
+import { ignoreElements, filter, take } from 'rxjs';
 
 const source$ = of(1, 2, 3);
 
@@ -267,7 +267,7 @@ source$.pipe(
 
 ```ts
 import { throwError, of, concat } from 'rxjs';
-import { ignoreElements, delay } from 'rxjs/operators';
+import { ignoreElements, delay } from 'rxjs';
 
 const success$ = of(1, 2, 3).pipe(
   delay(100),
@@ -306,7 +306,7 @@ error$.subscribe({
 
 ```ts
 import { of } from 'rxjs';
-import { ignoreElements, tap } from 'rxjs/operators';
+import { ignoreElements, tap } from 'rxjs';
 
 of(1, 2, 3).pipe(
   tap(v => console.log('副作用:', v)),
@@ -328,7 +328,7 @@ of(1, 2, 3).pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { ignoreElements, take } from 'rxjs/operators';
+import { ignoreElements, take } from 'rxjs';
 
 // ❌ 悪い例: 完了しない
 interval(1000).pipe(
@@ -352,7 +352,7 @@ interval(1000).pipe(
 
 ```ts
 import { Observable, of } from 'rxjs';
-import { ignoreElements } from 'rxjs/operators';
+import { ignoreElements } from 'rxjs';
 
 const numbers$: Observable<number> = of(1, 2, 3);
 
@@ -376,7 +376,7 @@ result$.subscribe({
 
 ```ts
 import { NEVER } from 'rxjs';
-import { ignoreElements } from 'rxjs/operators';
+import { ignoreElements } from 'rxjs';
 
 // ❌ NEVERは完了もエラーも発行しない
 NEVER.pipe(
@@ -392,7 +392,7 @@ NEVER.pipe(
 
 ```ts
 import { of, concat } from 'rxjs';
-import { tap, ignoreElements, delay } from 'rxjs/operators';
+import { tap, ignoreElements, delay } from 'rxjs';
 
 const initStep1$ = of('Step 1').pipe(
   tap(console.log),
@@ -422,7 +422,7 @@ concat(initStep1$, initStep2$, initStep3$).subscribe({
 
 ```ts
 import { from, of } from 'rxjs';
-import { tap, ignoreElements, mergeMap } from 'rxjs/operators';
+import { tap, ignoreElements, mergeMap } from 'rxjs';
 
 interface Resource {
   id: number;

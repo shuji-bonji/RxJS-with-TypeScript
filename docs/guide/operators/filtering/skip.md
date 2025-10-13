@@ -11,7 +11,7 @@ description: skipオペレーターは、Observableストリームから最初�
 
 ```ts
 import { interval } from 'rxjs';
-import { skip } from 'rxjs/operators';
+import { skip } from 'rxjs';
 
 const source$ = interval(1000);
 
@@ -34,7 +34,7 @@ source$.pipe(
 
 ```ts
 import { range } from 'rxjs';
-import { skip, take } from 'rxjs/operators';
+import { skip, take } from 'rxjs';
 
 const numbers$ = range(0, 10); // 0から9まで
 
@@ -69,7 +69,7 @@ numbers$.pipe(
 1. **初期値のスキップ**
    ```ts
    import { BehaviorSubject } from 'rxjs';
-   import { skip } from 'rxjs/operators';
+   import { skip } from 'rxjs';
 
    const state$ = new BehaviorSubject<number>(0);
 
@@ -87,7 +87,7 @@ numbers$.pipe(
 2. **ウォームアップ期間のスキップ**
    ```ts
    import { interval } from 'rxjs';
-   import { skip, map } from 'rxjs/operators';
+   import { skip, map } from 'rxjs';
 
    // センサーデータのシミュレーション
    const sensorData$ = interval(100).pipe(
@@ -105,7 +105,7 @@ numbers$.pipe(
 3. **ページネーション**
    ```ts
    import { from } from 'rxjs';
-   import { skip, take } from 'rxjs/operators';
+   import { skip, take } from 'rxjs';
 
    interface Item {
      id: number;
@@ -141,7 +141,7 @@ numbers$.pipe(
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { skip, scan } from 'rxjs/operators';
+import { skip, scan } from 'rxjs';
 
 // UI要素の作成
 const container = document.createElement('div');
@@ -182,7 +182,7 @@ fromEvent(button, 'click').pipe(
 
 ```ts
 import { of } from 'rxjs';
-import { skip, skipWhile } from 'rxjs/operators';
+import { skip, skipWhile } from 'rxjs';
 
 const numbers$ = of(1, 2, 3, 4, 5, 6);
 
@@ -212,7 +212,7 @@ TypeScript でジェネリクスを活用した型安全な実装例です。
 
 ```ts
 import { Observable, from } from 'rxjs';
-import { skip, take } from 'rxjs/operators';
+import { skip, take } from 'rxjs';
 
 interface User {
   id: number;
@@ -257,7 +257,7 @@ getPaginatedUsers(users$, 1, 2).subscribe(user => {
 
 ```ts
 import { interval } from 'rxjs';
-import { skip } from 'rxjs/operators';
+import { skip } from 'rxjs';
 
 // ❌ 悪い例: 無限ストリームがそのまま続く
 interval(1000).pipe(
@@ -270,7 +270,7 @@ interval(1000).pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { skip, take } from 'rxjs/operators';
+import { skip, take } from 'rxjs';
 
 // ✅ 良い例: スキップ後に取得数を制限
 interval(1000).pipe(

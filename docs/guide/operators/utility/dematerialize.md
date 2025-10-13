@@ -12,7 +12,7 @@ Notificationオブジェクトのストリームを通常のストリームに�
 
 ```ts
 import { of } from 'rxjs';
-import { materialize, dematerialize } from 'rxjs/operators';
+import { materialize, dematerialize } from 'rxjs';
 
 of(1, 2, 3)
   .pipe(
@@ -45,7 +45,7 @@ of(1, 2, 3)
 
 ```ts
 import { of, throwError, concat } from 'rxjs';
-import { materialize, dematerialize, filter } from 'rxjs/operators';
+import { materialize, dematerialize, filter } from 'rxjs';
 
 // UI作成
 const container = document.createElement('div');
@@ -111,7 +111,7 @@ source$
 
 ```ts
 import { interval } from 'rxjs';
-import { materialize, dematerialize, bufferTime, concatMap, delay } from 'rxjs/operators';
+import { materialize, dematerialize, bufferTime, concatMap, delay } from 'rxjs';
 
 // UI作成
 const container2 = document.createElement('div');
@@ -168,7 +168,7 @@ interval(1000)
 
 ```ts
 import { of } from 'rxjs';
-import { materialize, dematerialize, map } from 'rxjs/operators';
+import { materialize, dematerialize, map } from 'rxjs';
 
 of(1, 2, 3)
   .pipe(
@@ -205,7 +205,7 @@ of(1, 2, 3)
 
 ```ts
 import { of } from 'rxjs';
-import { materialize, dematerialize, concatMap } from 'rxjs/operators';
+import { materialize, dematerialize, concatMap } from 'rxjs';
 
 of(
   Notification.createNext(1),
@@ -230,7 +230,7 @@ of(
 
 ```ts
 import { of } from 'rxjs';
-import { dematerialize } from 'rxjs/operators';
+import { dematerialize } from 'rxjs';
 
 of(
   Notification.createNext(1),
@@ -259,7 +259,7 @@ of(
 
 ```ts
 import { of } from 'rxjs';
-import { dematerialize } from 'rxjs/operators';
+import { dematerialize } from 'rxjs';
 
 // ❌ 通常の値をdematerializeに渡すとエラー
 of(1, 2, 3)
@@ -277,7 +277,7 @@ of(1, 2, 3)
 
 ```ts
 import { interval, throwError } from 'rxjs';
-import { materialize, dematerialize, take, mergeMap, filter, map } from 'rxjs/operators';
+import { materialize, dematerialize, take, mergeMap, filter, map } from 'rxjs';
 
 // エラーをwarningに変換する例
 interval(500)

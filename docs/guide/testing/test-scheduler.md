@@ -78,7 +78,7 @@ describe('TestSchedulerの基本', () => {
 
 ```ts
 import { describe, it, expect, beforeEach } from 'vitest';
-import { debounceTime, map } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 
 describe('仮想時間を使ったテスト', () => {
@@ -110,7 +110,7 @@ describe('仮想時間を使ったテスト', () => {
 
 ```ts
 import { describe, it, expect, beforeEach } from 'vitest';
-import { catchError} from 'rxjs/operators';
+import { catchError} from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
 import { of } from 'rxjs';
 

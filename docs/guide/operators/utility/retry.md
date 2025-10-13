@@ -11,7 +11,7 @@ description: retryオペレーターは、Observableでエラーが発生した�
 
 ```ts
 import { throwError, of } from 'rxjs';
-import { retry, catchError } from 'rxjs/operators';
+import { retry, catchError } from 'rxjs';
 
 throwError(() => new Error('一時的なエラー'))
   .pipe(
@@ -33,7 +33,7 @@ throwError(() => new Error('一時的なエラー'))
 
 ```ts
 import { interval, throwError, of } from 'rxjs';
-import { mergeMap, retry, catchError } from 'rxjs/operators';
+import { mergeMap, retry, catchError } from 'rxjs';
 
 let attempt = 0;
 
@@ -64,7 +64,7 @@ interval(1000)
 
 ```ts
 import { interval, throwError, of } from 'rxjs';
-import { mergeMap, retry, catchError } from 'rxjs/operators';
+import { mergeMap, retry, catchError } from 'rxjs';
 
 // 出力表示エリア
 const retryOutput = document.createElement('div');

@@ -11,7 +11,7 @@ description: windowは別のObservableが値を発行するタイミングで、
 
 ```ts
 import { interval, fromEvent } from 'rxjs';
-import { window, mergeAll } from 'rxjs/operators';
+import { window, mergeAll } from 'rxjs';
 
 // 100msごとに値を発行
 const source$ = interval(100);
@@ -50,7 +50,7 @@ source$.pipe(
 
 ```ts
 import { interval, timer } from 'rxjs';
-import { buffer, window, mergeAll } from 'rxjs/operators';
+import { buffer, window, mergeAll } from 'rxjs';
 
 const source$ = interval(100);
 const trigger$ = timer(1000, 1000);
@@ -80,7 +80,7 @@ source$.pipe(
 
 ```ts
 import { interval, fromEvent } from 'rxjs';
-import { window, map, mergeAll, scan } from 'rxjs/operators';
+import { window, map, mergeAll, scan } from 'rxjs';
 
 // ボタン作成
 const button = document.createElement('button');
@@ -126,7 +126,7 @@ source$.pipe(
 
 ```ts
 import { interval, fromEvent } from 'rxjs';
-import { window, take, mergeAll, map } from 'rxjs/operators';
+import { window, take, mergeAll, map } from 'rxjs';
 
 const source$ = interval(200);
 const clicks$ = fromEvent(document, 'click');
@@ -161,7 +161,7 @@ source$.pipe(
 
 ```ts
 import { interval, merge, fromEvent, timer } from 'rxjs';
-import { window, mergeAll, scan, map } from 'rxjs/operators';
+import { window, mergeAll, scan, map } from 'rxjs';
 
 const source$ = interval(100);
 
@@ -222,7 +222,7 @@ source$.pipe(
 
 ```ts
 import { interval, fromEvent } from 'rxjs';
-import { window, mergeAll } from 'rxjs/operators';
+import { window, mergeAll } from 'rxjs';
 
 const source$ = interval(100); // 100msごとに値を発行し続ける
 
@@ -247,7 +247,7 @@ source$.pipe(
 
 ```ts
 import { interval, fromEvent, timer, merge } from 'rxjs';
-import { window, mergeAll } from 'rxjs/operators';
+import { window, mergeAll } from 'rxjs';
 
 const source$ = interval(100);
 const button = document.querySelector('#start-button');
@@ -269,7 +269,7 @@ source$.pipe(
 
 ```ts
 import { interval, fromEvent, timer, merge } from 'rxjs';
-import { window, mergeAll } from 'rxjs/operators';
+import { window, mergeAll } from 'rxjs';
 
 const source$ = interval(100);
 const button = document.querySelector('#start-button');

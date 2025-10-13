@@ -11,7 +11,7 @@ description: auditTimeオペレーターは、値が発行されたら指定時�
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { auditTime } from 'rxjs/operators';
+import { auditTime } from 'rxjs';
 
 fromEvent(document, 'click').pipe(
   auditTime(1000)
@@ -33,7 +33,7 @@ fromEvent(document, 'click').pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { throttleTime, auditTime, take } from 'rxjs/operators';
+import { throttleTime, auditTime, take } from 'rxjs';
 
 const source$ = interval(300).pipe(take(10)); // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 
@@ -73,7 +73,7 @@ audit:      -------3--------6--------9----|
 1. **ウィンドウリサイズの最適化**
    ```ts
    import { fromEvent } from 'rxjs';
-   import { auditTime } from 'rxjs/operators';
+   import { auditTime } from 'rxjs';
 
    fromEvent(window, 'resize').pipe(
      auditTime(200) // 200ms間隔で最新のサイズを取得
@@ -85,7 +85,7 @@ audit:      -------3--------6--------9----|
 2. **スクロール位置の追跡**
    ```ts
    import { fromEvent } from 'rxjs';
-   import { auditTime, map } from 'rxjs/operators';
+   import { auditTime, map } from 'rxjs';
 
    fromEvent(window, 'scroll').pipe(
      auditTime(100),
@@ -101,7 +101,7 @@ audit:      -------3--------6--------9----|
 3. **スムーズなドラッグ移動**
    ```ts
    import { fromEvent } from 'rxjs';
-   import { auditTime, map, takeUntil, switchMap } from 'rxjs/operators';
+   import { auditTime, map, takeUntil, switchMap } from 'rxjs';
 
    // ドラッグ可能な要素を作成
    const box = document.createElement('div');
@@ -151,7 +151,7 @@ audit:      -------3--------6--------9----|
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { auditTime, map } from 'rxjs/operators';
+import { auditTime, map } from 'rxjs';
 
 // UI要素の作成
 const container = document.createElement('div');
@@ -214,7 +214,7 @@ fromEvent<MouseEvent>(container, 'mousemove').pipe(
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { auditTime, debounceTime } from 'rxjs/operators';
+import { auditTime, debounceTime } from 'rxjs';
 
 const input = document.createElement('input');
 input.placeholder = '検索ワード入力';
@@ -278,7 +278,7 @@ TypeScript でジェネリクスを活用した型安全な実装例です。
 
 ```ts
 import { Observable, fromEvent } from 'rxjs';
-import { auditTime, map } from 'rxjs/operators';
+import { auditTime, map } from 'rxjs';
 
 interface MousePosition {
   x: number;
@@ -319,7 +319,7 @@ trackMousePosition(canvas, 200).subscribe(position => {
 
 ```ts
 import { interval } from 'rxjs';
-import { throttleTime, auditTime, take } from 'rxjs/operators';
+import { throttleTime, auditTime, take } from 'rxjs';
 
 const source$ = interval(100).pipe(take(50));
 
@@ -340,7 +340,7 @@ source$.pipe(
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { auditTime } from 'rxjs/operators';
+import { auditTime } from 'rxjs';
 
 // 検索入力欄を作成
 const input = document.createElement('input');
@@ -360,7 +360,7 @@ fromEvent(input, 'input').pipe(
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime } from 'rxjs';
 
 // 検索入力欄を作成
 const input = document.createElement('input');

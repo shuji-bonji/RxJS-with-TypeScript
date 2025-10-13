@@ -12,7 +12,7 @@ description: startWithオペレーターは、Observableが値を発行する前
 
 ```ts
 import { of } from 'rxjs';
-import { startWith } from 'rxjs/operators';
+import { startWith } from 'rxjs';
 
 of('B', 'C').pipe(
   startWith('A')
@@ -33,7 +33,7 @@ of('B', 'C').pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { startWith, scan, take } from 'rxjs/operators';
+import { startWith, scan, take } from 'rxjs';
 
 interval(1000)
   .pipe(
@@ -60,7 +60,7 @@ interval(1000)
 
 ```ts
 import { interval } from 'rxjs';
-import { startWith, scan, take } from 'rxjs/operators';
+import { startWith, scan, take } from 'rxjs';
 
 // 出力表示エリア
 const startWithOutput = document.createElement('div');

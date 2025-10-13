@@ -11,7 +11,7 @@ description: distinctUntilChangedオペレーターは、前回と同じ値が�
 
 ```ts
 import { from } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged } from 'rxjs';
 
 const numbers$ = from([1, 1, 2, 2, 3, 1, 2, 3]);
 
@@ -40,7 +40,7 @@ numbers$.pipe(
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { map, distinctUntilChanged } from 'rxjs/operators';
+import { map, distinctUntilChanged } from 'rxjs';
 
 // 出力エリア作成
 const container = document.createElement('div');

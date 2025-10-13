@@ -10,7 +10,7 @@ description: filterオペレーターは、指定した条件関数に基づい�
 
 ```ts
 import { from } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter } from 'rxjs';
 
 const numbers$ = from([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
@@ -37,7 +37,7 @@ numbers$.pipe(
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
+import { map, filter } from 'rxjs';
 
 const title = document.createElement('h3');
 title.innerHTML = 'filter の実践例:';

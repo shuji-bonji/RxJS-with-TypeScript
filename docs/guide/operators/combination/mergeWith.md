@@ -12,7 +12,7 @@ description: mergeWithは、元のObservableと他のObservableを同時に購�
 
 ```ts
 import { interval } from 'rxjs';
-import { mergeWith, map, take } from 'rxjs/operators';
+import { mergeWith, map, take } from 'rxjs';
 
 const source1$ = interval(1000).pipe(
   map(val => `ストリーム1: ${val}`),
@@ -55,7 +55,7 @@ source1$
 
 ```ts
 import { fromEvent, interval } from 'rxjs';
-import { mergeWith, map, take } from 'rxjs/operators';
+import { mergeWith, map, take } from 'rxjs';
 
 // 出力エリア作成
 const output = document.createElement('div');
@@ -111,7 +111,7 @@ manualUpdate$
 
 ```ts
 import { merge, fromEvent } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 const clicks$ = fromEvent(document, 'click').pipe(map(() => 'クリック'));
 const moves$ = fromEvent(document, 'mousemove').pipe(map(() => 'マウス移動'));
@@ -126,7 +126,7 @@ merge(clicks$, moves$, keypress$).subscribe(console.log);
 
 ```ts
 import { fromEvent, interval } from 'rxjs';
-import { mergeWith, map, filter, throttleTime } from 'rxjs/operators';
+import { mergeWith, map, filter, throttleTime } from 'rxjs';
 
 const userClicks$ = fromEvent(document, 'click');
 const autoRefresh$ = interval(30000); // 30秒ごと
@@ -168,7 +168,7 @@ merge(
 
 ```ts
 import { fromEvent, timer } from 'rxjs';
-import { mergeWith, map, startWith } from 'rxjs/operators';
+import { mergeWith, map, startWith } from 'rxjs';
 
 // ボタン作成
 const saveButton = document.createElement('button');
@@ -213,7 +213,7 @@ manualSave$
 
 ```ts
 import { of, interval, NEVER } from 'rxjs';
-import { mergeWith, take } from 'rxjs/operators';
+import { mergeWith, take } from 'rxjs';
 
 of(1, 2, 3).pipe(
   mergeWith(
@@ -233,7 +233,7 @@ of(1, 2, 3).pipe(
 
 ```ts
 import { from, of } from 'rxjs';
-import { mergeMap, delay } from 'rxjs/operators';
+import { mergeMap, delay } from 'rxjs';
 
 from([1, 2, 3, 4, 5]).pipe(
   mergeMap(
@@ -249,7 +249,7 @@ from([1, 2, 3, 4, 5]).pipe(
 
 ```ts
 import { throwError, interval } from 'rxjs';
-import { mergeWith, take, catchError } from 'rxjs/operators';
+import { mergeWith, take, catchError } from 'rxjs';
 import { of } from 'rxjs';
 
 interval(1000).pipe(

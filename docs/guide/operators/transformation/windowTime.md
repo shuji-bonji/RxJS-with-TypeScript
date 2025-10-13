@@ -11,7 +11,7 @@ description: windowTimeは一定時間ごとにObservableを分割し、各時�
 
 ```ts
 import { interval } from 'rxjs';
-import { windowTime, mergeAll, take } from 'rxjs/operators';
+import { windowTime, mergeAll, take } from 'rxjs';
 
 // 100msごとに値を発行
 const source$ = interval(100);
@@ -51,7 +51,7 @@ source$.pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { bufferTime, windowTime, take } from 'rxjs/operators';
+import { bufferTime, windowTime, take } from 'rxjs';
 
 const source$ = interval(100);
 
@@ -82,7 +82,7 @@ source$.pipe(
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { windowTime, map, mergeAll, scan } from 'rxjs/operators';
+import { windowTime, map, mergeAll, scan } from 'rxjs';
 
 // ボタン作成
 const button = document.createElement('button');
@@ -125,7 +125,7 @@ clicks$.pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { windowTime, map, mergeMap, toArray, take } from 'rxjs/operators';
+import { windowTime, map, mergeMap, toArray, take } from 'rxjs';
 
 // 出力エリア作成
 const output = document.createElement('div');
@@ -196,7 +196,7 @@ source$.pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { windowTime, mergeMap, toArray, take, map } from 'rxjs/operators';
+import { windowTime, mergeMap, toArray, take, map } from 'rxjs';
 
 // 出力エリア作成
 const output = document.createElement('div');
@@ -263,7 +263,7 @@ source$.pipe(
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { windowTime, mergeMap, toArray, map } from 'rxjs/operators';
+import { windowTime, mergeMap, toArray, map } from 'rxjs';
 
 // 出力エリア
 const output = document.createElement('div');
@@ -332,7 +332,7 @@ source$.pipe(
 長時間実行される場合、適切に購読解除することが重要です。
 
 ```ts
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs';
 import { Subject } from 'rxjs';
 
 const destroy$ = new Subject<void>();
@@ -354,7 +354,7 @@ destroy$.complete();
 
 ```ts
 import { interval } from 'rxjs';
-import { windowTime, mergeMap, toArray } from 'rxjs/operators';
+import { windowTime, mergeMap, toArray } from 'rxjs';
 
 interval(100).pipe(
   windowTime(

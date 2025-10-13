@@ -12,7 +12,7 @@ description: distinctUntilKeyChangedオペレーターは、オブジェクト�
 
 ```ts
 import { from } from 'rxjs';
-import { distinctUntilKeyChanged } from 'rxjs/operators';
+import { distinctUntilKeyChanged } from 'rxjs';
 
 const users = [
   { id: 1, name: '田中' },
@@ -54,7 +54,7 @@ from(users).pipe(
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { map, filter, scan, distinctUntilKeyChanged } from 'rxjs/operators';
+import { map, filter, scan, distinctUntilKeyChanged } from 'rxjs';
 
 // 出力領域作成
 const output = document.createElement('div');

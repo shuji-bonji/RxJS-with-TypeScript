@@ -23,7 +23,7 @@ source$.pipe(
 
 ```ts
 import { interval, fromEvent } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs';
 
 const stopButton = document.createElement('button');
 stopButton.textContent = 'stop';

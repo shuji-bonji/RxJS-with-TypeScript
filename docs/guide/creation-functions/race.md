@@ -12,7 +12,7 @@ description: race Creation Functionは、複数のObservableのうち最初に�
 
 ```ts
 import { race, timer } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 const slow$ = timer(5000).pipe(map(() => 'ゆっくり (5秒)'));
 const fast$ = timer(2000).pipe(map(() => '速い (2秒)'));
@@ -39,7 +39,7 @@ race(slow$, fast$).subscribe(console.log);
 
 ```ts
 import { race, timer } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 // 出力エリア作成
 const output = document.createElement('div');

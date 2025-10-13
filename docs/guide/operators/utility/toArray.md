@@ -12,7 +12,7 @@ description: toArrayオペレーターは、Observableが完了するまでに�
 
 ```ts
 import { of } from 'rxjs';
-import { toArray } from 'rxjs/operators';
+import { toArray } from 'rxjs';
 
 of(1, 2, 3).pipe(
   toArray()
@@ -32,7 +32,7 @@ of(1, 2, 3).pipe(
 
 ```ts
 import { interval, of } from 'rxjs';
-import { take, toArray, delayWhen, delay } from 'rxjs/operators';
+import { take, toArray, delayWhen, delay } from 'rxjs';
 
 interval(500)
   .pipe(
@@ -53,7 +53,7 @@ interval(500)
 
 ```ts
 import { interval } from 'rxjs';
-import { take, toArray } from 'rxjs/operators';
+import { take, toArray } from 'rxjs';
 
 // 出力表示エリア
 const toArrayOutput = document.createElement('div');

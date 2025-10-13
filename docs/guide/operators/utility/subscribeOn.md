@@ -12,7 +12,7 @@ description: subscribeOnオペレーターはObservableの購読開始タイミ�
 
 ```ts
 import { of, asyncScheduler } from 'rxjs';
-import { subscribeOn } from 'rxjs/operators';
+import { subscribeOn } from 'rxjs';
 
 console.log('開始');
 
@@ -49,7 +49,7 @@ console.log('終了');
 
 ```ts
 import { Observable, asyncScheduler } from 'rxjs';
-import { subscribeOn, tap } from 'rxjs/operators';
+import { subscribeOn, tap } from 'rxjs';
 
 // UI作成
 const container = document.createElement('div');
@@ -117,7 +117,7 @@ addLog('購読リクエスト後（すぐに実行が続く）', '#e3f2fd');
 
 ```ts
 import { interval, asyncScheduler, asapScheduler } from 'rxjs';
-import { subscribeOn, take, tap } from 'rxjs/operators';
+import { subscribeOn, take, tap } from 'rxjs';
 
 // UI作成
 const container2 = document.createElement('div');
@@ -179,7 +179,7 @@ addLog2('購読リクエスト完了', '#e3f2fd');
 
 ```ts
 import { of, asyncScheduler } from 'rxjs';
-import { observeOn, subscribeOn, map, tap } from 'rxjs/operators';
+import { observeOn, subscribeOn, map, tap } from 'rxjs';
 
 // observeOn の例
 console.log('=== observeOn ===');
@@ -229,7 +229,7 @@ console.log('2: 終了');
 
 ```ts
 import { of, asyncScheduler } from 'rxjs';
-import { subscribeOn, map } from 'rxjs/operators';
+import { subscribeOn, map } from 'rxjs';
 
 // パターン1: 最初
 of(1, 2, 3)
@@ -254,7 +254,7 @@ of(1, 2, 3)
 
 ```ts
 import { of, asyncScheduler, asapScheduler } from 'rxjs';
-import { subscribeOn } from 'rxjs/operators';
+import { subscribeOn } from 'rxjs';
 
 of(1, 2, 3)
   .pipe(
@@ -272,7 +272,7 @@ of(1, 2, 3)
 
 ```ts
 import { interval, asyncScheduler } from 'rxjs';
-import { subscribeOn } from 'rxjs/operators';
+import { subscribeOn } from 'rxjs';
 
 // ❌ subscribeOnは効果なし
 interval(1000)
@@ -290,7 +290,7 @@ interval(1000, asyncScheduler)
 
 ```ts
 import { of, asyncScheduler, animationFrameScheduler } from 'rxjs';
-import { subscribeOn, observeOn, map, tap } from 'rxjs/operators';
+import { subscribeOn, observeOn, map, tap } from 'rxjs';
 
 console.log('開始');
 
@@ -321,7 +321,7 @@ console.log('終了');
 
 ```ts
 import { of, asyncScheduler } from 'rxjs';
-import { observeOn, subscribeOn, map } from 'rxjs/operators';
+import { observeOn, subscribeOn, map } from 'rxjs';
 
 // ケース1: 購読開始を遅延させたい
 // → subscribeOn を使用

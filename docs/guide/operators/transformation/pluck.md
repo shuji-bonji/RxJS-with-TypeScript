@@ -27,7 +27,7 @@ description: pluckオペレーターは、オブジェクトストリーム内�
 
 ```ts
 import { from } from 'rxjs';
-import { pluck } from 'rxjs/operators';
+import { pluck } from 'rxjs';
 
 const users$ = from([
   { id: 1, name: '田中', age: 28 },
@@ -45,7 +45,7 @@ users$.pipe(
 
 ```ts
 import { from } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 const users$ = from([
   { id: 1, name: '田中', age: 28 },
@@ -77,7 +77,7 @@ users$.pipe(
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { pluck } from 'rxjs/operators';
+import { pluck } from 'rxjs';
 
 // 出力エリア作成
 const output = document.createElement('div');
@@ -96,7 +96,7 @@ fromEvent<MouseEvent>(document, 'click')
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 // 出力エリア作成
 const output = document.createElement('div');

@@ -12,7 +12,7 @@ description: timeoutWithオペレーターは指定時間内に値が発行さ�
 
 ```ts
 import { of, timer } from 'rxjs';
-import { timeoutWith, concatMap } from 'rxjs/operators';
+import { timeoutWith, concatMap } from 'rxjs';
 
 // 3秒かかる処理
 of('データ')
@@ -44,7 +44,7 @@ APIリクエストがタイムアウトした場合にキャッシュデータ�
 
 ```ts
 import { of, throwError, timer } from 'rxjs';
-import { timeoutWith, mergeMap, delay } from 'rxjs/operators';
+import { timeoutWith, mergeMap, delay } from 'rxjs';
 
 // UI作成
 const container = document.createElement('div');
@@ -122,7 +122,7 @@ button.addEventListener('click', () => {
 
 ```ts
 import { of, timer, throwError } from 'rxjs';
-import { timeoutWith, mergeMap, tap } from 'rxjs/operators';
+import { timeoutWith, mergeMap, tap } from 'rxjs';
 
 // UI作成
 const container2 = document.createElement('div');
@@ -209,7 +209,7 @@ button2.addEventListener('click', () => {
 
 ```ts
 import { timer, of, throwError } from 'rxjs';
-import { timeout, timeoutWith, catchError } from 'rxjs/operators';
+import { timeout, timeoutWith, catchError } from 'rxjs';
 
 // timeout - エラーを発生
 timer(2000)
@@ -248,7 +248,7 @@ timer(2000)
 
 ```ts
 import { timer, of } from 'rxjs';
-import { timeoutWith } from 'rxjs/operators';
+import { timeoutWith } from 'rxjs';
 
 let callCount = 0;
 
@@ -273,7 +273,7 @@ timer(2000)
 
 ```ts
 import { timer } from 'rxjs';
-import { timeoutWith } from 'rxjs/operators';
+import { timeoutWith } from 'rxjs';
 
 timer(3000)
   .pipe(
@@ -292,7 +292,7 @@ timer(3000)
 
 ```ts
 import { timer, of } from 'rxjs';
-import { timeoutWith } from 'rxjs/operators';
+import { timeoutWith } from 'rxjs';
 
 timer(2000)
   .pipe(
@@ -312,7 +312,7 @@ timer(2000)
 
 ```ts
 import { timer, of } from 'rxjs';
-import { timeoutWith, retry, catchError } from 'rxjs/operators';
+import { timeoutWith, retry, catchError } from 'rxjs';
 
 // リトライとフォールバックの組み合わせ
 function apiWithRetryAndFallback() {

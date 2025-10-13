@@ -55,7 +55,7 @@ of(Math.random()).pipe(
 
 ```ts
 import { of } from 'rxjs';
-import { tap, map } from 'rxjs/operators';
+import { tap, map } from 'rxjs';
 
 // ログ出力用の要素
 const logOutput = document.createElement('div');

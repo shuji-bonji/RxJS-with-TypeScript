@@ -12,7 +12,7 @@ description: withLatestFromは、メインのObservableが値を発行するた�
 
 ```ts
 import { interval, fromEvent } from 'rxjs';
-import { withLatestFrom, map, take } from 'rxjs/operators';
+import { withLatestFrom, map, take } from 'rxjs';
 
 const clicks$ = fromEvent(document, 'click');
 const timer$ = interval(1000);
@@ -51,7 +51,7 @@ clicks$
 
 ```ts
 import { fromEvent, interval } from 'rxjs';
-import { map, startWith, withLatestFrom } from 'rxjs/operators';
+import { map, startWith, withLatestFrom } from 'rxjs';
 
 const title = document.createElement('h3');
 title.innerHTML = 'withLatestFrom 2秒ごとに最新入力取得:';

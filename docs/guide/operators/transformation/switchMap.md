@@ -11,7 +11,7 @@ description: switchMapは前のObservableをキャンセルして最新のObserv
 
 ```ts
 import { of } from 'rxjs';
-import { delay, switchMap } from 'rxjs/operators';
+import { delay, switchMap } from 'rxjs';
 
 of('A', 'B', 'C').pipe(
   switchMap(value =>
@@ -42,7 +42,7 @@ of('A', 'B', 'C').pipe(
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { debounceTime, map, switchMap } from 'rxjs/operators';
+import { debounceTime, map, switchMap } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { of } from 'rxjs';
 

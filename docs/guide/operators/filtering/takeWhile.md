@@ -11,7 +11,7 @@ description: takeWhileオペレーターは、指定した条件を満たす間�
 
 ```ts
 import { interval } from 'rxjs';
-import { takeWhile } from 'rxjs/operators';
+import { takeWhile } from 'rxjs';
 
 const source$ = interval(1000);
 
@@ -41,7 +41,7 @@ source$.pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { take, takeWhile } from 'rxjs/operators';
+import { take, takeWhile } from 'rxjs';
 
 const source$ = interval(1000);
 
@@ -72,7 +72,7 @@ source$.pipe(
 
 ```ts
 import { range } from 'rxjs';
-import { takeWhile } from 'rxjs/operators';
+import { takeWhile } from 'rxjs';
 
 const numbers$ = range(0, 10);
 
@@ -95,7 +95,7 @@ numbers$.pipe(
 1. **閾値までのデータ取得**
    ```ts
    import { interval } from 'rxjs';
-   import { takeWhile, map } from 'rxjs/operators';
+   import { takeWhile, map } from 'rxjs';
 
    // 温度センサーのシミュレーション
    const temperature$ = interval(100).pipe(
@@ -114,7 +114,7 @@ numbers$.pipe(
 2. **配列の条件付き処理**
    ```ts
    import { from } from 'rxjs';
-   import { takeWhile } from 'rxjs/operators';
+   import { takeWhile } from 'rxjs';
 
    interface Task {
      id: number;
@@ -141,7 +141,7 @@ numbers$.pipe(
 3. **ページング処理**
    ```ts
    import { range } from 'rxjs';
-   import { takeWhile, map } from 'rxjs/operators';
+   import { takeWhile, map } from 'rxjs';
 
    interface Page {
      pageNumber: number;
@@ -171,7 +171,7 @@ numbers$.pipe(
 
 ```ts
 import { fromEvent, interval } from 'rxjs';
-import { takeWhile, scan, switchMap } from 'rxjs/operators';
+import { takeWhile, scan, switchMap } from 'rxjs';
 
 // UI要素の作成
 const container = document.createElement('div');
@@ -223,7 +223,7 @@ fromEvent(startButton, 'click').pipe(
 
 ```ts
 import { range } from 'rxjs';
-import { takeWhile, skipWhile } from 'rxjs/operators';
+import { takeWhile, skipWhile } from 'rxjs';
 
 const numbers$ = range(0, 10);
 
@@ -252,7 +252,7 @@ TypeScript でジェネリクスを活用した型安全な実装例です。
 
 ```ts
 import { Observable, from } from 'rxjs';
-import { takeWhile } from 'rxjs/operators';
+import { takeWhile } from 'rxjs';
 
 interface SensorReading {
   timestamp: Date;
@@ -292,7 +292,7 @@ getReadingsUntilWarning(readings$).subscribe(reading => {
 
 ```ts
 import { range } from 'rxjs';
-import { takeWhile, filter } from 'rxjs/operators';
+import { takeWhile, filter } from 'rxjs';
 
 const numbers$ = range(0, 10);
 
@@ -330,7 +330,7 @@ numbers$.pipe(
 
 ```ts
 import { range } from 'rxjs';
-import { takeWhile } from 'rxjs/operators';
+import { takeWhile } from 'rxjs';
 
 // ❌ 悪い例: 最初の値で条件がfalse
 range(5, 10).pipe(
@@ -343,7 +343,7 @@ range(5, 10).pipe(
 
 ```ts
 import { range } from 'rxjs';
-import { takeWhile } from 'rxjs/operators';
+import { takeWhile } from 'rxjs';
 
 // ✅ 良い例: 条件を適切に設定
 range(0, 10).pipe(

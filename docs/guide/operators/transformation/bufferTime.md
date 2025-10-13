@@ -11,7 +11,7 @@ description: bufferTimeは一定時間ごとに発行された値をまとめて
 
 ```ts
 import { interval } from 'rxjs';
-import { bufferTime } from 'rxjs/operators';
+import { bufferTime } from 'rxjs';
 
 // 100msごとに値を発行
 const source$ = interval(100);
@@ -45,7 +45,7 @@ source$.pipe(
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { bufferTime } from 'rxjs/operators';
+import { bufferTime } from 'rxjs';
 
 // 出力エリア作成
 const output = document.createElement('div');

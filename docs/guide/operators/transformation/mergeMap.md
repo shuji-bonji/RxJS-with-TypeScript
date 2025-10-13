@@ -11,7 +11,7 @@ description: mergeMapオペレーターは、各値を新しいObservableに変�
 
 ```ts
 import { of } from 'rxjs';
-import { mergeMap, delay } from 'rxjs/operators';
+import { mergeMap, delay } from 'rxjs';
 
 of('A', 'B', 'C').pipe(
   mergeMap(value =>
@@ -42,7 +42,7 @@ of('A', 'B', 'C').pipe(
 
 ```ts
 import { fromEvent, of } from 'rxjs';
-import { mergeMap, delay } from 'rxjs/operators';
+import { mergeMap, delay } from 'rxjs';
 
 // ボタン作成
 const button = document.createElement('button');

@@ -11,7 +11,7 @@ description: sampleTimeオペレーターは、指定した時間間隔で定期
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { sampleTime } from 'rxjs/operators';
+import { sampleTime } from 'rxjs';
 
 const clicks$ = fromEvent(document, 'click');
 
@@ -42,7 +42,7 @@ clicks$.pipe(
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { sampleTime, map } from 'rxjs/operators';
+import { sampleTime, map } from 'rxjs';
 
 // UI作成
 const container = document.createElement('div');
@@ -110,7 +110,7 @@ fromEvent<MouseEvent>(area, 'mousemove').pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { sampleTime, map } from 'rxjs/operators';
+import { sampleTime, map } from 'rxjs';
 
 // UI作成
 const container = document.createElement('div');
@@ -201,7 +201,7 @@ sensorData$.pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { sampleTime, throttleTime, auditTime, take } from 'rxjs/operators';
+import { sampleTime, throttleTime, auditTime, take } from 'rxjs';
 
 const source$ = interval(300).pipe(take(10)); // 0, 1, 2, 3, ...
 
@@ -254,7 +254,7 @@ auditTime(1s):    -------|3|-------|6|-------|9|
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { sampleTime } from 'rxjs/operators';
+import { sampleTime } from 'rxjs';
 
 const clicks$ = fromEvent(document, 'click');
 
@@ -272,7 +272,7 @@ clicks$.pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { sampleTime } from 'rxjs/operators';
+import { sampleTime } from 'rxjs';
 
 interval(100).pipe(
   sampleTime(1000)
@@ -286,7 +286,7 @@ interval(100).pipe(
 
 ```ts
 import { of } from 'rxjs';
-import { sampleTime, delay } from 'rxjs/operators';
+import { sampleTime, delay } from 'rxjs';
 
 of(1, 2, 3).pipe(
   delay(100),
@@ -305,7 +305,7 @@ of(1, 2, 3).pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { sampleTime } from 'rxjs/operators';
+import { sampleTime } from 'rxjs';
 
 // 高頻度のストリーム（10msごと）
 interval(10).pipe(
@@ -320,7 +320,7 @@ interval(10).pipe(
 
 ```ts
 import { interval, fromEvent } from 'rxjs';
-import { sample, sampleTime } from 'rxjs/operators';
+import { sample, sampleTime } from 'rxjs';
 
 const source$ = interval(100);
 

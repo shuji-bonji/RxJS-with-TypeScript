@@ -10,7 +10,7 @@ description: elementAtオペレーターは、指定されたインデックス�
 
 ```ts
 import { from } from 'rxjs';
-import { elementAt } from 'rxjs/operators';
+import { elementAt } from 'rxjs';
 
 const numbers$ = from([10, 20, 30, 40, 50]);
 
@@ -41,7 +41,7 @@ N回目のクリックでアクションを実行する例です。
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { elementAt, map } from 'rxjs/operators';
+import { elementAt, map } from 'rxjs';
 
 // UI作成
 const output = document.createElement('div');
@@ -98,7 +98,7 @@ clicks$.pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { elementAt, map } from 'rxjs/operators';
+import { elementAt, map } from 'rxjs';
 
 // UI作成
 const container = document.createElement('div');
@@ -190,7 +190,7 @@ getButton.addEventListener('click', () => {
 
 ```ts
 import { from } from 'rxjs';
-import { elementAt, take, first, skip } from 'rxjs/operators';
+import { elementAt, take, first, skip } from 'rxjs';
 
 const numbers$ = from([10, 20, 30, 40, 50]);
 
@@ -229,7 +229,7 @@ numbers$.pipe(
 
 ```ts
 import { from } from 'rxjs';
-import { elementAt } from 'rxjs/operators';
+import { elementAt } from 'rxjs';
 
 const numbers$ = from([10, 20, 30]); // 3つしかない
 
@@ -248,7 +248,7 @@ numbers$.pipe(
 
 ```ts
 import { from } from 'rxjs';
-import { elementAt } from 'rxjs/operators';
+import { elementAt } from 'rxjs';
 
 const numbers$ = from([10, 20, 30]);
 
@@ -268,7 +268,7 @@ numbers$.pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { elementAt } from 'rxjs/operators';
+import { elementAt } from 'rxjs';
 
 // 1秒ごとに値を発行
 interval(1000).pipe(
@@ -283,7 +283,7 @@ interval(1000).pipe(
 
 ```ts
 import { from } from 'rxjs';
-import { elementAt } from 'rxjs/operators';
+import { elementAt } from 'rxjs';
 
 const numbers$ = from([10, 20, 30, 40, 50]);
 
@@ -301,7 +301,7 @@ numbers$.pipe(
 
 ```ts
 import { from } from 'rxjs';
-import { takeLast, last } from 'rxjs/operators';
+import { takeLast, last } from 'rxjs';
 
 const numbers$ = from([10, 20, 30, 40, 50]);
 

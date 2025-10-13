@@ -11,7 +11,7 @@ description: bufferWhenオペレーターは、終了条件を動的に制御し
 
 ```ts
 import { interval } from 'rxjs';
-import { bufferWhen, take } from 'rxjs/operators';
+import { bufferWhen, take } from 'rxjs';
 
 const source$ = interval(500); // 0.5秒ごとに値を発行
 
@@ -49,7 +49,7 @@ source$.pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { bufferWhen, take } from 'rxjs/operators';
+import { bufferWhen, take } from 'rxjs';
 
 const source$ = interval(300).pipe(take(12)); // 0-11を300msごとに発行
 
@@ -71,7 +71,7 @@ source$.pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { bufferToggle, take } from 'rxjs/operators';
+import { bufferToggle, take } from 'rxjs';
 
 const source$ = interval(300).pipe(take(12)); // 0-11を300msごとに発行
 
@@ -120,7 +120,7 @@ source$.pipe(
 1. **動的な時間間隔でのデータ収集**
    ```ts
    import { interval, timer } from 'rxjs';
-   import { bufferWhen, map } from 'rxjs/operators';
+   import { bufferWhen, map } from 'rxjs';
 
    // センサーデータ
    const sensorData$ = interval(100).pipe(
@@ -149,7 +149,7 @@ source$.pipe(
 2. **負荷に応じた適応的なバッチ処理**
    ```ts
    import { fromEvent, timer } from 'rxjs';
-   import { bufferWhen, map } from 'rxjs/operators';
+   import { bufferWhen, map } from 'rxjs';
 
    interface Task {
      id: number;
@@ -182,7 +182,7 @@ source$.pipe(
 3. **ランダムな間隔でのサンプリング**
    ```ts
    import { interval, timer } from 'rxjs';
-   import { bufferWhen, map } from 'rxjs/operators';
+   import { bufferWhen, map } from 'rxjs';
 
    // データストリーム
    const data$ = interval(100).pipe(
@@ -211,7 +211,7 @@ source$.pipe(
 
 ```ts
 import { interval, timer, fromEvent } from 'rxjs';
-import { bufferWhen, map, share } from 'rxjs/operators';
+import { bufferWhen, map, share } from 'rxjs';
 
 // UI要素の作成
 const container = document.createElement('div');
@@ -310,7 +310,7 @@ TypeScript でジェネリクスを活用した型安全な実装例です。
 
 ```ts
 import { Observable, interval, timer } from 'rxjs';
-import { bufferWhen, map } from 'rxjs/operators';
+import { bufferWhen, map } from 'rxjs';
 
 interface MetricData {
   value: number;
@@ -385,7 +385,7 @@ buffer.apply(metricsStream$).subscribe(metrics => {
 
 ```ts
 import { interval, timer, Subject } from 'rxjs';
-import { buffer, bufferTime, bufferCount, bufferWhen, bufferToggle, take } from 'rxjs/operators';
+import { buffer, bufferTime, bufferCount, bufferWhen, bufferToggle, take } from 'rxjs';
 
 const source$ = interval(300).pipe(take(10)); // 0-9
 
@@ -436,7 +436,7 @@ source$.pipe(
 
 ```ts
 import { interval, timer } from 'rxjs';
-import { bufferWhen } from 'rxjs/operators';
+import { bufferWhen } from 'rxjs';
 
 const source$ = interval(500);
 
@@ -453,7 +453,7 @@ source$.pipe(
 
 ```ts
 import { interval, timer } from 'rxjs';
-import { bufferWhen } from 'rxjs/operators';
+import { bufferWhen } from 'rxjs';
 
 const source$ = interval(500);
 

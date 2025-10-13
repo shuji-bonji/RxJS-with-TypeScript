@@ -10,7 +10,7 @@ description: tap、startWith、finalize、delay、timeoutなどユーティリ�
 
 ```ts
 import { of, throwError } from 'rxjs';
-import { tap, delay, finalize, catchError } from 'rxjs/operators';
+import { tap, delay, finalize, catchError } from 'rxjs';
 
 // UI要素
 const loadingExample = document.createElement('div');
@@ -152,7 +152,7 @@ failButton.addEventListener('click', () => {
 
 ```ts
 import { fromEvent, combineLatest, of } from 'rxjs';
-import { map, startWith, debounceTime, tap, finalize, catchError, delay } from 'rxjs/operators';
+import { map, startWith, debounceTime, tap, finalize, catchError, delay } from 'rxjs';
 
 // フォームUI
 const formExample = document.createElement('div');

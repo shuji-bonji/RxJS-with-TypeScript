@@ -10,7 +10,7 @@ description: findIndexオペレーターは、条件を満たす最初の値の�
 
 ```ts
 import { from } from 'rxjs';
-import { findIndex } from 'rxjs/operators';
+import { findIndex } from 'rxjs';
 
 const numbers$ = from([1, 3, 5, 7, 8, 9, 10]);
 
@@ -42,7 +42,7 @@ numbers$.pipe(
 
 ```ts
 import { from, fromEvent } from 'rxjs';
-import { findIndex } from 'rxjs/operators';
+import { findIndex } from 'rxjs';
 
 interface Task {
   id: number;
@@ -161,7 +161,7 @@ fromEvent(button2, 'click').subscribe(() => {
 
 ```ts
 import { interval } from 'rxjs';
-import { findIndex, map, take } from 'rxjs/operators';
+import { findIndex, map, take } from 'rxjs';
 
 // UI作成
 const container = document.createElement('div');
@@ -233,7 +233,7 @@ data$.pipe(
 
 ```ts
 import { from } from 'rxjs';
-import { findIndex, find, elementAt } from 'rxjs/operators';
+import { findIndex, find, elementAt } from 'rxjs';
 
 const numbers$ = from([10, 20, 30, 40, 50]);
 
@@ -274,7 +274,7 @@ console.log(index1); // 2
 
 // RxJS の Observable
 import { from } from 'rxjs';
-import { findIndex } from 'rxjs/operators';
+import { findIndex } from 'rxjs';
 
 const numbers$ = from([10, 20, 30, 40, 50]);
 numbers$.pipe(
@@ -294,7 +294,7 @@ numbers$.pipe(
 
 ```ts
 import { from } from 'rxjs';
-import { findIndex } from 'rxjs/operators';
+import { findIndex } from 'rxjs';
 
 const numbers$ = from([1, 3, 5, 7, 9]);
 
@@ -316,7 +316,7 @@ numbers$.pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { findIndex, tap } from 'rxjs/operators';
+import { findIndex, tap } from 'rxjs';
 
 interval(1000).pipe(
   tap(val => console.log(`値: ${val}`)),
@@ -338,7 +338,7 @@ interval(1000).pipe(
 
 ```ts
 import { Observable, from } from 'rxjs';
-import { findIndex } from 'rxjs/operators';
+import { findIndex } from 'rxjs';
 
 interface User {
   id: number;
@@ -375,7 +375,7 @@ findFirstInactiveUserIndex(users$).subscribe(index => {
 
 ```ts
 import { from } from 'rxjs';
-import { findIndex } from 'rxjs/operators';
+import { findIndex } from 'rxjs';
 
 const items$ = from(['A', 'B', 'C', 'D']);
 

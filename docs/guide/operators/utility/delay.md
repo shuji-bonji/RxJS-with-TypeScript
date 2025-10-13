@@ -14,7 +14,7 @@ description: delayオペレーターはObservable内の各値の発行タイミ�
 
 ```ts
 import { of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { delay } from 'rxjs';
 
 of('Hello')
   .pipe(
@@ -35,7 +35,7 @@ of('Hello')
 
 ```ts
 import { of } from 'rxjs';
-import { delay, concatMap } from 'rxjs/operators';
+import { delay, concatMap } from 'rxjs';
 
 of('A', 'B', 'C')
   .pipe(
@@ -56,7 +56,7 @@ of('A', 'B', 'C')
 
 ```ts
 import { of } from 'rxjs';
-import { delay, tap } from 'rxjs/operators';
+import { delay, tap } from 'rxjs';
 
 // 出力表示エリア
 const delayOutput = document.createElement('div');

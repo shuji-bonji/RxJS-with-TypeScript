@@ -11,7 +11,7 @@ RxJSでは、Observableのライフサイクルの一部としてエラーを処
 
 ```ts
 import { of, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError } from 'rxjs';
 
 // エラーを発生させるObservable
 const error$ = throwError(() => new Error('エラーが発生しました')); // RxJS 7以降、関数形式推奨
@@ -44,7 +44,7 @@ error$
 
 ```ts
 import { of, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError } from 'rxjs';
 
 const source$ = throwError(() => new Error('データ取得エラー'));
 
@@ -67,7 +67,7 @@ source$.pipe(
 
 ```ts
 import { interval, throwError, of } from 'rxjs';
-import { mergeMap, retry, tap } from 'rxjs/operators';
+import { mergeMap, retry, tap } from 'rxjs';
 
 let attemptCount = 0;
 
@@ -100,7 +100,7 @@ interval(1000).pipe(
 
 ```ts
 import { throwError, timer, of } from 'rxjs';
-import { retryWhen, tap, concatMap, catchError } from 'rxjs/operators';
+import { retryWhen, tap, concatMap, catchError } from 'rxjs';
 
 function fetchWithRetry() {
   let retryCount = 0;
@@ -163,7 +163,7 @@ finalizeは、エラー発生時だけでなく正常完了時にも確実にク
 
 ```ts
 import { throwError } from 'rxjs';
-import { catchError, finalize } from 'rxjs/operators';
+import { catchError, finalize } from 'rxjs';
 
 let isLoading = true;
 
@@ -196,7 +196,7 @@ throwError(() => new Error('処理エラー'))
 
 ```ts
 import { of, throwError } from 'rxjs';
-import { catchError, finalize, tap } from 'rxjs/operators';
+import { catchError, finalize, tap } from 'rxjs';
 
 function fetchData(shouldFail = false) {
   // ローディング表示
@@ -252,7 +252,7 @@ fetchData(true).subscribe();
 
 ```ts
 import { forkJoin, of, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs';
 
 // 複数のAPIリクエストをシミュレート
 function getUser() {

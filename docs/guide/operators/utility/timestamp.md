@@ -12,7 +12,7 @@ description: timestampオペレーターは各値にタイムスタンプを付�
 
 ```ts
 import { interval } from 'rxjs';
-import { timestamp, take } from 'rxjs/operators';
+import { timestamp, take } from 'rxjs';
 
 interval(1000)
   .pipe(
@@ -46,7 +46,7 @@ interval(1000)
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { timestamp, pairwise, map } from 'rxjs/operators';
+import { timestamp, pairwise, map } from 'rxjs';
 
 // UI作成
 const container = document.createElement('div');
@@ -121,7 +121,7 @@ addLog('ボタンをクリックしてください（2回目から間隔を測�
 
 ```ts
 import { interval } from 'rxjs';
-import { timestamp, map, take, tap } from 'rxjs/operators';
+import { timestamp, map, take, tap } from 'rxjs';
 
 // UI作成
 const container2 = document.createElement('div');
@@ -195,7 +195,7 @@ interval(500)
 
 ```ts
 import { merge, fromEvent, interval } from 'rxjs';
-import { timestamp, map, take } from 'rxjs/operators';
+import { timestamp, map, take } from 'rxjs';
 
 // UI作成
 const container3 = document.createElement('div');
@@ -276,7 +276,7 @@ addLog3('イベントログ記録中...', '#e3f2fd');
 
 ```ts
 import { of } from 'rxjs';
-import { timestamp, map } from 'rxjs/operators';
+import { timestamp, map } from 'rxjs';
 
 of('A', 'B', 'C')
   .pipe(
@@ -305,7 +305,7 @@ JavaScriptの`Date.now()`を使用するため、ミリ秒単位の精度です�
 
 ```ts
 import { interval } from 'rxjs';
-import { timestamp, take } from 'rxjs/operators';
+import { timestamp, take } from 'rxjs';
 
 // 高頻度のイベント（1ms間隔）
 interval(1)
@@ -327,7 +327,7 @@ interval(1)
 
 ```ts
 import { of, asyncScheduler } from 'rxjs';
-import { delay, timestamp } from 'rxjs/operators';
+import { delay, timestamp } from 'rxjs';
 
 of(1, 2, 3)
   .pipe(
@@ -343,7 +343,7 @@ of(1, 2, 3)
 
 ```ts
 import { of } from 'rxjs';
-import { timestamp, map } from 'rxjs/operators';
+import { timestamp, map } from 'rxjs';
 
 of(1, 2, 3)
   .pipe(

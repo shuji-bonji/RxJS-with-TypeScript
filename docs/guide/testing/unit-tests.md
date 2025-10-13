@@ -12,7 +12,7 @@ RxJSを使ったコードは非同期処理が多く、従来のテスト手法�
 
 ```ts
 import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { describe, it, expect } from 'vitest';
 
 // テスト対象の関数
@@ -49,7 +49,7 @@ describe('基本的なObservableのテスト', () => {
 
 ```ts
 import { Observable, timer } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map, take } from 'rxjs';
 import { describe, it, expect } from 'vitest';
 
 // テスト対象の非同期関数
@@ -79,11 +79,11 @@ describe('非同期Observableのテスト', () => {
 
 ## Promise変換による非同期テスト
 
-Observableを`toPromise()`や`lastValueFrom()`を使ってPromiseに変換し、modern JS/TSのasync/awaitを活用する方法もあります。
+Observableを`firstValueFrom()`や`lastValueFrom()`を使ってPromiseに変換し、modern JS/TSのasync/awaitを活用する方法もあります。
 
 ```ts
 import { Observable, of } from 'rxjs';
-import { map, delay, toArray } from 'rxjs/operators';
+import { map, delay, toArray } from 'rxjs';
 import { describe, it, expect } from 'vitest';
 import { lastValueFrom } from 'rxjs';
 
@@ -116,7 +116,7 @@ RxJSは`TestScheduler`という特別なスケジューラーを提供してお�
 
 ```ts
 import { TestScheduler } from 'rxjs/testing';
-import { map, debounceTime } from 'rxjs/operators';
+import { map, debounceTime } from 'rxjs';
 import { describe, it, beforeEach } from 'vitest';
 
 describe('TestSchedulerの使用', () => {
@@ -155,7 +155,7 @@ describe('TestSchedulerの使用', () => {
 ```ts
 import { TestScheduler } from 'rxjs/testing';
 import { interval } from 'rxjs';
-import { take, map } from 'rxjs/operators';
+import { take, map } from 'rxjs';
 import { describe, it, beforeEach } from 'vitest';
 
 describe('時間の制御', () => {
@@ -191,7 +191,7 @@ describe('時間の制御', () => {
 ```ts
 import { TestScheduler } from 'rxjs/testing';
 import { throwError, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError } from 'rxjs';
 
 describe('エラー処理のテスト', () => {
   let testScheduler: TestScheduler;
@@ -317,7 +317,7 @@ RxJSを使ったサービスをテストする場合、外部依存をモック�
 
 ```ts
 import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { describe, it, expect, vi } from 'vitest';
 
 type User = {
@@ -370,7 +370,7 @@ describe('サービスのテスト', () => {
 
 ```ts
 import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 import { describe, it, expect } from 'vitest';
 
 type User = {

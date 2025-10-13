@@ -12,7 +12,7 @@ description: repeatWhenオペレーターは完了時に別のObservableの発�
 
 ```ts
 import { of } from 'rxjs';
-import { repeatWhen, delay, take } from 'rxjs/operators';
+import { repeatWhen, delay, take } from 'rxjs';
 
 of(1, 2, 3)
   .pipe(
@@ -49,7 +49,7 @@ notifierファクトリー関数は、完了通知のストリームを受け取
 
 ```ts
 import { of, timer } from 'rxjs';
-import { repeatWhen, mergeMap, take, tap } from 'rxjs/operators';
+import { repeatWhen, mergeMap, take, tap } from 'rxjs';
 
 // UI作成
 const container = document.createElement('div');
@@ -116,7 +116,7 @@ of('データ取得')
 
 ```ts
 import { of, fromEvent, Subject } from 'rxjs';
-import { repeatWhen, tap, delay } from 'rxjs/operators';
+import { repeatWhen, tap, delay } from 'rxjs';
 
 // UI作成
 const container2 = document.createElement('div');
@@ -193,7 +193,7 @@ of('タスク実行中...')
 
 ```ts
 import { of, timer } from 'rxjs';
-import { repeat, repeatWhen, delay } from 'rxjs/operators';
+import { repeat, repeatWhen, delay } from 'rxjs';
 
 // repeat - シンプルなリピート
 of(1, 2, 3)
@@ -239,7 +239,7 @@ of(1, 2, 3)
 
 ```ts
 import { of } from 'rxjs';
-import { repeatWhen, delay, take } from 'rxjs/operators';
+import { repeatWhen, delay, take } from 'rxjs';
 
 of(1, 2, 3)
   .pipe(
@@ -266,7 +266,7 @@ notifierが完了すると、ソースObservableも完了します。
 
 ```ts
 import { of, throwError } from 'rxjs';
-import { repeatWhen, mergeMap } from 'rxjs/operators';
+import { repeatWhen, mergeMap } from 'rxjs';
 
 of(1, 2, 3)
   .pipe(
@@ -293,7 +293,7 @@ of(1, 2, 3)
 
 ```ts
 import { of } from 'rxjs';
-import { repeatWhen, delay } from 'rxjs/operators';
+import { repeatWhen, delay } from 'rxjs';
 
 // ❌ 悪い例: 無限リピート
 of(1, 2, 3)
@@ -326,7 +326,7 @@ of(1, 2, 3)
 
 ```ts
 import { of, throwError, concat } from 'rxjs';
-import { repeatWhen, delay } from 'rxjs/operators';
+import { repeatWhen, delay } from 'rxjs';
 
 concat(
   of(1, 2),
@@ -349,7 +349,7 @@ concat(
 
 ```ts
 import { of, timer } from 'rxjs';
-import { repeatWhen, mergeMap, tap, take } from 'rxjs/operators';
+import { repeatWhen, mergeMap, tap, take } from 'rxjs';
 
 // 段階的にリピート間隔を変更する例
 let attempt = 0;

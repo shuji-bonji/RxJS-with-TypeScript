@@ -11,7 +11,7 @@ description: isEmptyオペレーターは、Observableが値を発行せずに�
 
 ```ts
 import { of, EMPTY } from 'rxjs';
-import { isEmpty } from 'rxjs/operators';
+import { isEmpty } from 'rxjs';
 
 EMPTY.pipe(isEmpty()).subscribe(console.log); // 出力: true
 of(1).pipe(isEmpty()).subscribe(console.log); // 出力: false
@@ -26,7 +26,7 @@ of(1).pipe(isEmpty()).subscribe(console.log); // 出力: false
 
 ```ts
 import { from } from 'rxjs';
-import { filter, isEmpty } from 'rxjs/operators';
+import { filter, isEmpty } from 'rxjs';
 
 from([1, 3, 5])
   .pipe(
@@ -47,7 +47,7 @@ from([1, 3, 5])
 
 ```ts
 import { from } from 'rxjs';
-import { filter, isEmpty } from 'rxjs/operators';
+import { filter, isEmpty } from 'rxjs';
 
 const container = document.createElement('div');
 container.innerHTML = '<h3>isEmpty オペレーターの例:</h3>';
@@ -82,7 +82,7 @@ checkButton.addEventListener('click', () => {
 
 ```ts
 import { fromEvent, of, from } from 'rxjs';
-import { debounceTime, switchMap, map, filter, isEmpty, delay } from 'rxjs/operators';
+import { debounceTime, switchMap, map, filter, isEmpty, delay } from 'rxjs';
 
 const searchContainer = document.createElement('div');
 searchContainer.innerHTML = '<h3>isEmpty を使った検索結果チェック:</h3>';

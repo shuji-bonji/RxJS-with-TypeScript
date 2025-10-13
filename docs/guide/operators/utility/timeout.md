@@ -14,7 +14,7 @@ APIリクエストやユーザー操作の応答待ちなど、リアクティ�
 
 ```ts
 import { of } from 'rxjs';
-import { delay, timeout, catchError } from 'rxjs/operators';
+import { delay, timeout, catchError } from 'rxjs';
 
 of('response')
   .pipe(
@@ -43,7 +43,7 @@ TimeoutErrorImpl {stack: 'Error\n    at _super (http://localhost:5174/node_mo…
 
 ```ts
 import { interval, of } from 'rxjs';
-import { timeout, catchError, take } from 'rxjs/operators';
+import { timeout, catchError, take } from 'rxjs';
 
 const slow$ = interval(1500).pipe(take(3));
 const fast$ = interval(500).pipe(take(3));
@@ -73,7 +73,7 @@ slow$
 
 ```ts
 import { interval, of } from 'rxjs';
-import { timeout, catchError, take } from 'rxjs/operators';
+import { timeout, catchError, take } from 'rxjs';
 
 // 出力表示エリア
 const timeoutOutput = document.createElement('div');

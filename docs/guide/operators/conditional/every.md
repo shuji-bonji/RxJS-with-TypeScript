@@ -11,7 +11,7 @@ description: everyオペレーターは、すべての値が指定条件を満�
 
 ```ts
 import { from } from 'rxjs';
-import { every } from 'rxjs/operators';
+import { every } from 'rxjs';
 
 from([2, 4, 6, 8])
   .pipe(
@@ -23,7 +23,7 @@ from([2, 4, 6, 8])
 
 ```ts
 import { from } from 'rxjs';
-import { every } from 'rxjs/operators';
+import { every } from 'rxjs';
 
 from([2, 4, 5, 8])
   .pipe(
@@ -47,7 +47,7 @@ from([2, 4, 5, 8])
 
 ```ts
 import { from } from 'rxjs';
-import { every } from 'rxjs/operators';
+import { every } from 'rxjs';
 
 const container = document.createElement('div');
 container.innerHTML = '<h3>every オペレーターの例:</h3>';
@@ -92,7 +92,7 @@ someOddButton.addEventListener('click', () => {
 
 ```ts
 import { combineLatest, fromEvent } from 'rxjs';
-import { map, startWith, every, tap } from 'rxjs/operators';
+import { map, startWith, every, tap } from 'rxjs';
 
 // UI要素を作成
 const formContainer = document.createElement('div');

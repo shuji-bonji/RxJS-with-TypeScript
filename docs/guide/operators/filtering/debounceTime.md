@@ -11,7 +11,7 @@ description: debounceTimeオペレーターは、連続したイベント発行�
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { debounceTime, map } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs';
 
 const searchBox = document.createElement('input');
 document.body.appendChild(searchBox);
@@ -41,7 +41,7 @@ fromEvent(searchBox, 'input')
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { debounceTime, map } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs';
 
 // 出力エリア作成
 const container = document.createElement('div');

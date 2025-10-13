@@ -10,7 +10,7 @@ description: skipLastオペレーターは、Observableストリームの最後�
 
 ```ts
 import { range } from 'rxjs';
-import { skipLast } from 'rxjs/operators';
+import { skipLast } from 'rxjs';
 
 const numbers$ = range(0, 10); // 0から9まで
 
@@ -42,7 +42,7 @@ numbers$.pipe(
 
 ```ts
 import { from, interval } from 'rxjs';
-import { skipLast, map, take, concatMap, delay } from 'rxjs/operators';
+import { skipLast, map, take, concatMap, delay } from 'rxjs';
 
 // UI作成
 const container = document.createElement('div');
@@ -136,7 +136,7 @@ from(data).pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { skipLast, map, take } from 'rxjs/operators';
+import { skipLast, map, take } from 'rxjs';
 
 // UI作成
 const container = document.createElement('div');
@@ -249,7 +249,7 @@ logs$.pipe(
 
 ```ts
 import { range } from 'rxjs';
-import { skipLast, takeLast, skip } from 'rxjs/operators';
+import { skipLast, takeLast, skip } from 'rxjs';
 
 const numbers$ = range(0, 10); // 0から9まで
 
@@ -301,7 +301,7 @@ skip(3): [0, 1, 2 スキップ] | 3, 4, 5, 6, 7, 8, 9
 
 ```ts
 import { interval } from 'rxjs';
-import { skipLast } from 'rxjs/operators';
+import { skipLast } from 'rxjs';
 
 // ❌ 悪い例: 無限ストリームで skipLast を使用
 interval(1000).pipe(
@@ -318,7 +318,7 @@ interval(1000).pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { take, skipLast } from 'rxjs/operators';
+import { take, skipLast } from 'rxjs';
 
 // ✅ 良い例: 有限ストリームにしてから skipLast を使用
 interval(1000).pipe(
@@ -335,7 +335,7 @@ interval(1000).pipe(
 
 ```ts
 import { range } from 'rxjs';
-import { skipLast } from 'rxjs/operators';
+import { skipLast } from 'rxjs';
 
 // ⚠️ 1000個をバッファに保持
 range(0, 1000000).pipe(
@@ -349,7 +349,7 @@ range(0, 1000000).pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { take, skipLast, tap } from 'rxjs/operators';
+import { take, skipLast, tap } from 'rxjs';
 
 interval(1000).pipe(
   take(5),
@@ -373,7 +373,7 @@ interval(1000).pipe(
 
 ```ts
 import { range } from 'rxjs';
-import { skipLast } from 'rxjs/operators';
+import { skipLast } from 'rxjs';
 
 range(0, 5).pipe(
   skipLast(0)
@@ -389,7 +389,7 @@ range(0, 5).pipe(
 
 ```ts
 import { range } from 'rxjs';
-import { skip, skipLast } from 'rxjs/operators';
+import { skip, skipLast } from 'rxjs';
 
 range(0, 10).pipe(
   skip(2),      // 最初の2個をスキップ
@@ -404,7 +404,7 @@ range(0, 10).pipe(
 
 ```ts
 import { from } from 'rxjs';
-import { skipLast, map } from 'rxjs/operators';
+import { skipLast, map } from 'rxjs';
 
 interface Transaction {
   id: number;
@@ -438,7 +438,7 @@ transactions$.pipe(
 
 ```ts
 import { range } from 'rxjs';
-import { skipLast, bufferCount } from 'rxjs/operators';
+import { skipLast, bufferCount } from 'rxjs';
 
 range(0, 10).pipe(
   skipLast(2),      // 最後の2件をスキップ

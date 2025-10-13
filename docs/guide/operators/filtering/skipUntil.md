@@ -11,7 +11,7 @@ description: skipUntilオペレーターは、別のObservableが値を発行す
 
 ```ts
 import { interval, timer } from 'rxjs';
-import { skipUntil } from 'rxjs/operators';
+import { skipUntil } from 'rxjs';
 
 const source$ = interval(500); // 0.5秒ごとに値を発行
 const notifier$ = timer(2000); // 2秒後に値を発行
@@ -37,7 +37,7 @@ source$.pipe(
 
 ```ts
 import { interval, timer } from 'rxjs';
-import { skipUntil, takeUntil } from 'rxjs/operators';
+import { skipUntil, takeUntil } from 'rxjs';
 
 const source$ = interval(500); // 0.5秒ごとに値を発行
 const notifier$ = timer(2000); // 2秒後に値を発行
@@ -66,7 +66,7 @@ source$.pipe(
 1. **ユーザー認証後にデータを処理開始**
    ```ts
    import { interval, Subject } from 'rxjs';
-   import { skipUntil } from 'rxjs/operators';
+   import { skipUntil } from 'rxjs';
 
    const authenticated$ = new Subject<void>();
    const dataStream$ = interval(1000);
@@ -89,7 +89,7 @@ source$.pipe(
 2. **初期ロード完了後にイベント処理を開始**
    ```ts
    import { fromEvent, BehaviorSubject } from 'rxjs';
-   import { filter, skipUntil } from 'rxjs/operators';
+   import { filter, skipUntil } from 'rxjs';
 
    const appReady$ = new BehaviorSubject<boolean>(false);
    const button = document.createElement('button');
@@ -115,7 +115,7 @@ source$.pipe(
 3. **タイマーベースの遅延開始**
    ```ts
    import { fromEvent, timer } from 'rxjs';
-   import { skipUntil, scan } from 'rxjs/operators';
+   import { skipUntil, scan } from 'rxjs';
 
    const button = document.createElement('button');
    button.textContent = 'カウント';
@@ -142,7 +142,7 @@ source$.pipe(
 
 ```ts
 import { fromEvent, timer, interval } from 'rxjs';
-import { skipUntil, take, scan } from 'rxjs/operators';
+import { skipUntil, take, scan } from 'rxjs';
 
 // UI要素の作成
 const container = document.createElement('div');
@@ -197,7 +197,7 @@ clicks$.pipe(
 
 ```ts
 import { interval, timer } from 'rxjs';
-import { skip, skipUntil } from 'rxjs/operators';
+import { skip, skipUntil } from 'rxjs';
 
 const source$ = interval(500);
 
@@ -227,7 +227,7 @@ TypeScript でジェネリクスを活用した型安全な実装例です。
 
 ```ts
 import { Observable, Subject, fromEvent } from 'rxjs';
-import { skipUntil, map } from 'rxjs/operators';
+import { skipUntil, map } from 'rxjs';
 
 interface GameState {
   status: 'waiting' | 'ready' | 'playing' | 'finished';
@@ -285,7 +285,7 @@ game.startGame(canvas).subscribe(click => {
 
 ```ts
 import { interval, timer } from 'rxjs';
-import { skipUntil, takeUntil } from 'rxjs/operators';
+import { skipUntil, takeUntil } from 'rxjs';
 
 const source$ = interval(500);
 const start$ = timer(2000); // 2秒後に開始
@@ -322,7 +322,7 @@ source$.pipe(
 
 ```ts
 import { interval, Subject } from 'rxjs';
-import { skipUntil } from 'rxjs/operators';
+import { skipUntil } from 'rxjs';
 
 const source$ = interval(500);
 const notifier$ = new Subject<void>();
@@ -340,7 +340,7 @@ setTimeout(() => notifier$.next(), 2000); // これは無意味
 
 ```ts
 import { interval, Subject } from 'rxjs';
-import { skipUntil } from 'rxjs/operators';
+import { skipUntil } from 'rxjs';
 
 const source$ = interval(500);
 const notifier$ = new Subject<void>();

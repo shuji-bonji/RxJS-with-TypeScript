@@ -114,7 +114,7 @@ apiA().subscribe(a => {
 
 ```ts
 import { of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs';
 
 function apiA() {
   return of({ id: 1 });
@@ -172,7 +172,7 @@ function setupResizeHandler() {
 
 ```ts
 import { fromEvent, Subject } from 'rxjs';
-import { takeUntil, finalize } from 'rxjs/operators';
+import { takeUntil, finalize } from 'rxjs';
 
 class MyComponent {
   private readonly destroy$ = new Subject<void>();
@@ -232,7 +232,7 @@ class MyComponent {
 
 ```ts
 import { interval } from 'rxjs';
-import { shareReplay, take } from 'rxjs/operators';
+import { shareReplay, take } from 'rxjs';
 
 // バッファサイズを無制限にしてしまう
 const shared$ = interval(1000).pipe(
@@ -246,7 +246,7 @@ const shared$ = interval(1000).pipe(
 
 ```ts
 import { interval } from 'rxjs';
-import { shareReplay, take } from 'rxjs/operators';
+import { shareReplay, take } from 'rxjs';
 
 // バッファサイズと参照カウントを明示的に指定
 const shared$ = interval(1000).pipe(
@@ -275,7 +275,7 @@ const shared$ = interval(1000).pipe(
 
 ```ts
 import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 let counter = 0;
 
@@ -294,7 +294,7 @@ source$.subscribe(console.log); // counter が予期せず増加
 
 ```ts
 import { of } from 'rxjs';
-import { map, tap, scan } from 'rxjs/operators';
+import { map, tap, scan } from 'rxjs';
 
 // 純粋な変換のみ
 const source$ = of(1, 2, 3).pipe(
@@ -341,7 +341,7 @@ data$.subscribe(console.log); // リクエスト 2（無駄な重複）
 
 ```ts
 import { ajax } from 'rxjs/ajax';
-import { shareReplay } from 'rxjs/operators';
+import { shareReplay } from 'rxjs';
 
 // Hot Observable に変換して共有
 const data$ = ajax.getJSON('https://api.example.com/data').pipe(
@@ -386,7 +386,7 @@ from(fetchData()).subscribe(data => {
 
 ```ts
 import { from } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs';
 
 async function fetchData(): Promise<string> {
   return 'data';
@@ -433,7 +433,7 @@ function searchAPI(query: string): void {
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs';
 
 // デバウンスとキャンセルを適用
 fromEvent(document.getElementById('search'), 'input').pipe(
@@ -464,7 +464,7 @@ fromEvent(document.getElementById('search'), 'input').pipe(
 
 ```ts
 import { ajax } from 'rxjs/ajax';
-import { catchError } from 'rxjs/operators';
+import { catchError } from 'rxjs';
 import { of } from 'rxjs';
 
 // エラーを無視
@@ -479,7 +479,7 @@ ajax.getJSON('https://api.example.com/data').pipe(
 
 ```ts
 import { ajax } from 'rxjs/ajax';
-import { catchError } from 'rxjs/operators';
+import { catchError } from 'rxjs';
 import { of } from 'rxjs';
 
 interface ApiResponse {
@@ -550,7 +550,7 @@ class Widget {
 
 ```ts
 import { fromEvent, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs';
 
 class Widget {
   private button: HTMLButtonElement;
@@ -591,7 +591,7 @@ class Widget {
 
 ```ts
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 function fetchUser(): Observable<any> {
   return new Observable(subscriber => {
@@ -609,7 +609,7 @@ fetchUser().pipe(
 
 ```ts
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 interface User {
   name: string;
@@ -645,7 +645,7 @@ fetchUser().pipe(
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { mergeMap } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 
 // ボタンクリックごとに検索（古いリクエストがキャンセルされない）
@@ -658,7 +658,7 @@ fromEvent(document.getElementById('search-btn'), 'click').pipe(
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 
 // 最新のリクエストのみを処理（古いリクエストは自動キャンセル）
@@ -693,7 +693,7 @@ fromEvent(document.getElementById('search-btn'), 'click').pipe(
 
 ```ts
 import { Observable, of } from 'rxjs';
-import { map, mergeMap, toArray } from 'rxjs/operators';
+import { map, mergeMap, toArray } from 'rxjs';
 
 // 単純な配列変換を RxJS で複雑化
 function doubleNumbers(numbers: number[]): Observable<number[]> {
@@ -709,7 +709,7 @@ function doubleNumbers(numbers: number[]): Observable<number[]> {
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map } from 'rxjs';
 
 // 配列処理は普通の JavaScript で十分
 function doubleNumbers(numbers: number[]): number[] {
@@ -763,7 +763,7 @@ class Counter {
 
 ```ts
 import { interval, BehaviorSubject } from 'rxjs';
-import { scan, tap } from 'rxjs/operators';
+import { scan, tap } from 'rxjs';
 
 class Counter {
   private readonly count$ = new BehaviorSubject<number>(0);
@@ -801,7 +801,7 @@ RxJS のコードをテストせずに本番環境にデプロイすると、リ
 
 ```ts
 import { interval } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
+import { map, filter } from 'rxjs';
 
 // テストなしでデプロイ
 export function getEvenNumbers() {

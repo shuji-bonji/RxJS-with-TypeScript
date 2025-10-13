@@ -14,7 +14,7 @@ RxJSの`pipe()`メソッドを使って、パイプラインを構築します�
 
 ```ts
 import { Observable } from 'rxjs';
-import { map, filter, tap } from 'rxjs/operators';
+import { map, filter, tap } from 'rxjs';
 
 const source$: Observable<number> = // 何らかのObservable
 source$.pipe(
@@ -34,7 +34,7 @@ source$.pipe(
 
 ```ts
 import { of } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
+import { map, filter } from 'rxjs';
 
 // 数値のストリーム
 const numbers$ = of(1, 2, 3, 4, 5);
@@ -151,7 +151,7 @@ document.body.appendChild(div1);
 ⬇️⬇️⬇️ 
 ```ts
 import { of } from 'rxjs';
-import { filter, map, toArray } from 'rxjs/operators';
+import { filter, map, toArray } from 'rxjs';
 
 const output = document.createElement('div');
 output.innerHTML = '<h3>可読性と保守性の向上</h3>';
@@ -216,7 +216,7 @@ document.body.appendChild(div2);
 ```ts
 // 宣言的なプログラミングスタイル
 import { from } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter, map } from 'rxjs';
 
 const out2 = document.createElement('div');
 out2.innerHTML = '<h3>宣言的なスタイル</h3>';
@@ -280,7 +280,7 @@ document.body.appendChild(div0);
 ```ts
 // 宣言的なプログラミングスタイル
 import { from } from 'rxjs';
-import { filter, map, toArray } from 'rxjs/operators';
+import { filter, map, toArray } from 'rxjs';
 
 const out3 = document.createElement('div');
 out3.innerHTML = '<h3>合成可能性</h3>';
@@ -337,7 +337,7 @@ observable$.pipe(
 
 ```ts
 import { Observable, pipe } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter, map } from 'rxjs';
 
 // カスタムパイプライン関数
 export function filterAndTransform<T, R>(

@@ -12,7 +12,7 @@ description: observeOnオペレーターはObservableの値の発行タイミン
 
 ```ts
 import { of, asyncScheduler } from 'rxjs';
-import { observeOn } from 'rxjs/operators';
+import { observeOn } from 'rxjs';
 
 console.log('開始');
 
@@ -61,7 +61,7 @@ console.log('終了');
 
 ```ts
 import { range, asapScheduler } from 'rxjs';
-import { observeOn, bufferCount, tap } from 'rxjs/operators';
+import { observeOn, bufferCount, tap } from 'rxjs';
 
 // UI作成
 const container = document.createElement('div');
@@ -132,7 +132,7 @@ range(1, totalItems)
 
 ```ts
 import { interval, animationFrameScheduler } from 'rxjs';
-import { observeOn, take, map } from 'rxjs/operators';
+import { observeOn, take, map } from 'rxjs';
 
 // UI作成
 const container2 = document.createElement('div');
@@ -184,7 +184,7 @@ interval(0)
 
 ```ts
 import { of, asyncScheduler } from 'rxjs';
-import { observeOn, subscribeOn, tap } from 'rxjs/operators';
+import { observeOn, subscribeOn, tap } from 'rxjs';
 
 console.log('=== observeOn ===');
 of(1, 2, 3)
@@ -233,7 +233,7 @@ of(1, 2, 3)
 
 ```ts
 import { of, asyncScheduler } from 'rxjs';
-import { observeOn, map, tap } from 'rxjs/operators';
+import { observeOn, map, tap } from 'rxjs';
 
 of(1, 2, 3)
   .pipe(
@@ -252,7 +252,7 @@ of(1, 2, 3)
 
 ```ts
 import { of, asyncScheduler, queueScheduler } from 'rxjs';
-import { observeOn } from 'rxjs/operators';
+import { observeOn } from 'rxjs';
 
 of(1, 2, 3)
   .pipe(
@@ -291,7 +291,7 @@ range(1, 1000)
 
 ```ts
 import { of, asyncScheduler, asapScheduler, queueScheduler } from 'rxjs';
-import { observeOn } from 'rxjs/operators';
+import { observeOn } from 'rxjs';
 
 console.log('1: 開始');
 

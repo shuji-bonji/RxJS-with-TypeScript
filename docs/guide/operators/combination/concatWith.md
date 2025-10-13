@@ -11,7 +11,7 @@ description: concatWithは、元のObservableの完了後に他のObservableを�
 
 ```ts
 import { of, delay } from 'rxjs';
-import { concatWith } from 'rxjs/operators';
+import { concatWith } from 'rxjs';
 
 const obs1$ = of('A', 'B').pipe(delay(100));
 const obs2$ = of('C', 'D').pipe(delay(100));
@@ -43,7 +43,7 @@ obs1$
 
 ```ts
 import { of, delay } from 'rxjs';
-import { concatWith, map } from 'rxjs/operators';
+import { concatWith, map } from 'rxjs';
 
 // 出力エリア作成
 const output = document.createElement('div');
@@ -114,7 +114,7 @@ concat(part1$, part2$, part3$).subscribe(console.log);
 
 ```ts
 import { of } from 'rxjs';
-import { concatWith, map, filter } from 'rxjs/operators';
+import { concatWith, map, filter } from 'rxjs';
 
 const userData$ = of({ name: 'Alice', age: 30 }, { name: 'Bob', age: 25 });
 const additionalData$ = of({ name: 'Charlie', age: 35 });
@@ -146,7 +146,7 @@ userData$
 
 ```ts
 import { fromEvent, of } from 'rxjs';
-import { concatWith, take, mapTo } from 'rxjs/operators';
+import { concatWith, take, mapTo } from 'rxjs';
 
 // ボタンと出力エリア作成
 const button = document.createElement('button');
@@ -198,7 +198,7 @@ concat(
 
 ```ts
 import { interval, of } from 'rxjs';
-import { concatWith, take } from 'rxjs/operators';
+import { concatWith, take } from 'rxjs';
 
 interval(1000).pipe(
   take(3),              // 3つで完了させる
@@ -213,7 +213,7 @@ interval(1000).pipe(
 
 ```ts
 import { throwError, of } from 'rxjs';
-import { concatWith, catchError } from 'rxjs/operators';
+import { concatWith, catchError } from 'rxjs';
 
 throwError(() => new Error('エラー発生'))
   .pipe(

@@ -11,7 +11,7 @@ description: lastオペレーターは、ストリームの完了時に最後の
 
 ```ts
 import { from } from 'rxjs';
-import { last } from 'rxjs/operators';
+import { last } from 'rxjs';
 
 const numbers$ = from([1, 2, 3, 4, 5]);
 
@@ -50,7 +50,7 @@ numbers$.pipe(
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { map, filter, take, last } from 'rxjs/operators';
+import { map, filter, take, last } from 'rxjs';
 
 // 出力エリア作成
 const output = document.createElement('div');
