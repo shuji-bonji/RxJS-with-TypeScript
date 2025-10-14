@@ -110,8 +110,8 @@ source$
 通知を一時的にバッファリングしてから復元する例です。
 
 ```ts
-import { interval } from 'rxjs';
-import { materialize, dematerialize, bufferTime, concatMap, delay } from 'rxjs';
+import { from, interval, take, delay } from 'rxjs';
+import { materialize, dematerialize, bufferTime, concatMap } from 'rxjs';
 
 // UI作成
 const container2 = document.createElement('div');
@@ -204,13 +204,14 @@ of(1, 2, 3)
 ### 1. エラー通知は実際のエラーに変換される
 
 ```ts
-import { of } from 'rxjs';
-import { materialize, dematerialize, concatMap } from 'rxjs';
+import { of, throwError, concat } from 'rxjs';
+import { materialize, dematerialize } from 'rxjs';
 
-of(
-  Notification.createNext(1),
-  Notification.createError(new Error('エラー')),
-  Notification.createNext(2)  // ここは実行されない
+// 各Observableをmaterialize()で通知オブジェクトに変換
+concat(
+  of(1).pipe(materialize()),
+  throwError(() => new Error('エラー')).pipe(materialize()),
+  of(2).pipe(materialize())  // エラー後なので実行されない
 )
   .pipe(
     dematerialize()
@@ -229,14 +230,15 @@ of(
 ### 2. 完了通知でストリームが完了する
 
 ```ts
-import { of } from 'rxjs';
-import { dematerialize } from 'rxjs';
+import { of, EMPTY, concat } from 'rxjs';
+import { materialize, dematerialize } from 'rxjs';
 
-of(
-  Notification.createNext(1),
-  Notification.createNext(2),
-  Notification.createComplete(),
-  Notification.createNext(3)  // ここは実行されない
+// 各Observableをmaterialize()で通知オブジェクトに変換
+concat(
+  of(1).pipe(materialize()),
+  of(2).pipe(materialize()),
+  EMPTY.pipe(materialize()),  // 完了通知
+  of(3).pipe(materialize())   // 完了後なので実行されない
 )
   .pipe(
     dematerialize()
@@ -276,8 +278,8 @@ of(1, 2, 3)
 ## 実践的な組み合わせ例
 
 ```ts
-import { interval, throwError } from 'rxjs';
-import { materialize, dematerialize, take, mergeMap, filter, map } from 'rxjs';
+import { interval, throwError, of, concat } from 'rxjs';
+import { materialize, dematerialize, take, mergeMap, map } from 'rxjs';
 
 // エラーをwarningに変換する例
 interval(500)
@@ -295,8 +297,8 @@ interval(500)
       // エラーをwarningメッセージに変換
       if (notification.kind === 'E') {
         console.warn('Warning:', notification.error?.message);
-        // エラーの代わりに特別な値を発行
-        return Notification.createNext(-1);
+        // エラーの代わりに特別な値を発行（materialize()で生成）
+        return { kind: 'N' as const, value: -1 };
       }
       return notification;
     }),

@@ -408,8 +408,8 @@ The following operators are planned for the second documentation release, priori
 - ✅ `observeOn` - Control emission timing with scheduler (docs/guide/operators/utility/observeOn.md)
 - ✅ `subscribeOn` - Control subscription timing with scheduler (docs/guide/operators/utility/subscribeOn.md)
 - ✅ `timestamp` - Add time metadata to each emission (docs/guide/operators/utility/timestamp.md)
-- ✅ `timeoutWith` - Timeout with fallback Observable (docs/guide/operators/utility/timeoutWith.md)
-- ✅ `repeatWhen` - Conditional repeat on completion (docs/guide/operators/utility/repeatWhen.md)
+- ~~`repeatWhen`~~ → **削除済み** (RxJS v8で削除。代わりに `repeat` の `delay` オプションを使用)
+- ~~`timeoutWith`~~ → **削除済み** (RxJS公式から削除。代わりに `timeout` の `with` オプションを使用)
 
 #### 🔴 High Priority Operators (Remaining)
 
@@ -427,12 +427,14 @@ The following operators are planned for the second documentation release, priori
 
 
 **Note on Deprecated Operators:**
-The following operators are deprecated in RxJS 7 and will be removed in v8+:
-- `pluck` → Use `map` with optional chaining
-- `mapTo` → Use `map(() => value)`
-- `concatMapTo`, `switchMapTo`, `mergeMapTo` → Use base operators with constant function
+The following operators are deprecated/removed in RxJS and have been excluded from documentation:
+- ~~`pluck`~~ → **削除済み** (v8で削除。代わりに `map` with optional chaining を使用)
+- ~~`mapTo`~~ → **削除済み** (v9で削除予定。代わりに `map(() => value)` を使用)
+- `concatMapTo`, `switchMapTo`, `mergeMapTo` → 非推奨 (Use base operators with constant function)
+- ~~`repeatWhen`~~ → **削除済み** (RxJS v8で削除。代わりに `repeat` の `delay` オプションを使用)
+- ~~`timeoutWith`~~ → **削除済み** (RxJS公式から削除。代わりに `timeout` の `with` オプションを使用)
 
-These deprecated operators are intentionally excluded from the second release documentation.
+These deprecated operators have been removed from all documentation.
 
 ### Third Release: New Chapters
 

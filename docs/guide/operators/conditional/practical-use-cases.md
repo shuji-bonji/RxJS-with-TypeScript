@@ -41,6 +41,7 @@ idInput.type = 'number';
 idInput.placeholder = 'ID (1-10)';
 idInput.min = '1';
 idInput.max = '10';
+idInput.value = '1';
 idInput.style.marginLeft = '15px';
 idInput.style.width = '80px';
 optionsDiv.appendChild(idInput);
@@ -79,42 +80,26 @@ const cachedData: Record<number, User> = {
   3: { id: 3, name: '鈴木一郎', email: 'suzuki@example.com' },
 };
 
-// オンラインAPIシミュレーション
+// オンラインAPI（JSONPlaceholder）から実際にデータを取得
 function fetchUserFromApi(id: number) {
   console.log(`APIからユーザーID ${id} を取得中...`);
 
-  // 50%の確率で失敗するAPI
-  const shouldFail = Math.random() < 0.5;
+  // 実際のAPIエンドポイント
+  const apiUrl = `https://jsonplaceholder.typicode.com/users/${id}`;
 
-  if (shouldFail) {
-    return of(null).pipe(
-      tap(() => console.log('API呼び出しに失敗')),
-      switchMap(() =>
-        EMPTY.pipe(
-          tap(() => {
-            throw new Error('ネットワークエラー');
-          })
-        )
-      ),
-      catchError((err) => {
-        throw new Error('APIリクエストに失敗しました');
+  return of(null).pipe(
+    switchMap(() =>
+      fetch(apiUrl).then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTPエラー: ${response.status}`);
+        }
+        return response.json();
       })
-    );
-  }
-
-  // 成功時は1秒後にデータを返す
-  return of({
-    id: id,
-    name: `オンラインユーザー${id}`,
-    email: `user${id}@example.com`,
-    lastUpdated: new Date().toISOString(),
-  }).pipe(
+    ),
     tap(() => console.log('API呼び出しに成功')),
-    // 1秒の遅延をシミュレート
-    switchMap((data) => {
-      return new Promise((resolve) => {
-        setTimeout(() => resolve(data), 1000);
-      });
+    catchError((err) => {
+      console.error('API呼び出しに失敗:', err);
+      throw new Error('APIリクエストに失敗しました');
     })
   );
 }
@@ -251,6 +236,7 @@ optimizationContainer.appendChild(searchInputGroup);
 const searchInput = document.createElement('input');
 searchInput.type = 'text';
 searchInput.placeholder = 'ユーザーIDを入力 (1-10)';
+searchInput.value = '1';
 searchInput.style.padding = '8px';
 searchInput.style.width = '180px';
 searchInputGroup.appendChild(searchInput);
@@ -301,7 +287,7 @@ optimizationContainer.appendChild(optimizedResults);
 const cache = new Map<string, { data: any; timestamp: number }>();
 const CACHE_EXPIRY = 30000; // 30秒
 
-// ユーザーデータをシミュレート取得するAPI
+// 実際のAPIからユーザーデータを取得（JSONPlaceholder）
 function fetchUserData(id: string, forceRefresh: boolean): Observable<any> {
   // 無効なID
   if (!id || isNaN(Number(id)) || Number(id) < 1 || Number(id) > 10) {
@@ -327,38 +313,39 @@ function fetchUserData(id: string, forceRefresh: boolean): Observable<any> {
     }).pipe(delay(100)); // 高速レスポンスをシミュレート
   }
 
-  // APIリクエストをシミュレート
+  // 実際のAPIリクエスト（JSONPlaceholder）
   console.log(`APIからデータ取得: ${id}`);
+  const apiUrl = `https://jsonplaceholder.typicode.com/users/${id}`;
 
-  // 25%の確率でランダムにエラー発生
-  const shouldFail = Math.random() < 0.25;
-
-  if (shouldFail) {
-    return timer(1500).pipe(
-      switchMap(() =>
-        throwError(() => new Error('APIリクエストに失敗しました'))
-      )
-    );
-  }
-
-  // 成功レスポンス
-  return timer(1500).pipe(
-    map(() => {
-      const userData = {
-        id: Number(id),
-        name: `ユーザー${id}`,
-        email: `user${id}@example.com`,
+  return of(null).pipe(
+    switchMap(() =>
+      fetch(apiUrl).then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTPエラー: ${response.status}`);
+        }
+        return response.json();
+      })
+    ),
+    map((userData) => {
+      const processedData = {
+        id: userData.id,
+        name: userData.name,
+        email: userData.email,
         lastUpdated: now,
         fromCache: false,
       };
 
       // キャッシュに保存
       cache.set(cacheKey, {
-        data: userData,
+        data: processedData,
         timestamp: now,
       });
 
-      return userData;
+      return processedData;
+    }),
+    catchError((err) => {
+      console.error('APIエラー:', err);
+      throw new Error('APIリクエストに失敗しました');
     })
   );
 }

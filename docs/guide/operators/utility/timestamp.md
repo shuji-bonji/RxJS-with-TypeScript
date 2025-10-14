@@ -121,7 +121,7 @@ addLog('ボタンをクリックしてください（2回目から間隔を測�
 
 ```ts
 import { interval } from 'rxjs';
-import { timestamp, map, take, tap } from 'rxjs';
+import { timestamp, map, take } from 'rxjs';
 
 // UI作成
 const container2 = document.createElement('div');
@@ -326,8 +326,7 @@ interval(1)
 値が発行された時点のタイムスタンプであり、生成時点ではありません。
 
 ```ts
-import { of, asyncScheduler } from 'rxjs';
-import { delay, timestamp } from 'rxjs';
+import { of, delay, timestamp } from 'rxjs';
 
 of(1, 2, 3)
   .pipe(
@@ -342,8 +341,7 @@ of(1, 2, 3)
 `timestamp`を使用すると、値がオブジェクトにラップされます。
 
 ```ts
-import { of } from 'rxjs';
-import { timestamp, map } from 'rxjs';
+import { of, timestamp, map } from 'rxjs';
 
 of(1, 2, 3)
   .pipe(

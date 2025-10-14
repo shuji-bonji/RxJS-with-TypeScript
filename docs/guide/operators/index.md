@@ -44,17 +44,9 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
   <tbody>
     <!-- 変換オペレーター -->
     <tr>
-      <th scope="row" rowspan="17"><a href="./transformation/">変換</a></th>
+      <th scope="row" rowspan="15"><a href="./transformation/">変換</a></th>
       <td><a href="./transformation/map.html">map</a></td>
       <td>各値を変換する</td>
-    </tr>
-    <tr>
-      <td><a href="./transformation/pluck.html">pluck</a> <strong>⚠️ 非推奨</strong></td>
-      <td>オブジェクトから特定プロパティを抽出する（<strong>v8で削除</strong>。代わりに<code>map</code>とoptional chainingを使用）</td>
-    </tr>
-    <tr>
-      <td><a href="./transformation/mapTo.html">mapTo</a> <strong>⚠️ 非推奨</strong></td>
-      <td>すべての値を固定値に変換する（<strong>v9で削除予定</strong>。代わりに<code>map(() => value)</code>を使用）</td>
     </tr>
     <tr>
       <td><a href="./transformation/scan.html">scan</a></td>
@@ -230,7 +222,7 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
     </tr>
     <!-- ユーティリティオペレーター -->
     <tr>
-      <th scope="row" rowspan="17"><a href="./utility/">ユーティリティ</a></th>
+      <th scope="row" rowspan="15"><a href="./utility/">ユーティリティ</a></th>
       <td><a href="./utility/tap.html">tap</a></td>
       <td>副作用を実行する（ログ出力など）</td>
     </tr>
@@ -251,10 +243,6 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
       <td>指定時間内に値が来ない場合エラーを発行する</td>
     </tr>
     <tr>
-      <td><a href="./utility/timeoutWith.html">timeoutWith</a></td>
-      <td>タイムアウト時に別のObservableに切り替える</td>
-    </tr>
-    <tr>
       <td><a href="./utility/takeUntil.html">takeUntil</a></td>
       <td>別のObservableが値を発行するまで値を取得する</td>
     </tr>
@@ -265,10 +253,6 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
     <tr>
       <td><a href="./utility/repeat.html">repeat</a></td>
       <td>完了後に指定回数繰り返す</td>
-    </tr>
-    <tr>
-      <td><a href="./utility/repeatWhen.html">repeatWhen</a></td>
-      <td>完了時に別のObservableの発行を待って再購読する</td>
     </tr>
     <tr>
       <td><a href="./utility/startWith.html">startWith</a></td>

@@ -269,6 +269,9 @@ of(1, 2, 3)
 頻繁な`observeOn`の使用はオーバーヘッドになります。
 
 ```ts
+import { asyncScheduler, range, map, bufferCount, concatMap, from } from 'rxjs';
+import { observeOn } from 'rxjs';
+
 // ❌ 悪い例: 各値ごとに非同期化
 range(1, 1000)
   .pipe(

@@ -49,7 +49,7 @@ console.log('終了');
 
 ```ts
 import { Observable, asyncScheduler } from 'rxjs';
-import { subscribeOn, tap } from 'rxjs';
+import { subscribeOn } from 'rxjs';
 
 // UI作成
 const container = document.createElement('div');
@@ -179,7 +179,7 @@ addLog2('購読リクエスト完了', '#e3f2fd');
 
 ```ts
 import { of, asyncScheduler } from 'rxjs';
-import { observeOn, subscribeOn, map, tap } from 'rxjs';
+import { observeOn, subscribeOn, tap } from 'rxjs';
 
 // observeOn の例
 console.log('=== observeOn ===');
@@ -319,17 +319,17 @@ console.log('終了');
 
 ## 使い分けのガイドライン
 
+### ケース1: 購読開始を遅延させたい
 ```ts
-import { of, asyncScheduler } from 'rxjs';
-import { observeOn, subscribeOn, map } from 'rxjs';
 
-// ケース1: 購読開始を遅延させたい
 // → subscribeOn を使用
 of(データ)
   .pipe(subscribeOn(asyncScheduler))
   .subscribe();
+```
 
-// ケース2: 特定の処理だけ非同期化したい
+### ケース2: 特定の処理だけ非同期化したい
+```ts
 // → observeOn を使用
 of(データ)
   .pipe(
@@ -338,8 +338,10 @@ of(データ)
     map(軽い処理)
   )
   .subscribe();
+```
 
-// ケース3: 全体を非同期化 + 一部をさらに制御
+### ケース3: 全体を非同期化 + 一部をさらに制御
+```ts
 // → subscribeOn + observeOn の併用
 of(データ)
   .pipe(
