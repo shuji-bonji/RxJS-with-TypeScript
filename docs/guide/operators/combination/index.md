@@ -52,6 +52,12 @@ const result$ = source$.pipe(
 |オペレーター|説明|
 |---|---|
 |[withLatestFrom](./withLatestFrom)|メインObservableの発行に応じて、最新の他ストリームの値を組み合わせます|
+|[mergeAll](./mergeAll)|Higher-order Observableを並行に平坦化します|
+|[concatAll](./concatAll)|Higher-order Observableを順番に平坦化します|
+|[switchAll](./switchAll)|最新のHigher-order Observableに切り替えます|
+|[exhaustAll](./exhaustAll)|実行中は新しいHigher-order Observableを無視します|
+|[combineLatestAll](./combineLatestAll)|全ての内部Observableの最新値を組み合わせます|
+|[zipAll](./zipAll)|各内部Observableの対応する値をペア化します|
 
 ### ◾ Creation Functions として提供されるもの
 

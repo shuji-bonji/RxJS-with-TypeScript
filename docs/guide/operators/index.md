@@ -196,7 +196,7 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
     </tr>
     <!-- 結合オペレーター（Pipeable） -->
     <tr>
-      <th scope="row" rowspan="6"><a href="./combination/">結合（Pipeable）</a></th>
+      <th scope="row" rowspan="12"><a href="./combination/">結合（Pipeable）</a></th>
       <td><a href="./combination/concatWith.html">concatWith</a></td>
       <td>完了後に他のObservableを順番に結合する</td>
     </tr>
@@ -219,6 +219,30 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
     <tr>
       <td><a href="./combination/withLatestFrom.html">withLatestFrom</a></td>
       <td>メインストリームに他の最新値を付加する</td>
+    </tr>
+    <tr>
+      <td><a href="./combination/mergeAll.html">mergeAll</a></td>
+      <td>Higher-order Observableを並行に平坦化する</td>
+    </tr>
+    <tr>
+      <td><a href="./combination/concatAll.html">concatAll</a></td>
+      <td>Higher-order Observableを順番に平坦化する</td>
+    </tr>
+    <tr>
+      <td><a href="./combination/switchAll.html">switchAll</a></td>
+      <td>最新のHigher-order Observableに切り替える</td>
+    </tr>
+    <tr>
+      <td><a href="./combination/exhaustAll.html">exhaustAll</a></td>
+      <td>実行中は新しいHigher-order Observableを無視する</td>
+    </tr>
+    <tr>
+      <td><a href="./combination/combineLatestAll.html">combineLatestAll</a></td>
+      <td>全ての内部Observableの最新値を組み合わせる</td>
+    </tr>
+    <tr>
+      <td><a href="./combination/zipAll.html">zipAll</a></td>
+      <td>各内部Observableの対応する値をペア化する</td>
     </tr>
     <!-- ユーティリティオペレーター -->
     <tr>

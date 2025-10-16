@@ -400,6 +400,12 @@ The following operators are planned for the second documentation release, priori
 - ✅ `combineLatestWith` - Combine latest values in pipeline (docs/guide/operators/combination/combineLatestWith.md)
 - ✅ `zipWith` - Pair corresponding values in pipeline (docs/guide/operators/combination/zipWith.md)
 - ✅ `raceWith` - Race to first emission in pipeline (docs/guide/operators/combination/raceWith.md)
+- ✅ `mergeAll` - Flatten Higher-order Observable in parallel (docs/guide/operators/combination/mergeAll.md)
+- ✅ `concatAll` - Flatten Higher-order Observable sequentially (docs/guide/operators/combination/concatAll.md)
+- ✅ `switchAll` - Switch to latest Higher-order Observable (docs/guide/operators/combination/switchAll.md)
+- ✅ `exhaustAll` - Ignore new Higher-order Observable while executing (docs/guide/operators/combination/exhaustAll.md)
+- ✅ `combineLatestAll` - Combine latest values from all inner Observables (docs/guide/operators/combination/combineLatestAll.md)
+- ✅ `zipAll` - Pair corresponding values from inner Observables (docs/guide/operators/combination/zipAll.md)
 
 **Utility Operators:**
 - ✅ `delayWhen` - Delay each emission by Observable (docs/guide/operators/utility/delayWhen.md)
@@ -417,20 +423,14 @@ The following operators are planned for the second documentation release, priori
 
 #### 🟡 Medium Priority Operators (Used in specific scenarios)
 
-**Filtering Operators:**
-- `debounce`, `throttle` - Custom timing control
-- `sample` - Sample emissions with custom Observable
-- `single` - Ensure single emission
-
-**Combination Operators:**
-- Higher-order flattening: `combineLatestAll`, `concatAll`, `exhaustAll`, `mergeAll`, `switchAll`, `zipAll`
+**None remaining - all medium priority operators completed!**
 
 
 **Note on Deprecated Operators:**
 The following operators are deprecated/removed in RxJS and have been excluded from documentation:
 - ~~`pluck`~~ → **削除済み** (v8で削除。代わりに `map` with optional chaining を使用)
 - ~~`mapTo`~~ → **削除済み** (v9で削除予定。代わりに `map(() => value)` を使用)
-- `concatMapTo`, `switchMapTo`, `mergeMapTo` → 非推奨 (Use base operators with constant function)
+- ~~`switchMapTo`~~, ~~`mergeMapTo`~~ →  **削除済み**  (Use base operators with constant function)
 - ~~`repeatWhen`~~ → **削除済み** (RxJS v8で削除。代わりに `repeat` の `delay` オプションを使用)
 - ~~`timeoutWith`~~ → **削除済み** (RxJS公式から削除。代わりに `timeout` の `with` オプションを使用)
 

@@ -257,6 +257,30 @@ export default withMermaid({
                 link: '/guide/operators/combination/withLatestFrom',
               },
               {
+                text: 'mergeAll',
+                link: '/guide/operators/combination/mergeAll',
+              },
+              {
+                text: 'concatAll',
+                link: '/guide/operators/combination/concatAll',
+              },
+              {
+                text: 'switchAll',
+                link: '/guide/operators/combination/switchAll',
+              },
+              {
+                text: 'exhaustAll',
+                link: '/guide/operators/combination/exhaustAll',
+              },
+              {
+                text: 'combineLatestAll',
+                link: '/guide/operators/combination/combineLatestAll',
+              },
+              {
+                text: 'zipAll',
+                link: '/guide/operators/combination/zipAll',
+              },
+              {
                 text: '実用的なユースケース',
                 link: '/guide/operators/combination/practical-use-cases.md',
               },
