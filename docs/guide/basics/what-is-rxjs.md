@@ -54,47 +54,68 @@ RxJSを使いこなすには、以下の中核的な構成要素を理解する�
 ### 構成クラス図
 ```mermaid
 classDiagram
-    class Observable~T~ {
-        +subscribe(observer)
-        +pipe(...operators)
-    }
-    
-    class Observer~T~ {
-        <<interface>>
-        +next(value)
-        +error(err)
-        +complete()
-    }
-    
-    class Subscription {
-        +unsubscribe()
-        +add(subscription)
-    }
-    
-    class Subscriber~T~ {
-        +next(value)
-        +error(err)
-        +complete()
-    }
-    
-    class OperatorFunction~T,R~ {
-        <<interface>>
-        +function(source: Observable~T~): Observable~R~
-    }
-    
-    class Subject~T~ {
-        +next(value)
-        +error(err)
-        +complete()
-        +subscribe()
-    }
-    
-    Observable~T~ --> OperatorFunction : transformed by
-    Observable --> Observer : notifies
-    Subject~T~ --|> Observable~T~ : extends
-    Subject~T~ ..|> Observer~T~ : implements
-    Subscriber --|> Subscription : extends
-    Subscriber ..|> Observer : implements
+direction LR
+
+class Observable {
+  +subscribe(o: Observer): Subscription
+  +pipe(ops): Observable
+}
+
+class Observer {
+  +next(value): void
+  +error(err): void
+  +complete(): void
+}
+
+class Subscription {
+  -closed: boolean
+  +unsubscribe(): void
+  +add(teardown): void
+}
+
+class Subject {
+  +next(value): void
+  +error(err): void
+  +complete(): void
+}
+
+class BehaviorSubject
+class ReplaySubject
+class AsyncSubject
+
+class OperatorFunction {
+  +applyTo(source: Observable): Observable
+}
+
+class CreationFunctions {
+  +of(values): Observable
+  +from(input): Observable
+  +fromEvent(target, name): Observable
+}
+
+class SchedulerLike {
+  +now(): number
+  +schedule(work, delay, state): Subscription
+}
+
+%% 継承・実装
+Observable <|-- Subject
+Observer  <|.. Subject
+Subject   <|-- BehaviorSubject
+Subject   <|-- ReplaySubject
+Subject   <|-- AsyncSubject
+
+%% 依存・関連
+Observable --> Subscription : subscribe() returns
+Observable ..> OperatorFunction : pipe(ops)
+OperatorFunction ..> Observable : returns
+CreationFunctions ..> Observable : creates
+Observable ..> SchedulerLike : uses
+
+%% 補足ノート
+note for Observer "コールバック集合: next / error / complete"
+note for OperatorFunction "概念: (source: Observable) -> Observable"
+note for Observable "実際はジェネリクス Observable<T> を想定"
 ```
 
 
