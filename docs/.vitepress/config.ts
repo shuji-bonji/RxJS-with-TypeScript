@@ -403,6 +403,7 @@ export default withMermaid({
           { text: 'アンチパターンとは', link: '/guide/anti-patterns/' },
           { text: 'よくある間違いと対処法', link: '/guide/anti-patterns/common-mistakes' },
           { text: 'PromiseとObservableの混在', link: '/guide/anti-patterns/promise-observable-mixing' },
+          { text: 'ワンライナー地獄と段階分離構文', link: '/guide/anti-patterns/one-liner-hell' },
           { text: 'アンチパターン回避チェックリスト', link: '/guide/anti-patterns/checklist' },
         ],
       },
