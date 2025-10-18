@@ -120,13 +120,15 @@ Promise ベースのコードは非同期テストが複雑になりがちです
 
 以下は、実際のプロジェクトでよく見られる問題パターンです。
 
-### ❌ アンチパターン 1: 途中で Promise に落としてから `.then()` で続き処理
+### ❌ アンチパターン 1: async/await と pipe() の混在
+
+Observable 処理の途中で `await` を使ったり、Promise と Observable の処理が混ざると、キャンセル不能になります。
 
 ```ts
 import { ajax } from 'rxjs/ajax';
 import { firstValueFrom } from 'rxjs';
 
-// ❌ 悪い例
+// ❌ 悪い例: Observable → Promise → Promise の混在
 async function fetchUserData() {
   const user = await firstValueFrom(ajax.getJSON('/api/user'));
 
@@ -135,9 +137,30 @@ async function fetchUserData() {
 }
 ```
 
+```ts
+import { of } from 'rxjs';
+import { map } from 'rxjs';
+
+// ❌ 悪い例: pipe() の中で await を使おうとする（実際には動かない）
+async function processData() {
+  return of(1, 2, 3).pipe(
+    map(async (value) => {
+      const result = await someAsyncOperation(value);
+      return result; // Observable<Promise<T>> になってしまう
+    })
+  );
+}
+
+async function someAsyncOperation(value: number): Promise<number> {
+  return value * 2;
+}
+```
+
 #### 問題点
 - キャンセル不能になる
 - エラーチャンネルが分離（`error` ではなく `unhandledrejection` 側へ）
+- Promise と Observable の責務が曖昧になる
+- 型が `Observable<Promise<T>>` になってしまう
 
 ### ❌ アンチパターン 2: `toPromise()` の使用（廃止済み）
 
@@ -207,6 +230,61 @@ async function loadData() {
 #### 問題点
 - 二重実行
 - 順序競合
+
+### ❌ アンチパターン 6: Observable の中で Promise を返している
+
+Observable のコンストラクタ内で `async/await` を使うと、エラーハンドリングが困難になります。
+
+```ts
+import { Observable } from 'rxjs';
+
+// ❌ 悪い例: Observable の中で async function を使う
+const data$ = new Observable(subscriber => {
+  async function fetchData() {
+    const response = await fetch('/api/data');
+    const data = await response.json();
+    subscriber.next(data);
+    subscriber.complete();
+  }
+
+  fetchData(); // Promise が返されるが、エラーを捕捉できない
+  // fetchData() が reject された場合、subscriber.error() が呼ばれない
+});
+```
+
+```ts
+import { Observable } from 'rxjs';
+
+// ❌ 悪い例: Promise を subscriber.next() に渡す
+const data$ = new Observable(subscriber => {
+  const promise = fetch('/api/data').then(r => r.json());
+  subscriber.next(promise); // Promise オブジェクトが流れてしまう
+  subscriber.complete();
+});
+
+// 購読側で Promise を受け取ってしまう
+data$.subscribe(value => {
+  console.log(value); // Promise { <pending> } が出力される
+});
+```
+
+#### 問題点
+- Promise のエラーが Observable のエラーチャンネルに流れない
+- `unhandledrejection` になる可能性
+- subscriber.next() に Promise オブジェクトが渡される
+- 購読者が Promise を unwrap する必要がある
+
+#### 解決策
+
+```ts
+import { from, defer } from 'rxjs';
+
+// ✅ 良い例: from() で Promise を Observable に変換
+const data$ = from(fetch('/api/data').then(r => r.json()));
+
+// ✅ 良い例: defer() で遅延評価
+const data$ = defer(() => fetch('/api/data').then(r => r.json()));
+```
 
 
 ## 実務ガイド：境界でキレイに変換
