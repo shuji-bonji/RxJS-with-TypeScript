@@ -308,15 +308,7 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
     </tr>
     <!-- 条件オペレーター -->
     <tr>
-      <th scope="row" rowspan="5"><a href="./conditional/">条件</a></th>
-      <td><a href="./conditional/iif.html">iif</a></td>
-      <td>条件により異なるObservableを生成する</td>
-    </tr>
-    <tr>
-      <td><a href="./conditional/defer.html">defer</a></td>
-      <td>購読時にObservableを生成する</td>
-    </tr>
-    <tr>
+      <th scope="row" rowspan="3"><a href="./conditional/">条件</a></th>
       <td><a href="./conditional/defaultIfEmpty.html">defaultIfEmpty</a></td>
       <td>値がない場合デフォルト値を発行する</td>
     </tr>

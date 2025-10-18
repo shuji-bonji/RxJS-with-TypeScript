@@ -120,6 +120,18 @@ obs1$.pipe(
 
 各Creation Functionの詳細は、リンクをクリックして参照してください。
 
+## 条件分岐系 Creation Functions
+
+条件に基づいてObservableを選択・作成するCreation Functionsです。
+
+| Function | 説明 | ユースケース |
+|----------|------|-------------|
+| **[iif](/guide/creation-functions/iif)** | 条件に応じて2つのObservableのどちらかを選ぶ | ログイン状態による処理分岐 |
+| **[defer](/guide/creation-functions/defer)** | 購読時にObservableを遅延生成 | 動的なObservable作成 |
+
+> [!NOTE]
+> `iif`と`defer`は以前「条件オペレーター」として分類されていましたが、これらは**Creation Functions**（Observable作成関数）であり、Pipeable Operatorではありません。
+
 ## Pipeable Operator との対応関係
 
 多くの結合系Creation Functionsには、対応するPipeable Operatorが存在します。

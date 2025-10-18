@@ -32,6 +32,8 @@ TypeScript環境でRxJSを体系的に学ぶためのガイドです。
 - [race - 最速のストリームを採用](/guide/creation-functions/race)
 - [forkJoin - すべての完了を待つ](/guide/creation-functions/forkJoin)
 - [partition - 条件で2つに分割](/guide/creation-functions/partition)
+- [iif - 条件による分岐](/guide/creation-functions/iif)
+- [defer - 遅延生成](/guide/creation-functions/defer)
 
 ### 4. オペレーターの理解
 - [オペレーターの概要](/guide/operators/)

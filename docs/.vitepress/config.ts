@@ -92,6 +92,8 @@ export default withMermaid({
           { text: 'race', link: '/guide/creation-functions/race' },
           { text: 'forkJoin', link: '/guide/creation-functions/forkJoin' },
           { text: 'partition', link: '/guide/creation-functions/partition' },
+          { text: 'iif', link: '/guide/creation-functions/iif' },
+          { text: 'defer', link: '/guide/creation-functions/defer' },
         ],
       },
       {
@@ -317,8 +319,6 @@ export default withMermaid({
             link: '/guide/operators/conditional/',
             collapsed: true,
             items: [
-              { text: 'iif', link: '/guide/operators/conditional/iif' },
-              { text: 'defer', link: '/guide/operators/conditional/defer' },
               {
                 text: 'defaultIfEmpty',
                 link: '/guide/operators/conditional/defaultIfEmpty',
