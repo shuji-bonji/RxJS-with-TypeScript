@@ -496,8 +496,8 @@ of(...numbers).pipe(
 
 概念理解ができたら、次は実践的な壁に進みましょう。
 
-- **[ライフサイクル管理の壁](/guide/overcoming-difficulties/lifecycle-management)** - いつsubscribe/unsubscribeすべきか
-- **[オペレーター選択の迷い](/guide/overcoming-difficulties/operator-selection)** - 100+のオペレーターから選ぶ基準
+- **ライフサイクル管理の壁**（準備中） - いつsubscribe/unsubscribeすべきか
+- **オペレーター選択の迷い**（準備中） - 100+のオペレーターから選ぶ基準
 
 ## 関連セクション
 

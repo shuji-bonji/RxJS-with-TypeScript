@@ -63,12 +63,12 @@ const clicks$ = fromEvent(button, 'click');
 | 困難点 | 内容 | よくある症状 |
 |---|---|---|
 | **[概念理解の壁](/guide/overcoming-difficulties/conceptual-understanding)** | Observable vs Promise、Cold vs Hot | "Promiseと何が違うの？" |
-| **[ライフサイクル管理](/guide/overcoming-difficulties/lifecycle-management)** | subscribe/unsubscribe、メモリリーク | "いつunsubscribeすべき？" |
-| **[オペレーター選択](/guide/overcoming-difficulties/operator-selection)** | 100+のオペレーターから選ぶ基準 | "どのオペレーターを使えば？" |
-| **[タイミングと順序](/guide/overcoming-difficulties/timing-and-order)** | いつ値が流れるのか、同期vs非同期 | "なぜ値が出ない？" |
-| **[状態管理](/guide/overcoming-difficulties/state-and-sharing)** | Subject、share/shareReplay | "状態を共有したい" |
-| **[複数ストリーム組み合わせ](/guide/overcoming-difficulties/stream-combination)** | combineLatest、zip、withLatestFrom | "2つのAPIの結果を合わせたい" |
-| **[デバッグ](/guide/overcoming-difficulties/debugging-guide)** | 値が流れない、期待と違う値 | "何が起きているか分からない" |
+| **ライフサイクル管理**（準備中） | subscribe/unsubscribe、メモリリーク | "いつunsubscribeすべき？" |
+| **オペレーター選択**（準備中） | 100+のオペレーターから選ぶ基準 | "どのオペレーターを使えば？" |
+| **タイミングと順序**（準備中） | いつ値が流れるのか、同期vs非同期 | "なぜ値が出ない？" |
+| **状態管理**（準備中） | Subject、share/shareReplay | "状態を共有したい" |
+| **複数ストリーム組み合わせ**（準備中） | combineLatest、zip、withLatestFrom | "2つのAPIの結果を合わせたい" |
+| **デバッグ**（準備中） | 値が流れない、期待と違う値 | "何が起きているか分からない" |
 
 ## 各セクションの使い方
 
@@ -77,9 +77,9 @@ const clicks$ = fromEvent(button, 'click');
 上記の表から、**現在直面している困難**に該当するセクションを選んでください。
 
 **例：**
-- API呼び出しで値が取れない → [タイミングと順序](/guide/overcoming-difficulties/timing-and-order)
-- メモリリークが心配 → [ライフサイクル管理](/guide/overcoming-difficulties/lifecycle-management)
-- mergeMapとswitchMapで迷う → [オペレーター選択](/guide/overcoming-difficulties/operator-selection)
+- API呼び出しで値が取れない → タイミングと順序（準備中）
+- メモリリークが心配 → ライフサイクル管理（準備中）
+- mergeMapとswitchMapで迷う → オペレーター選択（準備中）
 
 ### 2. 悪い例→良い例で理解する
 

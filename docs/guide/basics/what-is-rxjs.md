@@ -107,10 +107,14 @@ Subject   <|-- AsyncSubject
 
 %% 依存・関連
 Observable --> Subscription : subscribe() returns
+Observable ..> Observer : subscribe(observer)
 Observable ..> OperatorFunction : pipe(ops)
 OperatorFunction ..> Observable : returns
 CreationFunctions ..> Observable : creates
 Observable ..> SchedulerLike : uses
+Subject o--> Observer : notifies multiple
+Subscription ..> Subscription : add(sub)
+SchedulerLike --> Subscription : schedule() returns
 
 %% 補足ノート
 note for Observer "コールバック集合: next / error / complete"
