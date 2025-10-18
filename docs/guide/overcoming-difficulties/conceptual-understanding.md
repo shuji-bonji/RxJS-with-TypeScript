@@ -253,46 +253,57 @@ const processUsers$ = from(fetch('/api/users')).pipe(
 processUsers$.subscribe(userNames => console.log(userNames));
 ```
 
-#### 違い
+
+::: tip 違い
 - **命令的**: 手順（ループ、条件分岐、変数代入）を記述
 - **宣言的**: 変換のパイプライン（データの流れ）を記述
+:::
 
 ### 思考転換のポイント
 
-#### ポイント1: subscribe内で処理を完結させない
+#### ポイント1: subscribe内でデータ加工をしない
+
+データ変換はpipe内で、subscribeは副作用のみとする。
 
 ```typescript
+import { filter, map, of } from "rxjs";
+
+const observable$ = of(1, 2, 3);
 // ❌ 悪い例: subscribe内で加工
-observable.subscribe(value => {
-  const doubled = value * 2;
-  const filtered = doubled > 10 ? doubled : null;
-  if (filtered) {
+observable$.subscribe(value => {
+  const doubled = value * 2;           // 👈 subscribe内で計算
+  const filtered = doubled > 4 ? doubled : null;  // 👈 subscribe内で条件分岐
+  if (filtered) {                      // 👈 subscribe内でif文
     console.log(filtered);
   }
 });
 
 // ✅ 良い例: pipe内で変換
-observable.pipe(
-  map(value => value * 2),
-  filter(value => value > 10)
-).subscribe(value => console.log(value));
+observable$.pipe(
+  map(value => value * 2),       // 計算はpipe内で
+  filter(value => value > 4)     // フィルタリングもpipe内で
+).subscribe(value => console.log(value));  // subscribeは副作用のみ
 ```
 
 #### ポイント2: 中間変数を使わない
 
 ```typescript
-// ❌ 悪い例: 中間変数に保存
-let doubled$: Observable<number>;
-let filtered$: Observable<number>;
+import { filter, map, Observable, of } from "rxjs";
 
-doubled$ = source$.pipe(map(x => x * 2));
-filtered$ = doubled$.pipe(filter(x => x > 10));
+const source$ = of(1, 2, 3, 4, 5);
+
+// ❌ 悪い例: 中間変数に保存
+let doubled$: Observable<number>;      // 👈 中間変数を宣言
+let filtered$: Observable<number>;     // 👈 中間変数を宣言
+
+doubled$ = source$.pipe(map(x => x * 2));    // 👈 中間変数に代入
+filtered$ = doubled$.pipe(filter(x => x > 5)); // 👈 中間変数に代入
 filtered$.subscribe(console.log);
 
 // ✅ 良い例: パイプラインで繋ぐ
 source$.pipe(
-  map(x => x * 2),
-  filter(x => x > 10)
+  map(x => x * 2),      // 直接パイプラインで繋ぐ
+  filter(x => x > 5)    // 直接パイプラインで繋ぐ
 ).subscribe(console.log);
 ```
 
@@ -301,19 +312,19 @@ source$.pipe(
 ```typescript
 // ❌ 悪い例: ネストしたsubscribe
 getUser$(userId).subscribe(user => {
-  getOrders$(user.id).subscribe(orders => {
+  getOrders$(user.id).subscribe(orders => {  // 👈 subscribe内でさらにsubscribe（ネスト）
     console.log(user, orders);
-  });
+  });  // 👈 購読解除が複雑になる
 });
 
 // ✅ 良い例: mergeMapで平坦化
 getUser$(userId).pipe(
-  mergeMap(user =>
+  mergeMap(user =>                // mergeMapで内側のObservableを平坦化
     getOrders$(user.id).pipe(
       map(orders => ({ user, orders }))
     )
   )
-).subscribe(({ user, orders }) => console.log(user, orders));
+).subscribe(({ user, orders }) => console.log(user, orders));  // 購読は1箇所だけ
 ```
 
 #### ポイント4: 3段階分離構文で整理する
@@ -340,6 +351,8 @@ fromEvent(document, 'click').pipe(
 
 ```typescript
 // ✅ 良い例: 3段階に分離
+
+import { filter, fromEvent, map, throttleTime } from "rxjs";
 
 // 1. Observable 定義（ストリームの発生源）
 const clicks$ = fromEvent(document, 'click');
