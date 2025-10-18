@@ -556,6 +556,193 @@ The following new chapters have been added or are planned for future releases.
 2. **Short-term**: Chapter 14.1 基本的なフレームワーク連携
 3. **Medium-term**: Chapter 14.2 状態管理との統合 (starting with NgRX)
 
+---
+
+### Fourth Release: New Chapters for Overcoming Learning Difficulties
+
+Based on discussion with the developer, two new chapters are planned to address common learning challenges and provide practical patterns.
+
+#### 🔴 High Priority: Chapter 11 - RxJS困難点克服
+
+**Purpose:**
+- Address common difficulties that experienced developers face when working with RxJS
+- Provide actionable guidance to overcome RxJS-specific conceptual and practical barriers
+- Bridge the gap between theory (Chapters 1-10) and practice (Chapter 13)
+
+**Target Audience:**
+- Developers with TypeScript experience
+- Developers with professional programming experience
+- Those who understand RxJS basics but struggle with practical implementation
+
+**Structure:**
+```
+11. RxJS困難点克服
+├── index.md                        # なぜRxJSは難しいのか（経験者でも）
+│   ├── 学習者が直面する主な困難点
+│   ├── 各セクションの使い方
+│   └── 学習ロードマップ
+├── conceptual-understanding.md     # 概念理解の壁
+│   ├── Observable vs Promise の本質的違い
+│   ├── Cold vs Hot の直感的理解
+│   ├── 宣言的プログラミングへの思考転換
+│   └── 実験して理解する（Starter Kit活用）
+├── lifecycle-management.md         # ライフサイクル管理の壁
+│   ├── いつ subscribe すべきか
+│   ├── いつ unsubscribe すべきか
+│   ├── メモリリークを防ぐパターン
+│   ├── takeUntil パターンの完全ガイド
+│   └── Subscription管理のベストプラクティス
+├── operator-selection.md           # オペレーター選択の迷い
+│   ├── 100以上のオペレーターから選ぶ基準
+│   ├── カテゴリ別選択フローチャート
+│   ├── よく使うオペレーター20選
+│   ├── switchMap vs mergeMap vs concatMap vs exhaustMap
+│   └── 実践での判断基準
+├── timing-and-order.md             # タイミングと順序の理解
+│   ├── いつ値が流れるのか
+│   ├── 同期 vs 非同期の理解
+│   ├── Scheduler の役割
+│   ├── Marble Diagram の読み方
+│   └── デバッグで確認する方法
+├── state-and-sharing.md            # 状態管理の難しさ
+│   ├── Subject vs BehaviorSubject vs ReplaySubject
+│   ├── いつ share/shareReplay を使うか
+│   ├── Hot/Cold の実践的使い分け
+│   ├── 状態の一元管理パターン
+│   └── よくある落とし穴
+├── stream-combination.md           # 複数ストリーム組み合わせ
+│   ├── combineLatest vs zip vs forkJoin
+│   ├── withLatestFrom の使いどころ
+│   ├── Higher-order Observable の理解
+│   ├── ネストを避けるパターン
+│   └── 実践例：フォーム + API
+└── debugging-guide.md              # デバッグの壁
+    ├── 値が流れてこない時の対処
+    ├── tap でのデバッグテクニック
+    ├── RxJS DevTools の活用
+    ├── よくあるエラーメッセージと対処
+    └── Marble Testing での検証
+```
+
+**Content Characteristics:**
+- ❌ 悪い例 → ✅ 良い例 → 💡 解説 → 🎯 練習問題
+- Marble Diagram での視覚化
+- Starter Kit で即座に実行可能なコード例
+- 理解度チェックリスト
+- 既存章へのクロスリファレンス
+
+**Implementation Notes:**
+- Chapter 10（アンチパターン）との連携を重視
+- 「なぜそのアンチパターンに陥るか」を深掘り
+- Chapter 8（デバッグ）の内容を学習者視点で再構成
+
+---
+
+#### 🔴 High Priority: Chapter 13 - 実践パターン集
+
+**Purpose:**
+- Provide real-world implementation patterns for common use cases
+- Show how to apply RxJS knowledge in practical scenarios
+- Address the gap between "knowing operators" and "building features"
+
+**Structure:**
+```
+13. 実践パターン集
+├── index.md                        # 実践パターンの概要
+│   ├── パターン一覧
+│   ├── 使い方ガイド
+│   └── 実装時の考え方
+├── ui-events.md                    # UIイベント処理パターン
+│   ├── クリックイベントの制御（throttle, debounce, distinct）
+│   ├── ドラッグ&ドロップ
+│   ├── スクロールイベント処理
+│   ├── キーボード入力（オートコンプリート）
+│   └── マルチタッチ対応
+├── api-calls.md                    # API呼び出しパターン
+│   ├── 基本的なGET/POST
+│   ├── 並列リクエスト（forkJoin）
+│   ├── 直列リクエスト（concatMap）
+│   ├── 依存関係のあるリクエスト（switchMap）
+│   ├── リトライとエラーハンドリング
+│   ├── タイムアウト処理
+│   └── キャンセル処理（takeUntil）
+├── form-handling.md                # フォーム処理パターン
+│   ├── リアルタイムバリデーション
+│   ├── 自動保存（debounce + distinctUntilChanged）
+│   ├── 複数フィールドの組み合わせ（combineLatest）
+│   ├── 条件付きフィールド表示
+│   ├── サブミット処理（exhaustMap で二重送信防止）
+│   └── エラー表示とリセット
+├── real-time-data.md               # リアルタイムデータ処理
+│   ├── WebSocket 統合
+│   ├── Server-Sent Events (SSE)
+│   ├── Polling パターン
+│   ├── 接続管理とリトライ
+│   ├── データのマージと更新
+│   └── 通知システム
+├── caching-strategies.md           # キャッシュ戦略
+│   ├── shareReplay でのキャッシュ
+│   ├── 手動リフレッシュパターン
+│   ├── TTL（有効期限）付きキャッシュ
+│   ├── キャッシュ無効化戦略
+│   ├── ローカルストレージ連携
+│   └── オフライン対応
+├── error-handling-patterns.md      # エラーハンドリング実践パターン
+│   ├── API呼び出しでのエラーハンドリング
+│   ├── ユーザー通知とフォールバック戦略
+│   ├── リトライ戦略（指数バックオフ）
+│   ├── グローバルエラーハンドリング
+│   ├── エラー境界の設計
+│   └── ログとモニタリング
+└── subscribe-branching.md          # subscribe内の条件分岐パターン
+    ├── 問題：subscribe内で複雑な条件分岐
+    ├── パターン1: パイプラインでの分岐（filter + tap）
+    ├── パターン2: partition による分岐
+    ├── パターン3: switchMap + iif による動的分岐
+    ├── パターン4: 関数化 + map による変換（推奨）
+    ├── 実践例：APIレスポンス処理
+    └── 選択のガイドライン
+```
+
+**Content Characteristics:**
+- 実務で即座に使えるコード例
+- Before/After での比較
+- パフォーマンスとメモリ考慮
+- テストコード付き
+- TypeScript での型安全性
+
+**Integration with Existing Content:**
+- Chapter 6（エラーハンドリング）の基礎を実践で応用
+- Chapter 10（アンチパターン）で学んだことを避けるパターン
+- Chapter 11（学習の壁）で克服した知識を実践
+
+**Implementation Strategy:**
+1. **Phase 1**: Core patterns (ui-events, api-calls, form-handling)
+2. **Phase 2**: Advanced patterns (real-time-data, caching-strategies)
+3. **Phase 3**: Specialized patterns (error-handling, subscribe-branching)
+
+**Developer Focus Areas:**
+- WebSocket integration (developer's learning focus) → `real-time-data.md`
+- PWA application examples → `caching-strategies.md`
+- Web Components integration → `ui-events.md`
+
+---
+
+**Updated Chapter Structure After Implementation:**
+```
+10. RxJSアンチパターン集
+11. 学習の壁を越える           ← NEW (Fourth Release)
+12. TypeScriptとRxJSの高度な連携
+13. 実践パターン集             ← NEW (Fourth Release)
+14. パフォーマンス最適化
+15. フレームワークとの統合
+```
+
+**Timeline:**
+- **Q2 2025**: Chapter 11 implementation (6-8 pages)
+- **Q3 2025**: Chapter 13 implementation (7 pages)
+- **Q4 2025**: Integration and cross-referencing
+
 ## Reference Resources
 
 - [RxJS Official Documentation](https://rxjs.dev)

@@ -19,25 +19,22 @@ hero:
       link: /guide/
 
 features:
-  # - title: テストリストの作成と管理
-  #   details: TDDにおいて最初に行う重要なプラクティス
-  #   link: test-list-management
-  # - title: Red 🔴 - 失敗するテストの書き方
-  #   details: テストを書くことから開発を始め、仕様を明確にする手法について学びます。
-  #   link: /testing-in-TDD
-  # - title: TypeScriptでのTDDパターン集
-  #   details: TypeScriptでのテストパターン集目次
-  #   link: /collection-of-TDD-patterns-TypeScript
-  # - title: Web Components に TDD の適用は難しい
-  #   details: なぜ Web Components に TDD をそのまま適用するのが難しいのか？
-  #   link: /applying-TDD-to-WebComponents-is-difficult
+  - title: TypeScript第一
+    details: すべてのコード例をTypeScriptで記述、型安全性を重視
+  - title: フレームワーク非依存
+    details: Angular、React、Vueなど、どのフレームワークでも使える知識
+  - title: 実践的なコード例
+    details: 実際に動作するコードとテストコードを豊富に掲載
+  # - title: RxJS困難点克服
+  #   details: 経験者でも直面するRxJS特有の困難とその解決策
+  - title: アンチパターン集
+    details: 実務で陥りがちな問題とその対処法を網羅
 
 ---
 
-TypeScript 環境で RxJS を体系的に学ぶためのノートです。  
+TypeScript 環境で RxJS を体系的に学ぶためのサイトです。  
 実践コードとテストを通して、直感的かつ論理的に理解していきましょう。
 
----
 
 > [!IMPORTANT]
 > この「RxJS with TypeScript」プロジェクト([Github](https://github.com/shuji-bonji/RxJS-with-TypeScript))は、人間のエンジニア（[@shuji-bonji](https://github.com/shuji-bonji)）と生成AI（[ChatGPT](https://chatgpt.com/), [Claude](https://claude.ai/)）との協働によって作成されています。
