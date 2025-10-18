@@ -35,7 +35,7 @@ RxJSは強力なリアクティブプログラミングのライブラリです�
 |---|---|---|
 | **[map での副作用](./common-mistakes#5-map-での副作用)** | `map` オペレーター内で状態を変更する | 予測不可能な動作、テスト困難 |
 | **[Cold/Hot の無視](./common-mistakes#6-cold-hot-observable-の違いの無視)** | Observable の性質を考慮しない | 重複実行、予期しない動作 |
-| **[Promise との混在](./common-mistakes#7-promise-と-observable-の不適切な混在)** | Promise と Observable を適切に変換しない | エラーハンドリングの不備 |
+| **[Promise との混在](./promise-observable-mixing)** | Promise と Observable を適切に変換しない | キャンセル不可、エラーハンドリングの不備 |
 | **[バックプレッシャー無視](./common-mistakes#8-バックプレッシャーの無視)** | 高頻度イベントの制御を怠る | パフォーマンス低下、UI のフリーズ |
 
 ### 🔵 コード品質に関する問題

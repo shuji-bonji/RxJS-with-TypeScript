@@ -502,19 +502,19 @@ The following new chapters have been added or are planned for future releases.
 **Placement:** Between Chapter 7 (Schedulers) and Chapter 9 (Testing)
 - Natural progression: Implementation → Error Handling → Schedulers → **Debugging** → Testing → Anti-patterns
 
-#### 🔄 Medium Priority: Chapter 12 Enhancement - 状態管理との統合
+#### 🔄 Medium Priority: Chapter 14 Enhancement - フレームワークとの統合
 
 **Phased Approach:**
 
-**Phase 1: Basic Framework Integration (12.1)**
+**Phase 1: Basic Framework Integration (14.1)**
 - Quick start guides for each framework (5-10 min read)
 - Focus on basic RxJS usage patterns
 - Heavy use of external documentation links
 - Frameworks: Angular, React, Vue, Svelte
 
-**Phase 2: State Management Integration (12.2)** ⭐ Main Enhancement
+**Phase 2: State Management Integration (14.2)** ⭐ Main Enhancement
 ```
-12.2 状態管理との統合
+14.2 状態管理との統合
 ├── RxJS + NgRX (Angular)
 │   ├── 基本的なパターン
 │   ├── Effects と Observables
@@ -533,7 +533,7 @@ The following new chapters have been added or are planned for future releases.
     └── Jotai
 ```
 
-**Phase 3: Web API Integration (12.3)**
+**Phase 3: Web API Integration (14.3)**
 - WebSocket (developer's focus area)
 - Server-Sent Events
 - IndexedDB

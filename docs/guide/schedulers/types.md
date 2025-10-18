@@ -218,7 +218,7 @@ const intervalId = setInterval(() => {
   element.style.transform = `translateX(${position}px)`;
 }, 16);  // 約60fps
 
-// 問題点
+// 問題点:
 // - ブラウザの描画タイミングと同期していない
 // - バックグラウンドタブでも実行され続ける
 // - 正確な60fpsを保証できない

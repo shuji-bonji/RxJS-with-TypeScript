@@ -45,7 +45,7 @@ higherOrder$
 
 ## 🧠 実践コード例
 
-複数のAPI呼び出しの最新結果を組み合わせて表示する例：
+複数のAPI呼び出しの最新結果を組み合わせて表示する例
 
 ```ts
 import { of, timer, Observable } from 'rxjs';

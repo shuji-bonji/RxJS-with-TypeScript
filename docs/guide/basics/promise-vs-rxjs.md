@@ -279,6 +279,18 @@ fromEvent(searchInput, 'input').pipe(
 - Promise（async/await）がHTTPリクエストを担当
 - `from()`で両者を橋渡し
 
+> [!WARNING] 実務での注意事項
+> PromiseとObservableの混在は、**設計の境界を明確にしないとアンチパターンに陥りやすい**です。
+>
+> **よくある問題：**
+> - キャンセル不能になる
+> - エラーハンドリングの分離
+> - `subscribe`内での`await`（特に危険）
+> - 同じデータを Promise と Observable で並行取得
+>
+> 詳しくは **[Chapter 10: PromiseとObservableの混在アンチパターン](/guide/anti-patterns/promise-observable-mixing)** を参照してください。
+
+
 ## メリットとデメリット
 ### Promise
 <div class="comparison-cards">
