@@ -74,6 +74,10 @@ TypeScript環境でRxJSを体系的に学ぶためのガイドです。
 - [ワンライナー地獄と段階分離構文](/guide/anti-patterns/one-liner-hell)
 - [アンチパターン回避チェックリスト](/guide/anti-patterns/checklist)
 
+### 11. RxJS困難点克服
+- [なぜRxJSは難しいのか](/guide/overcoming-difficulties/)
+- [概念理解の壁](/guide/overcoming-difficulties/conceptual-understanding)
+
 ---
 
 > [!NOTE]

@@ -408,7 +408,14 @@ export default withMermaid({
         ],
       },
       {
-        text: '11. TypeScriptとRxJSの高度な連携',
+        text: '11. RxJS困難点克服',
+        items: [
+          { text: 'なぜRxJSは難しいのか', link: '/guide/overcoming-difficulties/' },
+          { text: '概念理解の壁', link: '/guide/overcoming-difficulties/conceptual-understanding' },
+        ],
+      },
+      {
+        text: '12. TypeScriptとRxJSの高度な連携',
         // items: [
         //   {
         //     text: 'TypeScriptとRxJSの基本連携',
