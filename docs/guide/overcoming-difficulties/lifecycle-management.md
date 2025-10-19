@@ -742,7 +742,7 @@ fromEvent(document, 'mousemove').pipe(
 
 ライフサイクル管理を理解したら、次は**オペレーター選択**を学びましょう。
 
-→ **オペレーター選択の迷い**（準備中） - 100以上のオペレーターから適切なものを選ぶ基準
+→ **[オペレーター選択の迷い](/guide/overcoming-difficulties/operator-selection)** - 100以上のオペレーターから適切なものを選ぶ基準
 
 ## 関連ページ
 
@@ -792,11 +792,11 @@ class ChatComponent {
 }
 ```
 
-**修正点:**
-1. `destroy$` Subjectを追加
-2. `takeUntil(this.destroy$)` でintervalを停止
-3. ネストされたsubscribeを `switchMap` で解消
-4. `ngOnDestroy` で cleanup
+> [!NOTE] 修正点
+> 1. `destroy$` Subjectを追加
+> 2. `takeUntil(this.destroy$)` でintervalを停止
+> 3. ネストされたsubscribeを `switchMap` で解消
+> 4. `ngOnDestroy` で cleanup
 
 </details>
 

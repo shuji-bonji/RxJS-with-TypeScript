@@ -413,6 +413,8 @@ export default withMermaid({
           { text: 'なぜRxJSは難しいのか', link: '/guide/overcoming-difficulties/' },
           { text: '概念理解の壁', link: '/guide/overcoming-difficulties/conceptual-understanding' },
           { text: 'ライフサイクル管理の壁', link: '/guide/overcoming-difficulties/lifecycle-management' },
+          { text: 'オペレーター選択の迷い', link: '/guide/overcoming-difficulties/operator-selection' },
+          { text: 'タイミングと順序の理解', link: '/guide/overcoming-difficulties/timing-and-order' },
         ],
       },
       {

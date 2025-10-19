@@ -82,6 +82,8 @@ TypeScript環境でRxJSを体系的に学ぶためのガイドです。
 - [なぜRxJSは難しいのか](/guide/overcoming-difficulties/)
 - [概念理解の壁](/guide/overcoming-difficulties/conceptual-understanding)
 - [ライフサイクル管理の壁](/guide/overcoming-difficulties/lifecycle-management)
+- [オペレーター選択の迷い](/guide/overcoming-difficulties/operator-selection)
+- [タイミングと順序の理解](/guide/overcoming-difficulties/timing-and-order)
 
 ---
 

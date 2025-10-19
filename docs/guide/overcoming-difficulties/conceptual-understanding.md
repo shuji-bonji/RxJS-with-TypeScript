@@ -18,11 +18,11 @@ userPromise.then(user => console.log(user)); // ユーザー情報を1回だけ�
 userPromise.then(user => console.log(user)); // キャッシュされた同じ結果
 ```
 
-#### 特徴
-- **Eager（即座に実行）** - Promise作成時点で処理が開始される
-- **1回だけ完了** - 成功か失敗、どちらか1回だけ
-- **キャンセル不可** - 一度開始したら止められない
-- **常にHot** - 複数のthenで同じ結果を共有
+> [!TIP] 特徴
+> - **Eager（即座に実行）** - Promise作成時点で処理が開始される
+> - **1回だけ完了** - 成功か失敗、どちらか1回だけ
+> - **キャンセル不可** - 一度開始したら止められない
+> - **常にHot** - 複数のthenで同じ結果を共有
 
 ### Observable: ストリーム（時間軸を持つデータの流れ）
 
@@ -58,11 +58,11 @@ Observable実行開始！
 購読2: { id: 1, name: 'Alice' }
 ```
 
-#### 特徴
-- **Lazy（遅延実行）** - subscribeするまで何も起きない
-- **複数の値を流せる** - next()を複数回呼べる
-- **キャンセル可能** - unsubscribeで停止できる
-- **ColdまたはHot** - 購読ごとに実行するか、共有するかを選べる
+> [!TIP] 特徴
+> - **Lazy（遅延実行）** - subscribeするまで何も起きない
+> - **複数の値を流せる** - next()を複数回呼べる
+> - **キャンセル可能** - unsubscribeで停止できる
+> - **ColdまたはHot** - 購読ごとに実行するか、共有するかを選べる
 
 ### 比較表
 
@@ -145,10 +145,10 @@ setTimeout(() => {
 // 購購読2: 2        (5秒後)
 ```
 
-#### Coldの特徴
-- 購読ごとに**独立した実行**
-- データの「設計図」を保持
-- 例: HTTP API呼び出し、タイマー、ファイル読み込み
+> [!TIP] Coldの特徴
+> - 購読ごとに**独立した実行**
+> - データの「設計図」を保持
+> - 例: HTTP API呼び出し、タイマー、ファイル読み込み
 
 ### Hot Observable: すべての購読者が同じストリームを共有
 
@@ -179,10 +179,10 @@ setTimeout(() => {
 // 購読2: 2        (3秒後) ← 購読2は途中から参加
 ```
 
-#### Hotの特徴
-- すべての購読者が**同じ実行を共有**
-- データが「放送」されている状態
-- 例: クリックイベント、WebSocket、Subject
+> [!TIP] Hotの特徴
+> - すべての購読者が**同じ実行を共有**
+> - データが「放送」されている状態
+> - 例: クリックイベント、WebSocket、Subject
 
 ### Cold/Hotの判別方法
 
@@ -199,11 +199,11 @@ const hot1$ = fromEvent(button, 'click');
 const hot2$ = new Subject<number>();
 ```
 
-#### 見分け方
-- **Creation Functions（of, interval, ajax等）** → 通常はCold
-- **DOMイベント（fromEvent）** → 常にHot
-- **Subject系** → 常にHot
-- **share(), shareReplay()使用** → Hotに変換
+> [!IMPORTANT] 見分け方
+> - **Creation Functions（of, interval, ajax等）** → 通常はCold
+> - **DOMイベント（fromEvent）** → 常にHot
+> - **Subject系** → 常にHot
+> - **share(), shareReplay()使用** → Hotに変換
 
 ## 宣言的プログラミングへの思考転換
 
@@ -343,11 +343,11 @@ fromEvent(document, 'click').pipe(
 });
 ```
 
-#### 問題点
-- ストリーム定義・変換・購読が混在
-- デバッグが困難（どこで問題が起きているか分からない）
-- テストしにくい
-- 再利用できない
+> [!IMPORTANT] 問題点
+> - ストリーム定義・変換・購読が混在
+> - デバッグが困難（どこで問題が起きているか分からない）
+> - テストしにくい
+> - 再利用できない
 
 ```typescript
 // ✅ 良い例: 3段階に分離
@@ -478,19 +478,21 @@ of(...numbers).pipe(
 
 以下の質問に答えられるか確認してください。
 
-### 基本概念
+```markdown
+## 基本概念
 - [ ] PromiseとObservableの違いを3つ挙げられる
 - [ ] LazyとEagerの違いを説明できる
 - [ ] ColdとHotの違いを実例で説明できる
 
-### 実践
+## 実践
 - [ ] なぜsubscribe内で処理を完結させてはいけないのか説明できる
 - [ ] ネストしたsubscribeをどう修正すべきか分かる
 - [ ] Cold ObservableをHotに変換する方法を知っている
 
-### デバッグ
+## デバッグ
 - [ ] Observableが実行されないときの原因を特定できる
 - [ ] 購読が複数回実行される原因を理解している
+```
 
 ## 次のステップ
 

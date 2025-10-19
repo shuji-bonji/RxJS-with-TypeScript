@@ -64,8 +64,8 @@ const clicks$ = fromEvent(button, 'click');
 |---|---|---|
 | **[概念理解の壁](/guide/overcoming-difficulties/conceptual-understanding)** | Observable vs Promise、Cold vs Hot | "Promiseと何が違うの？" |
 | **[ライフサイクル管理](/guide/overcoming-difficulties/lifecycle-management)** | subscribe/unsubscribe、メモリリーク | "いつunsubscribeすべき？" |
-| **オペレーター選択**（準備中） | 100+のオペレーターから選ぶ基準 | "どのオペレーターを使えば？" |
-| **タイミングと順序**（準備中） | いつ値が流れるのか、同期vs非同期 | "なぜ値が出ない？" |
+| **[オペレーター選択](/guide/overcoming-difficulties/operator-selection)** | 100+のオペレーターから選ぶ基準 | "どのオペレーターを使えば？" |
+| **[タイミングと順序](/guide/overcoming-difficulties/timing-and-order)** | いつ値が流れるのか、同期vs非同期 | "なぜ値が出ない？" |
 | **状態管理**（準備中） | Subject、share/shareReplay | "状態を共有したい" |
 | **複数ストリーム組み合わせ**（準備中） | combineLatest、zip、withLatestFrom | "2つのAPIの結果を合わせたい" |
 | **デバッグ**（準備中） | 値が流れない、期待と違う値 | "何が起きているか分からない" |
@@ -77,9 +77,9 @@ const clicks$ = fromEvent(button, 'click');
 上記の表から、**現在直面している困難**に該当するセクションを選んでください。
 
 **例：**
-- API呼び出しで値が取れない → タイミングと順序（準備中）
-- メモリリークが心配 → ライフサイクル管理（準備中）
-- mergeMapとswitchMapで迷う → オペレーター選択（準備中）
+- API呼び出しで値が取れない → [タイミングと順序](/guide/overcoming-difficulties/timing-and-order)
+- メモリリークが心配 → [ライフサイクル管理](/guide/overcoming-difficulties/lifecycle-management)
+- mergeMapとswitchMapで迷う → [オペレーター選択](/guide/overcoming-difficulties/operator-selection)
 
 ### 2. 悪い例→良い例で理解する
 
@@ -111,11 +111,12 @@ const clicks$ = fromEvent(button, 'click');
 ```mermaid
 graph TD
     A[Chapter 1-2: 基礎] --> B[Chapter 3-4: Creation/Operators]
-    B --> C[Chapter 11.1: 概念理解の壁]
-    C --> D[Chapter 11.2: ライフサイクル管理]
+    B --> C[概念理解の壁]
+    C --> D[ライフサイクル管理]
     D --> E[Chapter 5-6: Subject/Error]
-    E --> F[Chapter 11.3: オペレーター選択]
-    F --> G[Chapter 13: 実践パターン]
+    E --> F[オペレーター選択]
+    F --> G[タイミングと順序]
+    G --> H[Chapter 13: 実践パターン]
 ```
 
 ### 基礎は理解しているが実践で困っている場合
@@ -123,11 +124,11 @@ graph TD
 ```mermaid
 graph TD
     A[現在の困難点を特定] --> B{困難点は？}
-    B -->|値が流れない| C[11.4: タイミングと順序]
-    B -->|オペレーター選択| D[11.3: オペレーター選択]
-    B -->|メモリリーク| E[11.2: ライフサイクル]
-    B -->|状態共有| F[11.5: 状態管理]
-    B -->|複数API| G[11.6: ストリーム組み合わせ]
+    B -->|値が流れない| C[タイミングと順序]
+    B -->|オペレーター選択| D[オペレーター選択]
+    B -->|メモリリーク| E[ライフサイクル]
+    B -->|状態共有| F[状態管理 準備中]
+    B -->|複数API| G[ストリーム組み合わせ 準備中]
     C --> H[Chapter 13: 実践パターン]
     D --> H
     E --> H
@@ -141,8 +142,8 @@ graph TD
 graph TD
     A[Chapter 10: アンチパターン集] --> B[該当する問題を確認]
     B --> C{なぜそうなった？}
-    C -->|概念の誤解| D[11.1: 概念理解]
-    C -->|オペレーター選択ミス| E[11.3: オペレーター選択]
+    C -->|概念の誤解| D[概念理解]
+    C -->|オペレーター選択ミス| E[オペレーター選択]
     C -->|subscribe地獄| F[Chapter 13: 実践パターン]
     D --> G[修正後、Chapter 13で実践]
     E --> G
