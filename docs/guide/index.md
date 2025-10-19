@@ -20,6 +20,8 @@ TypeScript環境でRxJSを体系的に学ぶためのガイドです。
 - [Observableとは](/guide/observables/what-is-observable)
 - [Observableの作成方法](/guide/observables/creation)
 - [イベントのストリーム化](/guide/observables/events)
+- [fromEvent で利用できないイベント](/guide/observables/events#cannot-used-fromEvent)
+- [イベント一覧](/guide/observables/events-list)
 - [Observableのライフサイクル](/guide/observables/observable-lifecycle)
 - [コールドObservableとホットObservable](/guide/observables/cold-and-hot-observables)
 
@@ -38,12 +40,12 @@ TypeScript環境でRxJSを体系的に学ぶためのガイドです。
 ### 4. オペレーターの理解
 - [オペレーターの概要](/guide/operators/)
 - [パイプラインの概念](/guide/operators/pipeline)
-  - [変換オペレーター](/guide/operators/transformation/)
-  - [フィルタリングオペレーター](/guide/operators/filtering/)
-  - [結合オペレーター](/guide/operators/combination/)
-  - [ユーティリティオペレーター](/guide/operators/utility/)
-  - [条件オペレーター](/guide/operators/conditional/)
-  - [マルチキャスティング](/guide/operators/multicasting/)
+- [変換オペレーター](/guide/operators/transformation/) - map, scan, mergeMap, switchMap, buffer系、window系など
+- [フィルタリングオペレーター](/guide/operators/filtering/) - filter, take, debounceTime, throttleTime, distinctなど
+- [結合オペレーター](/guide/operators/combination/) - concatWith, mergeWith, withLatestFrom, *Allオペレーターなど
+- [ユーティリティオペレーター](/guide/operators/utility/) - tap, delay, retry, finalize, takeUntilなど
+- [条件オペレーター](/guide/operators/conditional/) - defaultIfEmpty, every, isEmptyなど
+- [マルチキャスティング](/guide/operators/multicasting/) - share, shareReplayなど
 
 ### 5. Subjectとマルチキャスト
 - [Subjectとは](/guide/subjects/what-is-subject)
@@ -79,6 +81,7 @@ TypeScript環境でRxJSを体系的に学ぶためのガイドです。
 ### 11. RxJS困難点克服
 - [なぜRxJSは難しいのか](/guide/overcoming-difficulties/)
 - [概念理解の壁](/guide/overcoming-difficulties/conceptual-understanding)
+- [ライフサイクル管理の壁](/guide/overcoming-difficulties/lifecycle-management)
 
 ---
 

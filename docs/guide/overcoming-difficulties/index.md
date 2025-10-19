@@ -63,7 +63,7 @@ const clicks$ = fromEvent(button, 'click');
 | 困難点 | 内容 | よくある症状 |
 |---|---|---|
 | **[概念理解の壁](/guide/overcoming-difficulties/conceptual-understanding)** | Observable vs Promise、Cold vs Hot | "Promiseと何が違うの？" |
-| **ライフサイクル管理**（準備中） | subscribe/unsubscribe、メモリリーク | "いつunsubscribeすべき？" |
+| **[ライフサイクル管理](/guide/overcoming-difficulties/lifecycle-management)** | subscribe/unsubscribe、メモリリーク | "いつunsubscribeすべき？" |
 | **オペレーター選択**（準備中） | 100+のオペレーターから選ぶ基準 | "どのオペレーターを使えば？" |
 | **タイミングと順序**（準備中） | いつ値が流れるのか、同期vs非同期 | "なぜ値が出ない？" |
 | **状態管理**（準備中） | Subject、share/shareReplay | "状態を共有したい" |

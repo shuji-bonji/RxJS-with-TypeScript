@@ -743,6 +743,151 @@ Based on discussion with the developer, two new chapters are planned to address 
 - **Q3 2025**: Chapter 13 implementation (7 pages)
 - **Q4 2025**: Integration and cross-referencing
 
+---
+
+### Fifth Release: Future Content Enhancements
+
+The following enhancements are planned for future releases to keep the documentation current with the latest RxJS developments and ecosystem trends.
+
+#### 🔴 High Priority: RxJS v8 Full Migration
+
+**Purpose:**
+- Provide comprehensive migration guide from RxJS v7 to v8
+- Document all breaking changes and new features
+- Update all code examples to v8 best practices
+
+**Structure:**
+```
+RxJS v8 Migration Guide
+├── Breaking Changes Overview
+│   ├── Removed operators and their replacements
+│   ├── API signature changes
+│   └── Import path updates
+├── New Features and Improvements
+│   ├── Performance enhancements
+│   ├── Bundle size optimizations
+│   └── New operator additions
+├── Migration Strategy
+│   ├── Step-by-step migration process
+│   ├── Automated migration tools
+│   └── Testing migration results
+└── Updated Code Examples
+    ├── Before/After comparisons
+    └── Best practices for v8
+```
+
+**Implementation Tasks:**
+1. Monitor RxJS v8 stable release
+2. Review official migration guide
+3. Update all existing documentation examples
+4. Create dedicated migration guide page
+5. Add version badges throughout documentation
+
+**Timeline:** Upon RxJS v8 stable release
+
+---
+
+#### 🔴 High Priority: Observable と Signal の統合 (Deep Dive)
+
+**Purpose:**
+- Provide comprehensive guide on Observable-Signal interoperability
+- Show practical patterns for modern reactive applications
+- Cover both Angular Signals and framework-agnostic approaches
+
+**Structure:**
+```
+Observable と Signal の統合
+├── Angular Signals との統合 (詳細版)
+│   ├── toSignal / toObservable の詳細
+│   ├── Signal based Inputs と RxJS
+│   ├── computedとObservableの組み合わせ
+│   ├── effectとObservableの連携
+│   └── 実践例：リアクティブフォームの最新パターン
+├── 他のフレームワークのSignals
+│   ├── Solid.js Signals
+│   ├── Preact Signals
+│   └── Vue 3 Composition API
+├── Observable vs Signal の使い分け
+│   ├── それぞれの強み・弱み
+│   ├── パフォーマンス比較
+│   └── 選択のガイドライン
+└── 実践パターン集
+    ├── フォーム処理
+    ├── 状態管理
+    └── 非同期データフロー
+```
+
+**Implementation Tasks:**
+1. Expand Chapter 14.2 content significantly
+2. Add standalone chapter option if content grows large
+3. Include framework-agnostic Signal concepts
+4. Provide migration patterns from pure RxJS to Signal-hybrid approaches
+5. Add performance benchmarks and trade-off analysis
+
+**Placement Options:**
+- **Option 1**: Expand Chapter 14.2 (State Management Integration)
+- **Option 2**: Create standalone Chapter 12.5 (Advanced TypeScript Integration subsection)
+
+**Timeline:** Q2-Q3 2025
+
+---
+
+#### 🟡 Medium Priority: TestScheduler 活用ガイド (拡張)
+
+**Purpose:**
+- Expand Chapter 9 testing section with comprehensive TestScheduler guide
+- Provide advanced marble testing techniques
+- Show real-world testing scenarios
+
+**Structure:**
+```
+TestScheduler 活用ガイド（拡張）
+├── TestScheduler の基礎（復習）
+│   ├── 基本的な使い方
+│   └── Marble Diagram 記法
+├── 高度な TestScheduler テクニック
+│   ├── 複雑な時間制御のテスト
+│   ├── Higher-order Observable のテスト
+│   ├── エラーハンドリングのテスト
+│   └── リトライ・タイムアウトのテスト
+├── 実践的なテストパターン
+│   ├── API呼び出しのテスト
+│   ├── フォーム処理のテスト
+│   ├── WebSocket 通信のテスト
+│   └── キャッシュ戦略のテスト
+├── デバッグとトラブルシューティング
+│   ├── よくあるテストの失敗原因
+│   ├── Marble Diagram のデバッグ方法
+│   └── 非同期処理のデバッグ
+└── CI/CD との統合
+    ├── テスト環境のセットアップ
+    ├── カバレッジ測定
+    └── パフォーマンステスト
+```
+
+**Implementation Tasks:**
+1. Expand existing Chapter 9 testing content
+2. Add dedicated TestScheduler subsection (Chapter 9.3)
+3. Provide downloadable test code examples
+4. Include video tutorials for complex scenarios
+5. Cross-reference with Chapter 13 practical patterns
+
+**Placement:** Chapter 9.3 (new subsection within existing Testing chapter)
+
+**Timeline:** Q3-Q4 2025
+
+---
+
+**Priority Summary:**
+1. **RxJS v8 Full Migration** - Critical for staying current (wait for stable release)
+2. **Observable と Signal の統合** - High demand, reflects 2025 ecosystem trends
+3. **TestScheduler 活用ガイド** - Important for production quality, less urgent
+
+**Dependencies:**
+- **RxJS v8 Migration**: Depends on official v8 stable release
+- **Observable-Signal integration**: Can start now with Angular 19+ examples
+- **TestScheduler guide**: Can start anytime, complements existing content
+
 ## Reference Resources
 
 - [RxJS Official Documentation](https://rxjs.dev)
