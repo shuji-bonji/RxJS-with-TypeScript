@@ -264,75 +264,6 @@ When editing documentation:
 
 ## Content Priorities and TODO
 
-### Immediate Priority: Technical Corrections for RxJS v7-v8 Compliance
-
-Based on technical review, the following items need updates to align with current RxJS best practices:
-
-1. **✅ `share()` operator explanation update**
-   - Status: Completed
-   - Issue: "内部的には `multicast()` と `refCount()` の組み合わせ" is outdated
-   - Action: Update to reflect that `multicast/publish/refCount` are deprecated in v7, removed in v8
-   - Details: Explain `share` now accepts options like `connector`, and can replace `shareReplay` behavior
-   - Reference: https://rxjs.dev/deprecations/multicasting
-   - Files: `docs/guide/operators/multicasting/share.md`
-
-2. **✅ Import path modernization**
-   - Status: Completed (107 files updated)
-   - Issue: Many examples use `import { X } from 'rxjs/operators'`
-   - Action: Change all imports to top-level `import { X } from 'rxjs'`
-   - Details: `'rxjs/operators'` exports are deprecated since v7.2+, will be removed in future
-   - Reference: https://rxjs.dev/guide/importing
-   - Files: All operator documentation pages (bulk updated via sed)
-
-3. **✅ Deprecated operator badges in index/TOC**
-   - Status: Completed (Partially - index.md updated, config.ts pending)
-   - Issue: `pluck`, `mapTo`, `*MapTo` not clearly marked as deprecated in overview pages
-   - Action: Add "⚠️ 非推奨" badges in `docs/guide/operators/index.md` table
-   - Details: `pluck` removed in v8, `mapTo/mergeMapTo/concatMapTo/switchMapTo` removed in v9
-   - Alternative: Use `map(() => value)` / `mergeMap(() => inner$)` etc.
-   - Reference: https://rxjs.dev/api/operators/pluck
-   - Files: `docs/guide/operators/index.md`, sidebar in `config.ts`
-
-4. **✅ `subscribe()` three-argument form deprecation**
-   - Status: Completed (2 instances fixed)
-   - Issue: Check if any examples use `subscribe(next, error, complete)`
-   - Action: Replace with observer object `{ next, error, complete }` or single function
-   - Reference: https://rxjs.dev/deprecations/subscribe-arguments
-   - Files: `observable-lifecycle.md`, `pairwise.md`
-
-5. **✅ `reduce` operator warning for infinite streams**
-   - Status: Completed
-   - Issue: Missing warning that `reduce` requires `complete()` to emit
-   - Action: Add prominent note that infinite streams never emit, suggest `scan` + `takeLast(1)` alternative
-   - Reference: https://rxjs.dev/api/index/function/reduce
-   - Files: `docs/guide/operators/transformation/reduce.md`
-
-6. **✅ Modern `share()` configuration examples**
-   - Status: Completed
-   - Issue: Multicasting chapter lacks modern `share({...})` recipes
-   - Action: Add example showing `share({ connector: () => new ReplaySubject(1), ... })` pattern
-   - Details: Show how to replace `shareReplay` behavior with explicit config
-   - Reference: https://rxjs.dev/deprecations/multicasting
-   - Files: `docs/guide/operators/multicasting/share.md`, `docs/guide/subjects/multicasting.md`
-
-7. **✅ Promise conversion API update**
-   - Status: Completed (1 reference updated)
-   - Issue: Check if `toPromise()` is used anywhere
-   - Action: Replace with `firstValueFrom()` / `lastValueFrom()` with default value examples
-   - Reference: https://kylenazario.com/blog/rxjs-7-changes
-   - Files: `unit-tests.md` (deprecated method reference removed), `promise-vs-rxjs.md` (already has deprecation warning)
-
-**Implementation Status: ✅ All 7 items completed**
-
-Summary of changes:
-- **share.md**: Updated multicast/refCount explanation, added modern connector examples, added deprecation warnings
-- **reduce.md**: Added WARNING callout about infinite streams with 3 alternative strategies
-- **index.md**: Added deprecated badges (⚠️ 非推奨) for pluck, mapTo with version info and alternatives
-- **107 files**: Bulk updated imports from `'rxjs/operators'` to `'rxjs'` using sed
-- **2 files**: Fixed subscribe() three-argument form to modern observer object syntax
-- **1 file**: Removed toPromise() reference, replaced with firstValueFrom/lastValueFrom
-- All changes comply with RxJS v7-v8 best practices and deprecation guidelines
-
 ### High Priority
 1. **RxJS v8 Preparation**
    - Research and document new features
@@ -355,88 +286,11 @@ Summary of changes:
 2. Add practice exercises
 3. Community contribution guidelines
 
-### Second Release: Additional Operators
+---
 
-The following operators are planned for the second documentation release, prioritized by usage frequency and practical importance.
+## Completed Releases
 
-#### ✅ Completed Operators
-
-**Transformation Operators:**
-- ✅ `buffer` - Basic buffer operator (docs/guide/operators/transformation/buffer.md)
-- ✅ `bufferToggle` - Independent start/end control buffering (docs/guide/operators/transformation/bufferToggle.md)
-- ✅ `bufferWhen` - Dynamic closing control buffering (docs/guide/operators/transformation/bufferWhen.md)
-- ✅ `expand` - Recursive expansion (docs/guide/operators/transformation/expand.md)
-- ✅ `reduce` - Aggregation processing (docs/guide/operators/transformation/reduce.md)
-- ✅ `pairwise` - Process consecutive pairs of values (docs/guide/operators/transformation/pairwise.md)
-- ✅ `groupBy` - Group emissions by key (docs/guide/operators/transformation/groupBy.md)
-- ✅ `mergeScan` - Accumulation with merging (docs/guide/operators/transformation/mergeScan.md)
-- ✅ `window` - Split by Observable trigger (docs/guide/operators/transformation/window.md)
-- ✅ `windowCount` - Split by count (docs/guide/operators/transformation/windowCount.md)
-- ✅ `windowToggle` - Independent start/end control windowing (docs/guide/operators/transformation/windowToggle.md)
-- ✅ `windowWhen` - Dynamic closing control windowing (docs/guide/operators/transformation/windowWhen.md)
-
-**Filtering Operators:**
-- ✅ `distinct` - Remove all duplicates (docs/guide/operators/filtering/distinct.md)
-- ✅ `skip` - Skip first N emissions (docs/guide/operators/filtering/skip.md)
-- ✅ `skipLast` - Skip last N emissions (docs/guide/operators/filtering/skipLast.md)
-- ✅ `skipWhile` - Skip while condition is true (docs/guide/operators/filtering/skipWhile.md)
-- ✅ `skipUntil` - Ignore emissions until another Observable emits (docs/guide/operators/filtering/skipUntil.md)
-- ✅ `takeLast` - Take last N emissions (docs/guide/operators/filtering/takeLast.md)
-- ✅ `takeWhile` - Take emissions while condition is true (docs/guide/operators/filtering/takeWhile.md)
-- ✅ `elementAt` - Get emission at specific index (docs/guide/operators/filtering/elementAt.md)
-- ✅ `find` - Find first emission matching predicate (docs/guide/operators/filtering/find.md)
-- ✅ `findIndex` - Find index of first matching emission (docs/guide/operators/filtering/findIndex.md)
-- ✅ `auditTime` - Emit last value after specified time (docs/guide/operators/filtering/auditTime.md)
-- ✅ `audit` - Custom Observable-controlled timing (docs/guide/operators/filtering/audit.md)
-- ✅ `sampleTime` - Sample emissions at fixed intervals (docs/guide/operators/filtering/sampleTime.md)
-- ✅ `ignoreElements` - Ignore all emissions, only complete/error (docs/guide/operators/filtering/ignoreElements.md)
-
-**Creation Functions:**
-- ✅ `partition` - Split stream by condition (docs/guide/creation-functions/partition.md)
-
-**Combination Operators (Pipeable):**
-- ✅ `concatWith` - Sequential combination in pipeline (docs/guide/operators/combination/concatWith.md)
-- ✅ `mergeWith` - Parallel combination in pipeline (docs/guide/operators/combination/mergeWith.md)
-- ✅ `combineLatestWith` - Combine latest values in pipeline (docs/guide/operators/combination/combineLatestWith.md)
-- ✅ `zipWith` - Pair corresponding values in pipeline (docs/guide/operators/combination/zipWith.md)
-- ✅ `raceWith` - Race to first emission in pipeline (docs/guide/operators/combination/raceWith.md)
-- ✅ `mergeAll` - Flatten Higher-order Observable in parallel (docs/guide/operators/combination/mergeAll.md)
-- ✅ `concatAll` - Flatten Higher-order Observable sequentially (docs/guide/operators/combination/concatAll.md)
-- ✅ `switchAll` - Switch to latest Higher-order Observable (docs/guide/operators/combination/switchAll.md)
-- ✅ `exhaustAll` - Ignore new Higher-order Observable while executing (docs/guide/operators/combination/exhaustAll.md)
-- ✅ `combineLatestAll` - Combine latest values from all inner Observables (docs/guide/operators/combination/combineLatestAll.md)
-- ✅ `zipAll` - Pair corresponding values from inner Observables (docs/guide/operators/combination/zipAll.md)
-
-**Utility Operators:**
-- ✅ `delayWhen` - Delay each emission by Observable (docs/guide/operators/utility/delayWhen.md)
-- ✅ `materialize` - Convert notifications to Notification objects (docs/guide/operators/utility/materialize.md)
-- ✅ `dematerialize` - Convert Notification objects back to notifications (docs/guide/operators/utility/dematerialize.md)
-- ✅ `observeOn` - Control emission timing with scheduler (docs/guide/operators/utility/observeOn.md)
-- ✅ `subscribeOn` - Control subscription timing with scheduler (docs/guide/operators/utility/subscribeOn.md)
-- ✅ `timestamp` - Add time metadata to each emission (docs/guide/operators/utility/timestamp.md)
-- ~~`repeatWhen`~~ → **削除済み** (RxJS v8で削除。代わりに `repeat` の `delay` オプションを使用)
-- ~~`timeoutWith`~~ → **削除済み** (RxJS公式から削除。代わりに `timeout` の `with` オプションを使用)
-
-#### 🔴 High Priority Operators (Remaining)
-
-**None remaining - all high priority operators completed!**
-
-#### 🟡 Medium Priority Operators (Used in specific scenarios)
-
-**None remaining - all medium priority operators completed!**
-
-
-**Note on Deprecated Operators:**
-The following operators are deprecated/removed in RxJS and have been excluded from documentation:
-- ~~`pluck`~~ → **削除済み** (v8で削除。代わりに `map` with optional chaining を使用)
-- ~~`mapTo`~~ → **削除済み** (v9で削除予定。代わりに `map(() => value)` を使用)
-- ~~`switchMapTo`~~, ~~`mergeMapTo`~~ →  **削除済み**  (Use base operators with constant function)
-- ~~`repeatWhen`~~ → **削除済み** (RxJS v8で削除。代わりに `repeat` の `delay` オプションを使用)
-- ~~`timeoutWith`~~ → **削除済み** (RxJS公式から削除。代わりに `timeout` の `with` オプションを使用)
-
-These deprecated operators have been removed from all documentation.
-
-### Third Release: New Chapters
+### ✅ Third Release: New Chapters (Completed)
 
 The following new chapters have been added or are planned for future releases.
 
@@ -502,17 +356,43 @@ The following new chapters have been added or are planned for future releases.
 **Placement:** Between Chapter 7 (Schedulers) and Chapter 9 (Testing)
 - Natural progression: Implementation → Error Handling → Schedulers → **Debugging** → Testing → Anti-patterns
 
-#### 🔄 Medium Priority: Chapter 14 Enhancement - フレームワークとの統合
+#### ✅ Chapter 11: RxJS困難点克服 (Completed)
+
+**Purpose:**
+- Address common difficulties that experienced developers face when working with RxJS
+- Provide actionable guidance to overcome RxJS-specific conceptual and practical barriers
+- Bridge the gap between theory (Chapters 1-10) and practice (Chapter 13)
+
+**Structure:**
+```
+11. RxJS困難点克服
+├── index.md                        # なぜRxJSは難しいのか（経験者でも）
+├── conceptual-understanding.md     # 概念理解の壁
+├── lifecycle-management.md         # ライフサイクル管理の壁
+├── operator-selection.md           # オペレーター選択の迷い
+├── timing-and-order.md             # タイミングと順序の理解
+├── state-and-sharing.md            # 状態管理の難しさ
+├── stream-combination.md           # 複数ストリーム組み合わせ
+└── debugging-guide.md              # デバッグの壁
+```
+
+**Implementation Status:** ✅ All 7 pages completed (Q1 2025)
+
+---
+
+## Active Development
+
+#### 🔄 Medium Priority: Chapter 15 Enhancement - フレームワークとの統合
 
 **Phased Approach:**
 
-**Phase 1: Basic Framework Integration (14.1)**
+**Phase 1: Basic Framework Integration (15.1)**
 - Quick start guides for each framework (5-10 min read)
 - Focus on basic RxJS usage patterns
 - Heavy use of external documentation links
 - Frameworks: Angular, React, Vue, Svelte
 
-**Phase 2: State Management Integration (14.2)** ⭐ Main Enhancement
+**Phase 2: State Management Integration (15.2)** ⭐ Main Enhancement
 ```
 14.2 状態管理との統合
 ├── RxJS + NgRX (Angular)
@@ -533,7 +413,7 @@ The following new chapters have been added or are planned for future releases.
     └── Jotai
 ```
 
-**Phase 3: Web API Integration (14.3)**
+**Phase 3: Web API Integration (15.3)**
 - WebSocket (developer's focus area)
 - Server-Sent Events
 - IndexedDB
@@ -551,94 +431,13 @@ The following new chapters have been added or are planned for future releases.
 - ✅ Provides unique value vs other RxJS resources
 - ✅ Reflects 2024-2025 trends (Signals, Runes)
 
-**Priority Order:**
-1. **Immediate**: Chapter 8 RxJSのデバッグ手法 (structure created, content TBD)
-2. **Short-term**: Chapter 14.1 基本的なフレームワーク連携
-3. **Medium-term**: Chapter 14.2 状態管理との統合 (starting with NgRX)
+**Priority-term**: Chapter 14.1 基本的なフレームワーク連携
+2. **Medium-term**: Chapter 14.2 状態管理との統合 (starting with NgRX)
 
----
+--- Order:**
+1. **Short
 
-### Fourth Release: New Chapters for Overcoming Learning Difficulties
-
-Based on discussion with the developer, two new chapters are planned to address common learning challenges and provide practical patterns.
-
-#### 🔴 High Priority: Chapter 11 - RxJS困難点克服
-
-**Purpose:**
-- Address common difficulties that experienced developers face when working with RxJS
-- Provide actionable guidance to overcome RxJS-specific conceptual and practical barriers
-- Bridge the gap between theory (Chapters 1-10) and practice (Chapter 13)
-
-**Target Audience:**
-- Developers with TypeScript experience
-- Developers with professional programming experience
-- Those who understand RxJS basics but struggle with practical implementation
-
-**Structure:**
-```
-11. RxJS困難点克服
-├── index.md                        # なぜRxJSは難しいのか（経験者でも）
-│   ├── 学習者が直面する主な困難点
-│   ├── 各セクションの使い方
-│   └── 学習ロードマップ
-├── conceptual-understanding.md     # 概念理解の壁
-│   ├── Observable vs Promise の本質的違い
-│   ├── Cold vs Hot の直感的理解
-│   ├── 宣言的プログラミングへの思考転換
-│   └── 実験して理解する（Starter Kit活用）
-├── lifecycle-management.md         # ライフサイクル管理の壁
-│   ├── いつ subscribe すべきか
-│   ├── いつ unsubscribe すべきか
-│   ├── メモリリークを防ぐパターン
-│   ├── takeUntil パターンの完全ガイド
-│   └── Subscription管理のベストプラクティス
-├── operator-selection.md           # オペレーター選択の迷い
-│   ├── 100以上のオペレーターから選ぶ基準
-│   ├── カテゴリ別選択フローチャート
-│   ├── よく使うオペレーター20選
-│   ├── switchMap vs mergeMap vs concatMap vs exhaustMap
-│   └── 実践での判断基準
-├── timing-and-order.md             # タイミングと順序の理解
-│   ├── いつ値が流れるのか
-│   ├── 同期 vs 非同期の理解
-│   ├── Scheduler の役割
-│   ├── Marble Diagram の読み方
-│   └── デバッグで確認する方法
-├── state-and-sharing.md            # 状態管理の難しさ
-│   ├── Subject vs BehaviorSubject vs ReplaySubject
-│   ├── いつ share/shareReplay を使うか
-│   ├── Hot/Cold の実践的使い分け
-│   ├── 状態の一元管理パターン
-│   └── よくある落とし穴
-├── stream-combination.md           # 複数ストリーム組み合わせ
-│   ├── combineLatest vs zip vs forkJoin
-│   ├── withLatestFrom の使いどころ
-│   ├── Higher-order Observable の理解
-│   ├── ネストを避けるパターン
-│   └── 実践例：フォーム + API
-└── debugging-guide.md              # デバッグの壁
-    ├── 値が流れてこない時の対処
-    ├── tap でのデバッグテクニック
-    ├── RxJS DevTools の活用
-    ├── よくあるエラーメッセージと対処
-    └── Marble Testing での検証
-```
-
-**Content Characteristics:**
-- ❌ 悪い例 → ✅ 良い例 → 💡 解説 → 🎯 練習問題
-- Marble Diagram での視覚化
-- Starter Kit で即座に実行可能なコード例
-- 理解度チェックリスト
-- 既存章へのクロスリファレンス
-
-**Implementation Notes:**
-- Chapter 10（アンチパターン）との連携を重視
-- 「なぜそのアンチパターンに陥るか」を深掘り
-- Chapter 8（デバッグ）の内容を学習者視点で再構成
-
----
-
-#### 🔴 High Priority: Chapter 13 - 実践パターン集
+#### 🔴 High Priority: Chapter 13 - 実践パターン集 (Planned)
 
 **Purpose:**
 - Provide real-world implementation patterns for common use cases
@@ -726,26 +525,13 @@ Based on discussion with the developer, two new chapters are planned to address 
 - PWA application examples → `caching-strategies.md`
 - Web Components integration → `ui-events.md`
 
----
-
-**Updated Chapter Structure After Implementation:**
-```
-10. RxJSアンチパターン集
-11. 学習の壁を越える           ← NEW (Fourth Release)
-12. TypeScriptとRxJSの高度な連携
-13. 実践パターン集             ← NEW (Fourth Release)
-14. パフォーマンス最適化
-15. フレームワークとの統合
-```
-
 **Timeline:**
-- **Q2 2025**: Chapter 11 implementation (6-8 pages)
-- **Q3 2025**: Chapter 13 implementation (7 pages)
+- **Q2-Q3 2025**: Chapter 13 implementation (7 pages)
 - **Q4 2025**: Integration and cross-referencing
 
 ---
 
-### Fifth Release: Future Content Enhancements
+## Future Enhancements
 
 The following enhancements are planned for future releases to keep the documentation current with the latest RxJS developments and ecosystem trends.
 
