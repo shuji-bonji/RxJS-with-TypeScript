@@ -25,10 +25,10 @@ const doubled$ = observable.pipe(
 );
 ```
 
-#### 問題点
-- 命令的プログラミング（Promiseのthen/await）の思考が通用しない
-- 値ではなく「ストリームの変換」を考える必要がある
-- subscribe内で処理を完結させようとすると、アンチパターンに陥る
+> [!IMPORTANT] 問題点
+> - 命令的プログラミング（Promiseのthen/await）の思考が通用しない
+> - 値ではなく「ストリームの変換」を考える必要がある
+> - subscribe内で処理を完結させようとすると、アンチパターンに陥る
 
 ### 時間軸の概念が追加される
 
@@ -42,17 +42,17 @@ const clicks$ = fromEvent(button, 'click');
 // clicks$:  ------click----click--click---------->
 ```
 
-#### 問題点
-- 「いつ値が流れるのか」を常に意識する必要がある
-- 同期/非同期の違いが動作に影響する
-- Marble Diagramの読解が必須になる
+> [!IMPORTANT] 問題点
+> - 「いつ値が流れるのか」を常に意識する必要がある
+> - 同期/非同期の違いが動作に影響する
+> - Marble Diagramの読解が必須になる
 
 ### 100種類以上のオペレーターから選択
 
-#### よくある悩み
-- "map, mergeMap, switchMap, concatMap... 違いがわからない"
-- "debounceTime と throttleTime、どっちを使えば？"
-- "combineLatest と zip、何が違う？"
+> [!IMPORTANT] よくある悩み
+> - "map, mergeMap, switchMap, concatMap... 違いがわからない"
+> - "debounceTime と throttleTime、どっちを使えば？"
+> - "combineLatest と zip、何が違う？"
 
 → Chapter 11では、**実践的な選択基準**を提供します。
 
@@ -166,20 +166,22 @@ graph TD
 
 各セクションを読み終えたら、以下を確認してください。
 
-### 概念理解
+```markdown
+## 概念理解
 - [ ] ObservableとPromiseの違いを説明できる
 - [ ] ColdとHotの違いを実例で説明できる
 - [ ] 宣言的プログラミングのメリットを理解している
 
-### 実践スキル
+## 実践スキル
 - [ ] 適切なタイミングでsubscribe/unsubscribeできる
 - [ ] 目的に合ったオペレーターを選択できる
 - [ ] Marble Diagramを読んで動作を予測できる
 
-### デバッグ
+## デバッグ
 - [ ] tapを使ってストリームをデバッグできる
 - [ ] 値が流れない原因を特定できる
 - [ ] メモリリークの兆候を見つけられる
+```
 
 ## 次のステップ
 
