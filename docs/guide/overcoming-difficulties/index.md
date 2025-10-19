@@ -67,7 +67,7 @@ const clicks$ = fromEvent(button, 'click');
 | **[オペレーター選択](/guide/overcoming-difficulties/operator-selection)** | 100+のオペレーターから選ぶ基準 | "どのオペレーターを使えば？" |
 | **[タイミングと順序](/guide/overcoming-difficulties/timing-and-order)** | いつ値が流れるのか、同期vs非同期 | "なぜ値が出ない？" |
 | **[状態管理](/guide/overcoming-difficulties/state-and-sharing)** | Subject、share/shareReplay | "状態を共有したい" |
-| **複数ストリーム組み合わせ**（準備中） | combineLatest、zip、withLatestFrom | "2つのAPIの結果を合わせたい" |
+| **[複数ストリーム組み合わせ](/guide/overcoming-difficulties/stream-combination)** | combineLatest、zip、withLatestFrom | "2つのAPIの結果を合わせたい" |
 | **デバッグ**（準備中） | 値が流れない、期待と違う値 | "何が起きているか分からない" |
 
 ## 各セクションの使い方
@@ -81,6 +81,7 @@ const clicks$ = fromEvent(button, 'click');
 - メモリリークが心配 → [ライフサイクル管理](/guide/overcoming-difficulties/lifecycle-management)
 - mergeMapとswitchMapで迷う → [オペレーター選択](/guide/overcoming-difficulties/operator-selection)
 - 状態を複数のコンポーネントで共有したい → [状態管理](/guide/overcoming-difficulties/state-and-sharing)
+- 2つのAPIの結果を組み合わせたい → [複数ストリーム組み合わせ](/guide/overcoming-difficulties/stream-combination)
 
 ### 2. 悪い例→良い例で理解する
 
@@ -118,7 +119,8 @@ graph TD
     E --> F[オペレーター選択]
     F --> G[タイミングと順序]
     G --> H[状態管理]
-    H --> I[Chapter 13: 実践パターン]
+    H --> I[ストリーム組み合わせ]
+    I --> J[Chapter 13: 実践パターン]
 ```
 
 ### 基礎は理解しているが実践で困っている場合
@@ -130,7 +132,7 @@ graph TD
     B -->|オペレーター選択| D[オペレーター選択]
     B -->|メモリリーク| E[ライフサイクル]
     B -->|状態共有| F[状態管理]
-    B -->|複数API| G[ストリーム組み合わせ 準備中]
+    B -->|複数API| G[ストリーム組み合わせ]
     C --> H[Chapter 13: 実践パターン]
     D --> H
     E --> H

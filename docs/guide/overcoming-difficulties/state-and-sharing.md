@@ -674,7 +674,7 @@ class CounterService {
 
 状態管理と共有を理解したら、次は**複数ストリームの組み合わせ**を学びましょう。
 
-→ **複数ストリーム組み合わせ**（準備中） - combineLatest、zip、withLatestFromの使い分け
+→ **[複数ストリーム組み合わせ](/guide/overcoming-difficulties/stream-combination)** - combineLatest、zip、withLatestFromの使い分け
 
 ## 関連ページ
 
