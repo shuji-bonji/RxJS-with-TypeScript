@@ -68,7 +68,7 @@ const clicks$ = fromEvent(button, 'click');
 | **[タイミングと順序](/guide/overcoming-difficulties/timing-and-order)** | いつ値が流れるのか、同期vs非同期 | "なぜ値が出ない？" |
 | **[状態管理](/guide/overcoming-difficulties/state-and-sharing)** | Subject、share/shareReplay | "状態を共有したい" |
 | **[複数ストリーム組み合わせ](/guide/overcoming-difficulties/stream-combination)** | combineLatest、zip、withLatestFrom | "2つのAPIの結果を合わせたい" |
-| **デバッグ**（準備中） | 値が流れない、期待と違う値 | "何が起きているか分からない" |
+| **[デバッグ](/guide/overcoming-difficulties/debugging-guide)** | 値が流れない、期待と違う値 | "何が起きているか分からない" |
 
 ## 各セクションの使い方
 
@@ -82,6 +82,7 @@ const clicks$ = fromEvent(button, 'click');
 - mergeMapとswitchMapで迷う → [オペレーター選択](/guide/overcoming-difficulties/operator-selection)
 - 状態を複数のコンポーネントで共有したい → [状態管理](/guide/overcoming-difficulties/state-and-sharing)
 - 2つのAPIの結果を組み合わせたい → [複数ストリーム組み合わせ](/guide/overcoming-difficulties/stream-combination)
+- デバッグ方法が分からない → [デバッグ](/guide/overcoming-difficulties/debugging-guide)
 
 ### 2. 悪い例→良い例で理解する
 

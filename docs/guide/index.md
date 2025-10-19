@@ -86,6 +86,7 @@ TypeScript環境でRxJSを体系的に学ぶためのガイドです。
 - [タイミングと順序の理解](/guide/overcoming-difficulties/timing-and-order)
 - [状態管理の難しさ](/guide/overcoming-difficulties/state-and-sharing)
 - [複数ストリーム組み合わせ](/guide/overcoming-difficulties/stream-combination)
+- [デバッグの壁](/guide/overcoming-difficulties/debugging-guide)
 
 ---
 

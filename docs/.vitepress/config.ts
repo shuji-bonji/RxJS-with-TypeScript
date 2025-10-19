@@ -417,6 +417,7 @@ export default withMermaid({
           { text: 'タイミングと順序の理解', link: '/guide/overcoming-difficulties/timing-and-order' },
           { text: '状態管理の難しさ', link: '/guide/overcoming-difficulties/state-and-sharing' },
           { text: '複数ストリーム組み合わせ', link: '/guide/overcoming-difficulties/stream-combination' },
+          { text: 'デバッグの壁', link: '/guide/overcoming-difficulties/debugging-guide' },
         ],
       },
       {
