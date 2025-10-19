@@ -56,6 +56,31 @@ const clicks$ = fromEvent(button, 'click');
 
 → Chapter 11では、**実践的な選択基準**を提供します。
 
+### RxJSの難しさの全体像
+
+以下の図は、RxJSの難しさがどのような要素から構成されているかを示しています。
+
+```mermaid
+mindmap
+  root((RxJSの難しさ))
+    概念の抽象度
+      値 vs ストリーム
+      命令的 vs 宣言的
+      時間軸の概念
+    パラダイムシフト
+      Promise的思考からの脱却
+      同期的思考の限界
+      単一値から複数値へ
+    選択肢の多さ
+      100以上のオペレーター
+      似た名前のオペレーター
+      組み合わせの複雑さ
+    デバッグの難しさ
+      非同期の追跡
+      状態の可視化
+      タイミング問題
+```
+
 ## 主な困難点一覧
 
 このセクションでは、以下の7つの困難点を扱います。
@@ -69,6 +94,50 @@ const clicks$ = fromEvent(button, 'click');
 | **[状態管理](/guide/overcoming-difficulties/state-and-sharing)** | Subject、share/shareReplay | "状態を共有したい" |
 | **[複数ストリーム組み合わせ](/guide/overcoming-difficulties/stream-combination)** | combineLatest、zip、withLatestFrom | "2つのAPIの結果を合わせたい" |
 | **[デバッグ](/guide/overcoming-difficulties/debugging-guide)** | 値が流れない、期待と違う値 | "何が起きているか分からない" |
+
+### 困難点の関係性
+
+以下のフローチャートは、RxJSを学習する際に遭遇する典型的な困難の流れを示しています。
+
+```mermaid
+graph Tb
+    A[RxJSを学び始める] --> B{基礎概念を<br/>理解できたか？}
+    B -->|不十分| C[概念理解の壁]
+    B -->|理解済| D{実装開始}
+
+    C --> E[Observable vs Promise]
+    C --> F[Cold vs Hot]
+    C --> G[宣言的プログラミング]
+
+    E --> D
+    F --> D
+    G --> D
+
+    D --> H[ライフサイクル管理]
+    D --> I[オペレーター選択]
+
+    H --> J{メモリリーク<br/>発生？}
+    I --> K{期待通り<br/>動作？}
+
+    J -->|はい| L[購読管理の見直し]
+    K -->|いいえ| M[タイミング問題]
+    K -->|いいえ| N[組み合わせ問題]
+
+    L --> O[デバッグが必要]
+    M --> O
+    N --> O
+
+    O --> P[Chapter 8:<br/>デバッグ手法]
+    P --> Q[問題解決]
+
+    Q --> R[Chapter 13:<br/>実践パターン]
+
+    style C fill:#ffcccc
+    style H fill:#ffffcc
+    style I fill:#ffffcc
+    style O fill:#ccffcc
+    style R fill:#ccccff
+```
 
 ## 各セクションの使い方
 

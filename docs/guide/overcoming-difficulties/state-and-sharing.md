@@ -17,6 +17,54 @@ RxJSで **「状態を複数のコンポーネントで共有したい」「API�
 | **ReplaySubject** | なし | 過去N個の値を受信 | 履歴、ログ、操作の記録 |
 | **AsyncSubject** | なし | 完了時の最終値のみ受信 | 単一の非同期結果（あまり使わない） |
 
+### Subjectの種類と動作の違いを視覚化
+
+以下の図は、各Subjectが購読時にどのような値を受け取るかを示しています。
+
+```mermaid
+graph LR
+    subgraph Subject[Subject - 新しい値のみ]
+        direction LR
+        S1[購読1<br/>開始時点]
+        S2[購読2<br/>後から購読]
+        S[Subject]
+        S1 --> S
+        S2 --> S
+        S --> |新しい値のみ| S1
+        S --> |新しい値のみ| S2
+        style S fill:#ffcccc,color:#333
+    end
+
+    subgraph BehaviorSubject[BehaviorSubject - 現在値 + 新しい値]
+        direction LR
+        B1[購読1<br/>開始時点]
+        B2[購読2<br/>後から購読]
+        B[BehaviorSubject<br/>初期値: 0]
+        B1 --> B
+        B2 --> B
+        B --> |現在値: 0| B1
+        B --> |現在値: 5<br/>最新の状態| B2
+        style B fill:#ccffcc,color:#333
+    end
+
+    subgraph ReplaySubject[ReplaySubject - 過去N個 + 新しい値]
+        direction LR
+        R1[購読1<br/>開始時点]
+        R2[購読2<br/>後から購読]
+        R[ReplaySubject<br/>bufferSize: 2]
+        R1 --> R
+        R2 --> R
+        R --> |すべての値| R1
+        R --> |直近2つ<br/>3, 4| R2
+        style R fill:#ccccff,color:#333
+    end
+```
+
+> [!TIP] 選択基準
+> - **Subject**: イベント通知（過去は不要）
+> - **BehaviorSubject**: 状態管理（現在値が必要）
+> - **ReplaySubject**: 履歴管理（過去N個が必要）
+
 ### 実践例1: Subject（イベントバス）
 
 #### ❌ 悪い例：購読前の値は受け取れない

@@ -65,6 +65,47 @@ graph LR
     E --> E2[代替値: catchError]
 ```
 
+### より詳細な選択フローチャート
+
+以下のフローチャートは、具体的な目的に応じてオペレーターを選ぶ手順を示しています。
+
+```mermaid
+graph LR
+    A[何をしたい?] --> B{変換?}
+    A --> C{フィルタリング?}
+    A --> D{組み合わせ?}
+    A --> E{エラー処理?}
+
+    B --> B1[map: 値を変換]
+    B --> B2[mergeMap: 非同期変換<br/>並列実行]
+    B --> B3[switchMap: 非同期変換<br/>最新のみ]
+    B --> B4[concatMap: 非同期変換<br/>順序保証]
+    B --> B5[scan: 累積処理]
+
+    C --> C1[filter: 条件で絞る]
+    C --> C2[take: 個数制限]
+    C --> C3[debounceTime: 遅延で絞る<br/>最後の値のみ]
+    C --> C4[throttleTime: 一定間隔で絞る<br/>最初の値のみ]
+    C --> C5[distinctUntilChanged: 重複除去<br/>連続する同じ値]
+
+    D --> D1[combineLatest: すべての<br/>最新値を組み合わせ]
+    D --> D2[merge: 複数を統合<br/>到着順]
+    D --> D3[zip: 対応する値を<br/>ペア化]
+    D --> D4[forkJoin: すべて完了後に<br/>最後の値を組み合わせ]
+    D --> D5[withLatestFrom: メイン側の<br/>発火時に組み合わせ]
+
+    E --> E1[catchError: エラーを<br/>処理/代替値]
+    E --> E2[retry: リトライ]
+    E --> E3[retryWhen: 条件付き<br/>リトライ]
+
+    style B1 fill:#e1f5ff
+    style B2 fill:#fff3e1
+    style B3 fill:#fff3e1
+    style B4 fill:#fff3e1
+    style B5 fill:#e1f5ff
+    style C3 fill:#ffe1f5
+    style C4 fill:#ffe1f5
+```
 
 ## 1. 変換オペレーター（Transformation）
 

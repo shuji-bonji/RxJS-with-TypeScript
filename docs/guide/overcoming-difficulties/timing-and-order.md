@@ -96,6 +96,46 @@ console.log('終了');
 // 値: 2  (300ms後)
 ```
 
+### 同期vs非同期の実行フローを視覚化
+
+以下のシーケンス図は、同期ObservableとObservableの実行タイミングの違いを示しています。
+
+```mermaid
+sequenceDiagram
+    participant Code
+    participant 同期Observable
+    participant 非同期Observable
+    participant Console
+
+    Note over Code,Console: 同期Observableの場合
+    Code->>Console: console.log('開始')
+    Code->>同期Observable: of(1, 2, 3).subscribe()
+    activate 同期Observable
+    同期Observable->>Console: 値: 1
+    同期Observable->>Console: 値: 2
+    同期Observable->>Console: 値: 3
+    同期Observable->>Code: complete
+    deactivate 同期Observable
+    Code->>Console: console.log('終了')
+
+    Note over Code,Console: 非同期Observableの場合
+    Code->>Console: console.log('開始')
+    Code->>非同期Observable: interval(100).subscribe()
+    activate 非同期Observable
+    Code->>Console: console.log('終了')
+    Note over 非同期Observable: 100ms待機
+    非同期Observable->>Console: 値: 0
+    Note over 非同期Observable: 100ms待機
+    非同期Observable->>Console: 値: 1
+    Note over 非同期Observable: 100ms待機
+    非同期Observable->>Console: 値: 2
+    deactivate 非同期Observable
+```
+
+> [!TIP] タイミングの違い
+> - **同期Observable**: subscribe内の処理が完了してから次の行に進む
+> - **非同期Observable**: subscribeはすぐに返り、値は後から流れてくる
+
 ### 同期/非同期の判断基準
 
 | Observable | 同期/非同期 | 理由 |

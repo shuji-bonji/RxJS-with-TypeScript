@@ -110,7 +110,7 @@ randomClicks$.subscribe(value => {
 ### いつ subscribe すべきか：判断フローチャート
 
 ```mermaid
-graph TD
+graph LR
     A[Observable処理を実行したい] --> B{値を外部に渡す必要がある？}
     B -->|はい| C[Observableを返す<br/>subscribeしない]
     B -->|いいえ| D{副作用が必要？}
@@ -122,6 +122,49 @@ graph TD
     H -->|はい| I[tapで分離 or<br/>複数subscribe]
     H -->|いいえ| J[1つのsubscribeで実行]
 ```
+
+### 購読のライフサイクル全体像
+
+以下の状態遷移図は、Observableの購読がどのような状態を経て終了するかを示しています。
+
+```mermaid
+stateDiagram-v2
+    [*] --> 未購読: Observable作成
+    未購読 --> 購読中: subscribe()
+    購読中 --> 値発行: next()
+    値発行 --> 値発行: next()
+    値発行 --> 完了: complete()
+    値発行 --> エラー: error()
+    値発行 --> 購読解除: unsubscribe()
+    完了 --> [*]
+    エラー --> [*]
+    購読解除 --> [*]
+
+    note right of 購読中
+        この状態ではメモリを消費
+        unsubscribe必須！
+    end note
+
+    note right of 完了
+        complete()後は
+        自動的にクリーンアップ
+    end note
+
+    note right of エラー
+        error()後も
+        自動的にクリーンアップ
+    end note
+
+    note right of 購読解除
+        unsubscribe()で
+        手動クリーンアップ
+    end note
+```
+
+> [!IMPORTANT] ライフサイクル管理のポイント
+> - **購読中**: メモリリークの危険性がある状態
+> - **complete/error**: 自動的にクリーンアップされる（unsubscribe不要）
+> - **unsubscribe**: 手動でクリーンアップが必要（特に無限ストリーム）
 
 ## いつ unsubscribe すべきか
 
@@ -210,7 +253,7 @@ EMPTY.subscribe(() => console.log('実行されない'));
 ### unsubscribe が必要かの判断フローチャート
 
 ```mermaid
-graph TB
+graph LR
     A[Observableをsubscribeした] --> B{自動的にcompleteする？}
     B -->|はい<br/>of, from, HTTPリクエスト| C[unsubscribe不要]
     B -->|いいえ| D{take/first/takeUntil<br/>などで完了保証？}

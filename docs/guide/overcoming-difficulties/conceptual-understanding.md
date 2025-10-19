@@ -74,6 +74,48 @@ Observable実行開始！
 | **再利用** | キャッシュされた結果 | 購読ごとに再実行（Cold） |
 | **エラー後** | 終了 | 終了（retry可能） |
 
+### 動作の違いを視覚化
+
+以下のシーケンス図は、PromiseとObservableの実行フローの違いを示しています。
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Promise
+    participant Observable
+
+    Note over User,Promise: Promiseの場合
+    User->>Promise: 作成（即座に実行開始）
+    activate Promise
+    Promise-->>Promise: API呼び出し実行中...
+    Promise-->>User: 1つの値を返す
+    deactivate Promise
+    Note over Promise: 完了（再実行不可）
+
+    Note over User,Observable: Observableの場合
+    User->>Observable: 作成（何も起きない）
+    Note over Observable: 待機状態（Lazy）
+
+    User->>Observable: subscribe()
+    activate Observable
+    Observable-->>Observable: API呼び出し実行中...
+    Observable-->>User: 値1
+    Observable-->>User: 値2
+    Observable-->>User: 値3
+    Note over Observable: 時間軸に沿って複数の値
+    Observable-->>User: complete()
+    deactivate Observable
+
+    User->>Observable: 再度subscribe()
+    activate Observable
+    Note over Observable: 最初から再実行（Cold）
+    Observable-->>User: 値1
+    Observable-->>User: 値2
+    deactivate Observable
+    User->>Observable: unsubscribe()
+    Note over Observable: キャンセル可能
+```
+
 ### よくある誤解
 
 #### ❌ 誤解1: "Observableは非同期専用"

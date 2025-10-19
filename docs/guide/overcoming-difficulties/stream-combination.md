@@ -40,6 +40,63 @@ forkJoin({ a: A, b: B }):
     (両方が完了してから発火)
 ```
 
+### 発火タイミングの視覚化
+
+以下の図は、各組み合わせオペレーターがいつ値を発火するかを示しています。
+
+```mermaid
+sequenceDiagram
+    participant A as Stream A
+    participant B as Stream B
+    participant CL as combineLatest
+    participant Z as zip
+    participant WL as withLatestFrom
+    participant FJ as forkJoin
+
+    Note over A,FJ: 時間の経過 →
+
+    A->>A: 値1発行
+    Note over CL: まだ発火しない<br/>(B未発行)
+
+    B->>B: 値a発行
+    A->>CL: [1, a]
+    Note over Z: まだ発火しない<br/>(Aの次の値待ち)
+    Note over FJ: まだ発火しない<br/>(未完了)
+
+    A->>A: 値2発行
+    A->>CL: [2, a]
+    A->>WL: [2, a]
+    Note over Z: ペア化待ち
+
+    B->>B: 値b発行
+    B->>CL: [2, b]
+    A->>Z: [1, a], [2, b]
+    Note over FJ: まだ発火しない<br/>(未完了)
+
+    A->>A: 値3発行
+    A->>CL: [3, b]
+    A->>WL: [3, b]
+
+    B->>B: 値c発行
+    B->>CL: [3, c]
+    A->>Z: [3, c]
+
+    Note over A: 完了
+    Note over B: 完了
+    B->>FJ: {a: 3, b: c}
+
+    Note right of CL: いずれかが変更<br/>されるたびに発火
+    Note right of Z: 対応する位置で<br/>ペア化して発火
+    Note right of WL: Aが変更された<br/>ときのみ発火
+    Note right of FJ: 両方完了後に<br/>1回だけ発火
+```
+
+> [!TIP] 選択基準
+> - **combineLatest**: リアクティブな状態の組み合わせ（フォーム、設定）
+> - **zip**: 対応する値のペア化（ページネーション、並列処理）
+> - **withLatestFrom**: イベント + 現在の状態（クリック時の設定取得）
+> - **forkJoin**: 複数の非同期処理を並列実行して全結果を取得（複数API）
+
 ## combineLatest：最新値の組み合わせ
 
 ### 特徴
