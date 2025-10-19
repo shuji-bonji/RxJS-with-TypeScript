@@ -1,5 +1,5 @@
 ---
-description: RxJSのアンチパターンを理解し、より堅牢で保守性の高いコードを書くための実践的なガイドです。Subjectの誤用、ネストしたsubscribe、メモリリーク、shareReplayの誤用など、よくある15の間違いとその対処法を解説します。
+description: RxJSのアンチパターンを理解し、より堅牢で保守性の高いコードを書くための実践的なガイドです。Subjectの誤用、ネストしたsubscribe、subscribe内の条件分岐、メモリリーク、shareReplayの誤用など、よくある16の間違いとその対処法を解説します。
 ---
 
 # RxJSアンチパターン集
@@ -14,7 +14,7 @@ RxJSは強力なリアクティブプログラミングのライブラリです�
 
 ## アンチパターン一覧
 
-このセクションでは、以下の15のアンチパターンを取り上げています。
+このセクションでは、以下の16のアンチパターンを取り上げています。
 
 ### 🔴 重大な問題
 
@@ -24,6 +24,7 @@ RxJSは強力なリアクティブプログラミングのライブラリです�
 |---|---|---|
 | **[Subject の外部公開](./common-mistakes#1-subject-の外部公開)** | `Subject` をそのまま公開し、外部から `next()` を呼べる状態にする | 状態管理の予測不可能性、デバッグ困難 |
 | **[ネストした subscribe](./common-mistakes#2-ネストした-subscribe-コールバック地獄)** | `subscribe` の中でさらに `subscribe` を呼ぶ | コールバック地獄、エラー処理の複雑化 |
+| **[subscribe内のif文ネスト](./subscribe-if-hell)** | `subscribe` 内での複雑な条件分岐（3つ以上のネスト） | 可読性低下、テスト困難、宣言的思想に反する |
 | **[unsubscribe 忘れ](./common-mistakes#3-unsubscribe-忘れ-メモリリーク)** | 無限ストリームの購読を解除しない | メモリリーク、リソース浪費 |
 | **[shareReplay の誤用](./common-mistakes#4-sharereplay-の誤用)** | `shareReplay` の動作を理解せずに使う | 古いデータの参照、メモリリーク |
 

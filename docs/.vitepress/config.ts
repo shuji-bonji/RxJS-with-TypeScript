@@ -402,6 +402,7 @@ export default withMermaid({
         items: [
           { text: 'アンチパターンとは', link: '/guide/anti-patterns/' },
           { text: 'よくある間違いと対処法', link: '/guide/anti-patterns/common-mistakes' },
+          { text: 'subscribe内のif文ネスト地獄', link: '/guide/anti-patterns/subscribe-if-hell' },
           { text: 'PromiseとObservableの混在', link: '/guide/anti-patterns/promise-observable-mixing' },
           { text: 'ワンライナー地獄と段階分離構文', link: '/guide/anti-patterns/one-liner-hell' },
           { text: 'アンチパターン回避チェックリスト', link: '/guide/anti-patterns/checklist' },

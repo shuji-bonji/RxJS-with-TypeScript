@@ -508,13 +508,13 @@ of(1, 2, 3, 4, 5).pipe(
 
 ### 2. RxJS DevTools（ブラウザ拡張）
 
-Chrome/Edge拡張機能「RxJS DevTools」を使うと、以下が可能になります：
+Chrome/Edge拡張機能「RxJS DevTools」を使うと、以下が可能になります。
 
 - すべてのObservableをリアルタイム監視
 - Marble Diagramでの可視化
 - subscribe/unsubscribeの追跡
 
-**インストール方法：**
+#### インストール方法
 1. Chrome Web Storeで「RxJS DevTools」を検索
 2. 拡張機能を追加
 3. DevToolsの「RxJS」タブを開く

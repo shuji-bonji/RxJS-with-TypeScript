@@ -74,6 +74,7 @@ TypeScript環境でRxJSを体系的に学ぶためのガイドです。
 ### 10. RxJSアンチパターン集
 - [アンチパターンとは](/guide/anti-patterns/)
 - [よくある間違いと対処法](/guide/anti-patterns/common-mistakes)
+- [subscribe内のif文ネスト地獄](/guide/anti-patterns/subscribe-if-hell)
 - [PromiseとObservableの混在](/guide/anti-patterns/promise-observable-mixing)
 - [ワンライナー地獄と段階分離構文](/guide/anti-patterns/one-liner-hell)
 - [アンチパターン回避チェックリスト](/guide/anti-patterns/checklist)

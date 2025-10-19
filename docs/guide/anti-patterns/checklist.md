@@ -1,5 +1,5 @@
 ---
-description: RxJSコードを書く際に確認すべきアンチパターン回避チェックリスト。15のベストプラクティスを確認し、堅牢で保守性の高いコードを実現しましょう。
+description: RxJSコードを書く際に確認すべきアンチパターン回避チェックリスト。16のベストプラクティスを確認し、堅牢で保守性の高いコードを実現しましょう。
 ---
 
 # アンチパターン回避チェックリスト
@@ -16,6 +16,7 @@ description: RxJSコードを書く際に確認すべきアンチパターン回
 | <input type="checkbox" /> | **[ネストした subscribe を避ける](./common-mistakes#2-ネストした-subscribe-コールバック地獄)** | `subscribe` 内で別の `subscribe` を呼ばない<br>`switchMap`、`mergeMap`、`concatMap` などでフラット化 |
 | <input type="checkbox" /> | **[無限ストリームは必ず解除](./common-mistakes#3-unsubscribe-忘れ-メモリリーク)** | イベントリスナーなど無限に続くストリームは必ず購読解除<br>`takeUntil` パターンまたは `Subscription` の管理 |
 | <input type="checkbox" /> | **[shareReplay の設定を明示](./common-mistakes#4-sharereplay-の誤用)** | `shareReplay({ bufferSize: 1, refCount: true })` の形式を使用<br>メモリリークを防ぐために参照カウントを有効化 |
+| <input type="checkbox" /> | **[subscribe内のif文ネストを避ける](./subscribe-if-hell)** | `subscribe` 内での複雑な条件分岐（3つ以上のネスト）を避ける<br>`filter`、`iif`、`partition`などのオペレーターで宣言的に記述 |
 
 ### 🟡 注意が必要な問題の回避
 
