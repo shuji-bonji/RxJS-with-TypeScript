@@ -415,6 +415,7 @@ export default withMermaid({
           { text: 'ライフサイクル管理の壁', link: '/guide/overcoming-difficulties/lifecycle-management' },
           { text: 'オペレーター選択の迷い', link: '/guide/overcoming-difficulties/operator-selection' },
           { text: 'タイミングと順序の理解', link: '/guide/overcoming-difficulties/timing-and-order' },
+          { text: '状態管理の難しさ', link: '/guide/overcoming-difficulties/state-and-sharing' },
         ],
       },
       {
@@ -439,7 +440,7 @@ export default withMermaid({
         // ],
       },
       {
-        text: '12. 実践パターン',
+        text: '13. 実践パターン',
         // items: [
         //   {
         //     text: '状態管理パターン',
@@ -458,7 +459,7 @@ export default withMermaid({
         // ],
       },
       {
-        text: '13. パフォーマンス最適化',
+        text: '14. パフォーマンス最適化',
         // items: [
         //   {
         //     text: '購読の適切な管理',
@@ -475,7 +476,7 @@ export default withMermaid({
         // ],
       },
       {
-        text: '14. フレームワークとの統合',
+        text: '15. フレームワークとの統合',
         // items: [
         //   { text: 'Angularとの連携', link: '/guide/frameworks/angular' },
         //   { text: 'Reactとの連携', link: '/guide/frameworks/react' },

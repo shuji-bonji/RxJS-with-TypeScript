@@ -571,7 +571,7 @@ describe('タイミングのテスト', () => {
 
 タイミングと順序を理解したら、次は**状態管理と共有**を学びましょう。
 
-→ **状態管理の難しさ**（準備中） - Subject、share/shareReplayの使い分け
+→ **[状態管理の難しさ](/guide/overcoming-difficulties/state-and-sharing)** - Subject、share/shareReplayの使い分け
 
 ## 関連ページ
 
