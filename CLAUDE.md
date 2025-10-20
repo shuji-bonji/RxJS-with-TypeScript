@@ -250,7 +250,149 @@ graph LR
 - Proper unsubscription methods
 - Efficient operator selection
 
-### 8. General Guidelines
+### 8. Documentation Enhancement Guidelines
+
+**Purpose**: Improve readability and understanding by adding contextual explanations to all documentation pages (140+ pages planned).
+
+**Completed Examples**:
+- `docs/guide/anti-patterns/flag-management.md` - Demonstrates comprehensive explanation structure
+- `docs/guide/overcoming-difficulties/index.md` - Shows how to enhance index pages
+
+#### 8.1. Article Introduction
+
+Every article should start with a clear introduction that:
+- Explains **what the article covers** and **why it matters**
+- Provides context for the reader's current situation
+- Previews the main topics to be discussed
+
+**Example**:
+```markdown
+# 状態管理フラグの乱立
+
+RxJSを導入したプロジェクトでも、コンポーネント内に大量のbooleanフラグが乱立する問題がよく見られます。この記事では、17個ものフラグが存在する実際の事例を元に、その原因と改善方法を解説します。
+```
+
+#### 8.2. Section Headings
+
+Each major section (##) should include a 1-2 sentence explanation of:
+- **What** the section discusses
+- **Why** it's important
+- **How** it relates to the overall topic
+
+**Example**:
+```markdown
+## なぜフラグが乱立するのか
+
+フラグが乱立する背景には、技術的な問題だけでなく、開発者の思考パターンや組織の進化過程が関係しています。以下、5つの主要な原因を分析します。
+```
+
+#### 8.3. Code Block Context
+
+**Before Code Blocks**:
+- Explain what the code demonstrates
+- Highlight the key point readers should notice
+- Provide context for when this pattern applies
+
+**After Code Blocks**:
+- Use VitePress callouts (`> [!TIP]`, `> [!WARNING]`, `> [!IMPORTANT]`) for key points
+- Summarize the main takeaway
+- List concrete benefits or problems
+
+**Example**:
+```markdown
+以下の例で、問題のあるフラグと適切なフラグの違いを比較します。
+
+[CODE BLOCK]
+
+> [!WARNING] 問題点
+> - 状態が「宣言的」でなく「手続き的」
+> - 状態変更のタイミングが散在
+> - フラグ間の整合性を開発者が手動保証
+```
+
+#### 8.4. Transition Sentences
+
+Connect sections smoothly with transition sentences:
+- Between major sections: Explain how topics relate
+- Before lists/tables: State what the list contains and how to use it
+- Before diagrams: Explain what the diagram illustrates
+
+**Example**:
+```markdown
+### 改善戦略
+
+フラグ乱立問題を解決するには、以下の3ステップで段階的にリファクタリングを進めます。
+
+### Step 1: 状態の棚卸し
+
+まず、現在のフラグをすべて列挙し、責務ごとに分類します。これにより、どのフラグが統合可能かが見えてきます。
+```
+
+#### 8.5. Practical Examples
+
+When showing Before/After comparisons:
+- **Before**: Explain the problem concretely
+- **After**: Highlight what improved and why
+- **Comparison**: Use tables or side-by-side format when helpful
+
+#### 8.6. Conclusion Sections
+
+Every article should end with:
+1. **Summary** - Key points recap
+2. **Important Principles** - Core takeaways (using callouts)
+3. **Related Sections** - Links with brief descriptions
+4. **References** - External resources with context
+
+**Example**:
+```markdown
+## 参考リソース
+
+RxJSの公式ドキュメントや学習リソースで、さらに深く学習できます：
+
+- [RxJS公式ドキュメント](https://rxjs.dev/) - 公式のAPIリファレンスとガイド
+- [Learn RxJS](https://www.learnrxjs.io/) - オペレーター別の実践的な例
+- [RxJS Marbles](https://rxmarbles.com/) - ビジュアルでオペレーターの動作を理解
+```
+
+#### 8.7. Enhancement Checklist
+
+When enhancing any documentation page, verify:
+- [ ] Article has clear introduction (what, why, how)
+- [ ] Each section has contextual explanation
+- [ ] Code blocks have before/after context
+- [ ] VitePress callouts used for key points (`> [!TIP]`, `> [!WARNING]`, etc.)
+- [ ] Transitions between sections are smooth
+- [ ] Tables/lists have introductory sentences
+- [ ] Diagrams have explanatory text
+- [ ] Conclusion summarizes key points
+- [ ] Related links include descriptions
+- [ ] Language is accessible to target audience (TypeScript developers learning RxJS)
+
+#### 8.8. Implementation Process
+
+For each page:
+1. **Read through** - Understand the existing content
+2. **Identify gaps** - Note sections lacking context
+3. **Add introductions** - Start with article and section intros
+4. **Contextualize code** - Add before/after explanations
+5. **Enhance transitions** - Connect sections smoothly
+6. **Verify build** - Run `npm run docs:build` to test
+7. **Review readability** - Ensure natural flow
+
+**Progress Tracking** (as of 2025-10-20):
+- ✅ `docs/guide/anti-patterns/flag-management.md` - Complete
+- ✅ `docs/guide/overcoming-difficulties/index.md` - Complete
+- 🔲 Remaining: ~140 pages to enhance
+
+#### 8.9. Writing Tips
+
+- **Use concrete examples** - "17個のフラグ" is better than "たくさんのフラグ"
+- **Explain the "why"** - Don't just show code, explain reasoning
+- **Progressive disclosure** - Start simple, then add complexity
+- **Reader empathy** - Anticipate confusion points
+- **Consistent terminology** - Use the same terms throughout
+
+### 9. General Guidelines
 
 When editing documentation:
 - All content should be in Japanese
