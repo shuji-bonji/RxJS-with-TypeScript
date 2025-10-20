@@ -83,17 +83,34 @@ export default withMermaid({
       {
         text: '3. Creation Functions',
         link: '/guide/creation-functions/',
-        collapsed: true,
         items: [
-          { text: 'concat', link: '/guide/creation-functions/concat' },
-          { text: 'merge', link: '/guide/creation-functions/merge' },
-          { text: 'combineLatest', link: '/guide/creation-functions/combineLatest' },
-          { text: 'zip', link: '/guide/creation-functions/zip' },
-          { text: 'race', link: '/guide/creation-functions/race' },
-          { text: 'forkJoin', link: '/guide/creation-functions/forkJoin' },
-          { text: 'partition', link: '/guide/creation-functions/partition' },
-          { text: 'iif', link: '/guide/creation-functions/iif' },
-          { text: 'defer', link: '/guide/creation-functions/defer' },
+          {
+            text: '結合系',
+            link: '/guide/creation-functions/combination/',
+            items: [
+              { text: 'concat', link: '/guide/creation-functions/combination/concat' },
+              { text: 'merge', link: '/guide/creation-functions/combination/merge' },
+              { text: 'combineLatest', link: '/guide/creation-functions/combination/combineLatest' },
+              { text: 'zip', link: '/guide/creation-functions/combination/zip' },
+              { text: 'forkJoin', link: '/guide/creation-functions/combination/forkJoin' },
+            ],
+          },
+          {
+            text: '選択・分割系',
+            link: '/guide/creation-functions/selection/',
+            items: [
+              { text: 'race', link: '/guide/creation-functions/selection/race' },
+              { text: 'partition', link: '/guide/creation-functions/selection/partition' },
+            ],
+          },
+          {
+            text: '条件分岐系',
+            link: '/guide/creation-functions/conditional/',
+            items: [
+              { text: 'iif', link: '/guide/creation-functions/conditional/iif' },
+              { text: 'defer', link: '/guide/creation-functions/conditional/defer' },
+            ],
+          },
         ],
       },
       {

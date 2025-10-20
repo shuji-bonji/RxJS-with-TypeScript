@@ -89,4 +89,4 @@ merge(click$, timer$).subscribe((value) => {
 
 - **[mergeWith](/guide/operators/combination/mergeWith)** - Pipeable Operator版（パイプライン内で使用）
 - **[mergeMap](/guide/operators/transformation/mergeMap)** - 各値を並列マッピングして結合
-- **[concat](/guide/creation-functions/concat)** - 順次結合する Creation Function
+- **[concat](/guide/creation-functions/combination/concat)** - 順次結合する Creation Function

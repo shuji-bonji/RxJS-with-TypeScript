@@ -65,12 +65,12 @@ const result$ = source$.pipe(
 
 |Function|説明|Pipeable版|
 |---|---|---|
-|[concat](/guide/creation-functions/concat)|順番に結合|`concatWith` (RxJS 7+)|
-|[merge](/guide/creation-functions/merge)|並行結合|`mergeWith` (RxJS 7+)|
-|[combineLatest](/guide/creation-functions/combineLatest)|最新値を組み合わせ|`combineLatestWith` (RxJS 7+)|
-|[zip](/guide/creation-functions/zip)|対応する値をペア化|`zipWith` (RxJS 7+)|
-|[race](/guide/creation-functions/race)|最速のストリームを採用|`raceWith` (RxJS 7+)|
-|[forkJoin](/guide/creation-functions/forkJoin)|すべての完了を待つ|（Pipeable版なし）|
+|[concat](/guide/creation-functions/combination/concat)|順番に結合|`concatWith` (RxJS 7+)|
+|[merge](/guide/creation-functions/combination/merge)|並行結合|`mergeWith` (RxJS 7+)|
+|[combineLatest](/guide/creation-functions/combination/combineLatest)|最新値を組み合わせ|`combineLatestWith` (RxJS 7+)|
+|[zip](/guide/creation-functions/combination/zip)|対応する値をペア化|`zipWith` (RxJS 7+)|
+|[race](/guide/creation-functions/selection/race)|最速のストリームを採用|`raceWith` (RxJS 7+)|
+|[forkJoin](/guide/creation-functions/combination/forkJoin)|すべての完了を待つ|（Pipeable版なし）|
 
 ## さらに実践的に学びたい方へ
 

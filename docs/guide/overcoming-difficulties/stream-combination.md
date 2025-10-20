@@ -776,9 +776,9 @@ forkJoin({
 
 ## 関連ページ
 
-- **[Chapter 3: combineLatest](/guide/creation-functions/combineLatest)** - combineLatestの詳細
-- **[Chapter 3: zip](/guide/creation-functions/zip)** - zipの詳細
-- **[Chapter 3: forkJoin](/guide/creation-functions/forkJoin)** - forkJoinの詳細
+- **[Chapter 3: combineLatest](/guide/creation-functions/combination/combineLatest)** - combineLatestの詳細
+- **[Chapter 3: zip](/guide/creation-functions/combination/zip)** - zipの詳細
+- **[Chapter 3: forkJoin](/guide/creation-functions/combination/forkJoin)** - forkJoinの詳細
 - **[withLatestFrom](/guide/operators/combination/withLatestFrom)** - withLatestFromの詳細
 - **[Chapter 4: オペレーター選択](/guide/overcoming-difficulties/operator-selection)** - オペレーター選択の基準
 

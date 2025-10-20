@@ -84,4 +84,4 @@ race(slow$, medium$, fast$).subscribe(winner => {
 
 - **[raceWith](/guide/operators/combination/raceWith)** - Pipeable Operator版（パイプライン内で使用）
 - **[timeout](/guide/operators/utility/timeout)** - タイムアウト専用オペレーター
-- **[merge](/guide/creation-functions/merge)** - すべてのストリームをマージする Creation Function
+- **[merge](/guide/creation-functions/combination/merge)** - すべてのストリームをマージする Creation Function

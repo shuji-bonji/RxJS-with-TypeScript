@@ -108,7 +108,7 @@ const combined$ = combineLatest([
 combined$.subscribe(console.log);
 ```
 
-[3章 Creation Functions - combineLatest](/guide/creation-functions/combineLatest) を参照。
+[3章 Creation Functions - combineLatest](/guide/creation-functions/combination/combineLatest) を参照。
 
 ## 🔄 関連オペレーター
 

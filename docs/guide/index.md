@@ -27,15 +27,24 @@ TypeScript環境でRxJSを体系的に学ぶためのガイドです。
 
 ### 3. Creation Functions
 - [Creation Functionsとは](/guide/creation-functions/)
-- [concat - 順次結合](/guide/creation-functions/concat)
-- [merge - 並行結合](/guide/creation-functions/merge)
-- [combineLatest - 最新値の組み合わせ](/guide/creation-functions/combineLatest)
-- [zip - 対応する値のペア化](/guide/creation-functions/zip)
-- [race - 最速のストリームを採用](/guide/creation-functions/race)
-- [forkJoin - すべての完了を待つ](/guide/creation-functions/forkJoin)
-- [partition - 条件で2つに分割](/guide/creation-functions/partition)
-- [iif - 条件による分岐](/guide/creation-functions/iif)
-- [defer - 遅延生成](/guide/creation-functions/defer)
+
+**結合系**
+- [結合系の概要](/guide/creation-functions/combination/)
+- [concat - 順次結合](/guide/creation-functions/combination/concat)
+- [merge - 並行結合](/guide/creation-functions/combination/merge)
+- [combineLatest - 最新値の組み合わせ](/guide/creation-functions/combination/combineLatest)
+- [zip - 対応する値のペア化](/guide/creation-functions/combination/zip)
+- [forkJoin - すべての完了を待つ](/guide/creation-functions/combination/forkJoin)
+
+**選択・分割系**
+- [選択・分割系の概要](/guide/creation-functions/selection/)
+- [race - 最速のストリームを採用](/guide/creation-functions/selection/race)
+- [partition - 条件で2つに分割](/guide/creation-functions/selection/partition)
+
+**条件分岐系**
+- [条件分岐系の概要](/guide/creation-functions/conditional/)
+- [iif - 条件による分岐](/guide/creation-functions/conditional/iif)
+- [defer - 遅延生成](/guide/creation-functions/conditional/defer)
 
 ### 4. オペレーターの理解
 - [オペレーターの概要](/guide/operators/)

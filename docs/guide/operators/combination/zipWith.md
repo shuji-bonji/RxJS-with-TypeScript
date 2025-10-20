@@ -303,6 +303,6 @@ source1$.pipe(combineLatestWith(source2$)).subscribe(console.log);
 
 ## 📚 関連オペレーター
 
-- **[zip](/guide/creation-functions/zip)** - Creation Function版
+- **[zip](/guide/creation-functions/combination/zip)** - Creation Function版
 - **[combineLatestWith](/guide/operators/combination/combineLatestWith)** - 最新値を組み合わせる
 - **[withLatestFrom](/guide/operators/combination/withLatestFrom)** - メインストリームのみがトリガー

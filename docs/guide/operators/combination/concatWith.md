@@ -227,6 +227,6 @@ throwError(() => new Error('エラー発生'))
 
 ## 📚 関連オペレーター
 
-- **[concat](/guide/creation-functions/concat)** - Creation Function版
+- **[concat](/guide/creation-functions/combination/concat)** - Creation Function版
 - **[mergeWith](/guide/operators/combination/mergeWith)** - 並列結合するPipeable版
 - **[concatMap](/guide/operators/transformation/concatMap)** - 各値を順次マッピング

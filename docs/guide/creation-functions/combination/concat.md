@@ -70,4 +70,4 @@ concat(loading$, data$).subscribe((value) => {
 
 - **[concatWith](/guide/operators/combination/concatWith)** - Pipeable Operator版（パイプライン内で使用）
 - **[concatMap](/guide/operators/transformation/concatMap)** - 各値を順次マッピングして結合
-- **[merge](/guide/creation-functions/merge)** - 並行結合する Creation Function
+- **[merge](/guide/creation-functions/combination/merge)** - 並行結合する Creation Function

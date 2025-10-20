@@ -15,8 +15,8 @@ RxJSでは、カスタムObservableの作成や、イベント・配列・HTTP�
 | カテゴリ | 主な手法 | 説明 |
 |----------|----------|------|
 | カスタム作成 | [`new Observable()`](#new-observable) | 自由度が高いが記述量も多い。手動でクリーンアップが必要 |
-| 作成演算子 | [`of()`](#of), [`from()`](#from), [`fromEvent()`](#fromevent), [`interval()`](#interval-timer), [`timer()`](#interval-timer), [`ajax()`](#ajax), [`fromFetch()`](#fromfetch), [`scheduled()`](#scheduled) | よく使われるデータ・イベント・時間ベースの生成関数群 |
-| 特殊な作成演算子 | [`defer()`](#defer), [`range()`](#range), [`generate()`](#generate), [`iif()`](#iif) | 制御的・ループ的な生成、条件による切り替えなど |
+| Creation Functions | [`of()`](#of), [`from()`](#from), [`fromEvent()`](#fromevent), [`interval()`](#interval-timer), [`timer()`](#interval-timer), [`ajax()`](#ajax), [`fromFetch()`](#fromfetch), [`scheduled()`](#scheduled) | よく使われるデータ・イベント・時間ベースの生成関数群 |
+| 特殊な Creation Functions | [`defer()`](#defer), [`range()`](#range), [`generate()`](#generate), [`iif()`](#iif) | 制御的・ループ的な生成、条件による切り替えなど |
 | 特殊Observable | [`EMPTY`](#empty-never-throwerror), [`NEVER`](#empty-never-throwerror), [`throwError()`](#empty-never-throwerror) | 完了・何もしない・エラー発行用 |
 | Subject系 | [`Subject`](#subject-behaviorsubject), [`BehaviorSubject`](#subject-behaviorsubject) | 観測者としても送信者としても機能する特殊なObservable |
 | コールバック変換 | [`bindCallback()`](#bindcallback), [`bindNodeCallback()`](#bindnodecallback) | コールバックベースの関数をObservableに変換 |
@@ -88,12 +88,13 @@ observable$.subscribe({
 > - 購読解除を忘れると、イベントリスナーやタイマーが動き続けるため、メモリリークや予期せぬ副作用の原因になります。
 
 
-## 作成演算子
+## Creation Functions（作成関数）
 
-より簡潔で用途に特化したObservable作成には、RxJSが提供する「作成操作子（creation operator）」が便利です。繰り返し使われるユースケースにはこれらを使うことでコードが簡素化されます。
+より簡潔で用途に特化したObservable作成には、RxJSが提供する「Creation Functions（作成関数）」が便利です。繰り返し使われるユースケースにはこれらを使うことでコードが簡素化されます。
 
 > [!NOTE]
->RxJS公式ではこれらはfunctionと分類されていますが、従来(RxJS 5.x ~ 6)はcreation operatorと呼ばれることが多く、現在でもその呼称はよく使われています。
+> RxJS公式ではこれらは「Creation Functions（作成関数）」と分類されています。
+> 従来（RxJS 5.x ~ 6）は「creation operator（作成演算子）」と呼ばれていましたが、RxJS 7以降は「Creation Functions」が正式な用語です。
 
 
 ### of()

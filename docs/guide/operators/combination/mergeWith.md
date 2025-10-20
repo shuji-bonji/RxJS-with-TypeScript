@@ -269,6 +269,6 @@ interval(1000).pipe(
 
 ## 📚 関連オペレーター
 
-- **[merge](/guide/creation-functions/merge)** - Creation Function版
+- **[merge](/guide/creation-functions/combination/merge)** - Creation Function版
 - **[concatWith](/guide/operators/combination/concatWith)** - 順次結合するPipeable版
 - **[mergeMap](/guide/operators/transformation/mergeMap)** - 各値を並列マッピング

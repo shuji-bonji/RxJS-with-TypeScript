@@ -353,6 +353,6 @@ interval(1000).pipe(
 
 ## 📚 関連オペレーター
 
-- **[combineLatest](/guide/creation-functions/combineLatest)** - Creation Function版
+- **[combineLatest](/guide/creation-functions/combination/combineLatest)** - Creation Function版
 - **[withLatestFrom](/guide/operators/combination/withLatestFrom)** - メインストリームのみがトリガー
 - **[zipWith](/guide/operators/combination/zipWith)** - 対応する値をペア化

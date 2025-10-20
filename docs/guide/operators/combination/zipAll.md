@@ -97,7 +97,7 @@ const zipped$ = zip(
 zipped$.subscribe(console.log);
 ```
 
-[3章 Creation Functions - zip](/guide/creation-functions/zip) を参照。
+[3章 Creation Functions - zip](/guide/creation-functions/combination/zip) を参照。
 
 ## 🔄 関連オペレーター
 

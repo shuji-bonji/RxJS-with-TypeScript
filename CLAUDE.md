@@ -347,7 +347,7 @@ Every article should end with:
 ```markdown
 ## 参考リソース
 
-RxJSの公式ドキュメントや学習リソースで、さらに深く学習できます：
+RxJSの公式ドキュメントや学習リソースで、さらに深く学習できます。
 
 - [RxJS公式ドキュメント](https://rxjs.dev/) - 公式のAPIリファレンスとガイド
 - [Learn RxJS](https://www.learnrxjs.io/) - オペレーター別の実践的な例

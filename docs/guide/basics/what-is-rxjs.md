@@ -170,7 +170,7 @@ socket$.pipe(
 | 用途 | 説明 | 主要なオペレーター |
 |------|------|-------------------|
 | 入力フォームの制御 | 検索補完、リアルタイムバリデーション | [`debounceTime`](../operators/filtering/debounceTime.md), [`distinctUntilChanged`](../operators/filtering/distinctUntilChanged.md), [`switchMap`](../operators/transformation/switchMap.md) |
-| 複数フォーム項目の連携 | 依存する入力項目の更新 | [`combineLatest`](../creation-functions/combineLatest.md), [`withLatestFrom`](../operators/combination/withLatestFrom.md) |
+| 複数フォーム項目の連携 | 依存する入力項目の更新 | [`combineLatest`](../creation-functions/combination/combineLatest.md), [`withLatestFrom`](../operators/combination/withLatestFrom.md) |
 | コンポーネント間通信 | イベントバスやカスタム状態管理 | [`Subject`](../subjects/what-is-subject.md), [`share`](../operators/multicasting/share.md) |
 | UIイベント処理 | クリック、スクロール、ドラッグ&ドロップ | [`fromEvent`](../observables/events.md), [`takeUntil`](../operators/utility/takeUntil.md) |
 
@@ -204,7 +204,7 @@ Progressive Web App（PWA）でのオフライン対応やネットワーク状�
 
 | 用途 | 説明 | 主要なオペレーター |
 |------|------|-------------------|
-| ネットワーク状態監視 | オンライン/オフライン検出 | [`fromEvent`](../observables/events.md), [`merge`](../creation-functions/merge.md) |
+| ネットワーク状態監視 | オンライン/オフライン検出 | [`fromEvent`](../observables/events.md), [`merge`](../creation-functions/combination/merge.md) |
 | オフライン時の再試行 | 接続復帰時の自動再同期 | [`retry`](../operators/utility/retry.md), [`retryWhen`](../error-handling/retry-catch.md) |
 | キャッシュ制御 | Service Workerとの連携 | [`switchMap`](../operators/transformation/switchMap.md), [`catchError`](../error-handling/retry-catch.md) |
 

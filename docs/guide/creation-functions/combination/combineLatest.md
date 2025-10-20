@@ -87,4 +87,4 @@ combineLatest([name$, email$]).subscribe(([name, email]) => {
 
 - **[combineLatestWith](/guide/operators/combination/combineLatestWith)** - Pipeable Operator版（パイプライン内で使用）
 - **[withLatestFrom](/guide/operators/combination/withLatestFrom)** - メインストリームのみがトリガー
-- **[zip](/guide/creation-functions/zip)** - 対応する値をペア化する Creation Function
+- **[zip](/guide/creation-functions/combination/zip)** - 対応する値をペア化する Creation Function

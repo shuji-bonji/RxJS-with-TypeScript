@@ -396,9 +396,9 @@ const odds$ = shared$.pipe(filter(n => n % 2 !== 0));
 
 ## 🔗 関連オペレーター
 
-- [`filter`](../operators/filtering/filter.md) - 条件を満たす値のみを通過
-- [`groupBy`](../operators/transformation/groupBy.md) - 複数のグループに分割
-- [`share`](../operators/multicasting/share.md) - ソースの共有
+- [`filter`](../../operators/filtering/filter.md) - 条件を満たす値のみを通過
+- [`groupBy`](../../operators/transformation/groupBy.md) - 複数のグループに分割
+- [`share`](../../operators/multicasting/share.md) - ソースの共有
 
 ## 📝 まとめ
 

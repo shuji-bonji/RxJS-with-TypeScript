@@ -80,5 +80,5 @@ zip(fruits$, prices$).subscribe(([fruit, price]) => {
 ## 🔗 関連オペレーター
 
 - **[zipWith](/guide/operators/combination/zipWith)** - Pipeable Operator版（パイプライン内で使用）
-- **[combineLatest](/guide/creation-functions/combineLatest)** - 最新値を組み合わせる Creation Function
+- **[combineLatest](/guide/creation-functions/combination/combineLatest)** - 最新値を組み合わせる Creation Function
 - **[withLatestFrom](/guide/operators/combination/withLatestFrom)** - メインストリームのみがトリガー

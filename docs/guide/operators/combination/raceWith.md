@@ -363,6 +363,6 @@ of('A').pipe(
 
 ## 📚 関連オペレーター
 
-- **[race](/guide/creation-functions/race)** - Creation Function版
+- **[race](/guide/creation-functions/selection/race)** - Creation Function版
 - **[timeout](/guide/operators/utility/timeout)** - タイムアウト専用オペレーター
 - **[mergeWith](/guide/operators/combination/mergeWith)** - すべてのストリームをマージ
