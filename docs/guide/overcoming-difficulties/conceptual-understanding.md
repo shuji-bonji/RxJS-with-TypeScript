@@ -229,23 +229,24 @@ setTimeout(() => {
 ### Cold/Hotの判別方法
 
 ```typescript
-import { fromEvent, interval, of } from 'rxjs';
+import { fromEvent, interval, of, Subject } from 'rxjs';
+import { share } from 'rxjs';
 
-// Cold（購読ごとに独立）
+// Cold（購読ごとに独立した実行）
 const cold1$ = of(1, 2, 3);
 const cold2$ = interval(1000);
 const cold3$ = ajax('/api/data');
+const cold4$ = fromEvent(button, 'click'); // Coldだが特殊
 
-// Hot（常に共有）
-const hot1$ = fromEvent(button, 'click');
-const hot2$ = new Subject<number>();
+// Hot（購読者間で共有）
+const hot1$ = new Subject<number>();
+const hot2$ = interval(1000).pipe(share()); // ColdをHotに変換
 ```
 
 > [!IMPORTANT] 見分け方
-> - **Creation Functions（of, interval, ajax等）** → 通常はCold
-> - **DOMイベント（fromEvent）** → 常にHot
-> - **Subject系** → 常にHot
-> - **share(), shareReplay()使用** → Hotに変換
+> - **Creation Functions（of, from, fromEvent, interval, ajax等）** → Cold
+> - **Subject系** → Hot
+> - **share(), shareReplay()使用** → ColdをHotに変換
 
 ## 宣言的プログラミングへの思考転換
 

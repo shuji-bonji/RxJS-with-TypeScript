@@ -28,6 +28,14 @@ TypeScript環境でRxJSを体系的に学ぶためのガイドです。
 ### 3. Creation Functions
 - [Creation Functionsとは](/guide/creation-functions/)
 
+**基本作成系**
+- [基本作成系の概要](/guide/creation-functions/basic/)
+- [of - 指定した値を順番に発行](/guide/creation-functions/basic/of)
+- [from - 配列・Promise等から変換](/guide/creation-functions/basic/from)
+- [fromEvent - イベントをObservableに変換](/guide/creation-functions/basic/fromEvent)
+- [interval - 指定間隔で連続発行](/guide/creation-functions/basic/interval)
+- [timer - 遅延後に発行開始](/guide/creation-functions/basic/timer)
+
 **結合系**
 - [結合系の概要](/guide/creation-functions/combination/)
 - [concat - 順次結合](/guide/creation-functions/combination/concat)

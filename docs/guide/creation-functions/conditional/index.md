@@ -111,7 +111,7 @@ setTimeout(() => {
 
 ```typescript
 import { defer, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs';
 
 // ユーザーIDからユーザー情報を取得
 const userId$ = of(123);
@@ -126,6 +126,46 @@ userId$.pipe(
   )
 ).subscribe(console.log);
 ```
+
+## Cold から Hot への変換
+
+上記の表に示した通り、**全ての条件分岐系Creation Functionsは Cold Observable を生成します**。購読するたびに条件評価や生成関数が実行されます。
+
+マルチキャスト系オペレーター（`share()`, `shareReplay()` など）を使用することで、Cold Observable を Hot Observable に変換できます。
+
+### 実践例：条件分岐結果の共有
+
+```typescript
+import { iif, of, interval } from 'rxjs';
+import { take, share } from 'rxjs';
+
+const condition = () => Math.random() > 0.5;
+
+// ❄️ Cold - 購読ごとに条件を再評価
+const coldIif$ = iif(
+  condition,
+  of('Condition is true'),
+  interval(1000).pipe(take(3))
+);
+
+coldIif$.subscribe(val => console.log('購読者1:', val));
+coldIif$.subscribe(val => console.log('購読者2:', val));
+// → 各購読者が独立して条件評価（異なる結果の可能性）
+
+// 🔥 Hot - 購読者間で条件評価結果を共有
+const hotIif$ = iif(
+  condition,
+  of('Condition is true'),
+  interval(1000).pipe(take(3))
+).pipe(share());
+
+hotIif$.subscribe(val => console.log('購読者1:', val));
+hotIif$.subscribe(val => console.log('購読者2:', val));
+// → 条件評価は1回のみ、結果を共有
+```
+
+> [!TIP]
+> 詳しくは [基本作成系 - Cold から Hot への変換](/guide/creation-functions/basic/#cold-から-hot-への変換) を参照してください。
 
 ## 次のステップ
 

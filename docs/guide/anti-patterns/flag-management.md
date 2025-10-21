@@ -323,7 +323,7 @@ class LegacyComponent {
 
 ```typescript
 import { BehaviorSubject, combineLatest, EMPTY } from 'rxjs';
-import { map, switchMap, catchError, startWith } from 'rxjs/operators';
+import { map, switchMap, catchError, startWith } from 'rxjs';
 
 interface ApiState {
   loading: boolean;

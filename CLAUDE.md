@@ -524,6 +524,113 @@ The following new chapters have been added or are planned for future releases.
 
 ## Active Development
 
+#### 🔴 High Priority: Chapter 3 Expansion - Creation Functions 詳細ページ追加
+
+**Current Status (as of 2025-10-21):**
+- Chapter 3 has been restructured into 3 categories (combination, selection, conditional)
+- Currently includes only 9 detailed pages: concat, merge, combineLatest, zip, forkJoin, race, partition, iif, defer
+- Chapter 2 (Observableの作成方法) covers 25+ Creation Functions but only provides brief overviews
+
+**Purpose:**
+- Provide comprehensive, dedicated pages for all major Creation Functions
+- Move detailed explanations from Chapter 2 to Chapter 3 where they belong
+- Maintain Chapter 2 as a quick reference with links to Chapter 3 detailed pages
+- Complete the Creation Functions documentation with consistent depth across all functions
+
+**Planned Structure - 4 New Categories:**
+
+```
+3. Creation Functions (追加予定)
+├── 基本作成系 (5 pages) - NEW
+│   ├── index.md
+│   ├── of.md - 指定した値を順番に発行
+│   ├── from.md - 配列、Promise等から変換
+│   ├── fromEvent.md - イベントをObservableに変換
+│   ├── interval.md - 指定間隔で連続発行
+│   └── timer.md - 遅延後に発行開始
+├── ループ生成系 (2 pages) - NEW
+│   ├── index.md
+│   ├── range.md - 数値の範囲を生成
+│   └── generate.md - ループ的な生成（for文のような動作）
+├── 変換系 (4 pages) - NEW
+│   ├── index.md
+│   ├── ajax.md - Ajax/HTTPリクエスト
+│   ├── fromFetch.md - Fetch APIのラッパー
+│   ├── bindCallback.md - コールバック関数をObservableに変換
+│   └── bindNodeCallback.md - Node.js形式のコールバックをObservableに変換
+└── 制御系 (2 pages) - NEW
+    ├── index.md
+    ├── scheduled.md - スケジューラーを指定してObservableを生成
+    └── using.md - リソース制御付きObservable
+```
+
+**Total New Pages:** 17 pages (13 detailed pages + 4 category index pages)
+
+**Implementation Steps:**
+
+1. **Create Directory Structure**
+   - `docs/guide/creation-functions/basic/` (基本作成系)
+   - `docs/guide/creation-functions/loop/` (ループ生成系)
+   - `docs/guide/creation-functions/conversion/` (変換系)
+   - `docs/guide/creation-functions/control/` (制御系)
+
+2. **Create Category Index Pages** (4 pages)
+   - Each with overview, use cases, comparison table
+   - Follow same pattern as existing combination/selection/conditional index pages
+   - Include contextual explanations (per Section 8 guidelines)
+
+3. **Create Detailed Function Pages** (13 pages)
+   - Extract and expand content from Chapter 2's creation.md
+   - Add practical examples with TypeScript
+   - Include marble diagrams where helpful
+   - Add error handling patterns
+   - Cross-reference with related operators
+   - Follow documentation enhancement guidelines (Section 8)
+
+4. **Update Chapter 2 (creation.md)**
+   - Add note explaining this is a quick reference
+   - Add links to Chapter 3 detailed pages for each function
+   - Keep existing brief explanations (no deletion)
+   - Example:
+     ```markdown
+     ### of()
+     [Brief explanation remains here]
+
+     > [!TIP]
+     > 詳細な使い方と実践例は [of() の詳細ページ](/guide/creation-functions/basic/of) を参照してください。
+     ```
+
+5. **Update Navigation**
+   - Update `docs/.vitepress/config.ts` sidebar
+   - Update `docs/guide/index.md` with new categories
+   - Ensure all links are correct
+
+6. **Build and Verify**
+   - Run `npm run docs:build`
+   - Check for dead links
+   - Verify all pages render correctly
+
+**Content Guidelines:**
+- Follow Section 8: Documentation Enhancement Guidelines
+- Each page should include:
+  - Clear introduction (what, why, how)
+  - TypeScript code examples
+  - Practical use cases
+  - Marble diagrams (where applicable)
+  - Comparison with similar functions
+  - Common pitfalls and best practices
+  - Related functions/operators
+
+**Timeline:** TBD (estimated 17 pages × 30-60 min = 8-17 hours)
+
+**Priority Rationale:**
+- Completes the Chapter 3 restructuring started in October 2025
+- Provides consistent documentation depth across all Creation Functions
+- Maintains Chapter 2 as a useful quick reference
+- Enhances learning experience with dedicated, comprehensive pages
+
+---
+
 #### 🔄 Medium Priority: Chapter 15 Enhancement - フレームワークとの統合
 
 **Phased Approach:**

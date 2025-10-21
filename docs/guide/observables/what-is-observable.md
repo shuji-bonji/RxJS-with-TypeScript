@@ -63,8 +63,8 @@ Promiseは1回限りの非同期処理に適していますが、Observableは�
 
 RxJSのObservableには「コールド」と「ホット」の2種類があります。
 
-- **コールドObservable**：各サブスクライバーが独自のデータストリームを持ち、購読したときに実行が開始されます。（例：`of()`, `from()`, `ajax()`）
-- **ホットObservable**：サブスクライバーが同一のデータストリームを共有し、購読の有無に関わらずデータが流れ続けます。（例：`fromEvent()`, `Subject`）
+- **コールドObservable**：各サブスクライバーが独自のデータストリームを持ち、購読したときに実行が開始されます。（例：`of()`, `from()`, `fromEvent()`, `ajax()`）
+- **ホットObservable**：サブスクライバーが同一のデータストリームを共有し、購読の有無に関わらずデータが流れ続けます。（例：`Subject`, `share()`でマルチキャスト化したObservable）
 
 この区別はデータ共有とリソース効率に大きく影響します。  
 詳しくは[「コールドObservableとホットObservable」](./cold-and-hot-observables.md)のセクションで解説します。

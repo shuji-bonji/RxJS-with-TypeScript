@@ -354,8 +354,8 @@ data$.subscribe(console.log); // キャッシュされた結果を使用
 
 ### 解説
 
-- Cold Observable: 購読ごとに実行される（`of`, `from`, `ajax` など）
-- Hot Observable: 購読に関係なく実行される（`fromEvent`, `Subject` など）
+- Cold Observable: 購読ごとに実行される（`of`, `from`, `fromEvent`, `ajax` など）
+- Hot Observable: 購読に関係なく実行される（`Subject`, マルチキャスト化したObservable など）
 - `share` / `shareReplay` で Cold を Hot に変換可能
 
 

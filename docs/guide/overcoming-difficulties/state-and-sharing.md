@@ -419,10 +419,10 @@ import { share, shareReplay } from 'rxjs';
 // Cold: 各購読者が独立したタイマー
 const coldTimer$ = interval(1000);
 
-// Hot: タイマーを共有
+// Cold→Hot: タイマーを共有
 const hotTimer$ = interval(1000).pipe(share());
 
-// Hot: クリックイベント（元からHot）
+// Cold: クリックイベント（購読ごとに独立したリスナー登録）
 const clicks$ = fromEvent(document, 'click');
 
 // Cold→Hot: API結果をキャッシュ

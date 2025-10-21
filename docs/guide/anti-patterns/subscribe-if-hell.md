@@ -136,7 +136,7 @@ userService.getUser(id).subscribe(user => {
 **いつ使う？**: 値を絞り込む、不要な値を除外する
 
 ```typescript
-import { filter, tap, switchMap } from 'rxjs/operators';
+import { filter, tap, switchMap } from 'rxjs';
 
 // ✅ 良い例: filterで条件を分離
 userService.getUser(id).pipe(
@@ -221,7 +221,7 @@ merge(processedActive$, processedInactive$).subscribe(
 **いつ使う？**: 空の場合にデフォルト値を提供
 
 ```typescript
-import { defaultIfEmpty, filter } from 'rxjs/operators';
+import { defaultIfEmpty, filter } from 'rxjs';
 
 // ✅ 良い例: 空の場合にデフォルト値を提供
 userService.getUser(id).pipe(
@@ -242,7 +242,7 @@ userService.getUser(id).pipe(
 **いつ使う？**: 空の場合にエラーとして扱う
 
 ```typescript
-import { throwIfEmpty, catchError, filter } from 'rxjs/operators';
+import { throwIfEmpty, catchError, filter } from 'rxjs';
 import { of } from 'rxjs';
 
 // ✅ 良い例: 空の場合にエラーを投げる
@@ -306,7 +306,7 @@ apiService.fetchData().subscribe(data => {
 ### After: オペレーターで構造化
 
 ```typescript
-import { filter, map, defaultIfEmpty, switchMap, tap } from 'rxjs/operators';
+import { filter, map, defaultIfEmpty, switchMap, tap } from 'rxjs';
 import { from } from 'rxjs';
 
 // ✅ 良い例: オペレーターで条件を整理
@@ -459,7 +459,7 @@ it('should filter out null values', () => {
 
 ```typescript
 import { pipe } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter } from 'rxjs';
 
 // カスタムオペレーター: アクティブな管理者ユーザーのみ
 function filterActiveAdmins<T extends { isActive: boolean; role: string }>() {

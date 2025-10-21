@@ -35,7 +35,7 @@ description: 複数のObservableから1つを選択したり、1つのObservable
 
 ```typescript
 import { race, timer } from 'rxjs';
-import { mapTo } from 'rxjs/operators';
+import { mapTo } from 'rxjs';
 
 // 複数のデータソースから最速のものを採用
 const fast$ = timer(1000).pipe(mapTo('Fast API'));
@@ -68,6 +68,42 @@ even$.subscribe(val => console.log('Even:', val));
 odd$.subscribe(val => console.log('Odd:', val));
 // 出力: Odd: 1, Odd: 3, Odd: 5
 ```
+
+## Cold から Hot への変換
+
+上記の表に示した通り、**全ての選択・分割系Creation Functionsは Cold Observable を生成します**。購読するたびに独立した実行が開始されます。
+
+マルチキャスト系オペレーター（`share()`, `shareReplay()` など）を使用することで、Cold Observable を Hot Observable に変換できます。
+
+### 実践例：競合するAPIリクエストの共有
+
+```typescript
+import { race, timer } from 'rxjs';
+import { mapTo, share } from 'rxjs';
+
+// ❄️ Cold - 購読ごとに競争を再実行
+const coldRace$ = race(
+  timer(1000).pipe(mapTo('Fast API')),
+  timer(3000).pipe(mapTo('Slow API'))
+);
+
+coldRace$.subscribe(val => console.log('購読者1:', val));
+coldRace$.subscribe(val => console.log('購読者2:', val));
+// → 各購読者が独立した競争を実行（2回の競争）
+
+// 🔥 Hot - 購読者間で競争結果を共有
+const hotRace$ = race(
+  timer(1000).pipe(mapTo('Fast API')),
+  timer(3000).pipe(mapTo('Slow API'))
+).pipe(share());
+
+hotRace$.subscribe(val => console.log('購読者1:', val));
+hotRace$.subscribe(val => console.log('購読者2:', val));
+// → 1回の競争結果を共有
+```
+
+> [!TIP]
+> 詳しくは [基本作成系 - Cold から Hot への変換](/guide/creation-functions/basic/#cold-から-hot-への変換) を参照してください。
 
 ## Pipeable Operator との対応関係
 

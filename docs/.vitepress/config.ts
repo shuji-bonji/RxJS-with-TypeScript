@@ -85,6 +85,17 @@ export default withMermaid({
         link: '/guide/creation-functions/',
         items: [
           {
+            text: '基本作成系',
+            link: '/guide/creation-functions/basic/',
+            items: [
+              { text: 'of', link: '/guide/creation-functions/basic/of' },
+              { text: 'from', link: '/guide/creation-functions/basic/from' },
+              { text: 'fromEvent', link: '/guide/creation-functions/basic/fromEvent' },
+              { text: 'interval', link: '/guide/creation-functions/basic/interval' },
+              { text: 'timer', link: '/guide/creation-functions/basic/timer' },
+            ],
+          },
+          {
             text: '結合系',
             link: '/guide/creation-functions/combination/',
             items: [
