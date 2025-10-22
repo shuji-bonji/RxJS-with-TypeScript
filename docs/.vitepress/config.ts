@@ -87,6 +87,7 @@ export default withMermaid({
           {
             text: '基本作成系',
             link: '/guide/creation-functions/basic/',
+            collapsed: true,
             items: [
               { text: 'of', link: '/guide/creation-functions/basic/of' },
               { text: 'from', link: '/guide/creation-functions/basic/from' },
@@ -98,6 +99,7 @@ export default withMermaid({
           {
             text: 'ループ生成系',
             link: '/guide/creation-functions/loop/',
+            collapsed: true,
             items: [
               { text: 'range', link: '/guide/creation-functions/loop/range' },
               { text: 'generate', link: '/guide/creation-functions/loop/generate' },
@@ -106,6 +108,7 @@ export default withMermaid({
           {
             text: '変換系',
             link: '/guide/creation-functions/conversion/',
+            collapsed: true,
             items: [
               { text: 'ajax', link: '/guide/creation-functions/conversion/ajax' },
               { text: 'fromFetch', link: '/guide/creation-functions/conversion/fromFetch' },
@@ -116,6 +119,7 @@ export default withMermaid({
           {
             text: '結合系',
             link: '/guide/creation-functions/combination/',
+            collapsed: true,
             items: [
               { text: 'concat', link: '/guide/creation-functions/combination/concat' },
               { text: 'merge', link: '/guide/creation-functions/combination/merge' },
@@ -127,6 +131,7 @@ export default withMermaid({
           {
             text: '選択・分割系',
             link: '/guide/creation-functions/selection/',
+            collapsed: true,
             items: [
               { text: 'race', link: '/guide/creation-functions/selection/race' },
               { text: 'partition', link: '/guide/creation-functions/selection/partition' },
@@ -135,6 +140,7 @@ export default withMermaid({
           {
             text: '条件分岐系',
             link: '/guide/creation-functions/conditional/',
+            collapsed: true,
             items: [
               { text: 'iif', link: '/guide/creation-functions/conditional/iif' },
               { text: 'defer', link: '/guide/creation-functions/conditional/defer' },

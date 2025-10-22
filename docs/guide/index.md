@@ -27,32 +27,12 @@ TypeScript環境でRxJSを体系的に学ぶためのガイドです。
 
 ### 3. Creation Functions
 - [Creation Functionsとは](/guide/creation-functions/)
-
-**基本作成系**
-- [基本作成系の概要](/guide/creation-functions/basic/)
-- [of - 指定した値を順番に発行](/guide/creation-functions/basic/of)
-- [from - 配列・Promise等から変換](/guide/creation-functions/basic/from)
-- [fromEvent - イベントをObservableに変換](/guide/creation-functions/basic/fromEvent)
-- [interval - 指定間隔で連続発行](/guide/creation-functions/basic/interval)
-- [timer - 遅延後に発行開始](/guide/creation-functions/basic/timer)
-
-**結合系**
-- [結合系の概要](/guide/creation-functions/combination/)
-- [concat - 順次結合](/guide/creation-functions/combination/concat)
-- [merge - 並行結合](/guide/creation-functions/combination/merge)
-- [combineLatest - 最新値の組み合わせ](/guide/creation-functions/combination/combineLatest)
-- [zip - 対応する値のペア化](/guide/creation-functions/combination/zip)
-- [forkJoin - すべての完了を待つ](/guide/creation-functions/combination/forkJoin)
-
-**選択・分割系**
-- [選択・分割系の概要](/guide/creation-functions/selection/)
-- [race - 最速のストリームを採用](/guide/creation-functions/selection/race)
-- [partition - 条件で2つに分割](/guide/creation-functions/selection/partition)
-
-**条件分岐系**
-- [条件分岐系の概要](/guide/creation-functions/conditional/)
-- [iif - 条件による分岐](/guide/creation-functions/conditional/iif)
-- [defer - 遅延生成](/guide/creation-functions/conditional/defer)
+- [基本作成系](/guide/creation-functions/basic/) - of, from, fromEvent, interval, timer
+- [ループ生成系](/guide/creation-functions/loop/) - range, generate
+- [変換系](/guide/creation-functions/conversion/) - ajax, fromFetch, bindCallback, bindNodeCallback
+- [結合系](/guide/creation-functions/combination/) - concat, merge, combineLatest, zip, forkJoin
+- [選択・分割系](/guide/creation-functions/selection/) - race, partition
+- [条件分岐系](/guide/creation-functions/conditional/) - iif, defer
 
 ### 4. オペレーターの理解
 - [オペレーターの概要](/guide/operators/)
