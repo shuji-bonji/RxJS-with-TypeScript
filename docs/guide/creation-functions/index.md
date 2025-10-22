@@ -103,24 +103,40 @@ Pipeable Operatorは、既存のObservableに処理を追加する場合や、�
 
 - **パイプラインとして複数の操作を連鎖させる場合**
 
-## 基本的な Creation Functions（復習）
+## Creation Functions のカテゴリ
 
-2章で学んだ基本的なCreation Functionsを振り返ります。これらは単一のObservableを作成するための基礎的な関数です。
+この章では、Creation Functionsを5つのカテゴリに分けて学習します。
 
-| Function | 説明 | 例 |
-|----------|------|-----|
-| `of` | 指定した値を順番に発行 | `of(1, 2, 3)` |
-| `from` | 配列、Promise等から変換 | `from([1, 2, 3])` |
-| `interval` | 指定間隔で連続発行 | `interval(1000)` |
-| `timer` | 遅延後に発行開始 | `timer(1000, 500)` |
+### 1. [基本作成系 Creation Functions](/guide/creation-functions/basic/)
 
-詳細は [Observableの作成方法](/guide/observables/creation) を参照してください。
+最も基本的で頻繁に使用されるCreation Functionsです。データ、配列、イベント、時間ベースのObservableを簡単に作成できます。
 
-## Creation Functions の3つのカテゴリ
+**主要な関数**: of, from, fromEvent, interval, timer
 
-この章では、複数のObservableを操作するための高度なCreation Functionsを3つのカテゴリに分けて学習します。
+**代表的なユースケース**:
+- 固定値のテスト（of）
+- 既存データのストリーム化（from）
+- DOM イベントの処理（fromEvent）
+- ポーリング処理（interval）
+- 遅延実行（timer）
 
-### 1. [結合系 Creation Functions](/guide/creation-functions/combination/)
+→ [基本作成系 Creation Functionsの詳細を見る](/guide/creation-functions/basic/)
+
+### 2. [ループ生成系 Creation Functions](/guide/creation-functions/loop/)
+
+for文やwhile文のようなループ処理をObservableとして表現するためのCreation Functionsです。
+
+**主要な関数**: range, generate
+
+**代表的なユースケース**:
+- 連番生成（range）
+- バッチ処理（range）
+- 複雑な状態遷移（generate）
+- フィボナッチ数列などの数学的計算（generate）
+
+→ [ループ生成系 Creation Functionsの詳細を見る](/guide/creation-functions/loop/)
+
+### 3. [結合系 Creation Functions](/guide/creation-functions/combination/)
 
 複数のObservableを1つのObservableに結合します。結合方法によって、値の発行タイミングや順序が異なります。
 
@@ -134,7 +150,7 @@ Pipeable Operatorは、既存のObservableに処理を追加する場合や、�
 
 → [結合系 Creation Functionsの詳細を見る](/guide/creation-functions/combination/)
 
-### 2. [選択・分割系 Creation Functions](/guide/creation-functions/selection/)
+### 4. [選択・分割系 Creation Functions](/guide/creation-functions/selection/)
 
 複数のObservableから1つを選択したり、1つのObservableを複数に分割します。
 
@@ -146,7 +162,7 @@ Pipeable Operatorは、既存のObservableに処理を追加する場合や、�
 
 → [選択・分割系 Creation Functionsの詳細を見る](/guide/creation-functions/selection/)
 
-### 3. [条件分岐系 Creation Functions](/guide/creation-functions/conditional/)
+### 5. [条件分岐系 Creation Functions](/guide/creation-functions/conditional/)
 
 条件に基づいてObservableを選択したり、購読時に動的にObservableを生成します。
 
@@ -207,7 +223,9 @@ const result$ = source$.pipe(
 
 - **Creation Functions**: 新しいObservableを作成する関数
 - **Pipeable Operators**: 既存のObservableを変換する関数
-- Creation Functionsは3つのカテゴリに分類される。
+- Creation Functionsは5つのカテゴリに分類される。
+  - **基本作成系**: データ、配列、イベント、時間ベースのObservableを作成
+  - **ループ生成系**: 繰り返し処理をObservableで表現
   - **結合系**: 複数を1つにまとめる
   - **選択・分割系**: 選択または分割する
   - **条件分岐系**: 条件に応じて動的に生成する
@@ -217,8 +235,10 @@ const result$ = source$.pipe(
 
 各カテゴリの詳細を学ぶには、以下のリンクから進んでください。
 
-1. **[結合系 Creation Functions](/guide/creation-functions/combination/)** - concat, merge, combineLatest, zip, forkJoin
-2. **[選択・分割系 Creation Functions](/guide/creation-functions/selection/)** - race, partition
-3. **[条件分岐系 Creation Functions](/guide/creation-functions/conditional/)** - iif, defer
+1. **[基本作成系 Creation Functions](/guide/creation-functions/basic/)** - of, from, fromEvent, interval, timer
+2. **[ループ生成系 Creation Functions](/guide/creation-functions/loop/)** - range, generate
+3. **[結合系 Creation Functions](/guide/creation-functions/combination/)** - concat, merge, combineLatest, zip, forkJoin
+4. **[選択・分割系 Creation Functions](/guide/creation-functions/selection/)** - race, partition
+5. **[条件分岐系 Creation Functions](/guide/creation-functions/conditional/)** - iif, defer
 
 各ページで、Creation Functionの詳細な動作と実践例を学ぶことができます。

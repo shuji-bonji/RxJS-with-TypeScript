@@ -96,6 +96,14 @@ export default withMermaid({
             ],
           },
           {
+            text: 'ループ生成系',
+            link: '/guide/creation-functions/loop/',
+            items: [
+              { text: 'range', link: '/guide/creation-functions/loop/range' },
+              { text: 'generate', link: '/guide/creation-functions/loop/generate' },
+            ],
+          },
+          {
             text: '結合系',
             link: '/guide/creation-functions/combination/',
             items: [
