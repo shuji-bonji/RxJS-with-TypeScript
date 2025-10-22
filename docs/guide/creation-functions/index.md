@@ -105,7 +105,7 @@ Pipeable Operatorは、既存のObservableに処理を追加する場合や、�
 
 ## Creation Functions のカテゴリ
 
-この章では、Creation Functionsを5つのカテゴリに分けて学習します。
+この章では、Creation Functionsを6つのカテゴリに分けて学習します。
 
 ### 1. [基本作成系 Creation Functions](/guide/creation-functions/basic/)
 
@@ -136,7 +136,21 @@ for文やwhile文のようなループ処理をObservableとして表現する�
 
 → [ループ生成系 Creation Functionsの詳細を見る](/guide/creation-functions/loop/)
 
-### 3. [結合系 Creation Functions](/guide/creation-functions/combination/)
+### 3. [変換系 Creation Functions](/guide/creation-functions/conversion/)
+
+既存のAPIや非同期処理をObservableに変換するためのCreation Functionsです。
+
+**主要な関数**: ajax, fromFetch, bindCallback, bindNodeCallback
+
+**代表的なユースケース**:
+- Ajax/HTTPリクエスト（ajax）
+- モダンなHTTP通信（fromFetch）
+- 既存のコールバックAPIの統合（bindCallback）
+- Node.js APIのRxJS化（bindNodeCallback）
+
+→ [変換系 Creation Functionsの詳細を見る](/guide/creation-functions/conversion/)
+
+### 4. [結合系 Creation Functions](/guide/creation-functions/combination/)
 
 複数のObservableを1つのObservableに結合します。結合方法によって、値の発行タイミングや順序が異なります。
 
@@ -150,7 +164,7 @@ for文やwhile文のようなループ処理をObservableとして表現する�
 
 → [結合系 Creation Functionsの詳細を見る](/guide/creation-functions/combination/)
 
-### 4. [選択・分割系 Creation Functions](/guide/creation-functions/selection/)
+### 5. [選択・分割系 Creation Functions](/guide/creation-functions/selection/)
 
 複数のObservableから1つを選択したり、1つのObservableを複数に分割します。
 
@@ -162,7 +176,7 @@ for文やwhile文のようなループ処理をObservableとして表現する�
 
 → [選択・分割系 Creation Functionsの詳細を見る](/guide/creation-functions/selection/)
 
-### 5. [条件分岐系 Creation Functions](/guide/creation-functions/conditional/)
+### 6. [条件分岐系 Creation Functions](/guide/creation-functions/conditional/)
 
 条件に基づいてObservableを選択したり、購読時に動的にObservableを生成します。
 
@@ -223,9 +237,10 @@ const result$ = source$.pipe(
 
 - **Creation Functions**: 新しいObservableを作成する関数
 - **Pipeable Operators**: 既存のObservableを変換する関数
-- Creation Functionsは5つのカテゴリに分類される。
+- Creation Functionsは6つのカテゴリに分類される。
   - **基本作成系**: データ、配列、イベント、時間ベースのObservableを作成
   - **ループ生成系**: 繰り返し処理をObservableで表現
+  - **変換系**: 既存のAPIや非同期処理をObservableに変換
   - **結合系**: 複数を1つにまとめる
   - **選択・分割系**: 選択または分割する
   - **条件分岐系**: 条件に応じて動的に生成する
@@ -237,8 +252,9 @@ const result$ = source$.pipe(
 
 1. **[基本作成系 Creation Functions](/guide/creation-functions/basic/)** - of, from, fromEvent, interval, timer
 2. **[ループ生成系 Creation Functions](/guide/creation-functions/loop/)** - range, generate
-3. **[結合系 Creation Functions](/guide/creation-functions/combination/)** - concat, merge, combineLatest, zip, forkJoin
-4. **[選択・分割系 Creation Functions](/guide/creation-functions/selection/)** - race, partition
-5. **[条件分岐系 Creation Functions](/guide/creation-functions/conditional/)** - iif, defer
+3. **[変換系 Creation Functions](/guide/creation-functions/conversion/)** - ajax, fromFetch, bindCallback, bindNodeCallback
+4. **[結合系 Creation Functions](/guide/creation-functions/combination/)** - concat, merge, combineLatest, zip, forkJoin
+5. **[選択・分割系 Creation Functions](/guide/creation-functions/selection/)** - race, partition
+6. **[条件分岐系 Creation Functions](/guide/creation-functions/conditional/)** - iif, defer
 
 各ページで、Creation Functionの詳細な動作と実践例を学ぶことができます。
