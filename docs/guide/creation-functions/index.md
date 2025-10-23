@@ -1,5 +1,5 @@
 ---
-description: RxJSのCreation Functions（Observable作成関数）について、Pipeable Operatorとの違い、基本的な使い方、3つのカテゴリ（結合系・選択分割系・条件分岐系）を網羅的に解説します。
+description: RxJSのCreation Functions（Observable作成関数）について、Pipeable Operatorとの違い、基本的な使い方、7つのカテゴリ（基本作成系・ループ生成系・HTTP通信系・結合系・選択分割系・条件分岐系・制御系）を網羅的に解説します。
 ---
 
 # Creation Functions
@@ -105,88 +105,30 @@ Pipeable Operatorは、既存のObservableに処理を追加する場合や、�
 
 ## Creation Functions のカテゴリ
 
-この章では、Creation Functionsを6つのカテゴリに分けて学習します。
+この章では、Creation Functionsを7つのカテゴリに分けて学習します。
 
-### 1. [基本作成系 Creation Functions](/guide/creation-functions/basic/)
+### 全カテゴリ一覧
 
-最も基本的で頻繁に使用されるCreation Functionsです。データ、配列、イベント、時間ベースのObservableを簡単に作成できます。
+以下の表で、すべてのカテゴリと含まれる関数を確認できます。各関数名をクリックすると詳細ページに移動します。
 
-**主要な関数**: of, from, fromEvent, interval, timer
+| カテゴリ | 説明 | 主要な関数 | 代表的なユースケース |
+|---------|------|-----------|-------------------|
+| **[基本作成系](/guide/creation-functions/basic/)** | 最も基本的で頻繁に使用される関数。データ、配列、イベント、時間ベースのObservableを作成 | [of](/guide/creation-functions/basic/of), [from](/guide/creation-functions/basic/from), [fromEvent](/guide/creation-functions/basic/fromEvent), [interval](/guide/creation-functions/basic/interval), [timer](/guide/creation-functions/basic/timer) | 固定値のテスト、既存データのストリーム化、DOMイベント処理、ポーリング、遅延実行 |
+| **[ループ生成系](/guide/creation-functions/loop/)** | for文やwhile文のようなループ処理をObservableで表現 | [range](/guide/creation-functions/loop/range), [generate](/guide/creation-functions/loop/generate) | 連番生成、バッチ処理、複雑な状態遷移、数学的計算 |
+| **[HTTP通信系](/guide/creation-functions/http-communication/)** | HTTP通信をObservableとして扱う | [ajax](/guide/creation-functions/http-communication/ajax), [fromFetch](/guide/creation-functions/http-communication/fromFetch) | XMLHttpRequestベースのHTTP通信、Fetch APIベースのHTTP通信、REST API呼び出し |
+| **[結合系](/guide/creation-functions/combination/)** | 複数のObservableを1つに結合。結合方法によって発行タイミングや順序が異なる | [concat](/guide/creation-functions/combination/concat), [merge](/guide/creation-functions/combination/merge), [combineLatest](/guide/creation-functions/combination/combineLatest), [zip](/guide/creation-functions/combination/zip), [forkJoin](/guide/creation-functions/combination/forkJoin) | ステップバイステップ処理、複数イベントの統合、フォーム入力の同期、並列API呼び出しの完了待ち |
+| **[選択・分割系](/guide/creation-functions/selection/)** | 複数のObservableから1つを選択、または1つのObservableを複数に分割 | [race](/guide/creation-functions/selection/race), [partition](/guide/creation-functions/selection/partition) | 複数データソースの競争、成功/失敗の分岐処理 |
+| **[条件分岐系](/guide/creation-functions/conditional/)** | 条件に基づいてObservableを選択、または購読時に動的に生成 | [iif](/guide/creation-functions/conditional/iif), [defer](/guide/creation-functions/conditional/defer) | ログイン状態による処理分岐、動的なObservable作成、遅延評価 |
+| **[制御系](/guide/creation-functions/control/)** | Observableの実行タイミングやリソース管理を制御 | [scheduled](/guide/creation-functions/control/scheduled), [using](/guide/creation-functions/control/using) | スケジューラーによる実行タイミング制御、リソースのライフサイクル管理、メモリリーク防止 |
 
-**代表的なユースケース**:
-- 固定値のテスト（of）
-- 既存データのストリーム化（from）
-- DOM イベントの処理（fromEvent）
-- ポーリング処理（interval）
-- 遅延実行（timer）
-
-→ [基本作成系 Creation Functionsの詳細を見る](/guide/creation-functions/basic/)
-
-### 2. [ループ生成系 Creation Functions](/guide/creation-functions/loop/)
-
-for文やwhile文のようなループ処理をObservableとして表現するためのCreation Functionsです。
-
-**主要な関数**: range, generate
-
-**代表的なユースケース**:
-- 連番生成（range）
-- バッチ処理（range）
-- 複雑な状態遷移（generate）
-- フィボナッチ数列などの数学的計算（generate）
-
-→ [ループ生成系 Creation Functionsの詳細を見る](/guide/creation-functions/loop/)
-
-### 3. [変換系 Creation Functions](/guide/creation-functions/conversion/)
-
-既存のAPIや非同期処理をObservableに変換するためのCreation Functionsです。
-
-**主要な関数**: ajax, fromFetch, bindCallback, bindNodeCallback
-
-**代表的なユースケース**:
-- Ajax/HTTPリクエスト（ajax）
-- モダンなHTTP通信（fromFetch）
-- 既存のコールバックAPIの統合（bindCallback）
-- Node.js APIのRxJS化（bindNodeCallback）
-
-→ [変換系 Creation Functionsの詳細を見る](/guide/creation-functions/conversion/)
-
-### 4. [結合系 Creation Functions](/guide/creation-functions/combination/)
-
-複数のObservableを1つのObservableに結合します。結合方法によって、値の発行タイミングや順序が異なります。
-
-**主要な関数**: concat, merge, combineLatest, zip, forkJoin
-
-**代表的なユースケース**:
-- ステップバイステップ処理（concat）
-- 複数イベントの統合（merge）
-- フォーム入力の同期（combineLatest）
-- 並列API呼び出しの完了待ち（forkJoin）
-
-→ [結合系 Creation Functionsの詳細を見る](/guide/creation-functions/combination/)
-
-### 5. [選択・分割系 Creation Functions](/guide/creation-functions/selection/)
-
-複数のObservableから1つを選択したり、1つのObservableを複数に分割します。
-
-**主要な関数**: race, partition
-
-**代表的なユースケース**:
-- 複数データソースの競争（race）
-- 成功/失敗の分岐処理（partition）
-
-→ [選択・分割系 Creation Functionsの詳細を見る](/guide/creation-functions/selection/)
-
-### 6. [条件分岐系 Creation Functions](/guide/creation-functions/conditional/)
-
-条件に基づいてObservableを選択したり、購読時に動的にObservableを生成します。
-
-**主要な関数**: iif, defer
-
-**代表的なユースケース**:
-- ログイン状態による処理分岐（iif）
-- 動的なObservable作成（defer）
-
-→ [条件分岐系 Creation Functionsの詳細を見る](/guide/creation-functions/conditional/)
+> [!TIP]
+> **学習の順序**
+>
+> 初学者は以下の順序で学習することをお勧めします。
+> 1. **基本作成系** - RxJSの基本となる関数
+> 2. **結合系** - 複数のストリームを扱う基礎
+> 3. **HTTP通信系** - 実践的なAPI連携
+> 4. その他のカテゴリ - 必要に応じて学習
 
 ## Pipeable Operator との対応関係
 
@@ -235,16 +177,18 @@ const result$ = source$.pipe(
 
 ## まとめ
 
-- **Creation Functions**: 新しいObservableを作成する関数
+- **Creation Functions**: Observableを作成したり、結合する関数
 - **Pipeable Operators**: 既存のObservableを変換する関数
-- Creation Functionsは6つのカテゴリに分類される。
-  - **基本作成系**: データ、配列、イベント、時間ベースのObservableを作成
-  - **ループ生成系**: 繰り返し処理をObservableで表現
-  - **変換系**: 既存のAPIや非同期処理をObservableに変換
-  - **結合系**: 複数を1つにまとめる
-  - **選択・分割系**: 選択または分割する
-  - **条件分岐系**: 条件に応じて動的に生成する
+- Creation Functionsは7つのカテゴリに分類される
+  1. **基本作成系**: データ、配列、イベント、時間ベースのObservableを作成
+  2. **ループ生成系**: 繰り返し処理をObservableで表現
+  3. **HTTP通信系**: HTTP通信をObservableとして扱う
+  4. **結合系**: 複数を1つにまとめる
+  5. **選択・分割系**: 選択または分割する
+  6. **条件分岐系**: 条件に応じて動的に生成する
+  7. **制御系**: 実行タイミングやリソース管理を制御
 - パイプラインの中では`~With`系のPipeable Operatorを使う
+- 各カテゴリには複数の関数が含まれ、用途に応じて使い分ける
 
 ## 次のステップ
 
@@ -252,9 +196,15 @@ const result$ = source$.pipe(
 
 1. **[基本作成系 Creation Functions](/guide/creation-functions/basic/)** - of, from, fromEvent, interval, timer
 2. **[ループ生成系 Creation Functions](/guide/creation-functions/loop/)** - range, generate
-3. **[変換系 Creation Functions](/guide/creation-functions/conversion/)** - ajax, fromFetch, bindCallback, bindNodeCallback
+3. **[HTTP通信系 Creation Functions](/guide/creation-functions/http-communication/)** - ajax, fromFetch
 4. **[結合系 Creation Functions](/guide/creation-functions/combination/)** - concat, merge, combineLatest, zip, forkJoin
 5. **[選択・分割系 Creation Functions](/guide/creation-functions/selection/)** - race, partition
 6. **[条件分岐系 Creation Functions](/guide/creation-functions/conditional/)** - iif, defer
+7. **[制御系 Creation Functions](/guide/creation-functions/control/)** - scheduled, using
 
 各ページで、Creation Functionの詳細な動作と実践例を学ぶことができます。
+
+## 参考リソース
+
+- [RxJS公式ドキュメント - Creation Functions](https://rxjs.dev/guide/operators#creation-operators-list)
+- [Learn RxJS - Creation Operators](https://www.learnrxjs.io/learn-rxjs/operators/creation)

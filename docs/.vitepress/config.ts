@@ -106,14 +106,12 @@ export default withMermaid({
             ],
           },
           {
-            text: '変換系',
-            link: '/guide/creation-functions/conversion/',
+            text: 'HTTP通信系',
+            link: '/guide/creation-functions/http-communication/',
             collapsed: true,
             items: [
-              { text: 'ajax', link: '/guide/creation-functions/conversion/ajax' },
-              { text: 'fromFetch', link: '/guide/creation-functions/conversion/fromFetch' },
-              { text: 'bindCallback', link: '/guide/creation-functions/conversion/bindCallback' },
-              { text: 'bindNodeCallback', link: '/guide/creation-functions/conversion/bindNodeCallback' },
+              { text: 'ajax', link: '/guide/creation-functions/http-communication/ajax' },
+              { text: 'fromFetch', link: '/guide/creation-functions/http-communication/fromFetch' },
             ],
           },
           {
@@ -144,6 +142,15 @@ export default withMermaid({
             items: [
               { text: 'iif', link: '/guide/creation-functions/conditional/iif' },
               { text: 'defer', link: '/guide/creation-functions/conditional/defer' },
+            ],
+          },
+          {
+            text: '制御系',
+            link: '/guide/creation-functions/control/',
+            collapsed: true,
+            items: [
+              { text: 'scheduled', link: '/guide/creation-functions/control/scheduled' },
+              { text: 'using', link: '/guide/creation-functions/control/using' },
             ],
           },
         ],

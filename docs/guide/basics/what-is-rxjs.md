@@ -38,8 +38,8 @@ RxJSを使いこなすには、以下の中核的な構成要素を理解する�
 | [`Observable`](../observables/what-is-observable.md) | 非同期または時間に沿って発生するデータを表すストリームの源です。 |
 | [`Observer`](../observables/observable-lifecycle.md#observer)| Observableからデータを購読して受け取る側の存在です。 |
 | [`Subscription`](../observables/observable-lifecycle.html#subscription) | Observableの購読と解除の管理を行います。 |
-| [`Creation Functions`](../creation-functions/index.md) | 新しいObservableを作成・結合するための関数群です。 |
-| [`Operator`](../operators/index.md) | 既存のObservableを変換・制御するための関数群です。 |
+| [`Creation Functions`](../creation-functions/index.md) | Observableを作成・結合するための関数群です。 |
+| [`Operator`](../operators/index.md) | Observableを変換・制御するための関数群です。 |
 | [`Subject`](../subjects/what-is-subject.md)[^1] | ObservableとObserverの両方の性質を持つ中継器です。 |
 | [`Scheduler`](../schedulers/async-control.md)[^2]| Observableの実行タイミングを制御する仕組みです。 |
 
@@ -47,7 +47,7 @@ RxJSを使いこなすには、以下の中核的な構成要素を理解する�
 [^2]: Schedulerは、非同期処理の実行タイミングやコンテキストを制御するために使われ、デバッグやパフォーマンス管理にも役立ちます。
 
 これらはそれぞれ独立した機能を持ちながらも連携して動作します。
-たとえば、Creation Functionsで複数のObservableを結合し、Operatorで変換し、Observerが購読し、Schedulerで制御する、といった形で、全体としてストリーム処理を構成します。
+たとえば、Creation FunctionsでObservableを作成・結合し、Operatorで変換・制御し、Observerが購読し、Schedulerで実行タイミングを制御する、といった形で、全体としてストリーム処理を構成します。
 
 ※ 各構成要素の詳細な使い方や例については、それぞれの専用章で個別に解説します。
 

@@ -274,6 +274,9 @@ api$.subscribe({
 > [!NOTE]
 > RxJSのajaxは、内部的にはXMLHttpRequestを使用しています。一方、RxJSにはfromFetchというオペレーターもあり、これはFetch APIを利用してHTTPリクエストを行います。
 
+> [!TIP]
+> 詳細な使い方と実践例は [ajax() の詳細ページ](/guide/creation-functions/http-communication/ajax) を参照してください。HTTP通信系の概要は [HTTP通信系 Creation Functions](/guide/creation-functions/http-communication/) を参照してください。
+
 ### fromFetch()
 [📘 RxJS公式: fromFetch](https://rxjs.dev/api/fetch/fromFetch)
 
@@ -303,6 +306,9 @@ api$.pipe(
 > `fromFetch()` は Fetch API を使用しているため、`ajax()` と異なりリクエスト設定の初期化やレスポンスの `.json()` 変換は手動で行う必要があります。
 > エラーハンドリングや HTTP ステータスのチェックなども適切に行う必要があります。
 
+> [!TIP]
+> 詳細な使い方と実践例は [fromFetch() の詳細ページ](/guide/creation-functions/http-communication/fromFetch) を参照してください。HTTP通信系の概要は [HTTP通信系 Creation Functions](/guide/creation-functions/http-communication/) を参照してください。
+
 ### scheduled()
 [📘 RxJS公式: scheduled](https://rxjs.dev/api/index/function/scheduled)
 
@@ -329,6 +335,9 @@ observable$.subscribe({
 > [!NOTE]
 > `scheduled()` を使用することで、既存の同期関数（例: `of()`, `from()`）を非同期で動作させることが可能になります。
 > 非同期での処理制御が求められるテストやUIパフォーマンス最適化に役立ちます。
+
+> [!TIP]
+> 詳細な使い方と実践例は [scheduled() の詳細ページ](/guide/creation-functions/control/scheduled) を参照してください。制御系の概要は [制御系 Creation Functions](/guide/creation-functions/control/) を参照してください。
 
 ### defer()
 [📘 RxJS公式: defer](https://rxjs.dev/api/index/function/defer)
@@ -623,8 +632,11 @@ setTimeout(() => sub.unsubscribe(), 3500);
 ```
 
 > [!IMPORTANT]
-> `using()` はリソースのスコープをObservableの購読と一致させる際に便利です。  
+> `using()` はリソースのスコープをObservableの購読と一致させる際に便利です。
 > `unsubscribe()` されたタイミングで、明示的なクリーンアップ処理が自動的に呼び出されます。
+
+> [!TIP]
+> 詳細な使い方と実践例は [using() の詳細ページ](/guide/creation-functions/control/using) を参照してください。制御系の概要は [制御系 Creation Functions](/guide/creation-functions/control/) を参照してください。
 
 ## WebSocket()
 [📘 RxJS公式: webSocket](https://rxjs.dev/api/webSocket/webSocket)

@@ -6,7 +6,7 @@ description: deferオペレーターは、Observableのファクトリ関数を�
 
 `defer`オペレーターは、Observableのファクトリ関数を**購読時点**で実行し、その結果のObservableを返します。これにより、実際に購読されるまでObservableの作成を遅延させることができます。
 
-## 🔰 基本構文・動作
+## 基本構文・動作
 
 ```ts
 import { defer, of } from 'rxjs';
@@ -25,7 +25,7 @@ random$.subscribe(console.log);
 
 [🌐 RxJS公式ドキュメント - defer](https://rxjs.dev/api/index/function/defer)
 
-## 💡 典型的な活用例
+## 典型的な活用例
 
 APIや外部リソース、現在時刻や乱数など、**実行タイミングによって結果が変わる処理**を都度行いたいときに有効です。
 
@@ -45,7 +45,7 @@ fetchUser(1).subscribe(console.log);
 // {id: 1, name: 'Leanne Graham', username: 'Bret', email: 'Sincere@april.biz', address: {…}, …}
 ```
 
-## 🧪 実践コード例（UI付き）
+## 実践コード例（UI付き）
 
 `defer`は副作用のある処理や毎回異なる結果を生成する処理に特に有用です。
 

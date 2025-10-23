@@ -8,7 +8,7 @@ description: iifオペレーターは、条件式に応じて2つのObservable�
 JavaScriptの三項演算子（`condition ? trueValue : falseValue`）に似た機能を持ちます。
 
 
-## 🔰 基本構文・動作
+## 基本構文・動作
 
 ```ts
 import { iif, of } from 'rxjs';
@@ -27,7 +27,7 @@ getData(true).subscribe(console.log);
 
 [🌐 RxJS公式ドキュメント - iif](https://rxjs.dev/api/index/function/iif)
 
-## 💡 典型的な活用例
+## 典型的な活用例
 
 `iif` はよく `EMPTY` と組み合わせて、条件を満たさない場合に「何も発行しないストリーム」を返す使い方がされます。
 
@@ -50,7 +50,7 @@ conditionalData(1).subscribe(console.log);
 ```
 
 
-## 🧪 実践コード例（UI付き）
+## 実践コード例（UI付き）
 
 以下のUI付きコード例では、ユーザーの操作や数値入力に応じて  
 Observableの発行内容や発行の有無を `iif` によって動的に切り替えています。

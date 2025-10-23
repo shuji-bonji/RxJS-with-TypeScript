@@ -8,7 +8,7 @@ description: forkJoin Creation Functionは、複数のObservableがすべて完�
 「すべて揃ってからまとめて使いたい」場合に非常に便利です。
 
 
-## 🔰 基本構文と使い方
+## 基本構文と使い方
 
 ```ts
 import { forkJoin, of } from 'rxjs';
@@ -31,14 +31,14 @@ forkJoin([user$, posts$]).subscribe(([user, posts]) => {
 [🌐 RxJS公式ドキュメント - `forkJoin`](https://rxjs.dev/api/index/function/forkJoin)
 
 
-## 💡 典型的な活用パターン
+## 典型的な活用パターン
 
 - **複数のAPIリクエストを並列に実行して、すべての結果をまとめる**
 - **初期ロード時に必要な複数データセットを一括取得**
 - **関連するデータをまとめて取得し、まとめて画面描画**
 
 
-## 🧠 実践コード例（UI付き）
+## 実践コード例（UI付き）
 
 複数のAPIリクエストをシミュレートして、すべての結果が揃ったらまとめて表示します。
 

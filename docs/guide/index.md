@@ -29,10 +29,11 @@ TypeScript環境でRxJSを体系的に学ぶためのガイドです。
 - [Creation Functionsとは](/guide/creation-functions/)
 - [基本作成系](/guide/creation-functions/basic/) - of, from, fromEvent, interval, timer
 - [ループ生成系](/guide/creation-functions/loop/) - range, generate
-- [変換系](/guide/creation-functions/conversion/) - ajax, fromFetch, bindCallback, bindNodeCallback
+- [HTTP通信系](/guide/creation-functions/http-communication/) - ajax, fromFetch
 - [結合系](/guide/creation-functions/combination/) - concat, merge, combineLatest, zip, forkJoin
 - [選択・分割系](/guide/creation-functions/selection/) - race, partition
 - [条件分岐系](/guide/creation-functions/conditional/) - iif, defer
+- [制御系](/guide/creation-functions/control/) - scheduled, using
 
 ### 4. オペレーターの理解
 - [オペレーターの概要](/guide/operators/)
