@@ -39,6 +39,7 @@ export default withMermaid({
           'https://shuji-bonji.github.io/RxJS-with-TypeScript/images/ts-de-rxjs.png',
       },
     ],
+    ['link', {rel: 'icon', href: 'favicon.ico'}],
   ],
   themeConfig: {
     nav: [
