@@ -103,7 +103,14 @@ Documentation follows a structured 14-chapter curriculum:
 
 1. **RxJS入門** (Introduction) - Basics and streams
 2. **Observableの基礎** (Observable Basics) - Observable fundamentals, lifecycle, cold/hot
-3. **Creation Functions** - Observable creation and combination functions (concat, merge, combineLatest, zip, race, forkJoin, partition)
+3. **Creation Functions** - Observable creation and combination functions across 7 categories:
+   - 基本作成系 (Basic creation): of, from, fromEvent, interval, timer
+   - ループ生成系 (Loop generation): range, generate
+   - HTTP通信系 (HTTP communication): ajax, fromFetch
+   - 結合系 (Combination): concat, merge, combineLatest, zip, forkJoin
+   - 選択・分割系 (Selection/Partition): race, partition
+   - 条件分岐系 (Conditional): iif, defer
+   - 制御系 (Control): scheduled, using
 4. **オペレーターの理解** (Operators) - Pipeable operators categorized by type:
    - Transformation operators (map, mergeMap, switchMap, etc.)
    - Filtering operators (filter, debounceTime, throttleTime, etc.)
@@ -520,16 +527,7 @@ The following new chapters have been added or are planned for future releases.
 
 **Implementation Status:** ✅ All 7 pages completed (Q1 2025)
 
----
-
-## Active Development
-
-#### 🔴 High Priority: Chapter 3 Expansion - Creation Functions 詳細ページ追加
-
-**Current Status (as of 2025-10-21):**
-- Chapter 3 has been restructured into 3 categories (combination, selection, conditional)
-- Currently includes only 9 detailed pages: concat, merge, combineLatest, zip, forkJoin, race, partition, iif, defer
-- Chapter 2 (Observableの作成方法) covers 25+ Creation Functions but only provides brief overviews
+#### ✅ Chapter 3: Creation Functions - Full Expansion (Completed Q4 2025)
 
 **Purpose:**
 - Provide comprehensive, dedicated pages for all major Creation Functions
@@ -537,99 +535,98 @@ The following new chapters have been added or are planned for future releases.
 - Maintain Chapter 2 as a quick reference with links to Chapter 3 detailed pages
 - Complete the Creation Functions documentation with consistent depth across all functions
 
-**Planned Structure - 4 New Categories:**
+**Final Status:**
+- Chapter 3 has been fully expanded to include **7 categories** with comprehensive documentation
+- Total of **28 pages** created (1 main index + 7 category indices + 20 detailed function pages)
+- Chapter 2 (Observableの作成方法) now serves as quick reference with cross-links to Chapter 3 detailed pages
+- All Creation Functions now have consistent documentation depth
+
+**Completed Structure:**
 
 ```
-3. Creation Functions (追加予定)
-├── 基本作成系 (5 pages) - NEW
+3. Creation Functions (COMPLETED)
+├── index.md (main index with comprehensive table)
+├── 基本作成系 (6 pages)
 │   ├── index.md
 │   ├── of.md - 指定した値を順番に発行
 │   ├── from.md - 配列、Promise等から変換
 │   ├── fromEvent.md - イベントをObservableに変換
 │   ├── interval.md - 指定間隔で連続発行
 │   └── timer.md - 遅延後に発行開始
-├── ループ生成系 (2 pages) - NEW
+├── ループ生成系 (3 pages)
 │   ├── index.md
 │   ├── range.md - 数値の範囲を生成
 │   └── generate.md - ループ的な生成（for文のような動作）
-├── 変換系 (4 pages) - NEW
+├── HTTP通信系 (3 pages) - Renamed from "変換系"
 │   ├── index.md
 │   ├── ajax.md - Ajax/HTTPリクエスト
-│   ├── fromFetch.md - Fetch APIのラッパー
-│   ├── bindCallback.md - コールバック関数をObservableに変換
-│   └── bindNodeCallback.md - Node.js形式のコールバックをObservableに変換
-└── 制御系 (2 pages) - NEW
+│   └── fromFetch.md - Fetch APIのラッパー
+├── 結合系 (6 pages) - Previously existing
+│   ├── index.md
+│   ├── concat.md, merge.md, combineLatest.md
+│   ├── zip.md, forkJoin.md
+├── 選択・分割系 (3 pages) - Previously existing
+│   ├── index.md
+│   ├── race.md, partition.md
+├── 条件分岐系 (3 pages) - Previously existing
+│   ├── index.md
+│   ├── iif.md, defer.md
+└── 制御系 (3 pages)
     ├── index.md
     ├── scheduled.md - スケジューラーを指定してObservableを生成
     └── using.md - リソース制御付きObservable
 ```
 
-**Total New Pages:** 17 pages (13 detailed pages + 4 category index pages)
+**Total Pages Created:** 28 pages across 7 categories
 
-**Implementation Steps:**
+**Key Implementation Decisions:**
 
-1. **Create Directory Structure**
-   - `docs/guide/creation-functions/basic/` (基本作成系)
-   - `docs/guide/creation-functions/loop/` (ループ生成系)
-   - `docs/guide/creation-functions/conversion/` (変換系)
-   - `docs/guide/creation-functions/control/` (制御系)
+1. **Category Renaming:**
+   - "変換系" renamed to "HTTP通信系" for accuracy
+   - Reason: ajax/fromFetch are HTTP-specific, not general conversion functions
 
-2. **Create Category Index Pages** (4 pages)
-   - Each with overview, use cases, comparison table
-   - Follow same pattern as existing combination/selection/conditional index pages
-   - Include contextual explanations (per Section 8 guidelines)
+2. **Function Placement:**
+   - `bindCallback` and `bindNodeCallback` kept in Chapter 2 only
+   - Reason: Not classified as Creation operators in Learn RxJS documentation
+   - Chapter 2 provides detailed coverage, avoiding duplication
 
-3. **Create Detailed Function Pages** (13 pages)
-   - Extract and expand content from Chapter 2's creation.md
-   - Add practical examples with TypeScript
-   - Include marble diagrams where helpful
-   - Add error handling patterns
-   - Cross-reference with related operators
-   - Follow documentation enhancement guidelines (Section 8)
+3. **Cross-Referencing:**
+   - Chapter 2 (creation.md) updated with cross-links to all Chapter 3 detailed pages
+   - Chapter 2 maintained as quick reference guide
+   - All functions accessible from both chapters
 
-4. **Update Chapter 2 (creation.md)**
-   - Add note explaining this is a quick reference
-   - Add links to Chapter 3 detailed pages for each function
-   - Keep existing brief explanations (no deletion)
-   - Example:
-     ```markdown
-     ### of()
-     [Brief explanation remains here]
+4. **Documentation Consistency:**
+   - All pages follow Section 8 documentation enhancement guidelines
+   - Each page includes: introduction, TypeScript examples, practical use cases, marble diagrams
+   - Emoji removed from level 1-3 headings for consistency
+   - Main index page uses comprehensive table format with clickable links
 
-     > [!TIP]
-     > 詳細な使い方と実践例は [of() の詳細ページ](/guide/creation-functions/basic/of) を参照してください。
-     ```
+5. **Navigation Updates:**
+   - `docs/.vitepress/config.ts` sidebar fully updated
+   - `docs/guide/index.md` updated with all 7 categories
+   - Dead links fixed (error-handling, schedulers pages)
 
-5. **Update Navigation**
-   - Update `docs/.vitepress/config.ts` sidebar
-   - Update `docs/guide/index.md` with new categories
-   - Ensure all links are correct
+**Completed Implementation Steps:**
 
-6. **Build and Verify**
-   - Run `npm run docs:build`
-   - Check for dead links
-   - Verify all pages render correctly
+- ✅ Created directory structure (basic, loop, http-communication, control)
+- ✅ Created 7 category index pages with overviews and comparison tables
+- ✅ Created 20 detailed function pages with comprehensive examples
+- ✅ Updated Chapter 2 with cross-links to Chapter 3
+- ✅ Updated main Creation Functions index with table format
+- ✅ Updated navigation (config.ts, guide/index.md)
+- ✅ Removed emoji from level 1-3 headings across all pages
+- ✅ Fixed dead links and verified build
+- ✅ Updated terminology (removed "新しい" from Creation Functions description)
 
-**Content Guidelines:**
-- Follow Section 8: Documentation Enhancement Guidelines
-- Each page should include:
-  - Clear introduction (what, why, how)
-  - TypeScript code examples
-  - Practical use cases
-  - Marble diagrams (where applicable)
-  - Comparison with similar functions
-  - Common pitfalls and best practices
-  - Related functions/operators
-
-**Timeline:** TBD (estimated 17 pages × 30-60 min = 8-17 hours)
-
-**Priority Rationale:**
-- Completes the Chapter 3 restructuring started in October 2025
-- Provides consistent documentation depth across all Creation Functions
-- Maintains Chapter 2 as a useful quick reference
-- Enhances learning experience with dedicated, comprehensive pages
+**Impact:**
+- Complete Creation Functions documentation with 7 categories
+- Improved learning experience with dedicated, comprehensive pages
+- Clear separation between quick reference (Chapter 2) and detailed guides (Chapter 3)
+- Consistent documentation style across all 28 pages
 
 ---
+
+## Active Development
 
 #### 🔄 Medium Priority: Chapter 15 Enhancement - フレームワークとの統合
 
