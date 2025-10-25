@@ -419,6 +419,10 @@ export default withMermaid({
         items: [
           { text: 'エラー処理戦略', link: '/guide/error-handling/strategies' },
           {
+            text: 'エラーハンドリングの2つの場所',
+            link: '/guide/error-handling/error-handling-locations',
+          },
+          {
             text: 'retry と catchError',
             link: '/guide/error-handling/retry-catch',
           },

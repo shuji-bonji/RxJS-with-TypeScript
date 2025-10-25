@@ -53,6 +53,7 @@ TypeScript環境でRxJSを体系的に学ぶためのガイドです。
 
 ### 6. エラーハンドリング
 - [エラー処理戦略](/guide/error-handling/strategies)
+- [エラーハンドリングの2つの場所](/guide/error-handling/error-handling-locations)
 - [retry と catchError](/guide/error-handling/retry-catch)
 - [finalize と complete](/guide/error-handling/finalize)
 
