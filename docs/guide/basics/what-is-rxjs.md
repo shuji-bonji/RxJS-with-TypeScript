@@ -49,6 +49,52 @@ RxJSを使いこなすには、以下の中核的な構成要素を理解する�
 これらはそれぞれ独立した機能を持ちながらも連携して動作します。
 たとえば、Creation FunctionsでObservableを作成・結合し、Operatorで変換・制御し、Observerが購読し、Schedulerで実行タイミングを制御する、といった形で、全体としてストリーム処理を構成します。
 
+#### RxJSの構成要素とデータフロー
+```mermaid
+ flowchart TB
+      subgraph CREATION["① Creation Functions<br/>(Observable作成)"]
+        direction LR
+      end
+
+      subgraph OPERATOR["② Operators<br/>(変換・制御)"]
+        direction LR
+      end
+
+      subgraph SUBSCRIBE["③ Subscribe（購読）"]
+        direction TB
+        C0["subscribe()"]
+        C0 -->|"返す"| SUB["Subscription"]
+        C0 --> OBS["Observer"]
+        OBS --> C1["next(value)"]
+        OBS --> C2["error(err)"]
+        OBS --> C3["complete()"]
+        SUB -.->|"unsubscribe()"| UNSUB["購読解除"]
+      end
+
+      subgraph SCHEDULER["Scheduler<br/>(実行タイミング・コンテキスト制御)"]
+        direction LR
+      end
+
+      %% Connections
+      CREATION -->|"Observable生成"| OPERATOR
+      OPERATOR -->|"変換されたObservable"| SUBSCRIBE
+
+      %% Scheduler controls timing at multiple points
+      SCHEDULER -.->|"発行タイミング制御<br/>(Creation Functionsの引数)"| CREATION
+      SCHEDULER -.->|"実行タイミング制御<br/>(observeOn/subscribeOn)"| OPERATOR
+      SCHEDULER -.->|"通知タイミング制御"| SUBSCRIBE
+
+      classDef creation fill:#dbeafe,stroke:#2563eb,color:#111,rx:6,ry:6;
+      classDef operator fill:#ecfccb,stroke:#65a30d,color:#111,rx:6,ry:6;
+      classDef observer fill:#999,stroke:#eeee,color:#111,rx:6,ry:6;
+      classDef scheduler fill:#e0e7ff,stroke:#4338ca,color:#111,rx:6,ry:6;
+
+      class CREATION creation;
+      class OPERATOR operator;
+      class SUBSCRIBE observer;
+      class SCHEDULER scheduler;
+```
+
 ※ 各構成要素の詳細な使い方や例については、それぞれの専用章で個別に解説します。
 
 ### 構成クラス図
