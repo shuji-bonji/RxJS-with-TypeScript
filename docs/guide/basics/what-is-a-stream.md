@@ -40,6 +40,24 @@ RxJSでは、こうした時間経過とともに発生するデータを **Obse
 
 ObservableとObserverは、コールバックを通じて接続され、Subscriptionにより制御されます。
 
+### 基本的な関係図
+```mermaid
+  graph TB
+      Observable[Observable<br/>データの供給元]
+      Observer[Observer<br/>データの受け取り手]
+      Subscription[Subscription<br/>購読の制御ハンドル]
+
+      Observable -->|subscribe| Subscription
+      Subscription -->|通知| Observer
+      Observer -->|next/error/complete| Process[データ処理]
+      Subscription -->|unsubscribe| Cleanup[購読解除・<br/>リソース解放]
+
+      style Observable fill:#e1f5ff
+      style Observer fill:#fff4e1
+      style Subscription fill:#e8f5e9
+```
+
+
 ## まとめ
 
 RxJSの中核である「ストリーム」の概念は、非同期処理を扱う際の強力な武器です。Observableを使うことで、さまざまなデータソースを統一的に扱い、宣言的かつ柔軟にデータフローを記述できます。

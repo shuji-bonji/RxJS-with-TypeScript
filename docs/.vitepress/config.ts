@@ -72,6 +72,10 @@ export default withMermaid({
           },
           { text: 'イベント一覧', link: '/guide/observables/events-list' },
           {
+            text: 'Observer と Subscriber の違い',
+            link: '/guide/observables/observer-vs-subscriber',
+          },
+          {
             text: 'Observableのライフサイクル',
             link: '/guide/observables/observable-lifecycle',
           },
