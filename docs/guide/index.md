@@ -92,6 +92,10 @@ TypeScript環境でRxJSを体系的に学ぶためのガイドです。
 - [複数ストリーム組み合わせ](/guide/overcoming-difficulties/stream-combination)
 - [デバッグの壁](/guide/overcoming-difficulties/debugging-guide)
 
+### 付録
+- [付録の概要](/guide/appendix/)
+- [組み込み開発とリアクティブプログラミング](/guide/appendix/embedded-reactive-programming)
+
 ---
 
 > [!NOTE]

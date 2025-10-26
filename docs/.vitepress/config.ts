@@ -561,6 +561,13 @@ export default withMermaid({
         //   { text: 'Web APIとの連携', link: '/guide/frameworks/web-api' },
         // ],
       },
+      {
+        text: '付録',
+        items: [
+          { text: '付録の概要', link: '/guide/appendix/' },
+          { text: '組み込み開発とリアクティブプログラミング', link: '/guide/appendix/embedded-reactive-programming' },
+        ],
+      },
     ],
 
     socialLinks: [
