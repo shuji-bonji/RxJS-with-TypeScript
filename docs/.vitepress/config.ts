@@ -423,6 +423,10 @@ export default withMermaid({
             link: '/guide/error-handling/error-handling-locations',
           },
           {
+            text: 'try-catchとRxJSの統合',
+            link: '/guide/error-handling/try-catch-integration',
+          },
+          {
             text: 'retry と catchError',
             link: '/guide/error-handling/retry-catch',
           },

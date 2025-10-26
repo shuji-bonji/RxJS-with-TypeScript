@@ -594,6 +594,56 @@ Observable.create = function(subscribe: any) {
 };
 ```
 
+### シナリオ6: リトライの試行回数を追跡したい
+
+- **症状**: `retry` オペレーターを使用しているが、何回リトライしているのか分からない
+
+エラー発生時に自動的にリトライする場合、実際に何回リトライが実行されているのかを追跡することで、デバッグやログ記録が容易になります。
+
+#### 基本的なリトライデバッグ
+
+```ts
+import { throwError, of, timer } from 'rxjs';
+import { retryWhen, mergeMap, tap } from 'rxjs';
+
+throwError(() => new Error('一時的なエラー'))
+  .pipe(
+    retryWhen((errors) =>
+      errors.pipe(
+        mergeMap((error, index) => {
+          const retryCount = index + 1;
+          console.log(`🔄 リトライ ${retryCount}回目`);
+
+          if (retryCount > 2) {
+            console.log('❌ 最大リトライ数に到達');
+            throw error;
+          }
+
+          return timer(1000);
+        })
+      )
+    )
+  )
+  .subscribe({
+    next: value => console.log('✅ 成功:', value),
+    error: error => console.log('🔴 最終エラー:', error.message)
+  });
+
+// 出力:
+// 🔄 リトライ 1回目
+// 🔄 リトライ 2回目
+// 🔄 リトライ 3回目
+// ❌ 最大リトライ数に到達
+// 🔴 最終エラー: 一時的なエラー
+```
+
+> [!TIP]
+> リトライのデバッグ方法について、より詳細な実装パターンは[retry と catchError](/guide/error-handling/retry-catch#retry-debugging)の「リトライのデバッグ」セクションで解説しています。
+> - tap の error コールバックを使った基本的な追跡
+> - retryWhen での詳細なログ記録
+> - 指数バックオフとログ記録
+> - RxJS 7.4+ の retry 設定オブジェクト
+
 ## デバッグツール
 
 ### 1. 名前付きストリームのデバッグ

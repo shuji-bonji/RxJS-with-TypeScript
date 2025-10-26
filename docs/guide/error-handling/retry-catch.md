@@ -39,6 +39,7 @@ getDataWithRandomError()
 
 // 出力:
 // 成功: データ取得成功!
+// エラー (3回の再試行後): ランダムエラー発生 ⇦ 3回失敗したときに表示
 ```
 
 ### リアルタイムでの再試行状況の監視
@@ -244,6 +245,263 @@ fetchWithRetry().subscribe({
 // エラー発生: ネットワークエラー
 // 3回目の再試行を8000ms後に実行
 ```
+
+## リトライのデバッグ
+
+リトライ処理をデバッグする際、試行回数や各試行の結果を追跡することが重要です。以下では、リトライ状況をリアルタイムで監視する実用的な方法を紹介します。
+
+### 方法1: tap の error コールバック（基本）
+
+`tap`オペレーターの`error`コールバックを使用することで、エラー発生時に試行回数をカウントできます。
+
+```typescript
+import { throwError, of } from 'rxjs';
+import { retry, catchError, tap } from 'rxjs/operators';
+
+let attemptCount = 0;
+
+throwError(() => new Error('一時的なエラー'))
+  .pipe(
+    tap({
+      error: () => {
+        attemptCount++;
+        console.log(`試行回数: ${attemptCount}`);
+      }
+    }),
+    retry(2),
+    catchError((error) => {
+      console.log(`最終試行回数: ${attemptCount}`);
+      return of(`最終エラー: ${error.message}`);
+    })
+  )
+  .subscribe({
+    next: console.log,
+    error: err => console.error('購読エラー:', err)
+  });
+
+// 出力:
+// 試行回数: 1
+// 試行回数: 2
+// 試行回数: 3
+// 最終試行回数: 3
+// 最終エラー: 一時的なエラー
+```
+
+> [!NOTE] throwError での制限
+> `throwError`は値を発行せずに即座にエラーを出すため、`tap`の`next`コールバックは実行されません。`error`コールバックを使用する必要があります。
+
+### 方法2: retryWhen で詳細に追跡（推奨）
+
+より詳細な情報（試行回数、遅延時間、エラー内容）を追跡するには、`retryWhen`を使用します。
+
+```typescript
+import { throwError, of, timer } from 'rxjs';
+import { retryWhen, mergeMap, catchError } from 'rxjs/operators';
+
+throwError(() => new Error('一時的なエラー'))
+  .pipe(
+    retryWhen((errors) =>
+      errors.pipe(
+        mergeMap((error, index) => {
+          const retryCount = index + 1;
+          console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+          console.log(`🔄 リトライ ${retryCount}回目`);
+          console.log(`   エラー: ${error.message}`);
+
+          if (retryCount > 2) {
+            console.log(`❌ 最大リトライ回数に到達`);
+            console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+            throw error;
+          }
+
+          const delayMs = 1000;
+          console.log(`⏳ ${delayMs}ms後に再試行...`);
+          console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+
+          return timer(delayMs);
+        })
+      )
+    ),
+    catchError((error) => {
+      console.log(`\n最終結果: すべてのリトライが失敗`);
+      return of(`最終エラー: ${error.message}`);
+    })
+  )
+  .subscribe(result => console.log('結果:', result));
+
+// 出力:
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 🔄 リトライ 1回目
+//    エラー: 一時的なエラー
+// ⏳ 1000ms後に再試行...
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// （1秒待機）
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 🔄 リトライ 2回目
+//    エラー: 一時的なエラー
+// ⏳ 1000ms後に再試行...
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// （1秒待機）
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// 🔄 リトライ 3回目
+//    エラー: 一時的なエラー
+// ❌ 最大リトライ回数に到達
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━
+//
+// 最終結果: すべてのリトライが失敗
+// 結果: 最終エラー: 一時的なエラー
+```
+
+### 方法3: カスタムObservableで試行回数を追跡
+
+実際のAPIリクエストなど、値を発行するObservableの場合は、カスタムObservableで試行回数を管理できます。
+
+```typescript
+import { Observable, of } from 'rxjs';
+import { retry, catchError } from 'rxjs/operators';
+
+let attemptCount = 0;
+
+// 試行回数をカウントできるObservable
+const retryableStream$ = new Observable(subscriber => {
+  attemptCount++;
+  console.log(`[試行 ${attemptCount}回目]`);
+
+  // 最初の2回は失敗、3回目で成功
+  if (attemptCount < 3) {
+    subscriber.error(new Error(`失敗 (試行${attemptCount})`));
+  } else {
+    subscriber.next('成功データ');
+    subscriber.complete();
+  }
+});
+
+retryableStream$
+  .pipe(
+    retry(2),
+    catchError((error) => {
+      console.log(`[完了] 合計${attemptCount}回試行して失敗`);
+      return of(`最終エラー: ${error.message}`);
+    })
+  )
+  .subscribe({
+    next: data => console.log('[結果]', data),
+    complete: () => console.log('[完了]')
+  });
+
+// 出力:
+// [試行 1回目]
+// [試行 2回目]
+// [試行 3回目]
+// [結果] 成功データ
+// [完了]
+```
+
+### 方法4: 指数バックオフとログ記録
+
+実用的なAPIリクエストでの詳細ログ記録パターンです。
+
+```typescript
+import { ajax } from 'rxjs/ajax';
+import { retryWhen, mergeMap, catchError, finalize } from 'rxjs/operators';
+import { timer, throwError, of } from 'rxjs';
+
+function fetchWithRetryLogging(url: string, maxRetries = 3) {
+  let startTime = Date.now();
+
+  return ajax.getJSON(url).pipe(
+    retryWhen((errors) =>
+      errors.pipe(
+        mergeMap((error, index) => {
+          const retryCount = index + 1;
+          const elapsed = Date.now() - startTime;
+
+          console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+          console.log(`🔄 リトライ情報`);
+          console.log(`   回数: ${retryCount}/${maxRetries}`);
+          console.log(`   エラー: ${error.message || error.status}`);
+          console.log(`   経過時間: ${elapsed}ms`);
+
+          if (retryCount >= maxRetries) {
+            console.log(`❌ 最大リトライ回数に到達`);
+            console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+            throw error;
+          }
+
+          // 指数バックオフ
+          const delayMs = Math.min(1000 * Math.pow(2, index), 10000);
+          console.log(`⏳ ${delayMs}ms後に再試行...`);
+          console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+
+          return timer(delayMs);
+        })
+      )
+    ),
+    catchError((error) => {
+      const totalTime = Date.now() - startTime;
+      console.log(`\n❌ 最終的に失敗 (合計時間: ${totalTime}ms)`);
+      return of({ error: true, message: 'データ取得失敗' });
+    }),
+    finalize(() => {
+      const totalTime = Date.now() - startTime;
+      console.log(`\n✅ 処理完了 (合計時間: ${totalTime}ms)`);
+    })
+  );
+}
+
+// 使用例
+fetchWithRetryLogging('https://jsonplaceholder.typicode.com/users/1').subscribe({
+  next: data => console.log('データ:', data),
+  error: err => console.error('エラー:', err)
+});
+```
+
+### 方法5: RxJS 7.4+ の retry 設定オブジェクト
+
+RxJS 7.4以降では、`retry`に設定オブジェクトを渡すことができます。
+
+```typescript
+import { throwError, of } from 'rxjs';
+import { retry, catchError, tap } from 'rxjs/operators';
+
+let attemptCount = 0;
+
+throwError(() => new Error('一時的なエラー'))
+  .pipe(
+    tap({
+      subscribe: () => {
+        attemptCount++;
+        console.log(`試行 ${attemptCount}回目`);
+      },
+      error: (err) => console.log(`エラー発生:`, err.message)
+    }),
+    retry({
+      count: 2,
+      delay: 1000, // 1秒待ってリトライ
+      resetOnSuccess: true
+    }),
+    catchError((error) => {
+      console.log(`最終的に失敗（合計${attemptCount}回試行）`);
+      return of(`最終エラー: ${error.message}`);
+    })
+  )
+  .subscribe(result => console.log('結果:', result));
+
+// 出力:
+// 試行 1回目
+// エラー発生: 一時的なエラー
+// 試行 2回目
+// エラー発生: 一時的なエラー
+// 試行 3回目
+// エラー発生: 一時的なエラー
+// 最終的に失敗（合計3回試行）
+// 結果: 最終エラー: 一時的なエラー
+```
+
+> [!TIP] リトライデバッグの推奨アプローチ
+> - **開発中**: 方法2（retryWhen）または方法4（詳細ログ）が最適
+> - **本番環境**: 方法4をベースに、エラー監視サービスへのログ送信を追加
+> - **シンプルなケース**: 方法1（tap の error）または方法5（retry設定）で十分
 
 ## 実際のアプリケーションでの使用例：APIリクエスト
 

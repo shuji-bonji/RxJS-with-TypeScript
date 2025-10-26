@@ -409,6 +409,140 @@ function handleMessage(msg: any) {
 }
 ```
 
+### エラーリトライの制御
+
+`retry` オペレーターでスケジューラーを活用することで、リトライのタイミングを細かく制御できます。
+
+#### 基本的なリトライ制御
+
+`retry` オペレーターの `delay` オプションは、内部的に `asyncScheduler` を使用してリトライ間隔を制御します。
+
+```ts
+import { throwError, of } from 'rxjs';
+import { retry, mergeMap } from 'rxjs';
+
+// API呼び出しのシミュレーション
+function fetchData(id: number) {
+  return of(id).pipe(
+    mergeMap(() => {
+      const random = Math.random();
+      if (random > 0.7) {
+        return of({ id, data: 'success' });
+      }
+      return throwError(() => new Error('Network error'));
+    })
+  );
+}
+
+fetchData(1)
+  .pipe(
+    retry({
+      count: 3,
+      delay: 1000  // asyncScheduler で 1秒待機してからリトライ
+    })
+  )
+  .subscribe({
+    next: result => console.log('✅ 成功:', result),
+    error: error => console.log('❌ 最終エラー:', error.message)
+  });
+```
+
+#### 指数バックオフでのスケジューラー活用
+
+より高度な制御として、`retryWhen` と `asyncScheduler` を組み合わせて指数バックオフを実装できます。
+
+```ts
+import { throwError, timer, of } from 'rxjs';
+import { retryWhen, mergeMap, tap } from 'rxjs';
+
+function fetchDataWithBackoff(id: number) {
+  return of(id).pipe(
+    mergeMap(() => {
+      const random = Math.random();
+      if (random > 0.9) {
+        return of({ id, data: 'success' });
+      }
+      return throwError(() => new Error('Temporary error'));
+    })
+  );
+}
+
+fetchDataWithBackoff(1)
+  .pipe(
+    retryWhen(errors =>
+      errors.pipe(
+        mergeMap((error, index) => {
+          const retryCount = index + 1;
+
+          // 最大リトライ数チェック
+          if (retryCount > 3) {
+            console.log('❌ 最大リトライ数に到達');
+            throw error;
+          }
+
+          // 指数バックオフ: 1秒, 2秒, 4秒...
+          const delayTime = Math.pow(2, index) * 1000;
+          console.log(`🔄 リトライ ${retryCount}回目 (${delayTime}ms後)`);
+
+          // timer は内部的に asyncScheduler を使用
+          return timer(delayTime);
+        })
+      )
+    )
+  )
+  .subscribe({
+    next: result => console.log('✅ 成功:', result),
+    error: error => console.log('❌ 最終エラー:', error.message)
+  });
+
+// 出力例:
+// 🔄 リトライ 1回目 (1000ms後)
+// 🔄 リトライ 2回目 (2000ms後)
+// 🔄 リトライ 3回目 (4000ms後)
+// ❌ 最大リトライ数に到達
+// ❌ 最終エラー: Temporary error
+```
+
+#### asyncScheduler を明示的に指定する場合
+
+特定のスケジューラーを明示的に指定することで、テスト時に `TestScheduler` に差し替えるなど、より柔軟な制御が可能になります。
+
+```ts
+import { throwError, asyncScheduler, of } from 'rxjs';
+import { retryWhen, mergeMap, delay } from 'rxjs';
+
+function fetchDataWithScheduler(id: number, scheduler = asyncScheduler) {
+  return of(id).pipe(
+    mergeMap(() => throwError(() => new Error('Error'))),
+    retryWhen(errors =>
+      errors.pipe(
+        mergeMap((error, index) => {
+          if (index >= 2) throw error;
+
+          // スケジューラーを明示的に指定
+          return of(null).pipe(
+            delay(1000, scheduler)
+          );
+        })
+      )
+    )
+  );
+}
+
+// 本番環境: asyncScheduler を使用
+fetchDataWithScheduler(1).subscribe({
+  error: err => console.log('エラー:', err.message)
+});
+
+// テスト環境: TestScheduler に差し替え可能
+```
+
+> [!TIP]
+> リトライ処理の詳細な実装パターンやデバッグ方法については、[retry と catchError](/guide/error-handling/retry-catch) のページで解説しています。
+> - retry オペレーターの詳細な使い方
+> - catchError との組み合わせパターン
+> - リトライのデバッグ手法（試行回数の追跡、ログ記録など）
+
 ## パフォーマンスへの影響
 
 ### スケジューラーのオーバーヘッド

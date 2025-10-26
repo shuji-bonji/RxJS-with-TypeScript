@@ -696,6 +696,60 @@ ajax.getJSON('/api/data').pipe(
   error: err => console.error('エラー:', err)
 });
 ```
+## よくある質問
+
+::: info **Q: catchErrorとsubscribe.errorを両方書く必要がありますか？**  
+A: はい、両方書くことを推奨します。  
+`catchError`は「処理できるエラー」、  
+`subscribe.error`は「予期しないエラーの最終防衛線」として機能します。
+:::
+
+::: info **Q: catchError内でthrowError()すると、どこに行きますか？**  
+A: 後続の`catchError`があればそこで捕捉され、なければ`subscribe.error`に到達します。
+:::
+
+
+::: info **Q: 複数のcatchErrorを配置できますか？**
+A: はい、パイプライン内に複数配置可能です。各段階で異なるエラーを処理できます。
+:::
+
+::: info **Q: subscribe.errorを省略したらどうなりますか？**
+A: エラーが発生するとコンソールに`"Unhandled error"`が表示され、アプリケーションが予期しない動作をする可能性があります。必ず書くことを推奨します。
+:::
+
+::: info **Q: catchErrorでEMPTYを返すとどうなりますか？**
+A: ストリームは即座に完了します。値を発行せずに`complete()`が呼ばれます。エラーを無視したい場合に使います。
+```typescript
+import { EMPTY } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
+source$.pipe(
+  catchError(() => EMPTY) // エラーを無視して完了
+).subscribe({
+  next: val => console.log(val),
+  complete: () => console.log('完了') // これが呼ばれる
+});
+```
+:::
+
+::: info **Q: エラーが発生したら必ずストリームは終了しますか？**
+A: いいえ。`catchError`で処理すればストリームは継続します。`subscribe.error`に到達した場合のみ終了します。
+:::
+
+::: info **Q: finalizeはcatchErrorの前後どちらに配置すべきですか？**
+A: 通常は**catchErrorの後**に配置します。これにより、エラー処理後も確実にクリーンアップが実行されます。
+```typescript
+source$.pipe(
+  retry(2),
+  catchError(err => of(defaultValue)),
+  finalize(() => cleanup()) // catchErrorの後
+)
+```
+:::
+
+::: info **Q: catchErrorとtry-catchの違いは何ですか？**
+A: `try-catch`は**同期的なエラー**のみ捕捉しますが、`catchError`は**非同期的なエラー**（HTTPリクエスト、タイマーなど）も含むストリーム内のすべてのエラーを捕捉します。
+:::
 
 ## まとめ
 
