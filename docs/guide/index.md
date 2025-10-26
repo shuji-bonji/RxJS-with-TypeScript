@@ -65,6 +65,9 @@ TypeScript環境でRxJSを体系的に学ぶためのガイドです。
 
 ### 8. RxJSのデバッグ手法
 - [デバッグ手法の概要](/guide/debugging/)
+- [よくあるデバッグシナリオ](/guide/debugging/common-scenarios)
+- [カスタムデバッグツール](/guide/debugging/custom-tools)
+- [パフォーマンスデバッグ](/guide/debugging/performance)
 
 ### 9. テスト手法
 - [RxJSのユニットテスト](/guide/testing/unit-tests)

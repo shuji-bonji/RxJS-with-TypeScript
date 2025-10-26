@@ -452,7 +452,12 @@ export default withMermaid({
       },
       {
         text: '8. RxJSのデバッグ手法',
-        link: '/guide/debugging/',
+        items: [
+          { text: 'デバッグ手法の概要', link: '/guide/debugging/' },
+          { text: 'よくあるデバッグシナリオ', link: '/guide/debugging/common-scenarios' },
+          { text: 'カスタムデバッグツール', link: '/guide/debugging/custom-tools' },
+          { text: 'パフォーマンスデバッグ', link: '/guide/debugging/performance' },
+        ],
       },
       {
         text: '9. テスト手法',
