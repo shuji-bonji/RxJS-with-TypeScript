@@ -95,6 +95,7 @@ TypeScript環境でRxJSを体系的に学ぶためのガイドです。
 ### 付録
 - [付録の概要](/guide/appendix/)
 - [組み込み開発とリアクティブプログラミング](/guide/appendix/embedded-reactive-programming)
+- [ReactiveX以外のリアクティブ的手法](/guide/appendix/reactive-patterns-beyond-rxjs)
 
 ---
 

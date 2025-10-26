@@ -566,6 +566,7 @@ export default withMermaid({
         items: [
           { text: '付録の概要', link: '/guide/appendix/' },
           { text: '組み込み開発とリアクティブプログラミング', link: '/guide/appendix/embedded-reactive-programming' },
+          { text: 'ReactiveX以外のリアクティブ的手法', link: '/guide/appendix/reactive-patterns-beyond-rxjs' },
         ],
       },
     ],

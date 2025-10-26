@@ -13,6 +13,7 @@ description: RxJSの実践的な応用例や特定分野での活用方法を紹
 | トピック | 概要 | 対象読者 |
 |---------|------|---------|
 | [組み込み開発とリアクティブプログラミング](/guide/appendix/embedded-reactive-programming) | 組み込みシステムでのRxJS活用、センサー統合、イベント相関検知 | 組み込み開発者、IoTエンジニア |
+| [ReactiveX以外のリアクティブ的手法](/guide/appendix/reactive-patterns-beyond-rxjs) | イベント駆動、ステートマシン、データフロープログラミングなど7つの手法 | 制御工学エンジニア、組み込み開発者 |
 
 ## 今後の追加予定
 
