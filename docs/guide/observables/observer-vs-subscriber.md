@@ -329,3 +329,4 @@ Observer と Subscriber の違いを理解したら、次は実際の購読管�
 
 - [RxJS公式ドキュメント - Observer](https://rxjs.dev/guide/observer) - Observer の詳細な仕様
 - [RxJS公式ドキュメント - Subscription](https://rxjs.dev/guide/subscription) - Subscription の詳細な仕様
+- [Understanding the Difference Between Observer and Subscriber in RxJS](https://www.codingscenes.com/posts/92/Understanding-the-Difference-Between-Observer-and-Subscriber-in-RxJS) - Subscriber の拡張機能と実践例（英語）
