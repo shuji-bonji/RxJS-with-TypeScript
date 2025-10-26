@@ -9,6 +9,8 @@ description: retryオペレーターは、Observableでエラーが発生した�
 
 ## 🔰 基本構文・動作
 
+### retry(count) - 基本形
+
 ```ts
 import { throwError, of } from 'rxjs';
 import { retry, catchError } from 'rxjs';
@@ -24,6 +26,43 @@ throwError(() => new Error('一時的なエラー'))
 ```
 
 この例では、最初の失敗後に2回まで再試行され、すべて失敗した場合にフォールバックでメッセージが出力されます。
+
+### retry(config) - 設定オブジェクト形式（RxJS 7.4+）
+
+RxJS 7.4以降では、設定オブジェクトを渡すことで、より詳細な制御が可能です。
+
+```ts
+import { throwError, of } from 'rxjs';
+import { retry, catchError, tap } from 'rxjs';
+
+let attemptCount = 0;
+
+throwError(() => new Error('一時的なエラー'))
+  .pipe(
+    tap({
+      subscribe: () => {
+        attemptCount++;
+        console.log(`試行 ${attemptCount}回目`);
+      }
+    }),
+    retry({
+      count: 2,           // 最大2回まで再試行
+      delay: 1000,        // 1秒待ってから再試行（内部で asyncScheduler を使用）
+      resetOnSuccess: true // 成功したらカウントをリセット
+    }),
+    catchError((error) => of(`最終エラー: ${error.message}`))
+  )
+  .subscribe(console.log);
+
+// 出力:
+// 試行 1回目
+// 試行 2回目
+// 試行 3回目
+// 最終エラー: 一時的なエラー
+```
+
+> [!NOTE] リトライタイミングの制御
+> `delay` オプションを指定すると、内部的に **asyncScheduler** が使用されます。より詳細なリトライタイミングの制御（指数バックオフなど）については、[スケジューラーの種類と使い分け - エラーリトライの制御](/guide/schedulers/types#エラーリトライの制御)を参照してください。
 
 [🌐 RxJS公式ドキュメント - retry](https://rxjs.dev/api/index/function/retry)
 
@@ -161,3 +200,11 @@ startButton.addEventListener('click', () => {
 - `retry`は**正常に完了するまで再実行される**（失敗が続くとエラーが出る）
 - 一時的な障害が起こる**非同期APIやネットワークリクエスト**に有効
 - `catchError`と組み合わせて**フォールバック処理**を指定するのが一般的
+- RxJS 7.4+ では設定オブジェクト形式で `delay` や `resetOnSuccess` などを指定可能
+
+## 関連ページ
+
+- [retry と catchError](/guide/error-handling/retry-catch) - retry と catchError の組み合わせパターン、実践的な使用例
+- [リトライのデバッグ](/guide/error-handling/retry-catch#リトライのデバッグ) - 試行回数の追跡方法（5つの実装パターン）
+- [スケジューラーの種類と使い分け](/guide/schedulers/types#エラーリトライの制御) - リトライタイミングの詳細制御、指数バックオフの実装
+- [RxJSのデバッグ手法](/guide/debugging/#シナリオ6-リトライの試行回数を追跡したい) - リトライのデバッグシナリオ
