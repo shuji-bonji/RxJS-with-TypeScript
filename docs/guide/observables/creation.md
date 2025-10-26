@@ -532,13 +532,17 @@ RxJSには、コールバックベースの非同期関数をObservableに変換
 ### bindCallback()
 [📘 RxJS公式: bindCallback](https://rxjs.dev/api/index/function/bindCallback)
 
+`bindCallback()` は「最後の引数がコールバック関数」である非同期関数を、「Observable を返す関数」に変換します。
+
 ```ts
 import { bindCallback } from 'rxjs';
 
+// コールバック形式の非同期関数
 function asyncFn(input: string, callback: (result: string) => void) {
   setTimeout(() => callback(`Hello, ${input}`), 1000);
 }
 
+// asyncFn を「Observable を返す関数」に変換
 const observableFn = bindCallback(asyncFn);
 const result$ = observableFn('RxJS');
 
@@ -555,10 +559,13 @@ result$.subscribe({
 ### bindNodeCallback()
 [📘 RxJS公式: bindNodeCallback](https://rxjs.dev/api/index/function/bindNodeCallback)
 
+`bindNodeCallback()` は Node.js の「エラーファースト・コールバック（err, result）形式」の関数を、「Observable を返す関数」に変換します。
+
 ```ts
 import { bindNodeCallback } from 'rxjs';
 import { readFile } from 'fs';
 
+// readFile を「Observable を返す関数」に変換（エラーは error で通知）
 const readFile$ = bindNodeCallback(readFile);
 readFile$('./some.txt').subscribe({
   next: data => console.log('内容:', data),
