@@ -15,6 +15,8 @@ description: RxJSの実践的な応用例や特定分野での活用方法を紹
 | [組み込み開発とリアクティブプログラミング](/guide/appendix/embedded-reactive-programming) | 組み込みシステムでのRxJS活用、センサー統合、イベント相関検知 | 組み込み開発者、IoTエンジニア |
 | [ReactiveX以外のリアクティブ的手法](/guide/appendix/reactive-patterns-beyond-rxjs) | イベント駆動、ステートマシン、データフロープログラミングなど7つの手法 | 制御工学エンジニア、組み込み開発者 |
 | [リアクティブアーキテクチャ全体マップ](/guide/appendix/reactive-architecture-map) | UI・通信・バックエンド・データパイプライン・IoT・制御・UXの7層構造 | フルスタックエンジニア、アーキテクト |
+| [Reactive Programming Reconsidered](/guide/appendix/reactive-programming-reconsidered) | RPの理想と現実のギャップ、強みと限界、適用領域の見極め方 | 全開発者、アーキテクト |
+| [RxJSとReactive Streamsエコシステム](/guide/appendix/rxjs-and-reactive-streams-ecosystem) | RxJS・Reactor・Kafkaなど技術スタック全体像とUI〜データ層の連携 | フルスタックエンジニア、バックエンドエンジニア |
 
 ## 今後の追加予定
 

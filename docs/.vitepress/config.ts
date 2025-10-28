@@ -572,6 +572,8 @@ export default withMermaid({
           { text: '組み込み開発とリアクティブプログラミング', link: '/guide/appendix/embedded-reactive-programming' },
           { text: 'ReactiveX以外のリアクティブ的手法', link: '/guide/appendix/reactive-patterns-beyond-rxjs' },
           { text: 'リアクティブアーキテクチャ全体マップ', link: '/guide/appendix/reactive-architecture-map' },
+          { text: 'Reactive Programming Reconsidered', link: '/guide/appendix/reactive-programming-reconsidered' },
+          { text: 'RxJSとReactive Streamsエコシステム', link: '/guide/appendix/rxjs-and-reactive-streams-ecosystem' },
         ],
       },
     ],
