@@ -214,6 +214,9 @@ socket$.pipe(
 
 ユーザー入力や状態の変化をリアクティブに扱うことができます。
 
+> [!NOTE] フレームワークとの関係
+> 現代のフロントエンドフレームワーク（Angular Signals、React hooks、Vue Composition API、Svelte Runesなど）は、それぞれ独自のリアクティブシステムを提供しています。RxJSはフレームワーク非依存のライブラリとして、これらと併用・使い分けが可能です。フレームワーク固有の仕組みとRxJSの統合については、Chapter 15「フレームワークとの統合」（準備中）で詳しく解説します。
+
 | 用途 | 説明 | 主要なオペレーター |
 |------|------|-------------------|
 | 入力フォームの制御 | 検索補完、リアルタイムバリデーション | [`debounceTime`](../operators/filtering/debounceTime.md), [`distinctUntilChanged`](../operators/filtering/distinctUntilChanged.md), [`switchMap`](../operators/transformation/switchMap.md) |

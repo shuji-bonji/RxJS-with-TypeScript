@@ -9,18 +9,23 @@ description: ObservableはRxJSの中核となる概念で、時間経過とと�
 RxJSにおけるObservableとは、「時間の経過とともに発生するデータの流れ（ストリーム）」を表現する中核的な構成要素です。Observerパターンに基づいて設計されており、非同期処理やイベント駆動の処理を統一的に扱うことができます。
  
 ## Observableの役割
- 
+
 Observableは、複数の値を時間の経過とともに発行する「データの生産者」として機能します。これに対して、Observerが「消費者」となり、`subscribe()` によって値を購読します。
- 
+
+以下の例では、`observable$`という**Observable（生産者）** を作成し、**Observer（消費者）** が購読して値を受け取ります。
+
 ```ts
 import { Observable } from 'rxjs';
- 
+
+// Observable（生産者）を作成
 const observable$ = new Observable<number>(subscriber => {
+  // 購読時に実行されるロジック
   subscriber.next(1);
   subscriber.next(2);
   subscriber.complete();
 });
- 
+
+// Observer（消費者）が購読
 observable$.subscribe({
   next: value => console.log('次の値:', value),
   error: err => console.error('エラー:', err),
@@ -32,6 +37,9 @@ observable$.subscribe({
 // 次の値: 2
 // 完了
 ```
+
+> [!NOTE]
+> `new Observable(関数)` の引数として渡す関数は、**Observableが購読されたときに実行されるロジック**を定義します。この関数自体は生産者ではなく、Observable全体が生産者です。
  
 ## 通知の種類
  

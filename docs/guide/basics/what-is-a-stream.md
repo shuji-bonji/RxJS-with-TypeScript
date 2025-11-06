@@ -52,9 +52,9 @@ ObservableとObserverは、コールバックを通じて接続され、Subscrip
       Observer -->|next/error/complete| Process[データ処理]
       Subscription -->|unsubscribe| Cleanup[購読解除・<br/>リソース解放]
 
-      style Observable fill:#e1f5ff
-      style Observer fill:#fff4e1
-      style Subscription fill:#e8f5e9
+      style Observable fill:#e1f5ff,color:#333
+      style Observer fill:#fff4e1,color:#333
+      style Subscription fill:#e8f5e9,color:#333
 ```
 
 

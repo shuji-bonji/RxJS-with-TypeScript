@@ -29,6 +29,106 @@ Cold/Hotの違いを理解していないと、以下のような問題に直面
 
 **判断基準：** 各購読者に対して処理を再実行すべきか？それともストリームを共有すべきか？
 
+## Cold vs Hotの判断基準
+
+実際にObservableがColdかHotかを見分けるには、以下の基準で判断できます。
+
+| 判断ポイント | Cold | Hot |
+|-------------|------|-----|
+| **購読ごとに実行ロジックが再実行されるか？** | ✅ 毎回再実行 | ❌ 実行を共有 |
+| **購読前にデータが流れているか？** | ❌ 購読されるまで待機 | ✅ 購読と無関係に流れる |
+| **複数購読で同じデータを受け取るか？** | ❌ 独立したデータ | ✅ 同じデータを共有 |
+
+### 実践的な見分け方
+
+以下のテストで簡単に判断できます。
+
+```typescript
+const observable$ = /* 調べたいObservable */;
+
+observable$.subscribe(/* 購読1 */);
+observable$.subscribe(/* 購読2 */);
+
+// ✅ Cold: Observable内のconsole.logが2回実行される
+//         （購読ごとに実行ロジックが再実行される）
+// ✅ Hot:  Observable内のconsole.logが1回だけ実行される
+//         （実行が共有される）
+```
+
+**具体例：**
+
+```typescript
+import { Observable, Subject } from 'rxjs';
+
+// Cold Observable
+const cold$ = new Observable(subscriber => {
+  console.log('Cold: 実行開始');
+  subscriber.next(Math.random());
+});
+
+cold$.subscribe(v => console.log('購読1:', v));
+cold$.subscribe(v => console.log('購読2:', v));
+// 出力:
+// Cold: 実行開始  ← 1回目
+// 購読1: 0.123...
+// Cold: 実行開始  ← 2回目（再実行される）
+// 購読2: 0.456...
+
+// Hot Observable
+const hot$ = new Subject();
+
+hot$.subscribe(v => console.log('購読1:', v));
+hot$.subscribe(v => console.log('購読2:', v));
+hot$.next(1); // データ発行は1回だけ
+// 出力:
+// 購読1: 1
+// 購読2: 1  ← 同じデータを共有
+```
+
+## Creation Function別 Cold/Hot分類表
+
+すべての主要なCreation Functionについて、Cold/Hotを分類します。これにより、どの関数がどちらのObservableを生成するか一目で分かります。
+
+| カテゴリ | Creation Function | Cold/Hot | 備考 |
+|---------|-------------------|----------|------|
+| **基本作成系** | `of()` | ❄️ Cold | 購読ごとに値を再発行 |
+| | `from()` | ❄️ Cold | 購読ごとに配列/Promiseを再実行 |
+| | `fromEvent()` | ❄️ Cold | 購読ごとに独立したリスナーを追加 [^fromEvent] |
+| | `interval()` | ❄️ Cold | 購読ごとに独立したタイマー |
+| | `timer()` | ❄️ Cold | 購読ごとに独立したタイマー |
+| **ループ生成系** | `range()` | ❄️ Cold | 購読ごとに範囲を再生成 |
+| | `generate()` | ❄️ Cold | 購読ごとにループを再実行 |
+| **HTTP通信系** | `ajax()` | ❄️ Cold | 購読ごとに新しいHTTPリクエスト |
+| | `fromFetch()` | ❄️ Cold | 購読ごとに新しいFetchリクエスト |
+| **結合系** | `concat()` | ❄️ Cold | 元のObservableの性質を引き継ぐ [^combination] |
+| | `merge()` | ❄️ Cold | 元のObservableの性質を引き継ぐ [^combination] |
+| | `combineLatest()` | ❄️ Cold | 元のObservableの性質を引き継ぐ [^combination] |
+| | `zip()` | ❄️ Cold | 元のObservableの性質を引き継ぐ [^combination] |
+| | `forkJoin()` | ❄️ Cold | 元のObservableの性質を引き継ぐ [^combination] |
+| **選択・分割系** | `race()` | ❄️ Cold | 元のObservableの性質を引き継ぐ [^combination] |
+| | `partition()` | ❄️ Cold | 元のObservableの性質を引き継ぐ [^combination] |
+| **条件分岐系** | `iif()` | ❄️ Cold | 条件により選択されたObservableの性質を引き継ぐ |
+| | `defer()` | ❄️ Cold | 購読ごとにファクトリ関数を実行 |
+| **制御系** | `scheduled()` | ❄️ Cold | 元のObservableの性質を引き継ぐ |
+| | `using()` | ❄️ Cold | 購読ごとにリソースを作成 |
+| **Subject系** | `new Subject()` | 🔥 Hot | 常にHot |
+| | `new BehaviorSubject()` | 🔥 Hot | 常にHot |
+| | `new ReplaySubject()` | 🔥 Hot | 常にHot |
+| | `new AsyncSubject()` | 🔥 Hot | 常にHot |
+| **WebSocket** | `webSocket()` | 🔥 Hot | WebSocket接続を共有 |
+
+[^fromEvent]: `fromEvent()` は各購読ごとに独立したイベントリスナーを追加するためCold。ただし、イベント自体は購読と無関係に発生するため、Hotと誤解されやすい。
+
+[^combination]: 結合系Creation Functionsは、結合元のObservableがColdならCold、HotならHotになる。通常はColdのObservableを結合することが多い。
+
+> [!IMPORTANT] 重要な原則
+> **ほぼすべてのCreation FunctionはColdを生成します。**
+> Hotを生成するのは、
+> - Subject系（Subject, BehaviorSubject, ReplaySubject, AsyncSubject）
+> - webSocket()
+>
+> のみです。
+
 ## コールドObservable
 
 ### 特徴
@@ -156,24 +256,23 @@ hot$.complete();
 以下のObservableは常にHotです。
 
 ```typescript
-import { Subject, BehaviorSubject, ReplaySubject, fromEvent } from 'rxjs';
+import { Subject, BehaviorSubject, ReplaySubject } from 'rxjs';
 import { webSocket } from 'rxjs/webSocket';
 
-// Subject系
+// Subject系（常にHot）
 new Subject()                  // Hot
 new BehaviorSubject(0)         // Hot
 new ReplaySubject(1)           // Hot
 
-// DOM イベント
-fromEvent(button, 'click')     // Hot
-fromEvent(window, 'resize')    // Hot
-
-// WebSocket
+// WebSocket（常にHot）
 webSocket('ws://localhost:8080') // Hot
 ```
 
 > [!TIP] ルール
-> Subject系、DOMイベント、WebSocketは常にHot
+> **Hotを生成するのはSubject系とwebSocket()のみ**
+
+> [!WARNING] fromEvent()はColdです
+> `fromEvent(button, 'click')` はHotと誤解されやすいですが、実際は**Cold**です。各購読ごとに独立したイベントリスナーを追加します。イベント自体は購読と無関係に発生しますが、各購読者は独立したリスナーを持ちます。
 
 ## コールドObservableをホットに変換する方法
 
