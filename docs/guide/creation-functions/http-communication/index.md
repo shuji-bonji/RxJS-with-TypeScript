@@ -29,9 +29,9 @@ HTTP通信系 Creation Functions は、外部APIやサーバーとの通信を O
 ### 基本的な違い
 
 ```typescript
+import { switchMap } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 import { fromFetch } from 'rxjs/fetch';
-import { switchMap } from 'rxjs/operators';
 
 // ajax() - レスポンスを自動的にパース
 const ajax$ = ajax.getJSON<Todo>('https://jsonplaceholder.typicode.com/todos/1');
@@ -100,9 +100,8 @@ interface Todo {
 ### API呼び出しパターン
 
 ```typescript
+import { of, catchError, retry, timeout } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { catchError, retry, timeout } from 'rxjs/operators';
-import { of } from 'rxjs';
 
 interface User {
   id: number;
@@ -134,8 +133,7 @@ fetchUser$.subscribe({
 ### フォーム送信パターン
 
 ```typescript
-import { fromEvent } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import { fromEvent, switchMap, map } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 
 // フォームのsubmitイベントをObservable化

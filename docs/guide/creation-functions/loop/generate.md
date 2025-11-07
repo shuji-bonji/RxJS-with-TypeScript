@@ -166,9 +166,7 @@ console.log('購読後');
 条件が常に`true`の場合、無限ループになります。
 
 ```typescript
-import { generate } from 'rxjs';
-import { take } from 'rxjs/operators';
-
+import { generate, take } from 'rxjs';
 // ❌ 危険: 無限ループ（ブラウザがフリーズ）
 // generate(0, x => true, x => x + 1).subscribe(console.log);
 
@@ -197,9 +195,7 @@ generate(
 複雑な状態遷移の例です。
 
 ```typescript
-import { generate } from 'rxjs';
-import { take } from 'rxjs/operators';
-
+import { generate, take } from 'rxjs';
 interface FibState {
   current: number;
   next: number;
@@ -259,9 +255,7 @@ generate<number, RetryState>(
 次のページが存在する限り取得を続けます。
 
 ```typescript
-import { generate, of, Observable } from 'rxjs';
-import { concatMap, delay } from 'rxjs/operators';
-
+import { generate, of, Observable, concatMap, delay } from 'rxjs';
 interface PageState {
   page: number;
   hasNext: boolean;
@@ -314,9 +308,7 @@ generate<number, PageState>(
 不規則な間隔でイベントを発行します。
 
 ```typescript
-import { generate, of } from 'rxjs';
-import { concatMap, delay } from 'rxjs/operators';
-
+import { generate, of, concatMap, delay } from 'rxjs';
 interface TimerState {
   count: number;
   delay: number;
@@ -433,9 +425,7 @@ defer(() => of(1, 2, 3)).subscribe(console.log);
 大量のデータを処理する場合、スケジューラーを指定して非同期実行できます。
 
 ```typescript
-import { generate, asyncScheduler } from 'rxjs';
-import { observeOn } from 'rxjs/operators';
-
+import { generate, asyncScheduler, observeOn } from 'rxjs';
 console.log('開始');
 
 // 100万回のループを非同期で実行
@@ -503,10 +493,7 @@ console.log('購読後（非同期なので即座に実行される）');
 `generate()`自体はエラーを発行しませんが、パイプラインや状態更新関数でエラーが発生する可能性があります。
 
 ```typescript
-import { generate } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
-
+import { generate, of, map, catchError } from 'rxjs';
 generate(
   1,
   x => x <= 10,
@@ -532,10 +519,7 @@ generate(
 状態更新関数内でエラーが発生すると、Observableがエラー状態になります。
 
 ```typescript
-import { generate } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { EMPTY } from 'rxjs';
-
+import { generate, EMPTY, catchError } from 'rxjs';
 generate(
   1,
   x => x <= 10,

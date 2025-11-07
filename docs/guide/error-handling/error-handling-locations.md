@@ -68,9 +68,7 @@ sequenceDiagram
 実際のコード例で、エラーがどのように流れるかを見てみましょう。
 
 ```typescript
-import { of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-
+import { of, map, catchError } from 'rxjs';
 of(1, 2, 3).pipe(
   map(x => {
     if (x === 2) throw new Error('map内のエラー');  // ①
@@ -152,9 +150,8 @@ sequenceDiagram
 ### 実例：APIエラーの段階的処理
 
 ```typescript
+import { of, throwError, catchError, switchMap } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { catchError, switchMap } from 'rxjs/operators';
-import { of, throwError } from 'rxjs';
 
 // APIエラーをcatchErrorで処理
 ajax.get('/api/user/123').pipe(
@@ -196,9 +193,7 @@ ajax.get('/api/user/123').pipe(
 ### 実例：エラーの段階的処理と再スロー
 
 ```typescript
-import { of, throwError } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-
+import { of, throwError, map, catchError } from 'rxjs';
 // パターン1: catchErrorで処理されないエラー
 throwError(() => new Error('未処理エラー')).subscribe({
   next: val => console.log('値:', val),
@@ -243,9 +238,7 @@ of(1).pipe(
 #### パターン1: 成功時とエラー時で統一した形式にする
 
 ```typescript
-import { catchError, map } from 'rxjs/operators';
-import { of, throwError } from 'rxjs';
-
+import { of, throwError, catchError, map } from 'rxjs';
 interface User {
   id: number;
   name: string;
@@ -293,9 +286,7 @@ fetchUsers(true).pipe(
 #### パターン2: シンプルにデフォルト値を返す
 
 ```typescript
-import { catchError } from 'rxjs/operators';
-import { of, throwError } from 'rxjs';
-
+import { of, throwError, catchError } from 'rxjs';
 interface User {
   id: number;
   name: string;
@@ -342,9 +333,8 @@ fetchUsers(true).pipe(
 - ✅ **最終防衛線としてのエラー処理**
 
 ```typescript
+import { throwError, catchError, retry } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { catchError, retry } from 'rxjs/operators';
-import { throwError } from 'rxjs';
 
 ajax.getJSON('/api/critical-data').pipe(
   retry(2),
@@ -372,9 +362,8 @@ ajax.getJSON('/api/critical-data').pipe(
 実務では、`catchError`と`subscribe.error`を組み合わせた階層的なエラー処理が効果的です。
 
 ```typescript
+import { of, throwError, catchError, retry, finalize } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { catchError, retry, finalize } from 'rxjs/operators';
-import { of, throwError } from 'rxjs';
 
 function fetchUserData(userId: string) {
   let isLoading = true;
@@ -526,9 +515,8 @@ sequenceDiagram
 認証エラー（401）は、設計次第で両方のアプローチが可能です。
 
 ```typescript
+import { throwError, EMPTY, catchError } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { catchError } from 'rxjs/operators';
-import { throwError, EMPTY } from 'rxjs';
 
 // アプローチ1: catchErrorでリダイレクト（ストリーム内で完結）
 ajax.getJSON('/api/protected-data').pipe(
@@ -592,9 +580,8 @@ graph TD
 ### 1. エラーは早めにキャッチ、遅めに再スロー
 
 ```typescript
+import { throwError, catchError, map } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { catchError, map } from 'rxjs/operators';
-import { throwError } from 'rxjs';
 
 ajax.getJSON('/api/data').pipe(
   // 早めにキャッチ
@@ -625,9 +612,8 @@ function transformData(data: any) {
 ### 2. エラーの種類を明確に区別
 
 ```typescript
+import { of, throwError, catchError } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { catchError } from 'rxjs/operators';
-import { of, throwError } from 'rxjs';
 
 // カスタムエラー型
 class RecoverableError extends Error {
@@ -670,9 +656,8 @@ ajax.getJSON('/api/data').pipe(
 ### 3. finalizeで確実にクリーンアップ
 
 ```typescript
+import { of, catchError, finalize } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { catchError, finalize } from 'rxjs/operators';
-import { of } from 'rxjs';
 
 let isLoading = true;
 let resourceHandle: any = null;
@@ -720,9 +705,7 @@ A: エラーが発生するとコンソールに`"Unhandled error"`が表示さ�
 ::: info **Q: catchErrorでEMPTYを返すとどうなりますか？**
 A: ストリームは即座に完了します。値を発行せずに`complete()`が呼ばれます。エラーを無視したい場合に使います。
 ```typescript
-import { EMPTY } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-
+import { EMPTY, catchError } from 'rxjs';
 source$.pipe(
   catchError(() => EMPTY) // エラーを無視して完了
 ).subscribe({

@@ -133,9 +133,7 @@ range(start, count).subscribe(console.log);
 複数のタスクを順次実行する際に使用します。
 
 ```typescript
-import { range, of, Observable } from 'rxjs';
-import { concatMap, delay, map } from 'rxjs/operators';
-
+import { range, of, Observable, concatMap, delay, map } from 'rxjs';
 // データ処理をシミュレートする関数
 function processItem(index: number): Observable<string> {
   return of(index).pipe(
@@ -167,9 +165,7 @@ range(1, 10).pipe(
 複数ページのデータを順次取得します。
 
 ```typescript
-import { range, of, Observable } from 'rxjs';
-import { concatMap, delay } from 'rxjs/operators';
-
+import { range, of, Observable, concatMap, delay } from 'rxjs';
 interface PageData {
   page: number;
   items: string[];
@@ -210,9 +206,7 @@ fetchAllPages(5).subscribe({
 配列の各要素を処理する際に、インデックスベースのループとして使用します。
 
 ```typescript
-import { range } from 'rxjs';
-import { map } from 'rxjs/operators';
-
+import { range, map } from 'rxjs';
 const items = ['Apple', 'Banana', 'Cherry', 'Date', 'Elderberry'];
 
 range(0, items.length).pipe(
@@ -234,9 +228,7 @@ range(0, items.length).pipe(
 単体テストでモックデータを生成する際に便利です。
 
 ```typescript
-import { range } from 'rxjs';
-import { map, toArray } from 'rxjs/operators';
-
+import { range, map, toArray } from 'rxjs';
 // ユーザーデータのモック生成
 range(1, 100).pipe(
   map(id => ({
@@ -256,9 +248,7 @@ range(1, 100).pipe(
 エラー時のリトライ回数を制御します。
 
 ```typescript
-import { range, throwError, concat, of, Observable } from 'rxjs';
-import { mergeMap, delay, catchError, map, toArray } from 'rxjs/operators';
-
+import { range, throwError, concat, of, Observable, mergeMap, delay, catchError, map, toArray } from 'rxjs';
 // データ取得をシミュレートする関数（ランダムに失敗する）
 function fetchData(): Observable<string> {
   const shouldFail = Math.random() > 0.7; // 30%の確率で成功
@@ -309,9 +299,7 @@ fetchWithRetry().subscribe({
 大量のデータを処理する場合、スケジューラーを指定して非同期実行できます。
 
 ```typescript
-import { range, asyncScheduler } from 'rxjs';
-import { observeOn } from 'rxjs/operators';
-
+import { range, asyncScheduler, observeOn } from 'rxjs';
 console.log('開始');
 
 // 100万個の数値を非同期で発行
@@ -459,10 +447,7 @@ from(existingArray).subscribe(console.log);
 `range()`自体はエラーを発行しませんが、パイプラインでエラーが発生する可能性があります。
 
 ```typescript
-import { range } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
-
+import { range, of, map, catchError } from 'rxjs';
 range(1, 10).pipe(
   map(n => {
     if (n === 5) {

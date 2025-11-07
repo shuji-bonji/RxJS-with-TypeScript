@@ -34,8 +34,7 @@ RxJSの公式ドキュメントでよく見かけるマーブル図（Marble Dia
 
 #### 実例：チャットメッセージのバッチ送信
 ```typescript
-import { fromEvent, interval } from 'rxjs';
-import { buffer } from 'rxjs/operators';
+import { fromEvent, interval, buffer } from 'rxjs';
 
 // ユーザーがメッセージを入力（ストリーム）
 const messageInput$ = fromEvent(inputField, 'input');
@@ -84,7 +83,7 @@ messageInput$.pipe(
 
 ```typescript
 import { interval, Subject } from 'rxjs';
-import { buffer, tap } from 'rxjs/operators';
+import { buffer, tap } from 'rxjs';
 
 const trigger$ = new Subject();
 
@@ -119,7 +118,7 @@ setTimeout(() => {
 
 ```typescript
 import { fromEvent, interval } from 'rxjs';
-import { buffer, map } from 'rxjs/operators';
+import { buffer, map } from 'rxjs';
 
 // 1秒ごとのタイマーをトリガーとして使用
 const timer$ = interval(1000);
@@ -137,7 +136,7 @@ fromEvent(document, 'click').pipe(
 
 ```typescript
 import { fromEvent, interval } from 'rxjs';
-import { buffer, filter } from 'rxjs/operators';
+import { buffer, filter } from 'rxjs';
 
 const input$ = fromEvent(formElement, 'input');
 const autoSave$ = interval(5000); // 5秒ごと

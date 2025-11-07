@@ -266,9 +266,7 @@ fetchWithRetry().subscribe({
 `tap`オペレーターの`error`コールバックを使用することで、エラー発生時に試行回数をカウントできます。
 
 ```typescript
-import { throwError, of } from 'rxjs';
-import { retry, catchError, tap } from 'rxjs/operators';
-
+import { throwError, of, retry, catchError, tap } from 'rxjs';
 let attemptCount = 0;
 
 throwError(() => new Error('一時的なエラー'))
@@ -306,9 +304,7 @@ throwError(() => new Error('一時的なエラー'))
 より詳細な情報（試行回数、遅延時間、エラー内容）を追跡するには、`retryWhen`を使用します。
 
 ```typescript
-import { throwError, of, timer } from 'rxjs';
-import { retryWhen, mergeMap, catchError } from 'rxjs/operators';
-
+import { throwError, of, timer, retryWhen, mergeMap, catchError } from 'rxjs';
 throwError(() => new Error('一時的なエラー'))
   .pipe(
     retryWhen((errors) =>
@@ -368,9 +364,7 @@ throwError(() => new Error('一時的なエラー'))
 実際のAPIリクエストなど、値を発行するObservableの場合は、カスタムObservableで試行回数を管理できます。
 
 ```typescript
-import { Observable, of } from 'rxjs';
-import { retry, catchError } from 'rxjs/operators';
-
+import { Observable, of, retry, catchError } from 'rxjs';
 let attemptCount = 0;
 
 // 試行回数をカウントできるObservable
@@ -413,9 +407,8 @@ retryableStream$
 実用的なAPIリクエストでの詳細ログ記録パターンです。
 
 ```typescript
+import { timer, throwError, of, retryWhen, mergeMap, catchError, finalize } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { retryWhen, mergeMap, catchError, finalize } from 'rxjs/operators';
-import { timer, throwError, of } from 'rxjs';
 
 function fetchWithRetryLogging(url: string, maxRetries = 3) {
   let startTime = Date.now();
@@ -472,9 +465,7 @@ fetchWithRetryLogging('https://jsonplaceholder.typicode.com/users/1').subscribe(
 RxJS 7.4以降では、`retry`に設定オブジェクトを渡すことができます。
 
 ```typescript
-import { throwError, of } from 'rxjs';
-import { retry, catchError, tap } from 'rxjs/operators';
-
+import { throwError, of, retry, catchError, tap } from 'rxjs';
 let attemptCount = 0;
 
 throwError(() => new Error('一時的なエラー'))

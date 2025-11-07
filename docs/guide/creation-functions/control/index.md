@@ -62,9 +62,7 @@ console.log('購読終了');
 ### 基本的な使い方
 
 ```typescript
-import { using, interval, Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
-
+import { using, interval, Subscription, take } from 'rxjs';
 const resource$ = using(
   // リソースファクトリー: 購読開始時に実行
   () => {

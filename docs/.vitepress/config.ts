@@ -522,22 +522,16 @@ export default withMermaid({
       },
       {
         text: '13. 実践パターン',
-        // items: [
-        //   {
-        //     text: '状態管理パターン',
-        //     link: '/guide/patterns/state-management',
-        //   },
-        //   { text: '非同期データフェッチ', link: '/guide/patterns/async-data' },
-        //   {
-        //     text: 'デバウンスとスロットル',
-        //     link: '/guide/patterns/debounce-throttle',
-        //   },
-        //   { text: 'キャッシュ戦略', link: '/guide/patterns/caching' },
-        //   {
-        //     text: 'メモリリークの防止',
-        //     link: '/guide/patterns/memory-leak-prevention',
-        //   },
-        // ],
+        items: [
+          { text: '実践パターン集の概要', link: '/guide/practical-patterns/' },
+          { text: 'UIイベント処理', link: '/guide/practical-patterns/ui-events' },
+          { text: 'API呼び出し', link: '/guide/practical-patterns/api-calls' },
+          { text: 'フォーム処理', link: '/guide/practical-patterns/form-handling' },
+          { text: 'リアルタイムデータ処理', link: '/guide/practical-patterns/real-time-data' },
+          { text: 'キャッシュ戦略', link: '/guide/practical-patterns/caching-strategies' },
+          { text: 'エラーハンドリング実践', link: '/guide/practical-patterns/error-handling-patterns' },
+          { text: 'subscribe内の条件分岐', link: '/guide/practical-patterns/subscribe-branching' },
+        ],
       },
       {
         text: '14. パフォーマンス最適化',

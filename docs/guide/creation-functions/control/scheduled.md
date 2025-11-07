@@ -142,9 +142,7 @@ console.log('終了');
 ### animationFrameScheduler（アニメーション）
 
 ```typescript
-import { scheduled, animationFrameScheduler } from 'rxjs';
-import { map } from 'rxjs/operators';
-
+import { scheduled, animationFrameScheduler, map } from 'rxjs';
 // アニメーションフレームごとに値を更新
 const positions = [0, 50, 100, 150, 200];
 const animation$ = scheduled(positions, animationFrameScheduler).pipe(
@@ -169,9 +167,7 @@ animation$.subscribe(position => {
 ### UIをブロックしない大量データ処理
 
 ```typescript
-import { scheduled, asyncScheduler } from 'rxjs';
-import { map, bufferCount } from 'rxjs/operators';
-
+import { scheduled, asyncScheduler, map, bufferCount } from 'rxjs';
 // 100万件のデータを処理
 const largeArray = Array.from({ length: 1000000 }, (_, i) => i);
 
@@ -193,9 +189,7 @@ console.log('UIは引き続き応答可能');
 ### Promiseとの組み合わせ
 
 ```typescript
-import { scheduled, asyncScheduler } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
-
+import { scheduled, asyncScheduler, mergeMap } from 'rxjs';
 interface User {
   id: number;
   name: string;
@@ -276,9 +270,8 @@ describe('scheduled()', () => {
 ### 非同期処理のテスト
 
 ```typescript
+import { scheduled, asyncScheduler, delay } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-import { scheduled, asyncScheduler } from 'rxjs';
-import { delay } from 'rxjs/operators';
 
 describe('非同期処理のテスト', () => {
   let testScheduler: TestScheduler;
@@ -317,9 +310,7 @@ describe('非同期処理のテスト', () => {
 ### 1. ページネーション付きデータ取得
 
 ```typescript
-import { scheduled, asyncScheduler } from 'rxjs';
-import { mergeMap, toArray } from 'rxjs/operators';
-
+import { scheduled, asyncScheduler, mergeMap, toArray } from 'rxjs';
 interface Page {
   page: number;
   data: any[];
@@ -346,9 +337,7 @@ allData$.subscribe({
 ### 2. バッチ処理
 
 ```typescript
-import { scheduled, asyncScheduler } from 'rxjs';
-import { bufferCount, mergeMap, delay } from 'rxjs/operators';
-
+import { scheduled, asyncScheduler, bufferCount, mergeMap, delay } from 'rxjs';
 // 大量のタスクを1000件ずつ処理
 const tasks = Array.from({ length: 10000 }, (_, i) => `Task-${i}`);
 
@@ -372,9 +361,7 @@ function processBatch(batch: string[]): Promise<void> {
 ### 3. アニメーションの実装
 
 ```typescript
-import { scheduled, animationFrameScheduler } from 'rxjs';
-import { map } from 'rxjs/operators';
-
+import { scheduled, animationFrameScheduler, map } from 'rxjs';
 // 0から100までの値を生成
 const frames = Array.from({ length: 100 }, (_, i) => i);
 

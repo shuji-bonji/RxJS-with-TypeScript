@@ -15,9 +15,8 @@ description: RxJSのfromFetch()関数を使って、Fetch APIベースのHTTP通
 `fromFetch()` を使った最もシンプルな例は、URLを渡してレスポンスを手動でパースする方法です。
 
 ```typescript
+import { of, switchMap, catchError } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { switchMap, catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
 
 interface Todo {
   userId: number;
@@ -65,8 +64,8 @@ data$.subscribe({
 ### GET リクエスト
 
 ```typescript
+import { switchMap } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { switchMap } from 'rxjs/operators';
 
 interface User {
   id: number;
@@ -92,8 +91,8 @@ users$.subscribe({
 ### POST リクエスト
 
 ```typescript
+import { switchMap } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { switchMap } from 'rxjs/operators';
 
 interface CreateUserRequest {
   name: string;
@@ -137,8 +136,8 @@ createUser$.subscribe({
 ### PUT リクエスト
 
 ```typescript
+import { switchMap } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { switchMap } from 'rxjs/operators';
 
 interface UpdateUserRequest {
   name: string;
@@ -174,8 +173,8 @@ updateUser$.subscribe({
 ### DELETE リクエスト
 
 ```typescript
+import { switchMap } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { switchMap } from 'rxjs/operators';
 
 const deleteUser$ = fromFetch('https://api.example.com/users/1', {
   method: 'DELETE',
@@ -205,9 +204,8 @@ deleteUser$.subscribe({
 `fromFetch()` では手動でエラーチェックが必要なため、汎用関数を作成すると便利です。
 
 ```typescript
+import { Observable, switchMap } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { switchMap } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 
 function fetchJSON<T>(url: string, options?: RequestInit): Observable<T> {
   return fromFetch(url, options).pipe(
@@ -239,9 +237,8 @@ todo$.subscribe({
 ### HTTPステータスコードによる詳細な処理
 
 ```typescript
+import { throwError, switchMap } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { switchMap } from 'rxjs/operators';
-import { throwError } from 'rxjs';
 
 const api$ = fromFetch('https://api.example.com/data').pipe(
   switchMap(response => {
@@ -274,8 +271,8 @@ api$.subscribe({
 ### タイムアウトとリトライ
 
 ```typescript
+import { switchMap, timeout, retry } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { switchMap, timeout, retry } from 'rxjs/operators';
 
 const api$ = fromFetch('https://api.example.com/slow-endpoint').pipe(
   timeout(5000), // 5秒でタイムアウト
@@ -299,8 +296,8 @@ api$.subscribe({
 `fromFetch()` は、Fetch APIの `AbortController` を使ったリクエストのキャンセルに対応しています。
 
 ```typescript
+import { switchMap } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { switchMap } from 'rxjs/operators';
 
 const controller = new AbortController();
 const signal = controller.signal;
@@ -336,8 +333,7 @@ setTimeout(() => {
 ### ユーザー入力に応じた検索（switchMap）
 
 ```typescript
-import { fromEvent } from 'rxjs';
-import { map, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { fromEvent, map, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
 
 interface SearchResult {
@@ -375,9 +371,8 @@ search$.subscribe({
 ### 複数のリクエストを並列実行
 
 ```typescript
+import { forkJoin, switchMap } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { forkJoin } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 
 interface User {
   id: number;
@@ -414,8 +409,8 @@ forkJoin({
 ### 1. 認証トークン付きリクエスト
 
 ```typescript
+import { switchMap } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { switchMap } from 'rxjs/operators';
 
 function getAuthToken(): string {
   return localStorage.getItem('authToken') || '';
@@ -460,8 +455,8 @@ profile$.subscribe({
 ### 2. ファイルのダウンロード（Blob）
 
 ```typescript
+import { switchMap } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { switchMap } from 'rxjs/operators';
 
 const downloadFile$ = fromFetch('https://api.example.com/files/report.pdf').pipe(
   switchMap(response => {
@@ -491,8 +486,8 @@ downloadFile$.subscribe({
 ### 3. GraphQL クエリ
 
 ```typescript
+import { switchMap } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { switchMap } from 'rxjs/operators';
 
 interface GraphQLResponse<T> {
   data?: T;
@@ -553,8 +548,8 @@ user$.subscribe({
 ### 4. ページネーション付きAPI
 
 ```typescript
+import { expand, takeWhile, reduce, switchMap } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { expand, takeWhile, reduce, switchMap } from 'rxjs/operators';
 
 interface PaginatedResponse<T> {
   data: T[];
@@ -681,8 +676,8 @@ fromFetch('https://api.example.com/data', {
 Fetch APIにはタイムアウト機能がないため、RxJSの `timeout()` を使用します。
 
 ```typescript
+import { timeout, switchMap } from 'rxjs';
 import { fromFetch } from 'rxjs/fetch';
-import { timeout, switchMap } from 'rxjs/operators';
 
 const api$ = fromFetch('https://api.example.com/slow').pipe(
   timeout(5000), // 5秒でタイムアウト

@@ -92,6 +92,16 @@ TypeScript環境でRxJSを体系的に学ぶためのガイドです。
 - [複数ストリーム組み合わせ](/guide/overcoming-difficulties/stream-combination)
 - [デバッグの壁](/guide/overcoming-difficulties/debugging-guide)
 
+### 13. 実践パターン集
+- [実践パターン集の概要](/guide/practical-patterns/)
+- [UIイベント処理](/guide/practical-patterns/ui-events) - クリック、スクロール、ドラッグ&ドロップなど
+- [API呼び出し](/guide/practical-patterns/api-calls) - HTTP通信、並列/直列処理、エラーハンドリング
+- [フォーム処理](/guide/practical-patterns/form-handling) - リアルタイムバリデーション、自動保存、複数フィールド連携
+- [リアルタイムデータ処理](/guide/practical-patterns/real-time-data) - WebSocket、SSE、Polling、接続管理
+- [キャッシュ戦略](/guide/practical-patterns/caching-strategies) - データキャッシュ、TTL、無効化、オフライン対応
+- [エラーハンドリング実践](/guide/practical-patterns/error-handling-patterns) - API呼び出しエラー、リトライ戦略、グローバルエラー処理
+- [subscribe内の条件分岐](/guide/practical-patterns/subscribe-branching) - subscribe内での分岐を避ける、パイプライン内での分岐方法
+
 ### 付録
 - [付録の概要](/guide/appendix/)
 - [組み込み開発とリアクティブプログラミング](/guide/appendix/embedded-reactive-programming)

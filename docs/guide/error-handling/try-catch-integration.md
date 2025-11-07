@@ -22,6 +22,7 @@ JavaScriptには標準的なエラー処理として`try-catch`があります�
 以下のような非同期エラーは、`try-catch`では捕捉できません。
 
 ```typescript
+import { timer, throwError, mergeMap, catchError } from 'rxjs';
 // ❌ try-catchでは非同期エラーを捕捉できない
 try {
   setTimeout(() => {
@@ -33,8 +34,6 @@ try {
 }
 
 // ✅ RxJSなら非同期エラーも捕捉できる
-import { timer, throwError } from 'rxjs';
-import { mergeMap, catchError } from 'rxjs/operators';
 
 timer(1000).pipe(
   mergeMap(() => throwError(() => new Error('非同期エラー'))),
@@ -57,9 +56,7 @@ RxJSを使っていても、以下のケースでは`try-catch`が必要です�
 `finalize`や`using`内でのリソース解放時には、`try-catch`でエラーを捕捉します。
 
 ```typescript
-import { interval } from 'rxjs';
-import { take, finalize } from 'rxjs/operators';
-
+import { interval, take, finalize } from 'rxjs';
 let ws: WebSocket | null = null;
 
 interval(1000).pipe(
@@ -135,9 +132,7 @@ parseUserData('invalid json').subscribe({
 RxJSを使わない外部ライブラリを使用する際のエラー処理。
 
 ```typescript
-import { of } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-
+import { of, map, catchError } from 'rxjs';
 // 外部ライブラリ（例: 画像処理ライブラリ）
 declare const ExternalImageLib: {
   process(data: string): string;
@@ -173,9 +168,7 @@ of('image-data-1', 'image-data-2', 'invalid-data').pipe(
 `map`、`tap`などのオペレーター内で同期的な処理を行う場合。
 
 ```typescript
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
-
+import { of, map } from 'rxjs';
 interface Config {
   apiUrl: string;
   timeout: number;
@@ -212,9 +205,8 @@ of('{"apiUrl": "https://api.example.com", "timeout": 5000}').pipe(
 同期エラーは`try-catch`、非同期エラーは`catchError`で処理する階層的アプローチ。
 
 ```typescript
+import { of, map, catchError, finalize } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { map, catchError, finalize } from 'rxjs/operators';
-import { of } from 'rxjs';
 
 interface ApiResponse {
   data: string;
@@ -260,9 +252,7 @@ ajax.getJSON<ApiResponse>('https://api.example.com/data').pipe(
 ### パターン2: using()でのリソース管理
 
 ```typescript
-import { using, interval } from 'rxjs';
-import { take } from 'rxjs/operators';
-
+import { using, interval, take } from 'rxjs';
 interface ManagedResource {
   id: string;
   close: () => void;
@@ -314,9 +304,8 @@ createManagedStream(resource).subscribe({
 外部APIのエラーをアプリケーション固有のエラーに変換。
 
 ```typescript
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, catchError, map } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { catchError, map } from 'rxjs/operators';
 
 // カスタムエラークラス
 class ValidationError extends Error {
@@ -438,10 +427,9 @@ try {
 ```
 
 ```typescript
+import { of, catchError } from 'rxjs';
 // ✅ 良い例: catchErrorまたはsubscribe.errorで処理
 import { ajax } from 'rxjs/ajax';
-import { catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
 
 ajax.getJSON('https://api.example.com/data').pipe(
   catchError(error => {
@@ -456,9 +444,8 @@ ajax.getJSON('https://api.example.com/data').pipe(
 ### ❌ アンチパターン2: try-catchでエラーを握りつぶす
 
 ```typescript
+import { of, map } from 'rxjs';
 // ❌ 悪い例: エラーをログだけして握りつぶす
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 of('invalid-json').pipe(
   map(json => {
@@ -478,9 +465,8 @@ of('invalid-json').pipe(
 ```
 
 ```typescript
+import { of, map } from 'rxjs';
 // ✅ 良い例: エラー情報を保持する
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 interface ParseResult {
   success: boolean;
@@ -514,9 +500,8 @@ of('invalid-json').pipe(
 ### ❌ アンチパターン3: 不要なtry-catchの乱用
 
 ```typescript
+import { of, map } from 'rxjs';
 // ❌ 悪い例: RxJSが処理できるエラーをtry-catchで包む
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 of(1, 2, 3).pipe(
   map(x => {
@@ -531,9 +516,8 @@ of(1, 2, 3).pipe(
 ```
 
 ```typescript
+import { of, map } from 'rxjs';
 // ✅ 良い例: 必要な箇所だけtry-catchを使う
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 of('{"value": 1}', 'invalid', '{"value": 2}').pipe(
   map(json => {
@@ -555,9 +539,8 @@ of('{"value": 1}', 'invalid', '{"value": 2}').pipe(
 ### 1. エラーの種類で使い分ける
 
 ```typescript
+import { of, map, catchError, finalize } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { map, catchError, finalize } from 'rxjs/operators';
-import { of } from 'rxjs';
 
 // 明確な使い分け
 ajax.getJSON<{ data: string }>('https://api.example.com/data').pipe(
@@ -589,9 +572,7 @@ ajax.getJSON<{ data: string }>('https://api.example.com/data').pipe(
 ### 2. エラー情報を保持する
 
 ```typescript
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
-
+import { of, map } from 'rxjs';
 interface Result<T> {
   success: boolean;
   value?: T;
@@ -626,6 +607,7 @@ of('{"name": "太郎"}', 'invalid').pipe(
 ### 3. カスタムエラーで詳細情報を提供
 
 ```typescript
+import { of, map } from 'rxjs';
 // カスタムエラークラス
 class DataProcessingError extends Error {
   constructor(
@@ -638,8 +620,6 @@ class DataProcessingError extends Error {
   }
 }
 
-import { of } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 of({ raw: 'some-data' }).pipe(
   map(input => {
@@ -671,9 +651,8 @@ function processData(raw: string): any {
 ### 4. ログとモニタリング
 
 ```typescript
+import { of, map, catchError, tap } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { map, catchError, tap } from 'rxjs/operators';
-import { of } from 'rxjs';
 
 // エラー監視関数
 function logError(context: string, error: Error): void {
@@ -741,9 +720,7 @@ A: `finalize`内でエラーが発生すると、そのエラーは`subscribe.er
 ::: info **Q: async/awaitとtry-catchの組み合わせは使えますか？**
 A: はい、Promiseを扱う場合は有効です。
 ```typescript
-import { from } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
-
+import { from, mergeMap } from 'rxjs';
 async function fetchData(id: string): Promise<any> {
   try {
     const response = await fetch(`/api/data/${id}`);

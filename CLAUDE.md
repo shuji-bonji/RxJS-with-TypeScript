@@ -166,8 +166,7 @@ Automated via GitHub Actions (`.github/workflows/deploy.yml`):
 
 Example of good TypeScript code:
 ```typescript
-import { Observable } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
+import { Observable, map, filter } from 'rxjs';
 
 interface User {
   id: number;
@@ -198,9 +197,12 @@ const activeUsers$ = users$.pipe(
 
 **Import Method** (RxJS 7.2+):
 ```typescript
-// Recommended import method
-import { Observable, of, from } from 'rxjs';
-import { map, filter, catchError } from 'rxjs/operators';
+// Recommended import method - all from 'rxjs'
+import { Observable, of, from, map, filter, catchError } from 'rxjs';
+
+// DEPRECATED (RxJS < 7.2):
+// import { Observable, of, from } from 'rxjs';
+// import { map, filter, catchError } from 'rxjs/operators';
 ```
 
 ### 3. Angular Integration Considerations
@@ -739,14 +741,31 @@ The following new chapters have been added or are planned for future releases.
 │   ├── グローバルエラーハンドリング
 │   ├── エラー境界の設計
 │   └── ログとモニタリング
-└── subscribe-branching.md          # subscribe内の条件分岐パターン
-    ├── 問題：subscribe内で複雑な条件分岐
-    ├── パターン1: パイプラインでの分岐（filter + tap）
-    ├── パターン2: partition による分岐
-    ├── パターン3: switchMap + iif による動的分岐
-    ├── パターン4: 関数化 + map による変換（推奨）
-    ├── 実践例：APIレスポンス処理
-    └── 選択のガイドライン
+├── subscribe-branching.md          # subscribe内の条件分岐パターン
+│   ├── 問題：subscribe内で複雑な条件分岐
+│   ├── パターン1: パイプラインでの分岐（filter + tap）
+│   ├── パターン2: partition による分岐
+│   ├── パターン3: switchMap + iif による動的分岐
+│   ├── パターン4: 関数化 + map による変換（推奨）
+│   ├── 実践例：APIレスポンス処理
+│   └── 選択のガイドライン
+└── advanced-form-patterns.md       # JSON Patchを使った高度なフォームパターン
+    ├── 大規模フォームの自動保存とUndo/Redo
+    │   ├── JSON Patch/Pointer の基礎 (RFC 6902/6901)
+    │   ├── 差分検出とパッチ生成（pairwise + fast-json-patch）
+    │   ├── 自動保存（バッチング + 順序保証 with concatMap）
+    │   ├── 楽観的UI更新（scan による即時反映）
+    │   ├── Undo/Redo実装（逆パッチによる履歴管理）
+    │   ├── オフライン対応（IndexedDB キュー）
+    │   └── パフォーマンス最適化（パッチ圧縮、分割送信）
+    └── 共同編集のリアルタイム同期
+        ├── Operational Transform (OT) / CRDT の基礎
+        ├── WebSocket + RxJS統合（双方向通信）
+        ├── バージョン管理（Vector Clock / Lamport Timestamp）
+        ├── プレゼンス管理（カーソル位置、アクティブユーザー）
+        ├── 競合解決の実践（OT変換、送信バッファ管理）
+        ├── ライブラリ選択（ShareDB vs Yjs）
+        └── エラーハンドリング（再接続、状態同期）
 ```
 
 **Content Characteristics:**
@@ -755,6 +774,132 @@ The following new chapters have been added or are planned for future releases.
 - パフォーマンスとメモリ考慮
 - テストコード付き
 - TypeScript での型安全性
+- 標準技術優先（RFC準拠、W3C標準）
+- **実行可能なコード例**（HTML準備不要、そのまま動作）
+
+**Executable Code Examples (Chapter 13 Required):**
+
+All code examples in Chapter 13 must be **immediately executable** without requiring pre-existing HTML markup. This allows learners to:
+- Copy/paste code and see it work instantly
+- Run examples in browser console or CodeSandbox/StackBlitz
+- Focus on RxJS patterns without HTML setup overhead
+
+**Guidelines:**
+
+1. **Create DOM elements dynamically** instead of querying existing elements
+2. **Append elements to document.body** to make them visible
+3. **Comment out querySelector** to show the traditional approach (educational)
+4. **Include cleanup code** where appropriate (removeEventListener, element removal)
+
+**Example Pattern:**
+
+```typescript
+// ❌ Bad: Requires pre-existing HTML
+const button = document.querySelector<HTMLButtonElement>('#submit-button');
+if (button) {
+  fromEvent(button, 'click').pipe(
+    throttleTime(1000)
+  ).subscribe(() => {
+    console.log('送信処理実行');
+  });
+}
+
+// ✅ Good: Creates element dynamically (immediately executable)
+import { fromEvent, throttleTime } from 'rxjs';
+
+// Traditional approach (commented for reference)
+// const button = document.querySelector<HTMLButtonElement>('#submit-button');
+
+// Self-contained: creates button dynamically
+const button = document.createElement('button');
+button.id = 'submit-button';
+button.innerText = 'Submit';
+button.style.padding = '10px 20px';
+button.style.margin = '10px';
+document.body.appendChild(button);
+
+fromEvent(button, 'click').pipe(
+  throttleTime(1000) // 1秒間に1回のみ処理
+).subscribe(() => {
+  console.log('送信処理実行');
+  submitForm();
+});
+
+function submitForm(): void {
+  console.log('フォーム送信中...');
+  // API呼び出し等
+}
+
+// Optional: Cleanup example
+// button.remove(); // or document.body.removeChild(button);
+```
+
+**When to Apply:**
+
+- ✅ **Required**: All Chapter 13 examples (ui-events, form-handling, etc.)
+- ✅ **Required**: Examples meant for CodeSandbox/StackBlitz embedding
+- ✅ **Recommended**: Any code example demonstrating DOM interactions
+- ⚠️ **Optional**: Simple operator examples without DOM (map, filter, etc.)
+
+**Additional DOM Element Examples:**
+
+```typescript
+// Input field
+const input = document.createElement('input');
+input.type = 'text';
+input.placeholder = 'Enter text...';
+input.style.padding = '8px';
+input.style.margin = '10px';
+document.body.appendChild(input);
+
+// Div for output
+const output = document.createElement('div');
+output.id = 'output';
+output.style.padding = '10px';
+output.style.border = '1px solid #ccc';
+output.style.margin = '10px';
+document.body.appendChild(output);
+
+// Form
+const form = document.createElement('form');
+form.innerHTML = `
+  <input type="text" name="username" placeholder="Username" />
+  <input type="email" name="email" placeholder="Email" />
+  <button type="submit">Submit</button>
+`;
+form.style.padding = '10px';
+document.body.appendChild(form);
+```
+
+**Style Guidelines:**
+
+1. **Add basic styling** to make elements visible and usable
+   - padding, margin for buttons/inputs
+   - border for containers
+   - Don't overdo styling (focus on RxJS, not CSS)
+
+2. **Use semantic element names**
+   - `submitButton`, `emailInput`, `resultDiv`
+
+3. **Include element cleanup** for long-running examples
+   ```typescript
+   // At the end of examples with subscriptions
+   subscription.add(() => {
+     button.remove(); // Clean up DOM
+   });
+   ```
+
+4. **Show traditional approach** in comments
+   - Helps learners understand real-world usage
+   - Shows migration path from static HTML
+
+**Benefits:**
+
+- ✅ Zero HTML setup required
+- ✅ Works in browser console immediately
+- ✅ Perfect for CodeSandbox/StackBlitz embedding
+- ✅ Easy to copy/paste and experiment
+- ✅ Focus stays on RxJS patterns, not HTML boilerplate
 
 **Integration with Existing Content:**
 - Chapter 6（エラーハンドリング）の基礎を実践で応用
@@ -765,6 +910,7 @@ The following new chapters have been added or are planned for future releases.
 1. **Phase 1**: Core patterns (ui-events, api-calls, form-handling)
 2. **Phase 2**: Advanced patterns (real-time-data, caching-strategies)
 3. **Phase 3**: Specialized patterns (error-handling, subscribe-branching)
+4. **Phase 4**: JSON Patch patterns (advanced-form-patterns) - 詳細は下記参照
 
 **Developer Focus Areas:**
 - WebSocket integration (developer's learning focus) → `real-time-data.md`
@@ -772,8 +918,317 @@ The following new chapters have been added or are planned for future releases.
 - Web Components integration → `ui-events.md`
 
 **Timeline:**
-- **Q2-Q3 2025**: Chapter 13 implementation (7 pages)
+- **Q2-Q3 2025**: Chapter 13 implementation (Phase 1-3: 7 pages)
+- **Q3-Q4 2025**: Phase 4 implementation (advanced-form-patterns.md)
 - **Q4 2025**: Integration and cross-referencing
+
+### Supporting Infrastructure: JSON Patch Examples Repository
+
+**Purpose:**
+Provide executable code examples for JSON Patch patterns since no public APIs support JSON Patch operations.
+
+**Problem:**
+- No public testing APIs (like JSONPlaceholder) support JSON Patch (RFC 6902)
+- Learners need hands-on environment to understand JSON Patch + RxJS patterns
+- Server-side implementation is required for complete demonstrations
+
+**Solution: Multi-Phase Approach**
+
+#### Phase 1: Embedded Demos (Immediate - Priority 1)
+
+**Goal:** Enable learners to try patterns instantly without setup
+
+**Approach:**
+- Create StackBlitz/CodeSandbox projects with MSW (Mock Service Worker)
+- Embed interactive demos directly in documentation pages
+- Use browser-based mocking (no server required)
+
+**Stack:**
+```json
+{
+  "frontend": {
+    "rxjs": "^7.8.2",
+    "fast-json-patch": "^3.1.1",
+    "msw": "^2.0.0",
+    "vite": "^5.0.0",
+    "typescript": "^5.3.0"
+  }
+}
+```
+
+**Deliverables:**
+1. Large Form Autosave Demo (StackBlitz)
+   - JSON Patch generation with `pairwise()` + `fast-json-patch`
+   - Auto-save with `bufferTime()` + `concatMap()`
+   - Undo/Redo with inverse patches
+   - MSW handlers for `/api/forms/:id/patches`
+
+2. Collaborative Editing Demo (StackBlitz)
+   - Yjs integration (uses public Yjs WebSocket server)
+   - Real-time sync demonstration
+   - Presence management (cursor positions)
+
+**Documentation Integration:**
+```markdown
+## 実際に試してみる
+
+<iframe src="https://stackblitz.com/edit/rxjs-json-patch-autosave?embed=1&file=src/main.ts"
+  style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
+></iframe>
+
+[新しいタブで開く →](https://stackblitz.com/edit/rxjs-json-patch-autosave)
+```
+
+**Estimated Effort:** 2-3 hours per demo × 2 demos = 4-6 hours
+
+---
+
+#### Phase 2: Starter Kit Repository (Short-term - Priority 2)
+
+**Goal:** Provide comprehensive, runnable codebase with frontend and backend
+
+**Repository:** `https://github.com/shuji-bonji/rxjs-json-patch-examples`
+
+**Structure:**
+```
+rxjs-json-patch-examples/
+├── README.md
+├── package.json (workspaces root)
+├── docker-compose.yml
+│
+├── examples/
+│   ├── 01-basic-patch/              # JSON Patch基礎
+│   │   ├── frontend/
+│   │   ├── backend/ (optional)
+│   │   └── README.md
+│   │
+│   ├── 02-large-form-autosave/      # 大規模フォーム
+│   │   ├── frontend/
+│   │   │   ├── src/
+│   │   │   │   ├── lib/
+│   │   │   │   │   ├── patch-generator.ts
+│   │   │   │   │   ├── auto-saver.ts
+│   │   │   │   │   └── history-manager.ts
+│   │   │   │   ├── mocks/handlers.ts (MSW)
+│   │   │   │   └── main.ts
+│   │   │   ├── package.json
+│   │   │   └── vite.config.ts
+│   │   │
+│   │   ├── backend/
+│   │   │   ├── src/
+│   │   │   │   ├── server.ts (Express or Hono)
+│   │   │   │   ├── routes/form.ts
+│   │   │   │   └── services/patch.ts
+│   │   │   └── package.json
+│   │   │
+│   │   └── README.md
+│   │
+│   ├── 03-collaborative-editing/    # 共同編集
+│   │   ├── frontend/ (Yjs integration)
+│   │   ├── backend/ (y-websocket server)
+│   │   └── README.md
+│   │
+│   └── 04-offline-queue/            # オフライン対応
+│       ├── frontend/ (IndexedDB)
+│       └── README.md
+│
+├── shared/
+│   └── types.ts (共通型定義)
+│
+└── docs/
+    ├── GETTING_STARTED.md
+    ├── MSW_SETUP.md
+    └── DEPLOYMENT.md
+```
+
+**Technology Stack:**
+
+Frontend (共通):
+- RxJS 7.8.x
+- TypeScript 5.x
+- fast-json-patch 3.x
+- MSW 2.x (mock mode)
+- Vite 5.x
+
+Backend (optional):
+- Express 4.x or Hono (lightweight)
+- ws 8.x (WebSocket)
+- fast-json-patch 3.x
+- better-sqlite3 9.x (lightweight DB)
+
+**Startup Commands:**
+```bash
+# Clone and install all workspaces
+git clone https://github.com/shuji-bonji/rxjs-json-patch-examples
+cd rxjs-json-patch-examples
+npm run install:all
+
+# Run frontend only (MSW mock)
+npm run dev:form
+# → http://localhost:5173
+
+# Run with backend (Docker)
+npm run dev:with-backend
+# → Frontend: http://localhost:5173
+# → Backend: http://localhost:3000
+```
+
+**Design Principles (per discussion):**
+
+Frontend Responsibilities:
+- 操作（コマンド）の生成と整列
+- 楽観的UI反映 (scan による即時適用)
+- Undo/Redoスタック管理 (逆パッチによる履歴)
+- 送信キュー管理 (concatMap で順序保証)
+- バッチング (bufferTime + 圧縮)
+
+Backend Responsibilities (API仕様として記載):
+- バージョン管理 (Vector Clock / タイムスタンプ)
+- 冪等性保証 (Request ID による重複検出)
+- 競合解決とマージ (Last Write Wins or OT)
+- 永続化と監査ログ
+
+**Deliverables:**
+1. 4 complete examples with frontend + backend
+2. MSW handlers for mock mode
+3. Docker Compose setup for easy backend startup
+4. Comprehensive README with setup instructions
+5. TypeScript types shared between frontend/backend
+
+**Documentation Links:**
+```markdown
+## コード例を試す
+
+### 方法1: ブラウザで即座に試す（推奨）
+[StackBlitzで開く →](https://stackblitz.com/github/shuji-bonji/rxjs-json-patch-examples/tree/main/examples/02-large-form-autosave)
+
+### 方法2: ローカルで試す
+\`\`\`bash
+git clone https://github.com/shuji-bonji/rxjs-json-patch-examples
+cd examples/02-large-form-autosave
+npm install
+npm run dev
+\`\`\`
+
+### 方法3: バックエンド含めて試す
+\`\`\`bash
+docker-compose up
+\`\`\`
+```
+
+**Estimated Effort:** 1-2 weeks (10-15 hours)
+
+---
+
+#### Phase 3: Public API (Optional - Long-term)
+
+**Goal:** Deploy live backend API for documentation testing
+
+**Not Priority** - Requires:
+- Infrastructure setup (Vercel/Railway)
+- Maintenance overhead
+- Rate limiting / abuse prevention
+- SSL certificates
+- Monitoring
+
+**Decision:** Phase 1 + Phase 2 provide sufficient learning environment. Phase 3 can be reconsidered based on user feedback.
+
+---
+
+### Implementation Tasks
+
+**Prerequisites:**
+- Chapter 13 Phase 1-3 pages completed
+- `advanced-form-patterns.md` content drafted
+
+**Phase 1 Tasks (Immediate - after Chapter 13 Phase 1-3):**
+1. Create StackBlitz project: Large Form Autosave
+   - Setup Vite + RxJS + fast-json-patch + MSW
+   - Implement patch generation (pairwise)
+   - Implement auto-save (bufferTime + concatMap)
+   - Implement Undo/Redo (inverse patches)
+   - Create MSW handlers
+   - Test and verify
+2. Create StackBlitz project: Collaborative Editing
+   - Setup Vite + RxJS + Yjs
+   - Connect to public Yjs WebSocket server
+   - Implement presence management
+   - Test and verify
+3. Update `advanced-form-patterns.md` with embedded demos
+4. Test embedded iframes in VitePress build
+
+**Phase 2 Tasks (Short-term - 1-2 weeks after Phase 1):**
+1. Setup repository structure
+   - Create `rxjs-json-patch-examples` repo
+   - Setup npm workspaces
+   - Configure TypeScript projects
+2. Implement Example 01: Basic Patch
+   - Simple patch generation demo
+   - Frontend only (MSW)
+3. Implement Example 02: Large Form Autosave
+   - Complete frontend implementation
+   - Backend API (Express + SQLite)
+   - Docker Compose setup
+   - MSW handlers for mock mode
+4. Implement Example 03: Collaborative Editing
+   - Frontend with Yjs
+   - Backend with y-websocket
+   - Docker setup
+5. Implement Example 04: Offline Queue
+   - IndexedDB integration
+   - Sync manager
+6. Documentation
+   - Main README with quick start
+   - Individual example READMEs
+   - Setup guides (MSW, Docker, deployment)
+7. Cross-reference from main documentation
+   - Update `advanced-form-patterns.md` with links
+   - Add "実際に試す" sections
+
+**Phase 3 Tasks (Optional - based on feedback):**
+- Deploy backend to Vercel/Railway
+- Setup monitoring and rate limiting
+- Update documentation with live API endpoints
+
+---
+
+### Success Criteria
+
+**Phase 1:**
+- [ ] Learners can try JSON Patch patterns within 30 seconds (no setup)
+- [ ] Embedded demos work in all major browsers
+- [ ] StackBlitz projects can be forked and modified
+
+**Phase 2:**
+- [ ] Developers can clone and run locally in < 5 minutes
+- [ ] All examples include both MSW mock and real backend
+- [ ] Docker Compose starts full stack with single command
+- [ ] TypeScript types are shared and type-safe
+- [ ] Examples follow design principles (frontend/backend responsibilities)
+
+**Phase 3 (if implemented):**
+- [ ] Live API has 99% uptime
+- [ ] Rate limiting prevents abuse
+- [ ] Monitoring alerts on errors
+
+---
+
+### Dependencies and Risks
+
+**Dependencies:**
+- Chapter 13 Phase 1-3 content completion
+- `advanced-form-patterns.md` content
+- StackBlitz/CodeSandbox availability (free tier)
+
+**Risks:**
+- StackBlitz free tier limitations (project size, uptime)
+- MSW breaking changes in future versions
+- Yjs public server availability for demos
+
+**Mitigation:**
+- Provide multiple demo hosting options (StackBlitz + CodeSandbox)
+- Pin MSW version in examples
+- Include instructions for self-hosted Yjs server
 
 ---
 

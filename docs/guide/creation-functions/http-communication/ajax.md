@@ -204,9 +204,8 @@ delete$.subscribe({
 HTTP通信では、ネットワークエラーやサーバーエラーに対処する必要があります。
 
 ```typescript
+import { of, retry, catchError, timeout } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { retry, catchError, timeout } from 'rxjs/operators';
-import { of } from 'rxjs';
 
 interface User {
   id: number;
@@ -237,9 +236,8 @@ fetchUser$.subscribe({
 ### HTTPステータスコードによる条件分岐
 
 ```typescript
+import { throwError, catchError } from 'rxjs';
 import { ajax, AjaxError } from 'rxjs/ajax';
-import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
 
 const api$ = ajax.getJSON('https://api.example.com/data').pipe(
   catchError((error: AjaxError) => {
@@ -302,8 +300,7 @@ forkJoin({
 ### ユーザー入力に応じた検索（switchMap）
 
 ```typescript
-import { fromEvent } from 'rxjs';
-import { map, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { fromEvent, map, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 
 interface SearchResult {
@@ -342,8 +339,8 @@ search$.subscribe({
 `ajax()` は、`XMLHttpRequest` の `progress` イベントを利用して、アップロード・ダウンロードの進捗を監視できます。
 
 ```typescript
+import { tap } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { tap } from 'rxjs/operators';
 
 const fileInput = document.querySelector('#file') as HTMLInputElement;
 const file = fileInput.files?.[0];
@@ -399,8 +396,8 @@ api$.subscribe({
 ### 1. ページネーション付きAPI呼び出し
 
 ```typescript
+import { expand, takeWhile, reduce } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { expand, takeWhile, reduce } from 'rxjs/operators';
 
 interface PaginatedResponse {
   data: any[];
@@ -429,8 +426,7 @@ fetchAllPages$.subscribe({
 ### 2. ポーリング（定期的なデータ取得）
 
 ```typescript
-import { interval } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { interval, switchMap } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 
 interface Status {
@@ -455,8 +451,8 @@ setTimeout(() => subscription.unsubscribe(), 30000);
 ### 3. 依存関係のあるリクエスト
 
 ```typescript
+import { switchMap } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { switchMap } from 'rxjs/operators';
 
 interface User {
   id: number;
@@ -521,8 +517,8 @@ has been blocked by CORS policy
 
 **対処法:**
 ```typescript
+import { timeout, retry } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { timeout, retry } from 'rxjs/operators';
 
 const api$ = ajax.getJSON('https://api.example.com/slow-endpoint').pipe(
   timeout(10000), // 10秒でタイムアウト
@@ -534,9 +530,8 @@ const api$ = ajax.getJSON('https://api.example.com/slow-endpoint').pipe(
 
 **対処法:**
 ```typescript
+import { throwError, catchError } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
 
 const api$ = ajax({
   url: 'https://api.example.com/protected',

@@ -45,9 +45,7 @@ for文やwhile文のようなループ処理をObservableとして表現する�
 シンプルな連番生成には`range()`が最適です。
 
 ```typescript
-import { range } from 'rxjs';
-import { map } from 'rxjs/operators';
-
+import { range, map } from 'rxjs';
 // 1から5までの連番を生成
 range(1, 5).subscribe(console.log);
 // 出力: 1, 2, 3, 4, 5
@@ -98,9 +96,7 @@ console.log(results); // [2, 4, 6, 8, 10]
 ### 宣言的なrange()
 
 ```typescript
-import { range } from 'rxjs';
-import { map, toArray } from 'rxjs/operators';
-
+import { range, map, toArray } from 'rxjs';
 // RxJSのrange()
 range(1, 5).pipe(
   map(i => i * 2),
@@ -124,9 +120,7 @@ range(1, 5).pipe(
 ### 実践例：計算結果の共有
 
 ```typescript
-import { range } from 'rxjs';
-import { map, share } from 'rxjs/operators';
-
+import { range, map, share } from 'rxjs';
 // ❄️ Cold - 購読ごとに独立した計算
 const cold$ = range(1, 1000).pipe(
   map(n => {
@@ -168,9 +162,7 @@ hot$.subscribe(val => console.log('購読者2:', val));
 ### API呼び出しの連続実行
 
 ```typescript
-import { range, of, Observable } from 'rxjs';
-import { concatMap, delay } from 'rxjs/operators';
-
+import { range, of, Observable, concatMap, delay } from 'rxjs';
 interface PageData {
   page: number;
   items: string[];
@@ -200,9 +192,7 @@ range(1, 10).pipe(
 ### リトライ処理での活用
 
 ```typescript
-import { range, throwError, of, Observable } from 'rxjs';
-import { mergeMap, retryWhen, delay } from 'rxjs/operators';
-
+import { range, throwError, of, Observable, mergeMap, retryWhen, delay } from 'rxjs';
 // データ取得をシミュレートする関数（ランダムに失敗する）
 function fetchData(): Observable<string> {
   const shouldFail = Math.random() > 0.6; // 40%の確率で成功
@@ -271,9 +261,7 @@ fetchWithRetry().subscribe({
 > - または `scheduled()` でスケジューラーを指定し、非同期実行に変更
 
 ```typescript
-import { range, asyncScheduler } from 'rxjs';
-import { observeOn } from 'rxjs/operators';
-
+import { range, asyncScheduler, observeOn } from 'rxjs';
 // 非同期スケジューラーで実行
 range(1, 1000000).pipe(
   observeOn(asyncScheduler)

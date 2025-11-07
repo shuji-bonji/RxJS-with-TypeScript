@@ -13,9 +13,7 @@ description: RxJSのusing()関数を使って、リソースのライフサイ�
 ### シンプルなリソース管理
 
 ```typescript
-import { using, interval, Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
-
+import { using, interval, Subscription, take } from 'rxjs';
 const resource$ = using(
   // リソースファクトリー: 購読開始時に実行
   () => {
@@ -87,9 +85,7 @@ function using<T>(
 ### WebSocket接続の管理
 
 ```typescript
-import { using, interval, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
-
+import { using, interval, Subject, map, takeUntil } from 'rxjs';
 function createWebSocketStream(url: string) {
   return using(
     // WebSocket接続を作成
@@ -266,9 +262,7 @@ setTimeout(() => subscription.unsubscribe(), 30000);
 ### 1. データベース接続の管理
 
 ```typescript
-import { using, from } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
-
+import { using, from, mergeMap } from 'rxjs';
 interface DbConnection {
   query: (sql: string) => Promise<any[]>;
   close: () => Promise<void>;
@@ -444,9 +438,7 @@ setTimeout(() => subscription.unsubscribe(), 10000);
 ### 4. 条件付きリソース管理
 
 ```typescript
-import { using, interval, EMPTY } from 'rxjs';
-import { take } from 'rxjs/operators';
-
+import { using, interval, EMPTY, take } from 'rxjs';
 function conditionalResource(shouldCreate: boolean) {
   return using(
     () => {
@@ -488,9 +480,7 @@ conditionalResource(false).subscribe({
 ### エラー発生時のリソース解放
 
 ```typescript
-import { using, throwError, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-
+import { using, throwError, of, catchError } from 'rxjs';
 const errorHandling$ = using(
   () => {
     console.log('リソース作成');
@@ -570,9 +560,8 @@ using(
 
 **対処法:**
 ```typescript
+import { defer, from, mergeMap } from 'rxjs';
 // ✅ 正しい: defer と mergeMap で非同期処理
-import { defer, from } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
 
 defer(() =>
   from(createResourceAsync()).pipe(

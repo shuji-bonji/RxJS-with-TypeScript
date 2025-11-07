@@ -14,7 +14,7 @@ Angularだけでなく、PWA、リアルタイム通信、AIストリーミン�
 ### 💻 サンプルコード
 ```ts
 import { webSocket } from 'rxjs/webSocket';
-import { filter, map } from 'rxjs/operators';
+import { filter, map } from 'rxjs';
 
 const socket$ = webSocket('wss://example.com/chat');
 
@@ -45,7 +45,7 @@ socket$
 
 ```ts
 import { fromEvent, combineLatest } from 'rxjs';
-import { debounceTime, map, switchMap } from 'rxjs/operators';
+import { debounceTime, map, switchMap } from 'rxjs';
 
 const search$ = fromEvent(document.getElementById('search'), 'input')
   .pipe(map(e => e.target.value));
@@ -107,8 +107,7 @@ merge(online$, offline$).subscribe(isOnline => {
 ### 💻 サンプルコード
 
 ```ts
-import { from, fromEventPattern } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { map, mergeMap, from } from 'rxjs';
 
 const stream$ = from(fetch('/api/ai/stream'));
 
