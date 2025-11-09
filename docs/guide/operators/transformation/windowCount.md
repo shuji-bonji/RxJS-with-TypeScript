@@ -1,5 +1,5 @@
 ---
-description: windowCountは指定した個数ごとにObservableを分割するRxJSオペレーターで、個数ベースのストリーム処理や一定件数ごとの集計に便利です。
+description: windowCountは指定した個数ごとにObservableを分割するRxJS変換オペレーターです。個数ベースのストリーム処理や一定件数ごとの集計、ページネーション処理に最適で、bufferCountと異なり各ウィンドウに独立した処理を適用できます。TypeScriptの型推論により型安全なウィンドウ分割とストリーム操作が可能です。
 ---
 
 # windowCount - 指定した個数ごとにObservableを分割する

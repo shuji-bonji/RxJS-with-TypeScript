@@ -1,5 +1,5 @@
 ---
-description: materializeオペレーターはObservableの通知（next, error, complete）をNotificationオブジェクトに変換し、メタデータとして扱えるようにします。
+description: materializeはObservableの通知（next, error, complete）をNotificationオブジェクトに変換するRxJSユーティリティオペレーターです。エラーをデータとして扱う、通知のデバッグとロギング、メタ情報の記録など、通知そのものを操作したい場面に最適です。dematerializeで元の形式に戻せ、TypeScriptの型推論により型安全な通知処理が可能です。
 ---
 
 # materialize - 通知のオブジェクト化

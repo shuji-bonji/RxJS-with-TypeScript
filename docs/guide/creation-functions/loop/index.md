@@ -1,5 +1,5 @@
 ---
-description: ループ的に値を生成するCreation Functionsについて解説します。range、generateを使った繰り返し処理の実装方法を学びます。
+description: ループ的に値を生成するCreation Functionsについて解説します。range、generateを使い、for文やwhile文のような繰り返し処理をObservableストリームとして実装する方法を学びます。連番生成からカスタム条件に基づく複雑な状態遷移まで、TypeScriptの型推論を活かした宣言的なループ処理を実現できます。
 ---
 
 # ループ生成系 Creation Functions

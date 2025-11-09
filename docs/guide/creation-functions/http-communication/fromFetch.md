@@ -1,5 +1,5 @@
 ---
-description: RxJSのfromFetch()関数を使って、Fetch APIベースのHTTP通信をObservableとして扱う方法を、実践的なコード例とともに詳しく解説します。
+description: fromFetch()はFetch APIベースのHTTP通信をObservableとして扱うRxJS Creation Functionです。GET、POST、PUT、DELETEなどのHTTPメソッドに対応し、軽量でモダンなWeb標準準拠、Service Worker対応など最新のHTTP通信を実現します。手動でのエラーチェックとJSONパースが必要ですが、バンドルサイズが小さく型安全なHTTP通信が可能です。
 ---
 
 # fromFetch()

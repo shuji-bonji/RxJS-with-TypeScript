@@ -1,5 +1,5 @@
 ---
-description: switchMapは前のObservableをキャンセルして最新のObservableに切り替える演算子で、ライブサーチやナビゲーション切替などに最適です。
+description: switchMapは前のObservableをキャンセルして最新のものに切り替える変換オペレーターです。ライブサーチ、ナビゲーション切替、自動保存などのユースケースに最適で、TypeScriptの型推論とともに安全な非同期処理を実現します。mergeMapやconcatMapとの使い分けも詳しく解説します。
 ---
 
 # switchMap - 前のObservableをキャンセルして最新のものに切り替える

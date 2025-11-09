@@ -1,5 +1,5 @@
 ---
-description: dematerializeオペレーターはNotificationオブジェクトを通常の通知（next, error, complete）に戻し、materializeの逆変換を行います。
+description: dematerializeはNotificationオブジェクトを通常の通知（next, error, complete）に戻し、materializeの逆変換を行うRxJSユーティリティオペレーターです。通知の加工後の復元、エラーのフィルタリングや変換、通知の順序変更やバッファリングなど、通知をデータとして処理した後に元の形式に戻したい場面に最適です。
 ---
 
 # dematerialize - 通知オブジェクトの復元

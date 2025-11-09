@@ -1,5 +1,5 @@
 ---
-description: RxJSの制御系 Creation Functions である scheduled と using の概要、違い、使い分けのガイドラインについて解説します。
+description: RxJSの制御系 Creation Functions である scheduled と using について解説します。scheduledはスケジューラーを指定してObservableの実行タイミングを制御し、usingはWebSocketやファイルハンドルなどのリソースをObservableのライフサイクルに合わせて自動管理します。テストやパフォーマンス最適化にも活用できます。
 ---
 
 # 制御系 Creation Functions

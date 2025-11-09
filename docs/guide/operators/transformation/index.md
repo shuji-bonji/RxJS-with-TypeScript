@@ -1,5 +1,5 @@
 ---
-description: RxJSの変換オペレーターを使ってストリーム内のデータを加工・変換する方法を解説します。map、scan、mergeMap、switchMap、concatMapなど単純変換から非同期変換、バッチ処理まで実践的なパターンを紹介します。
+description: RxJSの変換オペレーターを使ってストリーム内のデータを加工・変換する方法を解説します。map、scan、mergeMap、switchMap、concatMapなど単純変換から非同期変換、バッファリング、ウィンドウイングまで、TypeScriptの型安全性を活かした実践的なパターンを豊富なコード例とともに紹介します。
 ---
 
 # 変換オペレーター

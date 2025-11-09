@@ -1,5 +1,5 @@
 ---
-description: combineLatestやforkJoin、mergeなどを用いた実践的なユースケースを通して、RxJSの結合オペレーターの活用方法を学びます。
+description: RxJS結合オペレーター（combineLatest、forkJoin、merge、concat、withLatestFrom等）の実践的なユースケースを解説します。フォーム入力の検証とAPI連携、複数リクエストの並列実行、リアルタイムデータの同期、ストリームの順次処理など、複数のObservableを組み合わせる実践的なパターンをTypeScriptコード例とともに紹介します。
 ---
 
 # 実践的なユースケース

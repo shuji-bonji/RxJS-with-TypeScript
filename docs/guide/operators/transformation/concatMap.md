@@ -1,5 +1,5 @@
 ---
-description: concatMapは各Observableを順番に処理し、前の処理が完了するまで次を待つRxJSオペレーターで、順序が重要な処理に適しています。
+description: concatMapは各Observableを順番に処理し、前の処理が完了するまで次を待つ変換オペレーターです。API呼び出しの直列実行やファイルアップロードの順序保証など、実行順序が重要なシナリオに最適です。TypeScript型推論により型安全な非同期処理の連鎖を実現し、mergeMapやswitchMapとの違いも解説します。
 ---
 
 # concatMap - 各Observableを順番に実行する

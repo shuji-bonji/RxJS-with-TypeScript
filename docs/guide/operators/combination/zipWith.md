@@ -1,5 +1,5 @@
 ---
-description: zipWithは、元のObservableと他のObservableから対応する順番の値を揃えてペアにするPipeable Operatorです。
+description: zipWithは元のObservableと他のObservableから対応する順番の値を揃えてペアにするRxJS結合オペレーターです。並列処理の結果を順序保証して結合、IDとデータの対応づけ、異なるタイミングで発行される関連データの同期など、順序が重要なストリーム結合に最適です。pipeable operator版でパイプライン内での使用が便利です。
 ---
 
 # zipWith - パイプライン内で対応する値をペアにする

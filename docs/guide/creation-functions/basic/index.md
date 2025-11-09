@@ -1,5 +1,5 @@
 ---
-description: 基本的なObservable作成のためのCreation Functionsについて解説します。of、from、fromEvent、interval、timerの使い分けと実践例を学びます。
+description: 基本的なObservable作成のためのCreation Functionsについて解説します。of、from、fromEvent、interval、timerを使い、単一値、配列、Promise、イベント、タイマーなど多様なデータソースからObservableを作成する方法を学びます。TypeScriptの型安全性とともに実装でき、RxJSの基礎となる重要な概念です。
 ---
 
 # 基本作成系 Creation Functions

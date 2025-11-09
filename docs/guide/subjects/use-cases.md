@@ -1,5 +1,5 @@
 ---
-description: Subjectファミリーを活用した状態管理・イベント通信・キャッシュ・フォーム管理など、実践的なユースケースを豊富なコード例で解説します。
+description: Subjectファミリー（Subject、BehaviorSubject、ReplaySubject、AsyncSubject）を活用した状態管理、イベントバス、グローバル通知システム、データキャッシュ、リアクティブフォーム管理など、実践的なユースケースを豊富なTypeScriptコード例で解説します。各Subjectタイプの特性を理解し、適切な場面で活用できるようになります。
 ---
 
 # Subjectのユースケース

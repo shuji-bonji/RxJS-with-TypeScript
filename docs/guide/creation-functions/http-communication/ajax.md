@@ -1,5 +1,5 @@
 ---
-description: RxJSのajax()関数を使って、XMLHttpRequestベースのHTTP通信をObservableとして扱う方法を、実践的なコード例とともに詳しく解説します。
+description: ajax()はXMLHttpRequestベースのHTTP通信をObservableとして扱うRxJS Creation Functionです。GET、POST、PUT、DELETEなどのHTTPメソッドをサポートし、進捗監視、タイムアウト処理、自動JSONパース、レガシーブラウザ対応など実践的な機能を提供します。getJSON()で簡単にJSON APIを呼び出せ、型安全なHTTP通信を実現します。
 ---
 
 # ajax()

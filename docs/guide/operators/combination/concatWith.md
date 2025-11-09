@@ -1,5 +1,5 @@
 ---
-description: concatWithは、元のObservableの完了後に他のObservableを順番に結合するPipeable Operatorです。
+description: concatWithは元のObservableの完了後に他のObservableを順番に結合するRxJS結合オペレーターです。パイプライン内での順次処理、完了後のフォローアップ処理、段階的なデータロードなど、メインストリームの延長として後続処理を追加したい場面に最適です。pipeable operator版でパイプライン内での使用が便利です。
 ---
 
 # concatWith - パイプライン内で順番にストリームを結合する

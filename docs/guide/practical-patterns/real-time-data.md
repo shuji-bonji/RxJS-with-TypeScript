@@ -1,5 +1,5 @@
 ---
-description: RxJSを使ったリアルタイムデータ処理の実践パターン。WebSocket、Server-Sent Events（SSE）、Polling、接続管理、再接続処理、リアルタイム通知システムなど、実務で使える具体的な実装例を紹介します。
+description: RxJSを使ったリアルタイムデータ処理の実践パターンを解説します。WebSocket統合、Server-Sent Events（SSE）、Polling、接続管理、自動再接続、リアルタイム通知システム、データのマージと更新など、チャットやライブ配信、IoTセンサー監視などで必要な具体的な実装例をTypeScriptコードとともに紹介します。堅牢なリアルタイム通信パターンを学べます。
 ---
 
 # リアルタイムデータ処理パターン

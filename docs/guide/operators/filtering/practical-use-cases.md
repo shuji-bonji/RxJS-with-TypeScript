@@ -1,5 +1,5 @@
 ---
-description: debounceTimeやthrottleTimeなどのフィルタリングオペレーターを活用したリアルタイム検索や無限スクロールの実装例を紹介します。
+description: RxJSフィルタリングオペレーター（debounceTime、throttleTime、distinctUntilChanged、filter等）の実践的なユースケースを解説します。リアルタイム検索、無限スクロール、高頻度イベントの制御、重複除外など、ストリームから必要な値だけを抽出する実践的なパターンをTypeScriptコード例とともに紹介します。UIイベント処理やパフォーマンス最適化に役立つ実装技法を学べます。
 ---
 
 # 実践的なユースケース
