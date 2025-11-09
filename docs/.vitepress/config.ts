@@ -593,7 +593,10 @@ export default withMermaid({
       md.use(footnote);
     },
   },
+  // Gitコミット履歴から最終更新日を取得
+  lastUpdated: true,
   sitemap: {
     hostname: 'https://shuji-bonji.github.io/RxJS-with-TypeScript/',
+    lastmodDateOnly: false, // 時刻まで含める（より正確）
   },
 });
