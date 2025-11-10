@@ -58,7 +58,7 @@ const observable$ = from(fetch('https://jsonplaceholder.typicode.com/posts/1')).
 observable$.subscribe(data => console.log(data));
 ```
 
-RxJSは**`subscribe()` が呼ばれるまで実行されません**（Lazy評価）。同じObservableを複数回購読すると独立した実行が行われ、`unsubscribe()` で処理を中断できます。
+RxJSは **`subscribe()` が呼ばれるまで実行されません** （Lazy評価）。同じObservableを複数回購読すると独立した実行が行われ、`unsubscribe()` で処理を中断できます。
 
 > [!TIP]
 > **実務での使い分け**
@@ -138,7 +138,7 @@ promise.then(result => console.log(result));
 
 ### RxJS（キャンセル可能）
 
-RxJSは**`unsubscribe()` でいつでもキャンセルできます**。
+RxJSは **`unsubscribe()` でいつでもキャンセルできます**。
 ```ts
 import { timer } from 'rxjs';
 

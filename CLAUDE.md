@@ -630,6 +630,172 @@ The following new chapters have been added or are planned for future releases.
 
 ## Active Development
 
+#### 🔄 Medium Priority: Multi-language Support (Internationalization)
+
+**Purpose:**
+- Add English translation to make content accessible to international audience
+- Maintain Japanese as primary language with English as secondary
+- Establish scalable translation workflow for potential future languages
+
+**Current Status:** Planning phase - requires investigation and design decisions
+
+**Approach: Japanese as root, English in `/en/` directory**
+- Japanese content remains at `/guide/` (preserves existing URLs and SEO)
+- English content at `/en/guide/`
+- VitePress native i18n support with `locales` configuration
+
+**Proposed Directory Structure:**
+```
+docs/
+├── .vitepress/
+│   ├── config/
+│   │   ├── index.ts        # Main configuration
+│   │   ├── ja.ts           # Japanese locale config
+│   │   └── en.ts           # English locale config
+├── guide/                   # Japanese content (existing)
+│   ├── introduction.md
+│   ├── observables/
+│   └── ...
+├── en/                      # English content (new)
+│   ├── guide/
+│   │   ├── introduction.md
+│   │   ├── observables/
+│   │   └── ...
+├── public/
+└── index.md
+```
+
+**Implementation Phases:**
+
+**Phase 0: Investigation & Design (1-2 days)**
+- [ ] Investigate base path handling (`/RxJS-with-TypeScript/` + i18n)
+- [ ] Research untranslated page handling strategies
+- [ ] Design Mermaid diagram translation workflow
+- [ ] Evaluate SEO requirements (hreflang tags, sitemap)
+- [ ] Test search provider options (local vs Algolia)
+- [ ] Design language switcher UI/UX
+- [ ] Create translation workflow automation scripts
+- [ ] Establish translation status tracking system
+
+**Phase 1: Foundation Setup (1-2 days)**
+- [ ] Create directory structure (`docs/.vitepress/config/`, `docs/en/guide/`)
+- [ ] Split config.ts into modular structure (index.ts, ja.ts, en.ts)
+- [ ] Configure VitePress locales with base path
+- [ ] Setup local search with multi-language support
+- [ ] Add hreflang tags for SEO
+- [ ] Test build and verify routing
+- [ ] Create branch: `feature/i18n-support`
+
+**Phase 2: Pilot Translation (1 week)**
+
+Priority pages to establish workflow:
+1. [ ] `index.md` (Homepage) - Critical landing page
+2. [ ] `guide/introduction.md` - Entry point for learners
+3. [ ] `guide/anti-patterns/flag-management.md` - High-quality reference example
+
+Workflow per page:
+- Copy frontmatter + add `translation: completed` metadata
+- Translate with AI assistance (Claude/ChatGPT)
+- Update internal links (`/guide/` → `/en/guide/`)
+- Translate Mermaid diagrams
+- Translate code comments
+- Review technical terminology consistency
+- Test build and verify
+
+**Phase 3: Priority Content Translation (2-4 weeks)**
+
+Translation order by value:
+1. [ ] **Chapter 10: Anti-Patterns** (7 pages) - High engagement content
+2. [ ] **Chapter 11: Overcoming Difficulties** (7 pages) - Unique value proposition
+3. [ ] **Chapter 13: Practical Patterns** (when completed) - Real-world applications
+
+**Phase 4: Infrastructure Enhancement (ongoing)**
+- [ ] Implement untranslated page fallback/notification
+- [ ] Add translation status badges to pages
+- [ ] Create language switcher component
+- [ ] Configure sitemap.xml for multi-language
+- [ ] Add 404 pages per locale
+- [ ] Setup GitHub Actions translation sync checker
+- [ ] Document translation contribution guidelines
+
+**Phase 5: Scale Translation (long-term)**
+- [ ] Remaining chapters (based on user feedback and analytics)
+- [ ] Continuous synchronization with Japanese updates
+- [ ] Community contribution support
+
+**Technical Considerations:**
+
+1. **Base Path Compatibility**
+   - Current: `base: '/RxJS-with-TypeScript/'`
+   - Must work with locale paths: `/RxJS-with-TypeScript/en/guide/...`
+
+2. **Link Management**
+   - Automated script to update internal links during translation
+   - Example: `sed -i 's|](/guide/|](/en/guide/|g' docs/en/**/*.md`
+
+3. **Search Strategy**
+   - Start with VitePress local search (built-in multi-language support)
+   - Consider Algolia DocSearch later if needed
+
+4. **Translation Quality**
+   - Maintain glossary for consistent technical terminology
+   - AI-assisted translation + human review
+   - Reference official RxJS/TypeScript documentation
+
+5. **SEO Optimization**
+   - hreflang tags in both ja.ts and en.ts configs
+   - Sitemap with alternate language links
+   - Proper meta descriptions per locale
+
+**Translation Workflow Tools:**
+
+```bash
+# scripts/translate-page.sh
+# Creates English page template with frontmatter
+# Copies original content with translation placeholders
+# Updates links automatically
+
+# scripts/check-translation-sync.sh
+# Compares Japanese and English versions
+# Reports outdated translations
+# Used in CI/CD pipeline
+```
+
+**Success Metrics:**
+- [ ] English pages build without errors
+- [ ] All internal links work correctly
+- [ ] Search works in both languages
+- [ ] Language switcher navigates correctly
+- [ ] SEO tags properly configured
+- [ ] Mermaid diagrams render in both languages
+
+**Dependencies:**
+- No dependency on other chapters
+- Can start immediately after investigation phase
+
+**Risks & Mitigation:**
+- **Risk**: Mermaid diagrams may be complex to translate
+  - **Mitigation**: Start with simple diagrams, consider SVG export for complex ones
+- **Risk**: Maintaining translation synchronization
+  - **Mitigation**: GitHub Actions to flag outdated translations
+- **Risk**: Translation consistency across 140+ pages
+  - **Mitigation**: Create comprehensive glossary, use AI tools consistently
+
+**Timeline:**
+- **Phase 0**: Investigation (1-2 days)
+- **Phase 1**: Foundation (1-2 days)
+- **Phase 2**: Pilot (1 week)
+- **Phase 3**: Priority content (2-4 weeks)
+- **Phase 4**: Infrastructure (ongoing)
+- **Phase 5**: Scale (based on feedback)
+
+**Resources:**
+- [VitePress i18n Guide](https://vitepress.dev/guide/i18n)
+- [vitepress-i18n plugin](https://www.npmjs.com/package/vitepress-i18n) - Auto-translates UI text
+- Translation glossary (to be created in Phase 1)
+
+---
+
 #### 🔄 Medium Priority: Chapter 15 Enhancement - フレームワークとの統合
 
 **Phased Approach:**
