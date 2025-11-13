@@ -97,6 +97,7 @@ TypeScript環境でRxJSを体系的に学ぶためのガイドです。
 - [UIイベント処理](/guide/practical-patterns/ui-events) - クリック、スクロール、ドラッグ&ドロップなど
 - [API呼び出し](/guide/practical-patterns/api-calls) - HTTP通信、並列/直列処理、エラーハンドリング
 - [フォーム処理](/guide/practical-patterns/form-handling) - リアルタイムバリデーション、自動保存、複数フィールド連携
+- [高度なフォームパターン](/guide/practical-patterns/advanced-form-patterns) - JSON Patch、大規模フォーム自動保存、Undo/Redo、共同編集
 - [リアルタイムデータ処理](/guide/practical-patterns/real-time-data) - WebSocket、SSE、Polling、接続管理
 - [キャッシュ戦略](/guide/practical-patterns/caching-strategies) - データキャッシュ、TTL、無効化、オフライン対応
 - [エラーハンドリング実践](/guide/practical-patterns/error-handling-patterns) - API呼び出しエラー、リトライ戦略、グローバルエラー処理

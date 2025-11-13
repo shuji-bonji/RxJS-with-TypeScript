@@ -35,6 +35,7 @@ RxJSの個々のオペレーターを理解していても、それらを組み�
 
 | パターン | 内容 | 主な対象 |
 |---------|------|---------|
+| [高度なフォームパターン](./advanced-form-patterns.md) | JSON Patch、大規模フォーム自動保存、Undo/Redo、共同編集 | エンタープライズフォーム |
 | [リアルタイムデータ処理](./real-time-data.md) | WebSocket、SSE、Polling、接続管理 | リアルタイム通信 |
 | [キャッシュ戦略](./caching-strategies.md) | データキャッシュ、TTL、無効化、オフライン対応 | パフォーマンス最適化 |
 
@@ -204,6 +205,7 @@ const activeUsers$: Observable<User[]> = users$.pipe(
 | UIイベント処理 | [Chapter 4: オペレーター](../operators/index.md) | debounceTime, throttleTime, distinctUntilChanged |
 | API呼び出し | [Chapter 6: エラーハンドリング](../error-handling/strategies.md) | catchError, retry, timeout |
 | フォーム処理 | [Chapter 3: Creation Functions](../creation-functions/index.md) | combineLatest, withLatestFrom |
+| 高度なフォームパターン | [Chapter 4: 変換オペレーター](../operators/transformation/pairwise.md) | pairwise, scan, bufferTime, concatMap |
 | リアルタイムデータ | [Chapter 5: Subject](../subjects/what-is-subject.md) | Subject, BehaviorSubject, shareReplay |
 | キャッシュ戦略 | [Chapter 2: Cold/Hot](../observables/cold-and-hot-observables.md) | shareReplay, share |
 | エラーハンドリング | [Chapter 6: エラーハンドリング](../error-handling/strategies.md) | catchError, retry, retryWhen |

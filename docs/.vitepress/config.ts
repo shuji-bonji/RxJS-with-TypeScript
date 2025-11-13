@@ -8,6 +8,17 @@ export default withMermaid({
   description: 'TypeScriptプログラマのためのRxJS入門',
   base: '/RxJS-with-TypeScript/',
   lang: 'ja',
+  // locales: {
+  //   root: {
+  //     label: '日本語',
+  //     lang: 'ja'
+  //   },
+  //   en: {
+  //     label: 'English',
+  //     lang: 'en',
+  //     link: '/en/'
+  //   }
+  // },
   head: [
     // Open Graph
     ['meta', { property: 'og:title', content: 'RxJS with TypeScript' }],
@@ -527,6 +538,7 @@ export default withMermaid({
           { text: 'UIイベント処理', link: '/guide/practical-patterns/ui-events' },
           { text: 'API呼び出し', link: '/guide/practical-patterns/api-calls' },
           { text: 'フォーム処理', link: '/guide/practical-patterns/form-handling' },
+          { text: '高度なフォームパターン', link: '/guide/practical-patterns/advanced-form-patterns' },
           { text: 'リアルタイムデータ処理', link: '/guide/practical-patterns/real-time-data' },
           { text: 'キャッシュ戦略', link: '/guide/practical-patterns/caching-strategies' },
           { text: 'エラーハンドリング実践', link: '/guide/practical-patterns/error-handling-patterns' },

@@ -44,6 +44,7 @@ interval(1000).pipe(take(5)).subscribe((val) => {
   output.appendChild(p);
 });
 ```
+
 ### localhostにアクセス
 以下のように`http://localhost:5174/`と表記されるので、こちらにアクセスして結果を確認しましょう。  
 `console.log()`の結果の確認にはディベロッパーツールのコンソールで確認してください。
