@@ -5,7 +5,6 @@ layout: home
 
 hero:
   name: "TypeScriptでRxJS"
-  text: "RxJS with TypeScript"
   tagline: TypeScriptでRxJSを学ぶ
   image:
     src: /images/ts-de-rxjs.webp
