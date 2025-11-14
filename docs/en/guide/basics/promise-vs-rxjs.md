@@ -511,7 +511,7 @@ In this example, the following controls are realized:
 
 > [!WARNING] Beware of anti-patterns
 > The pattern to subscribe Observable in Promise can cause memory leaks and unexpected behavior.
-> See [subscribe in Promise](/en/guide/anti-patterns/subscribe-in-promise) for details.
+> <!-- TODO: Add link to subscribe-in-promise anti-pattern when available -->
 
 > [!TIP]
 > **Design by separation of responsibilities**

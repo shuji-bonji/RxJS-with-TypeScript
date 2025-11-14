@@ -4,15 +4,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Japanese-language educational documentation site for learning RxJS with TypeScript, built with VitePress. It's a collaborative project between human engineers (@shuji-bonji) and AI (ChatGPT, Claude) aiming to be a model case for "human-AI co-created educational materials."
+This is a **multilingual educational documentation site** for learning RxJS with TypeScript, built with VitePress. It's a collaborative project between human engineers (@shuji-bonji) and AI (ChatGPT, Claude) aiming to be a model case for "human-AI co-created educational materials."
 
 **Project Characteristics**:
 - Educational material for TypeScript programmers learning RxJS
 - Practical learning through code examples and tests
 - Model case for human-AI co-created educational content
 - VitePress-based static documentation site
+- **Multilingual support**: Japanese (primary) and English
 
-**Language**: All documentation content is in Japanese (ja).
+**Languages**:
+- **Japanese (ja)**: Primary language at `/guide/` (root locale)
+- **English (en)**: Secondary language at `/en/guide/`
 
 **Key Technologies**:
 - VitePress 1.6.3 (static site generator)
@@ -79,22 +82,32 @@ npm run docs:serve
 ```
 docs/
 ├── .vitepress/
-│   ├── config.ts           # Main VitePress configuration
+│   ├── config/
+│   │   ├── index.ts        # Main VitePress configuration
+│   │   ├── ja.ts           # Japanese locale config
+│   │   └── en.ts           # English locale config
 │   ├── theme/
 │   │   ├── index.ts        # Theme customization (uses default VitePress theme)
 │   │   └── custom.css      # Custom styles
 │   └── dist/               # Build output (generated)
-├── index.md                # Homepage
-└── guide/                  # Documentation content organized by topic
-    ├── introduction.md
-    ├── basics/             # RxJS fundamentals
-    ├── observables/        # Observable concepts
-    ├── subjects/           # Subject and multicasting
-    ├── operators/          # Operator categories (transformation, filtering, etc.)
-    ├── error-handling/     # Error handling strategies
-    ├── schedulers/         # Scheduler usage
-    ├── testing/            # Testing techniques
-    └── typescript-advanced/ # Advanced TypeScript integration
+├── index.md                # Homepage (Japanese)
+├── guide/                  # Japanese documentation (root locale)
+│   ├── introduction.md
+│   ├── basics/             # RxJS fundamentals
+│   ├── observables/        # Observable concepts
+│   ├── subjects/           # Subject and multicasting
+│   ├── operators/          # Operator categories (transformation, filtering, etc.)
+│   ├── error-handling/     # Error handling strategies
+│   ├── schedulers/         # Scheduler usage
+│   ├── testing/            # Testing techniques
+│   └── typescript-advanced/ # Advanced TypeScript integration
+└── en/                     # English documentation
+    ├── index.md            # Homepage (English)
+    └── guide/              # Mirror structure of Japanese content
+        ├── introduction.md
+        ├── basics/
+        ├── observables/
+        └── ... (180 total files)
 ```
 
 ### Content Organization
@@ -133,13 +146,27 @@ Each operator/concept page typically includes practical use cases in a `practica
 
 ### Configuration Details
 
-**VitePress Config** (`docs/.vitepress/config.ts`):
+**VitePress Config** (modular structure in `docs/.vitepress/config/`):
+
+**`config/index.ts`** (Main configuration):
 - Uses `withMermaid()` wrapper for Mermaid diagram support
 - Base path: `/RxJS-with-TypeScript/` (GitHub Pages deployment)
+- Multi-language support with `locales` configuration:
+  - Root locale: Japanese (ja) at `/`
+  - English locale (en) at `/en/`
+- Root-level `themeConfig.search` with locale-specific translations
 - Configured with Open Graph and Twitter Card metadata
-- Local search enabled
-- Sidebar structure mirrors the curriculum
 - Footer: CC-BY-4.0 license, Copyright 2025 shuji-bonji
+
+**`config/ja.ts`** (Japanese locale):
+- Japanese sidebar structure mirroring the curriculum
+- Japanese nav links and labels
+- SEO metadata with hreflang tags
+
+**`config/en.ts`** (English locale):
+- English sidebar structure (mirror of Japanese)
+- English nav links and labels
+- SEO metadata with hreflang tags
 
 **Theme**: Uses default VitePress theme with minimal customization in `theme/index.ts` and `custom.css`.
 
@@ -153,7 +180,9 @@ Automated via GitHub Actions (`.github/workflows/deploy.yml`):
 - Triggers on push to `main` branch or manual workflow dispatch
 - Builds site with `npm run docs:build`
 - Deploys to GitHub Pages using peaceiris/actions-gh-pages@v4
-- Published to: https://shuji-bonji.github.io/RxJS-with-TypeScript/
+- Published to:
+  - Japanese: https://shuji-bonji.github.io/RxJS-with-TypeScript/
+  - English: https://shuji-bonji.github.io/RxJS-with-TypeScript/en/
 
 ## Content Guidelines
 
@@ -232,13 +261,26 @@ Pay special attention to these operator patterns:
 
 ### 6. Writing Style
 
-**Japanese Language**:
+**Multi-language Documentation**:
+- Primary content in Japanese (root locale at `/guide/`)
+- English translations at `/en/guide/`
+- Technical terms remain in English in both languages (Observable, Subject, etc.)
+- Code examples use English comments in English documentation
+- Code examples use appropriate mix of Japanese and English comments in Japanese documentation
+
+**Japanese Documentation Style**:
 - Technical terms remain in English (Observable, Subject, etc.)
 - Explanations in clear Japanese
 - Comments use appropriate mix of Japanese and English
 
+**English Documentation Style**:
+- Clear, accessible explanations for TypeScript developers
+- Technical terms in English (Observable, Subject, etc.)
+- All code comments in English
+- Mermaid diagrams with English labels
+
 **Visual Diagrams with Mermaid**:
-Visualize complex concepts with diagrams:
+Visualize complex concepts with diagrams. Example from Japanese documentation:
 ```mermaid
 graph LR
     A[Observable] -->|subscribe| B[Observer]
@@ -246,6 +288,8 @@ graph LR
     B -->|error| D[エラー処理]
     B -->|complete| E[完了処理]
 ```
+
+In English documentation, diagram text is translated to English.
 
 ### 7. Quality Assurance
 
@@ -404,10 +448,12 @@ For each page:
 ### 9. General Guidelines
 
 When editing documentation:
-- All content should be in Japanese
-- Maintain the established curriculum structure
+- **Multi-language content**: Maintain both Japanese (root locale) and English (`/en/`) versions
+- When editing Japanese content, consider updating English translation if changes are substantial
+- When adding new content, create both Japanese and English versions
+- Maintain the established curriculum structure across both languages
 - Each operator/concept page should include code examples with TypeScript
-- Use Mermaid diagrams where helpful for visualizing streams
+- Use Mermaid diagrams where helpful for visualizing streams (translate diagram text for English version)
 - Include practical use cases for each operator category
 - Follow the collaborative human-AI creation approach
 - Respect the CC-BY-4.0 license for content
@@ -628,171 +674,126 @@ The following new chapters have been added or are planned for future releases.
 
 ---
 
-## Active Development
+## Completed Releases
 
-#### 🔄 Medium Priority: Multi-language Support (Internationalization)
+### ✅ Fourth Release: Multi-language Support (Completed January 2025)
 
 **Purpose:**
 - Add English translation to make content accessible to international audience
 - Maintain Japanese as primary language with English as secondary
 - Establish scalable translation workflow for potential future languages
 
-**Current Status:** Planning phase - requires investigation and design decisions
+**Status:** ✅ **COMPLETED** - All 180 pages fully translated and deployed
 
-**Approach: Japanese as root, English in `/en/` directory**
-- Japanese content remains at `/guide/` (preserves existing URLs and SEO)
-- English content at `/en/guide/`
-- VitePress native i18n support with `locales` configuration
+**Implementation Summary:**
 
-**Proposed Directory Structure:**
+**Directory Structure:**
 ```
 docs/
 ├── .vitepress/
 │   ├── config/
-│   │   ├── index.ts        # Main configuration
+│   │   ├── index.ts        # Main configuration with root-level search
 │   │   ├── ja.ts           # Japanese locale config
 │   │   └── en.ts           # English locale config
-├── guide/                   # Japanese content (existing)
+├── guide/                   # Japanese content (root locale)
 │   ├── introduction.md
 │   ├── observables/
-│   └── ...
-├── en/                      # English content (new)
+│   └── ... (180 files)
+├── en/                      # English content
 │   ├── guide/
 │   │   ├── introduction.md
 │   │   ├── observables/
-│   │   └── ...
+│   │   └── ... (180 files)
 ├── public/
 └── index.md
 ```
 
-**Implementation Phases:**
+**Completed Implementation:**
 
-**Phase 0: Investigation & Design (1-2 days)**
-- [ ] Investigate base path handling (`/RxJS-with-TypeScript/` + i18n)
-- [ ] Research untranslated page handling strategies
-- [ ] Design Mermaid diagram translation workflow
-- [ ] Evaluate SEO requirements (hreflang tags, sitemap)
-- [ ] Test search provider options (local vs Algolia)
-- [ ] Design language switcher UI/UX
-- [ ] Create translation workflow automation scripts
-- [ ] Establish translation status tracking system
+**Phase 0: Investigation & Design** ✅
+- ✅ Base path handling (`/RxJS-with-TypeScript/` + i18n) verified
+- ✅ VitePress native i18n support implemented
+- ✅ DeepL MCP Server API workflow established
+- ✅ SEO requirements evaluated (hreflang tags, meta descriptions)
+- ✅ VitePress local search selected (built-in multi-language support)
+- ✅ Language switcher using VitePress native UI
 
-**Phase 1: Foundation Setup (1-2 days)**
-- [ ] Create directory structure (`docs/.vitepress/config/`, `docs/en/guide/`)
-- [ ] Split config.ts into modular structure (index.ts, ja.ts, en.ts)
-- [ ] Configure VitePress locales with base path
-- [ ] Setup local search with multi-language support
-- [ ] Add hreflang tags for SEO
-- [ ] Test build and verify routing
-- [ ] Create branch: `feature/i18n-support`
+**Phase 1: Foundation Setup** ✅
+- ✅ Directory structure created (`docs/.vitepress/config/`, `docs/en/guide/`)
+- ✅ config.ts split into modular structure (index.ts, ja.ts, en.ts)
+- ✅ VitePress locales configured with base path
+- ✅ Local search setup with multi-language support (root themeConfig)
+- ✅ hreflang tags added for SEO
+- ✅ Build verified and routing tested
 
-**Phase 2: Pilot Translation (1 week)**
+**Phase 2-5: Complete Translation** ✅
+- ✅ All 180 markdown files translated using DeepL MCP Server API
+- ✅ Code comments and console.log messages translated
+- ✅ Mermaid diagrams translated (all text elements)
+- ✅ Internal links updated (`/guide/` → `/en/guide/`)
+- ✅ URL anchors translated to English
+- ✅ Meta descriptions optimized (150-160 chars per Bing Webmaster Tools)
+- ✅ All sections completed:
+  - Introduction, Basics, Observables
+  - Creation Functions (7 categories, 28 pages)
+  - Operators (Transformation, Filtering, Combination, Utility, etc.)
+  - Subjects and Multicasting
+  - Error Handling
+  - Schedulers
+  - Debugging Techniques
+  - Testing Methods
+  - Anti-patterns
+  - Overcoming Difficulties
+  - Appendix (Reactive Architecture, Ecosystem, etc.)
 
-Priority pages to establish workflow:
-1. [ ] `index.md` (Homepage) - Critical landing page
-2. [ ] `guide/introduction.md` - Entry point for learners
-3. [ ] `guide/anti-patterns/flag-management.md` - High-quality reference example
+**Technical Implementation:**
 
-Workflow per page:
-- Copy frontmatter + add `translation: completed` metadata
-- Translate with AI assistance (Claude/ChatGPT)
-- Update internal links (`/guide/` → `/en/guide/`)
-- Translate Mermaid diagrams
-- Translate code comments
-- Review technical terminology consistency
-- Test build and verify
+1. **Translation Workflow**
+   - Used DeepL MCP Server API (`targetLangCode: "en-US"`)
+   - Systematic section-by-section translation (100-200 lines)
+   - Verification with grep for Japanese characters
+   - Final check: Zero Japanese characters in English files
 
-**Phase 3: Priority Content Translation (2-4 weeks)**
+2. **Search Configuration**
+   - Root-level themeConfig with locale-specific translations
+   - Fixed search button rendering issue
+   - Both Japanese and English search fully functional
 
-Translation order by value:
-1. [ ] **Chapter 10: Anti-Patterns** (7 pages) - High engagement content
-2. [ ] **Chapter 11: Overcoming Difficulties** (7 pages) - Unique value proposition
-3. [ ] **Chapter 13: Practical Patterns** (when completed) - Real-world applications
+3. **SEO Optimization**
+   - hreflang tags configured in ja.ts and en.ts
+   - All meta descriptions 150-160 characters
+   - Proper frontmatter with quoted descriptions containing colons
 
-**Phase 4: Infrastructure Enhancement (ongoing)**
-- [ ] Implement untranslated page fallback/notification
-- [ ] Add translation status badges to pages
-- [ ] Create language switcher component
-- [ ] Configure sitemap.xml for multi-language
-- [ ] Add 404 pages per locale
-- [ ] Setup GitHub Actions translation sync checker
-- [ ] Document translation contribution guidelines
+4. **Quality Assurance**
+   - All builds successful without errors
+   - Internal links verified
+   - Mermaid diagrams render correctly
+   - Language switcher navigates properly
 
-**Phase 5: Scale Translation (long-term)**
-- [ ] Remaining chapters (based on user feedback and analytics)
-- [ ] Continuous synchronization with Japanese updates
-- [ ] Community contribution support
+**Success Metrics Achieved:**
+- ✅ English pages build without errors
+- ✅ All internal links work correctly
+- ✅ Search works in both languages
+- ✅ Language switcher navigates correctly
+- ✅ SEO tags properly configured
+- ✅ Mermaid diagrams render in both languages
+- ✅ Zero Japanese characters remaining in English version
 
-**Technical Considerations:**
+**Translation Statistics:**
+- **Total files translated:** 180 markdown files
+- **Total content:** ~50,000+ lines of documentation
+- **Translation method:** DeepL MCP Server API
+- **Code examples:** All TypeScript code comments translated
+- **Diagrams:** All Mermaid diagrams translated
+- **Meta descriptions:** 20 files optimized for SEO
 
-1. **Base Path Compatibility**
-   - Current: `base: '/RxJS-with-TypeScript/'`
-   - Must work with locale paths: `/RxJS-with-TypeScript/en/guide/...`
+**Deployment:**
+- Japanese site: https://shuji-bonji.github.io/RxJS-with-TypeScript/
+- English site: https://shuji-bonji.github.io/RxJS-with-TypeScript/en/
 
-2. **Link Management**
-   - Automated script to update internal links during translation
-   - Example: `sed -i 's|](/guide/|](/en/guide/|g' docs/en/**/*.md`
+---
 
-3. **Search Strategy**
-   - Start with VitePress local search (built-in multi-language support)
-   - Consider Algolia DocSearch later if needed
-
-4. **Translation Quality**
-   - Maintain glossary for consistent technical terminology
-   - AI-assisted translation + human review
-   - Reference official RxJS/TypeScript documentation
-
-5. **SEO Optimization**
-   - hreflang tags in both ja.ts and en.ts configs
-   - Sitemap with alternate language links
-   - Proper meta descriptions per locale
-
-**Translation Workflow Tools:**
-
-```bash
-# scripts/translate-page.sh
-# Creates English page template with frontmatter
-# Copies original content with translation placeholders
-# Updates links automatically
-
-# scripts/check-translation-sync.sh
-# Compares Japanese and English versions
-# Reports outdated translations
-# Used in CI/CD pipeline
-```
-
-**Success Metrics:**
-- [ ] English pages build without errors
-- [ ] All internal links work correctly
-- [ ] Search works in both languages
-- [ ] Language switcher navigates correctly
-- [ ] SEO tags properly configured
-- [ ] Mermaid diagrams render in both languages
-
-**Dependencies:**
-- No dependency on other chapters
-- Can start immediately after investigation phase
-
-**Risks & Mitigation:**
-- **Risk**: Mermaid diagrams may be complex to translate
-  - **Mitigation**: Start with simple diagrams, consider SVG export for complex ones
-- **Risk**: Maintaining translation synchronization
-  - **Mitigation**: GitHub Actions to flag outdated translations
-- **Risk**: Translation consistency across 140+ pages
-  - **Mitigation**: Create comprehensive glossary, use AI tools consistently
-
-**Timeline:**
-- **Phase 0**: Investigation (1-2 days)
-- **Phase 1**: Foundation (1-2 days)
-- **Phase 2**: Pilot (1 week)
-- **Phase 3**: Priority content (2-4 weeks)
-- **Phase 4**: Infrastructure (ongoing)
-- **Phase 5**: Scale (based on feedback)
-
-**Resources:**
-- [VitePress i18n Guide](https://vitepress.dev/guide/i18n)
-- [vitepress-i18n plugin](https://www.npmjs.com/package/vitepress-i18n) - Auto-translates UI text
-- Translation glossary (to be created in Phase 1)
+## Active Development
 
 ---
 

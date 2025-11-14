@@ -261,6 +261,6 @@ timer(1000).pipe(
 
 ## 📚 Related Operators
 
-- **[race](/en/guide/creation-functions/combination/race)** - Creation Function version
+- **[race](/en/guide/creation-functions/selection/race)** - Creation Function version
 - **[mergeWith](/en/guide/operators/combination/mergeWith)** - Execute all streams in parallel
 - **[concatWith](/en/guide/operators/combination/concatWith)** - Execute streams sequentially

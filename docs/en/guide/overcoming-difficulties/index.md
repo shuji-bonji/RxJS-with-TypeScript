@@ -177,7 +177,8 @@ Each section has the following structure:
 
 ### 3. Experiment with Starter Kit
 
-All code examples can be run in the [learning execution environment](/guide/starter-kit).
+All code examples can be run in a local development environment.
+<!-- TODO: Add link to starter kit when available: [learning execution environment](/en/guide/starter-kit) -->
 
 #### Recommended Learning Flow
 1. Copy and run bad example → Experience the problem
