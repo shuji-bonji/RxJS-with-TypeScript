@@ -90,7 +90,7 @@ setTimeout(() => {
 
 ## Observer（オブザーバー）　 {#observer}
 
-より簡潔で用途に特化したObservable作成には、RxJSが提供する「Creation Functions（作成関数）」が便利です。繰り返し使われるユースケースにはこれらを使うことでコードが簡素化されます。
+Observerは、Observableから通知を受け取るための受信側の役割を担うオブジェクトです。Observableを購読（subscribe）する際に、Observerを渡すことで、発行されたデータやエラー、完了通知を処理できます。
 
 ### Observerが持つ、3つのコールバック関数
 Observerは、Observableから通知を受け取るためのインターフェースです。  
@@ -126,8 +126,6 @@ observable$.subscribe({
   error: err => console.error('エラー:', err),
   complete: () => console.log('完了::')
 });
-
-);
 
 // 処理結果:
 // 値: 1

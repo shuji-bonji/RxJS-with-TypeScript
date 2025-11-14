@@ -188,8 +188,8 @@ clicks$.subscribe({
 ```
 
 > [!CAUTION]
-> Note that it cannot be used outside of the DOM
-> - `fromEvent()` is only available in the browser environment and not in Node.js.
+> Note the supported event targets
+> - `fromEvent()` supports browser DOM elements (EventTarget implementation), Node.js EventEmitter, and jQuery-like event targets.
 > - Multiple subscriptions may add multiple event listeners.
 
 > 👉 For more detailed examples of event stream utilization, see [Event Streaming](../observables/events).

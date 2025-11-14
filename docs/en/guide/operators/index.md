@@ -19,7 +19,7 @@ In RxJS, operators fall into the following categories
 - [Combination Operators](./combination/)
 - [Utility Operators](./utility/)
 - [Conditional Operators](./conditional/)
-- [Error Handling Operators](../error-handling/strategies)
+- [Error Handling Operators](../error-handling/strategies.md)
 - [Multicasting Operators](./multicasting/)
 
 Each category contains a number of useful operators.

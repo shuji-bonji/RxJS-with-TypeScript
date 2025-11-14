@@ -19,7 +19,7 @@ RxJSでは、オペレーターは以下のカテゴリに分類されます。
 - [結合オペレーター](./combination/)
 - [ユーティリティオペレーター](./utility/)
 - [条件オペレーター](./conditional/)
-- [エラーハンドリングオペレーター](../error-handling/strategies)
+- [エラーハンドリングオペレーター](../error-handling/strategies.md)
 - [マルチキャスティングオペレーター](./multicasting/)
 
 それぞれのカテゴリに、多数の便利なオペレーターが含まれています。  

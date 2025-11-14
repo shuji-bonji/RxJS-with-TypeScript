@@ -288,9 +288,13 @@ fromEvent(searchInput, 'input').pipe(
 
 PromiseとRxJSは排他的なものではなく、相互に変換して組み合わせることができます。既存のPromiseベースのコードをRxJSのパイプラインに統合したり、逆にObservableを既存のPromiseベースのコードで使いたい場合に便利です。
 
-### PromiseをObservableに変換
+## PromiseをObservableに変換
 
-既存のPromiseベースのAPIや関数を、RxJSのパイプラインで使いたい場合は、`from()` を使って変換します。
+RxJSは、既存のPromiseをObservableに変換するための複数の方法を提供しています。
+
+### `from` による変換
+
+最も一般的な方法は `from` を使うことです。
 
 ```ts
 import { from } from 'rxjs';
@@ -311,9 +315,37 @@ observable$.subscribe({
 
 `from()` は、Promiseが解決すると1つの値を発行し、即座に `complete` します。エラーが発生すると `error` 通知が送られます。この変換により、Promise由来のデータに対しても、RxJSのオペレーター（`map`, `filter`, `retry` など）を自由に適用できるようになります。
 
-### ObservableをPromiseに変換
+### `defer` による変換（遅延評価）
 
-逆に、ObservableをPromiseに変換したい場合もあります。例えば、async/awaitで書かれた既存コードにRxJSの処理を統合する場合や、単一の値だけが必要な場合に便利です。
+`defer` は、購読されるまでPromiseの作成を遅延させます。
+
+```ts
+import { defer } from 'rxjs';
+
+// subscribe されるまで Promise は作成されない
+const observable$ = defer(() =>
+  fetch('https://jsonplaceholder.typicode.com/posts/1').then(r => r.json())
+);
+
+// 購読ごとに新しい Promise を作成
+observable$.subscribe(data => console.log('1回目:', data));
+observable$.subscribe(data => console.log('2回目:', data));
+```
+
+この方法は、購読するたびに新しいPromiseを作成したい場合に便利です。
+
+## ObservableをPromiseに変換
+
+Observableから1つの値だけを取り出して、Promiseにすることができます。
+
+### `firstValueFrom` と `lastValueFrom`
+
+RxJS 7以降では、以下の2つの関数が推奨されます。
+
+| 関数 | 動作 |
+|------|------|
+| `firstValueFrom` | 最初の値をPromiseとして返す |
+| `lastValueFrom` | 完了時の最後の値をPromiseとして返す |
 
 ```ts
 import { of, firstValueFrom, lastValueFrom } from 'rxjs';
@@ -330,13 +362,15 @@ const lastValue = await lastValueFrom(observable$);
 console.log(lastValue); // 3
 ```
 
+Observableが値を流す前に完了した場合、デフォルトではエラーになります。デフォルト値を指定することで回避できます。
+
 > [!WARNING]
 > `toPromise()`は非推奨です。代わりに`firstValueFrom()`または`lastValueFrom()`を使用してください。
 
 > [!TIP]
-> **使い分けのポイント**
-> - **`firstValueFrom()`**: 最初の値だけが必要な場合（例：ログイン認証の結果）
-> - **`lastValueFrom()`**: すべてのデータを処理した後の最終結果が必要な場合（例：集計結果）
+> **選択のガイドライン**
+> - **`firstValueFrom()`**: 最初の値だけが必要な場合（例: ログイン認証結果）
+> - **`lastValueFrom()`**: すべてのデータを処理した後の最終結果が必要な場合（例: 集計結果）
 
 ## 実践例：両者を組み合わせる
 
@@ -352,6 +386,72 @@ console.log(lastValue); // 3
 > - 同じデータを Promise と Observable で並行取得
 >
 > 詳しくは **[Chapter 10: PromiseとObservableの混在アンチパターン](/guide/anti-patterns/promise-observable-mixing)** を参照してください。
+
+### フォーム送信とAPI呼び出し
+
+ユーザーのフォーム送信イベントをRxJSで捕捉し、Fetch API (Promise) を使ってサーバーに送信する例です。
+
+```ts
+import { fromEvent, from } from 'rxjs';
+import { exhaustMap, catchError } from 'rxjs';
+import { of } from 'rxjs';
+
+interface FormData {
+  username: string;
+  email: string;
+}
+
+// Promiseベースのフォーム送信
+async function submitForm(data: FormData): Promise<{ success: boolean }> {
+  const response = await fetch('https://api.example.com/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  if (!response.ok) {
+    throw new Error('送信に失敗しました');
+  }
+  return response.json();
+}
+
+// RxJSでイベントストリームを管理
+const submitButton = document.createElement('button');
+submitButton.id = 'submit-button';
+submitButton.innerText = '送信';
+submitButton.style.padding = '10px 20px';
+submitButton.style.margin = '10px';
+document.body.appendChild(submitButton);
+if (!submitButton) throw new Error('送信ボタンが見つかりません');
+
+fromEvent(submitButton, 'click').pipe(
+  exhaustMap(() => {
+    const formData: FormData = {
+      username: 'testuser',
+      email: 'test@example.com'
+    };
+    // Promise関数をObservableに変換
+    return from(submitForm(formData));
+  }),
+  catchError(error => {
+    console.error('送信エラー:', error);
+    return of({ success: false });
+  })
+).subscribe(result => {
+  if (result.success) {
+    console.log('送信成功');
+  } else {
+    console.log('送信失敗');
+  }
+});
+```
+
+フォーム送信ボタンがクリックされるたびに、新しい送信プロセスが開始されますが、**送信中は新しい送信を無視します**。
+
+この例では、`exhaustMap` の使用により、送信中の重複リクエストを防いでいます。
+
+### 検索オートコンプリート
+
+入力フォームの値の変化を監視し、API検索を行う例です。
 
 ```ts
 import { fromEvent, from } from 'rxjs';
@@ -502,3 +602,8 @@ RxJSは以下のような分野で特に強力です。Promiseだけでは実現
 - **両方を組み合わせる**のも有効（`from()`で橋渡し）
 
 RxJSは強力ですが、すべての非同期処理にRxJSを使う必要はありません。適切なツールを適切な場面で使い分けることが重要です。
+
+> [!TIP] 次のステップ
+> - [Observableとは](/guide/observables/what-is-observable) で Observable の詳細を学ぶ
+> - [Creation Functions](/guide/creation-functions/index) で Observable の作成方法を学ぶ
+> - [Operators](/guide/operators/index) で Observable の変換と制御を学ぶ

@@ -582,15 +582,16 @@ Each technology has its suitability and disadvantages.
 
 ## Areas Where RxJS is Particularly Active
 
-RxJS is particularly powerful in the following situations.
+RxJS is particularly powerful in the following areas. It can elegantly solve complex requirements that are difficult to achieve with Promise alone.
 
-| Field | Reason | Concrete Examples |
-|------|------|--------|
-| UI Event Processing | Efficiently control continuous events | Clicks, scrolls, keyboard inputs |
-| Real-Time Communication | Support for continuous data streams | WebSocket, Server-Sent Events |
-| Form Processing | Combine and process multiple input values | Real-time validation, conditional input |
-| Control API Calls | Easy cancellation, retry, timeout | Search APIs, data fetching |
-| Complex Asynchronous Flows | Combine multiple asynchronous processes | Dependent API call chains |
+| Area | Examples | Comparison with Promise |
+|------|----------|-------------------------|
+| **Real-Time Communication** | WebSocket, SSE, chat, stock price updates | Promise is only for one-time communication. Not suitable for continuous message processing |
+| **User Input Control** | Search autocomplete, form validation | debounce, distinctUntilChanged, etc. are standard |
+| **Combining Multiple Sources** | Combining search conditions × sort order × filters | Can be described concisely with combineLatest, withLatestFrom |
+| **Offline Support** | PWA, network status monitoring, auto re-sync | Flexible retry control with retry, retryWhen |
+| **Streaming APIs** | OpenAI, sequential output of AI response tokens | Can process continuous data in real-time |
+| **Cancellation Control** | Interrupting long-running processes, discarding old requests | Can cancel immediately with unsubscribe() |
 
 > [!NOTE]
 > For details on the use of RxJS, see also [What is RxJS - Use Cases](./what-is-rxjs.md#use-cases).

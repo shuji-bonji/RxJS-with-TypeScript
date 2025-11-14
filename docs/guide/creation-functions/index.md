@@ -6,7 +6,7 @@ description: RxJSのCreation Functions（Observable作成関数）について�
 
 RxJSでは、Observableを作成するための**Creation Functions**と、既存のObservableを変換する**Pipeable Operators**という2つの異なる形式があります。
 
-このページでは、Creation Functionsの基本概念と、3つの主要なカテゴリについて解説します。
+このページでは、Creation Functionsの基本概念と、7つの主要なカテゴリについて解説します。
 
 ## Creation Functions とは
 

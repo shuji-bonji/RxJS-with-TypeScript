@@ -111,7 +111,9 @@ timer(3000).subscribe(() => console.log('3 seconds passed'));
 基本作成系Creation Functionsを使用する際は、適切な購読解除が重要です。
 
 > [!WARNING]
-> `fromEvent()`, `interval()`, `timer()` は完了しないため、コンポーネントの破棄時に必ず`unsubscribe()`するか、`takeUntil()`などで自動解除する必要があります。
+> `fromEvent()`, `interval()`, および周期的に発行する `timer(delay, period)` は完了しないため、コンポーネントの破棄時に必ず`unsubscribe()`するか、`takeUntil()`などで自動解除する必要があります。
+>
+> 注: `timer(delay)` のように第2引数を省略した場合は1回発行後に自動完了します。
 
 ```typescript
 import { fromEvent, Subject } from 'rxjs';

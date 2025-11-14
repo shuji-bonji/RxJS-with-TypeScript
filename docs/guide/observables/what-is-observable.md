@@ -49,7 +49,7 @@ Observableは以下の3種類の通知をObserverに送ります。
 - `error`: エラー発生時の通知（以降の通知は行われない）
 - `complete`: 正常終了の通知
 
-詳しくは、[「Observableのライフサイクル」の Observer（オブザーバー）](./observable-lifecycle.html#_2-observer-オブザーバー)のセクションで解説します。
+詳しくは、[「Observableのライフサイクル」の Observer（オブザーバー）](./observable-lifecycle.md#_2-observer-オブザーバー)のセクションで解説します。
 
 ## ObservableとPromiseの違い
  

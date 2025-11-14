@@ -8,7 +8,7 @@ description: RxJS is a JavaScript library for reactive programming, handling asy
 
 > ### What is reactive programming?
 > Reactive programming is a method of creating programs that are automatically updated in response to changes in data.
-> It is a type of event-driven programming, with a particular focus on handling asynchronous data streams. It focuses on the flow (stream) of data and builds programs in a way that reacts (reactions) to that flow.
+> It is a type of event-driven programming, with a particular focus on handling asynchronous data streams. It focuses on the flow (stream) of data and builds programs that react to that flow.
 
 In other words, RxJS is a library for handling events and asynchronous data streams in a functional style, providing powerful tools for handling asynchronous data streams using the Observable pattern.
 
@@ -37,8 +37,8 @@ To master RxJS, it is important to understand the following core components.
 |------|------|
 | [`Observable`](../observables/what-is-observable.md) | The source of the stream, which represents data that occurs asynchronously or along time. |
 | [`Observer`](../observables/observable-lifecycle.md#observer)[^observer]| The entity that subscribes to and receives data from the Observable. |
-| [`Subscription`](../observables/observable-lifecycle.html#subscription) | It manages the subscription and unsubscription of the Observable. |
-| [`Creation Functions`](../creation-functions/index.md) | A set of functions for creating and binding an Observable. |
+| [`Subscription`](../observables/observable-lifecycle.md#subscription) | It manages the subscription and unsubscription of the Observable. |
+| [`Creation Functions`](../creation-functions/index.md) | A set of functions for creating and combining Observables. |
 | [`Operator`](../operators/index.md) | A set of functions for converting and controlling an Observable. |
 | [`Subject`](../subjects/what-is-subject.md)[^1] | It is a relay that has the properties of both Observable and Observer. |
 | [`Scheduler`](../schedulers/async-control.md)[^2]| A mechanism to control the timing of Observable execution. |
@@ -194,7 +194,7 @@ RxJS is especially powerful when dealing with real-time communications such as W
 
 | Use Case | Description | Main Operators |
 |------|------|-------------------|
-| WebSocket communication | Chat, notifications, stock price updates, etc. | [`webSocket`](../operators/index.md), [`filter`](../operators/filtering/filter.md), [`map`](../operators/transformation/map.md) |
+| WebSocket communication | Chat, notifications, stock price updates, etc. | [`webSocket`](../observables/creation.md#websocket), [`filter`](../operators/filtering/filter.md), [`map`](../operators/transformation/map.md) |
 | Server-Sent Events | Push notifications from servers | [`fromEvent`](../observables/events.md), [`retry`](../operators/utility/retry.md) |
 | IoT Sensor Monitoring | Continuous sensor data processing | [`debounceTime`](../operators/filtering/debounceTime.md), [`distinctUntilChanged`](../operators/filtering/distinctUntilChanged.md) |
 

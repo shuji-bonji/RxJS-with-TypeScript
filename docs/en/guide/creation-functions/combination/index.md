@@ -41,7 +41,7 @@ The selection of Combination Creation Functions is determined from the following
 ### 3. Timing of Completion
 
 - **After all complete**: `concat`, `forkJoin` - Wait until all Observables have completed
-- **When any completes**: `zip` - Complete when one of them completes
+- **Completes with shortest stream**: `zip` - Complete when any one completes, since remaining values cannot form pairs
 - **Does not complete**: `merge`, `combineLatest` - If one completes while the other continues, it will not complete
 
 ## Converting Cold to Hot

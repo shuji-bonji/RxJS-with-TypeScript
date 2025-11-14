@@ -194,8 +194,8 @@ clicks$.subscribe({
 ```
 
 > [!CAUTION]
-> DOM以外では使えないことに注意
-> - `fromEvent()` はブラウザ環境でのみ利用でき、Node.jsでは利用できません。
+> 対応しているイベント対象に注意
+> - `fromEvent()` はブラウザのDOM要素（EventTarget実装）、Node.jsのEventEmitter、jQuery-likeなイベント対象に対応しています。
 > - 複数回購読すると、複数のイベントリスナーが追加される可能性があります。
 
 > 👉 より詳細なイベントストリームの活用例については、[イベントのストリーム化](../observables/events) を参照してください。

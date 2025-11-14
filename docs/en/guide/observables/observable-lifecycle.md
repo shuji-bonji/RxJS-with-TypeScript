@@ -91,7 +91,7 @@ setTimeout(() => {
 
 ## Observer {#observer}
 
-For more concise and application-specific Observable creation, RxJS provides "Creation Functions". These can be used to simplify code for repeated use cases.
+Observer is an object that acts as the receiver for notifications from Observable. When subscribing to an Observable, you pass an Observer to process the emitted data, errors, and completion notifications.
 
 ### Observer's Three Callback Functions
 

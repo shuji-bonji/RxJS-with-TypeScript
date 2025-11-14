@@ -82,11 +82,12 @@ document.addEventListener('keydown', (event) => {
 
 ```ts
 import { fromEvent } from 'rxjs';
-import { map } from 'rxjs';
+import { map, filter } from 'rxjs';
 
 // キーボードイベントのストリーム化
 const keyDown$ = fromEvent<KeyboardEvent>(document, 'keydown').pipe(
-  map(event => event.key)
+  map(event => event.key),
+  filter(key => key.length === 1) // 単一文字のみ（modifierキーを除外）
 );
 keyDown$.subscribe(key => console.log('押されたキー:', key));
 

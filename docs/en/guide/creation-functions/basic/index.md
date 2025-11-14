@@ -111,7 +111,9 @@ timer(3000).subscribe(() => console.log('3 seconds passed'));
 Proper unsubscription is important when using the Basic Creation Functions.
 
 > [!WARNING]
-> `fromEvent()`, `interval()`, and `timer()` will not complete and must always be `unsubscribe()`d or automatically unsubscribed with `takeUntil()` or similar when the component is destroyed.
+> `fromEvent()`, `interval()`, and periodic `timer(delay, period)` will not complete and must always be `unsubscribe()`d or automatically unsubscribed with `takeUntil()` or similar when the component is destroyed.
+>
+> Note: `timer(delay)` without a second argument will automatically complete after emitting once.
 
 ```typescript
 import { fromEvent, Subject } from 'rxjs';

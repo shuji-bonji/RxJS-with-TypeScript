@@ -37,7 +37,7 @@ RxJSを使いこなすには、以下の中核的な構成要素を理解する�
 |------|------|
 | [`Observable`](../observables/what-is-observable.md) | 非同期または時間に沿って発生するデータを表すストリームの源です。 |
 | [`Observer`](../observables/observable-lifecycle.md#observer)[^observer]| Observableからデータを購読して受け取る側の存在です。 |
-| [`Subscription`](../observables/observable-lifecycle.html#subscription) | Observableの購読と解除の管理を行います。 |
+| [`Subscription`](../observables/observable-lifecycle.md#subscription) | Observableの購読と解除の管理を行います。 |
 | [`Creation Functions`](../creation-functions/index.md) | Observableを作成・結合するための関数群です。 |
 | [`Operator`](../operators/index.md) | Observableを変換・制御するための関数群です。 |
 | [`Subject`](../subjects/what-is-subject.md)[^1] | ObservableとObserverの両方の性質を持つ中継器です。 |
@@ -194,7 +194,7 @@ WebSocketやServer-Sent Events(SSE)などのリアルタイム通信を扱う場
 
 | 用途 | 説明 | 主要なオペレーター |
 |------|------|-------------------|
-| WebSocket通信 | チャット、通知、株価更新など | [`webSocket`](../operators/index.md), [`filter`](../operators/filtering/filter.md), [`map`](../operators/transformation/map.md) |
+| WebSocket通信 | チャット、通知、株価更新など | [`webSocket`](../observables/creation.md#websocket), [`filter`](../operators/filtering/filter.md), [`map`](../operators/transformation/map.md) |
 | Server-Sent Events | サーバーからのプッシュ通知 | [`fromEvent`](../observables/events.md), [`retry`](../operators/utility/retry.md) |
 | IoTセンサー監視 | 連続的なセンサーデータの処理 | [`debounceTime`](../operators/filtering/debounceTime.md), [`distinctUntilChanged`](../operators/filtering/distinctUntilChanged.md) |
 

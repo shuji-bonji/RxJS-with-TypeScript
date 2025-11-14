@@ -49,7 +49,7 @@ Observable sends the following three types of notifications to Observer:
 - `error`: notification when an error occurs (no further notifications are sent)
 - `complete`: notification of successful completion
 
-For more information, see the [Observer in "Observable's Lifecycle"](./observable-lifecycle.html#_2-observer-observer) section.
+For more information, see the [Observer in "Observable's Lifecycle"](./observable-lifecycle.md#_2-observer-observer) section.
 
 ## Difference between Observable and Promise
 

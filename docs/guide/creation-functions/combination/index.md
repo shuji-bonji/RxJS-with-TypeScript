@@ -41,7 +41,7 @@ description: 複数のObservableを1つに結合するCreation Functionsにつ�
 ### 3. 完了のタイミング
 
 - **すべて完了後**: `concat`, `forkJoin` - すべてのObservableが完了するまで待つ
-- **いずれか完了時**: `zip` - いずれか1つが完了したら完了
+- **最短のストリームで完了**: `zip` - いずれか1つが完了した時点で、残りの値がペアになれなくなるため完了
 - **完了しない**: `merge`, `combineLatest` - いずれかが完了しても、他が継続していれば完了しない
 
 ## Cold から Hot への変換
