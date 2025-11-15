@@ -686,10 +686,10 @@ Once you understand debugging techniques, integrate all the knowledge you've lea
 
 ## Related Pages
 
-- **[Chapter 8: RxJS Debugging Techniques](/guide/debugging/)** - Overall debugging techniques
-- **[Chapter 9: Marble Testing](/guide/testing/marble-testing)** - Debugging with TestScheduler
-- **[Understanding Timing and Order](/guide/overcoming-difficulties/timing-and-order)** - Debugging with tap
-- **[Chapter 10: Common Mistakes and Solutions](/guide/anti-patterns/common-mistakes)** - Avoiding anti-patterns
+- **[Chapter 8: RxJS Debugging Techniques](/en/guide/debugging/)** - Overall debugging techniques
+- **[Chapter 9: Marble Testing](/en/guide/testing/marble-testing)** - Debugging with TestScheduler
+- **[Understanding Timing and Order](/en/guide/overcoming-difficulties/timing-and-order)** - Debugging with tap
+- **[Chapter 10: Common Mistakes and Solutions](/en/guide/anti-patterns/common-mistakes)** - Avoiding anti-patterns
 
 ## 🎯 Exercises
 

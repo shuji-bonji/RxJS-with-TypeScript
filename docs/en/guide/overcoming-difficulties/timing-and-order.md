@@ -352,7 +352,7 @@ console.log('End'); // output immediately
 > - **Animation**: Smooth drawing with animationFrameScheduler
 > - **Testing**: virtualize time with TestScheduler
 
-See **[Chapter 7: Utilizing Scheduler](/guide/schedulers/async-control)** for details.
+See **[Chapter 7: Utilizing Scheduler](/en/guide/schedulers/async-control)** for details.
 
 ## Common problems and debugging methods
 
@@ -579,7 +579,7 @@ describe('timing testing', () => {
 });
 ```
 
-See **[Chapter 9: Marble Testing](/guide/testing/marble-testing)** for details.
+See **[Chapter 9: Marble Testing](/en/guide/testing/marble-testing)** for details.
 
 ## Comprehension Checklist
 
@@ -611,14 +611,14 @@ Please check if you can answer the following questions.
 
 Once you understand timing and sequencing, the next step is to learn about **state management and sharing**.
 
-→ **[State management difficulties](/guide/overcoming-difficulties/state-and-sharing)** - Subject, share/shareReplay usage
+→ **[State management difficulties](/en/guide/overcoming-difficulties/state-and-sharing)** - Subject, share/shareReplay usage
 
 ## Related Pages
 
-- **[Chapter 7: Utilizing Scheduler](/guide/schedulers/async-control)** - Details of Scheduler
-- **[Chapter 9: Marble Testing](/guide/testing/marble-testing)** - Testing timing with TestScheduler
-- **[Chapter 8: Debugging techniques for RxJS](/guide/debugging/)** - Debugging in general
-- **[Operator Selection Conundrum](/guide/overcoming-difficulties/operator-selection)** - How to choose the right operator
+- **[Chapter 7: Utilizing Scheduler](/en/guide/schedulers/async-control)** - Details of Scheduler
+- **[Chapter 9: Marble Testing](/en/guide/testing/marble-testing)** - Testing timing with TestScheduler
+- **[Chapter 8: Debugging techniques for RxJS](/en/guide/debugging/)** - Debugging in general
+- **[Operator Selection Conundrum](/en/guide/overcoming-difficulties/operator-selection)** - How to choose the right operator
 
 ## 🎯 Practice Problems
 

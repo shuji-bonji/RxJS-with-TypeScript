@@ -772,15 +772,15 @@ Check if you can answer the following questions.
 
 Once you understand combining multiple streams, learn **debugging techniques** next.
 
-→ **[Debugging Techniques](/guide/overcoming-difficulties/debugging-guide)** - How to debug complex streams
+→ **[Debugging Techniques](/en/guide/overcoming-difficulties/debugging-guide)** - How to debug complex streams
 
 ## Related Pages
 
-- **[Chapter 3: combineLatest](/guide/creation-functions/combination/combineLatest)** - combineLatest details
-- **[Chapter 3: zip](/guide/creation-functions/combination/zip)** - zip details
-- **[Chapter 3: forkJoin](/guide/creation-functions/combination/forkJoin)** - forkJoin details
-- **[withLatestFrom](/guide/operators/combination/withLatestFrom)** - withLatestFrom details
-- **[Chapter 4: Operator Selection](/guide/overcoming-difficulties/operator-selection)** - Operator selection criteria
+- **[Chapter 3: combineLatest](/en/guide/creation-functions/combination/combineLatest)** - combineLatest details
+- **[Chapter 3: zip](/en/guide/creation-functions/combination/zip)** - zip details
+- **[Chapter 3: forkJoin](/en/guide/creation-functions/combination/forkJoin)** - forkJoin details
+- **[withLatestFrom](/en/guide/operators/combination/withLatestFrom)** - withLatestFrom details
+- **[Chapter 4: Operator Selection](/en/guide/overcoming-difficulties/operator-selection)** - Operator selection criteria
 
 ## 🎯 Exercises
 

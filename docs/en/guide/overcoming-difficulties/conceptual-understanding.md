@@ -488,7 +488,7 @@ setTimeout(() => {
 }, 6000);
 ```
 
-**[Run it in the learning execution environment](/guide/starter-kid) to experience the difference.**
+**[Run it in the learning execution environment](/en/guide/starter-kid) to experience the difference.**
 
 ### Experiment 3: Declarative vs. Imperative
 

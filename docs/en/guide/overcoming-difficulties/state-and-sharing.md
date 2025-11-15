@@ -722,15 +722,15 @@ Make sure you can answer the following questions.
 
 Once you understand state management and sharing, the next step is to learn how to **combine multiple streams**.
 
-→ **[Multiple stream combination](/guide/overcoming-difficulties/stream-combination)** - How to use combineLatest, zip, withLatestFrom
+→ **[Multiple stream combination](/en/guide/overcoming-difficulties/stream-combination)** - How to use combineLatest, zip, withLatestFrom
 
 ## Related Pages
 
-- **[Chapter 5: What is Subject](/guide/subjects/what-is-subject)** - Basics of Subject
-- **[Chapter 5: Types of Subject](/guide/subjects/types-of-subject)** - Details of BehaviorSubject and ReplaySubject
-- **[share() operator](/guide/operators/multicasting/share)** - Detailed explanation of share
-- **[Misuse of shareReplay](/guide/anti-patterns/common-mistakes#4-sharereplay-)** - Common mistakes
-- **[Cold vs Hot Observable](/guide/observables/cold-and-hot-observables)** - Cold/Hot details
+- **[Chapter 5: What is Subject](/en/guide/subjects/what-is-subject)** - Basics of Subject
+- **[Chapter 5: Types of Subject](/en/guide/subjects/types-of-subject)** - Details of BehaviorSubject and ReplaySubject
+- **[share() operator](/en/guide/operators/multicasting/share)** - Detailed explanation of share
+- **[Misuse of shareReplay](/en/guide/anti-patterns/common-mistakes#4-sharereplay-)** - Common mistakes
+- **[Cold vs Hot Observable](/en/guide/observables/cold-and-hot-observables)** - Cold/Hot details
 
 ## 🎯 Practice Problems
 
