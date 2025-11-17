@@ -1,5 +1,6 @@
 ---
 description: mergeScan is an RxJS conversion operator that performs asynchronous accumulation processing, combining scan and mergeMap behavior. It is best suited for situations where asynchronous accumulation is required, such as cumulative aggregation of API responses, executing the next request based on previous results, and cumulative data acquisition across multiple pages during pagination. The number of concurrent executions can be controlled with the concurrent parameter.
+titleTemplate: ':title | RxJS'
 ---
 
 # mergeScan - Accumulation with Asynchronous Processing

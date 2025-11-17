@@ -1,5 +1,6 @@
 ---
 description: The iif operator is a RxJS conditional branch operator that selects one of two Observables depending on a conditional expression, and can be used like a ternary operator.
+titleTemplate: ':title | RxJS'
 ---
 
 # iif - Selection of Observable based on condition

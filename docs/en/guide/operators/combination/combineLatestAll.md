@@ -1,5 +1,6 @@
 ---
 description: combineLatestAll takes a Higher-order Observable (Observable of Observables) and combines the latest value of each when all internal Observables have fired at least once.
+titleTemplate: ':title'
 ---
 
 # combineLatestAll - Combine Latest Values of All Internal Observables

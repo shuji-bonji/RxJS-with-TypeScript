@@ -1,5 +1,6 @@
 ---
 description: "mergeWith Pipeable Operator subscribes to multiple Observables simultaneously and merges them in parallel: Ideal for integrating multiple event sources"
+titleTemplate: ':title'
 ---
 
 # mergeWith - Merge Multiple Streams Simultaneously Within a Pipeline

@@ -1,5 +1,6 @@
 ---
 description: The distinctUntilKeyChanged operator focuses on a specific property within an object stream and outputs only when that value differs from the previous one. It efficiently skips consecutive duplicate data and is useful for detecting state changes and optimizing list updates.
+titleTemplate: ':title'
 ---
 
 # distinctUntilKeyChanged - Detect Changes in Specific Property Only

@@ -1,5 +1,6 @@
 ---
 description: The debounceTime operator outputs the last value when no new value has been received for a specified time after emitting consecutive events. This is ideal for optimizing frequent input such as search box typing or window resizing events.
+titleTemplate: ':title'
 ---
 
 # debounceTime - Throttle Event Firing and Emit Value After Waiting a Certain Amount of Time

@@ -1,5 +1,6 @@
 ---
 description: "exhaustAll operator ignores new internal Observables while one is running: Essential for preventing double-clicks, duplicate submissions, and button mashing"
+titleTemplate: ':title | RxJS'
 ---
 
 # exhaustAll - Ignore New Internal Observables While Running

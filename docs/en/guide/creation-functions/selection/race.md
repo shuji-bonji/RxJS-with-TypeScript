@@ -1,5 +1,6 @@
 ---
 description: The race Creation Function achieves a special concatenation process that adopts only the first stream that issues a value out of multiple Observables and ignores the others thereafter.
+titleTemplate: ':title | RxJS'
 ---
 
 # race - adopt the stream that issued the value first

@@ -1,5 +1,6 @@
 ---
 description: windowTime is an RxJS operator that can divide an Observable at regular time intervals and process values issued in each time frame as a separate Observable.
+titleTemplate: ':title | RxJS'
 ---
 
 # windowTime - Split Observable at Regular Time Intervals

@@ -1,5 +1,6 @@
 ---
 description: find is an RxJS filtering operator that finds and outputs the first value that satisfies a condition and immediately completes the stream. It is ideal for scenarios where you want to search for a specific element from an array or list, such as user search, inventory checking, and error log detection. If no value is found, it outputs undefined, and in TypeScript the return value is of type T | undefined.
+titleTemplate: ':title | RxJS'
 ---
 
 # find - Find the First Value That Satisfies a Condition

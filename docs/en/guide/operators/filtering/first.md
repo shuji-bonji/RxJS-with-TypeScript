@@ -1,5 +1,6 @@
 ---
 description: The first operator retrieves only the first value from the stream, or the first value that satisfies the specified condition, and then completes the stream. This is useful when you want to process only the first event reached or to retrieve initial data.
+titleTemplate: ':title'
 ---
 
 # first - Retrieve the First Value or the First Value That Satisfies a Condition

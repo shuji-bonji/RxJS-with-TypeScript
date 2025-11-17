@@ -1,5 +1,6 @@
 ---
 description: buffer is an RxJS operator that outputs an array of accumulated values at the time another Observable emits a value, making it ideal for event-driven batch processing.
+titleTemplate: ':title | RxJS'
 ---
 
 # buffer - Collect Values at Another Observable's Timing

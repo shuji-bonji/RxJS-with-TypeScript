@@ -1,5 +1,6 @@
 ---
 description: reduce is an RxJS conversion operator that accumulates all values in a stream and outputs only the final result upon completion. It is ideal for situations where only the final aggregation result is needed, such as calculating sums, averages, maximums, minimums, aggregating objects, and building arrays. Unlike scan, it does not output intermediate results and cannot be used with infinite streams because stream completion is required.
+titleTemplate: ':title | RxJS'
 ---
 
 # reduce - Outputs Only the Final Accumulated Result

@@ -1,5 +1,6 @@
 ---
 description: "bufferTime operator collects values at regular time intervals for batch processing: Perfect for aggregating events, logs, and real-time data streams"
+titleTemplate: ':title | RxJS'
 ---
 
 # bufferTime - Output Collected Values at Regular Intervals

@@ -1,5 +1,6 @@
 ---
 description: "Learn how to handle stream completion and resource cleanup in RxJS using finalize and complete: Essential techniques for preventing memory leaks"
+titleTemplate: ':title'
 ---
 # finalize and complete - Resource Release and Stream Completion Processing
 

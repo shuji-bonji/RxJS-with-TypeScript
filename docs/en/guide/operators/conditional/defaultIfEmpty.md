@@ -1,5 +1,6 @@
 ---
 description: The defaultIfEmpty operator is an operator to return a default value if Observable does not issue a value, useful for empty data handling and initial value completion.
+titleTemplate: ':title | RxJS'
 ---
 
 # defaultIfEmpty - Default Value if Stream is Empty

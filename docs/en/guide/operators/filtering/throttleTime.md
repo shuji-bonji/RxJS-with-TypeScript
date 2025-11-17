@@ -1,5 +1,6 @@
 ---
 description: The throttleTime operator efficiently thins out high frequency events by allowing only the first value to pass within a specified time interval and ignoring subsequent values. It is ideal for real-time event optimization such as scrolling or mouse movement.
+titleTemplate: ':title'
 ---
 
 # throttleTime - Pass Through the First Value and Ignore New Values for the Specified Time

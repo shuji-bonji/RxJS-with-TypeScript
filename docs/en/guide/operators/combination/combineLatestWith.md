@@ -1,5 +1,6 @@
 ---
 description: combineLatestWith is an RxJS combine operator that combines the original Observable with the latest values of other Observables to form a new stream. It is the Pipeable Operator version of the Creation Function combineLatest, and is ideal for real-time form validation, combining multiple sensor data, combining search filters, and other situations where you want to integrate the latest values of other streams while transforming or processing the main stream.
+titleTemplate: ':title | RxJS'
 ---
 
 # combineLatestWith - Combine Latest Values Within a Pipeline

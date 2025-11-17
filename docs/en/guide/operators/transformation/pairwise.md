@@ -1,5 +1,6 @@
 ---
 description: The pairwise operator is an RxJS operator that outputs two consecutive values as an array of pairs, and is utilized to compare the previous value with the current value or to calculate the difference.
+titleTemplate: ':title | RxJS'
 ---
 
 # pairwise - Process Two Consecutive Values as a Pair

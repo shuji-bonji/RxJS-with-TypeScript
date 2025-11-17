@@ -1,5 +1,6 @@
 ---
 description: The findIndex operator is an RxJS filtering operator that returns the index of the first value that satisfies the condition. If not found, it returns -1.
+titleTemplate: ':title | RxJS'
 ---
 
 # findIndex - Get Index of First Value Matching Condition

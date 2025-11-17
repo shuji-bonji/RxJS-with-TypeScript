@@ -1,5 +1,6 @@
 ---
 description: concatAll is an operator that takes a Higher-order Observable (Observable of Observables) and flattens values by subscribing to internal Observables in order. It starts the next one after the previous Observable completes.
+titleTemplate: ':title | RxJS'
 ---
 
 # concatAll - Flatten Internal Observables Sequentially

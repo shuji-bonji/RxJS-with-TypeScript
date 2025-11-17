@@ -1,5 +1,6 @@
 ---
 description: The ignoreElements operator is an RxJS filtering operator that ignores all values and passes through only completion and error notifications. It is useful when waiting for process completion.
+titleTemplate: ':title'
 ---
 
 # ignoreElements - Ignore All Values and Pass Through Only Completion/Error

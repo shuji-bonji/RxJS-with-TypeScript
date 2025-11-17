@@ -1,5 +1,6 @@
 ---
 description: The mergeMap operator converts each value into a new Observable, executes them concurrently, and combines them flat. This is useful when multiple API requests need to be executed in parallel without waiting in sequence, or to manage nested asynchronous processing.
+titleTemplate: ':title'
 ---
 
 # mergeMap - Converts Each Value to an Observable and Merges Them Concurrently

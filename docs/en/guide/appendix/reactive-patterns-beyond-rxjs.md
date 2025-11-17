@@ -1,5 +1,6 @@
 ---
 description: This course explains how reactive programming principles are implemented outside of ReactiveX in embedded systems and control engineering. Seven representative techniques will be presented, including event-driven, state machine, and data flow programming.
+titleTemplate: ':title | RxJS'
 ---
 
 # Reactive methods other than ReactiveX (embedded perspective)

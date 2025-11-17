@@ -1,5 +1,6 @@
 ---
 description: concatWith is an RxJS combination operator that joins other Observables in sequence after completion of the original Observable. It is ideal for sequential processing within a pipeline, follow-up processing after completion, staged data loading, and other situations where you want to add subsequent processing as an extension of the main stream. The pipeable operator version is convenient for use within a pipeline.
+titleTemplate: ':title'
 ---
 
 # concatWith - Concatenate Streams in Sequence Within a Pipeline

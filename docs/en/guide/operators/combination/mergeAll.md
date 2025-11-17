@@ -1,5 +1,6 @@
 ---
 description: mergeAll is an operator that takes a Higher-order Observable (Observable of Observables) and subscribes to all internal Observables in parallel to flatten the values.
+titleTemplate: ':title | RxJS'
 ---
 
 # mergeAll - Flatten All Internal Observables in Parallel

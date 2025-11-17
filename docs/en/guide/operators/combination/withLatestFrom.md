@@ -1,5 +1,6 @@
 ---
 description: "withLatestFrom operator combines the latest value from another stream each time the main Observable emits: Ideal for form validation and state synchronization"
+titleTemplate: ':title'
 ---
 
 # withLatestFrom - Combine Latest Value Against Main Stream Emission

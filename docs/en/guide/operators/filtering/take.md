@@ -1,5 +1,6 @@
 ---
 description: The take operator retrieves only the first specified number of values from the Observable stream and automatically completes the stream, ignoring subsequent values. This is useful when you only want to retrieve the first few pieces of data.
+titleTemplate: ':title | RxJS'
 ---
 
 # take - Retrieve Only the First Specified Number of Values

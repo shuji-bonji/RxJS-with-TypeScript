@@ -1,5 +1,6 @@
 ---
 description: switchMap is a conversion operator that cancels the previous Observable and switches to the latest one. It is ideal for use cases such as live search, navigation switching, auto-save, etc. Together with TypeScript type inference, it enables safe asynchronous processing. It also provides detailed explanations on how to use it in conjunction with mergeMap and concatMap.
+titleTemplate: ':title'
 ---
 
 # switchMap - Cancel Previous Observable and Switch to the Latest One

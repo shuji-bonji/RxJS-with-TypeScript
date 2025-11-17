@@ -1,5 +1,6 @@
 ---
 description: The sampleTime operator is an RxJS filtering operator that periodically samples the latest value from a stream at specified time intervals. It is ideal for taking periodic snapshots.
+titleTemplate: ':title | RxJS'
 ---
 
 # sampleTime - Sample Latest Value at Specified Time Intervals

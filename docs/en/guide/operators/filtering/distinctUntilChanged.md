@@ -1,5 +1,6 @@
 ---
 description: The distinctUntilChanged operator enables efficient data processing by skipping consecutive values that are the same as the previous one and outputting only the values that have changed.
+titleTemplate: ':title | RxJS'
 ---
 
 # distinctUntilChanged - Remove Consecutive Duplicate Values

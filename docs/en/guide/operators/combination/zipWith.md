@@ -1,5 +1,6 @@
 ---
 description: zipWith is an RxJS combination operator that pairs the original Observable with other Observables in corresponding order. It is the Pipeable Operator version of Creation Function zip, and is ideal for situations where order is important, such as quiz games (questions and answers), task assignments (users and tasks), seat assignments (passengers and seat numbers), etc. It is useful when you want to transform and process the main stream while pairing it with other streams.
+titleTemplate: ':title | RxJS'
 ---
 
 # zipWith - Pairing Based on Order (Within Pipeline)

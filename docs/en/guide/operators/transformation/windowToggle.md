@@ -1,5 +1,6 @@
 ---
 description: windowToggle is an advanced RxJS conversion operator that allows multiple window periods to be managed independently, with start and end triggers controlled by separate Observables. It is ideal for situations where dynamic period management is required, such as data collection during business hours or event recording during button presses. TypeScript type inference ensures type-safe window splitting processing.
+titleTemplate: ':title | RxJS'
 ---
 
 # windowToggle - Window with Independent Start and End Control

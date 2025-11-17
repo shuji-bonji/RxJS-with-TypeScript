@@ -7,6 +7,7 @@ import { enThemeConfig } from './en';
 export default withMermaid(
   defineConfig({
     title: 'RxJS with TypeScript',
+    titleTemplate: ':title | RxJS+TS',
     description: 'TypeScriptプログラマのためのRxJS入門',
     base: '/RxJS-with-TypeScript/',
 

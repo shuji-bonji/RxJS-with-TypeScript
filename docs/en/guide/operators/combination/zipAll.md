@@ -1,5 +1,6 @@
 ---
 description: zipAll is an operator that takes a Higher-order Observable (Observable of Observables) and pairs the corresponding ordered values of each internal Observable and outputs them as an array.
+titleTemplate: ':title'
 ---
 
 # zipAll - Pair Corresponding Values of Each Internal Observable

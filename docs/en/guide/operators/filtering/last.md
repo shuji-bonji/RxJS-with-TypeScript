@@ -1,5 +1,6 @@
 ---
 description: "The last operator retrieves only the last value at stream completion or the last value matching a condition: Essential for final state extraction"
+titleTemplate: ':title'
 ---
 
 # last - Retrieve the Last Value or the Last Value That Matches a Condition

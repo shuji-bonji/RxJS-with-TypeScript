@@ -1,5 +1,6 @@
 ---
 description: Robust error handling strategies that combine retry and catchError operators will be explained. You will learn through practical API request examples such as retries for temporary failures, exponential backoff patterns, and proper fallback handling.
+titleTemplate: ':title | RxJS'
 ---
 # retry and catchError - Effective Error Handling Combination
 

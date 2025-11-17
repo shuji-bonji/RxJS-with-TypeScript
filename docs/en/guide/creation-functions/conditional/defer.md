@@ -1,5 +1,6 @@
 ---
 description: The defer operator causes the Observable's factory function to be delayed until the point of subscription. This is useful when you want to evaluate a different value or process each time you subscribe, such as the current time, random values, dynamic API requests, or other processes whose results change at the time of execution.
+titleTemplate: ':title | RxJS'
 ---
 
 # defer - Observable creation with delayed evaluation

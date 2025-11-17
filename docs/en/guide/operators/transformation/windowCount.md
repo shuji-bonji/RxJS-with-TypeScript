@@ -1,5 +1,6 @@
 ---
 description: windowCount is an RxJS conversion operator that divides an Observable by a specified number of items. It is ideal for count-based stream processing, aggregation per fixed count, and pagination processing. Unlike bufferCount, it can apply independent processing to each window. TypeScript type inference allows type-safe window splitting and stream operations.
+titleTemplate: ':title | RxJS'
 ---
 
 # windowCount - Split Observable by Specified Count

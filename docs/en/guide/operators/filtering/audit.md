@@ -1,5 +1,6 @@
 ---
 description: The audit operator is an RxJS filtering operator that emits only the last value within a period controlled by a custom Observable. It is ideal for dynamic timing control.
+titleTemplate: ':title'
 ---
 
 # audit - Emit the Last Value During a Period Controlled by a Custom Observable

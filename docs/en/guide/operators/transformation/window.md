@@ -1,5 +1,6 @@
 ---
 description: window is an RxJS operator that splits a source Observable into nested Observables at the time another Observable emits values, ideal for advanced event-driven stream processing.
+titleTemplate: ':title | RxJS'
 ---
 
 # window - Split Observable at Another Observable's Timing

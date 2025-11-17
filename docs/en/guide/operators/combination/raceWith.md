@@ -1,5 +1,6 @@
 ---
 description: raceWith is an RxJS combination operator that adopts only the first stream that emits a value among the original Observable and other Observables. It is the Pipeable Operator version of Creation Function race, and is ideal for situations where the fastest response is a priority, such as timeout implementations, parallel acquisition from multiple CDNs (fallback), and competing acquisition from multiple data sources. It is effective when you want to compete with other streams while converting and processing the main stream.
+titleTemplate: ':title | RxJS'
 ---
 
 # raceWith - Adopt the Fastest Stream (Within Pipeline)

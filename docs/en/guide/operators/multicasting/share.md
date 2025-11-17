@@ -1,5 +1,6 @@
 ---
 description: Describes how to implement multicasting using the share() operator. Describes how to share the same Observable with multiple subscribers to reduce duplicate processing and provides detailed control options.
+titleTemplate: ':title | RxJS'
 ---
 
 # share - Share an Observable with Multiple Subscribers

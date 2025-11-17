@@ -1,5 +1,6 @@
 ---
 description: "Is Reactive Programming really a panacea? We will examine the gap between design philosophy and reality, and objectively explain the strengths and limitations of RP, as well as areas that should be applied and those that should be avoided."
+titleTemplate: ':title'
 ---
 
 # Reactive Programming Reconsidered - The Gap Between Design Philosophy and Reality

@@ -1,5 +1,6 @@
 ---
 description: This presentation will explain how to utilize reactive programming in embedded development. Practical examples will be presented, such as selecting applicable layers in environments with performance constraints and memory limitations, sensor integration, and event correlation detection.
+titleTemplate: ':title'
 ---
 
 # Relationship between Embedded Development and Reactive Programming

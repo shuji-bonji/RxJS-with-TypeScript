@@ -1,5 +1,6 @@
 ---
 description: "interval() - Creation Function that continuously emits values at specified intervals: Essential for polling, periodic tasks, countdown timers, and real-time updates"
+titleTemplate: ':title | RxJS'
 ---
 
 # interval() - Continuous Emission at Specified Intervals
