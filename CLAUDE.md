@@ -112,7 +112,9 @@ docs/
 
 ### Content Organization
 
-Documentation follows a structured 14-chapter curriculum:
+Documentation follows a structured curriculum with 15 chapters (Chapters 12, 14, 15 are planned for future releases):
+
+**✅ Completed Chapters (1-11, 13):**
 
 1. **RxJS入門** (Introduction) - Basics and streams
 2. **Observableの基礎** (Observable Basics) - Observable fundamentals, lifecycle, cold/hot
@@ -137,10 +139,14 @@ Documentation follows a structured 14-chapter curriculum:
 8. **RxJSのデバッグ手法** (Debugging) - Debugging strategies, common scenarios, and tools
 9. **テスト手法** (Testing) - Unit tests, TestScheduler, marble testing
 10. **RxJSアンチパターン集** (Anti-patterns) - Common mistakes and solutions
-11. **TypeScriptとRxJSの高度な連携** (Advanced TypeScript Integration) - Placeholder
-12. **実践パターン** (Practical Patterns) - Placeholder
-13. **パフォーマンス最適化** (Performance Optimization) - Placeholder
-14. **フレームワークとの統合** (Framework Integration) - Placeholder
+11. **RxJS困難点克服** (Overcoming Difficulties) - Conceptual barriers, lifecycle management, operator selection (7 pages)
+13. **実践パターン集** (Practical Patterns) - Real-world implementation patterns (9 pages: ui-events, api-calls, form-handling, real-time-data, caching-strategies, error-handling-patterns, subscribe-branching, advanced-form-patterns)
+
+**🔲 Planned Chapters (12, 14, 15):**
+
+12. **TypeScriptとRxJSの高度な連携** (Advanced TypeScript Integration) - Type safety, generics, custom operators (Placeholder)
+14. **パフォーマンス最適化** (Performance Optimization) - Subscription management, operator selection (Placeholder)
+15. **フレームワークとの統合** (Framework Integration) - Angular, React, Vue, Web APIs (Placeholder)
 
 Each operator/concept page typically includes practical use cases in a `practical-use-cases.md` file.
 
@@ -461,27 +467,47 @@ When editing documentation:
 
 ## Content Priorities and TODO
 
-### High Priority
-1. **RxJS v8 Preparation**
+### 🔴 High Priority
+
+1. **Chapter 14: パフォーマンス最適化** (Unimplemented)
+   - Subscription lifecycle management and memory leak prevention
+   - Operator selection for performance optimization
+   - Stream architecture patterns for scalability
+
+2. **Chapter 15: フレームワークとの統合** (Unimplemented)
+   - Angular, React, Vue framework integrations
+   - State management patterns (NgRX, Signals, Redux Toolkit)
+   - Web API integration (WebSocket, SSE, IndexedDB)
+
+3. **RxJS v8 Migration Guide** (Wait for stable release)
    - Research and document new features
    - Create migration guide
-2. **Add Practical Use Cases**
-   - WebSocket integration (developer's learning focus)
-   - PWA application examples
-   - Web Components integration
-3. **Expand Testing Section**
-   - Concrete examples using Jasmine
-   - Detailed marble testing explanation
+   - Update all code examples
 
-### Medium Priority
-1. Add interactive code examples
-2. Expand performance optimization section
-3. Common mistakes and their solutions
+### 🟡 Medium Priority
 
-### Low Priority
-1. Consider video tutorials
-2. Add practice exercises
-3. Community contribution guidelines
+1. **Chapter 12: TypeScriptとRxJSの高度な連携** (Unimplemented)
+   - Advanced type safety patterns
+   - Custom operator creation with proper typing
+   - Conditional types and mapped types
+
+2. **TestScheduler Advanced Guide** (Chapter 9 expansion)
+   - Comprehensive TestScheduler techniques
+   - Real-world testing scenarios
+   - Cross-reference with Chapter 13 patterns
+
+3. **Observable と Signal 統合** (Deep Dive)
+   - Angular Signals interoperability (toSignal/toObservable)
+   - Framework-agnostic Signal concepts
+   - Performance benchmarks and trade-offs
+
+### 🟢 Low Priority
+
+1. Add interactive code examples (CodeSandbox/StackBlitz embedding)
+2. Consider video tutorials
+3. Add practice exercises
+4. Community contribution guidelines
+5. JSON Patch Examples Repository (optional supporting infrastructure)
 
 ---
 
@@ -674,6 +700,72 @@ The following new chapters have been added or are planned for future releases.
 
 ---
 
+#### ✅ Chapter 13: 実践パターン集 (Completed November 2025)
+
+**Purpose:**
+- Provide real-world implementation patterns for common use cases
+- Show how to apply RxJS knowledge in practical scenarios
+- Address the gap between "knowing operators" and "building features"
+
+**Final Status:**
+- Chapter 13 has been fully implemented with **9 comprehensive pages** (Japanese and English)
+- All code examples follow the **immediately executable** pattern (dynamic DOM creation, no HTML setup required)
+- Covers essential practical patterns from UI events to advanced form handling
+
+**Completed Structure:**
+
+```
+13. 実践パターン集 (COMPLETED - 9 pages)
+├── index.md - 実践パターンの概要
+├── ui-events.md - UIイベント処理パターン
+├── api-calls.md - API呼び出しパターン
+├── form-handling.md - フォーム処理パターン
+├── real-time-data.md - リアルタイムデータ処理 (WebSocket, SSE, Polling)
+├── caching-strategies.md - キャッシュ戦略
+├── error-handling-patterns.md - エラーハンドリング実践パターン
+├── subscribe-branching.md - subscribe内の条件分岐パターン
+└── advanced-form-patterns.md - JSON Patch高度なフォームパターン
+```
+
+**Key Implementation Features:**
+
+1. **Immediately Executable Code Examples:**
+   - All DOM elements created dynamically with `document.createElement()`
+   - No pre-existing HTML markup required
+   - Examples work in browser console, CodeSandbox, StackBlitz immediately
+   - Traditional `querySelector` approach shown in comments for educational purposes
+
+2. **Coverage of Developer Focus Areas:**
+   - WebSocket integration (`real-time-data.md`)
+   - PWA application patterns (`caching-strategies.md`)
+   - Web Components integration (`ui-events.md`)
+
+3. **Advanced Patterns:**
+   - JSON Patch for large-scale form autosave and Undo/Redo
+   - Collaborative editing with operational transforms
+   - Offline-first architecture with IndexedDB
+
+4. **Multi-language Support:**
+   - All 9 pages fully translated to English
+   - Code comments translated appropriately
+   - Consistent documentation quality across both languages
+
+**Completed Implementation:**
+
+- ✅ All 9 pages created with comprehensive content
+- ✅ Code examples follow executable pattern
+- ✅ English translations completed
+- ✅ Cross-references to Chapters 6, 10, 11
+- ✅ Build verified without errors
+- ✅ Sidebar navigation updated
+
+**Developer Impact:**
+- Immediate practical value for TypeScript developers
+- Bridge between theoretical knowledge and real-world implementation
+- Demonstrates best practices with type safety and memory leak prevention
+
+---
+
 ## Completed Releases
 
 ### ✅ Fourth Release: Multi-language Support (Completed January 2025)
@@ -795,607 +887,132 @@ docs/
 
 ## Active Development
 
+### 🔴 High Priority: Remaining Chapters
+
+The following three chapters are defined in the sidebar configuration but remain unimplemented (all items are currently commented out):
+
+#### Chapter 12: TypeScriptとRxJSの高度な連携
+
+**Planned Structure** (from `docs/.vitepress/config/ja.ts`):
+```typescript
+items: [
+  { text: 'TypeScriptとRxJSの基本連携', link: '/guide/typescript-advanced/type-safety' },
+  { text: 'ジェネリクスの活用', link: '/guide/typescript-advanced/generics' },
+  { text: 'カスタムオペレーターと型定義', link: '/guide/typescript-advanced/custom-operators' },
+  { text: '条件型とマッピング型の活用', link: '/guide/typescript-advanced/conditional-types' },
+]
+```
+
+**Purpose:**
+- Deep dive into TypeScript integration with RxJS
+- Advanced type safety patterns and techniques
+- Custom operator creation with proper typing
+- Leverage conditional types and mapped types for better type inference
+
+**Implementation Priority:** Medium (foundation for advanced users)
+
 ---
 
-#### 🔄 Medium Priority: Chapter 15 Enhancement - フレームワークとの統合
+#### Chapter 14: パフォーマンス最適化
+
+**Planned Structure** (from `docs/.vitepress/config/ja.ts`):
+```typescript
+items: [
+  { text: '購読の適切な管理', link: '/guide/performance/subscription-management' },
+  { text: '効率的なオペレーター選択', link: '/guide/performance/operator-selection' },
+  { text: 'ストリームの設計パターン', link: '/guide/performance/stream-design' },
+]
+```
+
+**Purpose:**
+- Subscription lifecycle management and memory leak prevention
+- Operator selection for performance optimization
+- Stream architecture patterns for scalability
+
+**Implementation Priority:** High (critical for production applications)
+
+---
+
+#### Chapter 15: フレームワークとの統合
+
+**Planned Structure** (from `docs/.vitepress/config/ja.ts`):
+```typescript
+items: [
+  { text: 'Angularとの連携', link: '/guide/frameworks/angular' },
+  { text: 'Reactとの連携', link: '/guide/frameworks/react' },
+  { text: 'Vueとの連携', link: '/guide/frameworks/vue' },
+  { text: 'Web APIとの連携', link: '/guide/frameworks/web-api' },
+]
+```
+
+**Purpose:**
+- Framework-specific RxJS integration patterns
+- Angular: NgRX, Signals interoperability (Angular 19+)
+- React: React hooks integration, state management
+- Vue: Composition API integration
+- Web APIs: WebSocket, Server-Sent Events, IndexedDB
 
 **Phased Approach:**
 
-**Phase 1: Basic Framework Integration (15.1)**
+**Phase 1: Basic Framework Integration**
 - Quick start guides for each framework (5-10 min read)
 - Focus on basic RxJS usage patterns
 - Heavy use of external documentation links
-- Frameworks: Angular, React, Vue, Svelte
 
-**Phase 2: State Management Integration (15.2)** ⭐ Main Enhancement
-```
-14.2 状態管理との統合
-├── RxJS + NgRX (Angular)
-│   ├── 基本的なパターン
-│   ├── Effects と Observables
-│   └── 実践例：非同期処理の管理
-├── RxJS + Signals (Angular 19+)
-│   ├── Signals と RxJS の相互運用
-│   ├── toSignal / toObservable
-│   └── 実践例：リアクティブフォーム
-├── RxJS + Runes (Svelte 5)
-│   ├── $state と Observable の連携
-│   ├── $derived と RxJS パイプライン
-│   └── 実践例：リアルタイムデータ
-└── RxJS + 他の状態管理
-    ├── Redux Toolkit
-    ├── Zustand
-    └── Jotai
-```
+**Phase 2: State Management Integration** ⭐ Main Enhancement
+- RxJS + NgRX (Angular) - leverage developer's Angular experience
+- RxJS + Signals (Angular 19+) - toSignal/toObservable patterns
+- RxJS + Redux Toolkit (React)
+- RxJS + Zustand, Jotai (lightweight state management)
 
-**Phase 3: Web API Integration (15.3)**
+**Phase 3: Web API Integration**
 - WebSocket (developer's focus area)
 - Server-Sent Events
-- IndexedDB
+- IndexedDB for offline-first applications
 
-**Implementation Strategy:**
-1. Start with NgRX + RxJS (leverage developer's Angular experience)
-2. Keep each topic at "introduction" level
-3. Provide rich external documentation links
-4. Add based on user feedback
+**Implementation Priority:** High (connects RxJS to real-world frameworks)
 
 **Considerations:**
 - ⚠️ Maintain framework-agnostic foundation
 - ⚠️ Avoid scope creep (don't become a state management tutorial)
 - ⚠️ Maintenance overhead for framework updates
 - ✅ Provides unique value vs other RxJS resources
-- ✅ Reflects 2024-2025 trends (Signals, Runes)
+- ✅ Reflects 2025 ecosystem trends (Signals, Runes)
 
-**Priority-term**: Chapter 14.1 基本的なフレームワーク連携
-2. **Medium-term**: Chapter 14.2 状態管理との統合 (starting with NgRX)
+---
 
---- Order:**
-1. **Short
+### 🟡 Optional: Supporting Infrastructure
 
-#### 🔴 High Priority: Chapter 13 - 実践パターン集 (Planned)
+#### JSON Patch Examples Repository (Optional)
 
-**Purpose:**
-- Provide real-world implementation patterns for common use cases
-- Show how to apply RxJS knowledge in practical scenarios
-- Address the gap between "knowing operators" and "building features"
-
-**Structure:**
-```
-13. 実践パターン集
-├── index.md                        # 実践パターンの概要
-│   ├── パターン一覧
-│   ├── 使い方ガイド
-│   └── 実装時の考え方
-├── ui-events.md                    # UIイベント処理パターン
-│   ├── クリックイベントの制御（throttle, debounce, distinct）
-│   ├── ドラッグ&ドロップ
-│   ├── スクロールイベント処理
-│   ├── キーボード入力（オートコンプリート）
-│   └── マルチタッチ対応
-├── api-calls.md                    # API呼び出しパターン
-│   ├── 基本的なGET/POST
-│   ├── 並列リクエスト（forkJoin）
-│   ├── 直列リクエスト（concatMap）
-│   ├── 依存関係のあるリクエスト（switchMap）
-│   ├── リトライとエラーハンドリング
-│   ├── タイムアウト処理
-│   └── キャンセル処理（takeUntil）
-├── form-handling.md                # フォーム処理パターン
-│   ├── リアルタイムバリデーション
-│   ├── 自動保存（debounce + distinctUntilChanged）
-│   ├── 複数フィールドの組み合わせ（combineLatest）
-│   ├── 条件付きフィールド表示
-│   ├── サブミット処理（exhaustMap で二重送信防止）
-│   └── エラー表示とリセット
-├── real-time-data.md               # リアルタイムデータ処理
-│   ├── WebSocket 統合
-│   ├── Server-Sent Events (SSE)
-│   ├── Polling パターン
-│   ├── 接続管理とリトライ
-│   ├── データのマージと更新
-│   └── 通知システム
-├── caching-strategies.md           # キャッシュ戦略
-│   ├── shareReplay でのキャッシュ
-│   ├── 手動リフレッシュパターン
-│   ├── TTL（有効期限）付きキャッシュ
-│   ├── キャッシュ無効化戦略
-│   ├── ローカルストレージ連携
-│   └── オフライン対応
-├── error-handling-patterns.md      # エラーハンドリング実践パターン
-│   ├── API呼び出しでのエラーハンドリング
-│   ├── ユーザー通知とフォールバック戦略
-│   ├── リトライ戦略（指数バックオフ）
-│   ├── グローバルエラーハンドリング
-│   ├── エラー境界の設計
-│   └── ログとモニタリング
-├── subscribe-branching.md          # subscribe内の条件分岐パターン
-│   ├── 問題：subscribe内で複雑な条件分岐
-│   ├── パターン1: パイプラインでの分岐（filter + tap）
-│   ├── パターン2: partition による分岐
-│   ├── パターン3: switchMap + iif による動的分岐
-│   ├── パターン4: 関数化 + map による変換（推奨）
-│   ├── 実践例：APIレスポンス処理
-│   └── 選択のガイドライン
-└── advanced-form-patterns.md       # JSON Patchを使った高度なフォームパターン
-    ├── 大規模フォームの自動保存とUndo/Redo
-    │   ├── JSON Patch/Pointer の基礎 (RFC 6902/6901)
-    │   ├── 差分検出とパッチ生成（pairwise + fast-json-patch）
-    │   ├── 自動保存（バッチング + 順序保証 with concatMap）
-    │   ├── 楽観的UI更新（scan による即時反映）
-    │   ├── Undo/Redo実装（逆パッチによる履歴管理）
-    │   ├── オフライン対応（IndexedDB キュー）
-    │   └── パフォーマンス最適化（パッチ圧縮、分割送信）
-    └── 共同編集のリアルタイム同期
-        ├── Operational Transform (OT) / CRDT の基礎
-        ├── WebSocket + RxJS統合（双方向通信）
-        ├── バージョン管理（Vector Clock / Lamport Timestamp）
-        ├── プレゼンス管理（カーソル位置、アクティブユーザー）
-        ├── 競合解決の実践（OT変換、送信バッファ管理）
-        ├── ライブラリ選択（ShareDB vs Yjs）
-        └── エラーハンドリング（再接続、状態同期）
-```
-
-**Content Characteristics:**
-- 実務で即座に使えるコード例
-- Before/After での比較
-- パフォーマンスとメモリ考慮
-- テストコード付き
-- TypeScript での型安全性
-- 標準技術優先（RFC準拠、W3C標準）
-- **実行可能なコード例**（HTML準備不要、そのまま動作）
-
-**Executable Code Examples (Chapter 13 Required):**
-
-All code examples in Chapter 13 must be **immediately executable** without requiring pre-existing HTML markup. This allows learners to:
-- Copy/paste code and see it work instantly
-- Run examples in browser console or CodeSandbox/StackBlitz
-- Focus on RxJS patterns without HTML setup overhead
-
-**Guidelines:**
-
-1. **Create DOM elements dynamically** instead of querying existing elements
-2. **Append elements to document.body** to make them visible
-3. **Comment out querySelector** to show the traditional approach (educational)
-4. **Include cleanup code** where appropriate (removeEventListener, element removal)
-
-**Example Pattern:**
-
-```typescript
-// ❌ Bad: Requires pre-existing HTML
-const button = document.querySelector<HTMLButtonElement>('#submit-button');
-if (button) {
-  fromEvent(button, 'click').pipe(
-    throttleTime(1000)
-  ).subscribe(() => {
-    console.log('送信処理実行');
-  });
-}
-
-// ✅ Good: Creates element dynamically (immediately executable)
-import { fromEvent, throttleTime } from 'rxjs';
-
-// Traditional approach (commented for reference)
-// const button = document.querySelector<HTMLButtonElement>('#submit-button');
-
-// Self-contained: creates button dynamically
-const button = document.createElement('button');
-button.id = 'submit-button';
-button.innerText = 'Submit';
-button.style.padding = '10px 20px';
-button.style.margin = '10px';
-document.body.appendChild(button);
-
-fromEvent(button, 'click').pipe(
-  throttleTime(1000) // 1秒間に1回のみ処理
-).subscribe(() => {
-  console.log('送信処理実行');
-  submitForm();
-});
-
-function submitForm(): void {
-  console.log('フォーム送信中...');
-  // API呼び出し等
-}
-
-// Optional: Cleanup example
-// button.remove(); // or document.body.removeChild(button);
-```
-
-**When to Apply:**
-
-- ✅ **Required**: All Chapter 13 examples (ui-events, form-handling, etc.)
-- ✅ **Required**: Examples meant for CodeSandbox/StackBlitz embedding
-- ✅ **Recommended**: Any code example demonstrating DOM interactions
-- ⚠️ **Optional**: Simple operator examples without DOM (map, filter, etc.)
-
-**Additional DOM Element Examples:**
-
-```typescript
-// Input field
-const input = document.createElement('input');
-input.type = 'text';
-input.placeholder = 'Enter text...';
-input.style.padding = '8px';
-input.style.margin = '10px';
-document.body.appendChild(input);
-
-// Div for output
-const output = document.createElement('div');
-output.id = 'output';
-output.style.padding = '10px';
-output.style.border = '1px solid #ccc';
-output.style.margin = '10px';
-document.body.appendChild(output);
-
-// Form
-const form = document.createElement('form');
-form.innerHTML = `
-  <input type="text" name="username" placeholder="Username" />
-  <input type="email" name="email" placeholder="Email" />
-  <button type="submit">Submit</button>
-`;
-form.style.padding = '10px';
-document.body.appendChild(form);
-```
-
-**Style Guidelines:**
-
-1. **Add basic styling** to make elements visible and usable
-   - padding, margin for buttons/inputs
-   - border for containers
-   - Don't overdo styling (focus on RxJS, not CSS)
-
-2. **Use semantic element names**
-   - `submitButton`, `emailInput`, `resultDiv`
-
-3. **Include element cleanup** for long-running examples
-   ```typescript
-   // At the end of examples with subscriptions
-   subscription.add(() => {
-     button.remove(); // Clean up DOM
-   });
-   ```
-
-4. **Show traditional approach** in comments
-   - Helps learners understand real-world usage
-   - Shows migration path from static HTML
-
-**Benefits:**
-
-- ✅ Zero HTML setup required
-- ✅ Works in browser console immediately
-- ✅ Perfect for CodeSandbox/StackBlitz embedding
-- ✅ Easy to copy/paste and experiment
-- ✅ Focus stays on RxJS patterns, not HTML boilerplate
-
-**Integration with Existing Content:**
-- Chapter 6（エラーハンドリング）の基礎を実践で応用
-- Chapter 10（アンチパターン）で学んだことを避けるパターン
-- Chapter 11（学習の壁）で克服した知識を実践
-
-**Implementation Strategy:**
-1. **Phase 1**: Core patterns (ui-events, api-calls, form-handling)
-2. **Phase 2**: Advanced patterns (real-time-data, caching-strategies)
-3. **Phase 3**: Specialized patterns (error-handling, subscribe-branching)
-4. **Phase 4**: JSON Patch patterns (advanced-form-patterns) - 詳細は下記参照
-
-**Developer Focus Areas:**
-- WebSocket integration (developer's learning focus) → `real-time-data.md`
-- PWA application examples → `caching-strategies.md`
-- Web Components integration → `ui-events.md`
-
-**Timeline:**
-- **Q2-Q3 2025**: Chapter 13 implementation (Phase 1-3: 7 pages)
-- **Q3-Q4 2025**: Phase 4 implementation (advanced-form-patterns.md)
-- **Q4 2025**: Integration and cross-referencing
-
-### Supporting Infrastructure: JSON Patch Examples Repository
+> **Note:** This is an optional supporting infrastructure for Chapter 13's `advanced-form-patterns.md` page, which already contains comprehensive documentation on JSON Patch + RxJS patterns.
 
 **Purpose:**
 Provide executable code examples for JSON Patch patterns since no public APIs support JSON Patch operations.
 
-**Problem:**
+**Background:**
 - No public testing APIs (like JSONPlaceholder) support JSON Patch (RFC 6902)
-- Learners need hands-on environment to understand JSON Patch + RxJS patterns
-- Server-side implementation is required for complete demonstrations
+- Chapter 13's `advanced-form-patterns.md` already contains comprehensive JSON Patch documentation
+- This repository would provide hands-on, runnable examples to complement the documentation
 
-**Solution: Multi-Phase Approach**
+**Proposed Solution:**
 
-#### Phase 1: Embedded Demos (Immediate - Priority 1)
+**Phase 1: Embedded Demos** (StackBlitz/CodeSandbox with MSW)
+- Large Form Autosave demo with JSON Patch generation, auto-save, Undo/Redo
+- Collaborative Editing demo with Yjs integration
+- Embedded in `advanced-form-patterns.md` page
 
-**Goal:** Enable learners to try patterns instantly without setup
+**Phase 2: Starter Kit Repository** (`https://github.com/shuji-bonji/rxjs-json-patch-examples`)
+- 4 runnable examples (Basic Patch, Large Form, Collaborative Editing, Offline Queue)
+- Frontend (RxJS + TypeScript + fast-json-patch + MSW) + Backend (Express/Hono)
+- Docker Compose setup for easy local development
+- Comprehensive README with quick start guide
 
-**Approach:**
-- Create StackBlitz/CodeSandbox projects with MSW (Mock Service Worker)
-- Embed interactive demos directly in documentation pages
-- Use browser-based mocking (no server required)
+**Phase 3: Public API** (Optional, long-term)
+- Live backend API deployment (Vercel/Railway)
+- Not priority - Phase 1 + 2 provide sufficient learning environment
 
-**Stack:**
-```json
-{
-  "frontend": {
-    "rxjs": "^7.8.2",
-    "fast-json-patch": "^3.1.1",
-    "msw": "^2.0.0",
-    "vite": "^5.0.0",
-    "typescript": "^5.3.0"
-  }
-}
-```
-
-**Deliverables:**
-1. Large Form Autosave Demo (StackBlitz)
-   - JSON Patch generation with `pairwise()` + `fast-json-patch`
-   - Auto-save with `bufferTime()` + `concatMap()`
-   - Undo/Redo with inverse patches
-   - MSW handlers for `/api/forms/:id/patches`
-
-2. Collaborative Editing Demo (StackBlitz)
-   - Yjs integration (uses public Yjs WebSocket server)
-   - Real-time sync demonstration
-   - Presence management (cursor positions)
-
-**Documentation Integration:**
-```markdown
-## 実際に試してみる
-
-<iframe src="https://stackblitz.com/edit/rxjs-json-patch-autosave?embed=1&file=src/main.ts"
-  style="width:100%; height:500px; border:0; border-radius: 4px; overflow:hidden;"
-></iframe>
-
-[新しいタブで開く →](https://stackblitz.com/edit/rxjs-json-patch-autosave)
-```
-
-**Estimated Effort:** 2-3 hours per demo × 2 demos = 4-6 hours
-
----
-
-#### Phase 2: Starter Kit Repository (Short-term - Priority 2)
-
-**Goal:** Provide comprehensive, runnable codebase with frontend and backend
-
-**Repository:** `https://github.com/shuji-bonji/rxjs-json-patch-examples`
-
-**Structure:**
-```
-rxjs-json-patch-examples/
-├── README.md
-├── package.json (workspaces root)
-├── docker-compose.yml
-│
-├── examples/
-│   ├── 01-basic-patch/              # JSON Patch基礎
-│   │   ├── frontend/
-│   │   ├── backend/ (optional)
-│   │   └── README.md
-│   │
-│   ├── 02-large-form-autosave/      # 大規模フォーム
-│   │   ├── frontend/
-│   │   │   ├── src/
-│   │   │   │   ├── lib/
-│   │   │   │   │   ├── patch-generator.ts
-│   │   │   │   │   ├── auto-saver.ts
-│   │   │   │   │   └── history-manager.ts
-│   │   │   │   ├── mocks/handlers.ts (MSW)
-│   │   │   │   └── main.ts
-│   │   │   ├── package.json
-│   │   │   └── vite.config.ts
-│   │   │
-│   │   ├── backend/
-│   │   │   ├── src/
-│   │   │   │   ├── server.ts (Express or Hono)
-│   │   │   │   ├── routes/form.ts
-│   │   │   │   └── services/patch.ts
-│   │   │   └── package.json
-│   │   │
-│   │   └── README.md
-│   │
-│   ├── 03-collaborative-editing/    # 共同編集
-│   │   ├── frontend/ (Yjs integration)
-│   │   ├── backend/ (y-websocket server)
-│   │   └── README.md
-│   │
-│   └── 04-offline-queue/            # オフライン対応
-│       ├── frontend/ (IndexedDB)
-│       └── README.md
-│
-├── shared/
-│   └── types.ts (共通型定義)
-│
-└── docs/
-    ├── GETTING_STARTED.md
-    ├── MSW_SETUP.md
-    └── DEPLOYMENT.md
-```
-
-**Technology Stack:**
-
-Frontend (共通):
-- RxJS 7.8.x
-- TypeScript 5.x
-- fast-json-patch 3.x
-- MSW 2.x (mock mode)
-- Vite 5.x
-
-Backend (optional):
-- Express 4.x or Hono (lightweight)
-- ws 8.x (WebSocket)
-- fast-json-patch 3.x
-- better-sqlite3 9.x (lightweight DB)
-
-**Startup Commands:**
-```bash
-# Clone and install all workspaces
-git clone https://github.com/shuji-bonji/rxjs-json-patch-examples
-cd rxjs-json-patch-examples
-npm run install:all
-
-# Run frontend only (MSW mock)
-npm run dev:form
-# → http://localhost:5173
-
-# Run with backend (Docker)
-npm run dev:with-backend
-# → Frontend: http://localhost:5173
-# → Backend: http://localhost:3000
-```
-
-**Design Principles (per discussion):**
-
-Frontend Responsibilities:
-- 操作（コマンド）の生成と整列
-- 楽観的UI反映 (scan による即時適用)
-- Undo/Redoスタック管理 (逆パッチによる履歴)
-- 送信キュー管理 (concatMap で順序保証)
-- バッチング (bufferTime + 圧縮)
-
-Backend Responsibilities (API仕様として記載):
-- バージョン管理 (Vector Clock / タイムスタンプ)
-- 冪等性保証 (Request ID による重複検出)
-- 競合解決とマージ (Last Write Wins or OT)
-- 永続化と監査ログ
-
-**Deliverables:**
-1. 4 complete examples with frontend + backend
-2. MSW handlers for mock mode
-3. Docker Compose setup for easy backend startup
-4. Comprehensive README with setup instructions
-5. TypeScript types shared between frontend/backend
-
-**Documentation Links:**
-```markdown
-## コード例を試す
-
-### 方法1: ブラウザで即座に試す（推奨）
-[StackBlitzで開く →](https://stackblitz.com/github/shuji-bonji/rxjs-json-patch-examples/tree/main/examples/02-large-form-autosave)
-
-### 方法2: ローカルで試す
-\`\`\`bash
-git clone https://github.com/shuji-bonji/rxjs-json-patch-examples
-cd examples/02-large-form-autosave
-npm install
-npm run dev
-\`\`\`
-
-### 方法3: バックエンド含めて試す
-\`\`\`bash
-docker-compose up
-\`\`\`
-```
-
-**Estimated Effort:** 1-2 weeks (10-15 hours)
-
----
-
-#### Phase 3: Public API (Optional - Long-term)
-
-**Goal:** Deploy live backend API for documentation testing
-
-**Not Priority** - Requires:
-- Infrastructure setup (Vercel/Railway)
-- Maintenance overhead
-- Rate limiting / abuse prevention
-- SSL certificates
-- Monitoring
-
-**Decision:** Phase 1 + Phase 2 provide sufficient learning environment. Phase 3 can be reconsidered based on user feedback.
-
----
-
-### Implementation Tasks
-
-**Prerequisites:**
-- Chapter 13 Phase 1-3 pages completed
-- `advanced-form-patterns.md` content drafted
-
-**Phase 1 Tasks (Immediate - after Chapter 13 Phase 1-3):**
-1. Create StackBlitz project: Large Form Autosave
-   - Setup Vite + RxJS + fast-json-patch + MSW
-   - Implement patch generation (pairwise)
-   - Implement auto-save (bufferTime + concatMap)
-   - Implement Undo/Redo (inverse patches)
-   - Create MSW handlers
-   - Test and verify
-2. Create StackBlitz project: Collaborative Editing
-   - Setup Vite + RxJS + Yjs
-   - Connect to public Yjs WebSocket server
-   - Implement presence management
-   - Test and verify
-3. Update `advanced-form-patterns.md` with embedded demos
-4. Test embedded iframes in VitePress build
-
-**Phase 2 Tasks (Short-term - 1-2 weeks after Phase 1):**
-1. Setup repository structure
-   - Create `rxjs-json-patch-examples` repo
-   - Setup npm workspaces
-   - Configure TypeScript projects
-2. Implement Example 01: Basic Patch
-   - Simple patch generation demo
-   - Frontend only (MSW)
-3. Implement Example 02: Large Form Autosave
-   - Complete frontend implementation
-   - Backend API (Express + SQLite)
-   - Docker Compose setup
-   - MSW handlers for mock mode
-4. Implement Example 03: Collaborative Editing
-   - Frontend with Yjs
-   - Backend with y-websocket
-   - Docker setup
-5. Implement Example 04: Offline Queue
-   - IndexedDB integration
-   - Sync manager
-6. Documentation
-   - Main README with quick start
-   - Individual example READMEs
-   - Setup guides (MSW, Docker, deployment)
-7. Cross-reference from main documentation
-   - Update `advanced-form-patterns.md` with links
-   - Add "実際に試す" sections
-
-**Phase 3 Tasks (Optional - based on feedback):**
-- Deploy backend to Vercel/Railway
-- Setup monitoring and rate limiting
-- Update documentation with live API endpoints
-
----
-
-### Success Criteria
-
-**Phase 1:**
-- [ ] Learners can try JSON Patch patterns within 30 seconds (no setup)
-- [ ] Embedded demos work in all major browsers
-- [ ] StackBlitz projects can be forked and modified
-
-**Phase 2:**
-- [ ] Developers can clone and run locally in < 5 minutes
-- [ ] All examples include both MSW mock and real backend
-- [ ] Docker Compose starts full stack with single command
-- [ ] TypeScript types are shared and type-safe
-- [ ] Examples follow design principles (frontend/backend responsibilities)
-
-**Phase 3 (if implemented):**
-- [ ] Live API has 99% uptime
-- [ ] Rate limiting prevents abuse
-- [ ] Monitoring alerts on errors
-
----
-
-### Dependencies and Risks
-
-**Dependencies:**
-- Chapter 13 Phase 1-3 content completion
-- `advanced-form-patterns.md` content
-- StackBlitz/CodeSandbox availability (free tier)
-
-**Risks:**
-- StackBlitz free tier limitations (project size, uptime)
-- MSW breaking changes in future versions
-- Yjs public server availability for demos
-
-**Mitigation:**
-- Provide multiple demo hosting options (StackBlitz + CodeSandbox)
-- Pin MSW version in examples
-- Include instructions for self-hosted Yjs server
+**Decision:** Optional infrastructure. Chapter 13's documentation is already comprehensive. This repository would be a "nice-to-have" for hands-on experimentation but not essential for learning
 
 ---
 
