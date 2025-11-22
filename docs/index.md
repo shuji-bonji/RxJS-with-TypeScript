@@ -42,3 +42,4 @@ TypeScript 環境で RxJS を体系的に学ぶためのサイトです。
 > [!NOTE]
 > - [RxJS (Reactive Extensions for JavaScript)](https://rxjs.dev) は、非同期プログラミングとイベントベースのプログラミングをサポートするライブラリです。
 > - [TypeScript](https://www.typescriptlang.org)は、JavaScriptをベースにした強力な型付けプログラミング言語です。
+> - 英語版の翻訳には、[Claude Code](https://claude.ai/code)と[DeepL MCP Server](https://github.com/modelcontextprotocol/servers/tree/main/src/deepl)を使用しています。
