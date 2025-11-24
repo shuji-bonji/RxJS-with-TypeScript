@@ -1,4 +1,4 @@
-import { defineConfig } from 'vitepress';
+import { defineConfig, HeadConfig } from 'vitepress';
 import footnote from 'markdown-it-footnote';
 import { withMermaid } from 'vitepress-plugin-mermaid';
 import { jaThemeConfig } from './ja';
@@ -115,6 +115,36 @@ export default withMermaid(
     sitemap: {
       hostname: 'https://shuji-bonji.github.io/RxJS-with-TypeScript/',
       lastmodDateOnly: false, // 時刻まで含める（より正確）
+    },
+
+    // hreflang tags for SEO (multilingual support)
+    transformHead: ({ pageData }) => {
+      const head: HeadConfig[] = []
+      const baseUrl = 'https://shuji-bonji.github.io/RxJS-with-TypeScript'
+      const pagePath = pageData.relativePath.replace(/((^|\/)index)?\.md$/, '$2')
+
+      if (!pageData.relativePath.startsWith('en/')) {
+        // 日本語ページ (root locale)
+        const jaUrl = `${baseUrl}/${pagePath}`
+        const enUrl = `${baseUrl}/en/${pagePath}`
+
+        head.push(['link', { rel: 'canonical', href: jaUrl }])
+        head.push(['link', { rel: 'alternate', hreflang: 'ja', href: jaUrl }])
+        head.push(['link', { rel: 'alternate', hreflang: 'en', href: enUrl }])
+        head.push(['link', { rel: 'alternate', hreflang: 'x-default', href: jaUrl }])
+      } else {
+        // 英語ページ (/en/ locale)
+        const enPagePath = pagePath.replace(/^en\//, '')
+        const enUrl = `${baseUrl}/en/${enPagePath}`
+        const jaUrl = `${baseUrl}/${enPagePath}`
+
+        head.push(['link', { rel: 'canonical', href: enUrl }])
+        head.push(['link', { rel: 'alternate', hreflang: 'en', href: enUrl }])
+        head.push(['link', { rel: 'alternate', hreflang: 'ja', href: jaUrl }])
+        head.push(['link', { rel: 'alternate', hreflang: 'x-default', href: jaUrl }])
+      }
+
+      return head
     },
   })
 );
