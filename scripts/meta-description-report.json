@@ -1,0 +1,651 @@
+{
+  "summary": {
+    "noDescription": 0,
+    "shortDescription": 128,
+    "goodDescription": 42,
+    "longDescription": 192
+  },
+  "shortDescriptionFiles": [
+    {
+      "path": "en/guide/creation-functions/basic/of.md",
+      "length": 146,
+      "preview": "of() - Simplest Creation Function that emits specified values in sequence: Perfe..."
+    },
+    {
+      "path": "en/guide/creation-functions/combination/combineLatest.md",
+      "length": 148,
+      "preview": "combineLatest combines the latest values of multiple Observables: Essential for ..."
+    },
+    {
+      "path": "en/guide/error-handling/finalize.md",
+      "length": 144,
+      "preview": "Learn how to handle stream completion and resource cleanup in RxJS using finaliz..."
+    },
+    {
+      "path": "en/guide/operators/filtering/last.md",
+      "length": 145,
+      "preview": "The last operator retrieves only the last value at stream completion or the last..."
+    },
+    {
+      "path": "en/guide/operators/filtering/skipLast.md",
+      "length": 143,
+      "preview": "skipLast operator skips the last N values in Observable streams and outputs only..."
+    },
+    {
+      "path": "en/guide/operators/transformation/bufferTime.md",
+      "length": 148,
+      "preview": "bufferTime operator collects values at regular time intervals for batch processi..."
+    },
+    {
+      "path": "guide/anti-patterns/checklist.md",
+      "length": 142,
+      "preview": "RxJSコードを書く際に確認すべきアンチパターン回避チェックリスト。16のベストプラクティスを網羅し、Subscriptionの適切な解除、Subjectの正し..."
+    },
+    {
+      "path": "guide/anti-patterns/common-mistakes.md",
+      "length": 131,
+      "preview": "TypeScriptでRxJSを使う際によくある15の間違いとその対処法を、実際のコード例とともに詳しく解説。Subjectの外部公開、ネストしたsubscri..."
+    },
+    {
+      "path": "guide/anti-patterns/index.md",
+      "length": 123,
+      "preview": "RxJSのアンチパターンを理解し、より堅牢で保守性の高いコードを書くための実践的なガイド。Subjectの誤用、ネストしたsubscribe、subscribe..."
+    },
+    {
+      "path": "guide/anti-patterns/one-liner-hell.md",
+      "length": 127,
+      "preview": "RxJSの「ワンライナー地獄」を解消する段階分離構文を詳しく解説。ストリーム定義・変換・購読を明確に分離し、各段階に名前を付けることで、デバッグしやすく、テスト..."
+    },
+    {
+      "path": "guide/anti-patterns/promise-observable-mixing.md",
+      "length": 123,
+      "preview": "PromiseとObservableの混在によるアンチパターンと適切な統一方法を詳しく解説。キャンセル可能性、エラーハンドリング、複数値の扱い、実務での判断フロ..."
+    },
+    {
+      "path": "guide/anti-patterns/subscribe-if-hell.md",
+      "length": 131,
+      "preview": "subscribe内での複雑な条件分岐はRxJSのアンチパターンです。宣言的プログラミングの思想に反し、可読性、テスタビリティ、再利用性を損ないます。filte..."
+    },
+    {
+      "path": "guide/appendix/embedded-reactive-programming.md",
+      "length": 120,
+      "preview": "組み込み開発におけるリアクティブプログラミングの活用方法を解説。性能制約やメモリ制限がある環境での適用層の選択、センサー統合やイベント相関検知などの実践例、リア..."
+    },
+    {
+      "path": "guide/appendix/index.md",
+      "length": 132,
+      "preview": "RxJSの実践的な応用例や特定分野での活用方法を紹介する付録セクション。組み込み開発とリアクティブプログラミングの関係、ReactiveX以外のリアクティブパタ..."
+    },
+    {
+      "path": "guide/appendix/reactive-architecture-map.md",
+      "length": 128,
+      "preview": "リアクティブプログラミングの思想を、UI・通信・バックエンド・データパイプライン・IoT・制御システム・UXという7つの層で体系的に解説。Reactive Ma..."
+    },
+    {
+      "path": "guide/appendix/reactive-patterns-beyond-rxjs.md",
+      "length": 127,
+      "preview": "組み込みシステムや制御工学において、ReactiveX以外でリアクティブプログラミングの原則がどのように実装されているかを解説。イベント駆動設計、ステートマシン..."
+    },
+    {
+      "path": "guide/appendix/reactive-programming-reconsidered.md",
+      "length": 123,
+      "preview": "Reactive Programmingは本当に万能なのか？設計哲学と現実のギャップを検証し、RPの強みと限界、適用すべき領域と避けるべき領域を客観的に解説。命..."
+    },
+    {
+      "path": "guide/appendix/rxjs-and-reactive-streams-ecosystem.md",
+      "length": 134,
+      "preview": "RxJSはReactive Streamsエコシステムの中でどう位置づけられるのか？UI層からデータ層まで、技術スタック全体像とRxJS・Reactor・Kaf..."
+    },
+    {
+      "path": "guide/basics/promise-vs-rxjs.md",
+      "length": 135,
+      "preview": "PromiseとRxJSの違いを理解し、適切な使い分けを学びます。Promiseは単一の非同期処理に特化し即座に実行されますが、RxJSは複数の値を扱えるLaz..."
+    },
+    {
+      "path": "guide/basics/what-is-a-stream.md",
+      "length": 135,
+      "preview": "ストリームとは時間の経過とともに発生するデータの流れを指し、RxJSではObservableとして抽象化されます。イベント、非同期処理、ネットワーク通信など様々..."
+    },
+    {
+      "path": "guide/creation-functions/basic/from.md",
+      "length": 149,
+      "preview": "from() - 配列・Promise・イテラブル・文字列などからObservableを生成するCreation Function。既存のデータ構造を簡単にスト..."
+    },
+    {
+      "path": "guide/creation-functions/combination/combineLatest.md",
+      "length": 146,
+      "preview": "combineLatest Creation Functionを用いて複数のObservableの最新値を組み合わせる方法を解説。各ソースが値を発行するたびに最..."
+    },
+    {
+      "path": "guide/creation-functions/combination/concat.md",
+      "length": 147,
+      "preview": "concat Creation Functionで複数のObservableを順番に結合する方法を解説。最初のObservableが完了してから次が開始されるた..."
+    },
+    {
+      "path": "guide/creation-functions/combination/forkJoin.md",
+      "length": 142,
+      "preview": "forkJoin Creation Functionは、複数のObservableがすべて完了した後に、それぞれの最後の値をまとめて配列やオブジェクトとして出力..."
+    },
+    {
+      "path": "guide/creation-functions/combination/index.md",
+      "length": 147,
+      "preview": "複数のObservableを1つに結合するCreation Functionsについて解説。concat、merge、combineLatest、zip、for..."
+    },
+    {
+      "path": "guide/creation-functions/combination/merge.md",
+      "length": 140,
+      "preview": "merge Creation Functionは複数のObservableを同時に購読し、それぞれの値をリアルタイムに統合して出力します。並行処理、複数イベント..."
+    },
+    {
+      "path": "guide/creation-functions/combination/zip.md",
+      "length": 142,
+      "preview": "zip Creation Functionは複数のObservableから対応する順番の値を揃えてペアにし、すべてのソースが1つずつ値を発行したタイミングで出力..."
+    },
+    {
+      "path": "guide/creation-functions/conditional/defer.md",
+      "length": 147,
+      "preview": "defer Creation Functionは、Observableのファクトリ関数を購読時点まで遅延実行させます。購読のたびに異なる値や処理を評価したい場合..."
+    },
+    {
+      "path": "guide/creation-functions/conditional/iif.md",
+      "length": 148,
+      "preview": "iif Creation Functionは、条件式に応じて2つのObservableのうちどちらかを選択する三項演算子のような関数です。購読時に条件を評価して..."
+    },
+    {
+      "path": "guide/creation-functions/conditional/index.md",
+      "length": 141,
+      "preview": "条件に基づいてObservableを選択・作成するCreation Functions（iifとdefer）について解説。iifは三項演算子的な条件分岐、def..."
+    },
+    {
+      "path": "guide/creation-functions/index.md",
+      "length": 148,
+      "preview": "RxJSのCreation Functions（Observable作成関数）について、Pipeable Operatorとの違い、基本的な使い方、7つのカテゴ..."
+    },
+    {
+      "path": "guide/creation-functions/loop/range.md",
+      "length": 147,
+      "preview": "range() - 指定した開始値から連続する整数を順番に発行するCreation Function。for文の代わりとなる宣言的な連番生成方法です。gener..."
+    },
+    {
+      "path": "guide/creation-functions/selection/partition.md",
+      "length": 147,
+      "preview": "partition Creation Functionは、1つのObservableを条件に基づいて2つのObservableに分割します。成功/失敗、有効/無..."
+    },
+    {
+      "path": "guide/creation-functions/selection/race.md",
+      "length": 144,
+      "preview": "race Creation Functionは、複数のObservableのうち最初に値を発行したストリームのみを採用し、それ以降は他を無視します。タイムアウト..."
+    },
+    {
+      "path": "guide/debugging/common-scenarios.md",
+      "length": 117,
+      "preview": "RxJSのよくあるデバッグシナリオを6つ紹介。値が流れてこない、期待と異なる値が出力される、購読が完了しない、メモリリーク、エラーの見逃し、リトライの追跡など、..."
+    },
+    {
+      "path": "guide/debugging/custom-tools.md",
+      "length": 131,
+      "preview": "RxJSデバッグ用のカスタムツールの作成方法を解説。名前付きストリーム追跡オペレーター、設定可能なデバッグオペレーター、パフォーマンス計測用オペレーター、エラー..."
+    },
+    {
+      "path": "guide/debugging/index.md",
+      "length": 133,
+      "preview": "RxJSのデバッグ手法について、tap()による値の追跡、console.logの効果的な配置、RxJS DevTools拡張機能、カスタムデバッグオペレーター..."
+    },
+    {
+      "path": "guide/debugging/performance.md",
+      "length": 126,
+      "preview": "RxJSアプリケーションのパフォーマンスデバッグ手法を解説。購読数の追跡、不要な再評価の検出、メモリ使用量の監視、開発環境でのデバッグ設定、型安全なパフォーマン..."
+    },
+    {
+      "path": "guide/error-handling/error-handling-locations.md",
+      "length": 136,
+      "preview": "RxJSのエラー処理における2つの場所（catchErrorオペレーターとsubscribeのerrorコールバック）の違いを詳しく解説。それぞれの役割、使い分..."
+    },
+    {
+      "path": "guide/error-handling/finalize.md",
+      "length": 143,
+      "preview": "finalizeとcompleteを用いて、RxJSにおけるストリームの完了処理とリソース解放を効果的に行う方法を解説。メモリリーク防止、ファイルハンドルの解放..."
+    },
+    {
+      "path": "guide/error-handling/retry-catch.md",
+      "length": 126,
+      "preview": "retryとcatchErrorオペレーターを組み合わせた堅牢なエラー処理戦略を解説。一時的な障害の再試行、指数バックオフパターン、条件付きリトライ、適切なフォ..."
+    },
+    {
+      "path": "guide/error-handling/strategies.md",
+      "length": 145,
+      "preview": "RxJSの包括的なエラー処理戦略を解説。catchError、retry、retryWhen、finalizeオペレーターの組み合わせ方、指数バックオフによる再..."
+    },
+    {
+      "path": "guide/error-handling/try-catch-integration.md",
+      "length": 148,
+      "preview": "JavaScriptの標準的なtry-catchとRxJSのエラー処理（catchError、subscribe.error）の違いと使い分けを解説。併用パター..."
+    },
+    {
+      "path": "guide/index.md",
+      "length": 121,
+      "preview": "TypeScript環境でRxJSを体系的に学ぶための学習ガイドです。Observableの基礎からSubject、各種オペレーター、エラー処理、スケジューラー..."
+    },
+    {
+      "path": "guide/introduction.md",
+      "length": 129,
+      "preview": "TypeScriptプログラマのためのRxJS入門ガイド。Observableやオペレーターなどの基礎概念から実践的なパターンまで、豊富なコード例とともに段階的..."
+    },
+    {
+      "path": "guide/observables/cold-and-hot-observables.md",
+      "length": 142,
+      "preview": "Cold ObservableとHot Observableの違いを詳しく解説。購読ごとのデータストリームの独立性、shareやshareReplayによるHo..."
+    },
+    {
+      "path": "guide/observables/creation.md",
+      "length": 136,
+      "preview": "RxJSにおけるObservableの作成方法を、ofやfromなどの基本的な生成関数から、カスタムObservableの定義、HTTP通信のストリーム化、イベ..."
+    },
+    {
+      "path": "guide/observables/events-list.md",
+      "length": 127,
+      "preview": "RxJSのfromEventで使用可能なJavaScriptイベントの一覧表を種類ごとに整理して解説。マウス、キーボード、フォーム、タッチ、ドラッグ&ドロップ、..."
+    },
+    {
+      "path": "guide/observables/events.md",
+      "length": 133,
+      "preview": "fromEventを使ってDOMイベントをObservableとして扱う方法を解説。クリック、マウス移動、キーボード、フォーム入力のストリーム化から、ドラッグ&..."
+    },
+    {
+      "path": "guide/observables/observable-lifecycle.md",
+      "length": 139,
+      "preview": "Observableのライフサイクルを作成、購読、実行、解除の4段階に分けて詳しく解説。Observer、Subscriptionの役割、next・error・..."
+    },
+    {
+      "path": "guide/observables/observer-vs-subscriber.md",
+      "length": 136,
+      "preview": "RxJSのObserverとSubscriberは混同されがちですが、明確に異なる役割を持ちます。Observerはデータの受け取り方を定義するインターフェース..."
+    },
+    {
+      "path": "guide/observables/what-is-observable.md",
+      "length": 143,
+      "preview": "ObservableはRxJSの中核となる概念で、時間経過とともに発生するデータストリームを表現します。Promiseとの違い、購読（subscribe）と解除..."
+    },
+    {
+      "path": "guide/operators/combination/combineLatestAll.md",
+      "length": 128,
+      "preview": "combineLatestAllは、Higher-order Observable（Observable of Observables）を受け取り、全ての内部O..."
+    },
+    {
+      "path": "guide/operators/combination/concatAll.md",
+      "length": 130,
+      "preview": "concatAllは、Higher-order Observable（Observable of Observables）を受け取り、内部Observableを..."
+    },
+    {
+      "path": "guide/operators/combination/exhaustAll.md",
+      "length": 107,
+      "preview": "exhaustAllは、Higher-order Observable（Observable of Observables）を受け取り、内部Observable..."
+    },
+    {
+      "path": "guide/operators/combination/mergeAll.md",
+      "length": 105,
+      "preview": "mergeAllは、Higher-order Observable（Observable of Observables）を受け取り、全ての内部Observabl..."
+    },
+    {
+      "path": "guide/operators/combination/mergeWith.md",
+      "length": 144,
+      "preview": "mergeWithは、元のObservableと他のObservableを同時に購読して並列に結合するPipeable Operatorです。複数のイベントソー..."
+    },
+    {
+      "path": "guide/operators/combination/switchAll.md",
+      "length": 109,
+      "preview": "switchAllは、Higher-order Observable（Observable of Observables）を受け取り、新しい内部Observab..."
+    },
+    {
+      "path": "guide/operators/combination/withLatestFrom.md",
+      "length": 125,
+      "preview": "withLatestFromは、メインのObservableが値を発行するたびに、別のストリームの最新値を組み合わせて出力するオペレーターです。フォーム送信時の..."
+    },
+    {
+      "path": "guide/operators/combination/zipAll.md",
+      "length": 110,
+      "preview": "zipAllは、Higher-order Observable（Observable of Observables）を受け取り、各内部Observableの対応..."
+    },
+    {
+      "path": "guide/operators/conditional/defaultIfEmpty.md",
+      "length": 132,
+      "preview": "defaultIfEmptyオペレーターは、Observableが値を発行しなかった場合にデフォルト値を返します。空のAPIレスポンス処理、初期値補完、検索結果..."
+    },
+    {
+      "path": "guide/operators/conditional/every.md",
+      "length": 137,
+      "preview": "everyオペレーターは、すべての値が指定条件を満たすかを評価し、最初に条件を満たさなかった時点でfalseを返す短絡的な判定が可能です。バリデーション、データ..."
+    },
+    {
+      "path": "guide/operators/conditional/isEmpty.md",
+      "length": 135,
+      "preview": "isEmptyオペレーターは、Observableが値を発行せずに完了したかどうかを判定します。空データの検出、条件分岐、データ存在チェックに活用されます。fi..."
+    },
+    {
+      "path": "guide/operators/filtering/audit.md",
+      "length": 84,
+      "preview": "auditオペレーターは、カスタムObservableで制御される期間内の最後の値のみを発行するRxJSフィルタリングオペレーターです。動的なタイミング制御に最..."
+    },
+    {
+      "path": "guide/operators/filtering/debounceTime.md",
+      "length": 105,
+      "preview": "debounceTimeオペレーターは、連続したイベント発行後に指定時間だけ新しい値が来なかった場合に最後の値を出力します。検索ボックスのタイピングやウィンドウ..."
+    },
+    {
+      "path": "guide/operators/filtering/distinct.md",
+      "length": 95,
+      "preview": "distinctオペレーターは、すべての重複値を除去し、一度も出力されていないユニークな値のみを出力します。内部的にSetを使用して既出の値を記憶するため、無限..."
+    },
+    {
+      "path": "guide/operators/filtering/distinctUntilChanged.md",
+      "length": 82,
+      "preview": "distinctUntilChangedオペレーターは、前回と同じ値が連続した場合にスキップし、変化があった値のみを出力することで効率的なデータ処理を可能にしま..."
+    },
+    {
+      "path": "guide/operators/filtering/distinctUntilKeyChanged.md",
+      "length": 119,
+      "preview": "distinctUntilKeyChangedオペレーターは、オブジェクトストリーム内の特定プロパティに着目し、その値が前回と異なる場合のみ出力します。連続した..."
+    },
+    {
+      "path": "guide/operators/filtering/elementAt.md",
+      "length": 82,
+      "preview": "elementAtオペレーターは、指定されたインデックス位置の値のみを取得するRxJSフィルタリングオペレーターです。配列のインデックスアクセスに似た動作をしま..."
+    },
+    {
+      "path": "guide/operators/filtering/findIndex.md",
+      "length": 74,
+      "preview": "findIndexオペレーターは、条件を満たす最初の値のインデックスを返すRxJSフィルタリングオペレーターです。見つからない場合は-1を返します。"
+    },
+    {
+      "path": "guide/operators/filtering/first.md",
+      "length": 101,
+      "preview": "firstオペレーターは、ストリームから最初の値、または指定した条件を満たす最初の値だけを取得し、その後ストリームを完了させます。最初に到達したイベントだけを処..."
+    },
+    {
+      "path": "guide/operators/filtering/ignoreElements.md",
+      "length": 79,
+      "preview": "ignoreElementsオペレーターは、すべての値を無視して完了とエラーのみを通すRxJSフィルタリングオペレーターです。処理の完了を待つ場合に便利です。"
+    },
+    {
+      "path": "guide/operators/filtering/index.md",
+      "length": 146,
+      "preview": "RxJSのフィルタリングオペレーターは、条件や時間をもとにストリームから必要なデータのみを抽出します。filter、take、skip、debounceTime..."
+    },
+    {
+      "path": "guide/operators/filtering/last.md",
+      "length": 141,
+      "preview": "lastオペレーターは、ストリームの完了時に最後の値、または条件に一致する最後の値だけを取り出します。first()との違い、デフォルト値の設定方法、Empty..."
+    },
+    {
+      "path": "guide/operators/filtering/sampleTime.md",
+      "length": 89,
+      "preview": "sampleTimeオペレーターは、指定した時間間隔で定期的にストリームの最新値をサンプリングするRxJSフィルタリングオペレーターです。定期的なスナップショッ..."
+    },
+    {
+      "path": "guide/operators/filtering/skip.md",
+      "length": 100,
+      "preview": "skipオペレーターは、Observableストリームから最初の指定された数の値をスキップし、それ以降の値のみを出力します。初期データを無視したい場合や、ウォー..."
+    },
+    {
+      "path": "guide/operators/filtering/skipLast.md",
+      "length": 80,
+      "preview": "skipLastオペレーターは、Observableストリームの最後のN個の値をスキップして、それ以前の値のみを出力するRxJSフィルタリングオペレーターです。"
+    },
+    {
+      "path": "guide/operators/filtering/skipUntil.md",
+      "length": 108,
+      "preview": "skipUntilオペレーターは、別のObservableが値を発行するまで元のObservableの値をすべてスキップし、発行後は通常通り値を出力します。時間..."
+    },
+    {
+      "path": "guide/operators/filtering/skipWhile.md",
+      "length": 95,
+      "preview": "skipWhileオペレーターは、指定した条件を満たす間は値をスキップし、条件がfalseになった時点から以降のすべての値を発行します。動的な開始条件でストリー..."
+    },
+    {
+      "path": "guide/operators/filtering/take.md",
+      "length": 100,
+      "preview": "takeオペレーターは、Observableストリームから最初の指定された数だけ値を取得し、それ以降の値は無視して自動的にストリームを完了させます。最初の数件の..."
+    },
+    {
+      "path": "guide/operators/filtering/throttleTime.md",
+      "length": 105,
+      "preview": "throttleTimeオペレーターは、指定時間間隔内で最初の値だけを通過させ、それ以降の値を無視することで高頻度イベントを効率的に間引きます。スクロールやマウ..."
+    },
+    {
+      "path": "guide/operators/multicasting/share.md",
+      "length": 139,
+      "preview": "share()オペレーターを使ったマルチキャスティングの実装方法を解説。複数の購読者で同じObservableを共有し、重複する処理（API呼び出し、計算）を削..."
+    },
+    {
+      "path": "guide/operators/pipeline.md",
+      "length": 136,
+      "preview": "RxJSにおけるpipe()メソッドを使ったパイプライン構築の基本と応用を詳しく解説。オペレーターの連鎖、TypeScript型推論の活用、カスタムオペレーター..."
+    },
+    {
+      "path": "guide/operators/transformation/buffer.md",
+      "length": 135,
+      "preview": "bufferオペレーターは別のObservableが値を発行するタイミングで、蓄積された値を配列にまとめて出力します。ボタンクリックでの一括送信、ウィンドウ閉じ..."
+    },
+    {
+      "path": "guide/operators/transformation/bufferCount.md",
+      "length": 129,
+      "preview": "bufferCountは指定した個数ごとに値をまとめて配列で出力するRxJSの変換オペレーターです。バッチ処理や一定件数ごとのデータ集計、パケット分割送信など個..."
+    },
+    {
+      "path": "guide/operators/transformation/bufferTime.md",
+      "length": 133,
+      "preview": "bufferTimeオペレーターは一定時間ごとに発行された値をまとめて配列で出力します。リアルタイムログのバッチ送信、UIイベントの集約、ネットワーク効率化など..."
+    },
+    {
+      "path": "guide/operators/transformation/bufferToggle.md",
+      "length": 87,
+      "preview": "bufferToggleオペレーターは、開始と終了のトリガーを別々のObservableで制御し、複数のバッファリング期間を独立して管理できる高度なバッファリン..."
+    },
+    {
+      "path": "guide/operators/transformation/exhaustMap.md",
+      "length": 115,
+      "preview": "exhaustMapオペレーターは、現在処理中のObservableが完了するまで新しい入力を無視する変換演算子です。フォーム送信ボタンの多重クリック防止やAP..."
+    },
+    {
+      "path": "guide/operators/transformation/expand.md",
+      "length": 135,
+      "preview": "expandオペレーターは、各値から新しいObservableを生成し、その結果を再帰的に展開するRxJSの演算子です。ツリー構造の走査、APIのページネーショ..."
+    },
+    {
+      "path": "guide/operators/transformation/groupBy.md",
+      "length": 129,
+      "preview": "groupByオペレーターは、ストリームの値を指定したキーに基づいてグループ化し、グループごとに別々のObservableを作成します。カテゴリ別集計、ユーザー..."
+    },
+    {
+      "path": "guide/operators/transformation/map.md",
+      "length": 132,
+      "preview": "mapオペレーターは、Observable内の各値に関数を適用して新しい値を生成する基本的な変換手段です。フォーム整形、APIレスポンス処理、データ変換に多用さ..."
+    },
+    {
+      "path": "guide/operators/transformation/mergeMap.md",
+      "length": 110,
+      "preview": "mergeMapオペレーターは、各値を新しいObservableに変換し、それらを同時並行で実行してフラットに結合します。複数のAPIリクエストを順番待ちせずに..."
+    },
+    {
+      "path": "guide/operators/transformation/pairwise.md",
+      "length": 128,
+      "preview": "pairwiseオペレーターは、連続する2つの値をペアの配列[前回値, 現在値]として出力します。値の変化検出、差分計算、トレンド分析、アニメーション補間など、..."
+    },
+    {
+      "path": "guide/operators/transformation/scan.md",
+      "length": 133,
+      "preview": "scanオペレーターは、各値を逐次的に蓄積しながら中間結果を出力するRxJSの演算子です。reduce()と異なり値が来るたびに結果を発行するため、リアルタイム..."
+    },
+    {
+      "path": "guide/operators/transformation/window.md",
+      "length": 104,
+      "preview": "windowは別のObservableが値を発行するタイミングで、ソースObservableをネストされたObservableに分割するRxJSオペレーターで、..."
+    },
+    {
+      "path": "guide/operators/transformation/windowTime.md",
+      "length": 134,
+      "preview": "windowTimeオペレーターは一定時間ごとにObservableを分割し、各時間枠で発行された値を個別のObservableとして処理できます。時間ベースの..."
+    },
+    {
+      "path": "guide/operators/transformation/windowWhen.md",
+      "length": 134,
+      "preview": "windowWhenオペレーターは、終了条件を動的に制御してObservableを分割します。ウィンドウ終了後すぐに次のウィンドウが開始されるため、連続したデー..."
+    },
+    {
+      "path": "guide/operators/utility/delay.md",
+      "length": 137,
+      "preview": "delayオペレーターはObservable内の各値の発行タイミングを指定時間だけ遅らせます。UI演出、レート制限、非同期処理の制御、テスト時の遅延シミュレーシ..."
+    },
+    {
+      "path": "guide/operators/utility/delayWhen.md",
+      "length": 132,
+      "preview": "delayWhenオペレーターは各値の遅延タイミングを個別のObservableで動的に制御します。条件に応じた柔軟な遅延処理、リトライ時の指数バックオフ、ユー..."
+    },
+    {
+      "path": "guide/operators/utility/index.md",
+      "length": 136,
+      "preview": "ユーティリティオペレーターは、RxJSにおいて副作用の制御や遅延処理、購読の管理などを補助します。tap、delay、finalize、takeUntil、st..."
+    },
+    {
+      "path": "guide/operators/utility/observeOn.md",
+      "length": 77,
+      "preview": "observeOnオペレーターはObservableの値の発行タイミングを指定したスケジューラーで制御し、非同期処理やアニメーションの最適化に活用します。"
+    },
+    {
+      "path": "guide/operators/utility/repeat.md",
+      "length": 108,
+      "preview": "repeatオペレーターは、ソースObservableが正常完了した後に、ストリーム全体を指定回数だけ再実行します。定期的なポーリング処理や繰り返しアニメーショ..."
+    },
+    {
+      "path": "guide/operators/utility/retry.md",
+      "length": 116,
+      "preview": "retryオペレーターは、Observableでエラーが発生した際にソースを指定回数だけ再購読して再試行します。ネットワーク障害などの一時的な通信失敗から回復さ..."
+    },
+    {
+      "path": "guide/operators/utility/startWith.md",
+      "length": 74,
+      "preview": "startWithオペレーターは、Observableが値を発行する前に指定した初期値を挿入する演算子で、状態初期化やUIの初期表示に適しています。"
+    },
+    {
+      "path": "guide/operators/utility/subscribeOn.md",
+      "length": 78,
+      "preview": "subscribeOnオペレーターはObservableの購読開始タイミングを指定したスケジューラーで制御し、ストリーム全体の実行コンテキストを変更します。"
+    },
+    {
+      "path": "guide/operators/utility/takeUntil.md",
+      "length": 80,
+      "preview": "takeUntilオペレーターは、通知用Observableが値を発行するまで元のObservableを購読し、通知された時点で購読を解除するために使われます。"
+    },
+    {
+      "path": "guide/operators/utility/timestamp.md",
+      "length": 70,
+      "preview": "timestampオペレーターは各値にタイムスタンプを付与し、値が発行された時刻を記録することでパフォーマンス測定やデバッグに活用できます。"
+    },
+    {
+      "path": "guide/overcoming-difficulties/conceptual-understanding.md",
+      "length": 132,
+      "preview": "Observable vs Promiseの本質的な違い、ColdとHotの直感的理解、宣言的プログラミングへの思考転換など、RxJSの概念理解における困難点と..."
+    },
+    {
+      "path": "guide/overcoming-difficulties/debugging-guide.md",
+      "length": 129,
+      "preview": "RxJSのデバッグ手法を総合的に解説。値が流れない原因の特定、tap()を使った追跡、RxJS DevToolsの活用、メモリリークの検出、パフォーマンス問題の..."
+    },
+    {
+      "path": "guide/overcoming-difficulties/index.md",
+      "length": 137,
+      "preview": "TypeScriptと業務経験のある開発者がRxJSで直面する困難とその克服方法を解説。Observable vs Promise、Cold vs Hot、宣言..."
+    },
+    {
+      "path": "guide/overcoming-difficulties/lifecycle-management.md",
+      "length": 138,
+      "preview": "RxJSのライフサイクル管理（subscribe/unsubscribe）の困難点とその克服方法を解説。メモリリーク防止、takeUntilパターン、Subsc..."
+    },
+    {
+      "path": "guide/overcoming-difficulties/operator-selection.md",
+      "length": 136,
+      "preview": "RxJSの100以上のオペレーターから適切なものを選ぶ基準を解説。カテゴリ別選択フローチャート、よく使うオペレーター20選、switchMap vs merge..."
+    },
+    {
+      "path": "guide/overcoming-difficulties/state-and-sharing.md",
+      "length": 145,
+      "preview": "RxJSでの状態管理とストリーム共有の難しさを克服します。Subject vs BehaviorSubject vs ReplaySubject、share/s..."
+    },
+    {
+      "path": "guide/overcoming-difficulties/stream-combination.md",
+      "length": 136,
+      "preview": "RxJSで複数のObservableを組み合わせる方法を解説。combineLatest、zip、withLatestFrom、forkJoinの使い分け、動的..."
+    },
+    {
+      "path": "guide/overcoming-difficulties/timing-and-order.md",
+      "length": 124,
+      "preview": "RxJSでいつ値が流れるのか、同期vs非同期の違い、Marble Diagramの読み方、Schedulerの役割を解説。値が流れない原因の特定方法、デバッグテ..."
+    },
+    {
+      "path": "guide/practical-patterns/advanced-form-patterns.md",
+      "length": 129,
+      "preview": "JSON Patchを使った高度なフォームパターン。大規模フォームの自動保存とUndo/Redo、共同編集のリアルタイム同期、オフライン対応、操作履歴の追跡など..."
+    },
+    {
+      "path": "guide/practical-patterns/caching-strategies.md",
+      "length": 126,
+      "preview": "RxJSを使ったキャッシュ戦略の実践パターン。shareReplayによるデータキャッシュ、TTL（有効期限）付きキャッシュ、キャッシュ無効化、ローカルストレー..."
+    },
+    {
+      "path": "guide/practical-patterns/error-handling-patterns.md",
+      "length": 127,
+      "preview": "RxJSアプリケーションで使える7つのエラーハンドリングパターンを解説。API呼び出しエラー、WebSocket接続エラー、タイムアウト、検証エラー、グローバル..."
+    },
+    {
+      "path": "guide/practical-patterns/form-handling.md",
+      "length": 119,
+      "preview": "RxJSを使ったフォーム処理の実践パターン。リアルタイムバリデーション、自動保存、複数フィールドの連携、条件付き表示、二重送信防止など、実務で使えるフォーム実装..."
+    },
+    {
+      "path": "guide/practical-patterns/index.md",
+      "length": 120,
+      "preview": "RxJSを実践で活用するための具体的なパターン集。UIイベント処理、API呼び出し、フォーム制御、リアルタイムデータ、キャッシュ戦略、エラーハンドリングなど、実..."
+    },
+    {
+      "path": "guide/practical-patterns/subscribe-branching.md",
+      "length": 141,
+      "preview": "RxJSのsubscribe内での条件分岐アンチパターンと改善方法を解説。filter、partition、groupByを使った宣言的なストリーム分岐、API..."
+    },
+    {
+      "path": "guide/starter-kid.md",
+      "length": 131,
+      "preview": "Vite、TypeScript、RxJSで構成された学習用開発テンプレートのセットアップ方法を紹介。ホットリロード対応でブラウザ上でのコード実験やDOM操作が即..."
+    },
+    {
+      "path": "guide/subjects/types-of-subject.md",
+      "length": 137,
+      "preview": "Subjectの4種類（Subject、BehaviorSubject、ReplaySubject、AsyncSubject）それぞれの特性と活用シーンを解説。..."
+    },
+    {
+      "path": "guide/testing/marble-testing.md",
+      "length": 134,
+      "preview": "マーブルテストは、RxJSの非同期ストリームを文字列で視覚的に表現しながらテストできる手法です。ColdとHot Observableの違い、マーブル記法のルー..."
+    },
+    {
+      "path": "guide/testing/test-scheduler.md",
+      "length": 142,
+      "preview": "TestSchedulerは仮想時間を使ってRxJSの時間ベースのオペレーターをテストできる強力なツールです。マーブル記法、ColdとHot Observabl..."
+    },
+    {
+      "path": "guide/testing/unit-tests.md",
+      "length": 134,
+      "preview": "RxJSのユニットテストでは同期・非同期・時間制御の各手法を使い分けます。TestSchedulerやマーブルテスト、モック・スタブを用いて堅牢なテスト戦略を構..."
+    },
+    {
+      "path": "guide/typescript-advanced/_typeScript-and-rxjs-integration.md",
+      "length": 134,
+      "preview": "TypeScriptとRxJSの統合におけるカスタムオペレーターの型定義、条件型の活用、状態管理パターンなどを解説。ジェネリクス、mapped types、co..."
+    },
+    {
+      "path": "guide/typescript-advanced/type-safety.md",
+      "length": 127,
+      "preview": "TypeScriptの型システムを活用し、RxJSで扱うObservableの型を明示的に定義することで、型安全性と開発効率を両立させる方法を解説。ジェネリクス..."
+    }
+  ],
+  "noDescriptionFiles": []
+}

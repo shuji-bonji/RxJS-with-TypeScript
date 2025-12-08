@@ -1,5 +1,5 @@
 ---
-description: delayWhenオペレーターは各値の遅延タイミングを個別のObservableで動的に制御し、条件に応じた柔軟な遅延処理を実現します。
+description: "delayWhenオペレーターは各値の遅延タイミングを個別のObservableで動的に制御します。条件に応じた柔軟な遅延処理、リトライ時の指数バックオフ、ユーザー操作待ち、API呼び出しの間隔調整など、実践的なパターンをTypeScriptコード例で解説します。"
 ---
 
 # delayWhen - 動的な遅延制御

@@ -1,5 +1,5 @@
 ---
-description: TypeScriptとRxJSの統合におけるカスタムオペレーターの型定義、条件型の活用、状態管理パターンなどを通じて、堅牢で型安全なリアクティブ設計を実現します。
+description: "TypeScriptとRxJSの統合におけるカスタムオペレーターの型定義、条件型の活用、状態管理パターンなどを解説。ジェネリクス、mapped types、conditional typesを使って堅牢で型安全なリアクティブ設計を実現する高度なテクニックを紹介します。"
 ---
 
 # TypeScriptとRxJSの統合

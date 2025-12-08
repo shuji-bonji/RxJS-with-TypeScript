@@ -1,5 +1,5 @@
 ---
-description: Cold ObservableとHot Observableの違いを詳しく解説します。購読ごとのデータストリームの独立性、shareやshareReplayによるColdからHotへの変換方法、APIリクエストのキャッシュなど実践的な活用例を紹介します。
+description: "Cold ObservableとHot Observableの違いを詳しく解説。購読ごとのデータストリームの独立性、shareやshareReplayによるHot化、BehaviorSubjectを使ったマルチキャスティング、TypeScriptでの型安全な実装パターンを紹介します。"
 ---
 # コールドObservableとホットObservable
 

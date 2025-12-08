@@ -1,5 +1,5 @@
 ---
-description: RxJSのCreation Functions（Observable作成関数）について、Pipeable Operatorとの違い、基本的な使い方、7つのカテゴリ（基本作成系・ループ生成系・HTTP通信系・結合系・選択分割系・条件分岐系・制御系）を網羅的に解説します。
+description: "RxJSのCreation Functions（Observable作成関数）について、Pipeable Operatorとの違い、基本的な使い方、7つのカテゴリ（基本作成、ループ生成、HTTP通信、結合、選択・分割、条件分岐、制御）を体系的に解説。各関数の特徴と用途別の選択ガイドを提供します。"
 ---
 
 # Creation Functions

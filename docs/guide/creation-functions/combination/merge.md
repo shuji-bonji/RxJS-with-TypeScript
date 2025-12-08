@@ -1,5 +1,5 @@
 ---
-description: merge Creation Functionは複数のObservableを同時に購読し、それぞれの値をリアルタイムに統合して出力するために使用されます。
+description: "merge Creation Functionは複数のObservableを同時に購読し、それぞれの値をリアルタイムに統合して出力します。並行処理、複数イベントソースの統合、リアルタイム更新の実装に活用できます。TypeScriptでの型安全な実装と実践的なコード例を解説します。"
 ---
 
 # merge - 複数のストリームを同時に結合する

@@ -1,5 +1,5 @@
 ---
-description: share()オペレーターを使ったマルチキャスティングの実装方法を解説します。複数の購読者で同じObservableを共有し、重複する処理を削減する方法と、詳細な制御オプションについて説明します。
+description: "share()オペレーターを使ったマルチキャスティングの実装方法を解説。複数の購読者で同じObservableを共有し、重複する処理（API呼び出し、計算）を削減します。shareReplay()との違い、Cold/Hot変換、TypeScriptでの型安全な実装を紹介します。"
 ---
 
 # share - Observableを複数の購読者で共有する

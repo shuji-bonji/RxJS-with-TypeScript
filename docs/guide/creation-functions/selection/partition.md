@@ -1,5 +1,5 @@
 ---
-description: partitionは、1つのObservableを条件に基づいて2つのObservableに分割するRxJSのCreation Functionです。成功/失敗、有効/無効などの二分岐処理に最適です。
+description: "partition Creation Functionは、1つのObservableを条件に基づいて2つのObservableに分割します。成功/失敗、有効/無効、奇数/偶数などの条件で値を振り分ける際に便利です。TypeScriptでの型安全な実装、filter()との使い分けを解説します。"
 ---
 
 # partition - 条件で2つのストリームに分割する

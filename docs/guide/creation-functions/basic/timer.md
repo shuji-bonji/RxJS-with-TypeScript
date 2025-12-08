@@ -1,5 +1,5 @@
 ---
-description: timer() - 遅延後に発行開始するCreation Function。1回限りの遅延実行や、遅延付き定期実行に最適です。
+description: "timer() - 指定時間後に値を発行するCreation Function。1回限りの遅延実行にはtimer(delay)、遅延付き定期実行にはtimer(delay, period)を使用します。interval()との使い分け、TypeScriptでの型推論、setTimeout代替としての活用法を解説します。"
 ---
 
 # timer() - 遅延後に発行開始

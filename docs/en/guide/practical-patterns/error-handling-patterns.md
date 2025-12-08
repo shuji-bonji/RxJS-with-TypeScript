@@ -1,3 +1,7 @@
+---
+description: "Seven practical error handling patterns for RxJS applications: API call errors, WebSocket connection errors, timeouts, validation errors, global error handling, exponential backoff retry strategies, and error boundaries with practical code examples."
+---
+
 # Error Handling Practice Patterns
 
 In RxJS applications, proper error handling is the foundation for building a reliable system. This article presents seven error handling patterns that can be used immediately in practice.

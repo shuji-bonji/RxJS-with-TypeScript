@@ -1,5 +1,5 @@
 ---
-description: TypeScriptの型システムを活用し、RxJSで扱うObservableの型を明示的に定義することで、型安全性と開発効率を両立させる方法を解説します。
+description: "TypeScriptの型システムを活用し、RxJSで扱うObservableの型を明示的に定義することで、型安全性と開発効率を両立させる方法を解説。ジェネリクス、型推論、カスタム型ガード、型の絞り込みなど、堅牢なリアクティブコードを書く技法を紹介します。"
 ---
 
 # TypeScriptとRxJSの基本連携

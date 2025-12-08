@@ -1,5 +1,5 @@
 ---
-description: RxJSのライフサイクル管理（subscribe/unsubscribe）の困難点とその克服方法を解説します。メモリリーク防止、takeUntilパターン、Subscription管理のベストプラクティスを実践的なコード例で学びます。
+description: "RxJSのライフサイクル管理（subscribe/unsubscribe）の困難点とその克服方法を解説。メモリリーク防止、takeUntilパターン、Subscription管理、Angular/ReactでのクリーンアップパターンをTypeScriptコード例で紹介します。"
 ---
 
 # ライフサイクル管理の壁

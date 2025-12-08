@@ -1,5 +1,5 @@
 ---
-description: RxJSの結合オペレーター（Pipeable Operators）を使って複数のObservableを組み合わせる方法を解説します。withLatestFromなどのPipeable形式の演算子の使い分けと活用法を紹介します。
+description: "RxJSの結合オペレーター（Pipeable Operators）を使って複数のObservableを組み合わせる方法を解説。withLatestFrom、concatWith、mergeWith、zipWith、raceWithなど、Creation Functionsとの違い、用途別の選択ガイドを提供します。"
 ---
 
 # 結合オペレーター（Pipeable Operators）

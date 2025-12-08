@@ -1,6 +1,6 @@
 ---
 title: 状態管理フラグの乱立問題
-description: RxJSプロジェクトにおける17個のbooleanフラグを、リアクティブ設計に改善する方法
+description: "RxJSプロジェクトにおける17個のbooleanフラグの乱立問題を、リアクティブ設計で改善する方法を解説。状態をObservableで表現し、複数のフラグをscan()やcombineLatest()で統合することで、保守性と可読性を劇的に向上させる実践的なリファクタリング手法を紹介します。"
 # outline: deep
 ---
 

@@ -11,6 +11,9 @@ export default withMermaid(
     description: 'TypeScriptプログラマのためのRxJS入門',
     base: '/RxJS-with-TypeScript/',
 
+    // URL正規化: .htmlなしのクリーンURLを使用
+    cleanUrls: true,
+
     head: [
       // Open Graph
       ['meta', { property: 'og:title', content: 'RxJS with TypeScript' }],

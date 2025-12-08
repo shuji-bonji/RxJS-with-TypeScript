@@ -1,5 +1,5 @@
 ---
-description: interval() - 指定間隔で連続的に値を発行するCreation Function。ポーリングや定期実行に最適です。
+description: "interval() - 指定間隔で連続的に値（0から始まる連番）を発行するCreation Function。ポーリングや定期実行、アニメーション制御に最適です。timer()との違い、take()での制限方法、TypeScriptでの型安全な実装、メモリリーク防止のための購読解除パターンを解説します。"
 ---
 
 # interval() - 指定間隔で連続発行

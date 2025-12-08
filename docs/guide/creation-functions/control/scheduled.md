@@ -1,5 +1,5 @@
 ---
-description: RxJSのscheduled()関数を使って、スケジューラーを指定してObservableを生成し、実行タイミングを制御する方法を、実践的なコード例とともに詳しく解説します。
+description: "RxJSのscheduled() Creation Functionを使って、スケジューラーを指定してObservableを生成し、実行タイミングを制御する方法を解説。asyncScheduler、queueSchedulerなどの使い分け、パフォーマンス最適化、TypeScriptでの型安全な実装を紹介します。"
 ---
 
 # scheduled()

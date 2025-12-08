@@ -1,5 +1,5 @@
 ---
-description: 条件に基づいてObservableを選択・作成するCreation Functionsについて解説します。iifとdeferの使い分けと実践例を学びます。
+description: "条件に基づいてObservableを選択・作成するCreation Functions（iifとdefer）について解説。iifは三項演算子的な条件分岐、deferは購読時評価を実現します。それぞれの使い分け、TypeScriptでの型安全な実装、実践的なユースケースを紹介します。"
 ---
 
 # 条件分岐系 Creation Functions

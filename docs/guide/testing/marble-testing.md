@@ -1,5 +1,5 @@
 ---
-description: マーブルテストは、RxJSの非同期ストリームを文字列で視覚的に表現しながらテストできる手法です。ColdとHot Observableの違い、マーブル記法のルール、TestSchedulerの使い方を基礎から実践例まで丁寧に解説します。
+description: "マーブルテストは、RxJSの非同期ストリームを文字列で視覚的に表現しながらテストできる手法です。ColdとHot Observableの違い、マーブル記法のルール、TestSchedulerの活用、複雑な非同期処理の検証方法をTypeScriptコード例で解説します。"
 ---
 
 # マーブルテスト入門

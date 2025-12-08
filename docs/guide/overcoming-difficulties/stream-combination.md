@@ -1,5 +1,5 @@
 ---
-description: RxJSで複数のObservableを組み合わせる方法を解説します。combineLatest、zip、withLatestFrom、forkJoinの使い分け、依存関係のある処理、フォームバリデーション、複数API呼び出しなど実践的なパターンを学びます。
+description: "RxJSで複数のObservableを組み合わせる方法を解説。combineLatest、zip、withLatestFrom、forkJoinの使い分け、動的なストリーム追加、エラー伝搬の制御、TypeScriptでの型安全な実装パターンを実践的なコード例で紹介します。"
 ---
 
 # 複数ストリーム組み合わせ

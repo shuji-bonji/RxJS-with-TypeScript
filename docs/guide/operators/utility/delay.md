@@ -1,5 +1,5 @@
 ---
-description: delayオペレーターはObservable内の各値の発行タイミングを指定時間だけ遅らせ、UI演出や非同期制御に効果的です。
+description: "delayオペレーターはObservable内の各値の発行タイミングを指定時間だけ遅らせます。UI演出、レート制限、非同期処理の制御、テスト時の遅延シミュレーションに効果的です。delayWhenとの違い、TypeScriptでの型安全な実装を実践的なコード例で解説します。"
 ---
 
 # delay - 値の遅延

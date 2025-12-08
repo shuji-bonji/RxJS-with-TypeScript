@@ -1,5 +1,5 @@
 ---
-description: Observable vs Promiseの本質的な違い、ColdとHotの直感的理解、宣言的プログラミングへの思考転換など、RxJSの概念理解における困難点とその克服方法を解説します。TypeScript経験者向けの実践的なガイドです。
+description: "Observable vs Promiseの本質的な違い、ColdとHotの直感的理解、宣言的プログラミングへの思考転換など、RxJSの概念理解における困難点とその克服方法を解説。命令型から宣言型への移行パターン、TypeScriptでの型安全な実装を紹介します。"
 ---
 
 # 概念理解の壁

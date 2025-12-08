@@ -1,5 +1,5 @@
 ---
-description: concat Creation Functionで複数のObservableを順番に結合する方法と、ステップ実行やUI表示への活用方法を解説します。
+description: "concat Creation Functionで複数のObservableを順番に結合する方法を解説。最初のObservableが完了してから次が開始されるため、ステップ実行やシーケンシャルなUI表示、APIの連続呼び出しなどに活用できます。TypeScriptの型推論と実践例を紹介します。"
 ---
 
 # concat - 順番にストリームを結合する

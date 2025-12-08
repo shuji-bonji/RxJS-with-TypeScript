@@ -1,5 +1,5 @@
 ---
-description: windowWhenオペレーターは、終了条件を動的に制御してObservableを分割するRxJSの演算子です。ウィンドウ終了後すぐに次のウィンドウが開始される連続的なストリーム処理を実現します。
+description: "windowWhenオペレーターは、終了条件を動的に制御してObservableを分割します。ウィンドウ終了後すぐに次のウィンドウが開始されるため、連続したデータ区切りに最適です。bufferWhenとの違い、TypeScriptでの型安全な実装と実践例を解説します。"
 ---
 
 # windowWhen - 動的な終了制御ウィンドウ

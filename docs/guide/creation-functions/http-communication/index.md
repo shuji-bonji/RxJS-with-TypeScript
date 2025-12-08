@@ -1,5 +1,5 @@
 ---
-description: RxJSでHTTP通信を行うための Creation Functions である ajax と fromFetch の概要、違い、使い分けのガイドラインについて解説します。
+description: "RxJSでHTTP通信を行うためのCreation FunctionsであるajaxとfromFetchの概要、違い、使い分けのガイドラインを解説。XMLHttpRequestベースのajaxとFetch APIベースのfromFetchの特性、キャンセル処理、エラーハンドリング、TypeScript型定義を紹介します。"
 ---
 
 # HTTP通信系 Creation Functions

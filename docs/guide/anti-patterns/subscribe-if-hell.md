@@ -1,5 +1,5 @@
 ---
-description: subscribe内での複雑な条件分岐はRxJSのアンチパターンです。宣言的プログラミングの思想に反し、可読性、テスタビリティ、再利用性を損ないます。filter、iif、partitionなどのオペレーターを使った解決策を学びます。
+description: "subscribe内での複雑な条件分岐はRxJSのアンチパターンです。宣言的プログラミングの思想に反し、可読性、テスタビリティ、再利用性を損ないます。filter、partition、groupByを使った改善方法を、実行可能なコード例とともに詳しく解説します。"
 ---
 
 # subscribe内のif文ネスト地獄

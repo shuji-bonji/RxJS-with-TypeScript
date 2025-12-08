@@ -1,5 +1,5 @@
 ---
-description: Subjectの4種類（Subject, BehaviorSubject, ReplaySubject, AsyncSubject）それぞれの特性や活用シーン、選び方の比較を詳しく解説します。
+description: "Subjectの4種類（Subject、BehaviorSubject、ReplaySubject、AsyncSubject）それぞれの特性と活用シーンを解説。初期値の有無、値のリプレイ回数、完了後の値取得など、用途に応じた使い分けをTypeScriptコード例で学びます。"
 ---
 
 # Subjectの種類

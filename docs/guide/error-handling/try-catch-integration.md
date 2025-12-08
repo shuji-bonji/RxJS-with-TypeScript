@@ -1,5 +1,5 @@
 ---
-description: 'JavaScriptの標準的なtry-catchとRxJSのエラー処理（catchError、subscribe.error）の違いと使い分けを解説します。併用が必要なケース、実践的なパターン、ベストプラクティスを通して、効果的なエラーハンドリング戦略を学びます。'
+description: "JavaScriptの標準的なtry-catchとRxJSのエラー処理（catchError、subscribe.error）の違いと使い分けを解説。併用パターン、Observable内部でのtry-catch、外部関数呼び出し時の例外処理、TypeScriptでの型安全な実装方法を紹介します。"
 ---
 # try-catchとRxJSの統合
 

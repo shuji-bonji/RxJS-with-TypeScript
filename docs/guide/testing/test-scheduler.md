@@ -1,5 +1,5 @@
 ---
-description: TestSchedulerは仮想時間を使ってRxJSの時間ベースのオペレーターをテストできる強力なツールです。マーブル記法、ColdとHot Observableの扱い、debounceTimeやdelayなど時間依存処理の精密なユニットテスト方法を解説します。
+description: "TestSchedulerは仮想時間を使ってRxJSの時間ベースのオペレーターをテストできる強力なツールです。マーブル記法、ColdとHot Observableの作成、時間を進める方法、debounceTimeやdelayのテスト、TypeScriptでの型安全な実装を解説します。"
 ---
 
 # TestSchedulerを活用したテスト

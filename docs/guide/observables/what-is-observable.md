@@ -1,5 +1,5 @@
 ---
-description: ObservableはRxJSの中核となる概念で、時間経過とともに発生するデータストリームを表現します。Promiseとの違い、購読と解除の仕組み、コールドとホットの区別、ライフサイクル管理などを実践的なコード例とともに解説します。
+description: "ObservableはRxJSの中核となる概念で、時間経過とともに発生するデータストリームを表現します。Promiseとの違い、購読（subscribe）と解除（unsubscribe）の仕組み、ColdとHot Observable、TypeScriptでの型定義を詳しく解説します。"
 ---
 
 # Observableとは

@@ -1,3 +1,7 @@
+---
+description: "Learn to avoid anti-patterns of conditional branching inside subscribe and improve with declarative stream branching using filter, partition, and groupBy. Includes type-safe patterns and executable code examples with JSONPlaceholder API."
+---
+
 # Conditional branching patterns within subscribe
 
 One of the problems that developers starting to use RxJS often run into is complex conditional branching within the `subscribe()` callback. This article explains why this is a problem and how it should be remedied, along with practical patterns.

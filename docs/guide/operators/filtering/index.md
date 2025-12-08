@@ -1,5 +1,5 @@
 ---
-description: RxJSのフィルタリングオペレーターは、条件や時間をもとにストリームから必要なデータのみを抽出するために使用され、パフォーマンス向上に貢献します。
+description: "RxJSのフィルタリングオペレーターは、条件や時間をもとにストリームから必要なデータのみを抽出します。filter、take、skip、debounceTime、throttleTime、distinct、first、lastなど、用途別のオペレーター選択ガイドと実践的な使用例を提供します。"
 ---
 
 # フィルタリングオペレーター

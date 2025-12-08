@@ -1,5 +1,5 @@
 ---
-description: RxJSはReactive Streamsエコシステムの中でどう位置づけられるのか？UI層からデータ層まで、技術スタックの全体像と、RxJS・Reactor・Kafkaなどの連携方法を解説します。
+description: "RxJSはReactive Streamsエコシステムの中でどう位置づけられるのか？UI層からデータ層まで、技術スタック全体像とRxJS・Reactor・Kafka Streamsなどの役割分担を解説。バックプレッシャー対応やスケーラビリティの違いも詳しく説明します。"
 ---
 
 # RxJSとReactive Streamsエコシステム

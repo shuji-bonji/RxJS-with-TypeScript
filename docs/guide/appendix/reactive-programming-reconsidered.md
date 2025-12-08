@@ -1,5 +1,5 @@
 ---
-description: Reactive Programmingは本当に万能なのか？設計哲学と現実のギャップを検証し、RPの強みと限界、適用すべき領域と避けるべき領域を客観的に解説します。
+description: "Reactive Programmingは本当に万能なのか？設計哲学と現実のギャップを検証し、RPの強みと限界、適用すべき領域と避けるべき領域を客観的に解説。命令型プログラミングとの使い分け、チーム導入時の考慮点も含めた実践的な視点を提供します。"
 titleTemplate: ':title | RxJS'
 ---
 

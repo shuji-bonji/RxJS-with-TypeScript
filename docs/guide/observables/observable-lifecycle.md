@@ -1,5 +1,5 @@
 ---
-description: Observableのライフサイクルを作成、購読、実行、解除の段階に分けて詳しく解説します。Observer、Subscriptionの役割、next・error・completeの通知タイミング、リソース管理とメモリリーク防止の実践例まで網羅的に説明します。
+description: "Observableのライフサイクルを作成、購読、実行、解除の4段階に分けて詳しく解説。Observer、Subscriptionの役割、next・error・completeコールバックの動作、メモリリーク防止のための適切な購読解除パターンをTypeScriptで紹介します。"
 ---
 
 # Observableのライフサイクル

@@ -1,5 +1,5 @@
 ---
-description: fromEvent() - DOMイベントやEventEmitterをObservableに変換するCreation Function。イベント駆動型プログラミングをストリーム化します。
+description: "fromEvent() - DOMイベントやEventEmitterをObservableに変換するCreation Function。イベント駆動型プログラミングの基本で、クリック、キー入力、マウス移動、スクロールなど様々なイベント処理に活用できます。TypeScript型定義とイベント対象の指定方法を解説。"
 ---
 
 # fromEvent() - イベントをObservableに変換

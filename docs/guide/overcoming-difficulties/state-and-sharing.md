@@ -1,5 +1,5 @@
 ---
-description: RxJSでの状態管理とストリーム共有の難しさを克服します。Subject vs BehaviorSubject vs ReplaySubject、share/shareReplayの使い分け、Hot/Coldの実践的使い分け、状態の一元管理パターンを実践的なコード例で学びます。
+description: "RxJSでの状態管理とストリーム共有の難しさを克服します。Subject vs BehaviorSubject vs ReplaySubject、share/shareReplayの使い分け、状態のリセット方法、Cold to Hot変換パターンをTypeScriptコード例で解説します。"
 ---
 
 # 状態管理の難しさ

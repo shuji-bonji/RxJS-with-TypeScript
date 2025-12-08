@@ -1,5 +1,5 @@
 ---
-description: 複数のObservableから1つを選択したり、1つのObservableを複数に分割するCreation Functionsについて解説します。raceとpartitionの使い分けと実践例を学びます。
+description: "複数のObservableから1つを選択したり、1つのObservableを複数に分割するCreation Functions（raceとpartition）について解説。競合処理、最速レスポンス取得、条件分岐によるストリーム分割など、実践的なユースケースとTypeScriptでの型安全な実装を紹介します。"
 ---
 
 # 選択・分割系 Creation Functions

@@ -1,5 +1,5 @@
 ---
-description: generate() - 汎用的なループ生成Creation Function。while文のような柔軟な条件制御とカスタム状態管理が可能です。
+description: "generate() - 初期値・条件・反復処理・結果選択を指定できる汎用的なループ生成Creation Function。while文やfor文のような柔軟な条件制御とカスタム状態管理が可能です。range()との違い、TypeScriptでの型安全な実装、複雑なシーケンス生成パターンを解説します。"
 ---
 
 # generate() - 汎用的なループ生成

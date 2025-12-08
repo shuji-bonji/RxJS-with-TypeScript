@@ -1,5 +1,5 @@
 ---
-description: RxJSのObserverとSubscriberは混同されがちですが、明確に異なる役割を持ちます。Observerはデータの受け取り方を定義するインターフェース、Subscriberは実際の購読処理を実行するクラスです。この違いを図解とコード例で解説します。
+description: "RxJSのObserverとSubscriberは混同されがちですが、明確に異なる役割を持ちます。Observerはデータの受け取り方を定義するインターフェース、Subscriberは実際の購読を管理するクラスです。両者の違いとTypeScriptでの型定義を解説します。"
 ---
 # Observer と Subscriber の違い
 

@@ -1,5 +1,5 @@
 ---
-description: range() - 数値の範囲を順番に発行するCreation Function。for文の代わりとなる宣言的な連番生成方法です。
+description: "range() - 指定した開始値から連続する整数を順番に発行するCreation Function。for文の代わりとなる宣言的な連番生成方法です。generate()との使い分け、TypeScriptでの型推論を活用した実装、map()との組み合わせパターンを実践的なコード例で解説します。"
 ---
 
 # range() - 数値範囲の生成

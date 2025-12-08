@@ -1,5 +1,5 @@
 ---
-description: TypeScriptと業務経験のある開発者がRxJSで直面する困難とその克服方法を解説します。Observable vs Promise、Cold vs Hot、オペレーター選択、ライフサイクル管理など、RxJS特有の難所を体系的に理解しましょう。
+description: "TypeScriptと業務経験のある開発者がRxJSで直面する困難とその克服方法を解説。Observable vs Promise、Cold vs Hot、宣言的思考への転換、オペレーター選択の迷い、デバッグの難しさなど、7つの壁を乗り越えるための実践的ガイドを提供します。"
 ---
 
 # RxJS困難点克服

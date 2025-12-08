@@ -1,5 +1,5 @@
 ---
-description: RxJSでいつ値が流れるのか、同期vs非同期の違い、Marble Diagramの読み方、Schedulerの役割を解説します。値が流れない原因の特定方法とデバッグ手法を実践的なコード例で学びます。
+description: "RxJSでいつ値が流れるのか、同期vs非同期の違い、Marble Diagramの読み方、Schedulerの役割を解説。値が流れない原因の特定方法、デバッグテクニック、asyncSchedulerの使い方をTypeScriptコード例で学びます。"
 ---
 
 # タイミングと順序の理解

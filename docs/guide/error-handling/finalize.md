@@ -1,5 +1,5 @@
 ---
-description: finalizeとcompleteを用いて、RxJSにおけるストリームの完了処理とリソース解放を効果的に行う方法を解説します。
+description: "finalizeとcompleteを用いて、RxJSにおけるストリームの完了処理とリソース解放を効果的に行う方法を解説。メモリリーク防止、ファイルハンドルの解放、WebSocket接続のクリーンアップ、UI状態のリセットなど実践的なパターンを紹介。finally句との違いも説明します。"
 ---
 # finalize と complete - リソース解放とストリームの完了処理
 

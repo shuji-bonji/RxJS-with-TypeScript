@@ -1,5 +1,5 @@
 ---
-description: of() - 指定した値を順番に発行するCreation Function。最もシンプルなObservable作成方法で、テストデータやモック作成に最適です。
+description: "of() - 指定した値を順番に発行するRxJSのCreation Function。最もシンプルなObservable作成方法で、テストデータやモック作成に最適です。TypeScriptの型推論を活用した実装パターン、配列やオブジェクトの扱い方、from()との使い分けを実践的なコード例で解説します。"
 ---
 
 # of() - 値の順次発行

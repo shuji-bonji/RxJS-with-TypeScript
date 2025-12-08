@@ -1,5 +1,5 @@
 ---
-description: RxJSの包括的なエラー処理戦略を解説します。catchError、retry、retryWhen、finalizeオペレーターの組み合わせ方、指数バックオフによる再試行、エラー時のリソース解放、フォールバック処理など実践的なパターンを紹介します。
+description: "RxJSの包括的なエラー処理戦略を解説。catchError、retry、retryWhen、finalizeオペレーターの組み合わせ方、指数バックオフによる再試行、エラーの分類と適切な処理、グローバルエラーハンドラーなど、TypeScriptで堅牢なエラー処理を実装する方法を紹介します。"
 ---
 # RxJSのエラー処理戦略
 

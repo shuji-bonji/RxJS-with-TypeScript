@@ -1,5 +1,5 @@
 ---
-description: windowTimeは一定時間ごとにObservableを分割し、各時間枠で発行された値を個別のObservableとして処理できるRxJSオペレーターです。
+description: "windowTimeオペレーターは一定時間ごとにObservableを分割し、各時間枠で発行された値を個別のObservableとして処理できます。時間ベースのストリーム分割、バッチ処理、bufferTimeとの違い、TypeScriptでの型安全な実装を解説します。"
 ---
 
 # windowTime - 一定時間ごとにObservableを分割する

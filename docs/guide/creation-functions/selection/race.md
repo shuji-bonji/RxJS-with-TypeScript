@@ -1,5 +1,5 @@
 ---
-description: race Creation Functionは、複数のObservableのうち最初に値を発行したストリームのみを採用し、それ以降は他を無視する特殊な結合処理を実現します。
+description: "race Creation Functionは、複数のObservableのうち最初に値を発行したストリームのみを採用し、それ以降は他を無視します。タイムアウト実装、複数サーバーへのフォールバック、最速レスポンスの取得などに活用できます。TypeScriptの型推論と実践例を解説します。"
 ---
 
 # race - 最初に値を発行したストリームを採用する

@@ -1,5 +1,5 @@
 ---
-description: combineLatest Creation Functionを用いて複数のObservableの最新値を組み合わせる方法と、UIやフォーム入力への応用例を紹介します。
+description: "combineLatest Creation Functionを用いて複数のObservableの最新値を組み合わせる方法を解説。各ソースが値を発行するたびに最新の組み合わせを出力するため、UIやフォーム入力の同期、複数条件の監視に最適です。TypeScriptの型推論と実践例を紹介します。"
 ---
 
 # combineLatest - 最新の値を組み合わせる

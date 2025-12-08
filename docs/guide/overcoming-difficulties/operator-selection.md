@@ -1,5 +1,5 @@
 ---
-description: RxJSの100以上のオペレーターから適切なものを選ぶ基準を解説します。カテゴリ別選択フローチャート、よく使うオペレーター20選、switchMap vs mergeMap vs concatMap vs exhaustMapの使い分けを実践的なコード例で学びます。
+description: "RxJSの100以上のオペレーターから適切なものを選ぶ基準を解説。カテゴリ別選択フローチャート、よく使うオペレーター20選、switchMap vs mergeMap vs concatMapの使い分け、用途別オペレーター対応表をTypeScriptコード例で紹介します。"
 ---
 
 <style scoped>

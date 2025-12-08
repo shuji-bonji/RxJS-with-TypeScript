@@ -1,5 +1,5 @@
 ---
-description: iifオペレーターは、条件式に応じて2つのObservableのうちどちらかを選択するRxJSの条件分岐演算子で、三項演算子のような使い方が可能です。
+description: "iif Creation Functionは、条件式に応じて2つのObservableのうちどちらかを選択する三項演算子のような関数です。購読時に条件を評価して適切なObservableを返します。defer()との違い、TypeScriptでの型安全な実装、動的な条件分岐パターンを解説します。"
 ---
 
 # iif - 条件に基づくObservableの選択

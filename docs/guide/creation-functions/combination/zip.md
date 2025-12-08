@@ -1,5 +1,5 @@
 ---
-description: zip Creation Functionは複数のObservableから対応する順番の値を揃えてペアにし、すべてのソースが1つずつ値を発行したタイミングで出力します。
+description: "zip Creation Functionは複数のObservableから対応する順番の値を揃えてペアにし、すべてのソースが1つずつ値を発行したタイミングで出力します。データの同期、並列処理結果の結合に活用できます。TypeScriptでの型安全な実装と実践的なコード例を解説します。"
 ---
 
 # zip - 対応する値をペアにする

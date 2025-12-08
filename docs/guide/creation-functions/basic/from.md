@@ -1,5 +1,5 @@
 ---
-description: from() - 配列・Promise・イテラブルなどからObservableを生成するCreation Function。既存のデータ構造を簡単にストリーム化できます。
+description: "from() - 配列・Promise・イテラブル・文字列などからObservableを生成するCreation Function。既存のデータ構造を簡単にストリーム化できます。TypeScriptでの型安全な変換パターン、async/awaitとの組み合わせ、of()との違いを詳しく解説します。"
 ---
 
 # from() - 配列・Promise等から変換

@@ -1,5 +1,5 @@
 ---
-description: 複数のObservableを1つに結合するCreation Functionsについて解説します。concat、merge、combineLatest、zip、forkJoinの使い分けと実践例を学びます。
+description: "複数のObservableを1つに結合するCreation Functionsについて解説。concat、merge、combineLatest、zip、forkJoin、raceの違いと使い分け、各関数のユースケース、TypeScriptでの型安全な実装パターンを実践的なコード例で学びます。"
 ---
 
 # 結合系 Creation Functions
