@@ -20,10 +20,16 @@ export default withMermaid(
 
     // 翻訳作業中は新言語のデッドリンクを無視（翻訳完了後に削除）
     ignoreDeadLinks: [
-      /^\/fr\//,
-      /^\/de\//,
-      /^\/it\//,
-      /^\/es\//,
+      // 相対リンク形式（./../など）も含めて無視
+      /\/fr\//,
+      /\/de\//,
+      /\/it\//,
+      /\/es\//,
+      // 翻訳中のセクションへのリンク
+      /\.\.\/operators\//,
+      /\.\.\/subjects\//,
+      /\.\.\/schedulers\//,
+      /\.\.\/error-handling\//,
     ],
 
     head: [

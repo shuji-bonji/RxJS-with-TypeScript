@@ -40,4 +40,4 @@ Verstehen Sie es intuitiv und logisch durch praktischen Code und Tests.
 > [!NOTE]
 > - [RxJS (Reactive Extensions for JavaScript)](https://rxjs.dev) ist eine Bibliothek, die asynchrone Programmierung und ereignisbasierte Programmierung unterstützt.
 > - [TypeScript](https://www.typescriptlang.org) ist eine stark typisierte Programmiersprache, die auf JavaScript basiert.
-> - Diese deutsche Version wurde mit [Claude Code](https://claude.ai/code) und [DeepL MCP Server](https://github.com/modelcontextprotocol/servers/tree/main/src/deepl) aus dem Japanischen übersetzt.
+> - Diese deutsche Version wurde mit [Claude Code](https://claude.ai/code) und [DeepL MCP Server](https://github.com/DeepLcom/deepl-mcp-server) aus dem Japanischen übersetzt.
