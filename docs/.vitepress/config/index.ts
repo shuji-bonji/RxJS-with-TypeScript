@@ -3,6 +3,10 @@ import footnote from 'markdown-it-footnote';
 import { withMermaid } from 'vitepress-plugin-mermaid';
 import { jaThemeConfig } from './ja';
 import { enThemeConfig } from './en';
+import { frThemeConfig } from './fr';
+import { deThemeConfig } from './de';
+import { itThemeConfig } from './it';
+import { esThemeConfig } from './es';
 
 export default withMermaid(
   defineConfig({
@@ -13,6 +17,14 @@ export default withMermaid(
 
     // URL正規化: .htmlなしのクリーンURLを使用
     cleanUrls: true,
+
+    // 翻訳作業中は新言語のデッドリンクを無視（翻訳完了後に削除）
+    ignoreDeadLinks: [
+      /^\/fr\//,
+      /^\/de\//,
+      /^\/it\//,
+      /^\/es\//,
+    ],
 
     head: [
       // Open Graph
@@ -60,6 +72,30 @@ export default withMermaid(
         link: '/en/',
         themeConfig: enThemeConfig,
       },
+      fr: {
+        label: 'Français',
+        lang: 'fr',
+        link: '/fr/',
+        themeConfig: frThemeConfig,
+      },
+      de: {
+        label: 'Deutsch',
+        lang: 'de',
+        link: '/de/',
+        themeConfig: deThemeConfig,
+      },
+      it: {
+        label: 'Italiano',
+        lang: 'it',
+        link: '/it/',
+        themeConfig: itThemeConfig,
+      },
+      es: {
+        label: 'Español',
+        lang: 'es',
+        link: '/es/',
+        themeConfig: esThemeConfig,
+      },
     },
 
     themeConfig: {
@@ -100,6 +136,74 @@ export default withMermaid(
                   }
                 }
               }
+            },
+            fr: {
+              translations: {
+                button: {
+                  buttonText: 'Rechercher',
+                  buttonAriaLabel: 'Rechercher'
+                },
+                modal: {
+                  noResultsText: 'Aucun résultat pour',
+                  resetButtonTitle: 'Réinitialiser la recherche',
+                  footer: {
+                    selectText: 'sélectionner',
+                    navigateText: 'naviguer',
+                    closeText: 'fermer'
+                  }
+                }
+              }
+            },
+            de: {
+              translations: {
+                button: {
+                  buttonText: 'Suchen',
+                  buttonAriaLabel: 'Suchen'
+                },
+                modal: {
+                  noResultsText: 'Keine Ergebnisse für',
+                  resetButtonTitle: 'Suche zurücksetzen',
+                  footer: {
+                    selectText: 'auswählen',
+                    navigateText: 'navigieren',
+                    closeText: 'schließen'
+                  }
+                }
+              }
+            },
+            it: {
+              translations: {
+                button: {
+                  buttonText: 'Cerca',
+                  buttonAriaLabel: 'Cerca'
+                },
+                modal: {
+                  noResultsText: 'Nessun risultato per',
+                  resetButtonTitle: 'Reimposta ricerca',
+                  footer: {
+                    selectText: 'selezionare',
+                    navigateText: 'navigare',
+                    closeText: 'chiudere'
+                  }
+                }
+              }
+            },
+            es: {
+              translations: {
+                button: {
+                  buttonText: 'Buscar',
+                  buttonAriaLabel: 'Buscar'
+                },
+                modal: {
+                  noResultsText: 'Sin resultados para',
+                  resetButtonTitle: 'Restablecer búsqueda',
+                  footer: {
+                    selectText: 'seleccionar',
+                    navigateText: 'navegar',
+                    closeText: 'cerrar'
+                  }
+                }
+              }
             }
           }
         }
@@ -126,26 +230,41 @@ export default withMermaid(
       const baseUrl = 'https://shuji-bonji.github.io/RxJS-with-TypeScript'
       const pagePath = pageData.relativePath.replace(/((^|\/)index)?\.md$/, '$2')
 
-      if (!pageData.relativePath.startsWith('en/')) {
-        // 日本語ページ (root locale)
-        const jaUrl = `${baseUrl}/${pagePath}`
-        const enUrl = `${baseUrl}/en/${pagePath}`
+      // Supported locales with their path prefixes
+      const locales = [
+        { lang: 'ja', prefix: '' },      // root locale (Japanese)
+        { lang: 'en', prefix: 'en/' },
+        { lang: 'fr', prefix: 'fr/' },
+        { lang: 'de', prefix: 'de/' },
+        { lang: 'it', prefix: 'it/' },
+        { lang: 'es', prefix: 'es/' },
+      ]
 
-        head.push(['link', { rel: 'canonical', href: jaUrl }])
-        head.push(['link', { rel: 'alternate', hreflang: 'ja', href: jaUrl }])
-        head.push(['link', { rel: 'alternate', hreflang: 'en', href: enUrl }])
-        head.push(['link', { rel: 'alternate', hreflang: 'x-default', href: jaUrl }])
-      } else {
-        // 英語ページ (/en/ locale)
-        const enPagePath = pagePath.replace(/^en\//, '')
-        const enUrl = `${baseUrl}/en/${enPagePath}`
-        const jaUrl = `${baseUrl}/${enPagePath}`
+      // Determine current locale and extract the content path
+      let currentLang = 'ja'
+      let contentPath = pagePath
 
-        head.push(['link', { rel: 'canonical', href: enUrl }])
-        head.push(['link', { rel: 'alternate', hreflang: 'en', href: enUrl }])
-        head.push(['link', { rel: 'alternate', hreflang: 'ja', href: jaUrl }])
-        head.push(['link', { rel: 'alternate', hreflang: 'x-default', href: jaUrl }])
+      for (const locale of locales) {
+        if (locale.prefix && pagePath.startsWith(locale.prefix)) {
+          currentLang = locale.lang
+          contentPath = pagePath.replace(new RegExp(`^${locale.prefix}`), '')
+          break
+        }
       }
+
+      // Generate canonical URL for current page
+      const currentPrefix = locales.find(l => l.lang === currentLang)?.prefix || ''
+      const canonicalUrl = `${baseUrl}/${currentPrefix}${contentPath}`
+      head.push(['link', { rel: 'canonical', href: canonicalUrl }])
+
+      // Generate hreflang tags for all locales
+      for (const locale of locales) {
+        const url = `${baseUrl}/${locale.prefix}${contentPath}`
+        head.push(['link', { rel: 'alternate', hreflang: locale.lang, href: url }])
+      }
+
+      // x-default points to Japanese (primary language)
+      head.push(['link', { rel: 'alternate', hreflang: 'x-default', href: `${baseUrl}/${contentPath}` }])
 
       return head
     },
