@@ -174,12 +174,12 @@ Implementa patrones a nivel empresarial:
 
 Cada patrón práctico se basa en conocimientos fundamentales de capítulos anteriores:
 
-- **[Capítulo 2: Observables](../observables/index.md)** - Entender Observables fríos vs. calientes
+- **[Capítulo 2: Observables](../observables/what-is-observable.md)** - Entender Observables fríos vs. calientes
 - **[Capítulo 3: Creation Functions](../creation-functions/index.md)** - Saber cuándo usar `fromEvent`, `interval`, `merge`
 - **[Capítulo 4: Operadores](../operators/index.md)** - Dominar operadores de transformación, filtrado y combinación
 - **[Capítulo 5: Subject](../subjects/index.md)** - Usar Subjects para gestión de estado
 - **[Capítulo 6: Manejo de Errores](../error-handling/index.md)** - Aplicar `catchError`, `retry`, `retryWhen`
-- **[Capítulo 9: Pruebas](../testing/index.md)** - Probar pipelines RxJS con TestScheduler
+- **[Capítulo 9: Pruebas](../testing/unit-tests.md)** - Probar pipelines RxJS con TestScheduler
 
 ## Principios de Código Ejecutable
 
@@ -228,7 +228,7 @@ Este enfoque asegura que cada ejemplo sea **inmediatamente ejecutable** sin ning
 
 - **[Capítulo 10: Anti-Patrones](../anti-patterns/index.md)** - Aprende qué evitar
 - **[Capítulo 11: Superar Dificultades](../overcoming-difficulties/index.md)** - Abordar desafíos conceptuales
-- **[Apéndice: Ecosistema](../appendix/ecosystem.md)** - Explorar bibliotecas e integraciones de frameworks
+- **[Apéndice: Ecosistema](../appendix/rxjs-and-reactive-streams-ecosystem.md)** - Explorar bibliotecas e integraciones de frameworks
 
 ## Recursos de Referencia
 

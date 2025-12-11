@@ -88,6 +88,7 @@ export const nlThemeConfig: DefaultTheme.Config = {
             { text: 'combineLatest', link: '/nl/guide/creation-functions/combination/combineLatest' },
             { text: 'zip', link: '/nl/guide/creation-functions/combination/zip' },
             { text: 'forkJoin', link: '/nl/guide/creation-functions/combination/forkJoin' },
+            { text: 'forkJoin vs combineLatest', link: '/nl/guide/creation-functions/combination/forkJoin-vs-combineLatest' },
           ],
         },
         {

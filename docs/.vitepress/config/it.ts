@@ -72,6 +72,7 @@ export const itThemeConfig: DefaultTheme.Config = {
             { text: 'combineLatest', link: '/it/guide/creation-functions/combination/combineLatest' },
             { text: 'zip', link: '/it/guide/creation-functions/combination/zip' },
             { text: 'forkJoin', link: '/it/guide/creation-functions/combination/forkJoin' },
+            { text: 'forkJoin vs combineLatest', link: '/it/guide/creation-functions/combination/forkJoin-vs-combineLatest' },
           ],
         },
         {
