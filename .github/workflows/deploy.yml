@@ -28,6 +28,8 @@ jobs:
 
       - name: Build VitePress site
         run: npm run docs:build
+        env:
+          NODE_OPTIONS: "--max-old-space-size=16384"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4

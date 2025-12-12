@@ -20,7 +20,9 @@ const LANGUAGES = {
   fr: 'French',
   de: 'German',
   it: 'Italian',
-  es: 'Spanish'
+  es: 'Spanish',
+  nl: 'Dutch',
+  pt: 'Portuguese'
 };
 
 /**
@@ -186,6 +188,6 @@ Usage:
   node scripts/translate-files.cjs progress <lang>    - Show progress for a language
   node scripts/translate-files.cjs prepare <lang>     - Create directory structure
 
-Languages: fr (French), de (German), it (Italian), es (Spanish)
+Languages: fr (French), de (German), it (Italian), es (Spanish), nl (Dutch), pt (Portuguese)
 `);
 }

@@ -8,6 +8,7 @@ import { deThemeConfig } from './de';
 import { itThemeConfig } from './it';
 import { esThemeConfig } from './es';
 import { nlThemeConfig } from './nl';
+import { ptThemeConfig } from './pt';
 
 export default withMermaid(
   defineConfig({
@@ -27,6 +28,7 @@ export default withMermaid(
       /\/it\//,
       /\/es\//,
       /\/nl\//,
+      /\/pt\//,
       // 翻訳中のセクションへのリンク
       /\.\.\/operators\//,
       /\.\.\/subjects\//,
@@ -109,6 +111,12 @@ export default withMermaid(
         lang: 'nl',
         link: '/nl/',
         themeConfig: nlThemeConfig,
+      },
+      pt: {
+        label: 'Português',
+        lang: 'pt',
+        link: '/pt/',
+        themeConfig: ptThemeConfig,
       },
     },
 
@@ -235,6 +243,23 @@ export default withMermaid(
                   }
                 }
               }
+            },
+            pt: {
+              translations: {
+                button: {
+                  buttonText: 'Pesquisar',
+                  buttonAriaLabel: 'Pesquisar'
+                },
+                modal: {
+                  noResultsText: 'Sem resultados para',
+                  resetButtonTitle: 'Redefinir pesquisa',
+                  footer: {
+                    selectText: 'selecionar',
+                    navigateText: 'navegar',
+                    closeText: 'fechar'
+                  }
+                }
+              }
             }
           }
         }
@@ -270,6 +295,7 @@ export default withMermaid(
         { lang: 'it', prefix: 'it/' },
         { lang: 'es', prefix: 'es/' },
         { lang: 'nl', prefix: 'nl/' },
+        { lang: 'pt', prefix: 'pt/' },
       ]
 
       // Determine current locale and extract the content path
