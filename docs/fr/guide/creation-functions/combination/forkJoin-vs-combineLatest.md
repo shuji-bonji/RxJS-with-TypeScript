@@ -18,9 +18,9 @@ Cette page compare minutieusement les deux à l'aide de diagrammes et d'exemples
 |-----------------|----------|---------------|
 | **Timing de sortie** | **Une fois** après que tout soit terminé | **À chaque fois** qu'une valeur est mise à jour |
 | **Valeur de sortie** | **Dernière valeur** de chaque Observable | **Valeur la plus récente** de chaque Observable |
-| **Condition de complétion** | Tous les Observables terminent | Chaque fois qu'un émet une valeur |
+| **Condition de complétion** | Tous les Observables terminent | Tous les Observables terminent |
 | **Cas d'utilisation principaux** | Appels API parallèles, chargement initial | Surveillance de formulaire, sync temps réel |
-| **Flux infinis** | ❌ Ne peut pas utiliser | ✅ Peut utiliser |
+| **Flux infinis** | ❌ Ne peut pas utiliser | ✅ Peut utiliser (émet des valeurs même sans complétion) |
 
 > [!TIP]
 > **Façon simple de retenir**

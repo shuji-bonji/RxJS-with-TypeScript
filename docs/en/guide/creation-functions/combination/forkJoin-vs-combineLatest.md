@@ -18,9 +18,9 @@ This page thoroughly compares both using diagrams and practical examples, making
 |---------|----------|---------------|
 | **Output Timing** | **Once** after all complete | **Every time** a value is updated |
 | **Output Value** | **Last value** of each Observable | **Latest value** of each Observable |
-| **Completion Condition** | All Observables complete | Every time any emits a value |
+| **Completion Condition** | All Observables complete | All Observables complete |
 | **Main Use Cases** | Parallel API calls, initial data load | Form monitoring, real-time sync |
-| **Infinite Streams** | ❌ Cannot use (never completes) | ✅ Can use |
+| **Infinite Streams** | ❌ Cannot use (never completes) | ✅ Can use (emits values even without completion) |
 
 > [!TIP]
 > **Easy way to remember**
@@ -159,7 +159,10 @@ combineLatest([obs1$, obs2$]).subscribe(result => {
 
 **Execution Results**:
 - `forkJoin`: Outputs `[A2, B1]` **once** after about 3 seconds
-- `combineLatest`: Outputs **4 times** starting from about 1.5 seconds: `[A0, B0]` → `[A1, B0]` → `[A2, B0]` → `[A2, B1]`
+- `combineLatest`: Outputs **4 times** starting from about 1.5 seconds (e.g., `[A0, B0]` → `[A1, B0]` → `[A2, B0]` → `[A2, B1]`)
+
+> [!NOTE]
+> The output order of `combineLatest` depends on timer scheduling and may vary by environment. The key point is "it outputs every time any value is updated." In this example, 4 outputs occur, but the order may change like `[A1, B0]` → `[A1, B1]`.
 
 ## When to Use Which (Case-by-Case Guide)
 

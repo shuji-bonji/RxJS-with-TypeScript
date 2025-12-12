@@ -18,9 +18,9 @@ Diese Seite vergleicht beide gründlich mit Diagrammen und praktischen Beispiele
 |---------|----------|---------------|
 | **Ausgabe-Timing** | **Einmal** nach Abschluss aller | **Jedes Mal** wenn ein Wert aktualisiert wird |
 | **Ausgabewert** | **Letzter Wert** jedes Observables | **Neuester Wert** jedes Observables |
-| **Abschlussbedingung** | Alle Observables abgeschlossen | Jedes Mal wenn eines einen Wert ausgibt |
+| **Abschlussbedingung** | Alle Observables abgeschlossen | Alle Observables abgeschlossen |
 | **Hauptanwendungsfälle** | Parallele API-Aufrufe, initialer Datenload | Formularüberwachung, Echtzeit-Sync |
-| **Unendliche Streams** | ❌ Kann nicht verwendet werden | ✅ Kann verwendet werden |
+| **Unendliche Streams** | ❌ Kann nicht verwendet werden | ✅ Kann verwendet werden (gibt Werte auch ohne Abschluss aus) |
 
 > [!TIP]
 > **Einfache Merkregel**

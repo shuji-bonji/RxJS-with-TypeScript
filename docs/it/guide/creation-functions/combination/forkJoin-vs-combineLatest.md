@@ -18,9 +18,9 @@ Questa pagina confronta approfonditamente entrambe usando diagrammi ed esempi pr
 |----------------|----------|---------------|
 | **Timing di output** | **Una volta** dopo il completamento di tutti | **Ogni volta** che un valore viene aggiornato |
 | **Valore di output** | **Ultimo valore** di ogni Observable | **Valore più recente** di ogni Observable |
-| **Condizione di completamento** | Tutti gli Observable completano | Ogni volta che uno emette un valore |
+| **Condizione di completamento** | Tutti gli Observable completano | Tutti gli Observable completano |
 | **Casi d'uso principali** | Chiamate API parallele, caricamento dati iniziale | Monitoraggio form, sync in tempo reale |
-| **Stream infiniti** | ❌ Non può usare | ✅ Può usare |
+| **Stream infiniti** | ❌ Non può usare | ✅ Può usare (emette valori anche senza completamento) |
 
 > [!TIP]
 > **Modo semplice per ricordare**

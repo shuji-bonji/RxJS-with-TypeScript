@@ -18,9 +18,9 @@ Deze pagina vergelijkt beide grondig met diagrammen en praktische voorbeelden, e
 |---------|----------|---------------|
 | **Output timing** | **Eenmaal** nadat alles voltooid is | **Elke keer** dat een waarde wordt bijgewerkt |
 | **Output waarde** | **Laatste waarde** van elke Observable | **Nieuwste waarde** van elke Observable |
-| **Voltooiingsvoorwaarde** | Alle Observables voltooien | Elke keer als er een waarde wordt uitgezonden |
+| **Voltooiingsvoorwaarde** | Alle Observables voltooien | Alle Observables voltooien |
 | **Belangrijkste use cases** | Parallelle API-aanroepen, initiële data load | Formulier monitoring, real-time sync |
-| **Oneindige streams** | ❌ Kan niet gebruiken | ✅ Kan gebruiken |
+| **Oneindige streams** | ❌ Kan niet gebruiken | ✅ Kan gebruiken (zendt waarden uit zelfs zonder voltooiing) |
 
 > [!TIP]
 > **Makkelijke manier om te onthouden**
