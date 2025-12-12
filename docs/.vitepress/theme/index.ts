@@ -1,16 +1,20 @@
 import DefaultTheme from 'vitepress/theme';
 import './custom.css';
-import { onMounted } from 'vue';
+import { onMounted, watch } from 'vue';
+import { useData } from 'vitepress';
 import type { Theme } from 'vitepress';
 
 export default {
   extends: DefaultTheme,
   setup() {
+    const { isDark } = useData();
+
     onMounted(() => {
       // svg-pan-zoom を動的にインポートして Mermaid SVG に適用
       import('svg-pan-zoom').then((module) => {
         const svgPanZoom = module.default;
         let dialogInstance: any = null;
+        let currentSourceSvg: SVGElement | null = null;
 
         // ダイアログ要素を作成
         const createDialog = () => {
@@ -24,25 +28,34 @@ export default {
           `;
           document.body.appendChild(dialog);
 
-          // 閉じるボタンのイベント
-          const closeBtn = dialog.querySelector('.dialog-close');
-          closeBtn?.addEventListener('click', () => {
+          // ダイアログを閉じる共通関数
+          const closeDialog = () => {
             if (dialogInstance) {
               dialogInstance.destroy();
               dialogInstance = null;
             }
+            currentSourceSvg = null;
             dialog.close();
-          });
+          };
+
+          // 閉じるボタンのイベント
+          const closeBtn = dialog.querySelector('.dialog-close');
+          closeBtn?.addEventListener('click', closeDialog);
 
           // バックドロップクリックで閉じる
           dialog.addEventListener('click', (e) => {
             if (e.target === dialog) {
-              if (dialogInstance) {
-                dialogInstance.destroy();
-                dialogInstance = null;
-              }
-              dialog.close();
+              closeDialog();
             }
+          });
+
+          // ESCキーで閉じた場合もクリーンアップ
+          dialog.addEventListener('close', () => {
+            if (dialogInstance) {
+              dialogInstance.destroy();
+              dialogInstance = null;
+            }
+            currentSourceSvg = null;
           });
 
           return dialog;
@@ -50,35 +63,103 @@ export default {
 
         const dialog = createDialog();
 
-        // ページ内のすべての Mermaid SVG にクリックイベントを追加
-        const initializeMermaidSvgs = () => {
-          const mermaidSvgs = document.querySelectorAll('.mermaid svg');
+        // ダイアログ内のSVGを更新する関数
+        const updateDialogSvg = () => {
+          if (!dialog.open || !currentSourceSvg) return;
 
-          mermaidSvgs.forEach((svg) => {
+          const container = dialog.querySelector('.dialog-svg-container');
+          if (!container) return;
+
+          // 現在のソースSVGの親要素（.mermaid）を取得
+          const mermaidContainer = currentSourceSvg.closest('.mermaid');
+          if (!mermaidContainer) return;
+
+          // 最新のSVGを取得（テーマ切り替え後は新しいSVGになっている可能性）
+          const latestSvg = mermaidContainer.querySelector('svg');
+          if (!latestSvg) return;
+
+          // 古いsvg-pan-zoomインスタンスを破棄
+          if (dialogInstance) {
+            dialogInstance.destroy();
+            dialogInstance = null;
+          }
+
+          // 最新のSVGをクローンして表示
+          const clonedSvg = latestSvg.cloneNode(true) as SVGElement;
+          container.innerHTML = '';
+          container.appendChild(clonedSvg);
+
+          // 新しいSVGにsvg-pan-zoomを適用
+          try {
+            dialogInstance = svgPanZoom(clonedSvg, {
+              zoomEnabled: true,
+              controlIconsEnabled: true,
+              fit: true,
+              center: true,
+              minZoom: 0.1,
+              maxZoom: 20,
+              zoomScaleSensitivity: 0.3,
+            });
+          } catch (error) {
+            console.warn('ダイアログ内のsvg-pan-zoom初期化に失敗:', error);
+          }
+
+          // ソースSVGの参照を更新
+          currentSourceSvg = latestSvg;
+        };
+
+        // Mermaidコンテナにイベント委譲でクリックイベントを追加
+        const initializeMermaidContainers = () => {
+          const mermaidContainers = document.querySelectorAll('.mermaid');
+
+          mermaidContainers.forEach((container) => {
             // すでに初期化されている場合はスキップ
-            if ((svg as any).__mermaidInitialized) {
+            if ((container as any).__mermaidContainerInitialized) {
               return;
             }
 
-            // クリックで全画面表示
-            svg.addEventListener('click', () => {
-              const container = dialog.querySelector('.dialog-svg-container');
-              if (!container) return;
+            // クリックで全画面表示（イベント委譲）
+            container.addEventListener('click', (e) => {
+              const svg = container.querySelector('svg');
+              if (!svg) return;
 
-              // SVGをクローン
-              const clonedSvg = svg.cloneNode(true) as SVGElement;
-              container.innerHTML = '';
-              container.appendChild(clonedSvg);
+              const dialogContainer = dialog.querySelector('.dialog-svg-container');
+              if (!dialogContainer) return;
+
+              // 現在のソースコンテナとSVGを記録
+              currentSourceSvg = svg as SVGElement;
+
+              // SVGのouterHTMLを取得して新しいSVG要素を作成
+              const svgHTML = svg.outerHTML;
+              dialogContainer.innerHTML = svgHTML;
+              const dialogSvg = dialogContainer.querySelector('svg') as SVGElement;
+
+              if (!dialogSvg) return;
+
+              // ダイアログ内のSVGのIDを変更して、Mermaidの再レンダリングとの競合を回避
+              const originalId = dialogSvg.id;
+              if (originalId) {
+                const newId = `${originalId}-dialog`;
+                dialogSvg.id = newId;
+                // スタイル内のID参照も更新
+                const styleElement = dialogSvg.querySelector('style');
+                if (styleElement && styleElement.textContent) {
+                  styleElement.textContent = styleElement.textContent.replace(
+                    new RegExp(`#${originalId}`, 'g'),
+                    `#${newId}`
+                  );
+                }
+              }
 
               // ダイアログを表示
               dialog.showModal();
 
-              // クローンしたSVGにsvg-pan-zoomを適用
+              // ダイアログ内のSVGにsvg-pan-zoomを適用
               try {
                 if (dialogInstance) {
                   dialogInstance.destroy();
                 }
-                dialogInstance = svgPanZoom(clonedSvg, {
+                dialogInstance = svgPanZoom(dialogSvg, {
                   zoomEnabled: true,
                   controlIconsEnabled: true,
                   fit: true,
@@ -92,21 +173,29 @@ export default {
               }
             });
 
-            // カーソルとヒントを表示
-            svg.style.cursor = 'pointer';
-            svg.setAttribute('title', 'クリックで全画面表示');
-
             // 初期化済みフラグを設定
-            (svg as any).__mermaidInitialized = true;
+            (container as any).__mermaidContainerInitialized = true;
           });
         };
 
         // 初回実行
-        initializeMermaidSvgs();
+        initializeMermaidContainers();
+
+        // ダークモード切り替え時にダイアログ内のSVGを更新
+        watch(isDark, () => {
+          // Mermaidの再レンダリングを待ってからダイアログを更新
+          setTimeout(() => {
+            updateDialogSvg();
+          }, 500);
+        });
 
         // ページ遷移時に再初期化（VitePress の SPA 対応）
+        let debounceTimer: ReturnType<typeof setTimeout> | null = null;
         const observer = new MutationObserver(() => {
-          initializeMermaidSvgs();
+          if (debounceTimer) clearTimeout(debounceTimer);
+          debounceTimer = setTimeout(() => {
+            initializeMermaidContainers();
+          }, 300);
         });
 
         observer.observe(document.body, {
