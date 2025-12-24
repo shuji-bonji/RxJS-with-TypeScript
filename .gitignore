@@ -26,3 +26,7 @@ docs/.vitepress/cache/
 *.njsproj
 *.sln
 *.sw?
+
+# Translation evaluation data (regeneratable)
+scripts/translation-pairs-*.json
+scripts/evaluation-results-*.json
