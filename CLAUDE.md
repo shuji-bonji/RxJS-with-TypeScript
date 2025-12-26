@@ -75,6 +75,23 @@ npm run docs:preview
 npm run docs:serve
 ```
 
+### Code Example Validation
+```bash
+# Validate all code examples in the guide
+node scripts/validate-code-examples.cjs
+
+# Validate specific directory
+node scripts/validate-code-examples.cjs --dir docs/guide/operators/transformation
+
+# Validate with verbose output
+node scripts/validate-code-examples.cjs --verbose
+
+# Generate JSON report (saved to scripts/code-validation-report.json)
+node scripts/validate-code-examples.cjs --report
+```
+
+**Note:** The report file `scripts/code-validation-report.json` is gitignored as it's a generated artifact.
+
 ## Architecture
 
 ### Directory Structure

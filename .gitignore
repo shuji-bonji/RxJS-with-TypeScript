@@ -30,3 +30,5 @@ docs/.vitepress/cache/
 # Translation evaluation data (regeneratable)
 scripts/translation-pairs-*.json
 scripts/evaluation-results-*.json
+# Generated validation reports
+scripts/code-validation-report.json
