@@ -1,0 +1,14 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    ignore:
+      # esbuild vulnerability (GHSA-67mh-4wv8-2f99) affects development server only.
+      # VitePress 1.6.x depends on Vite 5.4.x which requires esbuild ^0.21.3.
+      # The fix (esbuild 0.25.0+) requires Vite 6.2.0+ / VitePress 2.0+.
+      # Ignoring until VitePress 2.0 stable is released.
+      # See: https://github.com/advisories/GHSA-67mh-4wv8-2f99
+      - dependency-name: "esbuild"
+        versions: [">=0.25.0"]
