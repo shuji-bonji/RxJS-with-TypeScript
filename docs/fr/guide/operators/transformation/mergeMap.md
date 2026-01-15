@@ -2,7 +2,7 @@
 description: "L'opérateur mergeMap transforme chaque valeur en un nouvel Observable et les exécute simultanément, en les fusionnant à plat. Pratique pour l'exécution parallèle de plusieurs requêtes API sans attente, et la gestion de traitements asynchrones imbriqués."
 ---
 
-# mergeMap - Transformer chaque valeur en Observable et fusionner simultanément
+# mergeMap - Fusion parallèle
 
 L'opérateur `mergeMap` (aussi appelé `flatMap`) transforme chaque valeur en un nouvel Observable et **les fusionne à plat simultanément**.
 C'est très pratique lorsque vous voulez exécuter des requêtes immédiatement sans attendre en séquence, ou pour un traitement asynchrone imbriqué.

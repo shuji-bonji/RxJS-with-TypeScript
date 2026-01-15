@@ -2,7 +2,7 @@
 description: "mergeWith is een Pipeable Operator die de originele Observable en andere Observables gelijktijdig subscribed en parallel combineert. Kan gebruikt worden voor het integreren van meerdere event-bronnen voor real-time verwerking. Uitleg over verschillen met merge() en type-veilige implementatie in TypeScript."
 ---
 
-# mergeWith - Meerdere streams gelijktijdig combineren in pipeline
+# mergeWith - Parallel Samenvoegen
 
 De `mergeWith`-operator **subscribed gelijktijdig** op de originele Observable en opgegeven andere Observables,
 en integreert real-time waarden die van elk uitgegeven worden.

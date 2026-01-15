@@ -2,7 +2,7 @@
 description: "Der last-Operator holt beim Abschluss eines Streams nur den letzten Wert oder den letzten Wert, der eine Bedingung erfüllt. Erklärt werden der Unterschied zu first(), Einstellung von Standardwerten, Behandlung von EmptyError und typsichere Implementierung in TypeScript mit praktischen Codebeispielen. Auch der Unterschied zu takeLast() wird vorgestellt."
 ---
 
-# last - Letzten Wert oder letzten Wert abrufen, der Bedingung erfüllt
+# last - Letzten Wert Abrufen
 
 Der `last`-Operator ruft aus einem Stream den **letzten Wert** oder den **letzten Wert, der eine Bedingung erfüllt**, ab und beendet den Stream.
 

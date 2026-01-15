@@ -2,7 +2,7 @@
 description: combineLatestAll ist ein Operator, der ein Higher-order Observable (Observable of Observables) empfängt und, wenn alle inneren Observables mindestens einmal ausgelöst haben, die neuesten Werte jedes einzelnen kombiniert und als Array ausgibt.
 ---
 
-# combineLatestAll - Neueste Werte aller inneren Observables kombinieren
+# combineLatestAll - Innere Neueste Kombinieren
 
 Der `combineLatestAll`-Operator empfängt ein **Higher-order Observable** (Observable of Observables),
 und wenn **alle inneren Observables mindestens einmal ausgelöst haben**, gibt er die **neuesten Werte jedes einzelnen** kombiniert als Array aus.

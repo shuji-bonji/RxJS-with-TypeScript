@@ -3,7 +3,7 @@ description: raceWith es un operador de combinación de RxJS que adopta solo el 
 titleTemplate: ':title | RxJS'
 ---
 
-# raceWith - Adoptar el Stream Más Rápido (Dentro del Pipeline)
+# raceWith - Stream Más Rápido
 
 El operador `raceWith` **adopta solo el primer stream que emite un valor** entre el Observable original y los otros Observables especificados, e ignora todos los demás.
 Esta es la versión Pipeable Operator de la Creation Function `race`.

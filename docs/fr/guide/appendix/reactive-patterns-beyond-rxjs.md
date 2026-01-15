@@ -2,7 +2,7 @@
 description: "Explique comment les principes de la programmation réactive sont implémentés au-delà de ReactiveX dans les systèmes embarqués et l'ingénierie de contrôle. Présente des patterns réactifs spécifiques aux domaines tels que la conception événementielle, les machines à états, le pattern pub/sub et le modèle d'acteurs."
 ---
 
-# Méthodes réactives au-delà de ReactiveX (Perspective embarquée)
+# Patterns réactifs hors ReactiveX
 
 La philosophie de la programmation réactive a été largement pratiquée dans les domaines des systèmes embarqués et de l'ingénierie de contrôle bien avant l'apparition de ReactiveX (RxJS).
 

@@ -2,7 +2,7 @@
 description: Der throttleTime-Operator lässt innerhalb eines angegebenen Zeitintervalls nur den ersten Wert durch und ignoriert spätere Werte, wodurch hochfrequente Ereignisse effizient reduziert werden. Ideal zur Optimierung von Echtzeit-Ereignissen wie Scrollen oder Mausbewegungen.
 ---
 
-# throttleTime - Ersten Wert durchlassen, neue Werte für angegebene Zeit ignorieren
+# throttleTime - Erster Wert dann Limit
 
 Der `throttleTime`-Operator lässt den zuerst ausgegebenen Wert durch und ignoriert nachfolgende Werte, die innerhalb des angegebenen Zeitintervalls ausgegeben werden.
 Gibt nicht regelmäßig den neuesten Wert aus, sondern **lässt nur den zuerst empfangenen Wert durch und ignoriert danach für eine Zeit**.

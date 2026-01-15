@@ -2,7 +2,7 @@
 description: "defaultIfEmptyオペレーターは、Observableが値を発行しなかった場合にデフォルト値を返します。空のAPIレスポンス処理、初期値補完、検索結果がない場合のフォールバックなど、実践的なユースケースとTypeScriptでの型安全な実装を解説します。"
 ---
 
-# defaultIfEmpty - ストリームが空の場合のデフォルト値
+# defaultIfEmpty - 空時のデフォルト値
 
 `defaultIfEmpty` オペレーターは、**Observable が何も値を発行せずに complete された場合に、指定したデフォルト値を発行する**演算子です。  
 空の配列や空の API 結果に対応するために使用されます。

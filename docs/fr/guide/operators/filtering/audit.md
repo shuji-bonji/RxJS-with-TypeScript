@@ -2,7 +2,7 @@
 description: "L'opérateur audit est un opérateur de filtrage RxJS qui émet uniquement la dernière valeur pendant une période contrôlée par un Observable personnalisé. Idéal pour un contrôle de timing dynamique."
 ---
 
-# audit - Émettre la dernière valeur d'une période contrôlée par un Observable personnalisé
+# audit - Dernière valeur sur trigger
 
 L'opérateur `audit` attend qu'un Observable personnalisé émette une valeur, puis émet la **dernière valeur** reçue de la source pendant cette période.
 Contrairement à `auditTime` qui contrôle avec un temps fixe, `audit` permet de **contrôler la période avec un Observable dynamique**.

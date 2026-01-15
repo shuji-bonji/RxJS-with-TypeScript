@@ -2,7 +2,7 @@
 description: "mergeWithは、元のObservableと他のObservableを同時に購読して並列に結合するPipeable Operatorです。複数のイベントソースを統合してリアルタイムに処理する場合に活用できます。merge()との違い、TypeScriptでの型安全な実装を解説します。"
 ---
 
-# mergeWith - パイプライン内で複数のストリームを同時に結合する
+# mergeWith - 複数ストリームを並行結合
 
 `mergeWith` オペレーターは、元のObservableと指定された他のObservableを**同時に購読**し、
 それぞれから発行される値をリアルタイムに統合します。

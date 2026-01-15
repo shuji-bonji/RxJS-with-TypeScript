@@ -3,7 +3,7 @@ description: The mergeMap operator converts each value into a new Observable, ex
 titleTemplate: ':title'
 ---
 
-# mergeMap - Converts Each Value to an Observable and Merges Them Concurrently
+# mergeMap - Concurrent Merge Transform
 
 The `mergeMap` (aka `flatMap`) operator converts each value into a new Observable and **merges them flat concurrently**.
 It is very useful when you want to execute requests immediately without waiting in sequence, or for nested asynchronous processing.

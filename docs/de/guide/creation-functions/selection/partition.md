@@ -2,7 +2,7 @@
 description: "partition teilt ein Observable in zwei basierend auf Bedingungen. Nützlich für Erfolg/Fehler-Aufteilung mit typsicherem TypeScript."
 ---
 
-# partition - Teilt in zwei Streams basierend auf einer Bedingung
+# partition - Stream Aufteilen
 
 `partition` ist eine Creation Function, die **ein Observable basierend auf einer Bedingung in zwei Observables aufteilt**.
 Sie können Werte, die eine Prädikatfunktion erfüllen, und solche, die sie nicht erfüllen, als separate Streams erhalten.

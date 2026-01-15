@@ -3,7 +3,7 @@ description: De audit operator is een RxJS filteroperator die alleen de laatste 
 titleTemplate: ':title'
 ---
 
-# audit - Geef de laatste waarde uit tijdens een periode gecontroleerd door een aangepaste Observable
+# audit - Laatste waarde op trigger
 
 De `audit` operator wacht tot een aangepaste Observable een waarde uitgeeft en geeft de **laatste waarde** van de bron tijdens die periode uit.
 Terwijl `auditTime` met een vaste tijd controleert, kan `audit` **de periode dynamisch controleren met een Observable**.

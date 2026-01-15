@@ -2,7 +2,7 @@
 description: "L'opérateur distinctUntilChanged ignore les valeurs consécutives identiques et n'émet que les valeurs qui changent, permettant un traitement efficace des données."
 ---
 
-# distinctUntilChanged - Supprimer les valeurs en double consécutives
+# distinctUntilChanged - Ignorer doublons
 
 L'opérateur `distinctUntilChanged` supprime les doublons lorsque des valeurs identiques sont émises consécutivement et n'émet que lorsque la valeur est différente de la précédente.
 

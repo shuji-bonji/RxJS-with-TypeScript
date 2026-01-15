@@ -3,7 +3,7 @@ description: combineLatestAll neemt een Higher-order Observable (Observable van 
 titleTemplate: ':title'
 ---
 
-# combineLatestAll - Combineer laatste waarden van alle interne Observables
+# combineLatestAll - Combineer Laatste Interne
 
 De `combineLatestAll` operator neemt een **Higher-order Observable** (Observable van Observables),
 **zodra alle interne Observables ten minste één keer hebben geëmitteerd**, combineert hun **laatste waarden** en geeft ze uit als een array.

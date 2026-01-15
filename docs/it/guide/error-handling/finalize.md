@@ -2,7 +2,7 @@
 description: "Descrive come gestire efficacemente il completamento dello stream e il rilascio delle risorse in RxJS usando finalize e complete. Include pattern pratici per prevenire le perdite di memoria, rilasciare gli handle dei file, pulire le connessioni WebSocket, ripristinare lo stato dell'interfaccia utente, ecc."
 ---
 
-# finalize e complete - Rilascio delle risorse e completamento dello stream
+# finalize e complete - Cleanup risorse
 
 In RxJS è importante gestire correttamente il completamento degli stream e il rilascio delle risorse. Questa pagina spiega come funzionano l'operatore `finalize` e le notifiche `complete`.
 

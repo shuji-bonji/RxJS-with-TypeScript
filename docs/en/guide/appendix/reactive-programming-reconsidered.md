@@ -3,7 +3,7 @@ description: "Is Reactive Programming really a panacea? We will examine the gap 
 titleTemplate: ':title'
 ---
 
-# Reactive Programming Reconsidered - The Gap Between Design Philosophy and Reality
+# RP Reconsidered - Design vs Reality
 
 Reactive Programming (RP) is widely known as a powerful paradigm for asynchronous data stream processing.
 

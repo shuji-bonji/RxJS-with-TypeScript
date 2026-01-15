@@ -3,7 +3,7 @@ description: "Reactive Programmingは本当に万能なのか？設計哲学と�
 titleTemplate: ':title | RxJS'
 ---
 
-# Reactive Programming Reconsidered — 設計哲学と現実のギャップ
+# RP再考 — 設計哲学と現実のギャップ
 
 Reactive Programming（リアクティブプログラミング、以下RP）は、非同期データストリーム処理の強力なパラダイムとして広く知られています。
 

@@ -3,7 +3,7 @@ description: concatWith is an RxJS combination operator that joins other Observa
 titleTemplate: ':title'
 ---
 
-# concatWith - Concatenate Streams in Sequence Within a Pipeline
+# concatWith - Concatenar em Sequência
 
 The `concatWith` operator **sequentially concatenates** the specified other Observables after the original Observable `completes`.
 This is the Pipeable Operator version of the Creation Function `concat`.

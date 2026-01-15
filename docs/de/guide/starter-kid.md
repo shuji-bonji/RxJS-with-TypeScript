@@ -2,7 +2,7 @@
 description: "Eine Einführung in die Einrichtung einer Lernentwicklungsvorlage bestehend aus Vite, TypeScript und RxJS. Hot-Reload-Unterstützung ermöglicht sofortige Code-Experimente und DOM-Manipulation im Browser. npm create Befehl ermöglicht es Ihnen, einfach eine Umgebung zu bauen und beginnen RxJS sofort zu lernen."
 ---
 
-# Wie man eine Laufzeitumgebung für praktisches Lernen erstellt
+# Starter Kit für Praktisches Lernen
 
 Diese Seite bietet eine Entwicklungsvorlage [`RxJS-with-TypeScript-Starter-Kit`](https://github.com/shuji-bonji/rxjs-with-typescript-starter-kit).
 

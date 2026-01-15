@@ -2,7 +2,7 @@
 description: "shareReplay est un opérateur de multidiffusion RxJS qui, en plus de la multidiffusion, met en tampon les valeurs passées et les fournit aux abonnés retardés. Idéal pour la mise en cache des réponses API, le partage des informations de configuration et la gestion de l'état. Prévention des fuites de mémoire avec les options refCount et windowTime, et mise en cache type-safe grâce à l'inférence de type TypeScript."
 ---
 
-# shareReplay - Mettre en cache et partager les valeurs passées
+# shareReplay - Cache et partage
 
 L'opérateur `shareReplay()` fournit la même multidiffusion que `share()`, mais en plus **mémorise un nombre spécifié de valeurs passées** et les rend disponibles aux abonnés qui se joignent plus tard.
 

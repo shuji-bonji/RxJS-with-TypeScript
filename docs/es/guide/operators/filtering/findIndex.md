@@ -3,7 +3,7 @@ description: El operador findIndex es un operador de filtrado de RxJS que devuel
 titleTemplate: ':title | RxJS'
 ---
 
-# findIndex - Obtener Índice del Primer Valor que Coincide con la Condición
+# findIndex - Obtener Índice Correspondiente
 
 El operador `findIndex` devuelve **el índice del primer valor que satisface la condición** e inmediatamente completa el flujo. Si el valor no se encuentra, devuelve `-1`.
 

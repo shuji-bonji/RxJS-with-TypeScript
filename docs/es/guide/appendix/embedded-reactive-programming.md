@@ -3,7 +3,7 @@ description: Esta presentación explicará cómo utilizar la programación react
 titleTemplate: ':title'
 ---
 
-# Relación entre el desarrollo embebido y la programación reactiva
+# Embebido y RP
 
 Esta presentación discutirá las posibilidades y limitaciones de cómo se puede utilizar la programación reactiva, especialmente el procesamiento de flujos asíncronos como RxJS, en sistemas embebidos.
 

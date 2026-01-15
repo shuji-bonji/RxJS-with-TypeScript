@@ -2,7 +2,7 @@
 description: "L'operatore first ottiene il primo valore da uno stream o il primo valore che soddisfa una condizione specificata, completando poi lo stream. Utile per elaborare solo il primo evento raggiunto o ottenere dati iniziali."
 ---
 
-# first - Ottiene il primo valore o il primo valore che soddisfa la condizione
+# first - Ottieni Primo Valore
 
 L'operatore `first` ottiene solo il **primo valore** o il **primo valore che soddisfa la condizione** da uno stream e completa lo stream.
 

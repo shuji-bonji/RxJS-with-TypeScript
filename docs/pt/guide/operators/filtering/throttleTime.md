@@ -3,7 +3,7 @@ description: O operador throttleTime reduz eficientemente eventos de alta frequ�
 titleTemplate: ':title'
 ---
 
-# throttleTime - Passar o Primeiro Valor e Ignorar Novos Valores pelo Tempo Especificado
+# throttleTime - Primeiro valor depois limite
 
 O operador `throttleTime` passa o primeiro valor emitido e ignora valores subsequentes emitidos dentro de um intervalo de tempo especificado.
 Ele não emite o último valor em intervalos regulares, mas sim **apenas passa o primeiro valor que recebe e ignora valores subsequentes durante esse período**.

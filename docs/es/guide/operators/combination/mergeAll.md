@@ -3,7 +3,7 @@ description: mergeAll es un operador que toma un Higher-order Observable (Observ
 titleTemplate: ':title | RxJS'
 ---
 
-# mergeAll - Aplanar Todos los Observables Internos en Paralelo
+# mergeAll - Aplanar en Paralelo
 
 El operador `mergeAll` toma un **Higher-order Observable** (Observable de Observables),
 **se suscribe a todos los Observables internos en paralelo**, y aplana sus valores.

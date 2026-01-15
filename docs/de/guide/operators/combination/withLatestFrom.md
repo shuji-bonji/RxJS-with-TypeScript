@@ -2,7 +2,7 @@
 description: "withLatestFrom ist ein Operator, der bei jeder Wertausgabe des Haupt-Observables den neuesten Wert eines anderen Streams kombiniert und ausgibt. Kann zur Erfassung des neuesten Zustands bei Formularübermittlung, Referenzierung von Eingabewerten beim Button-Klick und Kombination von Ereignissen und Zuständen verwendet werden."
 ---
 
-# withLatestFrom - Neuesten Wert zur Hauptausgabe kombinieren
+# withLatestFrom - Mit neuestem Wert
 
 Der `withLatestFrom`-Operator kombiniert **bei jeder Wertausgabe des Hauptstreams**
 den **neuesten Wert** eines anderen Streams und gibt ihn aus.

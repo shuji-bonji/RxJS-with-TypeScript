@@ -3,7 +3,7 @@ description: De throttleTime operator dunt hoogfrequente gebeurtenissen efficië
 titleTemplate: ':title'
 ---
 
-# throttleTime - Laat eerste waarde door en negeer nieuwe waarden gedurende gespecificeerde tijd
+# throttleTime - Eerste waarde dan limiet
 
 De `throttleTime` operator laat de eerste uitgegeven waarde door en negeert volgende waarden die binnen een gespecificeerd tijdsinterval worden uitgegeven.
 Het geeft niet de laatste waarde op regelmatige intervallen uit, maar **laat alleen de eerste waarde die het ontvangt door en negeert volgende waarden gedurende die periode**.

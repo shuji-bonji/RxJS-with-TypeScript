@@ -2,7 +2,7 @@
 description: "L'opérateur filter sélectionne les valeurs d'un flux sur la base d'une fonction de condition spécifiée, ne transmettant que les valeurs qui remplissent la condition. Il s'agit d'un opérateur de filtrage qui exclut les données inutiles pour rationaliser le flux, comme la validation des entrées de formulaire, l'extraction de données avec des conditions spécifiques et l'exclusion des valeurs null ou undefined. Il peut également être utilisé comme un type guard TypeScript."
 ---
 
-# filter - Ne laisser passer que les valeurs correspondant à la condition
+# filter - Filtrer par Condition
 
 L'opérateur `filter` sélectionne les valeurs dans un flux basé sur une fonction de condition spécifiée et ne laisse passer que les valeurs qui satisfont la condition.
 

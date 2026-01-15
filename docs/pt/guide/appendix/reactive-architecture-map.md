@@ -2,7 +2,7 @@
 description: "The philosophy of reactive programming is systematically explained in seven layers: UI, communication, backend, data pipeline, IoT, control system, and UX. It provides an overall view of full stack architecture based on the four characteristics of the Reactive Manifesto."
 ---
 
-# Reactive Architecture Overall Map
+# Mapa Arquitetura Reativa
 
 Reactive programming has evolved beyond mere libraries and frameworks to a **whole system architecture philosophy**.
 

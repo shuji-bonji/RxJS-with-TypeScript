@@ -3,7 +3,7 @@ description: The first operator retrieves only the first value from the stream, 
 titleTemplate: ':title'
 ---
 
-# first - Retrieve the First Value or the First Value That Satisfies a Condition
+# first - Get First Value
 
 The `first` operator retrieves only the **first value** or **first value satisfying a condition** from a stream and completes the stream.
 

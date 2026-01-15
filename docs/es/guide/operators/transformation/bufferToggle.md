@@ -2,7 +2,7 @@
 description: El operador bufferToggle es un operador de buffering avanzado que controla los triggers de inicio y fin con Observables separados, permitiendo gestionar múltiples períodos de buffering de forma independiente.
 ---
 
-# bufferToggle - Buffer con control independiente de inicio y fin
+# bufferToggle - Buffer con Trigger
 
 El operador `bufferToggle` controla el **trigger de inicio** y el **trigger de fin** con Observables separados, agrupando valores y emitiéndolos como arrays. Es un operador de buffering avanzado que puede gestionar múltiples períodos de buffering simultáneamente.
 

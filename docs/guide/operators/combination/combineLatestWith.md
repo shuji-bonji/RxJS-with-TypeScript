@@ -2,7 +2,7 @@
 description: combineLatestWithは元のObservableと他のObservableの最新値を組み合わせて出力するRxJS結合オペレーターです。フォーム入力のリアルタイム検証、複数の状態の同期、計算結果のリアルタイム更新など、依存する複数のストリームの最新値を常に監視したい場面に最適です。pipeable operator版でパイプライン内での使用が便利です。
 ---
 
-# combineLatestWith - パイプライン内で最新の値を組み合わせる
+# combineLatestWith - 最新値を結合
 
 `combineLatestWith` オペレーターは、元のObservableと指定された他のObservableの**最新の値をすべてまとめて出力**します。
 いずれかのObservableから新しい値が発行されるたびに、すべての最新値をまとめた結果が発行されます。

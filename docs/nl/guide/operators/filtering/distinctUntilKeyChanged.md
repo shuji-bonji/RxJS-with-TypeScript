@@ -3,7 +3,7 @@ description: De distinctUntilKeyChanged operator richt zich op een specifieke ei
 titleTemplate: ':title'
 ---
 
-# distinctUntilKeyChanged - Detecteer alleen wijzigingen in specifieke eigenschap
+# distinctUntilKeyChanged - Sleutelwijziging Detectie
 
 De `distinctUntilKeyChanged` operator richt zich op een specifieke sleutel (eigenschap) van een object en geeft alleen uit wanneer die waarde verschilt van de vorige.
 Het is nuttig voor het efficiënt overslaan van opeenvolgende duplicaten.

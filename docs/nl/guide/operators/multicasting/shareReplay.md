@@ -2,7 +2,7 @@
 description: shareReplay is een RxJS multicast operator die naast multicasting ook vorige waarden buffert en aan vertraagde subscribers levert. Optimaal voor scenario's waar u vorige waarden wilt onthouden en aan meerdere subscribers wilt distribueren, zoals API response caching, configuratie-informatie delen en statusbeheer. Voorkomen van geheugenlekkages is ook mogelijk met refCount en windowTime opties, en realiseer type-veilig cache verwerking met TypeScript type-inferentie.
 ---
 
-# shareReplay - Vorige Waarden Cachen en Delen
+# shareReplay - Cache en delen
 
 De `shareReplay()` operator realiseert multicasting net als `share()`, maar **onthoudt daarnaast een opgegeven aantal vorige waarden** en levert deze ook aan later deelnemende subscribers.
 

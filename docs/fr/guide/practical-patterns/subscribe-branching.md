@@ -2,7 +2,7 @@
 description: "Anti-patterns de branchement conditionnel dans subscribe et méthodes d'amélioration. Apprenez les modèles de branchement déclaratif de flux avec filter, partition et groupBy, le traitement par statut de réponse API et les modèles de branchement type-safe avec des exemples de code exécutables utilisant JSONPlaceholder."
 ---
 
-# Modèles de branchement conditionnel dans subscribe
+# Branchement dans subscribe
 
 L'un des problèmes courants des développeurs qui commencent à utiliser RxJS est d'effectuer des branchements conditionnels complexes dans le callback de `subscribe()`. Cet article explique pourquoi c'est problématique et comment l'améliorer avec des modèles pratiques.
 

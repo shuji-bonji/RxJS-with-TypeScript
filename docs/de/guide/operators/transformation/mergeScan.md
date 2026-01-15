@@ -2,7 +2,7 @@
 description: mergeScan ist ein Transformationsoperator von RxJS, der asynchrone kumulative Verarbeitung durchführt und eine Kombination aus scan und mergeMap darstellt. Ideal für Situationen, die asynchrone kumulative Verarbeitung erfordern, wie kumulative Aggregation von API-Antworten, Ausführung der nächsten Anfrage basierend auf vorherigen Ergebnissen oder kumulative Datenerfassung mehrerer Seiten bei Paginierung. Steuerung der gleichzeitigen Ausführungsanzahl mit dem concurrent-Parameter möglich.
 ---
 
-# mergeScan - Kumulative Verarbeitung mit asynchronen Operationen
+# mergeScan - Asynchrone Kumulation
 
 Der `mergeScan`-Operator führt **asynchrone kumulative Verarbeitung** für jeden Wert des Streams aus.
 Funktioniert wie eine Kombination aus `scan` und `mergeMap`, hält den kumulativen Wert, konvertiert jeden Wert in ein neues Observable und verwendet das Ergebnis für die nächste kumulative Verarbeitung.

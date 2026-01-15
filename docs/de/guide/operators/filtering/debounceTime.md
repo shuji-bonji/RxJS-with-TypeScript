@@ -2,7 +2,7 @@
 description: Der debounceTime-Operator gibt nach kontinuierlichen Ereignisausgaben nur dann den letzten Wert aus, wenn für die angegebene Zeit kein neuer Wert kam. Ideal zur Optimierung häufiger Eingaben wie Suchfelder oder Fenstergrößenänderungen.
 ---
 
-# debounceTime - Ereignisse reduzieren und Wert nach Wartezeit ausgeben
+# debounceTime - Letzter Wert nach Stille
 
 Der `debounceTime`-Operator gibt den letzten Wert aus, wenn nach der Ausgabe eines Werts im Stream für die angegebene Zeit kein neuer Wert ausgegeben wurde.
 Wird sehr häufig in Szenarien verwendet, in denen häufige Ereignisse wie Suchfelder unterdrückt werden sollen.

@@ -3,7 +3,7 @@ description: "De last operator haalt alleen de laatste waarde bij streamvoltooii
 titleTemplate: ':title'
 ---
 
-# last - Haal de laatste waarde of de laatste waarde die aan een voorwaarde voldoet
+# last - Haal Laatste Waarde
 
 De `last` operator haalt de **laatste waarde** of **laatste waarde die aan een voorwaarde voldoet** uit de stream en voltooit de stream.
 

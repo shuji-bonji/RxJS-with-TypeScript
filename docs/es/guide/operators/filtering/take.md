@@ -3,7 +3,7 @@ description: El operador take recupera solo el número especificado de primeros 
 titleTemplate: ':title | RxJS'
 ---
 
-# take - Recuperar Solo el Número Especificado de Primeros Valores
+# take - Primeros N Valores
 
 El operador `take` recupera solo el **número especificado de primeros** valores del flujo e ignora los valores subsiguientes.
 Después de completarse, el flujo automáticamente se `completa`.

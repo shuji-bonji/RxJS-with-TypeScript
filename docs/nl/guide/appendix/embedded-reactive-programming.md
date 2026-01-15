@@ -2,7 +2,7 @@
 description: "Legt uit hoe reactief programmeren kan worden toegepast in embedded development. Behandelt selectie van toepassingslagen in omgevingen met prestatiebeperkingen en geheugenlimieten, praktische voorbeelden zoals sensorintegratie en gebeurteniscorrelatie-detectie, en stream processing patronen op real-time OS, met concrete codevoorbeelden."
 ---
 
-# De Relatie tussen Embedded Development en Reactief Programmeren
+# Embedded en RP
 
 Dit hoofdstuk legt uit hoe reactief programmeren, met name asynchrone stream processing zoals RxJS, kan worden toegepast in embedded systemen, inclusief de mogelijkheden en beperkingen.
 

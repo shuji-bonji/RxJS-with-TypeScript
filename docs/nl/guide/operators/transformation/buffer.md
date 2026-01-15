@@ -3,7 +3,7 @@ description: buffer is een RxJS operator die een array van geaccumuleerde waarde
 titleTemplate: ':title | RxJS'
 ---
 
-# buffer - Verzamel waarden op timing van een andere Observable
+# buffer - Verzamelen op Gebeurtenis
 
 De `buffer` operator accumuleert de waarden van een bron Observable **totdat** een andere Observable een waarde uitzendt, en voert vervolgens de geaccumuleerde waarden als een **array** uit op die timing.
 Dit is nuttig wanneer u buffering wilt controleren volgens externe gebeurtenissen of signalen, in plaats van op tijd of aantal items.

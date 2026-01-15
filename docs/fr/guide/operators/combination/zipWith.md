@@ -2,7 +2,7 @@
 description: "zipWith est un opérateur de combinaison RxJS qui apparie les valeurs correspondantes de l'Observable original et d'autres Observables. Idéal pour combiner des résultats de traitements parallèles avec garantie d'ordre, associer des IDs à des données, synchroniser des données liées émises à des moments différents. Version pipeable operator pratique à utiliser dans les pipelines."
 ---
 
-# zipWith - Appairer les valeurs correspondantes dans un pipeline
+# zipWith - Paires Correspondantes
 
 L'opérateur `zipWith` émet ensemble les **valeurs correspondantes** de l'Observable original et des autres Observables spécifiés.
 Il attend qu'une valeur arrive de chaque Observable, puis crée une paire quand elles sont alignées.

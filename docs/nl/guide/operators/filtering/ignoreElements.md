@@ -3,7 +3,7 @@ description: De ignoreElements operator is een RxJS filteroperator die alle waar
 titleTemplate: ':title'
 ---
 
-# ignoreElements - Negeer alle waarden en laat alleen voltooiing/fout door
+# ignoreElements - Alleen Voltooiing
 
 De `ignoreElements` operator negeert **alle waarden** die door de bron Observable worden uitgegeven en laat **alleen voltooiings- en foutmeldingen** stroomafwaarts door.
 

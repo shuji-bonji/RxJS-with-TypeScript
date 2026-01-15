@@ -2,7 +2,7 @@
 description: "interval() - Erstellungsfunktion, die kontinuierlich Werte (fortlaufende Zahlen ab 0) in einem bestimmten Intervall ausgibt. Ideal für Polling, regelmäßige Ausführung und Animationssteuerung. Unterschiede zu timer(), Begrenzung mit take(), typsichere TypeScript-Implementierung und Abbestellmuster zur Vermeidung von Speicherlecks."
 ---
 
-# interval() - Kontinuierliche Ausgabe in bestimmten Intervallen
+# interval() - Periodische Ausgabe
 
 `interval()` ist eine Erstellungsfunktion, die kontinuierlich Werte in einem bestimmten Zeitintervall ausgibt.
 

@@ -2,7 +2,7 @@
 description: combineLatestWith ist ein RxJS-Kombinationsoperator, der die neuesten Werte des ursprünglichen Observables und anderer Observables kombiniert und ausgibt. Ideal für Echtzeit-Validierung von Formulareingaben, Synchronisierung mehrerer Zustände und Echtzeit-Aktualisierung von Berechnungsergebnissen, wenn Sie die neuesten Werte mehrerer abhängiger Streams kontinuierlich überwachen möchten. Als Pipeable Operator bequem für die Verwendung in Pipelines.
 ---
 
-# combineLatestWith - Neueste Werte in der Pipeline kombinieren
+# combineLatestWith - Neueste kombinieren
 
 Der `combineLatestWith`-Operator gibt **alle neuesten Werte zusammen** des ursprünglichen Observables und anderer angegebener Observables aus.
 Jedes Mal, wenn von einem der Observables ein neuer Wert ausgegeben wird, wird ein Ergebnis mit allen neuesten Werten ausgegeben.

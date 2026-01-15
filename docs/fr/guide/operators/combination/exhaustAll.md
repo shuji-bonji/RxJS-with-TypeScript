@@ -2,7 +2,7 @@
 description: "exhaustAll est un opérateur qui reçoit un Higher-order Observable (Observable d'Observables) et ignore les nouveaux Observables internes pendant qu'un est en cours d'exécution."
 ---
 
-# exhaustAll - Ignorer les nouveaux Observables internes pendant l'exécution
+# exhaustAll - Ignorer Pendant Actif
 
 L'opérateur `exhaustAll` reçoit un **Higher-order Observable** (Observable d'Observables)
 et **ignore les nouveaux Observables internes si un est en cours d'exécution**.

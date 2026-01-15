@@ -1,7 +1,7 @@
 ---
 description: "Explique en détail la différence entre les deux emplacements de gestion des erreurs dans RxJS (l'opérateur catchError et le callback error de subscribe). Apprenez les rôles respectifs, les critères de choix, l'impact sur la continuité du stream, et les patterns d'implémentation type-safe avec TypeScript à travers des exemples de code pratiques."
 ---
-# Les deux emplacements de gestion des erreurs
+# Emplacements de gestion d'erreurs
 
 Lors du traitement des erreurs dans RxJS, « où » capturer l'erreur est une décision de conception importante. RxJS a deux emplacements principaux pour la gestion des erreurs : l'opérateur `catchError` dans le pipeline et le callback `error` dans le `subscribe` final. Cette page explique les différences entre les deux et leur utilisation appropriée.
 

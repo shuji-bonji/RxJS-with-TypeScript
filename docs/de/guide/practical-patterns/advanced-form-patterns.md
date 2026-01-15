@@ -2,7 +2,7 @@
 description: "JSON Patch-Formularmuster mit RxJS: Autosave, Undo/Redo für große Formulare, Echtzeit-Kollaboration, Offline-Unterstützung und Verlaufsverfolgung."
 ---
 
-# Fortgeschrittene Formularmuster mit JSON Patch
+# Formulare mit JSON Patch
 
 Bei der Implementierung großer Formulare oder kollaborativer Echtzeitbearbeitung führt der traditionelle Ansatz „das gesamte Formular absenden" zu Performance- und Benutzererfahrungsproblemen.
 

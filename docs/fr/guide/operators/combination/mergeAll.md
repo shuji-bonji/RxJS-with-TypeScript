@@ -2,7 +2,7 @@
 description: "mergeAll est un opérateur qui reçoit un Higher-order Observable (Observable d'Observables) et souscrit à tous les Observables internes en parallèle pour aplatir les valeurs."
 ---
 
-# mergeAll - Aplatir tous les Observables internes en parallèle
+# mergeAll - Aplatir en Parallèle
 
 L'opérateur `mergeAll` reçoit un **Higher-order Observable** (Observable d'Observables)
 et **souscrit à tous les Observables internes en parallèle** pour aplatir les valeurs.

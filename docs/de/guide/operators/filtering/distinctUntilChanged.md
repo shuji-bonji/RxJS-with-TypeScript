@@ -2,7 +2,7 @@
 description: Der distinctUntilChanged-Operator überspringt aufeinanderfolgende gleiche Werte und gibt nur Werte aus, die sich geändert haben, was eine effiziente Datenverarbeitung ermöglicht.
 ---
 
-# distinctUntilChanged - Aufeinanderfolgende doppelte Werte entfernen
+# distinctUntilChanged - Duplikate ignorieren
 
 Der `distinctUntilChanged`-Operator entfernt Duplikate, wenn derselbe Wert aufeinanderfolgend ausgegeben wird, und gibt nur dann einen neuen Wert aus, wenn er sich vom vorherigen Wert unterscheidet.
 

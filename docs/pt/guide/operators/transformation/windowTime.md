@@ -3,7 +3,7 @@ description: windowTime é um operador RxJS que pode dividir um Observable em in
 titleTemplate: ':title | RxJS'
 ---
 
-# windowTime - Divide Observable em Intervalos de Tempo Regulares
+# windowTime - Janela por Tempo
 
 O operador `windowTime` agrupa os valores do Observable fonte **em intervalos regulares** e gera esse grupo como um **novo Observable**.
 Enquanto `bufferTime` retorna um array, `windowTime` retorna um **Observable&lt;T&gt;**, permitindo que operadores adicionais sejam aplicados a cada janela.

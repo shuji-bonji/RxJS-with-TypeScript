@@ -3,7 +3,7 @@ description: "withLatestFrom operator combineert de laatste waarde van een ander
 titleTemplate: ':title'
 ---
 
-# withLatestFrom - Combineer laatste waarde bij emissie van hoofdstream
+# withLatestFrom - Met laatste waarde
 
 De `withLatestFrom` operator **elke keer dat een waarde in de hoofdstream wordt geëmitteerd**,
 combineert de **laatste waarde** van een andere stream en geeft deze uit.

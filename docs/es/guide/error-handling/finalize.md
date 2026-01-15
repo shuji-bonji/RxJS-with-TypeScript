@@ -2,7 +2,7 @@
 description: "Aprenda a manejar la finalización de flujos y la limpieza de recursos en RxJS usando finalize y complete: Técnicas esenciales para prevenir fugas de memoria"
 titleTemplate: ':title'
 ---
-# finalize y complete - Liberación de Recursos y Procesamiento de Finalización de Flujo
+# finalize - Limpieza de Recursos
 
 En RxJS, es importante gestionar adecuadamente la finalización de flujos y la liberación de recursos. Esta página explica cómo funcionan el operador `finalize` y las notificaciones `complete`.
 

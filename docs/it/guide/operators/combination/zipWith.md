@@ -3,7 +3,7 @@ description: zipWith è un operatore di combinazione RxJS che accoppia l'Observa
 titleTemplate: ':title | RxJS'
 ---
 
-# zipWith - Accoppiamento Basato sull'Ordine (All'interno della Pipeline)
+# zipWith - Accoppia per Ordine
 
 L'operatore `zipWith` accoppia l'Observable originale con gli altri Observable specificati **in ordine corrispondente** per formare un nuovo stream.
 Questa è la versione Pipeable Operator della Funzione di Creazione `zip`.

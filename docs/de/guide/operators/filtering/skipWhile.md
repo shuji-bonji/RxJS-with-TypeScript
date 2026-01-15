@@ -2,7 +2,7 @@
 description: Der skipWhile-Operator überspringt Werte, solange eine angegebene Bedingung erfüllt ist, und gibt alle Werte aus, sobald die Bedingung false wird. Nützlich, wenn Sie Streams mit dynamischen Startbedingungen steuern möchten.
 ---
 
-# skipWhile - Werte überspringen, solange Bedingung erfüllt ist
+# skipWhile - Überspringen Solange Wahr
 
 Der `skipWhile`-Operator **überspringt Werte weiterhin, solange die angegebene Bedingung erfüllt ist**, und gibt **alle Werte aus**, sobald die Bedingung `false` wird.
 

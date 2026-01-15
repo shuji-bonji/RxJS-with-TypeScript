@@ -2,7 +2,7 @@
 description: "L'opérateur buffer accumule les valeurs jusqu'à ce qu'un autre Observable émette, puis les sort sous forme de tableau. Idéal pour le traitement par lots piloté par événements comme l'envoi en masse au clic de bouton ou la sauvegarde de données à la fermeture de fenêtre. Explique l'implémentation TypeScript type-safe."
 ---
 
-# buffer - Regrouper les valeurs au timing d'un autre Observable
+# buffer - Regrouper par Événement
 
 L'opérateur `buffer` accumule les valeurs d'un Observable source **jusqu'à ce qu'un autre Observable émette des valeurs** et sort les valeurs accumulées à ce moment-là **sous forme de tableau**.
 Ceci est utile lorsque vous souhaitez contrôler la mise en mémoire tampon en fonction d'événements ou de signaux externes, plutôt qu'en fonction du temps ou du nombre.

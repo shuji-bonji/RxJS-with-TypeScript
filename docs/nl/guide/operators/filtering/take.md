@@ -3,7 +3,7 @@ description: De take operator haalt alleen het eerste gespecificeerde aantal waa
 titleTemplate: ':title | RxJS'
 ---
 
-# take - Haal alleen het eerste gespecificeerde aantal waarden op
+# take - Eerste N Waarden
 
 De `take` operator haalt alleen het **eerste gespecificeerde aantal** waarden op uit de stream en negeert volgende waarden.
 Na voltooiing `voltooit` de stream automatisch.

@@ -3,7 +3,7 @@ description: El operador debounceTime emite el último valor cuando no se ha rec
 titleTemplate: ':title'
 ---
 
-# debounceTime - Limitar la Emisión de Eventos y Emitir Valor Después de Esperar Cierto Tiempo
+# debounceTime - Ultimo valor tras silencio
 
 El operador `debounceTime` emite el último valor después de que un valor ha sido emitido en el flujo si no se ha emitido ningún valor nuevo durante el tiempo especificado.
 Se utiliza muy comúnmente en situaciones donde es necesario suprimir eventos frecuentes, como cuadros de búsqueda de entrada de usuario.

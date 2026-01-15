@@ -2,7 +2,7 @@
 description: zipAll ist ein Operator, der ein Higher-order Observable (Observable of Observables) empfängt und entsprechende Werte jedes inneren Observables in der Reihenfolge paart und als Array ausgibt.
 ---
 
-# zipAll - Entsprechende Werte jedes inneren Observables paaren
+# zipAll - Innere Observables Paaren
 
 Der `zipAll`-Operator empfängt ein **Higher-order Observable** (Observable of Observables),
 **paart entsprechende Werte jedes inneren Observables in der Reihenfolge** und gibt sie als Array aus.

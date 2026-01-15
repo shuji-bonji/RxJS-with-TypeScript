@@ -3,7 +3,7 @@ description: De first operator haalt alleen de eerste waarde uit de stream, of d
 titleTemplate: ':title'
 ---
 
-# first - Haal de eerste waarde of de eerste waarde die aan een voorwaarde voldoet
+# first - Haal Eerste Waarde
 
 De `first` operator haalt alleen de **eerste waarde** of **eerste waarde die aan een voorwaarde voldoet** uit een stream en voltooit de stream.
 

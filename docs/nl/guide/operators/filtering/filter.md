@@ -2,7 +2,7 @@
 description: De filter operator selecteert waarden in een stream op basis van een opgegeven voorwaardefunctie en laat alleen waarden door die aan de voorwaarde voldoen. Deze filteringsoperator wordt gebruikt voor formulierinvoervalidatie, extractie van gegevens met specifieke voorwaarden, uitsluiting van null of undefined, enz., en maakt streams efficiënter door onnodige gegevens uit te sluiten. Het kan ook worden gebruikt als TypeScript type guard.
 ---
 
-# filter - Laat alleen waarden door die aan een voorwaarde voldoen
+# filter - Waarden op Voorwaarde
 
 De `filter` operator selecteert waarden in een stream op basis van een opgegeven voorwaardefunctie en laat alleen waarden door die aan de voorwaarde voldoen.
 

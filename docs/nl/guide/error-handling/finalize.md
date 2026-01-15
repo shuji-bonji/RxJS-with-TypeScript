@@ -1,7 +1,7 @@
 ---
 description: "Leer hoe je finalize en complete gebruikt voor effectieve stream completion en resource cleanup in RxJS. Voorkomt geheugenlekken, bestandshandler vrijgave, WebSocket verbinding cleanup, UI status reset en meer praktische patronen. Inclusief uitleg over het verschil met finally."
 ---
-# finalize en complete - Resource vrijgave en stream completion
+# finalize en complete - Resource Vrijgave
 
 In RxJS is het belangrijk om de beëindiging van streams en resource vrijgave correct te beheren. Deze pagina legt het mechanisme van de `finalize` operator en `complete` notificatie uit.
 

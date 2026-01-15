@@ -3,7 +3,7 @@ description: De distinctUntilChanged operator maakt efficiënte dataverwerking m
 titleTemplate: ':title | RxJS'
 ---
 
-# distinctUntilChanged - Verwijder opeenvolgende dubbele waarden
+# distinctUntilChanged - Geen Duplicaten
 
 De `distinctUntilChanged` operator verwijdert duplicaten wanneer dezelfde waarde opeenvolgend wordt uitgegeven, en geeft alleen de nieuwe waarde uit als deze verschilt van de vorige waarde.
 

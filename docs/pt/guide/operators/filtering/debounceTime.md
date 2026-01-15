@@ -3,7 +3,7 @@ description: O operador debounceTime emite o último valor quando nenhum novo va
 titleTemplate: ':title'
 ---
 
-# debounceTime - Controlar Disparo de Evento e Emitir Valor Após Esperar um Certo Tempo
+# debounceTime - Ultimo valor apos silencio
 
 O operador `debounceTime` emite o último valor após um valor ter sido emitido no stream se nenhum novo valor tiver sido emitido pelo tempo especificado.
 É muito comumente usado em situações onde eventos frequentes precisam ser suprimidos, como caixas de pesquisa de entrada do usuário.

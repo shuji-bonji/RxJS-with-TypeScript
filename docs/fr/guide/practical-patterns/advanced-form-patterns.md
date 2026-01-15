@@ -2,7 +2,7 @@
 description: "Modèles avancés de formulaires utilisant JSON Patch. Apprenez à implémenter la sauvegarde automatique et Undo/Redo pour les formulaires à grande échelle, la synchronisation temps réel pour l'édition collaborative, la gestion hors ligne, le suivi de l'historique des opérations et plus encore avec RxJS et TypeScript au niveau entreprise."
 ---
 
-# Modèles avancés de formulaires avec JSON Patch
+# Formulaires avancés avec JSON Patch
 
 Lors de l'implémentation de formulaires à grande échelle ou d'édition collaborative en temps réel, l'approche traditionnelle consistant à "soumettre le formulaire entier" pose des défis en termes de performances et d'expérience utilisateur.
 

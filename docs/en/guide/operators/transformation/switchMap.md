@@ -3,7 +3,7 @@ description: switchMap is a conversion operator that cancels the previous Observ
 titleTemplate: ':title'
 ---
 
-# switchMap - Cancel Previous Observable and Switch to the Latest One
+# switchMap - Switch to Latest Observable
 
 The `switchMap` operator creates a new Observable for each value in the input stream, **canceling the previous Observable and switching only to the most recent one**.
 This is ideal for cases where only the most recent input is to be valid, such as in a search form.

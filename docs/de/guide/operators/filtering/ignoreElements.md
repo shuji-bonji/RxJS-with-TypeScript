@@ -2,7 +2,7 @@
 description: Der ignoreElements-Operator ist ein RxJS-Filteroperator, der alle Werte ignoriert und nur Abschluss und Fehler durchlässt. Praktisch beim Warten auf Verarbeitungsabschluss.
 ---
 
-# ignoreElements - Alle Werte ignorieren und nur Abschluss/Fehler durchlassen
+# ignoreElements - Nur Abschluss
 
 Der `ignoreElements`-Operator ignoriert **alle vom Quell-Observable ausgegebenen Werte** und lässt nur **Abschlussbenachrichtigung und Fehlerbenachrichtigung** nach unten durch.
 

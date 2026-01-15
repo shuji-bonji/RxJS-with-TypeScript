@@ -3,7 +3,7 @@ description: O operador first recupera apenas o primeiro valor do stream, ou o p
 titleTemplate: ':title'
 ---
 
-# first - Recuperar o Primeiro Valor ou o Primeiro Valor que Satisfaz uma Condição
+# first - Obter Primeiro Valor
 
 O operador `first` recupera apenas o **primeiro valor** ou **primeiro valor que satisfaz uma condição** de um stream e completa o stream.
 

@@ -3,7 +3,7 @@ description: El operador distinctUntilKeyChanged se enfoca en una propiedad espe
 titleTemplate: ':title'
 ---
 
-# distinctUntilKeyChanged - Detectar Cambios Solo en Propiedad Específica
+# distinctUntilKeyChanged - Detectar Cambio de Clave
 
 El operador `distinctUntilKeyChanged` se enfoca en una clave específica (propiedad) de un objeto y emite solo cuando ese valor difiere del anterior.
 Es útil para omitir eficientemente duplicados consecutivos.

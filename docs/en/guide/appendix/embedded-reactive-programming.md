@@ -3,7 +3,7 @@ description: This presentation will explain how to utilize reactive programming 
 titleTemplate: ':title'
 ---
 
-# Relationship between Embedded Development and Reactive Programming
+# Embedded Development and RP
 
 This presentation will discuss the possibilities and limitations of how reactive programming, especially asynchronous stream processing such as RxJS, can be utilized in embedded systems.
 

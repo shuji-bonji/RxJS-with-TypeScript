@@ -2,7 +2,7 @@
 description: switchMap ist ein Transformationsoperator, der das vorherige Observable abbricht und zum neuesten wechselt. Ideal für Anwendungsfälle wie Live-Suche, Navigationsumschaltung und Auto-Save. Realisiert sichere asynchrone Verarbeitung mit TypeScript-Typinferenz. Ausführliche Erklärung zur Unterscheidung von mergeMap und concatMap.
 ---
 
-# switchMap - Vorheriges Observable abbrechen und zum neuesten wechseln
+# switchMap - Zum Neuesten wechseln
 
 Der `switchMap`-Operator erzeugt für jeden Wert des Eingabestreams ein neues Observable und **bricht das vorherige Observable ab, um nur zum neuesten Observable zu wechseln**.
 Ideal für Fälle wie Suchformulare, bei denen nur die aktuellste Eingabe gültig sein soll.

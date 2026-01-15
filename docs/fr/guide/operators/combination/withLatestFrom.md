@@ -2,7 +2,7 @@
 description: "withLatestFrom est un opérateur qui, chaque fois que l'Observable principal émet une valeur, combine celle-ci avec la dernière valeur d'un autre flux. Peut être utilisé pour obtenir le dernier état lors de la soumission d'un formulaire, référencer les valeurs d'entrée lors d'un clic de bouton, etc."
 ---
 
-# withLatestFrom - Combiner avec la dernière valeur lors de l'émission principale
+# withLatestFrom - Dernière valeur combinée
 
 L'opérateur `withLatestFrom` **émet chaque fois que le flux principal émet une valeur**,
 en la combinant avec la **dernière valeur** d'un autre flux.

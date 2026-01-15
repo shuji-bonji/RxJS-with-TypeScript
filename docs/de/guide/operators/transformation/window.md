@@ -2,7 +2,7 @@
 description: "window ist ein RxJS-Operator, der ein Quell-Observable in verschachtelte Observables aufteilt, wenn ein anderes Observable Werte ausgibt - ideal für erweiterte ereignisgesteuerte Stream-Verarbeitung."
 ---
 
-# window - Observable zum Zeitpunkt eines anderen Observable aufteilen
+# window - Trigger-Basiertes Fenster
 
 Der `window`-Operator gruppiert Werte eines Quell-Observable, **bis ein anderes Observable einen Wert ausgibt**, und gibt diese Gruppe als **neues Observable** aus.
 Während `buffer` ein Array zurückgibt, gibt `window` **Observable\<T>** zurück, sodass weitere Operatoren auf jedes Fenster angewendet werden können.

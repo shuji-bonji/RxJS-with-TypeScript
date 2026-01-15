@@ -2,7 +2,7 @@
 description: "L'opérateur first récupère uniquement la première valeur d'un flux, ou la première valeur qui satisfait une condition spécifiée, puis termine le flux. Utile lorsque vous souhaitez traiter uniquement le premier événement ou récupérer des données initiales."
 ---
 
-# first - Récupérer la première valeur ou la première satisfaisant une condition
+# first - Obtenir Première Valeur
 
 L'opérateur `first` récupère uniquement **la première valeur**, ou **la première valeur satisfaisant une condition** d'un flux, puis termine le flux.
 

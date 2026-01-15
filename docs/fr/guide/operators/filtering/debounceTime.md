@@ -2,7 +2,7 @@
 description: "L'opérateur debounceTime émet la dernière valeur après qu'aucune nouvelle valeur n'a été émise pendant une durée spécifiée. Idéal pour optimiser les entrées fréquentes comme les boîtes de recherche ou les événements de redimensionnement de fenêtre."
 ---
 
-# debounceTime - Émettre la dernière valeur après une période de silence
+# debounceTime - Dernière valeur après silence
 
 L'opérateur `debounceTime` émet la dernière valeur du flux si aucune nouvelle valeur n'a été émise pendant la durée spécifiée.
 Il est très couramment utilisé pour supprimer les événements fréquents comme les boîtes de recherche.

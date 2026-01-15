@@ -2,7 +2,7 @@
 description: "Legt de gedachte van reactief programmeren systematisch uit in 7 lagen: UI, communicatie, backend, data pipeline, IoT, control systemen, en UX. Organiseert concepten zoals Reactive Manifesto, event-driven architectuur, CQRS en de positionering van RxJS."
 ---
 
-# Reactieve Architectuur Totaalkaart
+# Reactieve Architectuur Kaart
 
 Reactief programmeren overstijgt het kader van losse libraries en frameworks en evolueert naar een **systeembrede architectuurfilosofie**.
 

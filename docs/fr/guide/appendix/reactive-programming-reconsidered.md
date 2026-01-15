@@ -3,7 +3,7 @@ description: "La Programmation Réactive est-elle vraiment universelle ? Vérifi
 titleTemplate: ':title | RxJS'
 ---
 
-# Reactive Programming Reconsidered — L'écart entre philosophie de conception et réalité
+# RP Reconsidérée - Conception vs Réalité
 
 La Programmation Réactive (Reactive Programming, ci-après RP) est largement connue comme un paradigme puissant pour le traitement de flux de données asynchrones.
 

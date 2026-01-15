@@ -3,7 +3,7 @@ description: The throttleTime operator efficiently thins out high frequency even
 titleTemplate: ':title'
 ---
 
-# throttleTime - Pass Through the First Value and Ignore New Values for the Specified Time
+# throttleTime - First Value Then Time-Limit
 
 The `throttleTime` operator passes through the first value emitted and ignores subsequent values emitted within a specified time interval.
 It does not emit the latest value at regular intervals, but rather **only passes through the first value it receives and ignores subsequent values during that period**.

@@ -2,7 +2,7 @@
 description: "dematerialize est un opérateur utilitaire RxJS qui convertit les objets Notification en notifications normales (next, error, complete), en effectuant la transformation inverse de materialize. Idéal pour la restauration après le traitement des notifications, le filtrage ou la transformation des erreurs, la réorganisation ou la mise en mémoire tampon des notifications."
 ---
 
-# dematerialize - Restauration des objets de notification
+# dematerialize - Objets en notifications
 
 L'opérateur `dematerialize` **convertit les objets Notification en notifications normales (next, error, complete)**. Il effectue la transformation inverse de `materialize`, en restaurant les notifications converties en données dans leur format d'origine.
 

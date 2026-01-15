@@ -2,7 +2,7 @@
 description: "L'opérateur bufferTime regroupe les valeurs émises à intervalles de temps réguliers et les sort sous forme de tableau. Idéal pour le traitement par lots basé sur le temps comme l'envoi par lots de logs en temps réel, l'agrégation d'événements UI, et l'optimisation réseau. Explique les différences avec buffer et l'implémentation TypeScript type-safe."
 ---
 
-# bufferTime - Regrouper les valeurs à intervalles de temps réguliers
+# bufferTime - Buffer Temporel
 
 L'opérateur `bufferTime` produit des **valeurs regroupées sous forme de tableau** à des intervalles de temps spécifiés.
 Ceci est utile si vous voulez séparer les flux à intervalles de temps réguliers et les traiter comme un processus par lots.

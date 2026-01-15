@@ -2,7 +2,7 @@
 description: "Explica sistemáticamente el pensamiento de la programación reactiva en 7 capas: UI, comunicación, backend, pipeline de datos, IoT, sistemas de control y UX. Organiza conceptos como Reactive Manifesto, arquitectura dirigida por eventos, CQRS y el posicionamiento de RxJS."
 ---
 
-# Mapa General de Arquitectura Reactiva
+# Mapa Arquitectura Reactiva
 
 La programación reactiva ha evolucionado más allá del marco de una simple biblioteca o framework, convirtiéndose en una **filosofía arquitectónica para todo el sistema**.
 

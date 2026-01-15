@@ -2,7 +2,7 @@
 description: "L'opérateur last récupère uniquement la dernière valeur lorsque le flux se termine, ou la dernière valeur qui correspond à une condition. Explique la différence avec first(), comment définir les valeurs par défaut, la gestion de EmptyError et l'implémentation TypeScript type-safe avec des exemples de code pratiques. Présente également la différence avec takeLast()."
 ---
 
-# last - Récupérer la dernière valeur ou la dernière satisfaisant une condition
+# last - Obtenir Dernière Valeur
 
 L'opérateur `last` récupère uniquement **la dernière valeur**, ou **la dernière valeur satisfaisant une condition** d'un flux, puis termine le flux.
 

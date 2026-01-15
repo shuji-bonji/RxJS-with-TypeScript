@@ -2,7 +2,7 @@
 description: "Reaktive Programmierungsprinzipien außerhalb von ReactiveX in Embedded-Systemen und Steuerungstechnik: Ereignisgesteuerte Architekturen, Zustandsmaschinen, Pub/Sub-Pattern und Actor-Modell."
 ---
 
-# Reaktive Methoden außerhalb von ReactiveX (Embedded-Perspektive)
+# Reaktive Patterns ohne ReactiveX
 
 Die Philosophie der reaktiven Programmierung wurde bereits lange vor ReactiveX (RxJS) in Embedded-Systemen und der Steuerungstechnik praktiziert.
 

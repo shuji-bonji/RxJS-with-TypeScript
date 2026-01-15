@@ -2,7 +2,7 @@
 description: "L'opérateur distinctUntilKeyChanged se concentre sur une propriété spécifique dans un flux d'objets et n'émet que lorsque sa valeur est différente de la précédente. Ignore efficacement les données en double consécutives, utile pour la détection de changement d'état et l'optimisation des mises à jour de liste."
 ---
 
-# distinctUntilKeyChanged - Détecter uniquement les changements d'une propriété spécifique
+# distinctUntilKeyChanged - Changement de clé
 
 L'opérateur `distinctUntilKeyChanged` se concentre sur une clé (propriété) spécifique d'un objet et n'émet que lorsque sa valeur est différente de la précédente.
 Pratique pour ignorer efficacement les doublons consécutifs.

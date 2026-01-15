@@ -3,7 +3,7 @@ description: "L'operatore withLatestFrom combina l'ultimo valore da un altro str
 titleTemplate: ':title'
 ---
 
-# withLatestFrom - Combina l'Ultimo Valore contro l'Emissione dello Stream Principale
+# withLatestFrom - Con ultimo valore
 
 L'operatore `withLatestFrom` **ogni volta che un valore nello stream principale viene emesso**,
 combina l'**ultimo valore** da un altro stream e lo emette.

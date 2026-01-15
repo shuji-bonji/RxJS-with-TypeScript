@@ -2,7 +2,7 @@
 description: "L'opérateur take récupère uniquement le premier nombre spécifié de valeurs d'un flux Observable et ignore les valeurs suivantes, complétant automatiquement le flux. Utile lorsque vous souhaitez extraire uniquement les premiers éléments de données."
 ---
 
-# take - Récupérer uniquement le premier nombre spécifié de valeurs
+# take - Prendre N Valeurs
 
 L'opérateur `take` récupère uniquement **le premier nombre spécifié** de valeurs d'un flux et ignore les valeurs suivantes.
 Après complétion, le flux se termine automatiquement avec `complete`.

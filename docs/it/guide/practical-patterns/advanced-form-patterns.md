@@ -2,7 +2,7 @@
 description: "Pattern avanzati per form con JSON Patch. Come costruire implementazioni di form di livello enterprise con RxJS e TypeScript, inclusi salvataggio automatico e Undo/Redo per form di grandi dimensioni, sincronizzazione in tempo reale dell'editing collaborativo, supporto offline e tracciamento della cronologia delle operazioni."
 ---
 
-# Pattern avanzati per form con JSON Patch
+# Form avanzati con JSON Patch
 
 Quando si implementano form di grandi dimensioni e editing collaborativo in tempo reale, l'approccio tradizionale "invia l'intero form" crea problemi di prestazioni e di esperienza utente.
 

@@ -2,7 +2,7 @@
 description: "concatWith est un opérateur de combinaison RxJS qui combine séquentiellement d'autres Observables après la complétion de l'Observable original. Idéal pour le traitement séquentiel dans un pipeline, le traitement de suivi après complétion, le chargement progressif de données. Version pipeable operator pratique à utiliser dans les pipelines."
 ---
 
-# concatWith - Combiner séquentiellement des flux dans un pipeline
+# concatWith - Concaténer en Séquence
 
 L'opérateur `concatWith` **combine séquentiellement** les autres Observables spécifiés après que l'Observable original soit `complete`.
 C'est la version Pipeable Operator de la Creation Function `concat`.

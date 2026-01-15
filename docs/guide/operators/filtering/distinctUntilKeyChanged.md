@@ -2,7 +2,7 @@
 description: distinctUntilKeyChangedオペレーターは、オブジェクトストリーム内の特定プロパティに着目し、その値が前回と異なる場合のみ出力します。連続した重複データを効率的にスキップし、状態変化の検出やリスト更新の最適化に有用です。
 ---
 
-# distinctUntilKeyChanged - 特定プロパティの変更のみ検出する
+# distinctUntilKeyChanged - キー変更を検出
 
 `distinctUntilKeyChanged` オペレーターは、オブジェクトの特定のキー（プロパティ）に注目し、その値が前回と異なる場合のみ出力します。  
 連続した重複を効率的にスキップする際に便利です。

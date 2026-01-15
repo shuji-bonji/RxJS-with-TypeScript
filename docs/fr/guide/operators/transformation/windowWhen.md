@@ -2,7 +2,7 @@
 description: "L'opérateur windowWhen divise l'Observable en contrôlant dynamiquement les conditions de fin. Comme la fenêtre suivante démarre immédiatement après la fin de la précédente, il est idéal pour le découpage de données continu. Explique les différences avec bufferWhen, l'implémentation TypeScript type-safe et des exemples pratiques."
 ---
 
-# windowWhen - Fenêtre avec contrôle de fin dynamique
+# windowWhen - Fenêtre dynamique
 
 L'opérateur `windowWhen` **contrôle dynamiquement les conditions de fin** pour diviser l'Observable. Il réalise un pattern de traitement de flux continu où lorsqu'une fenêtre se termine, la fenêtre suivante démarre immédiatement.
 

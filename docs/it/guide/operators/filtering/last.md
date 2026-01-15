@@ -2,7 +2,7 @@
 description: "L'operatore last estrae l'ultimo valore o l'ultimo valore che corrisponde a una condizione al completamento dello stream. Differenze con first(), impostazione valori predefiniti, gestione EmptyError, implementazione type-safe TypeScript e differenze con takeLast()."
 ---
 
-# last - Ottiene l'ultimo valore o l'ultimo valore che soddisfa la condizione
+# last - Ottieni Ultimo Valore
 
 L'operatore `last` ottiene l'**ultimo valore** o l'**ultimo valore che soddisfa la condizione** da uno stream e completa lo stream.
 

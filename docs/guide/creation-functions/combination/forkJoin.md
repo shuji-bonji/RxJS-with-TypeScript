@@ -2,7 +2,7 @@
 description: "forkJoin Creation Functionは、複数のObservableがすべて完了した後に、それぞれの最後の値をまとめて配列やオブジェクトとして出力します。並列API呼び出しの結果を一括取得したい場合に最適です。TypeScriptの型推論と実践的なコード例を解説します。"
 ---
 
-# forkJoin - すべての最後の値をまとめて出力する
+# forkJoin - 全完了後に出力
 
 `forkJoin` は、複数のObservableが**すべて完了した後に、それぞれの最後の値をまとめて配列やオブジェクトとして出力**するCreation Functionです。
 「すべて揃ってからまとめて使いたい」場合に非常に便利です。

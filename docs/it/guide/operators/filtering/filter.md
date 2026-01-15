@@ -2,7 +2,7 @@
 description: "L'operatore filter seleziona i valori in uno stream in base a una funzione condizionale e fa passare solo quelli che soddisfano la condizione. Efficiente per validazione input form, estrazione dati con condizioni specifiche, esclusione di null/undefined. Utilizzabile anche come type guard TypeScript."
 ---
 
-# filter - Fa passare solo i valori che soddisfano la condizione
+# filter - Filtra per Condizione
 
 L'operatore `filter` seleziona i valori in uno stream in base a una funzione condizionale specificata e fa passare solo i valori che soddisfano la condizione.
 

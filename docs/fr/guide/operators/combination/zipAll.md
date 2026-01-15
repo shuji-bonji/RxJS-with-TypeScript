@@ -2,7 +2,7 @@
 description: "zipAll est un opérateur qui reçoit un Higher-order Observable (Observable d'Observables) et apparie les valeurs correspondantes de chaque Observable interne en un tableau."
 ---
 
-# zipAll - Appairer les valeurs correspondantes de chaque Observable interne
+# zipAll - Pairage par Ordre
 
 L'opérateur `zipAll` reçoit un **Higher-order Observable** (Observable d'Observables)
 et **apparie les valeurs correspondantes de chaque Observable interne** en un tableau.

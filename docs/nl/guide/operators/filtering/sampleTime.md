@@ -3,7 +3,7 @@ description: De sampleTime operator is een RxJS filteroperator die periodiek de 
 titleTemplate: ':title | RxJS'
 ---
 
-# sampleTime - Bemonsteren van laatste waarde op gespecificeerde tijdsintervallen
+# sampleTime - Periodieke Bemonstering
 
 De `sampleTime` operator **bemonstert periodiek** en geeft de **laatste waarde** uit van de bron Observable op **gespecificeerde tijdsintervallen**.
 Net als periodieke snapshots, haalt het de laatste waarde op dat moment op.

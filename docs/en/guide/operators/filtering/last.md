@@ -3,7 +3,7 @@ description: "The last operator retrieves only the last value at stream completi
 titleTemplate: ':title'
 ---
 
-# last - Retrieve the Last Value or the Last Value That Matches a Condition
+# last - Get Last Value
 
 The `last` operator retrieves the **last value** or **last value satisfying a condition** from the stream and completes the stream.
 

@@ -2,7 +2,7 @@
 description: "Come si posiziona RxJS nell'ecosistema Reactive Streams, dal livello UI al livello dati, spiegando l'intero stack tecnologico e come RxJS, Reactor, Kafka, ecc. lavorano insieme."
 ---
 
-# RxJS e l'Ecosistema Reactive Streams
+# RxJS e Reactive Streams
 
 Quando si impara RxJS, molti sviluppatori si chiedono: "Come si inserisce RxJS nel quadro generale della Programmazione Reattiva?"
 

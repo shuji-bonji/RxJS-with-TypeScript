@@ -3,7 +3,7 @@ description: switchMap é um operador de conversão que cancela o Observable ant
 titleTemplate: ':title'
 ---
 
-# switchMap - Cancela Observable Anterior e Muda para o Mais Recente
+# switchMap - Mudar para o ultimo
 
 O operador `switchMap` cria um novo Observable para cada valor no stream de entrada, **cancelando o Observable anterior e mudando apenas para o mais recente**.
 Isso é ideal para casos onde apenas a entrada mais recente deve ser válida, como em um formulário de pesquisa.

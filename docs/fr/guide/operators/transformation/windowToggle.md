@@ -2,7 +2,7 @@
 description: "windowToggle est un opérateur de transformation RxJS avancé qui contrôle les déclencheurs de début et de fin avec des Observables séparés, permettant de gérer indépendamment plusieurs périodes de fenêtre. Idéal pour la collecte de données pendant les heures de bureau ou l'enregistrement d'événements pendant l'appui sur un bouton, où une gestion de période dynamique est nécessaire. L'inférence de type TypeScript permet un traitement de division de fenêtre type-safe."
 ---
 
-# windowToggle - Fenêtre avec contrôle indépendant début/fin
+# windowToggle - Fenêtre avec déclencheurs
 
 L'opérateur `windowToggle` contrôle les **déclencheurs de début** et **de fin** avec des Observables séparés et émet chaque période comme un nouvel Observable. C'est un opérateur de fenêtre avancé capable de gérer plusieurs périodes de fenêtre simultanément.
 

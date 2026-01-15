@@ -3,7 +3,7 @@ description: auditTime è un operatore di filtraggio RxJS che attende un tempo s
 titleTemplate: ':title | RxJS'
 ---
 
-# auditTime - Emetti l'Ultimo Valore Dopo un Tempo Specificato
+# auditTime - Ultimo valore per periodo
 
 L'operatore `auditTime` attende un **tempo specificato** dopo l'emissione di un valore e restituisce l'**ultimo valore** entro quel periodo di tempo. Poi attende il prossimo valore.
 

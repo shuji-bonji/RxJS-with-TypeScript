@@ -2,7 +2,7 @@
 description: "De every operator evalueert of alle waarden aan een opgegeven voorwaarde voldoen en retourneert false zodra de eerste waarde niet voldoet, wat kortsluitende evaluatie mogelijk maakt. Implementeert validatie, datakwaliteitscontroles en stream-verwerking equivalent aan Array.every() op een type-veilige manier in TypeScript."
 ---
 
-# every - Controleren of Alle Waarden aan een Voorwaarde Voldoen
+# every - Alle Voldoen aan Voorwaarde
 
 De `every` operator evalueert of alle waarden die door de bron Observable worden uitgezonden aan een opgegeven voorwaarde voldoen,
 en **eindigt met het retourneren van `false` zodra de eerste waarde niet voldoet**. Als alle waarden voldoen, wordt `true` geretourneerd.

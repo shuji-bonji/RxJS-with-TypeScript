@@ -3,7 +3,7 @@ description: "bufferTime operator verzamelt waarden op regelmatige tijdsinterval
 titleTemplate: ':title | RxJS'
 ---
 
-# bufferTime - Voer verzamelde waarden uit op regelmatige intervallen
+# bufferTime - Buffer op Tijdsinterval
 
 De `bufferTime` operator voert **een array van waarden** uit op gespecificeerde tijdsintervallen.
 Dit is nuttig wanneer u de stream wilt scheiden op een bepaalde hoeveelheid tijd en het wilt behandelen als een batchproces.

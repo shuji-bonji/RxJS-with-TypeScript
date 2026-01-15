@@ -2,7 +2,7 @@
 description: "race Creation Functionは、複数のObservableのうち最初に値を発行したストリームのみを採用し、それ以降は他を無視します。タイムアウト実装、複数サーバーへのフォールバック、最速レスポンスの取得などに活用できます。TypeScriptの型推論と実践例を解説します。"
 ---
 
-# race - 最初に値を発行したストリームを採用する
+# race - 最速ストリームを採用
 
 `race` は、複数のObservableのうち**最初に値を発行したObservableだけを生かし**、
 他のObservableは無視する特殊な結合Creation Functionです。

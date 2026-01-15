@@ -2,7 +2,7 @@
 description: Der skipUntil-Operator überspringt alle Werte des ursprünglichen Observable, bis ein anderes Observable einen Wert ausgibt, danach werden Werte normal ausgegeben. Praktisch für zeitbasierte verzögerte Starts oder Verarbeitung nach bestimmten Ereignissen.
 ---
 
-# skipUntil - Bis zur Auslösung eines anderen Observable überspringen
+# skipUntil - Überspringen Bis Trigger
 
 Der `skipUntil`-Operator **überspringt alle Werte vom ursprünglichen Observable, bis das angegebene Observable (Benachrichtigungs-Trigger) den ersten Wert ausgibt**. Nach Auslösung des Benachrichtigungs-Triggers werden Werte normal ausgegeben.
 

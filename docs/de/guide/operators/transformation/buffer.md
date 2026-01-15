@@ -2,7 +2,7 @@
 description: "Der buffer-Operator gibt akkumulierte Werte als Array aus, wenn ein anderes Observable einen Wert emittiert. Ideal für ereignisgesteuerte Batch-Verarbeitung wie Massen-Submit per Button-Klick oder Datenspeicherung beim Schließen eines Fensters. Erklärt typsichere Implementierung mit TypeScript."
 ---
 
-# buffer - Werte zum Zeitpunkt eines anderen Observables zusammenfassen
+# buffer - Trigger-Basierter Puffer
 
 Der `buffer`-Operator sammelt Werte des Quell-Observables, **bis ein anderes Observable einen Wert emittiert**, und gibt dann die gesammelten Werte **als Array auf einmal** aus.
 Praktisch, wenn Sie die Pufferung nicht nach Zeit oder Anzahl, sondern nach externen Ereignissen oder Signalen steuern möchten.

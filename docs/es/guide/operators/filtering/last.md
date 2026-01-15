@@ -3,7 +3,7 @@ description: "El operador last recupera solo el último valor al completar el fl
 titleTemplate: ':title'
 ---
 
-# last - Recuperar el Último Valor o el Último Valor que Coincide con una Condición
+# last - Obtener Último Valor
 
 El operador `last` recupera el **último valor** o **último valor que satisface una condición** del flujo y completa el flujo.
 

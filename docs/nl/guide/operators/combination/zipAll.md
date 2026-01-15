@@ -3,7 +3,7 @@ description: zipAll is een operator die een Higher-order Observable (Observable 
 titleTemplate: ':title'
 ---
 
-# zipAll - Paar corresponderende waarden van elke interne Observable
+# zipAll - Paar Interne Observables
 
 De `zipAll` operator neemt een **Higher-order Observable** (Observable van Observables),
 **paart de corresponderende geordende waarden van elke interne Observable** en geeft ze uit als een array.

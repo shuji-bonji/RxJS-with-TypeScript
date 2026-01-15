@@ -3,7 +3,7 @@ description: De mergeMap operator converteert elke waarde naar een nieuwe Observ
 titleTemplate: ':title'
 ---
 
-# mergeMap - Converteert elke waarde naar een Observable en voegt ze gelijktijdig samen
+# mergeMap - Parallelle samenvoeging
 
 De `mergeMap` (ook bekend als `flatMap`) operator converteert elke waarde naar een nieuwe Observable en **voegt ze plat gelijktijdig samen**.
 Het is zeer nuttig wanneer u verzoeken onmiddellijk wilt uitvoeren zonder sequentieel te wachten, of voor geneste asynchrone verwerking.

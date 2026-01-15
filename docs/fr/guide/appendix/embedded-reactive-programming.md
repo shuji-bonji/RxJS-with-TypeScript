@@ -2,7 +2,7 @@
 description: "Explique les méthodes d'utilisation de la programmation réactive dans le développement embarqué. Sélection de couches d'application dans des environnements avec contraintes de performance et limitations de mémoire, exemples pratiques tels que l'intégration de capteurs et la détection de corrélation d'événements, et patterns de traitement de flux sur RTOS, avec des exemples de code concrets."
 ---
 
-# Développement embarqué et programmation réactive
+# Embarqué et RP
 
 Dans les systèmes embarqués, comment la programmation réactive, en particulier le traitement de flux asynchrones comme RxJS, peut-elle être utilisée ? Cette page explique les possibilités et contraintes.
 

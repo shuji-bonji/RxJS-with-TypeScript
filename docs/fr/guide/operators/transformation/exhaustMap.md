@@ -2,7 +2,7 @@
 description: "L'opérateur exhaustMap ignore les nouvelles entrées pendant le traitement de l'Observable actuel. Efficace pour éviter les clics en double sur les boutons de soumission de formulaires ou les requêtes API en double."
 ---
 
-# exhaustMap - Ignorer les nouvelles entrées pendant le traitement
+# exhaustMap - Ignorer Pendant Actif
 
 L'opérateur `exhaustMap` **ignore les nouvelles entrées** jusqu'à ce que l'Observable actuel soit terminé.
 Parfait pour éviter les clics en double ou les soumissions de requêtes en double.

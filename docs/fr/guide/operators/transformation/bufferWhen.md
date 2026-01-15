@@ -2,7 +2,7 @@
 description: "bufferWhen est un opérateur de transformation RxJS qui contrôle dynamiquement les conditions de fin pour regrouper et émettre des valeurs sous forme de tableau. Il réalise une mise en buffer continue où le buffer suivant démarre immédiatement après la fin du précédent, utile pour le traitement par lots adaptatif et la collecte de logs selon la charge. L'inférence de type TypeScript permet une mise en buffer dynamique type-safe."
 ---
 
-# bufferWhen - Buffer avec contrôle de fin dynamique
+# bufferWhen - Buffer dynamique
 
 L'opérateur `bufferWhen` **contrôle dynamiquement les conditions de fin** et publie les valeurs dans un tableau. Il fournit un pattern de mise en buffer continue, où lorsqu'un buffer se termine, le buffer suivant démarre immédiatement.
 

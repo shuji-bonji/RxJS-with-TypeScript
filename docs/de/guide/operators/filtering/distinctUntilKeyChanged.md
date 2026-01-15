@@ -2,7 +2,7 @@
 description: Der distinctUntilKeyChanged-Operator konzentriert sich auf ein bestimmtes Property in einem Objektstream und gibt nur dann aus, wenn sich dessen Wert vom vorherigen unterscheidet. Nützlich zum effizienten Überspringen aufeinanderfolgender Duplikate und zur Zustandsänderungs-Erkennung sowie Listenaktualisierungs-Optimierung.
 ---
 
-# distinctUntilKeyChanged - Nur Änderungen eines bestimmten Property erkennen
+# distinctUntilKeyChanged - Key-Änderungen
 
 Der `distinctUntilKeyChanged`-Operator konzentriert sich auf einen bestimmten Schlüssel (Property) eines Objekts und gibt nur dann aus, wenn sich dessen Wert vom vorherigen unterscheidet.
 Praktisch zum effizienten Überspringen aufeinanderfolgender Duplikate.

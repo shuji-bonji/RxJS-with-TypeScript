@@ -2,7 +2,7 @@
 description: ignoreElementsオペレーターは、すべての値を無視して完了とエラーのみを通すRxJSフィルタリングオペレーターです。処理の完了を待つ場合に便利です。
 ---
 
-# ignoreElements - すべての値を無視して完了/エラーのみを通す
+# ignoreElements - 完了/エラーのみ通過
 
 `ignoreElements` オペレーターは、ソースObservableから発行される**すべての値を無視**し、**完了通知とエラー通知のみ**を下流に通します。
 

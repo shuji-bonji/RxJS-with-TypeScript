@@ -3,7 +3,7 @@ description: "El operador exhaustAll ignora nuevos Observables internos mientras
 titleTemplate: ':title | RxJS'
 ---
 
-# exhaustAll - Ignorar Nuevos Observables Internos Mientras Se Ejecuta
+# exhaustAll - Ignorar Durante Activo
 
 El operador `exhaustAll` toma un **Higher-order Observable** (Observable de Observables),
 **ignora nuevos Observables internos** si un Observable interno está en ejecución.

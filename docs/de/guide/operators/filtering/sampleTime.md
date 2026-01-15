@@ -2,7 +2,7 @@
 description: Der sampleTime-Operator ist ein RxJS-Filteroperator, der in angegebenen Zeitintervallen regelmäßig den neuesten Wert des Streams sampelt. Ideal für regelmäßige Snapshot-Erfassung.
 ---
 
-# sampleTime - Neuesten Wert in angegebenen Zeitintervallen sampeln
+# sampleTime - Regelmäßig Sampeln
 
 Der `sampleTime`-Operator **sampelt regelmäßig in angegebenen Zeitintervallen** den **neuesten Wert** des Quell-Observable und gibt ihn aus.
 Wie ein regelmäßiger Snapshot wird der neueste Wert zu diesem Zeitpunkt erfasst.

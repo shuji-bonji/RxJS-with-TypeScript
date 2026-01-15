@@ -2,7 +2,7 @@
 description: "Illustra come utilizzare la programmazione reattiva nello sviluppo embedded. Spiega la selezione dei layer applicativi in ambienti con vincoli di prestazioni e memoria, esempi pratici come integrazione di sensori e rilevamento di correlazioni tra eventi, pattern di elaborazione stream su sistemi operativi in tempo reale con esempi di codice concreti."
 ---
 
-# Relazione tra Sviluppo Embedded e Programmazione Reattiva
+# Embedded e RP
 
 Questo articolo spiega come la programmazione reattiva, in particolare l'elaborazione di stream asincroni come RxJS, può essere utilizzata nei sistemi embedded, le sue possibilità e i suoi vincoli.
 

@@ -2,7 +2,7 @@
 description: "materialize est un opérateur utilitaire RxJS qui convertit les notifications Observable (next, error, complete) en objets Notification. Idéal pour traiter les erreurs comme des données, déboguer et enregistrer des notifications, enregistrer des méta-informations, et d'autres situations où vous voulez manipuler les notifications elles-mêmes. Le format d'origine peut être restauré avec dematerialize."
 ---
 
-# materialize - Convertir les notifications en objets
+# materialize - Notifications en objets
 
 L'opérateur `materialize` **convertit les notifications Observable (next, error, complete) en objets Notification**. Cela vous permet de traiter non seulement les valeurs mais aussi les erreurs et les achèvements comme des données.
 

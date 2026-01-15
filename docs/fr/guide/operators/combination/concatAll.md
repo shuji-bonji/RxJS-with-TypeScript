@@ -2,7 +2,7 @@
 description: "concatAll est un opérateur qui reçoit un Higher-order Observable (Observable d'Observables) et souscrit aux Observables internes séquentiellement pour aplatir les valeurs. Il attend la complétion de l'Observable précédent avant de démarrer le suivant."
 ---
 
-# concatAll - Aplatir les Observables internes séquentiellement
+# concatAll - Aplatir en Séquence
 
 L'opérateur `concatAll` reçoit un **Higher-order Observable** (Observable d'Observables)
 et **souscrit aux Observables internes séquentiellement** pour aplatir les valeurs. Il ne démarre pas le suivant tant que l'Observable précédent n'est pas terminé.

@@ -2,7 +2,7 @@
 description: "L'opérateur map est un outil de transformation de base qui applique une fonction à chaque valeur d'un Observable pour générer de nouvelles valeurs. Couramment utilisé pour la mise en forme de formulaires, le traitement des réponses API et la transformation de données. Explique l'inférence de type TypeScript, la combinaison avec d'autres opérateurs et l'optimisation des performances."
 ---
 
-# map - Appliquer une fonction de transformation à chaque valeur
+# map - Transformer Chaque Valeur
 
 L'opérateur `map` applique une fonction spécifiée à **chaque valeur** dans un flux et génère de nouvelles valeurs transformées.
 Il est similaire à la méthode `Array.prototype.map`, mais opère sur des **flux asynchrones**.

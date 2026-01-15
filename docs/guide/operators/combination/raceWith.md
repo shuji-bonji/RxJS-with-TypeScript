@@ -2,7 +2,7 @@
 description: raceWithは元のObservableと他のObservableのうち最初に値を発行したストリームのみを採用するRxJS結合オペレーターです。タイムアウト実装、フォールバック処理、複数データソースからの最速採用など、競争条件による選択が必要な場面に最適です。pipeable operator版でパイプライン内での使用が便利です。
 ---
 
-# raceWith - パイプライン内で最速のストリームを採用する
+# raceWith - 最速ストリームを採用
 
 `raceWith` オペレーターは、元のObservableと指定された他のObservableのうち、**最初に値を発行したObservableだけを採用**し、
 それ以降は他のObservableを無視します。

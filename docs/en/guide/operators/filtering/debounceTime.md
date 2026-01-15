@@ -3,7 +3,7 @@ description: The debounceTime operator outputs the last value when no new value 
 titleTemplate: ':title'
 ---
 
-# debounceTime - Throttle Event Firing and Emit Value After Waiting a Certain Amount of Time
+# debounceTime - Emit Last Value After Wait
 
 The `debounceTime` operator outputs the last value after a value has been emitted in the stream if no new value has been emitted for the specified time.
 It is very commonly used in situations where frequent events need to be suppressed, such as user-input search boxes.

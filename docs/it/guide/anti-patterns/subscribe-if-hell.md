@@ -2,7 +2,7 @@
 description: "La ramificazione condizionale complessa all'interno delle sottoscrizioni è un anti-pattern di RxJS. Va contro la filosofia della programmazione dichiarativa e mina la leggibilità, la testabilità e la riusabilità. Spieghiamo come migliorarla usando filter, partition e groupBy, con esempi di codice eseguibili."
 ---
 
-# Nidificazione infernale delle istruzioni if all'interno di subscribe
+# If-Hell in Subscribe
 
 ## Perché questo è un anti-pattern
 

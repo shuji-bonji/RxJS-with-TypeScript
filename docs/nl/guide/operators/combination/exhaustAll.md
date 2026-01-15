@@ -3,7 +3,7 @@ description: "exhaustAll operator negeert nieuwe interne Observables terwijl er 
 titleTemplate: ':title | RxJS'
 ---
 
-# exhaustAll - Negeer nieuwe interne Observables tijdens uitvoering
+# exhaustAll - Negeer Tijdens Actief
 
 De `exhaustAll` operator neemt een **Higher-order Observable** (Observable van Observables),
 **negeert nieuwe interne Observables** als er een interne Observable actief is.

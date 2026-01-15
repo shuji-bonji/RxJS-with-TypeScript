@@ -2,7 +2,7 @@
 description: "Der bufferTime-Operator gibt in festen Zeitabständen emittierte Werte als Array aus. Ideal für zeitbasierte Batch-Verarbeitung wie Batch-Übertragung von Echtzeit-Logs, UI-Ereignis-Aggregation oder Netzwerkeffizienzsteigerung. Erklärt den Unterschied zu buffer und typsichere Implementierung mit TypeScript."
 ---
 
-# bufferTime - Werte in festen Zeitintervallen zusammenfassen und ausgeben
+# bufferTime - Zeitbasierter Puffer
 
 Der `bufferTime`-Operator fasst Werte in angegebenen Zeitintervallen **zusammen und gibt sie als Array** aus.
 Praktisch, wenn Sie den Stream in festen Zeitintervallen aufteilen und wie eine Batch-Verarbeitung behandeln möchten.

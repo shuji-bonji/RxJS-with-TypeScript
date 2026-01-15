@@ -2,7 +2,7 @@
 description: "Erläutert die Anwendung von reaktiver Programmierung in der Embedded-Entwicklung. Behandelt die Auswahl von Anwendungsebenen in Umgebungen mit Leistungs- und Speicherbeschränkungen, praktische Beispiele wie Sensorintegration und Event-Korrelationserkennung sowie Stream-Verarbeitungsmuster auf Echtzeit-Betriebssystemen mit konkreten Codebeispielen."
 ---
 
-# Beziehung zwischen Embedded-Entwicklung und reaktiver Programmierung
+# Embedded und RP
 
 Dieser Artikel erklärt, wie reaktive Programmierung, insbesondere asynchrone Stream-Verarbeitung wie RxJS, in Embedded-Systemen eingesetzt werden kann, sowie deren Möglichkeiten und Einschränkungen.
 

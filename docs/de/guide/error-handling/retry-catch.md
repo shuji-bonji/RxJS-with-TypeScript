@@ -1,7 +1,7 @@
 ---
 description: "Erklärung robuster Fehlerbehandlungsstrategien durch Kombination der Operatoren retry und catchError. Lernen Sie, wie Sie vorübergehende Störungen wiederholen, exponentielle Backoff-Muster, bedingte Wiederholungen und geeignete Fallback-Verarbeitung typsicher in TypeScript implementieren, anhand praktischer Codebeispiele."
 ---
-# retry und catchError - Effektive Fehlerbehandlungskombination
+# retry und catchError - Effektive Kombination
 
 Detaillierte Erklärung der beiden Kernoperatoren der Fehlerbehandlung in RxJS, `retry` und `catchError`. Durch Kombination dieser können Sie eine robuste Fehlerbehandlungsstrategie realisieren.
 

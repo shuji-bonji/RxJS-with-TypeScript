@@ -2,7 +2,7 @@
 description: "Explica cómo se implementan los principios de programación reactiva más allá de ReactiveX en sistemas embebidos e ingeniería de control. Presenta patrones reactivos específicos del dominio como diseño dirigido por eventos, máquinas de estado, pub/sub, modelo de actores, etc."
 ---
 
-# Métodos Reactivos más allá de ReactiveX (Perspectiva de Sistemas Embebidos)
+# Reactivo sin ReactiveX
 
 El pensamiento de la programación reactiva ha sido ampliamente practicado en los campos de sistemas embebidos e ingeniería de control, mucho antes de la aparición de ReactiveX (RxJS).
 

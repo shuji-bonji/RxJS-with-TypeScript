@@ -3,7 +3,7 @@ description: "mergeWith Pipeable Operator subscribes to multiple Observables sim
 titleTemplate: ':title'
 ---
 
-# mergeWith - Merge Multiple Streams Simultaneously Within a Pipeline
+# mergeWith - Merge Streams in Parallel
 
 The `mergeWith` operator **simultaneously subscribes** to the original Observable and the specified other Observables,
 and merges the values emitted from each in real-time.

@@ -2,7 +2,7 @@
 description: "L'opérateur every permet d'évaluer si toutes les valeurs satisfont une condition spécifiée et de renvoyer false dès que la condition n'est pas satisfaite (court-circuit). La validation, les contrôles de qualité des données et le traitement des flux équivalents à Array.every() sont mis en œuvre de manière type-safe en TypeScript."
 ---
 
-# every - Vérifier que toutes les valeurs remplissent la condition
+# every - Toutes Satisfont Condition
 
 L'opérateur `every` évalue si chaque valeur émise par l'Observable source satisfait la condition spécifiée et
 **termine en retournant `false` dès qu'une condition n'est pas remplie**. Si toutes les conditions sont satisfaites, `true` est retourné.

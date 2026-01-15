@@ -2,7 +2,7 @@
 description: "L'opérateur windowTime divise l'Observable à intervalles de temps réguliers, permettant de traiter les valeurs émises dans chaque fenêtre temporelle comme des Observables individuels. Explique la division de flux basée sur le temps, le traitement par lots, les différences avec bufferTime, et l'implémentation TypeScript type-safe."
 ---
 
-# windowTime - Diviser l'Observable à intervalles de temps réguliers
+# windowTime - Fenêtre Temporelle
 
 L'opérateur `windowTime` regroupe les valeurs de l'Observable source **à intervalles réguliers** et produit ce groupe **comme un nouvel Observable**.
 Alors que `bufferTime` renvoie un tableau, `windowTime` renvoie **Observable\<T>**, permettant d'appliquer d'autres opérateurs à chaque fenêtre.

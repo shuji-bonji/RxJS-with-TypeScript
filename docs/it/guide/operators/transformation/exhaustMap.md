@@ -2,7 +2,7 @@
 description: "L'operatore exhaustMap è un operatore di trasformazione che ignora nuovi input finché l'Observable in corso di elaborazione non è completato. È efficace in situazioni in cui si vuole limitare l'esecuzione parallela, come la prevenzione di clic multipli su pulsanti di invio form o la prevenzione di invii duplicati di richieste API."
 ---
 
-# exhaustMap - Ignora nuovi input durante l'esecuzione
+# exhaustMap - Ignora input
 
 L'operatore `exhaustMap` **ignora nuovi input** finché l'Observable in corso di elaborazione non è completato.
 È ideale per prevenire clic duplicati o invii multipli di richieste.

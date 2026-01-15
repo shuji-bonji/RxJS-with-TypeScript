@@ -2,7 +2,7 @@
 description: "Systematische Erklärung der reaktiven Programmierung in 7 Schichten: UI, Kommunikation, Backend, Datenpipeline, IoT, Steuerung und UX. Reactive Manifesto, ereignisgesteuerte Architektur und RxJS-Positionierung."
 ---
 
-# Gesamtkarte der reaktiven Architektur
+# Karte der reaktiven Architektur
 
 Die reaktive Programmierung hat sich über Bibliotheken und Frameworks hinaus zu einer **Systemarchitektur-Philosophie** entwickelt.
 

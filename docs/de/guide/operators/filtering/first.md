@@ -2,7 +2,7 @@
 description: Der first-Operator ruft aus einem Stream nur den ersten Wert oder den ersten Wert ab, der eine angegebene Bedingung erfüllt, und beendet dann den Stream. Praktisch, wenn Sie nur das erste Ereignis verarbeiten oder Initialdaten abrufen möchten.
 ---
 
-# first - Ersten Wert oder ersten Wert abrufen, der Bedingung erfüllt
+# first - Ersten Wert Abrufen
 
 Der `first`-Operator ruft aus einem Stream den **ersten Wert** oder den **ersten Wert, der eine Bedingung erfüllt**, ab und beendet den Stream.
 

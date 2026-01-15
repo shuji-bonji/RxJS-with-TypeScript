@@ -2,7 +2,7 @@
 description: "Comment RxJS se positionne-t-il dans l'écosystème Reactive Streams ? Explique la vue d'ensemble complète de la pile technologique de la couche UI à la couche données, ainsi que la répartition des rôles entre RxJS, Reactor, Kafka Streams et autres. Décrit également en détail les différences de support backpressure et de scalabilité."
 ---
 
-# RxJS et l'écosystème Reactive Streams
+# RxJS et Reactive Streams
 
 Lorsqu'on apprend RxJS, de nombreux développeurs se posent la question : "Comment RxJS se positionne-t-il dans la vue d'ensemble globale de la Programmation Réactive ?"
 

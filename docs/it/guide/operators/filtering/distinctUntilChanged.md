@@ -3,7 +3,7 @@ description: L'operatore distinctUntilChanged consente un'elaborazione dati effi
 titleTemplate: ':title | RxJS'
 ---
 
-# distinctUntilChanged - Rimuovi Valori Duplicati Consecutivi
+# distinctUntilChanged - Ignora duplicati
 
 L'operatore `distinctUntilChanged` rimuove i duplicati quando lo stesso valore viene emesso consecutivamente, ed emette il nuovo valore solo se è diverso dal precedente.
 

@@ -2,7 +2,7 @@
 description: L'operatore skipUntil salta tutti i valori dall'Observable originale fino a quando un altro Observable emette un valore, poi emette i valori normalmente. È utile per avvio ritardato basato sul tempo o elaborazione dopo che si verifica un evento specifico.
 ---
 
-# skipUntil - Salta Fino a Quando un Altro Observable Si Attiva
+# skipUntil - Salta Fino a Trigger
 
 L'operatore `skipUntil` **salta tutti i valori dall'Observable sorgente** fino a quando un Observable specificato (trigger di notifica) emette il suo primo valore. Dopo che il trigger di notifica emette, i valori successivi vengono emessi normalmente.
 

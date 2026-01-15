@@ -2,7 +2,7 @@
 description: "La filosofia della programmazione reattiva viene spiegata sistematicamente in sette livelli: UI, comunicazione, backend, data pipeline, IoT, sistema di controllo e UX. Fornisce una visione d'insieme dell'architettura full stack basata sulle quattro caratteristiche del Reactive Manifesto."
 ---
 
-# Mappa Generale dell'Architettura Reattiva
+# Mappa Architettura Reattiva
 
 La programmazione reattiva si è evoluta oltre le semplici librerie e framework fino a diventare una **filosofia di architettura di sistema completa**.
 

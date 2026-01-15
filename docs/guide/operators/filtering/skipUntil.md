@@ -2,7 +2,7 @@
 description: skipUntilオペレーターは、別のObservableが値を発行するまで元のObservableの値をすべてスキップし、発行後は通常通り値を出力します。時間ベースの遅延開始や、特定イベント発生後の処理に便利です。
 ---
 
-# skipUntil - 別のObservableが発火するまでスキップする
+# skipUntil - 発火までスキップ
 
 `skipUntil` オペレーターは、**指定した Observable（通知トリガー）が最初の値を発行するまで、元の Observable からの値をすべてスキップ**します。通知トリガーが発行されたタイミング以降は、通常通り値を出力します。
 

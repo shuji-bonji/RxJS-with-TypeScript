@@ -2,7 +2,7 @@
 description: ConcatMap é um operador de conversão que processa cada Observable por vez e espera o próximo até que o anterior seja concluído, ideal para cenários onde a ordem de execução é importante, como execução serial de chamadas de API ou garantias de ordem de upload de arquivos. A inferência de tipo TypeScript permite encadeamento assíncrono type-safe, e as diferenças de mergeMap e switchMap também são explicadas.
 ---
 
-# concatMap - Executa Cada Observable em Ordem
+# concatMap - Execucao sequencial
 
 O operador `concatMap` converte cada valor no stream de entrada em um Observable e **executa e concatena-os por vez**.
 Ele não inicia o próximo Observable **até que o Observable anterior seja concluído**.

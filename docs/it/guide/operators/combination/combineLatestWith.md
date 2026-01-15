@@ -3,7 +3,7 @@ description: combineLatestWith è un operatore di combinazione RxJS che combina 
 titleTemplate: ':title | RxJS'
 ---
 
-# combineLatestWith - Combina gli Ultimi Valori All'interno di una Pipeline
+# combineLatestWith - Combina ultimi
 
 L'operatore `combineLatestWith` combina gli **ultimi valori** dell'Observable originale e di altri Observable specificati in un nuovo stream.
 Questa è la versione Pipeable Operator della Funzione di Creazione `combineLatest`.

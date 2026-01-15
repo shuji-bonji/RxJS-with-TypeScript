@@ -3,7 +3,7 @@ description: "Il Pipeable Operator mergeWith sottoscrive più Observable simulta
 titleTemplate: ':title'
 ---
 
-# mergeWith - Unisci Più Stream Simultaneamente All'interno di una Pipeline
+# mergeWith - Unione Parallela
 
 L'operatore `mergeWith` **sottoscrive simultaneamente** l'Observable originale e gli altri Observable specificati,
 e unisce i valori emessi da ciascuno in tempo reale.

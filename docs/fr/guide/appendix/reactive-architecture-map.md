@@ -2,7 +2,7 @@
 description: "Explique systématiquement la philosophie de la programmation réactive à travers 7 couches : UI, communication, backend, pipeline de données, IoT, systèmes de contrôle et UX. Organise les concepts tels que le Reactive Manifesto, l'architecture événementielle, CQRS et la position de RxJS."
 ---
 
-# Carte complète de l'architecture réactive
+# Carte de l'architecture réactive
 
 La programmation réactive a évolué au-delà du cadre des bibliothèques et frameworks pour devenir une **philosophie architecturale de systèmes entiers**.
 

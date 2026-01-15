@@ -2,7 +2,7 @@
 description: "Der pairwise-Operator gibt zwei aufeinanderfolgende Werte als Paar-Array [vorheriger Wert, aktueller Wert] aus. Kann für Wertänderungserkennung, Differenzberechnung, Trendanalyse, Animationsinterpolation und andere Vergleichsverarbeitungen zwischen vorherigen und aktuellen Werten verwendet werden. Erklärt typsichere Implementierung mit TypeScript und praktische Beispiele."
 ---
 
-# pairwise - Zwei aufeinanderfolgende Werte paarweise verarbeiten
+# pairwise - Aufeinanderfolgende Paare
 
 Der `pairwise`-Operator fasst **zwei aufeinanderfolgende Werte aus dem Stream als Array `[vorheriger Wert, aktueller Wert]`** zusammen und gibt sie aus.
 Praktisch zum Vergleichen von vorherigen und aktuellen Werten oder zum Berechnen von Änderungsbeträgen.

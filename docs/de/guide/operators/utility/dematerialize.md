@@ -2,7 +2,7 @@
 description: dematerialize ist ein RxJS Utility-Operator, der Notification-Objekte in normale Benachrichtigungen (next, error, complete) zurückwandelt und die inverse Umwandlung von materialize durchführt. Er eignet sich optimal für Szenarien, in denen nach Verarbeitung von Benachrichtigungen als Daten eine Rückwandlung zum Originalformat gewünscht ist, wie Wiederherstellung nach Benachrichtigungsbearbeitung, Filterung oder Transformation von Fehlern oder Neuordnung und Pufferung von Benachrichtigungen.
 ---
 
-# dematerialize - Wiederherstellung von Benachrichtigungsobjekten
+# dematerialize - Notification Umwandeln
 
 Der `dematerialize`-Operator **wandelt Notification-Objekte in normale Benachrichtigungen (next, error, complete)** um. Er führt die inverse Umwandlung von `materialize` durch und stellt datifizierte Benachrichtigungen in ihre ursprüngliche Form wieder her.
 

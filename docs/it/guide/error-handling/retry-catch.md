@@ -2,7 +2,7 @@
 description: "Descrive robuste strategie di gestione degli errori che combinano gli operatori retry e catchError. Imparerete con esempi pratici di codice come implementare la sicurezza di tipo in TypeScript, compresi i retry per i fallimenti temporanei, i modelli di backoff esponenziali, i retry condizionali e la corretta gestione dei fallback."
 ---
 
-# retry e catchError - Combinazioni efficaci per la gestione degli errori
+# retry + catchError
 
 Approfondimento sui due operatori fondamentali per la gestione degli errori in RxJS: `retry` e `catchError`. La loro combinazione può fornire una solida strategia di gestione degli errori.
 

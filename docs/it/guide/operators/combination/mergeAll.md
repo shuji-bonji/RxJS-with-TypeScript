@@ -3,7 +3,7 @@ description: mergeAll è un operatore che prende un Higher-order Observable (Obs
 titleTemplate: ':title | RxJS'
 ---
 
-# mergeAll - Appiattisci Tutti gli Observable Interni in Parallelo
+# mergeAll - Appiattisci in Parallelo
 
 L'operatore `mergeAll` prende un **Higher-order Observable** (Observable di Observable),
 **sottoscrive tutti gli Observable interni in parallelo**, e appiattisce i loro valori.

@@ -2,7 +2,7 @@
 description: "L'opérateur observeOn contrôle le timing d'émission des valeurs Observable en utilisant un planificateur spécifié, utile pour optimiser le traitement asynchrone et les animations."
 ---
 
-# observeOn - Contrôle du contexte d'exécution
+# observeOn - Contexte d'exécution
 
 L'opérateur `observeOn` **contrôle le timing d'émission et le contexte d'exécution des valeurs Observable en utilisant un planificateur spécifié**. Il permet aux opérations suivantes dans le flux de s'exécuter sur un planificateur spécifique.
 

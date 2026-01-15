@@ -2,7 +2,7 @@
 description: "L'opérateur throttleTime laisse passer uniquement la première valeur dans un intervalle de temps spécifié et ignore les valeurs suivantes, réduisant efficacement les événements à haute fréquence. Idéal pour optimiser les événements en temps réel comme le défilement ou le mouvement de la souris."
 ---
 
-# throttleTime - Laisser passer la première valeur et ignorer les suivantes pendant une durée spécifiée
+# throttleTime - Première valeur puis limite
 
 L'opérateur `throttleTime` laisse passer la première valeur émise et ignore les valeurs suivantes émises dans l'intervalle de temps spécifié.
 Contrairement à l'émission de la dernière valeur à intervalles réguliers, il **laisse passer uniquement la première valeur reçue et ignore les valeurs suivantes**.

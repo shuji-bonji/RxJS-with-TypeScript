@@ -2,7 +2,7 @@
 description: "L'opérateur skipWhile ignore les valeurs tant qu'une condition spécifiée est remplie, et émet toutes les valeurs suivantes une fois que la condition devient fausse. Utile lorsque vous souhaitez contrôler le flux à l'aide d'une condition de démarrage dynamique."
 ---
 
-# skipWhile - Ignorer les valeurs tant que la condition est satisfaite
+# skipWhile - Ignorer Pendant Condition
 
 L'opérateur `skipWhile` **ignore les valeurs tant que la condition spécifiée est satisfaite**, et une fois que la condition devient `false`, **émet toutes les valeurs suivantes**.
 

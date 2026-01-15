@@ -3,7 +3,7 @@ description: concatWith es un operador de combinación de RxJS que une otros Obs
 titleTemplate: ':title'
 ---
 
-# concatWith - Concatenar Streams en Secuencia Dentro de un Pipeline
+# concatWith - Concatenar en Secuencia
 
 El operador `concatWith` **concatena secuencialmente** los otros Observables especificados después de que el Observable original `completa`.
 Esta es la versión Pipeable Operator de la Creation Function `concat`.

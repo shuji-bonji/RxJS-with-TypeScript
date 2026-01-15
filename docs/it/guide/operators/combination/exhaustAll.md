@@ -3,7 +3,7 @@ description: "L'operatore exhaustAll ignora nuovi Observable interni mentre uno 
 titleTemplate: ':title | RxJS'
 ---
 
-# exhaustAll - Ignora Nuovi Observable Interni Durante l'Esecuzione
+# exhaustAll - Ignora Durante Attivo
 
 L'operatore `exhaustAll` prende un **Higher-order Observable** (Observable di Observable),
 **ignora nuovi Observable interni** se un Observable interno è in esecuzione.

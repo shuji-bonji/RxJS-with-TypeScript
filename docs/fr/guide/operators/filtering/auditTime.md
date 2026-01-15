@@ -2,7 +2,7 @@
 description: "auditTime est un opérateur de filtrage RxJS qui attend une durée spécifiée après la réception d'une valeur et émet la dernière valeur de cette période. Idéal pour échantillonner périodiquement le dernier état lors d'événements à haute fréquence comme le suivi de la position de défilement, le redimensionnement de fenêtre ou le mouvement de souris. Il est important de comprendre les différences avec throttleTime et debounceTime pour un usage approprié."
 ---
 
-# auditTime - Émettre la dernière valeur après une durée spécifiée
+# auditTime - Dernière valeur par période
 
 L'opérateur `auditTime` **attend la durée spécifiée** après la réception d'une valeur et émet la **dernière valeur** de cette période. Ensuite, il attend la prochaine valeur.
 

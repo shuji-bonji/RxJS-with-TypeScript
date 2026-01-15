@@ -2,7 +2,7 @@
 description: "switchMap annule l'Observable précédent et passe au plus récent. Idéal pour la recherche en direct, le changement de navigation, l'enregistrement automatique et d'autres cas d'utilisation, réalisant un traitement asynchrone sûr avec l'inférence de type TypeScript. Explique également les différences avec mergeMap et concatMap."
 ---
 
-# switchMap - Annuler l'Observable précédent et passer au plus récent
+# switchMap - Basculer vers le dernier
 
 L'opérateur `switchMap` génère un nouvel Observable pour chaque valeur du flux d'entrée, **annulant l'Observable précédent et basculant uniquement sur l'Observable le plus récent**.
 C'est parfait pour des cas comme les formulaires de recherche où l'on veut que seule la valeur la plus récente soit valide.

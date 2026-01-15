@@ -2,7 +2,7 @@
 description: "window divise l'Observable source en Observables imbriqués au timing de l'émission d'un autre Observable. Idéal pour le traitement de flux avancé piloté par événements."
 ---
 
-# window - Diviser l'Observable au timing d'un autre Observable
+# window - Fenêtre par Événement
 
 L'opérateur `window` regroupe les valeurs de l'Observable source **jusqu'à ce qu'un autre Observable émette des valeurs** et sort ce groupe **comme un nouvel Observable**.
 Alors que `buffer` renvoie un tableau, `window` renvoie **Observable\<T>**, permettant d'appliquer d'autres opérateurs à chaque fenêtre.

@@ -3,7 +3,7 @@ description: O operador mergeMap converte cada valor em um novo Observable, exec
 titleTemplate: ':title'
 ---
 
-# mergeMap - Converte Cada Valor em um Observable e os Mescla Simultaneamente
+# mergeMap - Fusao paralela
 
 O operador `mergeMap` (também conhecido como `flatMap`) converte cada valor em um novo Observable e **os mescla de forma plana simultaneamente**.
 É muito útil quando você deseja executar requisições imediatamente sem esperar em sequência, ou para processamento assíncrono aninhado.

@@ -2,7 +2,7 @@
 description: "Learn how to handle stream completion and resource cleanup in RxJS using finalize and complete: Essential techniques for preventing memory leaks"
 titleTemplate: ':title'
 ---
-# finalize and complete - Resource Release and Stream Completion Processing
+# finalize - Resource Cleanup
 
 In RxJS, it is important to properly manage stream completion and resource release. This page explains how the `finalize` operator and `complete` notifications work.
 

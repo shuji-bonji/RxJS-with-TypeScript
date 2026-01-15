@@ -2,7 +2,7 @@
 description: Der findIndex-Operator ist ein RxJS-Filteroperator, der den Index des ersten Werts zurückgibt, der eine Bedingung erfüllt. Gibt -1 zurück, wenn nicht gefunden.
 ---
 
-# findIndex - Index des ersten Werts abrufen, der eine Bedingung erfüllt
+# findIndex - Passenden Index Finden
 
 Der `findIndex`-Operator gibt den **Index des ersten Werts zurück, der eine Bedingung erfüllt**, und beendet den Stream sofort. Wenn kein Wert gefunden wird, gibt er `-1` zurück.
 

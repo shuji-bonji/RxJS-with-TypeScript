@@ -3,7 +3,7 @@ description: "O operador last recupera apenas o último valor na conclusão do s
 titleTemplate: ':title'
 ---
 
-# last - Recuperar o Último Valor ou o Último Valor que Corresponde a uma Condição
+# last - Obter Último Valor
 
 O operador `last` recupera o **último valor** ou **último valor que satisfaz uma condição** do stream e completa o stream.
 

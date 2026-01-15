@@ -1,7 +1,7 @@
 ---
 description: "Explique comment effectuer efficacement le traitement de complétion des streams et la libération des ressources dans RxJS en utilisant finalize et complete. Présente des patterns pratiques incluant la prévention des fuites mémoire, la libération des handles de fichiers, le nettoyage des connexions WebSocket, la réinitialisation de l'état UI. Explique également la différence avec la clause finally."
 ---
-# finalize et complete - Libération des ressources et traitement de complétion des streams
+# finalize et complete - Nettoyage de ressources
 
 Dans RxJS, il est important de gérer correctement la terminaison des streams et la libération des ressources. Cette page explique l'opérateur `finalize` et le mécanisme de notification `complete`.
 

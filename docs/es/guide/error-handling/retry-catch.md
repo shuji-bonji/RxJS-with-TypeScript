@@ -2,7 +2,7 @@
 description: Se explicarán estrategias robustas de manejo de errores que combinan los operadores retry y catchError. Aprenderá a través de ejemplos prácticos de solicitudes de API, como reintentos para fallos temporales, patrones de backoff exponencial y manejo adecuado de fallback.
 titleTemplate: ':title | RxJS'
 ---
-# retry y catchError - Combinación Efectiva de Manejo de Errores
+# retry y catchError - Combinación Efectiva
 
 Los dos operadores en el corazón del manejo de errores en RxJS, `retry` y `catchError`, se describen en detalle. Juntos, proporcionan una estrategia robusta de manejo de errores.
 

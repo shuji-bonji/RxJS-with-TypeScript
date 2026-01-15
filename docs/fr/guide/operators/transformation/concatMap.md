@@ -2,7 +2,7 @@
 description: "concatMap traite chaque Observable séquentiellement, en attendant que le précédent soit terminé avant de commencer le suivant. Idéal pour les scénarios où l'ordre d'exécution est important, comme les appels API en série ou l'ordre de téléchargement de fichiers garanti. Permet d'obtenir des chaînes de traitement asynchrones sûres avec l'inférence de type TypeScript, et explique les différences avec mergeMap et switchMap."
 ---
 
-# concatMap - Exécuter chaque Observable séquentiellement
+# concatMap - Exécution séquentielle
 
 L'opérateur `concatMap` transforme chaque valeur du flux d'entrée en un Observable et **les exécute séquentiellement**.
 **Il ne démarre pas l'Observable suivant tant que le précédent n'est pas terminé**.

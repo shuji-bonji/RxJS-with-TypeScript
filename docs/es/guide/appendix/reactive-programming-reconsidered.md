@@ -1,48 +1,48 @@
 ---
-description: "¿Es realmente universal la Programación Reactiva? Examina la brecha entre la filosofía de diseño y la realidad, explicando objetivamente las fortalezas y limitaciones de RP, áreas donde debe aplicarse y áreas que deben evitarse. Proporciona una perspectiva práctica que incluye la combinación con programación imperativa y consideraciones para la adopción en equipo."
+description: "ï¿½Es realmente universal la Programaciï¿½n Reactiva? Examina la brecha entre la filosofï¿½a de diseï¿½o y la realidad, explicando objetivamente las fortalezas y limitaciones de RP, ï¿½reas donde debe aplicarse y ï¿½reas que deben evitarse. Proporciona una perspectiva prï¿½ctica que incluye la combinaciï¿½n con programaciï¿½n imperativa y consideraciones para la adopciï¿½n en equipo."
 titleTemplate: ':title | RxJS'
 ---
 
-# Reactive Programming Reconsidered  La brecha entre la filosofía de diseño y la realidad
+# RP Reconsiderado
 
-Reactive Programming (Programación Reactiva, en adelante RP) es ampliamente conocido como un paradigma poderoso para el procesamiento de flujos de datos asíncronos.
+Reactive Programming (Programaciï¿½n Reactiva, en adelante RP) es ampliamente conocido como un paradigma poderoso para el procesamiento de flujos de datos asï¿½ncronos.
 
-Sin embargo, **¿es RP realmente universal?** Esta página examina la brecha entre el ideal y la realidad de RP, y considera objetivamente dónde debe usarse RP y dónde no debe usarse.
+Sin embargo, **ï¿½es RP realmente universal?** Esta pï¿½gina examina la brecha entre el ideal y la realidad de RP, y considera objetivamente dï¿½nde debe usarse RP y dï¿½nde no debe usarse.
 
 
 ## RP ideal vs realidad
 
-### Ideal: Diseño moderno refinado
+### Ideal: Diseï¿½o moderno refinado
 
 RP a menudo se promociona de la siguiente manera:
 
-- Código **declarativo** y legible
-- Puede expresar **procesamiento asíncrono de manera concisa**
+- Cï¿½digo **declarativo** y legible
+- Puede expresar **procesamiento asï¿½ncrono de manera concisa**
 - Puede manejar **flujos de datos complejos** de manera unificada
-- Tecnología central de **arquitectura reactiva**
+- Tecnologï¿½a central de **arquitectura reactiva**
 
-### Realidad: También puede reducir la productividad del equipo
+### Realidad: Tambiï¿½n puede reducir la productividad del equipo
 
-Sin embargo, en proyectos reales están ocurriendo los siguientes problemas:
+Sin embargo, en proyectos reales estï¿½n ocurriendo los siguientes problemas:
 
 - **Curva de aprendizaje muy alta**
-- **Depuración difícil**
+- **Depuraciï¿½n difï¿½cil**
 - **Pruebas complejas**
-- **Reducción de productividad por mal uso**
+- **Reducciï¿½n de productividad por mal uso**
 
 > [!WARNING]
-> Si aplica RP a "todo el código", paradójicamente puede aumentar la complejidad del código y reducir la productividad del equipo.
+> Si aplica RP a "todo el cï¿½digo", paradï¿½jicamente puede aumentar la complejidad del cï¿½digo y reducir la productividad del equipo.
 
-## Cuatro desafíos que enfrenta RP
+## Cuatro desafï¿½os que enfrenta RP
 
 ### 1. Alta curva de aprendizaje
 
-Dominar RP requiere un modelo mental diferente de la programación imperativa tradicional.
+Dominar RP requiere un modelo mental diferente de la programaciï¿½n imperativa tradicional.
 
-#### El seguimiento del flujo de datos es difícil
+#### El seguimiento del flujo de datos es difï¿½cil
 
 ```typescript
-// L Difícil de ver el flujo de datos
+// L Difï¿½cil de ver el flujo de datos
 source$
   .pipe(
     mergeMap(x => fetchData(x)),
@@ -54,14 +54,14 @@ source$
 
 ::: warning Problemas
 - Las diferencias entre `mergeMap`, `switchMap`, `concatMap` no son intuitivas
-- Es difícil rastrear dónde y cómo se transforman los datos
-- Es difícil identificar dónde ocurrió el error
+- Es difï¿½cil rastrear dï¿½nde y cï¿½mo se transforman los datos
+- Es difï¿½cil identificar dï¿½nde ocurriï¿½ el error
 :::
 
-#### Dificultad en depuración y registro
+#### Dificultad en depuraciï¿½n y registro
 
 ```typescript
-// Depuración difícil
+// Depuraciï¿½n difï¿½cil
 source$
   .pipe(
     map(x => x * 2),
@@ -70,37 +70,37 @@ source$
   )
   .subscribe(/*...*/);
 
-// ¿Dónde ocurrió el error?
-// ¿En qué operador desapareció el valor?
+// ï¿½Dï¿½nde ocurriï¿½ el error?
+// ï¿½En quï¿½ operador desapareciï¿½ el valor?
 ```
 
 > [!TIP]
-> Se usa el operador `tap()` para depuración, pero esto en sí es un costo adicional de aprendizaje.
+> Se usa el operador `tap()` para depuraciï¿½n, pero esto en sï¿½ es un costo adicional de aprendizaje.
 > ```typescript
 > source$
 >   .pipe(
 >     tap(x => console.log('Antes de map:', x)),
 >     map(x => x * 2),
->     tap(x => console.log('Después de map:', x)),
+>     tap(x => console.log('Despuï¿½s de map:', x)),
 >     filter(x => x > 10),
->     tap(x => console.log('Después de filter:', x))
+>     tap(x => console.log('Despuï¿½s de filter:', x))
 >   )
 >   .subscribe(/*...*/);
 > ```
 
 ### 2. Alta carga cognitiva
 
-RP tiene más de 100 operadores, y su uso es complejo.
+RP tiene mï¿½s de 100 operadores, y su uso es complejo.
 
 #### Demasiadas opciones de operadores
 
 | Requisito | Opciones | Diferencias |
 |------|--------|------|
-| Procesar array secuencialmente | `concatMap`, `mergeMap`, `switchMap`, `exhaustMap` | Difieren en concurrencia y garantía de orden |
-| Combinar múltiples streams | `concat`, `merge`, `combineLatest`, `zip`, `forkJoin`, `race` | Difieren en método de combinación |
+| Procesar array secuencialmente | `concatMap`, `mergeMap`, `switchMap`, `exhaustMap` | Difieren en concurrencia y garantï¿½a de orden |
+| Combinar mï¿½ltiples streams | `concat`, `merge`, `combineLatest`, `zip`, `forkJoin`, `race` | Difieren en mï¿½todo de combinaciï¿½n |
 | Manejo de errores | `catchError`, `retry`, `retryWhen`, `onErrorResumeNext` | Difieren en estrategia de reintento |
 
-**¿Es necesario escribir con RP un proceso que se resuelve con un simple `if` o `await`?**
+**ï¿½Es necesario escribir con RP un proceso que se resuelve con un simple `if` o `await`?**
 
 ```typescript
 // L Ejemplo complejo escrito con RP
@@ -113,7 +113,7 @@ of(user)
   )
   .subscribe(/*...*/);
 
-//  Condición simple
+//  Condiciï¿½n simple
 const data = user.isPremium
   ? await fetchPremiumData(user)
   : await fetchBasicData(user);
@@ -145,30 +145,30 @@ it('Prueba de debounceTime', () => {
 ```
 
 ::: warning Problemas
-- Necesidad de aprender la notación de Marble Diagram
+- Necesidad de aprender la notaciï¿½n de Marble Diagram
 - Necesidad de entender el mecanismo de control del tiempo
 - Mayor costo de aprendizaje que las pruebas unitarias normales
 :::
 
-#### Bugs de sincronización frecuentes
+#### Bugs de sincronizaciï¿½n frecuentes
 
 ```typescript
-// L Bug común: problema de temporización de suscripción
+// L Bug comï¿½n: problema de temporizaciï¿½n de suscripciï¿½n
 const subject$ = new Subject();
 
-subject$.next(1);  // Este valor no se recibirá
-subject$.subscribe(x => console.log(x));  // Suscripción tardía
-subject$.next(2);  // Este se recibirá
+subject$.next(1);  // Este valor no se recibirï¿½
+subject$.subscribe(x => console.log(x));  // Suscripciï¿½n tardï¿½a
+subject$.next(2);  // Este se recibirï¿½
 ```
 
 ### 4. Complejidad por mal uso
 
-Aplicar RP a todo el código crea una complejidad innecesaria.
+Aplicar RP a todo el cï¿½digo crea una complejidad innecesaria.
 
-#### Aplicación excesiva a procesamiento CRUD simple
+#### Aplicaciï¿½n excesiva a procesamiento CRUD simple
 
 ```typescript
-// L Aplicación excesiva de RP
+// L Aplicaciï¿½n excesiva de RP
 getUserById(userId: string): Observable<User> {
   return this.http.get<User>(`/api/users/${userId}`)
     .pipe(
@@ -193,15 +193,15 @@ async getUserById(userId: string): Promise<User> {
 ```
 
 > [!IMPORTANT]
-> **RP no es una "bala de plata" que resuelve todos los problemas.** Es importante distinguir las áreas donde debe aplicarse de las áreas que deben evitarse.
+> **RP no es una "bala de plata" que resuelve todos los problemas.** Es importante distinguir las ï¿½reas donde debe aplicarse de las ï¿½reas que deben evitarse.
 
-## Áreas donde RP sobresale
+## ï¿½reas donde RP sobresale
 
-RP no es universal, pero es muy poderoso en las siguientes áreas.
+RP no es universal, pero es muy poderoso en las siguientes ï¿½reas.
 
 ### 1. Procesamiento de flujos de datos continuos
 
-Óptimo para procesar **datos que ocurren continuamente** como datos de sensores, flujos de registros, datos en tiempo real.
+ï¿½ptimo para procesar **datos que ocurren continuamente** como datos de sensores, flujos de registros, datos en tiempo real.
 
 ```typescript
 //  Ejemplo donde RP demuestra su fortaleza: procesamiento de datos de sensores
@@ -217,27 +217,27 @@ sensorStream$
 
 ### 2. WebSocket y notificaciones push
 
-Óptimo para comunicación bidireccional y entrega de datos tipo push desde el servidor.
+ï¿½ptimo para comunicaciï¿½n bidireccional y entrega de datos tipo push desde el servidor.
 
 ```typescript
-//  Procesamiento reactivo de comunicación WebSocket
+//  Procesamiento reactivo de comunicaciï¿½n WebSocket
 const socket$ = webSocket('wss://example.com/socket');
 
 socket$
   .pipe(
-    retry({ count: 3, delay: 1000 }),  // Reconexión automática
+    retry({ count: 3, delay: 1000 }),  // Reconexiï¿½n automï¿½tica
     map(msg => parseMessage(msg)),
     filter(msg => msg.type === 'notification')
   )
   .subscribe(notification => showNotification(notification));
 ```
 
-### 3. Sistemas de gestión de estado
+### 3. Sistemas de gestiï¿½n de estado
 
-Efectivo como base para bibliotecas de gestión de estado como NgRx, Redux Observable, MobX.
+Efectivo como base para bibliotecas de gestiï¿½n de estado como NgRx, Redux Observable, MobX.
 
 ```typescript
-//  Uso de RP en gestión de estado (NgRx Effects)
+//  Uso de RP en gestiï¿½n de estado (NgRx Effects)
 loadUsers$ = createEffect(() =>
   this.actions$.pipe(
     ofType(UserActions.loadUsers),
@@ -253,7 +253,7 @@ loadUsers$ = createEffect(() =>
 
 ### 4. I/O no bloqueante en backend
 
-Adecuado para procesamiento asíncrono en backend como Node.js Streams, Spring WebFlux, Vert.x.
+Adecuado para procesamiento asï¿½ncrono en backend como Node.js Streams, Spring WebFlux, Vert.x.
 
 ```typescript
 //  Procesamiento tipo RP de Node.js Streams
@@ -272,13 +272,13 @@ fileStream.pipe(transformStream).pipe(outputStream);
 
 Efectivo como base de arquitectura dirigida por eventos con Kafka, RabbitMQ, Akka Streams.
 
-## Áreas donde RP no es adecuado
+## ï¿½reas donde RP no es adecuado
 
-En las siguientes áreas, el código es más simple y mantenible sin usar RP.
+En las siguientes ï¿½reas, el cï¿½digo es mï¿½s simple y mantenible sin usar RP.
 
 ### 1. Procesamiento CRUD simple
 
-Para operaciones simples de lectura/escritura en base de datos, `async`/`await` es más apropiado.
+Para operaciones simples de lectura/escritura en base de datos, `async`/`await` es mï¿½s apropiado.
 
 ```typescript
 // L No necesita escribirse con RP
@@ -297,14 +297,14 @@ async getUser(id: string): Promise<User> {
 No es necesario convertir en stream un proceso que se resuelve con un simple `if`.
 
 ```typescript
-// L Aplicación excesiva de RP
+// L Aplicaciï¿½n excesiva de RP
 of(value)
   .pipe(
     mergeMap(v => v > 10 ? doA(v) : doB(v))
   )
   .subscribe();
 
-//  Condición simple
+//  Condiciï¿½n simple
 if (value > 10) {
   doA(value);
 } else {
@@ -312,21 +312,21 @@ if (value > 10) {
 }
 ```
 
-### 3. Procesamiento asíncrono de una sola vez
+### 3. Procesamiento asï¿½ncrono de una sola vez
 
 Si Promise es suficiente, no hay necesidad de convertir a Observable.
 
 ```typescript
-// L Conversión innecesaria a Observable
+// L Conversiï¿½n innecesaria a Observable
 from(fetchData()).subscribe(data => process(data));
 
 //  Suficiente con Promise
 fetchData().then(data => process(data));
 ```
 
-## Evolución de RP: Hacia abstracciones más simples
+## Evoluciï¿½n de RP: Hacia abstracciones mï¿½s simples
 
-La filosofía de RP no está desapareciendo, sino que está **evolucionando hacia formas más simples y transparentes**.
+La filosofï¿½a de RP no estï¿½ desapareciendo, sino que estï¿½ **evolucionando hacia formas mï¿½s simples y transparentes**.
 
 ### Angular Signals (Angular 19+)
 
@@ -343,9 +343,9 @@ count.set(5);  // Simple e intuitivo
 ```
 
 
-::: info Características:
+::: info Caracterï¿½sticas:
 - Menor costo de aprendizaje que RxJS
-- Depuración fácil
+- Depuraciï¿½n fï¿½cil
 - Reactividad de grano fino
 :::
 
@@ -359,9 +359,9 @@ function UserProfile({ userId }) {
 }
 ```
 
-::: info Características:
-- Obtención de datos declarativa
-- Control automático de prioridades
+::: info Caracterï¿½sticas:
+- Obtenciï¿½n de datos declarativa
+- Control automï¿½tico de prioridades
 - Oculta la complejidad de RP
 :::
 
@@ -373,12 +373,12 @@ let count = $state(0);
 let doubled = $derived(count * 2);
 
 function increment() {
-  count++;  // Actualización intuitiva
+  count++;  // Actualizaciï¿½n intuitiva
 }
 ```
 
-::: info Características:
-- Optimización por compilador
+::: info Caracterï¿½sticas:
+- Optimizaciï¿½n por compilador
 - Sin boilerplate
 - Transparencia de reactividad
 :::
@@ -386,17 +386,17 @@ function increment() {
 > [!TIP]
 > Estas nuevas abstracciones mantienen el **valor central de RP (reactividad)** mientras **reducen significativamente la complejidad**.
 
-## Política de uso apropiado de RP
+## Polï¿½tica de uso apropiado de RP
 
 ### 1. Identificar el dominio del problema
 
 | Adecuado | No adecuado |
 |-----------|-------------|
 | Flujos de datos continuos | CRUD simple |
-| Comunicación WebSocket | Llamada única a API |
-| Integración de múltiples eventos asíncronos | Condiciones simples |
-| Procesamiento de datos en tiempo real | Transformación de datos estáticos |
-| Gestión de estado | Actualización simple de variables |
+| Comunicaciï¿½n WebSocket | Llamada ï¿½nica a API |
+| Integraciï¿½n de mï¿½ltiples eventos asï¿½ncronos | Condiciones simples |
+| Procesamiento de datos en tiempo real | Transformaciï¿½n de datos estï¿½ticos |
+| Gestiï¿½n de estado | Actualizaciï¿½n simple de variables |
 
 ### 2. Introducir gradualmente
 
@@ -414,7 +414,7 @@ class UserService {
   async getUser(id: string): Promise<User> { /* ... */ }
   async updateUser(user: User): Promise<User> { /* ... */ }
 
-  // Observable solo para partes que necesitan actualización en tiempo real
+  // Observable solo para partes que necesitan actualizaciï¿½n en tiempo real
   watchUser(id: string): Observable<User> {
     return this.websocket.watch(`/users/${id}`);
   }
@@ -423,16 +423,16 @@ class UserService {
 
 ### 3. Considerar el nivel de dominio del equipo
 
-| Situación del equipo | Enfoque recomendado |
+| Situaciï¿½n del equipo | Enfoque recomendado |
 |------------|---------------|
-| No familiarizado con RP | Introducción limitada (solo partes con ventajas claras como WebSocket) |
-| Algunos familiarizados | Expansión gradual (gestión de estado, procesamiento en tiempo real) |
+| No familiarizado con RP | Introducciï¿½n limitada (solo partes con ventajas claras como WebSocket) |
+| Algunos familiarizados | Expansiï¿½n gradual (gestiï¿½n de estado, procesamiento en tiempo real) |
 | Todos familiarizados | Uso full-stack (frontendbackend) |
 
 ### 4. Comparar con alternativas
 
 ```typescript
-// Patrón 1: RP (cuando se necesita integrar múltiples eventos)
+// Patrï¿½n 1: RP (cuando se necesita integrar mï¿½ltiples eventos)
 combineLatest([
   formValue$,
   validation$,
@@ -444,7 +444,7 @@ combineLatest([
   }))
 );
 
-// Patrón 2: Signals (reactividad más simple)
+// Patrï¿½n 2: Signals (reactividad mï¿½s simple)
 const formValue = signal({});
 const validation = signal(false);
 const apiStatus = signal('ready');
@@ -452,7 +452,7 @@ const canSubmit = computed(() =>
   validation() && apiStatus() === 'ready'
 );
 
-// Patrón 3: async/await (procesamiento de una vez)
+// Patrï¿½n 3: async/await (procesamiento de una vez)
 async function submitForm() {
   const isValid = await validateForm(formValue);
   if (!isValid) return;
@@ -467,48 +467,48 @@ async function submitForm() {
 ### RP no es universal
 
 > [!IMPORTANT]
-> Reactive Programming **no es ni perjudicial ni universal**. Es una **herramienta especializada** optimizada para problemas de flujo asíncrono y de eventos.
+> Reactive Programming **no es ni perjudicial ni universal**. Es una **herramienta especializada** optimizada para problemas de flujo asï¿½ncrono y de eventos.
 
 ### Reconocer el valor de RP mientras se entienden sus limitaciones
 
-::: tip Áreas donde RP sobresale
+::: tip ï¿½reas donde RP sobresale
 - Procesamiento de flujos de datos continuos
-- WebSocket y comunicación en tiempo real
-- Sistemas de gestión de estado
+- WebSocket y comunicaciï¿½n en tiempo real
+- Sistemas de gestiï¿½n de estado
 - I/O no bloqueante en backend
 - Sistemas distribuidos dirigidos por eventos
 :::
 
-::: warning Áreas donde RP no es adecuado
+::: warning ï¿½reas donde RP no es adecuado
 - Procesamiento CRUD simple
 - Condiciones simples
-- Procesamiento asíncrono de una sola vez
+- Procesamiento asï¿½ncrono de una sola vez
 :::
 
-### Transición a nuevas abstracciones
+### Transiciï¿½n a nuevas abstracciones
 
-La filosofía de RP está evolucionando hacia **formas más simples y transparentes** como Angular Signals, React Concurrent Features, Svelte Runes.
+La filosofï¿½a de RP estï¿½ evolucionando hacia **formas mï¿½s simples y transparentes** como Angular Signals, React Concurrent Features, Svelte Runes.
 
-### Directrices de aplicación en la práctica
+### Directrices de aplicaciï¿½n en la prï¿½ctica
 
-1. **Identificar el dominio del problema** - ¿Realmente se necesita RP?
+1. **Identificar el dominio del problema** - ï¿½Realmente se necesita RP?
 2. **Introducir gradualmente** - No adoptar completamente de inmediato
 3. **Considerar el nivel de dominio del equipo** - El costo de aprendizaje es alto
-4. **Comparar con alternativas** - ¿Es suficiente con async/await o Signals?
+4. **Comparar con alternativas** - ï¿½Es suficiente con async/await o Signals?
 
 > [!TIP]
-> **"Usar la herramienta adecuada en el lugar adecuado"** Esta es la clave para el éxito con RP.
+> **"Usar la herramienta adecuada en el lugar adecuado"** Esta es la clave para el ï¿½xito con RP.
 
-## Páginas relacionadas
+## Pï¿½ginas relacionadas
 
 - [Mapa completo de arquitectura reactiva](/es/guide/appendix/reactive-architecture-map) - Las 7 capas donde RP sobresale
-- [RxJS y el ecosistema de Reactive Streams](/es/guide/appendix/rxjs-and-reactive-streams-ecosystem) - Visión general del stack tecnológico de RP
+- [RxJS y el ecosistema de Reactive Streams](/es/guide/appendix/rxjs-and-reactive-streams-ecosystem) - Visiï¿½n general del stack tecnolï¿½gico de RP
 - [Superar dificultades de RxJS](/es/guide/overcoming-difficulties/) - Superar las barreras de aprendizaje de RP
-- [Colección de antipatrones de RxJS](/es/guide/anti-patterns/) - Evitar el mal uso de RP
+- [Colecciï¿½n de antipatrones de RxJS](/es/guide/anti-patterns/) - Evitar el mal uso de RP
 
 ## Referencias
 
 - [GitHub Discussion #17 - Reactive Programming Reconsidered](https://github.com/shuji-bonji/RxJS-with-TypeScript/discussions/17)
-- [Documentación oficial de Angular Signals](https://angular.dev/guide/signals)
+- [Documentaciï¿½n oficial de Angular Signals](https://angular.dev/guide/signals)
 - [React Concurrent Features](https://react.dev/blog/2022/03/29/react-v18)
 - [Svelte 5 Runes](https://svelte.dev/docs/svelte/what-are-runes)

@@ -3,7 +3,7 @@ description: "Ist Reactive Programming wirklich universell? Die Lücke zwischen 
 titleTemplate: ':title | RxJS'
 ---
 
-# Reactive Programming Reconsidered — Die Lücke zwischen Designphilosophie und Realität
+# RP Überdacht - Design vs Realität
 
 Reactive Programming (im Folgenden RP) ist weithin als leistungsstarkes Paradigma für die asynchrone Datenstromverarbeitung bekannt.
 

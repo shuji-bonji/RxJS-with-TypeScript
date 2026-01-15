@@ -3,7 +3,7 @@ description: concatAll è un operatore che prende un Higher-order Observable (Ob
 titleTemplate: ':title | RxJS'
 ---
 
-# concatAll - Appiattisci gli Observable Interni Sequenzialmente
+# concatAll - Appiattisci in Sequenza
 
 L'operatore `concatAll` prende un **Higher-order Observable** (Observable di Observable),
 **sottoscrive gli Observable interni in ordine**, e appiattisce i loro valori. Non avvierà il successivo fino a quando l'Observable precedente non completa.

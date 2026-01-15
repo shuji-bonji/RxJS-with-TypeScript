@@ -3,7 +3,7 @@ description: windowToggle è un operatore di conversione RxJS avanzato che perme
 titleTemplate: ':title | RxJS'
 ---
 
-# windowToggle - Finestra con Controllo Indipendente di Inizio e Fine
+# windowToggle - Finestra con Trigger
 
 L'operatore `windowToggle` controlla il **trigger di inizio** e il **trigger di fine** con Observable separati, emettendo ogni periodo come un nuovo Observable. Questo è un operatore finestra avanzato che può gestire più periodi di finestra simultaneamente.
 

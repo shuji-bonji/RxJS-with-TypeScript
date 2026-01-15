@@ -2,7 +2,7 @@
 description: "L'opérateur subscribeOn contrôle le timing de démarrage de l'abonnement d'un Observable en utilisant un planificateur spécifié, modifiant le contexte d'exécution du flux entier."
 ---
 
-# subscribeOn - Contrôle du timing de démarrage de l'abonnement
+# subscribeOn - Timing d'abonnement
 
 L'opérateur `subscribeOn` **contrôle le timing de démarrage de l'abonnement et le contexte d'exécution en utilisant un planificateur spécifié**. Il affecte le timing d'exécution du flux entier.
 

@@ -2,7 +2,7 @@
 description: "L'opérateur sampleTime est un opérateur de filtrage RxJS qui échantillonne périodiquement la dernière valeur du flux à des intervalles spécifiés. Idéal pour obtenir des snapshots périodiques."
 ---
 
-# sampleTime - Échantillonner la dernière valeur à intervalles réguliers
+# sampleTime - Échantillonnage périodique
 
 L'opérateur `sampleTime` **échantillonne périodiquement** la **dernière valeur** de l'Observable source à intervalles réguliers.
 Comme un snapshot périodique, il récupère la dernière valeur à ce moment.

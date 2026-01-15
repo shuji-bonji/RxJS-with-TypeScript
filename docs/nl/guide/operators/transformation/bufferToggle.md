@@ -3,7 +3,7 @@ description: De bufferToggle operator is een geavanceerde bufferoperator die sta
 titleTemplate: ':title'
 ---
 
-# bufferToggle - Buffer met onafhankelijke controle van start en einde
+# bufferToggle - Start/Einde Controle
 
 De `bufferToggle` operator controleert de **starttrigger** en **eindtrigger** met aparte Observables en geeft de waarden uit in een array. Dit is een geavanceerde bufferoperator die meerdere bufferperiodes tegelijk kan beheren.
 

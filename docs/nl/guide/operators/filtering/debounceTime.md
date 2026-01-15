@@ -3,7 +3,7 @@ description: De debounceTime operator geeft de laatste waarde uit wanneer er gee
 titleTemplate: ':title'
 ---
 
-# debounceTime - Beperk gebeurtenis vuren en geef waarde uit na wachten op een bepaalde tijd
+# debounceTime - Laatste waarde na stilte
 
 De `debounceTime` operator geeft de laatste waarde uit nadat een waarde is uitgegeven in de stream als er geen nieuwe waarde is uitgegeven gedurende de gespecificeerde tijd.
 Het wordt zeer vaak gebruikt in situaties waar frequente gebeurtenissen moeten worden onderdrukt, zoals zoekvakken met gebruikersinvoer.

@@ -2,7 +2,7 @@
 description: Der bufferToggle-Operator ist ein fortgeschrittener Pufferungsoperator, der Start- und End-Trigger mit separaten Observables steuert und mehrere Pufferungszeiträume unabhängig verwalten kann.
 ---
 
-# bufferToggle - Puffer mit unabhängiger Start- und End-Steuerung
+# bufferToggle - Puffer mit Trigger
 
 Der `bufferToggle`-Operator steuert **Start-Trigger** und **End-Trigger** mit separaten Observables und emittiert Werte als Array zusammengefasst. Ein fortgeschrittener Pufferungsoperator, der mehrere Pufferungszeiträume gleichzeitig verwalten kann.
 

@@ -3,7 +3,7 @@ description: L'operatore bufferToggle è un operatore di buffering avanzato che 
 titleTemplate: ':title'
 ---
 
-# bufferToggle - Buffer con Controllo Indipendente di Inizio e Fine
+# bufferToggle - Buffer con Trigger
 
 L'operatore `bufferToggle` controlla il **trigger di inizio** e il **trigger di fine** con Observable separati ed emette i valori in un array. Questo è un operatore di buffering avanzato che può gestire più periodi di buffering simultaneamente.
 

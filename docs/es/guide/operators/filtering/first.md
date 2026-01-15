@@ -3,7 +3,7 @@ description: El operador first recupera solo el primer valor del flujo, o el pri
 titleTemplate: ':title'
 ---
 
-# first - Recuperar el Primer Valor o el Primer Valor que Satisface una Condición
+# first - Obtener Primer Valor
 
 El operador `first` recupera solo el **primer valor** o **primer valor que satisface una condición** de un flujo y completa el flujo.
 

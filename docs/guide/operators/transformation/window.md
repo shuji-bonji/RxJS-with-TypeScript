@@ -2,7 +2,7 @@
 description: windowは別のObservableが値を発行するタイミングで、ソースObservableをネストされたObservableに分割するRxJSオペレーターで、イベント駆動型の高度なストリーム処理に最適です。
 ---
 
-# window - 別のObservableのタイミングでObservableを分割する
+# window - Observableで区切りを指定
 
 `window`オペレーターは、**別のObservableが値を発行するまで**ソースObservableの値をグループ化し、そのグループを**新しいObservableとして出力**します。
 `buffer`が配列を返すのに対し、`window`は**Observable\<T>を返す**ため、各ウィンドウに対してさらにオペレーターを適用できます。

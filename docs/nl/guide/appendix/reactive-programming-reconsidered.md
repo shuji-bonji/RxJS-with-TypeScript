@@ -3,7 +3,7 @@ description: "Is Reactive Programming echt universeel? Verifieert de kloof tusse
 titleTemplate: ':title | RxJS'
 ---
 
-# Reactive Programming Reconsidered — Kloof tussen ontwerpfilosofie en realiteit
+# RP Heroverwogen - Design vs Realiteit
 
 Reactive Programming (hierna RP) is algemeen bekend als een krachtig paradigma voor asynchrone datastream verwerking.
 

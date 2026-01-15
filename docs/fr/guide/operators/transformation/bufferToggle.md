@@ -2,7 +2,7 @@
 description: "L'opérateur bufferToggle contrôle les déclencheurs de début et de fin avec des Observables séparés, permettant de gérer indépendamment plusieurs périodes de mise en buffer. Un opérateur avancé de mise en buffer."
 ---
 
-# bufferToggle - Buffer avec contrôle indépendant début/fin
+# bufferToggle - Buffer avec déclencheurs
 
 L'opérateur `bufferToggle` contrôle les **déclencheurs de début** et **de fin** avec des Observables séparés et émet les valeurs regroupées dans un tableau. C'est un opérateur de mise en buffer avancé capable de gérer plusieurs périodes de mise en buffer simultanément.
 

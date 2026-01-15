@@ -1,7 +1,7 @@
 ---
 description: "Erklärung, wie man mit finalize und complete die Stream-Abschlussverarbeitung und Ressourcenfreigabe in RxJS effektiv durchführt. Stellt praktische Muster vor wie Speicherleck-Prävention, Dateihandle-Freigabe, WebSocket-Verbindungs-Cleanup, UI-Status-Reset usw. Erläutert auch die Unterschiede zur finally-Klausel."
 ---
-# finalize und complete - Ressourcenfreigabe und Stream-Abschlussverarbeitung
+# finalize und complete - Ressourcen-Cleanup
 
 In RxJS ist es wichtig, die Stream-Beendigung und Ressourcenfreigabe angemessen zu verwalten. Diese Seite erklärt den Mechanismus des `finalize`-Operators und der `complete`-Benachrichtigung.
 

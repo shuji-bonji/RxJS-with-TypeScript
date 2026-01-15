@@ -2,7 +2,7 @@
 description: "takeWhile est un opérateur de filtrage RxJS qui continue à récupérer des valeurs tant qu'une condition spécifiée est remplie, et termine le flux lorsque la condition devient fausse. Idéal pour l'extraction de données jusqu'à un seuil, le traitement basé sur la priorité et la pagination lorsque vous souhaitez contrôler le flux avec des conditions dynamiques. L'option inclusive permet d'inclure la valeur qui a rendu la condition fausse."
 ---
 
-# takeWhile - Récupérer les valeurs tant que la condition est satisfaite
+# takeWhile - Prendre Pendant Condition
 
 L'opérateur `takeWhile` continue à récupérer des valeurs **tant que la condition spécifiée est satisfaite**, et termine le flux lorsque la condition devient `false`.
 

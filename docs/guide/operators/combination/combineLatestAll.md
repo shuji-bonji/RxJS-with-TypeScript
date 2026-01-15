@@ -2,7 +2,7 @@
 description: combineLatestAllは、Higher-order Observable（Observable of Observables）を受け取り、全ての内部Observableが最低1回発火したら、それぞれの最新値を組み合わせて出力するオペレーターです。
 ---
 
-# combineLatestAll - 全ての内部Observableの最新値を組み合わせる
+# combineLatestAll - 内部Observableの最新値を結合
 
 `combineLatestAll` オペレーターは、**Higher-order Observable**（Observable of Observables）を受け取り、
 **全ての内部Observableが最低1回発火したら**、それぞれの**最新値を組み合わせて**配列として出力します。

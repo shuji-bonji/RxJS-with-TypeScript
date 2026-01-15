@@ -2,7 +2,7 @@
 description: switchMapは前のObservableをキャンセルして最新のものに切り替える変換オペレーターです。ライブサーチ、ナビゲーション切替、自動保存などのユースケースに最適で、TypeScriptの型推論とともに安全な非同期処理を実現します。mergeMapやconcatMapとの使い分けも詳しく解説します。
 ---
 
-# switchMap - 前のObservableをキャンセルして最新のものに切り替える
+# switchMap - 最新のObservableに切り替え
 
 `switchMap`オペレーターは、入力ストリームの各値に対して新しいObservableを生成し、**前回のObservableをキャンセルして最新のObservableだけに切り替え**ます。  
 検索フォームのように、直近の入力だけを有効にしたいケースに最適です。
