@@ -1,33 +1,34 @@
 ---
-description: "Uma comparação abrangente de RxJS forkJoin vs combineLatest com diagramas. Aprenda as diferenças no momento de conclusão e atualizações de valores mais recentes, com exemplos práticos para chamadas de API paralelas e monitoramento de entrada de formulário."
+description: "Compara minuciosamente as diferenças entre forkJoin e combineLatest do RxJS com ilustrações. Explica os usos caso a caso (aquisição paralela de API, monitoramento de entrada de formulário, etc.) mostrando as diferenças no timing de conclusão e atualização do último valor, com exemplos práticos."
 head:
   - - meta
     - name: keywords
       content: RxJS, forkJoin, combineLatest, diferença, comparação, Observable, processamento paralelo, TypeScript
 ---
 
-# Diferença Entre forkJoin e combineLatest
+# Diferença entre forkJoin e combineLatest
 
-Ao combinar múltiplos Observables no RxJS, `forkJoin` e `combineLatest` são as Creation Functions mais comumente usadas. No entanto, essas duas têm **comportamentos significativamente diferentes**, e usá-las incorretamente não produzirá os resultados esperados.
+Ao combinar vários Observables no RxJS, `forkJoin` e `combineLatest` são as Creation Functions mais comumente usadas. No entanto, as duas **se comportam de forma muito diferente** e, se não forem usadas corretamente, não produzirão os resultados esperados.
 
-Esta página compara minuciosamente ambas usando diagramas e exemplos práticos, deixando claro "qual usar".
+Esta página compara detalhadamente as diferenças entre elas com ilustrações e exemplos práticos para deixar claro qual delas você deve usar.
 
-## Conclusão: Diferença Entre forkJoin e combineLatest
+## Conclusão: a diferença entre forkJoin e combineLatest
 
 | Característica | forkJoin | combineLatest |
-|---------|----------|---------------|
-| **Momento de Emissão** | **Uma vez** após todos completarem | **Toda vez** que um valor é atualizado |
-| **Valor Emitido** | **Último valor** de cada Observable | **Valor mais recente** de cada Observable |
-| **Condição de Conclusão** | Todos os Observables completam | Todos os Observables completam |
-| **Principais Casos de Uso** | Chamadas de API paralelas, carregamento inicial de dados | Monitoramento de formulários, sincronização em tempo real |
-| **Fluxos Infinitos** | ❌ Não pode usar (nunca completa) | ✅ Pode usar (emite valores mesmo sem conclusão) |
+|---|---|---|
+| **Timing de emissão** | **Apenas uma vez** após conclusão de todos | **A cada atualização** de um valor |
+| **Valor emitido** | O **último valor** de cada Observable | O **valor mais recente** de cada Observable |
+| **Condição de conclusão** | Todos os Observables concluídos | Todos os Observables concluídos |
+| **Uso principal** | Aquisição paralela de APIs, carregamento inicial | Monitoramento de formulário, sincronização em tempo real |
+| **Stream infinito** | ❌ Não utilizável (não conclui) | ✅ Utilizável (emite valores sem concluir) |
 
 > [!TIP]
-> **Maneira fácil de lembrar**
-> - `forkJoin` = "Uma vez que todos estejam prontos, **partir uma vez**" (similar ao Promise.all)
-> - `combineLatest` = "**Relatar o status mais recente** toda vez que alguém se move"
 
-## Compreendendo Diferenças de Comportamento com Diagramas
+> **Fácil de lembrar**
+> - `forkJoin` = «partir **apenas uma vez** quando todos estiverem presentes» (semelhante a Promise.all)
+> - `combineLatest` = «**reportar o estado mais recente** sempre que alguém se mover»
+
+## Entendendo as diferenças de comportamento com ilustrações
 
 ### Comportamento do forkJoin
 
@@ -36,20 +37,20 @@ sequenceDiagram
     participant A as Observable A
     participant B as Observable B
     participant F as forkJoin
-    participant S as Assinante
+    participant S as Subscriber
 
-    A->>A: Emitir valor1
-    A->>A: Emitir valor2
-    B->>B: Emitir valorX
-    A->>A: Emitir valor3 (último)
+    A->>A: emite valor 1
+    A->>A: emite valor 2
+    B->>B: emite valor X
+    A->>A: emite valor 3 (última)
     A-->>F: complete
-    B->>B: Emitir valorY (último)
+    B->>B: emite valor Y (última)
     B-->>F: complete
-    F->>S: Emitir [valor3, valorY]
+    F->>S: emite [valor 3, valor Y]
     F-->>S: complete
 ```
 
-**Ponto-Chave**: Aguarda até que todos os Observables façam `complete`, então emite **apenas os últimos valores** uma vez.
+**Ponto**: aguarde até que todos os Observables estejam `complete` e emita **apenas o último valor** uma vez.
 
 ### Comportamento do combineLatest
 
@@ -58,27 +59,27 @@ sequenceDiagram
     participant A as Observable A
     participant B as Observable B
     participant C as combineLatest
-    participant S as Assinante
+    participant S as Subscriber
 
-    A->>A: Emitir valor1
-    Note over C: Aguardando porque B ainda não emitiu
-    B->>B: Emitir valorX
-    C->>S: Emitir [valor1, valorX]
-    A->>A: Emitir valor2
-    C->>S: Emitir [valor2, valorX]
-    B->>B: Emitir valorY
-    C->>S: Emitir [valor2, valorY]
-    A->>A: Emitir valor3
-    C->>S: Emitir [valor3, valorY]
+    A->>A: emite valor 1
+    Note over C: Baguardando porque B ainda não emitiu
+    B->>B: emite valor X
+    C->>S: emite [valor 1, valor X]
+    A->>A: emite valor 2
+    C->>S: emite [valor 2, valor X]
+    B->>B: emite valor Y
+    C->>S: emite [valor 2, valor Y]
+    A->>A: emite valor 3
+    C->>S: emite [valor 3, valor Y]
 ```
 
-**Ponto-Chave**: Após todos os Observables emitirem seu primeiro valor, **emite a combinação mais recente toda vez que qualquer um atualiza**.
+**Ponto**: depois que todos os Observables tiverem emitido seu primeiro valor, eles continuarão a emitir a combinação mais recente **sempre que qualquer um deles for atualizado**.
 
-## Visualização em Linha do Tempo das Diferenças
+## Diferenças na linha do tempo
 
 ```mermaid
 gantt
-    title Momento de Emissão forkJoin vs combineLatest
+    title forkJoin vs Timing de emissão de combineLatest
     dateFormat X
     axisFormat %s
 
@@ -93,29 +94,29 @@ gantt
     valorY :b2, 3, 1
     complete :milestone, b_done, 4, 0
 
-    section Emissão forkJoin
+    section forkJoinemissão
     [valor3,valorY] :crit, fork_out, 5, 1
 
-    section Emissão combineLatest
+    section combineLatestemissão
     [valor1,valorX] :c1, 1, 1
     [valor2,valorX] :c2, 2, 1
     [valor2,valorY] :c3, 3, 1
     [valor3,valorY] :c4, 4, 1
 ```
 
-## Comparação Prática: Verificar Comportamento com a Mesma Fonte de Dados
+## Comparação prática: verificar o comportamento com a mesma fonte de dados
 
-Aplique tanto `forkJoin` quanto `combineLatest` aos mesmos Observables e verifique as diferenças de saída.
+Aplicamos `forkJoin` e `combineLatest` ao mesmo Observable e verificamos as diferenças na saída.
 
 ```ts
 import { forkJoin, combineLatest, interval, take, map } from 'rxjs';
 
-// Criar área de saída
+// criar área de saída
 const output = document.createElement('div');
 output.innerHTML = '<h3>Comparação forkJoin vs combineLatest:</h3>';
 document.body.appendChild(output);
 
-// Criar dois Observables
+// Criar 2 Observables
 const obs1$ = interval(1000).pipe(
   take(3),
   map(i => `A${i}`)
@@ -126,70 +127,71 @@ const obs2$ = interval(1500).pipe(
   map(i => `B${i}`)
 );
 
-// Área de exibição de resultado forkJoin
+// Área de exibição do resultado de forkJoin
 const forkJoinResult = document.createElement('div');
-forkJoinResult.innerHTML = '<h4>forkJoin:</h4><div id="forkjoin-output">Aguardando...</div>';
+forkJoinResult.innerHTML = '<h4>forkJoin:</h4><div id="forkjoin-output">aguardando...</div>';
 output.appendChild(forkJoinResult);
 
-// Área de exibição de resultado combineLatest
+// Área de exibição do resultado de combineLatest
 const combineLatestResult = document.createElement('div');
 combineLatestResult.innerHTML = '<h4>combineLatest:</h4><div id="combinelatest-output"></div>';
 output.appendChild(combineLatestResult);
 
-// forkJoin: Emite uma vez após todos completarem
+// forkJoin：após conclusão de todos1emite apenas uma vez
 forkJoin([obs1$, obs2$]).subscribe(result => {
   const el = document.getElementById('forkjoin-output');
   if (el) {
-    el.textContent = `Emissão: [${result.join(', ')}]`;
+    el.textContent = `emissão: [${result.join(', ')}]`;
     el.style.color = 'green';
     el.style.fontWeight = 'bold';
   }
 });
 
-// combineLatest: Emite toda vez que valores atualizam
+// combineLatest：emite a cada atualização de valor
 const combineOutput = document.getElementById('combinelatest-output');
 combineLatest([obs1$, obs2$]).subscribe(result => {
   if (combineOutput) {
     const item = document.createElement('div');
-    item.textContent = `Emissão: [${result.join(', ')}]`;
+    item.textContent = `emissão: [${result.join(', ')}]`;
     combineOutput.appendChild(item);
   }
 });
 ```
 
-**Resultados da Execução**:
-- `forkJoin`: Emite `[A2, B1]` **uma vez** após cerca de 3 segundos
-- `combineLatest`: Emite **4 vezes** começando de cerca de 1.5 segundos (por exemplo, `[A0, B0]` → `[A1, B0]` → `[A2, B0]` → `[A2, B1]`)
+**Resultado da execução**:
+- `forkJoin`: emite `[A2, B1]` **apenas uma vez** após cerca de 3 segundos
+- `combineLatest`: emite **4 vezes** a partir de aproximadamente 1,5 s (por exemplo, `[A0, B0]` → `[A1, B0]` → `[A2, B0]` → `[A2, B1]`)
 
 > [!NOTE]
-> A ordem de emissão do `combineLatest` depende do agendamento do timer e pode variar por ambiente. O ponto-chave é "ele emite toda vez que qualquer valor é atualizado". Neste exemplo, 4 emissões ocorrem, mas a ordem pode mudar como `[A1, B0]` → `[A1, B1]`.
 
-## Quando Usar Qual (Guia Caso a Caso)
+> A ordem de emissão do `combineLatest` depende do agendamento do timer e pode variar de acordo com o ambiente. O ponto importante é que «um valor é emitido sempre que um deles é atualizado». No exemplo acima a emissão ocorre 4 vezes, mas a ordem pode mudar, por exemplo `[A1, B0]` → `[A1, B1]`.
 
-### Casos para Usar forkJoin
+## Qual usar (guia por caso)
 
-#### 1. Chamadas de API Paralelas
+### Casos em que usar forkJoin
 
-Quando você deseja processar apenas após todos os dados estarem prontos.
+#### 1. Aquisição paralela de várias APIs
+
+Quando você quer processar os dados depois que todos os dados estiverem disponíveis.
 
 ```ts
 import { forkJoin } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 
-// Buscar informações de usuário e configurações simultaneamente
+// obter info do usuário e configurações simultaneamente
 forkJoin({
   user: ajax.getJSON('/api/user/123'),
   settings: ajax.getJSON('/api/settings'),
   notifications: ajax.getJSON('/api/notifications')
 }).subscribe(({ user, settings, notifications }) => {
-  // Renderizar painel após todos os dados estarem prontos
+  // renderizar a tela após todos os dados estarem prontos
   renderDashboard(user, settings, notifications);
 });
 ```
 
-#### 2. Busca em Massa de Dados no Carregamento Inicial
+#### 2. Aquisição de dados em lote durante o carregamento inicial
 
-Buscar dados mestres necessários na inicialização do aplicativo todos de uma vez.
+Adquira em bloco os dados mestres necessários no início do aplicativo.
 
 ```ts
 import { forkJoin } from 'rxjs';
@@ -205,13 +207,14 @@ function loadInitialData() {
 ```
 
 > [!WARNING]
-> `forkJoin` não pode ser usado com **Observables que nunca completam** (`interval`, WebSocket, fluxos de eventos, etc.). Ele aguardará para sempre se não completarem.
 
-### Casos para Usar combineLatest
+> `forkJoin` não pode ser usado com **Observables que não se completam** (por exemplo, `interval`, WebSocket, fluxos de eventos). Se não se completar, continuará aguardando indefinidamente.
 
-#### 1. Monitoramento de Entrada de Formulário em Tempo Real
+### Casos em que usar combineLatest
 
-Combine múltiplos valores de entrada para validação ou atualizações de exibição.
+#### 1. Monitoramento em tempo real da entrada do formulário
+
+Combine vários valores de entrada para atualizar a validação e a exibição.
 
 ```ts
 import { combineLatest, fromEvent } from 'rxjs';
@@ -232,16 +235,16 @@ const age$ = fromEvent(ageInput, 'input').pipe(
   startWith(0)
 );
 
-// Executar validação sempre que qualquer entrada mudar
+// executar validação a cada mudança de entrada
 combineLatest([name$, email$, age$]).subscribe(([name, email, age]) => {
   const isValid = name.length > 0 && email.includes('@') && age >= 18;
   submitButton.disabled = !isValid;
 });
 ```
 
-#### 2. Sincronização em Tempo Real de Múltiplos Fluxos
+#### 2. Sincronização em tempo real de vários streams
 
-Exibição integrada de dados de sensores ou status.
+Exibição integrada de dados e status de sensores.
 
 ```ts
 import { combineLatest, interval } from 'rxjs';
@@ -258,9 +261,9 @@ combineLatest([temperature$, humidity$, pressure$]).subscribe(
 );
 ```
 
-#### 3. Combinando Condições de Filtro
+#### 3. Combinação de condições de filtro
 
-Execute busca sempre que qualquer condição de filtro mudar.
+Realizar uma busca sempre que várias condições de filtro mudarem.
 
 ```ts
 import { combineLatest, BehaviorSubject } from 'rxjs';
@@ -280,45 +283,45 @@ combineLatest([searchText$, category$, sortOrder$]).pipe(
 });
 ```
 
-## Fluxograma de Decisão
+## Fluxograma de uso
 
 ```mermaid
 flowchart TD
-    A[Deseja combinar múltiplos Observables] --> B{Os Observables completam?}
-    B -->|Todos completam| C{Precisa do resultado apenas uma vez?}
-    B -->|Alguns nunca completam| D[combineLatest]
-    C -->|Sim| E[forkJoin]
-    C -->|Não, precisa a cada atualização| D
+    A[múltiplosObservabledeseja combinar] --> B{Observablese completa?}
+    B -->|todos se completam| C{resultado1necessário apenas uma vez?}
+    B -->|alguns não se completam| D[combineLatest]
+    C -->|sim| E[forkJoin]
+    C -->|não, necessário a cada atualização| D
 
-    E --> E1[Exemplos: Chamadas de API paralelas<br>Carregamento inicial de dados]
-    D --> D1[Exemplos: Monitoramento de formulários<br>Sincronização em tempo real]
+    E --> E1[Ex.: APIaquisição paralela<br>carregamento inicial de dados]
+    D --> D1[Ex.: monitoramento de formulário<br>sincronização em tempo real]
 ```
 
-## Erros Comuns e Soluções
+## Erros comuns e soluções
 
-### Erro 1: Usar forkJoin com Observables que Não Completam
+### Erro 1: usar forkJoin com um Observable que não se completa
 
 ```ts
-// ❌ Isso nunca emitirá
+// ❌ isso nunca será emitido
 forkJoin([
-  interval(1000),  // Nunca completa
+  interval(1000),  // não se completa
   ajax.getJSON('/api/data')
 ]).subscribe(console.log);
 
-// ✅ Faça completar com take, ou use combineLatest
+// ✅ takecompletar com combineLatestusar
 forkJoin([
-  interval(1000).pipe(take(5)),  // Completa após 5
+  interval(1000).pipe(take(5)),  // 5se completa em
   ajax.getJSON('/api/data')
 ]).subscribe(console.log);
 ```
 
-### Erro 2: combineLatest Sem Valores Iniciais
+### Erro 2: sem valor inicial em combineLatest
 
 ```ts
-// ❌ Não emitirá mesmo se email$ tiver valor até name$ emitir primeiro
+// ❌ name$até a primeira emissão de Bemail$mesmo com valores, nada é emitido
 combineLatest([name$, email$]).subscribe(console.log);
 
-// ✅ Definir valores iniciais com startWith
+// ✅ startWithdefinir valor inicial com
 combineLatest([
   name$.pipe(startWith('')),
   email$.pipe(startWith(''))
@@ -327,23 +330,24 @@ combineLatest([
 
 ## Resumo
 
-| Critério de Seleção | forkJoin | combineLatest |
-|-------------------|----------|---------------|
-| Processar uma vez quando todos estiverem prontos | ✅ | ❌ |
-| Processar toda vez que valores mudam | ❌ | ✅ |
-| Fluxos que não completam | ❌ | ✅ |
-| Uso similar ao Promise.all | ✅ | ❌ |
+| Critério de seleção | forkJoin | combineLatest |
+|---|---|---|
+| Processamento único quando todos estão prontos | ✅ | ❌ |
+| Processamento a cada mudança de valor | ❌ | ✅ |
+| Stream que não conclui | ❌ | ✅ |
+| Uso tipo Promise.all | ✅ | ❌ |
 | Sincronização em tempo real | ❌ | ✅ |
 
 > [!IMPORTANT]
-> **Princípios para escolher**
-> - **forkJoin**: "Uma vez quando todos estiverem prontos" → Chamadas de API paralelas, carregamento inicial
-> - **combineLatest**: "Atualizar toda vez que alguém se move" → Monitoramento de formulários, UI em tempo real
 
-## Páginas Relacionadas
+> **Princípio de uso**
+> - **forkJoin**: «apenas uma vez quando todos estiverem presentes» → aquisição paralela de APIs, carregamento inicial
+> - **combineLatest**: «atualizar sempre que alguém se mover» → monitoramento de formulário, UI em tempo real
 
-- **[forkJoin](/pt/guide/creation-functions/combination/forkJoin)** - Explicação detalhada de forkJoin
-- **[combineLatest](/pt/guide/creation-functions/combination/combineLatest)** - Explicação detalhada de combineLatest
+## Páginas relacionadas
+
+- **[forkJoin](/pt/guide/creation-functions/combination/forkJoin)** - Explicação detalhada do forkJoin
+- **[combineLatest](/pt/guide/creation-functions/combination/combineLatest)** - Explicação detalhada do combineLatest
 - **[zip](/pt/guide/creation-functions/combination/zip)** - Emparelhar valores correspondentes
-- **[merge](/pt/guide/creation-functions/combination/merge)** - Executar múltiplos Observables em paralelo
-- **[withLatestFrom](/pt/guide/operators/combination/withLatestFrom)** - Apenas o fluxo principal dispara
+- **[merge](/pt/guide/creation-functions/combination/merge)** - Executar vários Observables em paralelo
+- **[withLatestFrom](/pt/guide/operators/combination/withLatestFrom)** - Apenas o fluxo principal é trigger
