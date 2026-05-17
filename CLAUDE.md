@@ -11,11 +11,17 @@ This is a **multilingual educational documentation site** for learning RxJS with
 - Practical learning through code examples and tests
 - Model case for human-AI co-created educational content
 - VitePress-based static documentation site
-- **Multilingual support**: Japanese (primary) and English
+- **Multilingual support**: 7 languages — Japanese (primary), English, French, German, Italian, Spanish, Dutch, Portuguese
 
 **Languages**:
 - **Japanese (ja)**: Primary language at `/guide/` (root locale)
-- **English (en)**: Secondary language at `/en/guide/`
+- **English (en)**: `/en/guide/`
+- **French (fr)**: `/fr/guide/`
+- **German (de)**: `/de/guide/`
+- **Italian (it)**: `/it/guide/`
+- **Spanish (es)**: `/es/guide/`
+- **Dutch (nl)**: `/nl/guide/`
+- **Portuguese (pt)**: `/pt/guide/`
 
 **Key Technologies**:
 - VitePress 1.6.3 (static site generator)
@@ -486,17 +492,31 @@ When editing documentation:
 
 ### 🔴 High Priority
 
-1. **Chapter 14: パフォーマンス最適化** (Unimplemented)
+1. **Issue #34 残作業: 横断スコープ深刻ファイルの DeepL 補完** (進行中)
+   - 残り 7 ファイル × 6 言語 = 約 210 DeepL call、約 550K 文字消費見込み
+   - 対象: `elementAt`, `find`, `findIndex`, `ignoreElements`, `sampleTime`, `auditTime`, `takeLast`
+   - ローカル Python スクリプト `scripts/translate_files.py` の作成が前提
+   - Skill `rxjs-vitepress-i18n` + `rxjs-glossary` を参照
+
+2. **audit.md の de/it/es/nl/pt 本文段落修正** (Issue #34 関連)
+   - 現状: 本文段落が fr 流用状態
+   - 対応: ローカルスクリプト稼働後に DeepL から取得済みの各言語翻訳を正しく反映
+
+3. **Issue #33: XCOMET MCP 翻訳検証** (Issue #34 完了後)
+   - 全 7 言語の翻訳精度を XCOMET MCP で検証
+   - 低スコア箇所を DeepL で再翻訳
+
+4. **Chapter 14: パフォーマンス最適化** (Unimplemented)
    - Subscription lifecycle management and memory leak prevention
    - Operator selection for performance optimization
    - Stream architecture patterns for scalability
 
-2. **Chapter 15: フレームワークとの統合** (Unimplemented)
+5. **Chapter 15: フレームワークとの統合** (Unimplemented)
    - Angular, React, Vue framework integrations
    - State management patterns (NgRX, Signals, Redux Toolkit)
    - Web API integration (WebSocket, SSE, IndexedDB)
 
-3. **RxJS v8 Migration Guide** (Wait for stable release)
+6. **RxJS v8 Migration Guide** (Wait for stable release)
    - Research and document new features
    - Create migration guide
    - Update all code examples
@@ -528,379 +548,77 @@ When editing documentation:
 
 ---
 
-## Completed Releases
+## 過去のリリース履歴
 
-### ✅ Third Release: New Chapters (Completed)
+詳細な完成済みリリース履歴は [CHANGELOG.md](./CHANGELOG.md) を参照してください。
 
-The following new chapters have been added or are planned for future releases.
-
-#### ✅ Chapter 3: Creation Functions (Added in restructuring)
-
-**Purpose:**
-- Clearly separate creation functions from pipeable operators
-- Teach Observable creation and combination before manipulation
-- Explain the relationship between creation functions (concat, merge) and pipeable operators (concatWith, mergeWith)
-
-**Placement:** After Observable basics, before Pipeable Operators
-- Natural progression: Basic creation (of, from) → **Advanced creation/combination** → Manipulation (operators) → Sharing (Subject)
-
-**Structure:**
-```
-3. Creation Functions
-├── Creation Functions とは
-│   ├── Pipeable Operator との違い
-│   └── 使い分けの基準
-├── 基本的な Creation Functions（2章の復習）
-│   └── of, from, interval, timer
-├── 結合系 Creation Functions
-│   ├── concat - 順次結合
-│   ├── merge - 並行結合
-│   ├── combineLatest - 最新値の組み合わせ
-│   ├── zip - 対応する値のペア化
-│   ├── race - 最速のストリームを採用
-│   ├── forkJoin - すべての完了を待つ
-│   └── partition - 条件で分割
-└── Pipeable Operator との対応関係
-```
-
-#### ✅ Chapter 8: RxJSのデバッグ手法 (Structure created, content TBD)
-
-**Why Critical:**
-- RxJS debugging is one of the most challenging aspects for learners
-- Essential skill for real-world development
-- Complements existing testing and anti-patterns chapters
-
-**Proposed Structure:**
-```
-8. RxJSのデバッグ手法
-├── デバッグの基本戦略
-│   ├── tap オペレーターでのログ出力
-│   ├── 開発者ツールでの確認
-│   └── RxJS DevTools の活用
-├── よくあるデバッグシナリオ
-│   ├── 値が流れてこない
-│   ├── 期待と異なる値が出力される
-│   ├── 購読が完了しない（無限ストリーム）
-│   ├── メモリリーク（購読解除忘れ）
-│   └── エラーが発生しているのに気づかない
-├── デバッグツール
-│   ├── rxjs-spy の使い方
-│   ├── RxJS DevTools（ブラウザ拡張）
-│   └── カスタムデバッグオペレーターの作成
-└── パフォーマンスデバッグ
-    ├── 購読数の確認
-    ├── 不要な再評価の検出
-    └── メモリ使用量の監視
-```
-
-**Placement:** Between Chapter 7 (Schedulers) and Chapter 9 (Testing)
-- Natural progression: Implementation → Error Handling → Schedulers → **Debugging** → Testing → Anti-patterns
-
-#### ✅ Chapter 11: RxJS困難点克服 (Completed)
-
-**Purpose:**
-- Address common difficulties that experienced developers face when working with RxJS
-- Provide actionable guidance to overcome RxJS-specific conceptual and practical barriers
-- Bridge the gap between theory (Chapters 1-10) and practice (Chapter 13)
-
-**Structure:**
-```
-11. RxJS困難点克服
-├── index.md                        # なぜRxJSは難しいのか（経験者でも）
-├── conceptual-understanding.md     # 概念理解の壁
-├── lifecycle-management.md         # ライフサイクル管理の壁
-├── operator-selection.md           # オペレーター選択の迷い
-├── timing-and-order.md             # タイミングと順序の理解
-├── state-and-sharing.md            # 状態管理の難しさ
-├── stream-combination.md           # 複数ストリーム組み合わせ
-└── debugging-guide.md              # デバッグの壁
-```
-
-**Implementation Status:** ✅ All 7 pages completed (Q1 2025)
-
-#### ✅ Chapter 3: Creation Functions - Full Expansion (Completed Q4 2025)
-
-**Purpose:**
-- Provide comprehensive, dedicated pages for all major Creation Functions
-- Move detailed explanations from Chapter 2 to Chapter 3 where they belong
-- Maintain Chapter 2 as a quick reference with links to Chapter 3 detailed pages
-- Complete the Creation Functions documentation with consistent depth across all functions
-
-**Final Status:**
-- Chapter 3 has been fully expanded to include **7 categories** with comprehensive documentation
-- Total of **28 pages** created (1 main index + 7 category indices + 20 detailed function pages)
-- Chapter 2 (Observableの作成方法) now serves as quick reference with cross-links to Chapter 3 detailed pages
-- All Creation Functions now have consistent documentation depth
-
-**Completed Structure:**
-
-```
-3. Creation Functions (COMPLETED)
-├── index.md (main index with comprehensive table)
-├── 基本作成系 (6 pages)
-│   ├── index.md
-│   ├── of.md - 指定した値を順番に発行
-│   ├── from.md - 配列、Promise等から変換
-│   ├── fromEvent.md - イベントをObservableに変換
-│   ├── interval.md - 指定間隔で連続発行
-│   └── timer.md - 遅延後に発行開始
-├── ループ生成系 (3 pages)
-│   ├── index.md
-│   ├── range.md - 数値の範囲を生成
-│   └── generate.md - ループ的な生成（for文のような動作）
-├── HTTP通信系 (3 pages) - Renamed from "変換系"
-│   ├── index.md
-│   ├── ajax.md - Ajax/HTTPリクエスト
-│   └── fromFetch.md - Fetch APIのラッパー
-├── 結合系 (6 pages) - Previously existing
-│   ├── index.md
-│   ├── concat.md, merge.md, combineLatest.md
-│   ├── zip.md, forkJoin.md
-├── 選択・分割系 (3 pages) - Previously existing
-│   ├── index.md
-│   ├── race.md, partition.md
-├── 条件分岐系 (3 pages) - Previously existing
-│   ├── index.md
-│   ├── iif.md, defer.md
-└── 制御系 (3 pages)
-    ├── index.md
-    ├── scheduled.md - スケジューラーを指定してObservableを生成
-    └── using.md - リソース制御付きObservable
-```
-
-**Total Pages Created:** 28 pages across 7 categories
-
-**Key Implementation Decisions:**
-
-1. **Category Renaming:**
-   - "変換系" renamed to "HTTP通信系" for accuracy
-   - Reason: ajax/fromFetch are HTTP-specific, not general conversion functions
-
-2. **Function Placement:**
-   - `bindCallback` and `bindNodeCallback` kept in Chapter 2 only
-   - Reason: Not classified as Creation operators in Learn RxJS documentation
-   - Chapter 2 provides detailed coverage, avoiding duplication
-
-3. **Cross-Referencing:**
-   - Chapter 2 (creation.md) updated with cross-links to all Chapter 3 detailed pages
-   - Chapter 2 maintained as quick reference guide
-   - All functions accessible from both chapters
-
-4. **Documentation Consistency:**
-   - All pages follow Section 8 documentation enhancement guidelines
-   - Each page includes: introduction, TypeScript examples, practical use cases, marble diagrams
-   - Emoji removed from level 1-3 headings for consistency
-   - Main index page uses comprehensive table format with clickable links
-
-5. **Navigation Updates:**
-   - `docs/.vitepress/config.ts` sidebar fully updated
-   - `docs/guide/index.md` updated with all 7 categories
-   - Dead links fixed (error-handling, schedulers pages)
-
-**Completed Implementation Steps:**
-
-- ✅ Created directory structure (basic, loop, http-communication, control)
-- ✅ Created 7 category index pages with overviews and comparison tables
-- ✅ Created 20 detailed function pages with comprehensive examples
-- ✅ Updated Chapter 2 with cross-links to Chapter 3
-- ✅ Updated main Creation Functions index with table format
-- ✅ Updated navigation (config.ts, guide/index.md)
-- ✅ Removed emoji from level 1-3 headings across all pages
-- ✅ Fixed dead links and verified build
-- ✅ Updated terminology (removed "新しい" from Creation Functions description)
-
-**Impact:**
-- Complete Creation Functions documentation with 7 categories
-- Improved learning experience with dedicated, comprehensive pages
-- Clear separation between quick reference (Chapter 2) and detailed guides (Chapter 3)
-- Consistent documentation style across all 28 pages
+- **[Fifth Release] - 2026-05**: 6 言語追加 + RxJS MCP 監査適用 (Phase 1〜3、337 ファイル)
+- **[Fourth Release] - 2025-01**: Multi-language Support (en 翻訳、180 ファイル)
+- **[Third Release] - 2025**: New Chapters (Chapter 3 Creation Functions 28 ページ、Chapter 13 実践パターン 9 ページ)
 
 ---
 
-#### ✅ Chapter 13: 実践パターン集 (Completed November 2025)
 
-**Purpose:**
-- Provide real-world implementation patterns for common use cases
-- Show how to apply RxJS knowledge in practical scenarios
-- Address the gap between "knowing operators" and "building features"
+## Translation Workflow & i18n Maintenance (Issues #32-#34)
 
-**Final Status:**
-- Chapter 13 has been fully implemented with **9 comprehensive pages** (Japanese and English)
-- All code examples follow the **immediately executable** pattern (dynamic DOM creation, no HTML setup required)
-- Covers essential practical patterns from UI events to advanced form handling
+7 言語ドキュメントの品質向上を 3 つの Issue で段階的に進める。各 Issue は独立した役割を持ち、**Issue #32 → #34 → #33** の順で進める。
 
-**Completed Structure:**
+### ✅ Issue #32: RxJS MCP 監査レポート（完了）
 
-```
-13. 実践パターン集 (COMPLETED - 9 pages)
-├── index.md - 実践パターンの概要
-├── ui-events.md - UIイベント処理パターン
-├── api-calls.md - API呼び出しパターン
-├── form-handling.md - フォーム処理パターン
-├── real-time-data.md - リアルタイムデータ処理 (WebSocket, SSE, Polling)
-├── caching-strategies.md - キャッシュ戦略
-├── error-handling-patterns.md - エラーハンドリング実践パターン
-├── subscribe-branching.md - subscribe内の条件分岐パターン
-└── advanced-form-patterns.md - JSON Patch高度なフォームパターン
-```
+`rxjs-mcp-server` v0.4.1 で日本語版を機械検査し、検出された問題を 3 Phase に分けて全 7 言語に適用済み。
 
-**Key Implementation Features:**
+- **Phase 1（高優先度・error レベル）**: shareReplay/retryWhen/mapTo/takeUntil 修正
+- **Phase 2（型注釈一括強化）**: `catchError((error: unknown) => ...)` への変換
+- **Phase 2.5（error.message ガード）**: `error instanceof Error ? error.message : String(error)` のインラインガード
+- **Phase 3（教材表現の調整）**: fromEvent サンプルへの WARNING callout 追加、`retry({ count, delay })` への移行案内
 
-1. **Immediately Executable Code Examples:**
-   - All DOM elements created dynamically with `document.createElement()`
-   - No pre-existing HTML markup required
-   - Examples work in browser console, CodeSandbox, StackBlitz immediately
-   - Traditional `querySelector` approach shown in comments for educational purposes
+**成果**: 6 言語 + JA で 337 ファイル変更（fr 60 + de 62 + it 54 + es 55 + nl 53 + pt 53、加えて JA 原本と en 同期分）。修正 commit: `046e0057` (JA→EN), Phase 1〜3 の言語別 commit。
 
-2. **Coverage of Developer Focus Areas:**
-   - WebSocket integration (`real-time-data.md`)
-   - PWA application patterns (`caching-strategies.md`)
-   - Web Components integration (`ui-events.md`)
+詳細レポート: `audit/details/report-group-*.md`, `audit/rxjs-mcp-audit-2026-05-17.md`
 
-3. **Advanced Patterns:**
-   - JSON Patch for large-scale form autosave and Undo/Redo
-   - Collaborative editing with operational transforms
-   - Offline-first architecture with IndexedDB
+### 🟡 Issue #34: 未翻訳箇所の精査（進行中）
 
-4. **Multi-language Support:**
-   - All 9 pages fully translated to English
-   - Code comments translated appropriately
-   - Consistent documentation quality across both languages
+JA と各言語版の行数・セクション構造を比較し、(a) 翻訳不足、(b) JA にないコンテンツ（削除し忘れ等）の両方向ギャップを検出。XCOMET の死角を埋める前段ステップ。
 
-**Completed Implementation:**
+**現状**:
+- 全 7 言語 × 181 ファイルでファイル存在は一致（削除し忘れ無し ✅）
+- 行数・セクション比較で 115 ギャップを検出（深刻度別レポート: `audit/issue34-coverage-report.md`）
+- 横断的に問題のあるファイル 14 件中、**2 ファイル分の補完が完了**:
+  - ✅ `creation-functions/combination/forkJoin-vs-combineLatest.md` (6 言語完全翻訳)
+  - ⚠️ `operators/filtering/audit.md` (fr のみ完全、他 5 言語は本文段落が fr 流用残存)
 
-- ✅ All 9 pages created with comprehensive content
-- ✅ Code examples follow executable pattern
-- ✅ English translations completed
-- ✅ Cross-references to Chapters 6, 10, 11
-- ✅ Build verified without errors
-- ✅ Sidebar navigation updated
+**残作業**: 残り 7 ファイル × 6 言語 (`elementAt`/`find`/`findIndex`/`ignoreElements`/`sampleTime`/`auditTime`/`takeLast`) は、ローカル Python スクリプト + DeepL API 直叩きに移行して対応する方針。
 
-**Developer Impact:**
-- Immediate practical value for TypeScript developers
-- Bridge between theoretical knowledge and real-world implementation
-- Demonstrates best practices with type safety and memory leak prevention
+### 🔵 Issue #33: XCOMET MCP による翻訳検証（保留中）
 
----
+Issue #34 で完全なペアを揃えた後に着手。各言語の翻訳精度を XCOMET MCP で検証し、低スコア箇所を DeepL で再翻訳。Discussion #23 を参照。
 
-## Completed Releases
+### 翻訳ワークフローの推奨実行環境
 
-### ✅ Fourth Release: Multi-language Support (Completed January 2025)
+**Claude 駆動 (MCP 経由) は非推奨**: 1 ファイル/セッションが限界（コンテキスト窓圧迫）。残り 7 ファイル × 6 言語 = 約 210 DeepL call は 1 セッションで完了不可。
 
-**Purpose:**
-- Add English translation to make content accessible to international audience
-- Maintain Japanese as primary language with English as secondary
-- Establish scalable translation workflow for potential future languages
+**ローカル Python スクリプト + DeepL API 直叩きを推奨**:
+- `scripts/translate_files.py`（次セッションで作成予定）
+- `pip install deepl` + 環境変数 `DEEPL_AUTH_KEY`
+- ファイル/言語ごとにアトミックに処理
+- 詳細手順は Skill `rxjs-vitepress-i18n` を参照
 
-**Status:** ✅ **COMPLETED** - All 180 pages fully translated and deployed
+## Skills for this project
 
-**Implementation Summary:**
+このリポジトリ固有の Skill を `.claude/skills/` 配下に配置している。Claude セッションで翻訳作業や監査作業を行う際、自動的に参照される。
 
-**Directory Structure:**
-```
-docs/
-├── .vitepress/
-│   ├── config/
-│   │   ├── index.ts        # Main configuration with root-level search
-│   │   ├── ja.ts           # Japanese locale config
-│   │   └── en.ts           # English locale config
-├── guide/                   # Japanese content (root locale)
-│   ├── introduction.md
-│   ├── observables/
-│   └── ... (180 files)
-├── en/                      # English content
-│   ├── guide/
-│   │   ├── introduction.md
-│   │   ├── observables/
-│   │   └── ... (180 files)
-├── public/
-└── index.md
-```
+### 配置済み Skills
 
-**Completed Implementation:**
+| Skill | 用途 |
+|-------|------|
+| `.claude/skills/rxjs-vitepress-i18n/` | VitePress 多言語ドキュメントの DeepL 翻訳ワークフロー。コードブロック・Mermaid・テーブル・frontmatter・callout を保護してから翻訳し、後処理で組み立てる手順 |
+| `.claude/skills/rxjs-glossary/` | 翻訳用語集。固有名詞（翻訳しない用語）と、6 言語の定型訳テーブル（テーブルヘッダー、よく出るフレーズ、コード内日本語フラグメント）。`glossary.json` をローカルスクリプトから直接読み込み可能 |
 
-**Phase 0: Investigation & Design** ✅
-- ✅ Base path handling (`/RxJS-with-TypeScript/` + i18n) verified
-- ✅ VitePress native i18n support implemented
-- ✅ DeepL MCP Server API workflow established
-- ✅ SEO requirements evaluated (hreflang tags, meta descriptions)
-- ✅ VitePress local search selected (built-in multi-language support)
-- ✅ Language switcher using VitePress native UI
+### Skills 運用方針
 
-**Phase 1: Foundation Setup** ✅
-- ✅ Directory structure created (`docs/.vitepress/config/`, `docs/en/guide/`)
-- ✅ config.ts split into modular structure (index.ts, ja.ts, en.ts)
-- ✅ VitePress locales configured with base path
-- ✅ Local search setup with multi-language support (root themeConfig)
-- ✅ hreflang tags added for SEO
-- ✅ Build verified and routing tested
-
-**Phase 2-5: Complete Translation** ✅
-- ✅ All 180 markdown files translated using DeepL MCP Server API
-- ✅ Code comments and console.log messages translated
-- ✅ Mermaid diagrams translated (all text elements)
-- ✅ Internal links updated (`/guide/` → `/en/guide/`)
-- ✅ URL anchors translated to English
-- ✅ Meta descriptions optimized (150-160 chars per Bing Webmaster Tools)
-- ✅ All sections completed:
-  - Introduction, Basics, Observables
-  - Creation Functions (7 categories, 28 pages)
-  - Operators (Transformation, Filtering, Combination, Utility, etc.)
-  - Subjects and Multicasting
-  - Error Handling
-  - Schedulers
-  - Debugging Techniques
-  - Testing Methods
-  - Anti-patterns
-  - Overcoming Difficulties
-  - Appendix (Reactive Architecture, Ecosystem, etc.)
-
-**Technical Implementation:**
-
-1. **Translation Workflow**
-   - Used DeepL MCP Server API (`targetLangCode: "en-US"`)
-   - Systematic section-by-section translation (100-200 lines)
-   - Verification with grep for Japanese characters
-   - Final check: Zero Japanese characters in English files
-
-2. **Search Configuration**
-   - Root-level themeConfig with locale-specific translations
-   - Fixed search button rendering issue
-   - Both Japanese and English search fully functional
-
-3. **SEO Optimization**
-   - hreflang tags configured in ja.ts and en.ts
-   - All meta descriptions 150-160 characters
-   - Proper frontmatter with quoted descriptions containing colons
-
-4. **Quality Assurance**
-   - All builds successful without errors
-   - Internal links verified
-   - Mermaid diagrams render correctly
-   - Language switcher navigates properly
-
-**Success Metrics Achieved:**
-- ✅ English pages build without errors
-- ✅ All internal links work correctly
-- ✅ Search works in both languages
-- ✅ Language switcher navigates correctly
-- ✅ SEO tags properly configured
-- ✅ Mermaid diagrams render in both languages
-- ✅ Zero Japanese characters remaining in English version
-
-**Translation Statistics:**
-- **Total files translated:** 180 markdown files
-- **Total content:** ~50,000+ lines of documentation
-- **Translation method:** DeepL MCP Server API
-- **Code examples:** All TypeScript code comments translated
-- **Diagrams:** All Mermaid diagrams translated
-- **Meta descriptions:** 20 files optimized for SEO
-
-**Deployment:**
-- Japanese site: https://shuji-bonji.github.io/RxJS-with-TypeScript/
-- English site: https://shuji-bonji.github.io/RxJS-with-TypeScript/en/
-
----
+- **更新時**: 翻訳作業中に新しい用語パターンが見つかったら、`rxjs-glossary` の `glossary.json` に追記する。学習・蓄積していくことで DeepL 消費を抑える
+- **共有**: リポジトリにコミットすることで他デバイス・他セッションからも参照可能
+- **依存関係**: `rxjs-vitepress-i18n` ワークフローは `rxjs-glossary` の用語集を必ず参照する
 
 ## Active Development
 
@@ -1196,6 +914,15 @@ TestScheduler 活用ガイド（拡張）
 3. **Follow latest developments** - RxJS v8, TypeScript 5.x new features
 4. **Be practical** - Emphasize real-world examples, not just theory
 5. **Prevent memory leaks** - Always include proper cleanup patterns
+
+### Notes for Translation Work (Issues #32-#34)
+
+6. **JA が原本** - 全 6 言語 (en/fr/de/it/es/nl/pt) は JA からの翻訳。変更は JA → EN → 他言語の順で同期
+7. **コードは言語非依存** - 識別子・型・API 名は翻訳しない。`forkJoin`、`Observable`、`Subject` 等の固有名詞は `rxjs-glossary` Skill の `no_translate` リストを参照
+8. **Mermaid 図のラベル** - 図内の日本語テキスト（`値1発行`、`完了` 等）は各言語に翻訳必須。コード内コメントも同様
+9. **VitePress callout** - `> [!WARNING]` ヘッダー行は保護（翻訳しない）し、本文のみ翻訳
+10. **テーブルセル** - DeepL は Markdown テーブルの `|` 区切りを誤認識する。必ずセル単位で翻訳する
+11. **DeepL ワークフロー** - Claude 駆動 MCP 経由ではなく、ローカル Python スクリプト + DeepL API SDK 推奨。詳細は Skill `rxjs-vitepress-i18n` を参照
 
 ## Collaboration Guidelines
 
