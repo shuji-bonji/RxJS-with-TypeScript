@@ -4,7 +4,7 @@ description: "O operador findIndex é um operador de filtragem RxJS que retorna 
 
 # findIndex - obtém o índice que corresponde à condição
 
-O operador `findIndex` retorna **o índice do primeiro valor que corresponde à condição** e completa o fluxo imediatamente. Retorna `-1` se nenhum valor for encontrado.
+O operador findIndex retorna **o índice do primeiro valor que corresponde à condição** e completa o fluxo imediatamente. Retorna `-1` se nenhum valor for encontrado.
 
 ## 🔰 Sintaxe básica e uso
 
@@ -27,7 +27,7 @@ numbers$.pipe(
 4. 7 (índice 3) → Ímpar, pular
 5. 8 (índice 4) → número par, saída do índice 4 e conclusão
 
-[🌐 Documentação oficial do RxJS - `findIndex`](https://rxjs.dev/api/operators/findIndex)
+[🌐 Documentação oficial do RxJS - findIndex](https://rxjs.dev/api/operators/findIndex)
 
 ## 💡 Padrão de utilização típico.
 
@@ -261,15 +261,24 @@ numbers$.pipe(
 // Saída.: 30
 ```
 
-| Operador | Argumentos | Valor de retorno | Se não for encontrado. |
-|---|---|---|---|
-| `findIndex(predicate)` | Função condicional | Índice (numérico). | `-1` |
-| `find(predicado)` | Função de condição | Valor em si | `undefined` |
-| `elementAt(index)` | Índice | O próprio valor | Erro (nenhum valor padrão) |
+```ts
+import { from } from 'rxjs';
+import { findIndex } from 'rxjs';
+
+const numbers$ = from([1, 3, 5, 7, 8, 9, 10]);
+
+numbers$.pipe(
+  findIndex(n => n % 2 === 0)
+).subscribe(console.log);
+// Saída.: 4(primeiro par8índice do primeiro par)
+---
+description: findIndexオペレーターは、条件を満たす最初の値のインデックスを返すRxJSフィルタリングオペレーターです。見つからない場合は-1を返します。
+---
+
 
 ## 🔄 Comparação com Array.findIndex() do JavaScript
 
-O `findIndex` do RxJS se comporta de forma semelhante ao método de matriz do JavaScript `Array.prototype.findIndex()`.
+O `findIndex` do RxJS se comporta de forma semelhante ao método de array do JavaScript `Array.prototype.findIndex()`.
 
 ```ts
 // JavaScript Matriz de
@@ -289,7 +298,7 @@ numbers$.pipe(
 
 **Principais diferenças**.
 - **Array**: retorna o resultado de forma síncrona e imediata.
-- Observável**: assíncrono, aguarda o fluxo de valores do fluxo
+- Observable**: assíncrono, espera que os valores fluam do fluxo
 
 ## ⚠️ Notas.
 
@@ -337,9 +346,9 @@ interval(1000).pipe(
 // Índice: 3
 ```
 
-### Segurança de tipo no TypeScript
+### Segurança de tipo em TypeScript
 
-O `findIndex` sempre retorna o tipo `number`.
+O findIndex sempre retorna o tipo `number`.
 
 ```ts
 import { Observable, from } from 'rxjs';
@@ -399,11 +408,11 @@ items$.pipe(
 
 ## Resumo.
 
-O operador `findIndex` retorna o índice do primeiro valor que satisfaz a condição.
+O operador findIndex retorna o índice do primeiro valor que satisfaz a condição.
 
 - Comportamento semelhante ao `Array.findIndex()` do JavaScript.
 - Ideal quando as informações de índice são necessárias
 - Retorna `-1` se não for encontrado (não é um erro)
-- Conclui imediatamente quando encontrado
+- É concluído imediatamente quando encontrado
 - ⚠️ O valor de retorno é sempre do tipo `number` (-1 ou um número inteiro maior ou igual a 0)
-- ⚠️ Use `find` se o valor em si for necessário
+- ⚠️ Use find se o valor em si for necessário

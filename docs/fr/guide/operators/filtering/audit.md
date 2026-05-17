@@ -1,5 +1,5 @@
 ---
-description: "L'opérateur d'audit est un opérateur de filtrage RxJS qui n'émet que la dernière valeur au cours de la période contrôlée par l'observable personnalisé. Il est idéal pour le contrôle dynamique des délais."
+description: "L'opérateur d'audit est un opérateur de filtrage RxJS qui n'émet que la dernière valeur au cours de la période contrôlée par l'Observable personnalisé. Il est idéal pour le contrôle dynamique des délais."
 ---
 
 # audit - dernière valeur de la période de contrôle émise
@@ -30,14 +30,40 @@ clicks$.pipe(
 
 [🌐 Documentation officielle de RxJS - `audit`](https://rxjs.dev/api/operators/audit)
 
-> [!WARNING] Attention en code de production
+```ts
+import { fromEvent, interval } from 'rxjs';
+import { audit } from 'rxjs';
+
+// Événement de clic
+const clicks$ = fromEvent(document, 'click');
+
+// 1Périodes de temps séparées toutes les secondes
+clicks$.pipe(
+  audit(() => interval(1000))
+).subscribe(() => {
+  console.log('Le clic a été enregistré');
+});
+```ts
+import { fromEvent, interval } from 'rxjs';
+import { audit } from 'rxjs';
+
+// クリックイベント
+const clicks$ = fromEvent(document, 'click');
+
+// 1秒ごとにpériodeを区切る
+clicks$.pipe(
+  audit(() => interval(1000))
+).subscribe(() => {
+  console.log('クリックが記録されました');
+});
+```
 
 > L'exemple ci-dessus omet de désabonner `fromEvent` pour simplifier l'explication. Dans le code réel, utilisez `takeUntil(destroy$)`, `take(N)` ou `Subscription.unsubscribe()` pour gérer explicitement le cycle de vie. Plus d'informations : [Surmonter les difficultés : gestion du cycle de vie](/fr/guide/overcoming-difficulties/lifecycle-management.md)
 
 ## 💡 Modèles d'utilisation typiques
 
 - **Échantillonnage dynamique par intervalles** : ajuster la durée en fonction de la charge.
-- **Custom timing control** : contrôle de la période basé sur d'autres observables.
+- **Custom timing control** : contrôle de la période en fonction d'autres Observables.
 - Limitation adaptative des événements** : amincissement sensible au contexte.
 
 ## 🔍 Différences avec auditTime
@@ -45,7 +71,7 @@ clicks$.pipe(
 | Opérateur. | Contrôle des périodes | Cas d'utilisation. |
 |---|---|---|
 | `auditTime`. | Temps fixe (millisecondes) | Contrôle simple basé sur le temps |
-| `audit`. | **Observable personnalisé** | **Contrôle dynamique de la période**. |
+| `audit`. | **Observable personnalisé**. | **Contrôle dynamique de la période**. |
 
 ```ts
 import { fromEvent, timer } from 'rxjs';
@@ -53,10 +79,10 @@ import { audit, auditTime } from 'rxjs';
 
 const clicks$ = fromEvent(document, 'click');
 
-// auditTime - Fixe1fixes
+// auditTime - Fixe1secondes
 clicks$.pipe(
   auditTime(1000)
-).subscribe(() => console.log('Fixe1fixes'));
+).subscribe(() => console.log('Fixe1secondes'));
 
 // audit - Période dynamique
 let period = 1000;
@@ -130,7 +156,7 @@ moves$.pipe(
 - Échantillonnage fin à intervalles de 500 ms lorsque la charge est élevée.
 - La période peut être ajustée dynamiquement en fonction de la charge.
 
-## 🎯 Exemple de code pratique 2 : Contrôle de la période basé sur d'autres flux
+## 🎯 Exemple de code pratique 2 : Contrôle de la période sur la base d'autres flux
 
 ```ts
 import { fromEvent, timer } from 'rxjs';
@@ -190,7 +216,7 @@ clicks$.pipe(
 
 ### 1. la première valeur n'est pas immédiatement émise
 
-Après que le `audit` a reçu la première valeur, il attend la fin de la période.
+Après avoir reçu la première valeur, l'audit attend la fin de la période.
 
 ```ts
 import { interval, timer } from 'rxjs';
@@ -208,7 +234,7 @@ interval(100).pipe(
 // 29 (3Quelques secondes plus tard,20~.29Dernière valeur de)
 ```
 
-### L'observable duration est généré à chaque fois.
+### 2. l'Observable de durée est généré à chaque fois.
 
 Les fonctions passées à `audit` **doivent retourner un nouvel Observable à chaque fois**.
 
@@ -219,7 +245,7 @@ source$.pipe(
   audit(() => duration$) // 2Ne fonctionne pas après la deuxième fois
 ).subscribe();
 
-// ✅ Bon exemple: Nouvelle instance créée à chaque foisObservableGénérer un
+// ✅ Bon exemple: Une nouvelleObservableGénère un
 source$.pipe(
   audit(() => timer(1000))
 ).subscribe();
@@ -242,12 +268,23 @@ interval(10).pipe(
 
 ## 🆚 Comparaison avec des opérateurs similaires
 
-| Opérateurs | Quand délivrer | Valeur à délivrer | Cas d'utilisation. |
-|---|---|---|---|
-| `audit`. | A la **fin** de la période | La **dernière** valeur de la période | Obtenir le dernier statut dans la période |
-| `throttle`. | Au **début** de la période | Valeur du **premier** de la période | Obtenir le début d'une séquence d'événements. |
-| `debounce`. | **Après** stationnaire**. | Valeur juste avant la stationnaire | Attendre la fin d'une entrée |
-| `sample`. | **Quand un autre Observable se déclenche**. | Valeur la plus récente à ce moment-là | Instantané périodique |
+```ts
+import { fromEvent, interval } from 'rxjs';
+import { audit } from 'rxjs';
+
+// Événement de clic
+const clicks$ = fromEvent(document, 'click');
+
+// 1Périodes de temps séparées toutes les secondes
+clicks$.pipe(
+  audit(() => interval(1000))
+).subscribe(() => {
+  console.log('Le clic a été enregistré');
+});
+---
+description: auditオペレーターは、カスタムObservableで制御される期間内の最後の値のみを発行するRxJSフィルタリングオペレーターです。動的なタイミング制御に最適です。
+---
+
 
 ```ts
 import { fromEvent, interval, timer } from 'rxjs';
@@ -276,12 +313,12 @@ clicks$.pipe(
 ).subscribe(() => console.log('sample: Périodique'));
 ```
 
-## 📚 Opérateurs associés.
+## 📚 Opérateurs apparentés.
 
 - **[auditTime](. /auditTime)** - contrôlé par une heure fixe (version simplifiée de `audit`).
 - **[throttle](. /throttleTime)** - première valeur émise au début de la période.
 - **[debounce](. /debounceTime)** - émission d'une valeur après une période d'inactivité.
-- **[sample](. /sampleTime)** - échantillonnage au moment où un autre observable est utilisé.
+- **[sample](. /sampleTime)** - échantillonnage au moment où se trouve un autre Observable.
 
 ## Résumé.
 
@@ -290,5 +327,5 @@ L'opérateur `audit` émet la dernière valeur à l'intérieur d'une période dy
 - ✅ Le contrôle dynamique de la période est possible.
 - ✅ Échantillonnage adaptatif basé sur la charge
 - ✅ Contrôle basé sur d'autres flux
-- ⚠️ Un nouvel observable doit être généré à chaque fois.
+- ⚠️ Un nouvel Observable doit être généré à chaque fois
 - ⚠️ Sensible à la mémoire en cas d'émission fréquente

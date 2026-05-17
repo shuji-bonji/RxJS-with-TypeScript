@@ -4,7 +4,7 @@ description: "Der findIndex-Operator ist ein RxJS-Filterungsoperator, der den In
 
 # findIndex - liefert den Index, der die Bedingung erfüllt
 
-Der Operator "findIndex" gibt **den Index des ersten Wertes zurück, der die Bedingung erfüllt** und schließt den Stream sofort ab. Gibt `-1` zurück, wenn kein Wert gefunden wird.
+Der Operator `findIndex` gibt **den Index des ersten Wertes zurück, der die Bedingung erfüllt**, und schließt den Stream sofort ab. Gibt `-1` zurück, wenn kein Wert gefunden wird.
 
 ## 🔰 Grundlegende Syntax und Verwendung
 
@@ -218,7 +218,7 @@ data$.pipe(
   status.textContent = '';
   if (index !== -1) {
     result.innerHTML = `
-      ✅ 50Größer als oder gleich Wert gefunden<br>
+      ✅ 50Mehr als oder gleich Wert gefunden<br>
       Position: Index ${index}
     `;
     result.style.color = 'green';
@@ -248,7 +248,7 @@ numbers$.pipe(
 ).subscribe(console.log);
 // Ausgabe.: 2Gibt den Index des ersten Wertes zurück, der die Bedingung erfüllt30Index der ersten Geraden)
 
-// find: Gibt den ersten Wert zurück, der die Bedingung erfüllt.
+// find: Gibt den ersten Wert zurück, der die Bedingung erfüllt
 numbers$.pipe(
   find(n => n > 25)
 ).subscribe(console.log);
@@ -261,15 +261,24 @@ numbers$.pipe(
 // Ausgabe.: 30
 ```
 
-| Operator | Argumente | Rückgabewert | Wenn nicht gefunden. |
-|---|---|---|---|
-| FindeIndex(Prädikat)` | Bedingte Funktion | Index (numerisch). | `-1` |
-| `Finden(Prädikat)` | Bedingungsfunktion | Wert selbst | `Undefiniert` |
-| ElementAt(index)` | Index | Wert selbst | Fehler (kein Standardwert) |
+```ts
+import { from } from 'rxjs';
+import { findIndex } from 'rxjs';
+
+const numbers$ = from([1, 3, 5, 7, 8, 9, 10]);
+
+numbers$.pipe(
+  findIndex(n => n % 2 === 0)
+).subscribe(console.log);
+// Ausgabe.: 4(erste Gerade8Index der ersten Geraden)
+---
+description: findIndexオペレーターは、条件を満たす最初の値のインデックスを返すRxJSフィルタリングオペレーターです。見つからない場合は-1を返します。
+---
+
 
 ## 🔄 Vergleich mit JavaScript's Array.findIndex()
 
-RxJS `findIndex` verhält sich ähnlich wie die JavaScript Array Methode `Array.prototype.findIndex()`.
+RxJS `findIndex` verhält sich ähnlich wie die JavaScript Array-Methode `Array.prototype.findIndex()`.
 
 ```ts
 // JavaScript Array von
@@ -289,7 +298,7 @@ numbers$.pipe(
 
 **Hauptunterschiede**.
 - **Array**: gibt das Ergebnis synchron und sofort zurück.
-- **Observable**: asynchron, wartet auf Werte aus dem Stream
+- Observable**: asynchron, wartet auf Werte, die aus dem Stream fließen.
 
 ## ⚠️ Hinweise.
 
@@ -399,11 +408,11 @@ items$.pipe(
 
 ## Zusammenfassung.
 
-Der `findIndex` Operator gibt den Index des ersten Wertes zurück, der die Bedingung erfüllt.
+Der Operator `findIndex` gibt den Index des ersten Wertes zurück, der die Bedingung erfüllt.
 
-- ✅ Ähnliches Verhalten wie bei JavaScript's `Array.findIndex()`.
+- ✅ Ähnliches Verhalten wie JavaScript's `Array.findIndex()`.
 - ✅ Ideal, wenn Indexinformationen benötigt werden
 - ✅ Gibt `-1` zurück, wenn nicht gefunden (kein Fehler)
 - ✅ Wird sofort abgeschlossen, wenn gefunden
 - ⚠️ Rückgabewert ist immer vom Typ `Zahl` (-1 oder eine ganze Zahl größer oder gleich 0)
-- ⚠️ Benutze `find` wenn der Wert selbst benötigt wird
+- ⚠️ Use `find` if the value itself is required

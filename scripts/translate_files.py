@@ -70,6 +70,7 @@ except ImportError:
 REPO = Path(__file__).resolve().parent.parent
 SKILLS_DIR = REPO / '.claude' / 'skills'
 GLOSSARY_PATH = SKILLS_DIR / 'rxjs-glossary' / 'glossary.json'
+DEEPL_GLOSSARY_IDS_PATH = SKILLS_DIR / 'rxjs-glossary' / 'deepl_glossary_ids.json'
 
 # 言語コード: ディレクトリ名 → DeepL ターゲット言語コード
 LANGS = {
@@ -185,26 +186,49 @@ def generate_package(rel_path: str) -> dict:
 class DeepLTranslator:
     """DeepL API ラッパー（消費文字数カウント、ドライラン対応）"""
 
-    def __init__(self, dry_run: bool = False):
+    def __init__(self, dry_run: bool = False, use_glossary: bool = True):
         self.dry_run = dry_run
         self.consumed = 0
         self.calls = 0
+        self.glossary_ids: dict = {}  # {lang_dir: glossary_id}
         if not dry_run:
             api_key = os.getenv('DEEPL_AUTH_KEY')
             if not api_key:
                 raise RuntimeError("環境変数 DEEPL_AUTH_KEY が設定されていません")
             self.client = deepl.Translator(api_key)
 
-    def translate(self, text: str, target_lang: str) -> str:
-        """JA → target_lang 翻訳。dry_run なら原文を返す。"""
+        # Glossary IDs を読み込み (存在しなければ glossary 無しで動作)
+        if use_glossary and DEEPL_GLOSSARY_IDS_PATH.exists():
+            try:
+                self.glossary_ids = json.loads(
+                    DEEPL_GLOSSARY_IDS_PATH.read_text(encoding='utf-8')
+                )
+                if self.glossary_ids:
+                    print(f"  🔖 Glossary IDs loaded: {list(self.glossary_ids.keys())}")
+            except Exception as e:
+                print(f"  ⚠️  Glossary IDs 読み込み失敗: {e}")
+
+    def translate(self, text: str, target_lang: str, lang_dir: str = None) -> str:
+        """JA → target_lang 翻訳。dry_run なら原文を返す。
+
+        Args:
+            text: 翻訳テキスト
+            target_lang: DeepL ターゲット言語コード (FR, DE, IT, ES, NL, PT-BR)
+            lang_dir: 言語ディレクトリ名 (fr, de, it, es, nl, pt) - glossary 検索用
+        """
         if not text or not text.strip():
             return text
         self.calls += 1
         self.consumed += len(text)
         if self.dry_run:
             return text  # ドライラン: 原文をそのまま返す
+
+        kwargs = {}
+        if lang_dir and lang_dir in self.glossary_ids:
+            kwargs['glossary'] = self.glossary_ids[lang_dir]
+
         result = self.client.translate_text(
-            text, source_lang='JA', target_lang=target_lang
+            text, source_lang='JA', target_lang=target_lang, **kwargs
         )
         return result.text
 
@@ -221,21 +245,21 @@ def translate_package(pkg: dict, lang: str, translator: DeepLTranslator) -> dict
 
     # 1. Frontmatter description
     if pkg['fm_desc']:
-        results['fm_desc'] = translator.translate(pkg['fm_desc'], target)
+        results['fm_desc'] = translator.translate(pkg['fm_desc'], target, lang)
 
     # 2. Body (protected)
-    results['body'] = translator.translate(pkg['body'], target)
+    results['body'] = translator.translate(pkg['body'], target, lang)
 
     # 3. Tables (各テーブルごとに 1 call)
     for idx, cells in pkg['table_cells'].items():
         joined = '\n'.join(cells)
-        t = translator.translate(joined, target)
+        t = translator.translate(joined, target, lang)
         results['tables'][idx] = t.split('\n')
 
     # 4. Code 内 JP fragments
     if pkg['code_jp_fragments']:
         joined = '\n'.join(pkg['code_jp_fragments'])
-        t = translator.translate(joined, target)
+        t = translator.translate(joined, target, lang)
         translated_fragments = t.split('\n')
         if len(translated_fragments) == len(pkg['code_jp_fragments']):
             for jp, tr in zip(pkg['code_jp_fragments'], translated_fragments):
@@ -351,6 +375,15 @@ def assemble(pkg: dict, translations: dict, lang: str, glossary: dict) -> str:
 
     # 5) callout や code の前後にハイフン/空白挿入されたケース
     text = re.sub(r'_+\s*(FM|CODE|TABLE|CALLOUT)\s*_+\s*(\d+)\s*_+', r'___\1_\2___', text)
+
+    # 6) 壊れたコードフェンス: ```0___, ```1___ など (DeepL が _CODE_ を消去)
+    #    これらを blocks[N] で復元
+    def fix_orphan_fence(m):
+        idx = int(m.group(1))
+        if 0 <= idx < len(blocks):
+            return blocks[idx]
+        return m.group(0)
+    text = re.sub(r'```(\d+)___\.?', fix_orphan_fence, text)
 
     # 末尾ピリオド除去
     text = re.sub(r'(___[A-Za-z]+_\d+___)\.', r'\1', text)
@@ -483,12 +516,74 @@ def process_file(rel_path: str, lang: str, translator: DeepLTranslator,
     return out
 
 
+def setup_lang_glossary(translator_obj, lang: str) -> str:
+    """指定言語の glossary を Free 版 1-slot 制限に合わせて作成する
+
+    既存の全 glossary を削除してから、指定言語のみ作成する。
+    Returns: 作成した glossary_id (失敗時は None)
+    """
+    api_key = os.getenv('DEEPL_AUTH_KEY')
+    if not api_key:
+        return None
+    client = deepl.Translator(api_key)
+
+    # 既存を全削除 (Free 版の 1-slot 制限への対応)
+    try:
+        for g in client.list_glossaries():
+            client.delete_glossary(g)
+    except deepl.DeepLException:
+        pass
+
+    # glossary.json を読み込み
+    if not GLOSSARY_PATH.exists():
+        return None
+    data = json.loads(GLOSSARY_PATH.read_text(encoding='utf-8'))
+    no_translate = data.get('no_translate', [])
+    if not no_translate:
+        return None
+
+    # identity マッピング
+    entries = {term: term for term in no_translate}
+    target_map = {'fr': 'FR', 'de': 'DE', 'it': 'IT', 'es': 'ES', 'nl': 'NL', 'pt': 'PT-BR'}
+    target_lang = target_map.get(lang)
+    if not target_lang:
+        return None
+
+    try:
+        g = client.create_glossary(
+            name=f"rxjs-ja-{lang}",
+            source_lang='JA',
+            target_lang=target_lang,
+            entries=entries,
+        )
+        return g.glossary_id
+    except deepl.DeepLException as e:
+        print(f"  ⚠️  Glossary 作成失敗 ({lang}): {e}")
+        return None
+
+
+def cleanup_glossaries():
+    """全 rxjs-* 系 glossary を削除 (お掃除)"""
+    api_key = os.getenv('DEEPL_AUTH_KEY')
+    if not api_key:
+        return
+    try:
+        client = deepl.Translator(api_key)
+        for g in client.list_glossaries():
+            if g.name.startswith('rxjs-'):
+                client.delete_glossary(g)
+    except deepl.DeepLException:
+        pass
+
+
 def main():
     parser = argparse.ArgumentParser(description="DeepL で多言語翻訳")
     parser.add_argument('--file', '-f', help="特定のファイル (relative path, e.g. operators/filtering/audit.md)")
     parser.add_argument('--lang', '-l', help="特定の言語 (fr, de, it, es, nl, pt)")
     parser.add_argument('--dry-run', '-n', action='store_true', help="ドライラン (DeepL 呼び出し無し)")
     parser.add_argument('--files', help="複数ファイルをカンマ区切りで指定")
+    parser.add_argument('--auto-glossary', action='store_true',
+                        help="Free 版の 1-slot 制限対応: 言語ごとに glossary を作成→翻訳→削除")
     args = parser.parse_args()
 
     # ターゲット決定
@@ -515,11 +610,30 @@ def main():
     print(f"  Glossary entries: {sum(len(glossary.get(l, {}).get('code_jp', {})) for l in target_langs)} (合計)")
     print()
 
-    for rel in target_files:
-        print(f"📄 {rel}")
-        for lang in target_langs:
+    # 言語ループ → ファイルループ の順に変更 (auto-glossary 対応)
+    # 言語ごとに glossary を切り替えるため、言語を外ループに
+    for lang in target_langs:
+        # auto-glossary モード: 言語ごとに glossary を作成
+        if args.auto_glossary and not args.dry_run:
+            print(f"🔖 Glossary 作成中: {lang}...")
+            glossary_id = setup_lang_glossary(translator, lang)
+            if glossary_id:
+                translator.glossary_ids = {lang: glossary_id}
+                print(f"  ✅ Glossary ID: {glossary_id}")
+            else:
+                translator.glossary_ids = {}
+                print(f"  ⚠️  Glossary 作成失敗、glossary 無しで続行")
+
+        for rel in target_files:
+            print(f"📄 {rel} [{lang}]")
             process_file(rel, lang, translator, glossary)
         print()
+
+    # auto-glossary 後始末
+    if args.auto_glossary and not args.dry_run:
+        print("🧹 Glossary 削除中...")
+        cleanup_glossaries()
+        print("  ✅ 完了")
 
     # サマリ
     elapsed = time.time() - start

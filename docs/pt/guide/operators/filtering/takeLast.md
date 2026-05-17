@@ -2,7 +2,7 @@
 description: "takeLast é um operador de filtragem RxJS que gera apenas os últimos N valores quando um fluxo Observable é concluído. É ideal para situações em que apenas o último valor de todo o fluxo é necessário, como obter a última contagem no registro, exibir os N valores principais na tabela de classificação ou o resumo final dos dados na conclusão. Não pode ser usado com fluxos infinitos, pois é mantido em um buffer até a conclusão."
 ---
 
-# takeLast - obtém os últimos N valores
+# TakeLast - obtém os últimos N valores
 
 O operador `takeLast` gera apenas os últimos N valores no momento em que o fluxo é **completado**. Ele mantém os valores em um buffer até que o fluxo seja concluído e os envia juntos após a conclusão.
 
@@ -30,7 +30,7 @@ numbers$.pipe(
 
 ## 🆚 Contraste com take.
 
-`take` e `takeLast` têm comportamentos diferentes.
+O `take` e o `takeLast` têm comportamentos diferentes.
 
 ```ts
 import { range } from 'rxjs';
@@ -61,7 +61,10 @@ numbers$.pipe(
   takeLast(3)
 ).subscribe(console.log);
 // Saída: 7, 8, 9
-```0___
+---
+description: takeLastはObservableストリームが完了した時点で、最後のN個の値のみを出力するRxJSフィルタリングオペレーターです。ログの最新件数取得、リーダーボードの上位N件表示、完了時の最終データサマリーなど、ストリーム全体から最後の値だけが必要な場面に最適です。完了するまでバッファに保持するため無限ストリームでは使用できません。
+---
+
 
 ## 💡 Padrão de utilização típico
 
@@ -85,7 +88,7 @@ numbers$.pipe(
      { timestamp: 5, level: 'info' as const, message: 'Retry successful' },
    ] as LogEntry[]);
 
-   // Obter o mais recente3Recuperar os registros do
+   // Obter o mais recente3Obter os registros mais recentes
    logs$.pipe(
      takeLast(3)
    ).subscribe(log => {
@@ -179,8 +182,8 @@ const historyDisplay = document.createElement('div');
 historyDisplay.style.marginTop = '10px';
 contêiner.appendChild(historyDisplay);
 
-// Assunto para armazenar valores de entrada
-const inputs$ = new Subject<string>();.
+// Subject para armazenar valores de entrada
+const inputs$ = new Subject();.
 
 // **IMPORTANTE**: defina primeiro a assinatura takeLast
 inputs$.pipe(
@@ -242,8 +245,8 @@ ts.
 import { interval } from 'rxjs';
 import { takeLast } from 'rxjs';
 
-// ❌ Exemplo ruim: uso do takeLast com fluxos infinitos
-intervalo(1000).pipe(
+// ❌ Exemplo ruim: usando takeLast com fluxos infinitos
+interval(1000).pipe(
   takeLast(3)
 ).subscribe(console.log);.
 // Nada é gerado (porque o fluxo nunca é concluído)
@@ -258,10 +261,10 @@ ts.
 import { interval } from 'rxjs';
 import { take, takeLast } from 'rxjs';
 
-// ✅ Bom exemplo: fluxo finito e, em seguida, usar takeLast
-intervalo(1000).pipe(
+// ✅ Bom exemplo: fluxo finito e, em seguida, use takeLast
+interval(1000).pipe(
   take(10), // Complete com os primeiros 10
-  takeLast(3) // pegar os últimos 3 deles
+  takeLast(3) // pegar os últimos 3
 ).subscribe(console.log);.
 // Saída: 7, 8, 9
 
@@ -294,7 +297,7 @@ import { last, takeLast } from 'rxjs';
 
 const numbers$ = range(0, 10);
 
-// last: somente o último
+// last: apenas o último
 numbers$.pipe(
   last()
 ).subscribe(console.log);
@@ -337,9 +340,9 @@ interface Transaction {
 }
 
 function getRecentTransactions(
-  transactions$: Observable<Transaction>,.
+  transactions$: Observable,.
   count: number
-): Observável<Transação> {
+): Observable {
   return transactions$.pipe(
     takeLast(count)
   );
@@ -379,7 +382,7 @@ const numbers$ = range(0, 10); // 0 a 9
 
 // pular os primeiros 5 e pegar os últimos 3 restantes
 numbers$.pipe(
-  skip(5), // pula 0, 1, 2, 3, 4
+  skip(5), // skip 0, 1, 2, 3, 4
   takeLast(3) // pega os últimos 3 dos 5, 6, 7, 8, 9 restantes
 ).subscribe(console.log);.
 // Saída: 7, 8, 9
@@ -387,7 +390,7 @@ numbers$.pipe(
 
 ## 🎓 Resumo
 
-### Quando o takeLast deve ser usado.
+### Quando takeLast deve ser usado.
 - Se você precisar dos últimos N dados em um fluxo
 - Se você quiser obter os últimos N registros ou transações
 - Se houver garantia de que o fluxo será concluído

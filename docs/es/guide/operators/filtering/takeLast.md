@@ -2,9 +2,9 @@
 description: "takeLast es un operador de filtrado RxJS que muestra sólo los últimos N valores cuando se completa un flujo Observable. Es ideal para situaciones en las que solo se requiere el último valor de todo el flujo, como obtener el último recuento en el registro, mostrar los N valores principales en la tabla de clasificación o el resumen final de datos al finalizar. No se puede utilizar con flujos infinitos, ya que se mantiene en un búfer hasta su finalización."
 ---
 
-# takeLast - obtener los últimos N valores
+# takeLast - obtiene los últimos N valores
 
-El operador `takeLast` muestra sólo los últimos N valores en el momento en que el flujo está **completado**. Mantiene los valores en un buffer hasta que el flujo se completa y los muestra juntos una vez finalizado.
+El operador takeLast devuelve sólo los últimos N valores en el momento en que el flujo está **completado**. Mantiene los valores en un buffer hasta que el flujo se completa y los muestra juntos una vez finalizado.
 
 ## 🔰 Sintaxis básica y uso
 
@@ -22,7 +22,7 @@ numbers$.pipe(
 
 **Flujo de operación**:.
 1. stream emite 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
-2. internamente retener últimos 3 en buffer
+2. internamente mantener últimos 3 en buffer
 3. flujo completado 4. valores del buffer 7, 8, 9
 4. salida de los valores 7, 8, 9 del búfer en secuencia
 
@@ -51,10 +51,20 @@ numbers$.pipe(
 // Salida: 7, 8, 9(espera a que se complete antes de emitir)
 ```
 
-| Operador | Posición de adquisición | Tiempo de salida | Acción antes de la finalización. |
-|---|---|---|---|
-| `toma(n)` | Primera n | Salida inmediata | Finalización automática después de tomar n piezas. |
-| `tomarÚltima(n)` | Últimas n piezas | Salida colectiva tras la finalización | Mantener en búfer |
+```ts
+import { range } from 'rxjs';
+import { takeLast } from 'rxjs';
+
+const numbers$ = range(0, 10); // 0de (a)9a
+
+numbers$.pipe(
+  takeLast(3)
+).subscribe(console.log);
+// Salida: 7, 8, 9
+---
+description: takeLastはObservableストリームが完了した時点で、最後のN個の値のみを出力するRxJSフィルタリングオペレーターです。ログの最新件数取得、リーダーボードの上位N件表示、完了時の最終データサマリーなど、ストリーム全体から最後の値だけが必要な場面に最適です。完了するまでバッファに保持するため無限ストリームでは使用できません。
+---
+
 
 ## 💡 Patrón típico de utilización
 
@@ -78,7 +88,7 @@ numbers$.pipe(
      { timestamp: 5, level: 'info' as const, message: 'Retry successful' },
    ] as LogEntry[]);
 
-   // Obtener el último3Recuperar los registros de
+   // Obtener el último3Obtener los últimos registros
    logs$.pipe(
      takeLast(3)
    ).subscribe(log => {
@@ -90,7 +100,7 @@ numbers$.pipe(
    // [info] Retry successful
    ```
 
-2. **Top de la tabla de clasificaciónNRecuperar la parte superior**
+2. **Top de la clasificaciónNRecuperar la parte superior**
    ```ts
    import { from } from 'rxjs';
    import { takeLast } from 'rxjs';
@@ -172,8 +182,8 @@ const historyDisplay = document.createElement('div');
 historyDisplay.style.marginTop = '10px';
 container.appendChild(historyDisplay);
 
-// Sujeto para contener los valores de entrada
-const inputs$ = new Subject<string>();.
+// Subject para guardar los valores de entrada
+const inputs$ = new Subject();.
 
 // **IMPORTANTE**: establecer primero la suscripción takeLast
 inputs$.pipe(
@@ -217,13 +227,13 @@ fromEvent(submitButton, 'click').subscribe(() => {
 > [!IMPORTANT]
 > **Puntos clave**:
 > - `takeLast(3)` Suscribirse al**primero.**debe configurarse primero
-> - cuando se pulse el botón `complete()` se dará salida al último de los valores recibidos hasta ese momento.3Se emite el último de los valores recibidos hasta ese momento.
-> - `complete()` Después de llamar**Después de llamar**a `subscribe` no saldrá ningún valor si llama a
+> - cuando se pulse el botón `complete()` se dará salida al último de los valores recibidos hasta ese momento.3Se dará salida al último de los valores recibidos hasta ese momento.
+> - `complete()` Después de llamar**Después de llamar**a `subscribe` los valores no fluyen.
 
 ## ⚠️ Un punto importante a tener en cuenta
 
 > [!WARNING]
-> `takeLast` es esperar hasta que el flujo**Espere hasta que se complete**Por lo tanto, no funciona con flujos infinitos. Además, la`takeLast(n)` delnes grande, consume mucha memoria.
+> `takeLast` es esperar a que el flujo**Esperar hasta que se complete**Por lo tanto, no funciona con flujos infinitos. Además, la`takeLast(n)` delnes grande, consume mucha memoria.
 
 ### 1. No se puede utilizar con flujos infinitos.
 
@@ -285,16 +295,16 @@ ts.
 import { range } from 'rxjs';
 import { last, takeLast } from 'rxjs';
 
-const números$ = rango(0, 10);
+const números$ = range(0, 10);
 
 // last: sólo el último
 números$.pipe(
-  último()
+  last()
 ).subscribe(console.log);
 // salida: 9
 
-// takeLast(1): último (salida como valor único, no array)
-números$.pipe(
+// takeLast(1): último (salida como valor único, no matriz)
+numbers$.pipe(
   takeLast(1)
 ).subscribe(console.log);.
 // Salida: 9
@@ -326,13 +336,13 @@ interfaz Transacción {
   id: cadena;
   amount: número;
   timestamp: Fecha;
-  estado: 'pendiente' | 'completada' | 'fallida'; }
+  status: 'pending' | 'completed' | 'failed'; }
 }
 
 function getRecentTransactions(
-  transactions$: Observable<Transaction>,.
+  transactions$: Observable,.
   count: número
-): Observable<Transaction> {
+): Observable {
   return transacciones$.pipe(
     takeLast(count)
   );
@@ -341,7 +351,7 @@ function getRecentTransactions(
 // Ejemplo de uso
 const transacciones$ = from([.
   { id: '1', amount: 100, timestamp: new Date('2025-01-01'), status: 'completed' as const }
-  { id: '2', importe: 200, timestamp: new Date('2025-01-02'), estado: 'completado' as const }
+  { id: '2', importe: 200, timestamp: new Date('2025-01-02'), estado: 'complete' as const }
   { id: '3', amount: 150, timestamp: new Date('2025-01-03'), status: 'pending' as const }
   { id: '4', amount: 300, timestamp: new Date('2025-01-04'), status: 'completed' as const }
   { id: '5', amount: 250, timestamp: new Date('2025-01-05'), status: 'failed' as const }
@@ -353,7 +363,7 @@ getRecentTransactions(transactions$, 3).subscribe(tx => {
 });
 // Salida:.
 // 3: 150 yen (pendiente)
-// 4: 300 yen (completado)
+// 4: 300 yenes (complete)
 // 5: ¥250 (fallido)
 
 ```
@@ -368,11 +378,11 @@ ts
 import { range } from 'rxjs';
 import { skip, takeLast } from 'rxjs';
 
-const numbers$ = range(0, 10); // 0 a 9
+const números$ = range(0, 10); // 0 a 9
 
 // omite los 5 primeros y toma los 3 últimos restantes
 números$.pipe(
-  skip(5), // saltar 0, 1, 2, 3, 4
+  skip(5), // skip 0, 1, 2, 3, 4
   takeLast(3) // toma los 3 últimos de los 5, 6, 7, 8, 9 restantes
 ).subscribe(console.log);.
 // Salida: 7, 8, 9
@@ -380,7 +390,7 @@ números$.pipe(
 
 ## 🎓 Resumen
 
-### Cuándo se debe usar takeLast.
+### Cuándo debe usarse takeLast.
 - ✅ Si se necesitan los N últimos datos de un flujo.
 - ✅ Si se quieren obtener los N últimos logs o transacciones
 - ✅ Si se garantiza la finalización del flujo
@@ -401,6 +411,6 @@ números$.pipe(
 
 - **[take](. /take)** - aprende a obtener los primeros n valores.
 - **[last](. /last)** - aprende a obtener el último 1 valor.
-- saltar](. /saltar)** - aprende a saltar los N primeros valores.
-- filtro](. /filtro)** - aprende a filtrar en función de condiciones
+- skip](. /skip)** - aprende a saltar los N primeros valores.
+- filter](. /filter)** - aprende a filtrar en función de condiciones
 - **[filtro-operador-casos-prácticos](. /practical-use-cases)** - aprende a utilizar casos de uso reales

@@ -1,10 +1,10 @@
 ---
-description: "find is een RxJS filteroperator die de eerste waarde vindt die aan een voorwaarde voldoet en deze uitvoert, waardoor de stream onmiddellijk wordt voltooid. Het is ideaal voor situaties waarin je een specifiek element uit een array of lijst wilt vinden, zoals het zoeken naar gebruikers, het controleren van de inventaris of het opsporen van foutlogs. Als er geen waarde wordt gevonden, wordt er een ongedefinieerde uitvoer gegeven en in TypeScript is de retourwaarde van het type T | ongedefinieerd."
+description: "find is een RxJS filteroperator die de eerste waarde vindt die aan een voorwaarde voldoet en deze uitvoert, waardoor de stroom onmiddellijk wordt voltooid. Het is ideaal voor situaties waarin je een specifiek element uit een array of lijst wilt vinden, zoals het zoeken naar gebruikers, het controleren van de inventaris of het opsporen van foutlogs. Als er geen waarde wordt gevonden, wordt er een ongedefinieerde uitvoer gegeven en in TypeScript is de retourwaarde van het type T | ongedefinieerd."
 ---
 
-# find - zoek de eerste waarde die aan de voorwaarde voldoet
+# find - vind de eerste waarde die aan de voorwaarde voldoet
 
-De `find` operator vindt en voert de **eerste waarde uit die aan de voorwaarde voldoet** en voltooit de stream onmiddellijk. Als er geen waarde wordt gevonden, wordt `undefined` uitgevoerd.
+De `find` operator vindt en voert de **eerste waarde uit die aan de voorwaarde voldoet** en voltooit de stroom onmiddellijk. Als er geen waarde wordt gevonden, wordt `onbepaald` uitgevoerd.
 
 ## 🔰 Basis syntaxis en gebruik
 
@@ -25,9 +25,9 @@ numbers$.pipe(
 2. controleer 8 → voorwaarde vervuld → uitvoer 8 en compleet
 3. 9, 10 niet geëvalueerd
 
-[🌐 Officiële RxJS documentatie - `find`](https://rxjs.dev/api/operators/find)
+[🌐 Officiële RxJS documentatie - find](https://rxjs.dev/api/operators/find)
 
-## 🆚 Contrast met eerste
+## 🆚 Contrast met first
 
 `find` en `first` lijken op elkaar, maar ze worden anders gebruikt.
 
@@ -152,7 +152,7 @@ Dit is een voorbeeld van het zoeken naar producten uit de voorraad die voldoen a
 
 ts.
 import { from, fromEvent } from 'rxjs';
-import { find } van 'rxjs';
+import { find } from 'rxjs';
 
 interface Product {
   id: string;
@@ -193,8 +193,8 @@ container.appendChild(result);
 
 // Verwerking zoeken
 // Opmerking: hoewel het aanbevolen patroon oorspronkelijk is om af te vlakken met een switchMap, maar,
-// Opmerking: Hoewel het aanbevolen patroon is om af te vlakken met een switchMap, // nestelen we hier de subscribe voor leesbaarheid, // omdat het UI-validatie bevat (vroege terugkeer).
-// Overweeg een platte implementatie met `switchMap` in productiecode.
+// Opmerking: Hoewel het aanbevolen patroon is om af te vlakken met een switchMap, // nestelen we hier de subscribe voor de leesbaarheid, // omdat het UI-validatie bevat (vroege terugkeer).
+// Overweeg een platte implementatie met gebruik van `switchMap` in productiecode.
 fromEvent(searchButton, 'click').subscribe() => {
   const maxPrice = parseInt(input.value);.
 
@@ -205,7 +205,7 @@ fromEvent(searchButton, 'click').subscribe() => {
   }
 
   // Nest subscribe: oorspronkelijk aanbevolen om af te vlakken met switchMap
-  van(producten).pipe(
+  from(products).pipe(
     find(product => product.price <= maxPrice)
   ).subscribe(product => {
     if (product) {
@@ -239,12 +239,12 @@ import { find, filter } from 'rxjs';
 
 const. nummers$ = from([1, 3, 5, 7, 8, 9, 10]);
 
-// filter: uitvoer alle waarden die voldoen aan de voorwaarde
+// filter: uitvoer van alle waarden die aan de voorwaarde voldoen
 getallen$.pipe(
   filter(n => n > 5)
 ).subscribe({
-  volgende: console.log,.
-  compleet: () => console.log('filter compleet')
+  next: console.log,.
+  complete: () => console.log('filter compleet')
 });
 // Uitvoer: 7, 8, 9, 10, filter voltooid
 
@@ -252,10 +252,10 @@ getallen$.pipe(
 getallen$.pipe(
   find(n => n > 5)
 ).subscribe({
-  volgende: console.log,.
-  compleet: () => console.log('find compleet')
+  next: console.log,.
+  complete: () => console.log('find compleet')
 });
-// uitvoer: 7, compleet vinden
+// uitvoer: 7, find voltooid
 
 ```
 
@@ -277,32 +277,32 @@ import { find } from 'rxjs';
 interface Taak {
   id: getal;
   title: string;
-  voltooid: booleaans;
+  complete: booleaans;
   priority: 'high' | 'medium' | 'low'; }
 }
 
 functie findTaskById(
-  taken$: waarneembare<taak>,.
+  taken$: Observable,.
   id: getal
-): waarneembaar<taak | ongedefinieerd> {
+): Observable | undefined> {
   return taken$.pipe(
     find(task => task.id === id)
   );
 }
 
 functie findFirstIncompleteTask(
-  taken$: waarneembare<taak>
-): Waarneembare<Taak | ongedefinieerd> {
-  return taken$.pipe(
-    find(task => task.completed)
+  taken$: Observable
+): Observable | undefined> {
+  return tasks$.pipe(
+    find(task => !.task.complete)
   );
 }
 
 // Gebruiksvoorbeeld
 const tasks$ = from([.
-  { id: 1, titel: 'Taak A', voltooid: waar, prioriteit: 'hoog' als const }
-  { id: 2, titel: 'Taak B', voltooid: onwaar, prioriteit: 'gemiddeld' als const }
-  { id: 3, titel: 'Taak C', voltooid: onwaar, prioriteit: 'laag' als const }.
+  { id: 1, titel: 'Taak A', compleet: true, prioriteit: 'hoog' als const }
+  { id: 2, titel: 'Taak B', compleet: false, prioriteit: 'medium' als const }
+  { id: 3, titel: 'Taak C', compleet: false, prioriteit: 'laag' als const }.
 ] als Taak[]);.
 
 // Zoeken op ID
@@ -316,7 +316,7 @@ findTaskById(tasks$, 2).subscribe(task => {
 // Uitvoer: gevonden: taak B
 
 // Onvoltooide taken vinden
-findFirstIncompleteTask(taken$).subscribe(taak => {
+findFirstIncompleteTask(tasks$).subscribe(task => {
   if (taak) {
     console.log(`Volgende taak: ${task.title} (prioriteit: ${task.priority})`);
   }
@@ -343,7 +343,7 @@ getallen$.pipe(
 ).subscribe(console.log);.
 // uitvoer: 30
 
-// findIndex: geef index terug
+// findIndex: index teruggeven
 getallen$.pipe(
   findIndex(n => n > 25)
 ).subscribe(console.log);.
@@ -356,10 +356,10 @@ getallen$.pipe(
 | `find(predicate)` | Waarde zelf | `undefined` |
 | `findIndex(predicate)` | Index (numerieke waarde) | `-1` |
 
-## ⚠️ Veelvoorkomende fouten
+## ⚠️ Een veelgemaakte fout
 
 > [!NOTE]
-> `find` als de waarde niet wordt gevonden. `undefined` wordt uitgevoerd. Dit resulteert niet in een fout. Als een fout vereist is, moet `first` gebruikt worden.
+> `find` als de waarde niet wordt gevonden. `undefined` wordt uitgevoerd. Dit resulteert niet in een fout. Als een fout vereist is, moet `first` worden gebruikt.
 
 ### Fout.: Verwachte foutafhandeling als de waarde niet wordt gevonden.
 
@@ -375,8 +375,8 @@ const. nummers$ = from([1, 3, 5, 7]);
 getallen$.pipe(
   find(n => n > 10)
 ).subscribe({
-  volgende: console.log,.
-  error: err => console.log('Fout:', err) // niet aangeroepen
+  next: console.log,.
+  error: err => console.log('Error:', err) // niet aangeroepen
 });
 // uitvoer: ongedefinieerd
 
@@ -390,7 +390,7 @@ ts.
 import { from } from 'rxjs';
 import { find, first } from 'rxjs';
 
-const nummers$ = from([1, 3, 5, 7]);
+const. nummers$ = from([1, 3, 5, 7]);
 
 // ✅ Goed voorbeeld 1: controleer op ongedefinieerd
 getallen$.pipe(
@@ -404,12 +404,12 @@ getallen$.pipe(
 });
 // Uitvoer: niet gevonden
 
-// ✅ Goed voorbeeld 2: gebruik het eerste als je een foutmelding nodig hebt
+// ✅ Goed voorbeeld 2: gebruik first als je een foutmelding nodig hebt
 getallen$.pipe(
   first(n => n > 10, 0) // standaardwaarde opgeven
 ).subscribe({
   next: console.log,.
-  error: err => console.log('Fout:', err.message)
+  error: err => console.log('Error:', err.message)
 });
 // Uitvoer: 0
 ```
@@ -422,11 +422,11 @@ getallen$.pipe(
 - ✅ Als je een waarde als `undefined` wilt behandelen als deze niet wordt gevonden.
 - ✅ Wanneer je een specifiek element in een array of lijst wilt vinden
 
-### Wanneer je eerst moet gebruiken
+### Wanneer je first moet gebruiken
 - ✅ Als je de eerste waarde wilt krijgen
 - ✅ Als je een foutmelding wilt geven als de waarde niet wordt gevonden
 
-### Wanneer moet een filter worden gebruikt?
+### Wanneer moet filter worden gebruikt?
 - ✅ Als u alle waarden nodig hebt die aan een voorwaarde voldoen
 - ✅ Als u de gegevens wilt filteren
 
@@ -438,6 +438,6 @@ getallen$.pipe(
 ## Volgende stap.
 
 - **[first](. /first)** - leer hoe je de eerste waarde krijgt.
-- **[filter](. /filter)** - leer filteren op basis van voorwaarden.
-- **[findIndex](https://rxjs.dev/api/operators/findIndex)** - leer hoe u de index krijgt van de eerste waarde die voldoet aan een voorwaarde (officiële documentatie)
+- **[filter](. /filter)** - leren hoe te filteren op basis van voorwaarden.
+- **[findIndex](https://rxjs.dev/api/operators/findIndex)** - leer hoe je de index krijgt van de eerste waarde die voldoet aan een voorwaarde (officiële documentatie)
 - **[filtering-operator-praktische-gebruik-cases](. /practical-use-cases)** - leer echte gebruikssituaties

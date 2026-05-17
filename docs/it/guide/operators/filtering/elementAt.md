@@ -2,9 +2,9 @@
 description: "L'operatore elementAt è un operatore di filtraggio di RxJS che recupera solo i valori in una determinata posizione dell'indice. Funziona in modo simile all'accesso agli indici degli array."
 ---
 
-# elementAt - Recuperato in base alla specificazione dell'indice
+# elementAt - Recuperato in base alla specifica dell'indice
 
-L'operatore `elementAt` recupera **solo il valore nella posizione di indice specificata** dall'osservabile e completa immediatamente il flusso. Funziona in modo simile a `array[index]` di un array.
+L'operatore `elementAt' recupera **solo il valore nella posizione di indice specificata** dall'Observable e completa immediatamente il flusso. Funziona in modo simile a `array[index]` di un array.
 
 ## 🔰 Sintassi e utilizzo di base
 
@@ -117,7 +117,7 @@ input.style.marginRight = '10px';
 container.appendChild(input);
 
 const getButton = document.createElement('button');
-getButton.textContent = 'Ottenere';
+getButton.textContent = 'Recuperare';
 container.appendChild(getButton);
 
 const status = document.createElement('div');
@@ -190,12 +190,20 @@ getButton.addEventListener('click', () => {
 
 ##CODE_4___
 
-{\AN8}| Operatore. | Valore da ottenere | Numero di uscite | Caso d'uso. |
-|---|---|---|---|
-| `elementoAt(n)` | Solo i valori all'indice n | 1 | Prendere l'ennesimo valore |
-| `prendere(n)` | n valori dall'inizio | n valori | Ottenere i primi n valori |
-| `primo()` | Primo valore | 1 | Ottiene il primo. |
-| `skip(n) + first()` | Primo dopo n salti | Il primo | Equivalente a elementAt (deprecato) |
+{\AN8}```ts
+import { from } from 'rxjs';
+import { elementAt } from 'rxjs';
+
+const numbers$ = from([10, 20, 30, 40, 50]);
+
+numbers$.pipe(
+  elementAt(2)
+).subscribe(console.log);
+// Uscita.: 30(Indice2Valore)
+---
+description: elementAtオペレーターは、指定されたインデックス位置の値のみを取得するRxJSフィルタリングオペレーターです。配列のインデックスアクセスに似た動作をします。
+---
+
 
 ## ⚠️ Note.
 
@@ -273,7 +281,7 @@ numbers$.pipe(
 // Errore: ArgumentOutOfRangeError: index out of range
 ```
 
-Usare `takeLast` o `last` per arrivare alla fine dell'array.
+Usare takeLast o last per arrivare alla fine dell'array.
 
 ```ts
 import { from } from 'rxjs';
@@ -299,12 +307,12 @@ numbers$.pipe(
 - **[take](. /take)** - N preso dall'inizio.
 - **[first](. /first)** - ottiene il primo valore.
 - **[last](. /last)** - ottiene l'ultimo valore.
-- **[skip](. /skip)** - salta i primi N valori
+- **[skip](. /skip)** - salta i primi N valori.
 - **[takeLast](. /takeLast)** - ottiene gli ultimi N valori
 
 ## Riepilogo.
 
-L'operatore `elementAt` recupera solo il valore nella posizione di indice specificata.
+L'operatore elementAt recupera solo il valore nella posizione di indice specificata.
 
 - Stesso comportamento dell'accesso all'indice dell'array.
 - Ideale per recuperare l'ennesimo valore.

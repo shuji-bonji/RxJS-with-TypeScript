@@ -2,7 +2,7 @@
 description: "El operador ignoreElements es un operador de filtrado de RxJS que ignora todos los valores y sólo pasa por las finalizaciones y los errores. Esto es útil cuando se espera a que el proceso se complete."
 ---
 
-# ignoreElements - sólo pasan los completados/errores
+# ignoreElements - sólo pasan las terminaciones/errores
 
 El operador `ignoreElements` **ignora todos los valores** emitidos por el Observable fuente y sólo se pasan **notificaciones de finalización y error**.
 
@@ -24,7 +24,7 @@ source$.pipe(
 ```
 
 **Flujo de operación**:.
-1. todos los 1, 2, 3, 4 y 5 son ignorados
+1. todos 1, 2, 3, 4 y 5 son ignorados
 2. sólo se transmiten las notificaciones de finalización
 
 [🌐 Documentación oficial de RxJS - `ignoreElements`](https://rxjs.dev/api/operators/ignoreElements)
@@ -253,17 +253,100 @@ source$.pipe(
 // Salida: take(0): Completado
 ```
 
-| Operador | Tratamiento de valores | Notificación de finalización | Caso de uso. |
-|---|---|---|---|
-| `ignorarElementos()` | Ignora todos los | pasar | **Necesario sólo para completar** (recomendado) |
-| Filtro(() => false) | Filtra todos los elementos | dejar pasar | Filtrado condicional (excluir todo por casualidad). |
-| Tomar(0)` | Completar inmediatamente | dejar pasar | Completar inmediatamente |
+```ts
+import { of } from 'rxjs';
+import { ignoreElements } from 'rxjs';
+
+const source$ = of(1, 2, 3, 4, 5);
+
+source$.pipe(
+  ignoreElements()
+).subscribe({
+  next: value => console.log('Valor:', value), // No solicitado
+  complete: () => console.log('Completado')
+});
+// Salida: Completado
+```ts
+import { from, forkJoin, of } from 'rxjs';
+import { ignoreElements, tap, delay, concat } from 'rxjs';
+
+// UICrear
+const container = document.createElement('div');
+document.body.appendChild(container);
+
+const title = document.createElement('h3');
+title.textContent = 'アプリケーション初期化';
+container.appendChild(title);
+
+const statusArea = document.createElement('div');
+statusArea.style.marginTop = '10px';
+container.appendChild(statusArea);
+
+const completeMessage = document.createElement('div');
+completeMessage.style.marginTop = '10px';
+completeMessage.style.padding = '10px';
+completeMessage.style.display = 'none';
+container.appendChild(completeMessage);
+
+// ステータスログを追加する関数
+function addLog(message: string, color: string = 'black') {
+  const log = document.createElement('div');
+  log.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+  log.style.color = color;
+  statusArea.appendChild(log);
+}
+
+// 初期化処理1: データベース接続
+const initDatabase$ = from(['DB接続中...', 'テーブル確認中...', 'DB準備completado']).pipe(
+  tap(msg => addLog(msg, 'blue')),
+  delay(500),
+  ignoreElements() // valorは無視、completadoのみ通知
+);
+
+// 初期化処理2: 設定ファイル読み込み
+const loadConfig$ = from(['設定ファイル読み込み中...', '設定解析中...', '設定適用completado']).pipe(
+  tap(msg => addLog(msg, 'green')),
+  delay(700),
+  ignoreElements()
+);
+
+// 初期化処理3: ユーザー認証
+const authenticate$ = from(['認証情報確認中...', 'トークン検証中...', '認証completado']).pipe(
+  tap(msg => addLog(msg, 'purple')),
+  delay(600),
+  ignoreElements()
+);
+
+// すべての初期化処理を実行
+addLog('初期化開始...', 'orange');
+
+forkJoin([
+  initDatabase$,
+  loadConfig$,
+  authenticate$
+]).subscribe({
+  complete: () => {
+    completeMessage.style.display = 'block';
+    completeMessage.style.backgroundColor = '#e8f5e9';
+    completeMessage.style.color = 'green';
+    completeMessage.style.fontWeight = 'bold';
+    completeMessage.textContent = '✅ すべての初期化がcompletadoしました！アプリケーションを起動できます。';
+    addLog('アプリケーション起動', 'green');
+  },
+  error: err => {
+    completeMessage.style.display = 'block';
+    completeMessage.style.backgroundColor = '#ffebee';
+    completeMessage.style.color = 'red';
+    completeMessage.textContent = `❌ 初期化エラー: ${err.message}`;
+  }
+});
+```
 
 **Recomendado**: utilice `ignoreElements()` si desea ignorar intencionadamente todos los valores. La intención del código será clara.
 
 ## 🔄 Manejo de notificaciones de error.
 
-`ignoreElements` ignora los valores, pero **pasa las notificaciones de error**.
+ignoreElements` ignora los valores, pero **pasa las notificaciones de error**.
 
 ```ts
 import { throwError, of, concat } from 'rxjs';
@@ -302,7 +385,7 @@ error$.subscribe({
 
 ### 1. se realizan efectos secundarios
 
-`ignoreElements` ignora los valores, pero se realizan los efectos secundarios (como `tap`).
+`ignoreElements` ignora los valores, pero se ejecutan los efectos secundarios (por ejemplo, `tap`).
 
 ```ts
 import { of } from 'rxjs';
@@ -322,7 +405,7 @@ of(1, 2, 3).pipe(
 // Completado
 ```
 
-### 2. Uso con InfiniteObservable
+### 2. Utilizar con ObservableInfinito
 
 Cuando se utiliza con InfiniteObservable, la suscripción dura para siempre ya que la finalización nunca llega.
 
@@ -348,7 +431,7 @@ interval(1000).pipe(
 
 ### 3. Tipos en TypeScript
 
-El valor de retorno de `ignoreElements` es del tipo `Observable<never>`.
+El valor de retorno de `ignoreElements` es de tipo `Observable<never>`.
 
 ```ts
 import { Observable, of } from 'rxjs';
@@ -372,7 +455,7 @@ result$.subscribe({
 
 ### 4. si la finalización no está garantizada
 
-Si la fuente no se completa, el `ignoreElements` tampoco se completará.
+Si la fuente no se completa, el ignoreElements tampoco lo hará.
 
 ```ts
 import { NEVER } from 'rxjs';
@@ -391,67 +474,58 @@ NEVER.pipe(
 ### Patrón 1: Secuencia de inicialización.
 
 ```ts
-import { of, concat } from 'rxjs';
-import { tap, ignoreElements, delay } from 'rxjs';
+import { of } from 'rxjs';
+import { ignoreElements } from 'rxjs';
 
-const initStep1$ = of('Step 1').pipe(
-  tap(console.log),
-  delay(1000),
+const source$ = of(1, 2, 3, 4, 5);
+
+source$.pipe(
   ignoreElements()
-);
-
-const initStep2$ = of('Step 2').pipe(
-  tap(console.log),
-  delay(1000),
-  ignoreElements()
-);
-
-const initStep3$ = of('Step 3').pipe(
-  tap(console.log),
-  delay(1000),
-  ignoreElements()
-);
-
-// Todos los pasos se ejecutan secuencialmente
-concat(initStep1$, initStep2$, initStep3$).subscribe({
-  complete: () => console.log('✅ Se ha completado toda la inicialización')
+).subscribe({
+  next: value => console.log('Valor:', value), // No solicitado
+  complete: () => console.log('Completado')
 });
-```
+// Salida: Completado
+---
+description: ignoreElementsオペレーターは、すべての値を無視して完了とエラーのみを通すRxJSフィルタリングオペレーターです。処理の完了を待つ場合に便利です。
+---
+
 
 ### Patrón 2: Proceso de limpieza
 
 ```ts
-import { from, of } from 'rxjs';
-import { tap, ignoreElements, mergeMap } from 'rxjs';
+import { of } from 'rxjs';
+import { ignoreElements } from 'rxjs';
 
-interface Resource {
-  id: number;
-  name: string;
-}
+const source$ = of(1, 2, 3, 4, 5);
 
-const resources: Resource[] = [
-  { id: 1, name: 'Database' },
-  { id: 2, name: 'Cache' },
-  { id: 3, name: 'Logger' }
-];
-
-from(resources).pipe(
-  mergeMap(resource =>
-    of(resource).pipe(
-      tap(() => console.log(`🧹 ${resource.name} Limpieza en curso...`)),
-      ignoreElements()
-    )
-  )
+source$.pipe(
+  ignoreElements()
 ).subscribe({
-  complete: () => console.log('✅ Se han limpiado todos los recursos')
+  next: value => console.log('Valor:', value), // No solicitado
+  complete: () => console.log('Completado')
 });
+// Salida: Completado
+```ts
+import { of } from 'rxjs';
+import { ignoreElements } from 'rxjs';
+
+const source$ = of(1, 2, 3, 4, 5);
+
+source$.pipe(
+  ignoreElements()
+).subscribe({
+  next: value => console.log('valor:', value), // 呼ばれない
+  complete: () => console.log('completadoしました')
+});
+// Salida: completadoしました
 ```
 
 ## 📚 Operadores relacionados.
 
-- **[filtro](. /filtro)** - filtra valores basándose en condiciones.
+- **[filter](. /filter)** - filtra valores basándose en condiciones.
 - **[take](. /take)** - sólo se toman los N primeros valores.
-- **[skip](. /skip)** - omite los N primeros valores.
+- skip](. /skip)** - salta los N primeros valores.
 - **[tap](. /utility/tap)** - realiza una acción lateral
 
 ## Resumen.
@@ -461,7 +535,7 @@ El operador `ignoreElements` ignora todos los valores y sólo pasa por las termi
 - ✅ Ideal cuando sólo se requiere notificación de finalización.
 - ✅ Se ejecutan los efectos secundarios (TAP).
 - ✅ También se pasan las notificaciones de error
-- ✅ Intención más clara que `filter(() => false)`.
+- ✅ Intención más clara que filter(() => false)`.
 - ⚠️ Observable infinito no se completa
 - ⚠️ El tipo de valor de retorno es `Observable<nunca>`.
 - ⚠️ El valor se ignora completamente, pero se realizan efectos secundarios

@@ -2,7 +2,7 @@
 description: "De ignoreElements operator is een RxJS filteroperator die alle waarden negeert en alleen voltooiingen en fouten doorlaat. Dit is handig wanneer je wacht tot het proces voltooid is."
 ---
 
-# ignoreElements - alleen voltooiingen/fouten passeren
+# ignoreElements - alleen voltooiingen/fouten worden doorgelaten
 
 De `ignoreElements` operator **negeert alle waarden** uitgegeven door de bron Observable en alleen **completion en foutmeldingen** worden downstream doorgegeven.
 
@@ -27,12 +27,12 @@ source$.pipe(
 1. alle 1, 2, 3, 4 en 5 worden genegeerd
 2. alleen voltooiingsmeldingen worden stroomafwaarts doorgegeven
 
-[🌐 Officiële RxJS documentatie - `ignoreElements`](https://rxjs.dev/api/operators/ignoreElements)
+[🌐 Officiële RxJS documentatie - ` ignoreElements`](https://rxjs.dev/api/operators/ignoreElements)
 
 ## 💡 Typisch gebruikspatroon.
 
 - **Wacht op voltooiing**: als je de waarde niet nodig hebt en alleen de voltooiing wilt weten.
-- **Alleen neveneffecten uitvoeren**: neveneffecten uitvoeren met tap en waarden negeren
+- **Alleen neveneffecten uitvoeren**: neveneffecten uitvoeren met tap en waarden negeren.
 - **Fouten afhandelen**: als je alleen fouten wilt opvangen
 - **Synchroniseren van sequenties**: wachten tot meerdere processen voltooid zijn
 
@@ -255,7 +255,7 @@ source$.pipe(
 
 TABEL 12
 
-**Aanbevolen**: gebruik `ignoreElements()` als je opzettelijk alle waarden wilt negeren. De bedoeling van de code zal duidelijk zijn.
+**Aanbevolen**: gebruik `ignoreElements()` als je met opzet alle waarden wilt negeren. De bedoeling van de code zal duidelijk zijn.
 
 ## 🔄 Foutmeldingen afhandelen.
 
@@ -318,7 +318,7 @@ of(1, 2, 3).pipe(
 // Voltooid
 ```
 
-### 2. Gebruik met InfiniteObservable
+### 2. Gebruik met Observable
 
 Bij gebruik met Infinite Observable duurt het abonnement eeuwig omdat de voltooiing nooit komt.
 
@@ -368,7 +368,7 @@ result$.subscribe({
 
 ### 4. als voltooiing niet gegarandeerd is
 
-Als de bron niet wordt voltooid, wordt `ignoreElements` ook niet voltooid.
+Als de bron niet voltooid wordt, zal de ` ignoreElements` ook niet voltooid worden.
 
 ```ts
 import { NEVER } from 'rxjs';
@@ -387,60 +387,51 @@ NEVER.pipe(
 ### Patroon 1: initialisatiesequentie
 
 ```ts
-import { of, concat } from 'rxjs';
-import { tap, ignoreElements, delay } from 'rxjs';
+import { of } from 'rxjs';
+import { ignoreElements } from 'rxjs';
 
-const initStep1$ = of('Step 1').pipe(
-  tap(console.log),
-  delay(1000),
+const source$ = of(1, 2, 3, 4, 5);
+
+source$.pipe(
   ignoreElements()
-);
-
-const initStep2$ = of('Step 2').pipe(
-  tap(console.log),
-  delay(1000),
-  ignoreElements()
-);
-
-const initStep3$ = of('Step 3').pipe(
-  tap(console.log),
-  delay(1000),
-  ignoreElements()
-);
-
-// Alle stappen worden sequentieel uitgevoerd
-concat(initStep1$, initStep2$, initStep3$).subscribe({
-  complete: () => console.log('✅ Alle initialisatie voltooid')
+).subscribe({
+  next: value => console.log('Waarde:', value), // Niet opgeroepen
+  complete: () => console.log('Voltooid')
 });
-```
+// Uitvoer: Voltooid
+---
+description: ignoreElementsオペレーターは、すべての値を無視して完了とエラーのみを通すRxJSフィルタリングオペレーターです。処理の完了を待つ場合に便利です。
+---
+
 
 ### Patroon 2: Opschoonproces
 
 ```ts
-import { from, of } from 'rxjs';
-import { tap, ignoreElements, mergeMap } from 'rxjs';
+import { of } from 'rxjs';
+import { ignoreElements } from 'rxjs';
 
-interface Resource {
-  id: number;
-  name: string;
-}
+const source$ = of(1, 2, 3, 4, 5);
 
-const resources: Resource[] = [
-  { id: 1, name: 'Database' },
-  { id: 2, name: 'Cache' },
-  { id: 3, name: 'Logger' }
-];
-
-from(resources).pipe(
-  mergeMap(resource =>
-    of(resource).pipe(
-      tap(() => console.log(`🧹 ${resource.name} Opschonen bezig...`)),
-      ignoreElements()
-    )
-  )
+source$.pipe(
+  ignoreElements()
 ).subscribe({
-  complete: () => console.log('✅ Alle bronnen opgeschoond')
+  next: value => console.log('Waarde:', value), // Niet opgeroepen
+  complete: () => console.log('Voltooid')
 });
+// Uitvoer: Voltooid
+```ts
+import { of } from 'rxjs';
+import { ignoreElements } from 'rxjs';
+
+const source$ = of(1, 2, 3, 4, 5);
+
+source$.pipe(
+  ignoreElements()
+).subscribe({
+  next: value => console.log('waarde:', value), // 呼ばれない
+  complete: () => console.log('voltooidしました')
+});
+// Uitvoer: voltooidしました
 ```
 
 ## 📚 Gerelateerde operatoren.
@@ -448,16 +439,16 @@ from(resources).pipe(
 - **[filter](. /filter)** - waarden filteren op basis van voorwaarden.
 - **[take](. /take)** - alleen de eerste N waarden worden meegenomen.
 - **[skip](. /skip)** - de eerste N waarden overslaan.
-- **[tap](. /utility/tap)** - een nevenactie uitvoeren
+- **[tap](. /utility/tap)** - een zijwaartse actie uitvoeren
 
 ## Samenvatting.
 
-De `ignoreElements` operator negeert alle waarden en geeft alleen completies en fouten door.
+De ` ignoreElements` operator negeert alle waarden en geeft alleen completies en fouten door.
 
 - Ideaal als alleen een melding van voltooiing nodig is.
-- ✅ Neveneffecten (TAP) worden uitgevoerd
+- Neveneffecten (tap) worden uitgevoerd
 - ✅ Foutmeldingen worden ook doorgegeven
-- Duidelijkere intentie dan `filter() => false)`
-- ⚠️ Oneindige observeerbaarheid wordt niet voltooid
-- ⚠️ Het type terugkeerwaarde is `Observable<never>`.
+- ✅ Duidelijkere bedoeling dan filter() => false)`
+- ⚠️ Infinite Observable wordt niet voltooid
+- ⚠️ Type terugkeerwaarde is `Observable<never>`.
 - ⚠️ Waarde wordt volledig genegeerd, maar neveneffecten worden uitgevoerd

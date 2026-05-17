@@ -261,15 +261,24 @@ numbers$.pipe(
 // Salida.: 30
 ```
 
-| Operador | Argumentos | Valor de retorno | Si no se encuentra. |
-|---|---|---|---|
-| `encontrarÍndice(predicado)` | Función condicional | Índice (numérico). | `-1` |
-| Buscar(predicado)` | Función condicional | Valor propio | indefinido |
-| elementoEn(índice)` | Índice | Valor propio | Error (sin valor por defecto) |
+```ts
+import { from } from 'rxjs';
+import { findIndex } from 'rxjs';
+
+const numbers$ = from([1, 3, 5, 7, 8, 9, 10]);
+
+numbers$.pipe(
+  findIndex(n => n % 2 === 0)
+).subscribe(console.log);
+// Salida.: 4(primer par8índice del primer par)
+---
+description: findIndexオペレーターは、条件を満たす最初の値のインデックスを返すRxJSフィルタリングオペレーターです。見つからない場合は-1を返します。
+---
+
 
 ## 🔄 Comparación con Array.findIndex() de JavaScript
 
-El método `findIndex` de RxJS se comporta de forma similar al método `Array.prototype.findIndex()` de JavaScript.
+RxJS `findIndex` se comporta de manera similar al método de JavaScript `Array.prototype.findIndex()`.
 
 ```ts
 // JavaScript Matriz de
@@ -337,9 +346,9 @@ interval(1000).pipe(
 // Índice: 3
 ```
 
-### 3. Seguridad tipográfica en TypeScript
+### 3. Seguridad de tipos en TypeScript
 
-`findIndex` siempre devuelve el tipo `number`.
+findIndex` siempre devuelve el tipo `number`.
 
 ```ts
 import { Observable, from } from 'rxjs';
@@ -393,9 +402,9 @@ items$.pipe(
 ## 📚 Operadores relacionados.
 
 - **[find](. /find)** - Obtiene el primer valor que satisface la condición.
-- **[elementoEn](. /elementAt)** - Obtiene el valor en el índice especificado.
-- **[first](. /primero)** - Obtener el primer valor.
-- **[filtro](. /filtro)** - Obtener todos los valores que cumplan la condición.
+- elementAt](. /elementAt)** - Obtiene el valor en el índice especificado.
+- **[first](. /first)** - Obtiene el primer valor.
+- filter](. /filter)** - Obtener todos los valores que cumplan la condición.
 
 ## Resumen.
 
@@ -406,4 +415,4 @@ El operador `findIndex` devuelve el índice del primer valor que satisface la co
 - ✅ Devuelve `-1` si no se encuentra (no es un error)
 - ✅ Finaliza inmediatamente si se encuentra
 - ⚠️ El valor de retorno es siempre de tipo `number` (-1 o un entero mayor o igual que 0)
-- ⚠️ Utilice `find` si se requiere el valor en sí mismo
+- ⚠️ Utiliza `find` si se requiere el propio valor

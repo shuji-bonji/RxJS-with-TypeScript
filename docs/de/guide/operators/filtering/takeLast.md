@@ -4,7 +4,7 @@ description: "takeLast ist ein RxJS-Filteroperator, der nur die letzten N Werte 
 
 # takeLast - liefert die letzten N Werte
 
-Der Operator "takeLast" gibt nur die letzten N Werte zu dem Zeitpunkt aus, zu dem der Stream **vollständig** ist. Er behält die Werte in einem Puffer, bis der Stream abgeschlossen ist, und gibt sie nach Abschluss zusammen aus.
+Der Operator `takeLast` gibt nur die letzten N Werte zu dem Zeitpunkt aus, an dem der Stream **vollständig** ist. Er behält die Werte in einem Puffer, bis der Stream abgeschlossen ist, und gibt sie nach Abschluss zusammen aus.
 
 ## 🔰 Grundlegende Syntax und Verwendung
 
@@ -51,10 +51,20 @@ numbers$.pipe(
 // Ausgabe: 7, 8, 9(vor der Ausgabe auf die Fertigstellung warten)
 ```
 
-| Operator | Erfassungsposition | Zeitpunkt der Ausgabe | Aktion vor Abschluss. |
-|---|---|---|---|
-| Einnahme(n)` | Erstes n | Sofortige Ausgabe | Automatische Beendigung, nachdem n Stücke genommen wurden. |
-| `TakeLast(n)` | Letzte n Stücke | Ausgabe kollektiv nach Beendigung | Halten im Puffer |
+```ts
+import { range } from 'rxjs';
+import { takeLast } from 'rxjs';
+
+const numbers$ = range(0, 10); // 0von (bis)9bis
+
+numbers$.pipe(
+  takeLast(3)
+).subscribe(console.log);
+// Ausgabe: 7, 8, 9
+---
+description: takeLastはObservableストリームが完了した時点で、最後のN個の値のみを出力するRxJSフィルタリングオペレーターです。ログの最新件数取得、リーダーボードの上位N件表示、完了時の最終データサマリーなど、ストリーム全体から最後の値だけが必要な場面に最適です。完了するまでバッファに保持するため無限ストリームでは使用できません。
+---
+
 
 ## 💡 Typisches Nutzungsmuster
 
@@ -78,7 +88,7 @@ numbers$.pipe(
      { timestamp: 5, level: 'info' as const, message: 'Retry successful' },
    ] as LogEntry[]);
 
-   // Abrufen der letzten3Abrufen von Protokollen der
+   // Holt die letzten3Die letzten Protokolle abrufen
    logs$.pipe(
      takeLast(3)
    ).subscribe(log => {
@@ -172,14 +182,14 @@ const historyDisplay = document.createElement('div');
 historyDisplay.style.marginTop = '10px';
 container.appendChild(historyDisplay);
 
-// Subjekt zur Aufnahme von Eingabewerten
-const inputs$ = new Subject<string>();.
+// Subject zur Aufnahme von Eingabewerten
+const inputs$ = new Subject();.
 
 // **WICHTIG**: takeLast Abonnement zuerst setzen
 inputs$.pipe(
   takeLast(3)
 ).subscribe({
-  next: (value) => {
+  next: (Wert) => {
     const item = document.createElement('div');
     item.textContent = `- ${Wert}`;
     historyDisplay.appendChild(item);
@@ -209,7 +219,7 @@ fromEvent<KeyboardEvent>(input, 'keydown').subscribe(event => {
 // Vervollständigen Sie mit dem Klick auf die Schaltfläche und zeigen Sie den Verlauf an
 fromEvent(submitButton, 'click').subscribe(() => {
   historyDisplay.innerHTML = '<strong>History (latest 3):</strong><br>';
-  inputs$.complete(); // Stream vervollständigen → takeLast fires
+  inputs$.complete(); // Stream complete → takeLast feuert
 });
 
 ```
@@ -217,7 +227,7 @@ fromEvent(submitButton, 'click').subscribe(() => {
 > [!IMPORTANT]
 > **Wichtige Punkte**:
 > - `takeLast(3)` Abonnieren Sie die**zuerst.**muss zuerst eingerichtet werden
-> - wenn die Schaltfläche angeklickt wird. `complete()` wird der letzte der bis zu diesem Zeitpunkt empfangenen Werte ausgegeben.3Der letzte der bis zu diesem Zeitpunkt empfangenen Werte wird ausgegeben.
+> - wenn die Schaltfläche angeklickt wird. `complete()` wird der letzte der bis dahin empfangenen Werte ausgegeben.3Der letzte bis zu diesem Zeitpunkt empfangene Wert wird ausgegeben.
 > - `complete()` Nach dem Aufruf**Nach dem Aufruf von**an `subscribe` fließen die Werte nicht mehr.
 
 ## ⚠️ Ein wichtiger Punkt, der zu beachten ist
@@ -233,7 +243,7 @@ fromEvent(submitButton, 'click').subscribe(() => {
 
 ts.
 import { interval } from 'rxjs';
-importiere { takeLast } von 'rxjs';
+importieren { takeLast } from 'rxjs';
 
 // ❌ Schlechtes Beispiel: Verwendung von takeLast mit unendlichen Streams
 interval(1000).pipe(
@@ -254,7 +264,7 @@ importiere { take, takeLast } von 'rxjs';
 // ✅ Gutes Beispiel: endlicher Stream, dann takeLast verwenden
 interval(1000).pipe(
   take(10), // Komplett mit den ersten 10
-  takeLast(3), // Nimm die letzten 3 davon
+  takeLast(3), // take die letzten 3 davon
 ).subscribe(console.log);.
 // Ausgabe: 7, 8, 9
 
@@ -268,10 +278,10 @@ interval(1000).pipe(
 
 ts.
 import { range } from 'rxjs';
-importiere { takeLast } von 'rxjs';
+importieren { takeLast } from 'rxjs';
 
 // ⚠️ Hinweis: Große Datenmengen werden in einem Puffer gehalten
-bereich(0, 1000000).pipe(
+range(0, 1000000).pipe(
   takeLast(100000) // 100.000 Datensätze werden im Speicher gehalten
 ).subscribe(console.log);.
 
@@ -283,24 +293,24 @@ bereich(0, 1000000).pipe(
 
 ts.
 import { range } from 'rxjs';
-importiere { last, takeLast } von 'rxjs';
+importieren { last, takeLast } from 'rxjs';
 
 const numbers$ = range(0, 10);
 
 // last: nur die letzte Zahl
-zahlen$.pipe(
+numbers$.pipe(
   last()
 ).subscribe(console.log);
 // Ausgabe: 9
 
 // takeLast(1): letzter Wert (Ausgabe als Einzelwert, nicht als Array)
-zahlen$.pipe(
+numbers$.pipe(
   takeLast(1)
 ).subscribe(console.log);.
 // Ausgabe: 9
 
 // takeLast(3): letzte 3
-zahlen$.pipe(
+numbers$.pipe(
   takeLast(3)
 ).subscribe(console.log);
 // Ausgabe: 7, 8, 9
@@ -330,9 +340,9 @@ Schnittstelle Transaction {
 }
 
 function getRecentTransactions(
-  transactions$: Observable<Transaction>,.
+  transactions$: Observable,.
   count: Zahl
-): Observable<Transaktion> {
+): Observable {
   return transactions$.pipe(
     takeLast(count)
   );
@@ -340,7 +350,7 @@ function getRecentTransactions(
 
 // Beispiel für die Verwendung
 const transactions$ = from([.
-  { id: '1', Betrag: 100, Zeitstempel: new Date('2025-01-01'), Status: 'completed' as const }
+  { id: '1', amount: 100, timestamp: new Date('2025-01-01'), status: 'completed' as const }
   { id: '2', Betrag: 200, Zeitstempel: new Date('2025-01-02'), Status: 'completed' as const }
   { id: '3', Betrag: 150, Zeitstempel: new Date('2025-01-03'), Status: 'pending' as const }
   { id: '4', Betrag: 300, Zeitstempel: new Date('2025-01-04'), Status: 'completed' as const }
@@ -366,13 +376,13 @@ Der mittlere Teil des Wertes wird ausgeschlossen und nur der letzteNNur der letz
 
 ts
 import { range } from 'rxjs';
-importiere { skip, takeLast } von 'rxjs';
+importieren { skip, takeLast } from 'rxjs';
 
 const numbers$ = range(0, 10); // 0 bis 9
 
 // Überspringe die ersten 5 und nimm die verbleibenden letzten 3
 numbers$.pipe(
-  skip(5), // Überspringe 0, 1, 2, 3, 4
+  skip(5), // skip 0, 1, 2, 3, 4
   takeLast(3) // nimmt die letzten 3 der verbleibenden 5, 6, 7, 8, 9
 ).subscribe(console.log);.
 // Ausgabe: 7, 8, 9

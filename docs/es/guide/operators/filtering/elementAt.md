@@ -200,7 +200,7 @@ numbers$.pipe(
 ).subscribe(console.log);
 // Salida.: 30
 
-// take: Desde el principioNObtener un valor desde el principio
+// take: Desde el principioNObtener un valor
 numbers$.pipe(
   take(3)
 ).subscribe(console.log);
@@ -214,12 +214,20 @@ numbers$.pipe(
 // Salida.: 30
 ```
 
-| Operador. | Valor a obtener | Número de salidas | Caso de uso. |
-|---|---|---|---|
-| `elementoEn(n)` | Sólo valores en el índice n | 1 | Toma el enésimo valor |
-| `tomar(n)` | n valores desde el principio | n valores | Obtener los n primeros valores |
-| `primero()` | Primer valor | 1 | Obtener el primero |
-| `salto(n) + primero()` | Primero después de n saltos | 1 | Equivalente a elementAt (obsoleto) |
+```ts
+import { from } from 'rxjs';
+import { elementAt } from 'rxjs';
+
+const numbers$ = from([10, 20, 30, 40, 50]);
+
+numbers$.pipe(
+  elementAt(2)
+).subscribe(console.log);
+// Salida.: 30(Índice2Valor)
+---
+description: elementAtオペレーターは、指定されたインデックス位置の値のみを取得するRxJSフィルタリングオペレーターです。配列のインデックスアクセスに似た動作をします。
+---
+
 
 ## ⚠️ Notas.
 
@@ -272,7 +280,7 @@ import { elementAt } from 'rxjs';
 
 // 1Emite un valor cada segundo
 interval(1000).pipe(
-  elementAt(3) // Índice3(4(valor cada segundo)
+  elementAt(3) // Índice3(4(valor por segundo)
 ).subscribe(console.log);
 // 3Emisión después de segundos: 3
 ```
@@ -320,15 +328,15 @@ numbers$.pipe(
 
 ## 📚 Operadores relacionados.
 
-- **[tomar](. /take)** - N tomado desde el principio.
-- **[first](. /primero)** - obtiene el primer valor.
-- **[último](. /último)** - obtener el último valor.
-- **[skip](. /saltar)** - salta los N primeros valores
-- **[takeLast](. /takeLast)** - obtiene los N últimos valores
+- **[take](. /take)** - N tomado desde el principio.
+- **[first](. /first)** - obtiene el primer valor.
+- **[last](. /last)** - obtiene el último valor.
+- **[skip](. /skip)** - salta los N primeros valores
+- takeLast](. /takeLast)** - obtiene los N últimos valores
 
 ## Resumen.
 
-El operador `elementAt` sólo recupera el valor en la posición de índice especificada.
+El operador elementAt sólo recupera el valor en la posición de índice especificada.
 
 - ✅ Mismo comportamiento que el acceso a índices de array.
 - ✅ Ideal para recuperar el enésimo valor.

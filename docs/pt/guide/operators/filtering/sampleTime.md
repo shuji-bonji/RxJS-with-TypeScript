@@ -1,5 +1,5 @@
 ---
-description: "O operador sampleTime é um operador de filtragem RxJS que coleta amostras periódicas dos valores mais recentes do fluxo em intervalos de tempo especificados. É ideal para obter instantâneos periódicos."
+description: "O operador sampleTime é um operador de filtragem RxJS que coleta periodicamente amostras dos valores mais recentes do fluxo em intervalos de tempo especificados. É ideal para obter instantâneos periódicos."
 ---
 
 # sampleTime - obtém periodicamente o valor mais recente
@@ -29,7 +29,7 @@ clicks$.pipe(
 
 > [!WARNING] Atenção em código de produção
 
-> O exemplo acima omite o cancelamento da assinatura de `fromEvent` para simplificar a explicação. No código real, use `takeUntil(destroy$)`, `take(N)` ou `Subscription.unsubscribe()` para gerenciar explicitamente o ciclo de vida. Mais informações: [Superando dificuldades: gerenciamento do ciclo de vida](/pt/guide/overcoming-difficulties/lifecycle-management.md)
+> O exemplo acima omite o cancelamento da assinatura fromEvent para simplificar a explicação. No código real, use `takeUntil(destroy$)`, `take(N)` ou `Subscription.unsubscribe()` para gerenciar explicitamente o ciclo de vida. Mais informações: [Superando dificuldades: gerenciamento do ciclo de vida](/pt/guide/overcoming-difficulties/lifecycle-management.md)
 
 [🌐 Documentação oficial do RxJS - `sampleTime`](https://rxjs.dev/api/operators/sampleTime)
 
@@ -228,11 +228,29 @@ source$.pipe(
 // Exemplos de saída: 2, 5, 8(último valor de cada período)
 ```
 
-| Operador | Tempo de ignição | Valor a ser emitido | Caso de uso. |
-|---|---|---|---|
-| `sampleTime(1000)` | **Cronometragem recorrente a cada segundo**. | Valor mais recente naquele momento | Instantâneo periódico |
-| `throttleTime(1000)` | Ignorado por 1 segundo após o recebimento do valor | Primeiro valor no início do período | Limitação de eventos |
-| `auditTime(1000)` | 1 segundo após o recebimento do valor | Último valor no período | Último estado dentro do período |
+```ts
+import { fromEvent } from 'rxjs';
+import { sampleTime } from 'rxjs';
+
+const clicks$ = fromEvent(document, 'click');
+
+clicks$.pipe(
+  sampleTime(2000)
+).subscribe(() => {
+  console.log('2Amostras segundo a segundo');
+});
+```ts
+import { fromEvent } from 'rxjs';
+import { sampleTime } from 'rxjs';
+
+const clicks$ = fromEvent(document, 'click');
+
+clicks$.pipe(
+  sampleTime(2000)
+).subscribe(() => {
+  console.log('2秒ごとのサンプル');
+});
+```
 
 **diferenças visuais**:.
 
@@ -272,7 +290,7 @@ clicks$.pipe(
 
 ### Aguarde a primeira amostragem de tempo
 
-O `sampleTime` não produzirá nada até que o tempo especificado tenha se passado.
+O sampleTime não produzirá nada até que o tempo especificado tenha se passado.
 
 ```ts
 import { interval } from 'rxjs';
@@ -318,39 +336,103 @@ interval(10).pipe(
 // A memória retém apenas o mais recente1Apenas os dois valores mais recentes são mantidos na memória
 ```
 
-## 💡 Diferenças com a amostra
+## 💡 Diferenças com o sample
 
 O `sample` usa outro Observable como acionador, enquanto o `sampleTime` usa um intervalo de tempo fixo.
 
 ```ts
-import { interval, fromEvent } from 'rxjs';
-import { sample, sampleTime } from 'rxjs';
+import { fromEvent } from 'rxjs';
+import { sampleTime } from 'rxjs';
 
-const source$ = interval(100);
-
-// sampleTime: Intervalo de tempo fixo (1(a cada segundo)
-source$.pipe(
-  sampleTime(1000)
-).subscribe(val => console.log('sampleTime:', val));
-
-// sample: usando umObservableAcionado por um
 const clicks$ = fromEvent(document, 'click');
-source$.pipe(
-  sample(clicks$)
-).subscribe(val => console.log('sample:', val));
-// Cada clique gera o valor mais recente naquele momento
-```
 
-| Operador | Acionadores | Caso de uso. |
-|---|---|---|
-| `sampleTime(ms)` | Intervalo de tempo fixo | Amostragem periódica |
-| `sample(notifier$)` | Outro observável | Amostragem dinâmica de tempo |
+clicks$.pipe(
+  sampleTime(2000)
+).subscribe(() => {
+  console.log('2Amostras segundo a segundo');
+});
+---
+description: sampleTimeオペレーターは、指定した時間間隔で定期的にストリームの最新値をサンプリングするRxJSフィルタリングオペレーターです。定期的なスナップショット取得に最適です。
+---
+
+
+```ts
+import { fromEvent } from 'rxjs';
+import { sampleTime } from 'rxjs';
+
+const clicks$ = fromEvent(document, 'click');
+
+clicks$.pipe(
+  sampleTime(2000)
+).subscribe(() => {
+  console.log('2Amostras segundo a segundo');
+});
+```ts
+import { fromEvent } from 'rxjs';
+import { sampleTime, map } from 'rxjs';
+
+// UICriar
+const container = document.createElement('div');
+document.body.appendChild(container);
+
+const title = document.createElement('h3');
+title.textContent = 'マウス位置サンプリング（1秒ごと）';
+container.appendChild(title);
+
+const area = document.createElement('div');
+area.style.width = '100%';
+area.style.height = '300px';
+area.style.border = '2px solid #4CAF50';
+area.style.backgroundColor = '#f5f5f5';
+area.style.display = 'flex';
+area.style.alignItems = 'center';
+area.style.justifyContent = 'center';
+area.style.fontSize = '18px';
+area.textContent = 'この領域内でマウスを動かしてください';
+container.appendChild(area);
+
+const output = document.createElement('div');
+output.style.marginTop = '10px';
+output.style.maxHeight = '150px';
+output.style.overflow = 'auto';
+output.style.border = '1px solid #ccc';
+output.style.padding = '10px';
+container.appendChild(output);
+
+let sampleCount = 0;
+
+// マウス移動イベント
+fromEvent<MouseEvent>(area, 'mousemove').pipe(
+  map(event => ({
+    x: event.offsetX,
+    y: event.offsetY,
+    timestamp: Date.now()
+  })),
+  sampleTime(1000) // 1秒ごとにサンプリング
+).subscribe(pos => {
+  sampleCount++;
+  const log = document.createElement('div');
+  log.style.padding = '5px';
+  log.style.borderBottom = '1px solid #eee';
+  log.innerHTML = `
+    <strong>サンプル #${sampleCount}</strong>
+    [${new Date(pos.timestamp).toLocaleTimeString()}]
+    位置: (${pos.x}, ${pos.y})
+  `;
+  output.insertBefore(log, output.firstChild);
+
+  // Máx.10件まで表示
+  while (output.children.length > 10) {
+    output.removeChild(output.lastChild!);
+  }
+});
+```
 
 ## 📚 Operadores relacionados.
 
-- **[sample](https://rxjs.dev/api/operators/sample)** - Amostragem de outro Observável como um acionador (documentação oficial).
+- **[sample](https://rxjs.dev/api/operators/sample)** - Sampling de outro Observable como um acionador (documentação oficial).
 - **[throttleTime](. /throttleTime)** - Obtém o primeiro valor no início do período.
-- **[auditTime](. /auditTime)** - obtém o último valor no final do período
+- **[auditTime](. /auditTime)** - obtém o último valor no final do período.
 - **[debounceTime](. /debounceTime)** - emite o valor após a quiescência
 
 ## Resumo.

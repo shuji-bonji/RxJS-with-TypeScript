@@ -1,13 +1,13 @@
 ---
-description: "L'operatore sampleTime è un operatore di filtraggio RxJS che campiona periodicamente i valori più recenti del flusso a intervalli di tempo specificati. È ideale per scattare istantanee periodiche."
+description: "L'operatore sampleTime è un operatore di filtraggio di RxJS che campiona periodicamente i valori più recenti del flusso a intervalli di tempo specificati. È ideale per scattare istantanee periodiche."
 ---
 
 # sampleTime - ottiene periodicamente il valore più recente
 
-L'operatore `sampleTime` periodicamente **campiona** il valore più recente dell'osservabile di origine a **specificati intervalli di tempo** e lo restituisce.
+L'operatore sampleTime periodicamente **campiona** il valore più recente dell'Observable di origine a **specificati intervalli di tempo** e lo restituisce.
 Come un'istantanea periodica, recupera il valore più recente in quel momento.
 
-## 🔰 Sintassi e utilizzo di base
+## 🔰 Sintassi e uso di base
 
 ```ts
 import { fromEvent } from 'rxjs';
@@ -29,11 +29,11 @@ clicks$.pipe(
 
 > [!WARNING] Attenzione in codice di produzione
 
-> L'esempio precedente omette la sottoscrizione di `fromEvent` per semplicità di spiegazione. Nel codice reale, usare `takeUntil(destroy$)`, `take(N)` o `Subscription.unsubscribe()` per gestire esplicitamente il ciclo di vita. Ulteriori informazioni: [Superare le difficoltà: la gestione del ciclo di vita] (/it/guide/ Superare le difficoltà/gestione del ciclo di vita.md)
+> L'esempio precedente omette la sottoscrizione di fromEvent per semplicità di spiegazione. Nel codice reale, usare takeUntil(destroy$)`, take(N)` o `Subscription.unsubscribe()` per gestire esplicitamente il ciclo di vita. Ulteriori informazioni: [Superare le difficoltà: la gestione del ciclo di vita] (/it/guide/ Superare le difficoltà/gestione del ciclo di vita.md)
 
-[🌐 Documentazione ufficiale di RxJS - `sampleTime`](https://rxjs.dev/api/operators/sampleTime)
+[🌐 Documentazione ufficiale di RxJS - sampleTime](https://rxjs.dev/api/operators/sampleTime)
 
-## 💡 Modelli di utilizzo tipici
+## 💡 Modelli tipici di utilizzo
 
 - Acquisizione ricorrente dei dati dei sensori**: informazioni aggiornate sulla temperatura e sulla posizione ogni secondo.
 - **Dashboard in tempo reale**: aggiornamenti regolari dello stato.
@@ -228,11 +228,29 @@ source$.pipe(
 // Esempi di output: 2, 5, 8(ultimo valore di ogni periodo)
 ```
 
-| Operatore | Tempi di accensione | Valore da emettere | Caso d'uso. |
-|---|---|---|---|
-| Tempo campione(1000)` | **Tempo ricorrente ogni secondo**. | Ultimo valore in quel momento | Istantanea periodica |
-| Tempo di accelerazione(1000)` | Ignorato per 1 secondo dopo la ricezione del valore. | Primo valore all'inizio del periodo | Strozzatura degli eventi |
-| Tempo di verifica (1000) | 1 secondo dopo la ricezione del valore | Ultimo valore nel periodo | Ultimo stato nel periodo |
+```ts
+import { fromEvent } from 'rxjs';
+import { sampleTime } from 'rxjs';
+
+const clicks$ = fromEvent(document, 'click');
+
+clicks$.pipe(
+  sampleTime(2000)
+).subscribe(() => {
+  console.log('2Campioni secondo per secondo');
+});
+```ts
+import { fromEvent } from 'rxjs';
+import { sampleTime } from 'rxjs';
+
+const clicks$ = fromEvent(document, 'click');
+
+clicks$.pipe(
+  sampleTime(2000)
+).subscribe(() => {
+  console.log('2秒ごとのサンプル');
+});
+```
 
 **differenze visive**:.
 
@@ -272,7 +290,7 @@ clicks$.pipe(
 
 ### 2. Attendere il primo tempo di campionamento
 
-Il parametro `sampleTime` non emetterà nulla finché non sarà trascorso il tempo specificato.
+Il parametro sampleTime non emetterà nulla finché non sarà trascorso il tempo specificato.
 
 ```ts
 import { interval } from 'rxjs';
@@ -318,44 +336,108 @@ interval(10).pipe(
 // La memoria conserva solo i valori più recenti1Vengono mantenuti in memoria solo i due valori più recenti.
 ```
 
-## 💡 Differenze con il campione
+## 💡 Differenze con il sample
 
-`sample` utilizza un altro osservabile come trigger, mentre `sampleTime` utilizza un intervallo di tempo fisso.
+sample utilizza un altro Observable come trigger, mentre sampleTime utilizza un intervallo di tempo fisso.
 
 ```ts
-import { interval, fromEvent } from 'rxjs';
-import { sample, sampleTime } from 'rxjs';
+import { fromEvent } from 'rxjs';
+import { sampleTime } from 'rxjs';
 
-const source$ = interval(100);
-
-// sampleTime: Intervallo di tempo fisso (1(ogni secondo)
-source$.pipe(
-  sampleTime(1000)
-).subscribe(val => console.log('sampleTime:', val));
-
-// sample: utilizzando un diversoObservableAttivato da un
 const clicks$ = fromEvent(document, 'click');
-source$.pipe(
-  sample(clicks$)
-).subscribe(val => console.log('sample:', val));
-// Ogni clic produce il valore più recente in quel momento
-```
 
-| Operatore | Trigger | Caso d'uso. |
-|---|---|---|
-| `sampleTime(ms)` | Intervallo di tempo fisso | Campionamento periodico |
-| `campione(notificatore$)` | Un altro osservabile | Campionamento temporale dinamico |
+clicks$.pipe(
+  sampleTime(2000)
+).subscribe(() => {
+  console.log('2Campioni secondo per secondo');
+});
+---
+description: sampleTimeオペレーターは、指定した時間間隔で定期的にストリームの最新値をサンプリングするRxJSフィルタリングオペレーターです。定期的なスナップショット取得に最適です。
+---
+
+
+```ts
+import { fromEvent } from 'rxjs';
+import { sampleTime } from 'rxjs';
+
+const clicks$ = fromEvent(document, 'click');
+
+clicks$.pipe(
+  sampleTime(2000)
+).subscribe(() => {
+  console.log('2Campioni secondo per secondo');
+});
+```ts
+import { fromEvent } from 'rxjs';
+import { sampleTime, map } from 'rxjs';
+
+// UICreare
+const container = document.createElement('div');
+document.body.appendChild(container);
+
+const title = document.createElement('h3');
+title.textContent = 'マウス位置サンプリング（1秒ごと）';
+container.appendChild(title);
+
+const area = document.createElement('div');
+area.style.width = '100%';
+area.style.height = '300px';
+area.style.border = '2px solid #4CAF50';
+area.style.backgroundColor = '#f5f5f5';
+area.style.display = 'flex';
+area.style.alignItems = 'center';
+area.style.justifyContent = 'center';
+area.style.fontSize = '18px';
+area.textContent = 'この領域内でマウスを動かしてください';
+container.appendChild(area);
+
+const output = document.createElement('div');
+output.style.marginTop = '10px';
+output.style.maxHeight = '150px';
+output.style.overflow = 'auto';
+output.style.border = '1px solid #ccc';
+output.style.padding = '10px';
+container.appendChild(output);
+
+let sampleCount = 0;
+
+// マウス移動イベント
+fromEvent<MouseEvent>(area, 'mousemove').pipe(
+  map(event => ({
+    x: event.offsetX,
+    y: event.offsetY,
+    timestamp: Date.now()
+  })),
+  sampleTime(1000) // 1秒ごとにサンプリング
+).subscribe(pos => {
+  sampleCount++;
+  const log = document.createElement('div');
+  log.style.padding = '5px';
+  log.style.borderBottom = '1px solid #eee';
+  log.innerHTML = `
+    <strong>サンプル #${sampleCount}</strong>
+    [${new Date(pos.timestamp).toLocaleTimeString()}]
+    位置: (${pos.x}, ${pos.y})
+  `;
+  output.insertBefore(log, output.firstChild);
+
+  // Max.10件まで表示
+  while (output.children.length > 10) {
+    output.removeChild(output.lastChild!);
+  }
+});
+```
 
 ## 📚 Operatori correlati.
 
-- **[sample](https://rxjs.dev/api/operators/sample)** - Campionamento di un altro osservabile come trigger (documentazione ufficiale).
+- **[sample](https://rxjs.dev/api/operators/sample)** - Campionamento di un altro Observable come trigger (documentazione ufficiale).
 - **[throttleTime](. /throttleTime)** - Ottiene il primo valore all'inizio del periodo.
 - **[auditTime](. /auditTime)** - ottiene l'ultimo valore alla fine del periodo.
-- **[debounceTime](. /debounceTime)** - rilascia il valore dopo la quiescenza
+- **[debounceTime](. /debounceTime)** - emette il valore dopo la quiescenza.
 
 ## Riepilogo.
 
-L'operatore `sampleTime` campiona periodicamente il valore più recente nell'intervallo di tempo specificato.
+L'operatore sampleTime campiona periodicamente il valore più recente nell'intervallo di tempo specificato.
 
 - Ideale per ottenere istantanee periodiche.
 - ✅ Utile per sfoltire i flussi ad alta frequenza

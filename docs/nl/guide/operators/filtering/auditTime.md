@@ -1,5 +1,5 @@
 ---
-description: "auditTime is een RxJS filteroperator die wacht op een gespecificeerde tijd wanneer een waarde wordt afgegeven en de laatste waarde binnen die periode uitvoert. Het wordt het best gebruikt als je periodiek de laatste status wilt samplen op hoogfrequente gebeurtenissen zoals scrollpositie bijhouden, venster vergroten of verkleinen, muisbeweging, enz. Het is belangrijk om het verschil te begrijpen tussen dit en throttleTime en debounceTime en ze op de juiste manier te gebruiken."
+description: "auditTime is een RxJS filteroperator die wacht op een gespecificeerde tijd wanneer een waarde wordt afgegeven en de laatste waarde binnen die periode uitvoert. Het wordt het best gebruikt als je periodiek de laatste status wilt bemonsteren op hoogfrequente gebeurtenissen zoals scrollpositie bijhouden, venster verkleinen, muisbeweging, enz. Het is belangrijk om het verschil te begrijpen tussen dit en throttleTime en debounceTime en ze op de juiste manier te gebruiken."
 ---
 
 # auditTime - laatste waarde afgegeven na opgegeven tijd
@@ -23,7 +23,7 @@ fromEvent(document, 'click').pipe(
 3. de laatste klik wordt na 1 seconde uitgevoerd
 4. wacht op de volgende klik
 
-[🌐 RxJS officiële documentatie - `auditTime`](https://rxjs.dev/api/operators/auditTime)
+[🌐 RxJS officiële documentatie - auditTime](https://rxjs.dev/api/operators/auditTime)
 
 ## 🆚 Contrast met throttleTime
 
@@ -182,7 +182,7 @@ fromEvent<MouseEvent>(container, 'mousemove').pipe(
     };
   }),
   auditTime(100) // Elke 100 ms de laatste positie ophalen
-).subscribe(positie => {
+).subscribe(position => {
   positionDisplay.textContent = `Laatste positie (elke 100 ms): X=${position.x.toFixed(0)}, Y=${position.y.toFixed(0)}`;
 
   // Verplaats dot naar laatste positie
@@ -236,13 +236,13 @@ fromEvent(input, 'input').pipe(
 
 ### Verschillen in tijdlijn
 
-Verschil te zien wanneer een gebruiker klikt op "ab'→'abc'→'abcd' bij snel typen:
+Verschil gezien wanneer een gebruiker klikt op "ab'→'abc'→'abcd' bij snel typen:
 
 ```
 
 Invoerevent: a-b--c--d------------|
               ↓
-auditTime: ------c-----d----------|
+auditTime: ------c-----d----------|.
             (na 300 ms) (na 300 ms)
             → Zoek naar 'abc', zoek naar 'abcd' (in totaal 2 keer)
 
@@ -270,7 +270,7 @@ fromEvent(window, 'scroll').pipe(
 // ✅ als debounceTime geschikt is.
 // - zoekvak (we willen zoeken nadat de invoer is voltooid)
 fromEvent(searchInput, 'input').pipe(
-  debounceTime(300) // wacht 300ms nadat invoer stopt
+  debounceTime(300) // wacht 300ms nadat invoer is gestopt
 ).subscribe(/* ... */);
 
 ```
@@ -293,8 +293,8 @@ interface MousePosition {
 
 functie trackMousePosition(
   element: HTMLElement,.
-  intervalMs: getal
-): waarneembaar<muispositie> {
+  interval: getal
+): Observable {
   return fromEvent<MouseEvent>(element, 'mousemove').pipe(
     auditTime(intervalMs),.
     map(event => ({
@@ -331,25 +331,26 @@ import { throttleTime, auditTime, take } from 'rxjs';
 const source$ = interval(100).pipe(take(50));.
 
 // volgorde van throttleTime → auditTime
-bron$.pipe(
+source$.pipe(
   throttleTime(1000), // geef de eerste waarde elke seconde door
   auditTime(500) // wacht dan 500ms en voer de laatste waarde uit
 ).subscribe(console.log);.
 
-```
+```ts
+import { fromEvent } from 'rxjs';
+import { auditTime } from 'rxjs';
 
-## ⚠️ Een veelgemaakte fout
+fromEvent(document, 'click').pipe(
+  auditTime(1000)
+).subscribe(() => console.log('Klik.！'));
+---
+description: auditTimeは値が発行されたら指定時間待機し、その期間内の最後の値を出力するRxJSフィルタリングオペレーターです。スクロール位置の追跡、ウィンドウリサイズ、マウス移動などの高頻度イベントで最新の状態を定期的にサンプリングしたい場合に最適です。throttleTimeやdebounceTimeとの違いを理解して適切に使い分けることが重要です。
+---
 
-> [!WARNING]
-> `auditTime` en `debounceTime` zijn verschillend in gedrag. Zoekinvoer, bijvoorbeeld, waarbij de gebruiker**Wachten tot de gebruiker stopt**In sommige gevallen, zoals bij zoekinvoer, moet u `debounceTime` om te wachten tot de gebruiker stopt met typen, bijvoorbeeld voor zoekinvoer.`auditTime` waarden afgeeft met regelmatige tussenpozen tijdens de invoer.
-
-### Als er een foutieve: auditTime en debounceTime verwarren de
-
-```
 
 ts.
 import { fromEvent } from 'rxjs';
-import { auditTime } van 'rxjs';
+import { auditTime } from 'rxjs';
 
 // Maak een invoerveld voor zoeken
 const input = document.createElement('input');.
@@ -364,15 +365,25 @@ fromEvent(input, 'input').pipe(
   console.log('Zoekopdracht uitgevoerd');
 });
 
-```
+```ts
+import { fromEvent } from 'rxjs';
+import { auditTime } from 'rxjs';
 
-### juiste: debounceTime gebruik de
+fromEvent(document, 'click').pipe(
+  auditTime(1000)
+).subscribe(() => console.log('Klik.！'));
+```ts
+import { fromEvent } from 'rxjs';
+import { auditTime } from 'rxjs';
 
+fromEvent(document, 'click').pipe(
+  auditTime(1000)
+).subscribe(() => console.log('クリック！'));
 ```
 
 ts.
 import { fromEvent } from 'rxjs';
-import { debounceTime } van 'rxjs';
+import { debounceTime } from 'rxjs';
 
 // Maak een zoekinvoerveld
 const input = document.createElement('input');.
@@ -380,11 +391,11 @@ input.type = 'tekst';
 input.placeholder = "Zoeken... ;
 document.body.appendChild(input);
 
-// ✅ Goed voorbeeld: gebruik debounceTime voor zoekinvoer
+// ✅ Goed voorbeeld: debounceTime gebruiken voor zoekinvoer
 fromEvent(input, 'input').pipe(
-  debounceTime(300) // Wacht 300ms nadat input stopt voordat je gaat zoeken
+  debounceTime(300) // Wacht 300ms nadat invoer stopt voordat je gaat zoeken
 ).subscribe() => {
-  console.log('Zoekopdracht uitgevoerd', input.value);
+  console.log('Zoeken uitgevoerd', input.value);
 });
 ```
 
@@ -409,11 +420,11 @@ fromEvent(input, 'input').pipe(
 ### Opmerkingen.
 - ⚠️ `auditTime` voert alleen de laatste waarde in de periode uit (tussenliggende waarden worden genegeerd)
 - ⚠️ Niet erg effectief indien ingesteld voor korte intervallen
-- ⚠️ `throttleTime` of `debounceTime` kunnen geschikter zijn, afhankelijk van de toepassing
+- ⚠️ `throttleTime` of `debounceTime` kunnen geschikter zijn, afhankelijk van de toepassing.
 
 ## Volgende stappen.
 
 - **[throttleTime](. /throttleTime)** - leer hoe je de eerste waarde doorgeeft.
 - **[debounceTime](. /debounceTime)** - leer hoe je waarden doorgeeft nadat de invoer stopt.
-- **[filter](. /filter)** - leer filteren op basis van voorwaarden
+- Filter](. /filter)** - leer filteren op basis van voorwaarden.
 - **[filtering-operator-praktische-gebruiksgevallen](. /practical-use-cases)** - leer echte use-cases gebruiken

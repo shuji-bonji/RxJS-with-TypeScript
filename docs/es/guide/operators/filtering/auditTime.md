@@ -27,7 +27,7 @@ Espere al siguiente clic
 
 ## 🆚 Contraste con throttleTime
 
-`throttleTime` y `auditTime` son similares, pero difieren en los valores que emiten.
+`throttleTime` y `auditTime` son similares, pero difieren en los valores que muestran.
 
 ```ts
 import { interval } from 'rxjs';
@@ -60,11 +60,31 @@ audit:      -------3--------6--------9----|
                   (Último)   (Último)   (Último)
 ```
 
-| Operador. | Valor a emitir | Tiempo de salida | Caso de uso. |
-|---|---|---|---|
-| Tiempo de aceleración (ms) | El **primer** valor del periodo | Al recibir el valor | Reacción inmediata requerida |
-| Tiempo de auditoría (ms) | El **último** valor del periodo | Al final del periodo | Requiere estado actualizado |
-| `debounceTime(ms)` | El **último** valor después del silencio | Después de que se haya detenido la entrada | Espera a que se complete la entrada |
+```ts
+import { fromEvent } from 'rxjs';
+import { auditTime } from 'rxjs';
+
+fromEvent(document, 'click').pipe(
+  auditTime(1000)
+).subscribe(() => console.log('Pulsar.！'));
+```ts
+import { interval } from 'rxjs';
+import { throttleTime, auditTime, take } from 'rxjs';
+
+const source$ = interval(300).pipe(take(10)); // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+
+// throttleTime: PrimeroのvalorをSalida
+source$.pipe(
+  throttleTime(1000)
+).subscribe(console.log);
+// Salida: 0, 4, 8（各periodoのPrimeroのvalor）
+
+// auditTime: ÚltimoのvalorをSalida
+source$.pipe(
+  auditTime(1000)
+).subscribe(console.log);
+// Salida: 3, 6, 9（各periodoのÚltimoのvalor）
+```
 
 ## 💡 Patrón típico de utilización
 
@@ -177,7 +197,7 @@ dot.style.display = 'none';
 container.appendChild(dot);
 
 // Evento de movimiento del ratón
-fromEvent<MouseEvent>(container, 'mousemove').pipe(
+fromEvent<MouseEvent>(contenedor, 'moverratón').pipe(
   map(evento => {
     const rect = contenedor.getBoundingClientRect();
     return {
@@ -186,7 +206,7 @@ fromEvent<MouseEvent>(container, 'mousemove').pipe(
     };
   }),
   auditTime(100) // Obtener la última posición cada 100ms
-).subscribe(posición => {
+).subscribe(position => {
   positionDisplay.textContent = `Última posición (cada 100ms): X=${position.x.toFixed(0)}, Y=${position.y.toFixed(0)}`;
 
   // Mover el punto a la última posición
@@ -223,7 +243,7 @@ input.placeholder = 'Introducir palabra de búsqueda';
 document.body.appendChild(input);
 
 // auditTime: Ejecutar la búsqueda cada 300ms incluso durante la entrada
-fromEvent(input, 'input').pipe(
+fromEvent(entrada, 'entrada').pipe(
   auditTime(300)
 ).subscribe(() => {
   console.log('auditTime → Buscar:', input.value);
@@ -274,7 +294,7 @@ fromEvent(window, 'scroll').pipe(
 // ✅ si debounceTime es apropiado.
 // - caja de búsqueda (queremos buscar después de que se complete la entrada)
 fromEvent(searchInput, 'input').pipe(
-  debounceTime(300) // esperar 300ms después de que la entrada se detenga
+  debounceTime(300) // espera 300ms después de que la entrada se detenga
 ).subscribe(/* ... */);
 
 ```
@@ -298,10 +318,10 @@ interfaz MousePosition {
 function trackMousePosition(
   elemento: HTMLElement,.
   intervalMs: número
-): Observable<MousePosition> {
+): Observable {
   return fromEvent<MouseEvent>(element, 'mousemove').pipe(
     auditTime(intervalMs),.
-    map(event => ({
+    map(evento => ({
       x: evento.clienteX, evento.
       y: evento.clienteY,.
       timestamp: Date.now())
@@ -330,26 +350,27 @@ En ciertos escenarios, ambos pueden combinarse.
 
 ts.
 import { interval } from 'rxjs';
-import { throttleTime, auditTime, take } de 'rxjs';
+import { throttleTime, auditTime, take } from 'rxjs';
 
-const source$ = interval(100).pipe(take(50));.
+const fuente$ = interval(100).pipe(take(50));.
 
 // orden de throttleTime → auditTime
 source$.pipe(
-  throttleTime(1000), // pasar el primer valor cada segundo
+  throttleTime(1000), // pasa el primer valor cada segundo
   auditTime(500) // luego esperar 500ms y emitir el último valor
 ).subscribe(console.log);.
 
-```
+```ts
+import { fromEvent } from 'rxjs';
+import { auditTime } from 'rxjs';
 
-## ⚠️ Un error común
+fromEvent(document, 'click').pipe(
+  auditTime(1000)
+).subscribe(() => console.log('Pulsar.！'));
+---
+description: auditTimeは値が発行されたら指定時間待機し、その期間内の最後の値を出力するRxJSフィルタリングオペレーターです。スクロール位置の追跡、ウィンドウリサイズ、マウス移動などの高頻度イベントで最新の状態を定期的にサンプリングしたい場合に最適です。throttleTimeやdebounceTimeとの違いを理解して適切に使い分けることが重要です。
+---
 
-> [!WARNING]
-> `auditTime` y `debounceTime` son diferentes en comportamiento. Buscar entrada, por ejemplo, donde el usuario**Esperar a que el usuario pare**Si desea esperar a que el usuario deje de escribir, por ejemplo, para una entrada de búsqueda, utilice `debounceTime` Utilice`auditTime` emite valores a intervalos regulares durante la entrada.
-
-### Falso: auditTime y debounceTime confundir la
-
-```
 
 ts.
 import { fromEvent } from 'rxjs';
@@ -368,10 +389,20 @@ fromEvent(input, 'input').pipe(
   console.log('Búsqueda ejecutada');
 });
 
-```
+```ts
+import { fromEvent } from 'rxjs';
+import { auditTime } from 'rxjs';
 
-### correcto: debounceTime utilizar el
+fromEvent(document, 'click').pipe(
+  auditTime(1000)
+).subscribe(() => console.log('Pulsar.！'));
+```ts
+import { fromEvent } from 'rxjs';
+import { auditTime } from 'rxjs';
 
+fromEvent(document, 'click').pipe(
+  auditTime(1000)
+).subscribe(() => console.log('クリック！'));
 ```
 
 ts.
@@ -385,7 +416,7 @@ input.placeholder = 'Buscar...' ;
 document.body.appendChild(input);
 
 // ✅ Buen ejemplo: utilizar debounceTime para la entrada de búsqueda
-fromEvent(input, 'input').pipe(
+fromEvent(entrada, 'entrada').pipe(
   debounceTime(300) // Espera 300ms después de que la entrada se detenga antes de buscar
 ).subscribe(() => {
   console.log('Búsqueda ejecutada', input.value);
@@ -419,5 +450,5 @@ fromEvent(input, 'input').pipe(
 
 - **[throttleTime](. /throttleTime)** - aprende a pasar el primer valor.
 - **[debounceTime](. /debounceTime)** - aprende cómo emitir valores después de que se detenga la entrada.
-- filtro](. /filter)** - aprende a filtrar en base a condiciones.
+- filter](. /filter)** - aprende a filtrar basándose en condiciones.
 - **[filtro-operador-casos-prácticos](. /practical-use-cases)** - aprende a utilizar casos de uso reales

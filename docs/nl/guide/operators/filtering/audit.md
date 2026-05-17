@@ -1,5 +1,5 @@
 ---
-description: "De controle operator is een RxJS filter operator die alleen de laatste waarde afgeeft binnen de periode die wordt gecontroleerd door de aangepaste Observable. Het is ideaal voor dynamische timingcontrole."
+description: "De audit operator is een RxJS filteroperator die alleen de laatste waarde afgeeft binnen de periode die wordt gecontroleerd door de aangepaste Observable. Het is ideaal voor dynamische timingcontrole."
 ---
 
 # audit - laatste waarde van controleperiode afgegeven
@@ -30,22 +30,48 @@ clicks$.pipe(
 
 [🌐 Officiële RxJS documentatie - `audit`](https://rxjs.dev/api/operators/audit)
 
-> [!WARNING] Let op in productiecode
+```ts
+import { fromEvent, interval } from 'rxjs';
+import { audit } from 'rxjs';
 
-> Het bovenstaande voorbeeld laat het uitschrijven van `fromEvent` weg voor de eenvoud van de uitleg. Gebruik in echte code `takeUntil(destroy$)`, `take(N)` of `Subscription.unsubscribe()` om de levenscyclus expliciet te beheren. Meer informatie: [Moeilijkheden overwinnen: levenscyclusbeheer](/nl/guide/overcoming-difficulties/lifecycle-management.md)
+// Klikgebeurtenis
+const clicks$ = fromEvent(document, 'click');
+
+// 1Afzonderlijke tijdsperioden elke seconde
+clicks$.pipe(
+  audit(() => interval(1000))
+).subscribe(() => {
+  console.log('Klik is opgenomen');
+});
+```ts
+import { fromEvent, interval } from 'rxjs';
+import { audit } from 'rxjs';
+
+// クリックイベント
+const clicks$ = fromEvent(document, 'click');
+
+// 1秒ごとにperiodeを区切る
+clicks$.pipe(
+  audit(() => interval(1000))
+).subscribe(() => {
+  console.log('クリックが記録されました');
+});
+```
+
+> Het bovenstaande voorbeeld laat het afmelden van `fromEvent` weg voor de eenvoud van de uitleg. Gebruik in echte code `takeUntil(destroy$)`, `take(N)` of `Subscription.unsubscribe()` om de levenscyclus expliciet te beheren. Meer informatie: [Moeilijkheden overwinnen: levenscyclusbeheer](/nl/guide/overcoming-difficulties/lifecycle-management.md)
 
 ## 💡 Typische gebruikspatronen
 
 - Dynamische intervalsampling**: duur aanpassen aan belasting.
-- **Dynamische intervalsampling**: duur aanpassen op basis van belasting.
+- **Custom timing control**: perioderegeling op basis van andere Observable.
 - **Adaptieve gebeurtenisbeperking**: contextgevoelige uitdunning
 
 ## Verschillen met auditTime
 
 | Beheerder. | Periodecontrole | Gebruikscasus. |
 |---|---|---|
-| `auditTime`. | Vaste tijd (milliseconden) | Eenvoudige tijdsgebaseerde controle |
-| `audit`. | **Aangepaste waarneembaar** | **Dynamische periodecontrole**. |
+| auditTime`. | Vaste tijd (milliseconden) | Eenvoudige tijdsgebaseerde controle |
+| `audit`. | **Aangepaste Observable. | **Dynamische periodecontrole**. |
 
 ```ts
 import { fromEvent, timer } from 'rxjs';
@@ -210,7 +236,7 @@ interval(100).pipe(
 
 ### 2. De duration Observable wordt elke keer opnieuw gegenereerd.
 
-Functies die worden doorgegeven aan `audit` **moeten elke keer een nieuwe waarneembare waarde teruggeven**.
+Functies die worden doorgegeven aan `audit` **moeten elke keer een nieuwe Observable teruggeven**.
 
 ```ts
 // ❌ Slecht voorbeeld: Als dezelfdeObservableinstantie wordt gebruikt en opnieuw wordt gebruikt
@@ -227,7 +253,7 @@ source$.pipe(
 
 ### 3. geheugen en prestaties
 
-Het gebruik van `audit` op streams waar vaak waarden worden uitgegeven verbruikt geheugen.
+Het gebruik van `audit` op stromen waar vaak waarden worden uitgegeven verbruikt geheugen.
 
 ```ts
 import { interval, timer } from 'rxjs';
@@ -273,14 +299,14 @@ clicks$.pipe(
 
 ## 📚 Verwante operatoren.
 
-- **[auditTime](. /auditTime)** - bestuurd door vaste tijd (vereenvoudigde versie van `audit`).
+- **[auditTime](. /auditTime)** - gecontroleerd door vaste tijd (vereenvoudigde versie van `audit`).
 - **[throttle](. /throttleTime)** - eerste waarde afgegeven aan het begin van de periode.
-- **[debounce](. /debounceTime)** - geeft een waarde na een periode van inactiviteit.
-- **[sample](. /sampleTime)** - sample op de timing van een andere observable.
+- **[debounce](. /debounceTime)** - een waarde geven na een periode van inactiviteit.
+- **[sample](. /sampleTime)** - sample op het tijdstip van een andere Observable.
 
 ## Samenvatting.
 
-De `audit` operator geeft de laatste waarde binnen een periode die dynamisch wordt bepaald door een aangepaste Observable.
+De `audit` operator geeft de laatste waarde binnen een periode dynamisch gecontroleerd door een aangepaste Observable.
 
 - Dynamische periodecontrole is mogelijk.
 - ✅ Adaptieve bemonstering gebaseerd op belasting

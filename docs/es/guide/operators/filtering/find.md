@@ -1,10 +1,10 @@
 ---
-description: "find es un operador de filtrado RxJS que encuentra el primer valor que satisface una condición y lo emite, completando el flujo inmediatamente. Es ideal para situaciones en las que se desea encontrar un elemento específico de una matriz o lista, como la búsqueda de usuarios, la comprobación del inventario o la detección de registros de errores. Si no se encuentra ningún valor, devuelve undefined y en TypeScript el valor devuelto es de tipo T | undefined."
+description: "find es un operador de filtrado de RxJS que encuentra el primer valor que satisface una condición y lo emite, completando el flujo inmediatamente. Es ideal para situaciones en las que se desea encontrar un elemento específico de una matriz o lista, como la búsqueda de usuarios, la comprobación del inventario o la detección de registros de errores. Si no se encuentra ningún valor, devuelve undefined y en TypeScript el valor de retorno es de tipo T | undefined."
 ---
 
 # find - encuentra el primer valor que satisface la condición
 
-El operador `find` encuentra y emite el **primer valor que satisface la condición** y completa el flujo inmediatamente. Si no se encuentra ningún valor, sale `undefined`.
+El operador `find` encuentra y emite el **primer valor que satisface la condición** y completa el flujo inmediatamente. Si no encuentra ningún valor, devuelve `undefined`.
 
 ## 🔰 Sintaxis básica y uso
 
@@ -27,7 +27,7 @@ numbers$.pipe(
 
 [🌐 Documentación oficial de RxJS - `find`](https://rxjs.dev/api/operators/find)
 
-## 🆚 Contraste con la primera
+## 🆚 Contraste con first
 
 `find` y `first` son similares, pero su uso es diferente.
 
@@ -52,9 +52,9 @@ numbers$.pipe(
 
 | Operador. | Especificación de la condición | Si no se encuentra ningún valor | Caso de uso. |
 |---|---|---|---|
-| `primero()` | Opción | Error (`EmptyError`) | Obtener el primer valor |
-| `primero(predicado)` | Opcional | Error (`EmptyError`) | Obtener condicional. |
-| Buscar(predicado)` | Obligatorio. | Salida `undefined`. | Búsqueda y comprobación de existencia |
+| first()` (primero) | Opción | Error (`EmptyError`) | Obtener el primer valor |
+| first(predicado)` | Opcional | Error (`EmptyError`) | Obtener condicional. |
+| Encontrar(predicado)` | Obligatorio. | Salida `undefined`. | Búsqueda y comprobación de existencia |
 
 ## 💡 Patrón típico de utilización
 
@@ -197,8 +197,8 @@ container.appendChild(resultado);
 
 // Proceso de búsqueda
 // Nota: aunque originalmente el patrón recomendado es aplanar con un switchMap, pero,
-// Nota: aunque el patrón recomendado es aplanar con un switchMap, // aquí anidamos el subscribe por legibilidad, // ya que incluye validación UI (early return).
-// Considera una implementación plana usando `switchMap` en código de producción.
+// Nota: aunque el patrón recomendado es aplanar con un switchMap, // aquí anidamos el subscribe por legibilidad, // porque incluye validación UI (early return).
+// Considera una implementación plana usando switchMap en código de producción.
 fromEvent(searchButton, 'click').subscribe(() => {
   const maxPrice = parseInt(input.value);.
 
@@ -222,7 +222,7 @@ fromEvent(searchButton, 'click').subscribe(() => {
       result.style.color = 'verde';
     } else {
       result.textContent = `¥{maxPrice.toLocaleString()} o menos producto no encontrado `;
-      result.style.color = 'naranja'; }
+      result.style.color = 'orange'; }
     }
   });
 });
@@ -238,28 +238,28 @@ Este código busca y muestra el primer producto por debajo del precio introducid
 ```
 
 ts.
-import { from } de 'rxjs';
-import { find, filter } de 'rxjs';
+import { from } from 'rxjs';
+import { find, filter } from 'rxjs';
 
 const números$ = from([1, 3, 5, 7, 8, 9, 10]);
 
 // filter: muestra todos los valores que cumplen la condición
 números$.pipe(
-  filtro(n => n > 5)
+  filter(n => n > 5)
 ).subscribe({
-  siguiente: console.log,.
-  complete: () => console.log('filtro completado')
+  next: console.log,.
+  complete: () => console.log('filtro complete')
 });
-// Salida: 7, 8, 9, 10, filtro completo
+// Salida: 7, 8, 9, 10, filter completo
 
 // find: salida sólo el primer valor que coincida con la condición
 números$.pipe(
   find(n => n > 5)
 ).subscribe({
-  siguiente: console.log,.
-  complete: () => console.log('búsqueda completa')
+  next: console.log,.
+  complete: () => console.log('find complete')
 });
-// salida: 7, búsqueda completa
+// salida: 7, find completo
 
 ```
 
@@ -275,18 +275,18 @@ TypeScript Este es un ejemplo de implementación segura que utiliza genéricos e
 ```
 
 ts.
-import { Observable, from } de 'rxjs';
-import { find } de 'rxjs';
+import { Observable, from } from 'rxjs';
+import { find } from 'rxjs';
 
 interfaz Task {
   id: número;
   título: string
-  completada: boolean
+  completed: booleano;
   prioridad: 'alta' | 'media' | 'baja'; }
 }
 
 function findTaskById(
-  tareas$: Observable<Task>,.
+  tareas$: Observable<Tarea>,.
   id: número
 ): Observable<Tarea | undefined> {
   return tareas$.pipe(
@@ -294,18 +294,18 @@ function findTaskById(
   );
 }
 
-function findFirstIncompleteTask(
+función findFirstIncompleteTask(
   tareas$: Observable<Tarea>
 ): Observable<Tarea | undefined> {
   return tareas$.pipe(
-    find(tarea => !tarea.completada)
+    find(tarea => !tarea.complete)
   );
 }
 
 // Ejemplo de uso
 const tareas$ = from([.
-  { id: 1, title: 'Tarea A', completada: true, prioridad: 'alta' as const }
-  { id: 2, title: 'Tarea B', completada: false, prioridad: 'media' as const }
+  { id: 1, title: 'Tarea A', completed: true, priority: 'high' as const }
+  { id: 2, title: 'Tarea B', complete: false, prioridad: 'media' as const }
   { id: 3, title: 'Tarea C', completada: false, prioridad: 'baja' as const }
 ] as Task[]);.
 
@@ -336,7 +336,7 @@ RxJSen los operadores `findIndex` también están disponibles.
 ```
 
 ts
-import { from } de 'rxjs';
+import { from } from 'rxjs';
 import { find, findIndex } from 'rxjs';
 
 const números$ = from([10, 20, 30, 40, 50]);
@@ -360,17 +360,17 @@ números$.pipe(
 | `find(predicate)` | Valor propiamente dicho | `undefined` |
 | `findIndex(predicate)` | Índice (valor numérico) | `-1` |
 
-## ⚠️ Errores comunes
+## ⚠️ Un error común
 
 > [!NOTE]
-> `find` si no se encuentra el valor. `undefined` se emite. Esto no da lugar a un error. Si se requiere un error, utilice `first` para ser utilizado.
+> `find` si no se encuentra el valor `undefined` es emitido. Esto no da lugar a un error. Si se requiere un error, utilice `first` para ser utilizado.
 
 ### Error.: Tratamiento del error esperado si no se encuentra el valor.
 
 ```
 
 ts.
-import { from } de 'rxjs';
+import { from } from 'rxjs';
 import { find } from 'rxjs';
 
 const números$ = from([1, 3, 5, 7]);
@@ -379,7 +379,7 @@ const números$ = from([1, 3, 5, 7]);
 números$.pipe(
   find(n => n > 10)
 ).subscribe({
-  siguiente: console.log,.
+  next: console.log,.
   error: err => console.log('Error:', err) // no llamado
 });
 // salida: indefinida
@@ -391,8 +391,8 @@ números$.pipe(
 ```
 
 ts.
-import { from } de 'rxjs';
-import { find, first } de 'rxjs';
+import { from } from 'rxjs';
+import { find, first } from 'rxjs';
 
 const números$ = from([1, 3, 5, 7]);
 
@@ -408,7 +408,7 @@ números$.pipe(
 });
 // Salida: no encontrado
 
-// ✅ Buen ejemplo 2: usa el primero si necesitas un error
+// ✅ Buen ejemplo 2: usa first si necesitas un error
 numbers$.pipe(
   first(n => n > 10, 0) // especificar valor por defecto
 ).subscribe({
@@ -426,11 +426,11 @@ numbers$.pipe(
 - ✅ Cuando se desea tratar un valor como `undefined` si no se encuentra.
 - ✅ Cuando se desea encontrar un elemento concreto en una matriz o lista.
 
-### Cuando se debe utilizar primero
+### Cuando debe utilizar first.
 - ✅ Si quieres obtener el primer valor.
 - ✅ Si desea emitir un error si no se encuentra el valor
 
-### ¿Cuándo se debe utilizar el filtro?
+### ¿Cuándo se debe utilizar filter?
 - ✅ Si necesita todos los valores que coincidan con una condición
 - ✅ Si desea filtrar los datos
 
@@ -442,6 +442,6 @@ numbers$.pipe(
 ## 🚀 Siguiente paso.
 
 - **[first](. /first)** - aprende a obtener el primer valor.
-- **[filter](. /filtro)** - aprende a filtrar en base a condiciones.
-- **[findIndex](https://rxjs.dev/api/operators/findIndex)** - aprende a obtener el índice del primer valor que satisface una condición (documentación oficial)
+- **[filter](. /filter)** - aprende a filtrar en base a condiciones.
+- findIndex](https://rxjs.dev/api/operators/findIndex)** - aprende a obtener el índice del primer valor que satisface una condición (documentación oficial).
 - **[filtro-operador-casos-prácticos](. /practical-use-cases)** - aprende casos de uso reales

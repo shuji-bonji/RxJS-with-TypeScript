@@ -4,7 +4,7 @@ description: "De sampleTime operator is een RxJS filteroperator die periodiek de
 
 # sampleTime - periodiek de laatste waarde krijgen
 
-De `sampleTime` operator neemt periodiek **een monster** van de laatste waarde van de bronwaarneembaar met **gespecificeerde tijdsintervallen** en voert dit uit.
+De `sampleTime` operator neemt periodiek **een monster** van de laatste waarde van de bron Observable met **gespecificeerde tijdsintervallen** en voert dit uit.
 Net als een periodieke momentopname haalt het de meest recente waarde op dat moment op.
 
 ## 🔰 Basissyntaxis en gebruik
@@ -38,7 +38,89 @@ clicks$.pipe(
 ).subscribe(() => {
   console.log('2Monsters van seconde tot seconde');
 });
-```3___.
+```ts
+import { interval } from 'rxjs';
+import { sampleTime, map } from 'rxjs';
+
+// UIMaken
+const container = document.createElement('div');
+document.body.appendChild(container);
+
+const title = document.createElement('h3');
+title.textContent = 'センサーモニタリングダッシュボード';
+container.appendChild(title);
+
+const dashboard = document.createElement('div');
+dashboard.style.display = 'grid';
+dashboard.style.gridTemplateColumns = '1fr 1fr';
+dashboard.style.gap = '10px';
+dashboard.style.marginTop = '10px';
+container.appendChild(dashboard);
+
+// ダッシュボードカードMaken
+function createCard(label: string, unit: string) {
+  const card = document.createElement('div');
+  card.style.padding = '20px';
+  card.style.border = '2px solid #2196F3';
+  card.style.borderRadius = '8px';
+  card.style.backgroundColor = '#E3F2FD';
+
+  const labelDiv = document.createElement('div');
+  labelDiv.textContent = label;
+  labelDiv.style.fontSize = '14px';
+  labelDiv.style.color = '#666';
+  card.appendChild(labelDiv);
+
+  const valueDiv = document.createElement('div');
+  valueDiv.style.fontSize = '32px';
+  valueDiv.style.fontWeight = 'bold';
+  valueDiv.style.marginTop = '10px';
+  valueDiv.textContent = '--';
+  card.appendChild(valueDiv);
+
+  const unitDiv = document.createElement('div');
+  unitDiv.textContent = unit;
+  unitDiv.style.fontSize = '14px';
+  unitDiv.style.color = '#666';
+  card.appendChild(unitDiv);
+
+  dashboard.appendChild(card);
+  return valueDiv;
+}
+
+const tempValue = createCard('温度', '°C');
+const humidityValue = createCard('湿度', '%');
+const pressureValue = createCard('気圧', 'hPa');
+const lightValue = createCard('照度', 'lux');
+
+// センサーデータストリーム（100msごとに更新）
+const sensorData$ = interval(100).pipe(
+  map(() => ({
+    temperature: (20 + Math.random() * 10).toFixed(1),
+    humidity: (40 + Math.random() * 40).toFixed(1),
+    pressure: (1000 + Math.random() * 30).toFixed(1),
+    light: Math.floor(Math.random() * 1000)
+  }))
+);
+
+// 2秒ごとにサンプリングしてダッシュボードを更新
+sensorData$.pipe(
+  sampleTime(2000)
+).subscribe(data => {
+  tempValue.textContent = data.temperature;
+  humidityValue.textContent = data.humidity;
+  pressureValue.textContent = data.pressure;
+  lightValue.textContent = data.light.toString();
+
+  // アニメーション効果
+  [tempValue, humidityValue, pressureValue, lightValue].forEach(elem => {
+    elem.style.color = '#2196F3';
+    setTimeout(() => {
+      elem.style.color = 'black';
+    }, 500);
+  });
+});
+```
 
 > In het bovenstaande voorbeeld is het afmelden van `fromEvent` weggelaten voor de eenvoud van de uitleg. Gebruik in echte code `takeUntil(destroy$)`, `take(N)` of `Subscription.unsubscribe()` om de levenscyclus expliciet te beheren. Meer informatie: [Moeilijkheden overwinnen: levenscyclusbeheer](/nl/guide/overcoming-difficulties/lifecycle-management.md)
 
@@ -250,7 +332,18 @@ clicks$.pipe(
 ).subscribe(() => {
   console.log('2Monsters van seconde tot seconde');
 });
-```1___
+```ts
+import { fromEvent } from 'rxjs';
+import { sampleTime } from 'rxjs';
+
+const clicks$ = fromEvent(document, 'click');
+
+clicks$.pipe(
+  sampleTime(2000)
+).subscribe(() => {
+  console.log('2秒ごとのサンプル');
+});
+```
 
 **visuele verschillen**:.
 
@@ -290,7 +383,7 @@ clicks$.pipe(
 
 ### 2. Wacht op de eerste bemonsteringstijd
 
-De `sampleTime` geeft niets uit totdat de opgegeven tijd is verstreken.
+De `sampleTime` voert niets uit totdat de opgegeven tijd is verstreken.
 
 ```ts
 import { interval } from 'rxjs';
@@ -336,7 +429,7 @@ interval(10).pipe(
 // Geheugen bewaart alleen de meest recente1Alleen de twee meest recente waarden worden in het geheugen bewaard
 ```
 
-## Verschillen met voorbeeld
+## Verschillen met sample
 
 `sample` gebruikt een andere Observable als trigger, terwijl `sampleTime` een vast tijdsinterval gebruikt.
 
@@ -351,20 +444,23 @@ clicks$.pipe(
 ).subscribe(() => {
   console.log('2Monsters van seconde tot seconde');
 });
-```0___
+---
+description: sampleTimeオペレーターは、指定した時間間隔で定期的にストリームの最新値をサンプリングするRxJSフィルタリングオペレーターです。定期的なスナップショット取得に最適です。
+---
+
 
 TABEL 12
 
 ## 📚 Gerelateerde operatoren.
 
-- **[sample](https://rxjs.dev/api/operators/sample)** - Een andere observable samplen als trigger (officiële documentatie).
+- **[sample](https://rxjs.dev/api/operators/sample)** - Een andere Observable samplen als trigger (officiële documentatie).
 - **[throttleTime](. /throttleTime)** - Verkrijg de eerste waarde aan het begin van de periode.
 - **[auditTime](. /auditTime)** - Verkrijg de laatste waarde aan het einde van de periode.
 - **[debounceTime](. /debounceTime)** - waarde uitgeven na stilstand
 
 ## Samenvatting.
 
-De `sampleTime` operator samplet periodiek de laatste waarde in het opgegeven tijdsinterval.
+De `sampleTime` operator bemonstert periodiek de laatste waarde in het opgegeven tijdsinterval.
 
 - Ideaal voor het maken van periodieke momentopnamen.
 - ✅ Nuttig voor het uitdunnen van hoogfrequente stromen

@@ -2,9 +2,9 @@
 description: "L'opérateur sampleTime est un opérateur de filtrage RxJS qui échantillonne périodiquement les dernières valeurs du flux à des intervalles de temps spécifiés. Il est idéal pour prendre des instantanés périodiques."
 ---
 
-# sampleTime - obtient périodiquement la dernière valeur
+# sampleTime - récupère périodiquement la dernière valeur
 
-L'opérateur `sampleTime` **échantillonne** périodiquement la dernière valeur de l'observable source à **intervalles de temps spécifiés** et la restitue.
+L'opérateur `sampleTime` **échantillonne** périodiquement la dernière valeur de l'Observable source à **intervalles de temps spécifiés** et la restitue.
 Comme un instantané périodique, il récupère la valeur la plus récente à ce moment-là.
 
 ## 🔰 Syntaxe de base et utilisation
@@ -27,7 +27,7 @@ clicks$.pipe(
 2. sortie s'il y a un clic récent à ce moment-là
 3. s'il n'y a pas de valeur pendant la période d'échantillonnage, pas de sortie
 
-> [!WARNING] 本番コードでの注意
+> [!WARNING] Attention en code de production
 
 > L'exemple ci-dessus omet la désinscription de `fromEvent` pour simplifier l'explication. Dans le code réel, utilisez `takeUntil(destroy$)`, `take(N)` ou `Subscription.unsubscribe()` pour gérer explicitement le cycle de vie. Plus d'informations : [Surmonter les difficultés : gestion du cycle de vie](/fr/guide/overcoming-difficulties/lifecycle-management.md)
 
@@ -239,7 +239,18 @@ clicks$.pipe(
 ).subscribe(() => {
   console.log('2Échantillons seconde par seconde');
 });
-```1___
+```ts
+import { fromEvent } from 'rxjs';
+import { sampleTime } from 'rxjs';
+
+const clicks$ = fromEvent(document, 'click');
+
+clicks$.pipe(
+  sampleTime(2000)
+).subscribe(() => {
+  console.log('2秒ごとのサンプル');
+});
+```
 
 **différences visuelles** :.
 
@@ -277,9 +288,9 @@ clicks$.pipe(
 // 2Pendant les secondes1Pas de sortie si aucun clic n'est effectué
 ```
 
-### Attendre jusqu'au premier moment d'échantillonnage
+### Attendre le premier moment d'échantillonnage
 
-L'option `sampleTime` ne produira rien tant que le temps spécifié ne se sera pas écoulé.
+Le `sampleTime` ne produira rien tant que le temps spécifié ne se sera pas écoulé.
 
 ```ts
 import { interval } from 'rxjs';
@@ -340,7 +351,10 @@ clicks$.pipe(
 ).subscribe(() => {
   console.log('2Échantillons seconde par seconde');
 });
-```0___
+---
+description: sampleTimeオペレーターは、指定した時間間隔で定期的にストリームの最新値をサンプリングするRxJSフィルタリングオペレーターです。定期的なスナップショット取得に最適です。
+---
+
 
 ```ts
 import { fromEvent } from 'rxjs';
@@ -353,14 +367,73 @@ clicks$.pipe(
 ).subscribe(() => {
   console.log('2Échantillons seconde par seconde');
 });
-```2___
+```ts
+import { fromEvent } from 'rxjs';
+import { sampleTime, map } from 'rxjs';
+
+// UICréer
+const container = document.createElement('div');
+document.body.appendChild(container);
+
+const title = document.createElement('h3');
+title.textContent = 'マウス位置サンプリング（1秒ごと）';
+container.appendChild(title);
+
+const area = document.createElement('div');
+area.style.width = '100%';
+area.style.height = '300px';
+area.style.border = '2px solid #4CAF50';
+area.style.backgroundColor = '#f5f5f5';
+area.style.display = 'flex';
+area.style.alignItems = 'center';
+area.style.justifyContent = 'center';
+area.style.fontSize = '18px';
+area.textContent = 'この領域内でマウスを動かしてください';
+container.appendChild(area);
+
+const output = document.createElement('div');
+output.style.marginTop = '10px';
+output.style.maxHeight = '150px';
+output.style.overflow = 'auto';
+output.style.border = '1px solid #ccc';
+output.style.padding = '10px';
+container.appendChild(output);
+
+let sampleCount = 0;
+
+// マウス移動イベント
+fromEvent<MouseEvent>(area, 'mousemove').pipe(
+  map(event => ({
+    x: event.offsetX,
+    y: event.offsetY,
+    timestamp: Date.now()
+  })),
+  sampleTime(1000) // 1秒ごとにサンプリング
+).subscribe(pos => {
+  sampleCount++;
+  const log = document.createElement('div');
+  log.style.padding = '5px';
+  log.style.borderBottom = '1px solid #eee';
+  log.innerHTML = `
+    <strong>サンプル #${sampleCount}</strong>
+    [${new Date(pos.timestamp).toLocaleTimeString()}]
+    位置: (${pos.x}, ${pos.y})
+  `;
+  output.insertBefore(log, output.firstChild);
+
+  // Max.10件まで表示
+  while (output.children.length > 10) {
+    output.removeChild(output.lastChild!);
+  }
+});
+```
 
 ## 📚 Opérateurs apparentés.
 
-- **[sample](https://rxjs.dev/api/operators/sample)** - Échantillonnage d'un autre Observable comme déclencheur (documentation officielle).
+- **[sample](https://rxjs.dev/api/operators/sample)** - Echantillonnage d'un autre Observable comme déclencheur (documentation officielle).
 - **[throttleTime](. /throttleTime)** - Obtenir la première valeur au début de la période.
-- **[auditTime](. /auditTime)** - Obtient la dernière valeur à la fin de la période.
-- **[debounceTime](. /debounceTime)** - émet une valeur après la quiescence
+- **[auditTime](. /auditTime)** - Récupère la dernière valeur à la fin de la période.
+- **[debounceTime](. /debounceTime)** - délivre la valeur après la quiescence
 
 ## Résumé.
 

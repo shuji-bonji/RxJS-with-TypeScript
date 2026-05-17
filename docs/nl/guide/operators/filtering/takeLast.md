@@ -75,7 +75,7 @@ TABEL 10
      { timestamp: 5, level: 'info' as const, message: 'Retry successful' },
    ] as LogEntry[]);
 
-   // De laatste3Logs ophalen van de
+   // Haal de laatste3Haal de laatste logs
    logs$.pipe(
      takeLast(3)
    ).subscribe(log => {
@@ -169,19 +169,19 @@ const historyDisplay = document.createElement('div');
 historyDisplay.style.marginTop = '10px';
 container.appendChild(historyDisplay);
 
-// Onderwerp voor invoerwaarden
-const inputs$ = nieuw Onderwerp<string>();.
+// Subject voor invoerwaarden
+const inputs$ = nieuw Subject();.
 
-// **IMPORTANT**: takeLast-abonnement eerst instellen
+// **IMPORTANT**: abonnement take eerst instellen
 inputs$.pipe(
   takeLast(3)
 ).subscribe({
-  volgende: (waarde) => {
+  next: (waarde) => {
     const item = document.createElement('div');
     item.textContent = `- ${waarde}`;
     historyDisplay.appendChild(item);
   },.
-  compleet: () => {
+  complete: () => {
     const note = document.createElement('div');
     note.style.marginTop = '5px';
     noot.style.kleur = 'grijs';
@@ -206,7 +206,7 @@ fromEvent<KeyboardEvent>(input, 'keydown').subscribe(event => {
 // Voltooien met knopklik en geschiedenis weergeven
 fromEvent(submitButton, 'click').subscribe() => {
   historyDisplay.innerHTML = '<strong>Geschiedenis (laatste 3):</strong><br>';
-  inputs$.complete(); // complete stream → takeLast brands
+  inputs$.complete(); // stream compleet → takeLast vuurt af
 });
 
 ```
@@ -214,7 +214,7 @@ fromEvent(submitButton, 'click').subscribe() => {
 > [!IMPORTANT]
 > **Belangrijke punten**:
 > - `takeLast(3)` Abonneren op de**eerste.**moet eerst worden ingesteld
-> - wanneer op de knop wordt geklikt. `complete()` de laatste van de tot dan toe ontvangen waarden wordt uitgevoerd.3De laatste van de tot dan toe ontvangen waarden wordt uitgevoerd.
+> - wanneer op de knop wordt geklikt. `complete()` de laatste van de tot dan toe ontvangen waarden wordt uitgevoerd.3De laatste tot dan toe ontvangen waarde wordt uitgevoerd.
 > - `complete()` Na oproepen**Na het oproepen van**naar `subscribe` stromen de waarden niet.
 
 ## ⚠️ Een belangrijk punt om op te merken
@@ -248,7 +248,7 @@ ts.
 import { interval } from 'rxjs';
 import { take, takeLast } from 'rxjs';
 
-// ✅ Goed voorbeeld: eindige stream gebruik dan takeLast
+// ✅ Goed voorbeeld: eindige stroom gebruik dan takeLast
 interval(1000).pipe(
   take(10), // compleet met de eerste 10
   takeLast(3) // neem de laatste 3 mee
@@ -259,7 +259,7 @@ interval(1000).pipe(
 
 ### 2. Let op het geheugengebruik
 
-`takeLast(n)` werkt niet met eindige streams omdat het de laatste van hetnstuk vasthoudt in de buffer,ngroot is, verbruikt het meer geheugen.
+`takeLast(n)` werkt niet met eindige streams omdat het het laatstenstuk vasthoudt in de buffer,ngroot is, verbruikt het meer geheugen.
 
 ```
 
@@ -282,16 +282,16 @@ ts.
 import { range } from 'rxjs';
 import { last, takeLast } from 'rxjs';
 
-const. nummers$ = bereik(0, 10);
+const numbers$ = range(0, 10);
 
 // last: alleen de laatste
 getallen$.pipe(
-  laatste()
+  last()
 ).subscribe(console.log);
 // uitvoer: 9
 
 // takeLast(1): laatste (uitvoer als enkele waarde, niet array)
-getallen$.pipe(
+numbers$.pipe(
   takeLast(1)
 ).subscribe(console.log);.
 // Uitvoer: 9
@@ -311,7 +311,7 @@ getallen$.pipe(
 
 ## 📋 Type-veilig gebruik
 
-TypeScript Dit is een voorbeeld van een typeveilige implementatie die gebruik maakt van generics in
+TypeScript Dit is een voorbeeld van een typeveilige implementatie die gebruik maakt van generieken in
 
 ```
 
@@ -323,13 +323,13 @@ interface Transactie {
   id: string;
   bedrag: getal;
   tijdstempel: datum;
-  status: 'pending' | 'completed' | 'failed'; }
+  status: 'pending' | 'complete' | 'failed'; }
 }
 
 functie getRecentTransactions(
-  transacties$: waarneembare<transactie>,.
+  transacties$: Observable,.
   count: getal
-): Waarneembare<Transactie> {
+): Observable {
   return transacties$.pipe(
     takeLast(count)
   );
@@ -337,10 +337,10 @@ functie getRecentTransactions(
 
 // Gebruiksvoorbeeld
 const transacties$ = from([.
-  { id: '1', bedrag: 100, tijdstempel: nieuwe Datum('2025-01-01'), status: 'voltooid' als const }
-  { id: '2', bedrag: 200, tijdstempel: nieuwe Datum('2025-01-02'), status: 'voltooid' als const }
+  { id: '1', bedrag: 100, tijdstempel: nieuwe Datum('2025-01-01'), status: 'compleet' als const }.
+  { id: '2', bedrag: 200, tijdstempel: nieuwe Datum('2025-01-02'), status: 'compleet' als const }
   { id: '3', amount: 150, timestamp: new Date('2025-01-03'), status: 'pending' as const }
-  { id: '4', bedrag: 300, tijdstempel: nieuwe Datum('2025-01-04'), status: 'voltooid' als const }
+  { id: '4', amount: 300, timestamp: new Date('2025-01-04'), status: 'complete' as const }
   { id: '5', bedrag: 250, tijdstempel: nieuwe Datum('2025-01-05'), status: 'mislukt' als const }
 ] als Transactie[]);.
 
@@ -350,7 +350,7 @@ getRecentTransactions(transactions$, 3).subscribe(tx => {
 });
 // Uitvoer:.
 // 3: 150 yen (in behandeling)
-// 4: 300 yen (voltooid)
+// 4: 300 yen (compleet)
 // 5: 250 yen (mislukt)
 
 ```
@@ -365,11 +365,11 @@ ts
 import { range } from 'rxjs';
 import { skip, takeLast } from 'rxjs';
 
-const nummers$ = bereik(0, 10); // 0 tot 9
+const nummers$ = range(0, 10); // 0 tot 9
 
 // sla de eerste 5 over en neem de resterende laatste 3
 getallen$.pipe(
-  skip(5), // sla 0, 1, 2, 3, 4 over
+  skip(5), // skip 0, 1, 2, 3, 4
   takeLast(3) // neem de laatste 3 van de resterende 5, 6, 7, 8, 9
 ).subscribe(console.log);.
 // uitvoer: 7, 8, 9
@@ -383,7 +383,7 @@ getallen$.pipe(
 - ✅ Als de stream gegarandeerd wordt voltooid
 - ✅ Als je een samenvatting of top N records van gegevens wilt weergeven
 
-### Wanneer u take moet gebruiken.
+### Wanneer je take moet gebruiken.
 - ✅ Als je de eerste N gegevens in de stream nodig hebt
 - ✅ Als je de resultaten onmiddellijk wilt krijgen
 - ✅ Als je een deel van een oneindige stroom wilt krijgen
@@ -396,8 +396,8 @@ getallen$.pipe(
 
 ## Volgende stap.
 
-- **[take](. /take)** - leren hoe je de eerste n waarden krijgt.
-- **[last](. /last)** - leren hoe je de laatste 1 waarde krijgt
-- **[skip](. /skip)** - leer hoe je de eerste N waarden overslaat
+- **[take](. /take)** - leer hoe je de eerste n waarden krijgt.
+- **[last](. /last)** - leer hoe je de laatste 1 waarde krijgt.
+- **[skip](. /skip)** - leer de eerste N waarden over te slaan
 - Filter](. /filter)** - leer filteren op basis van voorwaarden
 - **[filtering-operator-praktische-gebruiksgevallen](. /practical-use-cases)** - leer hoe u echte use-cases kunt gebruiken

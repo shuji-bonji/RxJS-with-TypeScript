@@ -1,5 +1,5 @@
 ---
-description: "L'opérateur elementAt est un opérateur de filtrage RxJS qui ne récupère que les valeurs à une position d'index donnée. Son fonctionnement est similaire à celui de l'accès à l'index d'un tableau."
+description: "L'opérateur elementAt est un opérateur de filtrage de RxJS qui ne récupère que les valeurs à une position d'index donnée. Son fonctionnement est similaire à celui de l'accès à l'index d'un tableau."
 ---
 
 # elementAt - Récupéré par spécification d'index
@@ -33,7 +33,7 @@ numbers$.pipe(
 - **Pagination** : obtenir le premier élément d'une page spécifique.
 - Obtenir des données garanties par l'ordre** : obtenir le Nième événement ou message.
 - **Test et débogage** : valider la valeur d'une position spécifique.
-- **Accès de type tableau** : traiter Observable comme un tableau
+- **Accès de type tableau** : traiter Observable comme un tableau.
 
 ## 🧠 Exemple de code pratique 1 : Compte à rebours d'événements
 
@@ -194,13 +194,13 @@ import { elementAt, take, first, skip } from 'rxjs';
 
 const numbers$ = from([10, 20, 30, 40, 50]);
 
-// elementAt: Seules les valeurs d'un index spécifique sont récupérées
+// elementAt: Récupérer uniquement les valeurs d'un index spécifique
 numbers$.pipe(
   elementAt(2)
 ).subscribe(console.log);
 // Sortie.: 30
 
-// take: Depuis le débutNObtenir une valeur
+// take: Depuis le débutNObtenir une seule valeur
 numbers$.pipe(
   take(3)
 ).subscribe(console.log);
@@ -214,12 +214,20 @@ numbers$.pipe(
 // Sortie.: 30
 ```
 
-| Opérateur. | Valeur à obtenir | Nombre de sorties | Cas d'utilisation. |
-|---|---|---|---|
-| `elementAt(n)` | Uniquement les valeurs à l'indice n | 1 | Prendre la nième valeur |
-| `take(n)` | n valeurs depuis le début | n valeurs | Obtenir les n premières valeurs |
-| `first()` | Première valeur | 1 | Obtenir la première valeur. |
-| `skip(n) + first()` | Premier après n sauts | Premier | Equivalent à elementAt (obsolète) |
+```ts
+import { from } from 'rxjs';
+import { elementAt } from 'rxjs';
+
+const numbers$ = from([10, 20, 30, 40, 50]);
+
+numbers$.pipe(
+  elementAt(2)
+).subscribe(console.log);
+// Sortie.: 30(Valeur2Valeur)
+---
+description: elementAtオペレーターは、指定されたインデックス位置の値のみを取得するRxJSフィルタリングオペレーターです。配列のインデックスアクセスに似た動作をします。
+---
+
 
 ## ⚠️ Notes.
 
@@ -323,7 +331,7 @@ numbers$.pipe(
 - **[take](. /take)** - N pris depuis le début.
 - **[first](. /first)** - obtient la première valeur.
 - **[last](. /last)** - obtient la dernière valeur.
-- **[skip](. /skip)** - Sauter les N premières valeurs
+- **[skip](. /skip)** - sauter les N premières valeurs
 - **[takeLast](. /takeLast)** - obtenir les N dernières valeurs
 
 ## Résumé.

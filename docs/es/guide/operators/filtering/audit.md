@@ -1,8 +1,8 @@
 ---
-description: "El operador de auditoría es un operador de filtrado RxJS que sólo emite el último valor dentro del periodo controlado por el Observable personalizado. Es ideal para el control dinámico del tiempo."
+description: "El operador audit es un operador de filtrado RxJS que sólo emite el último valor dentro del periodo controlado por el Observable personalizado. Es ideal para el control dinámico del tiempo."
 ---
 
-# auditoría - último valor del período de control emitido
+# audit - last value of control period issued
 
 El operador `audit` espera hasta que un Observable personalizado emite un valor y emite el **último valor** emitido por la fuente dentro de ese periodo.
 Mientras que `auditTime` está controlado por un tiempo fijo, `audit` permite **controlar el periodo** con un Observable dinámico.
@@ -30,9 +30,35 @@ clicks$.pipe(
 
 [🌐 Documentación oficial de RxJS - `audit`](https://rxjs.dev/api/operators/audit)
 
-> [!WARNING] Atención en código de producción
+```ts
+import { fromEvent, interval } from 'rxjs';
+import { audit } from 'rxjs';
 
-> El ejemplo anterior omite la cancelación de la suscripción `fromEvent` para simplificar la explicación. En código real, utilice `takeUntil(destroy$)`, `take(N)` o `Subscription.unsubscribe()` para gestionar explícitamente el ciclo de vida. Más información: [Superando dificultades: gestión del ciclo de vida](/es/guide/overcoming-difficulties/lifecycle-management.md)
+// Evento clic
+const clicks$ = fromEvent(document, 'click');
+
+// 1Períodos de tiempo separados cada segundo
+clicks$.pipe(
+  audit(() => interval(1000))
+).subscribe(() => {
+  console.log('Se ha registrado el clic');
+});
+```ts
+import { fromEvent, interval } from 'rxjs';
+import { audit } from 'rxjs';
+
+// クリックイベント
+const clicks$ = fromEvent(document, 'click');
+
+// 1秒ごとにperiodoを区切る
+clicks$.pipe(
+  audit(() => interval(1000))
+).subscribe(() => {
+  console.log('クリックが記録されました');
+});
+```
+
+> El ejemplo anterior omite la desuscripción de `fromEvent` para simplificar la explicación. En código real, utilice `takeUntil(destroy$)`, `take(N)` o `Subscription.unsubscribe()` para gestionar explícitamente el ciclo de vida. Más información: [Superando dificultades: gestión del ciclo de vida](/es/guide/overcoming-difficulties/lifecycle-management.md)
 
 ## 💡 Patrones típicos de utilización
 
@@ -44,8 +70,8 @@ clicks$.pipe(
 
 | Operador. | Control de períodos | Caso de uso. |
 |---|---|---|
-| `auditTime`. | Tiempo fijo (milisegundos) | Control simple basado en el tiempo |
-| `audit`. | **Observable personalizado**. | **Control dinámico de periodo**. |
+| auditTime`. | Tiempo fijo (milisegundos) | Control simple basado en el tiempo |
+| audit`. | **Observable personalizado**. | **Control dinámico de periodo**. |
 
 ```ts
 import { fromEvent, timer } from 'rxjs';
@@ -219,7 +245,7 @@ source$.pipe(
   audit(() => duration$) // 2No funciona después de la segunda vez
 ).subscribe();
 
-// ✅ Buen ejemplo: Se crea una nueva instancia cada vezObservableGenerar un
+// ✅ Buen ejemplo: Una nuevaObservableGenera un
 source$.pipe(
   audit(() => timer(1000))
 ).subscribe();
@@ -242,12 +268,23 @@ interval(10).pipe(
 
 ## 🆚 Comparación con operadores similares
 
-| Operadores | Cuándo emitir | Valor a emitir | Caso de uso. |
-|---|---|---|---|
-| Auditoría. | Al **fin** del período | El **último** valor dentro del periodo | Obtener el último estado dentro del periodo |
-| Acelerador | Al **inicio** del periodo | Valor del **primero** en el período | Obtener el inicio de una secuencia de eventos. |
-| `debounce`. | Después** de** estacionario**. | Valor justo antes de estacionario | Esperar a que se complete la entrada |
-| `sample`. | **Cuando se dispara otro Observable**. | Valor más reciente en ese momento | Instantánea periódica |
+```ts
+import { fromEvent, interval } from 'rxjs';
+import { audit } from 'rxjs';
+
+// Evento clic
+const clicks$ = fromEvent(document, 'click');
+
+// 1Períodos de tiempo separados cada segundo
+clicks$.pipe(
+  audit(() => interval(1000))
+).subscribe(() => {
+  console.log('Se ha registrado el clic');
+});
+---
+description: auditオペレーターは、カスタムObservableで制御される期間内の最後の値のみを発行するRxJSフィルタリングオペレーターです。動的なタイミング制御に最適です。
+---
+
 
 ```ts
 import { fromEvent, interval, timer } from 'rxjs';
@@ -281,7 +318,7 @@ clicks$.pipe(
 - **[auditTime](. /auditTime)** - controlado por tiempo fijo (versión simplificada de `audit`).
 - **[throttle](. /throttleTime)** - primer valor emitido al inicio del periodo.
 - **[debounce](. /debounceTime)** - emite un valor tras un periodo de inactividad.
-- Muestra](. /sampleTime)** - muestreo en el momento de otro Observable.
+- sample](. /sampleTime)** - muestreo en el momento de otro Observable.
 
 ## Resumen.
 

@@ -1,11 +1,11 @@
 ---
-description: "L'operatore di verifica è un operatore di filtraggio RxJS che emette solo l'ultimo valore all'interno del periodo controllato dall'osservabile personalizzato. È ideale per il controllo dinamico dei tempi."
+description: "L'operatore audit è un operatore di filtraggio RxJS che emette solo l'ultimo valore nel periodo controllato dall'Observable personalizzato. È ideale per il controllo dinamico dei tempi."
 ---
 
 # audit - ultimo valore del periodo di controllo emesso
 
-L'operatore `audit` attende fino a quando un Osservabile personalizzato emette un valore ed emette l'**ultimo valore** emesso dalla sorgente entro quel periodo.
-Mentre `auditTime` è controllato da un tempo fisso, `audit` consente il **controllo del periodo** con un Osservabile dinamico.
+L'operatore `audit` attende finché un Observable personalizzato non emette un valore ed emette l'**ultimo valore** emesso dalla sorgente entro quel periodo.
+Mentre `auditTime` è controllato da un tempo fisso, `audit` permette il **controllo del periodo** con un Observable dinamico.
 
 ## 🔰 Sintassi e uso di base
 
@@ -25,27 +25,53 @@ clicks$.pipe(
 ```
 
 - Quando si verifica un clic, inizia un periodo di un secondo.
-- Viene emesso solo l'ultimo clic di questo periodo di un secondo.
+- Viene emesso solo l'ultimo clic di questo periodo di 1 secondo.
 - Dopo un secondo, inizia il periodo successivo.
 
 [🌐 Documentazione ufficiale di RxJS - `audit`](https://rxjs.dev/api/operators/audit)
 
-> [!WARNING] Attenzione in codice di produzione
+```ts
+import { fromEvent, interval } from 'rxjs';
+import { audit } from 'rxjs';
 
-> L'esempio precedente omette la sottoscrizione di `fromEvent` per semplicità di spiegazione. Nel codice reale, usare `takeUntil(destroy$)`, `take(N)` o `Subscription.unsubscribe()` per gestire esplicitamente il ciclo di vita. Ulteriori informazioni: [Superare le difficoltà: la gestione del ciclo di vita] (/it/guide/ Superare le difficoltà/gestione del ciclo di vita.md)
+// Evento click
+const clicks$ = fromEvent(document, 'click');
+
+// 1Periodi di tempo separati ogni secondo
+clicks$.pipe(
+  audit(() => interval(1000))
+).subscribe(() => {
+  console.log('Il clic è stato registrato');
+});
+```ts
+import { fromEvent, interval } from 'rxjs';
+import { audit } from 'rxjs';
+
+// クリックイベント
+const clicks$ = fromEvent(document, 'click');
+
+// 1秒ごとにperiodoを区切る
+clicks$.pipe(
+  audit(() => interval(1000))
+).subscribe(() => {
+  console.log('クリックが記録されました');
+});
+```
+
+> L'esempio qui sopra omette la sottoscrizione di `fromEvent` per semplicità di spiegazione. Nel codice reale, si può usare takeUntil(destroy$)`, take(N)` o `Subscription.unsubscribe()` per gestire esplicitamente il ciclo di vita. Ulteriori informazioni: [Superare le difficoltà: la gestione del ciclo di vita] (/it/guide/ Superare le difficoltà/gestione del ciclo di vita.md)
 
 ## 💡 Modelli tipici di utilizzo
 
 - **Campionamento dinamico a intervalli**: regolazione della durata in base al carico.
-- **Controllo personalizzato dei tempi**: controllo del periodo in base ad altre osservabili.
+- **Controllo personalizzato dei tempi**: controllo del periodo in base ad altri Observable.
 - **Limitazione adattiva degli eventi**: assottigliamento sensibile al contesto.
 
 ## 🔍 Differenze con auditTime
 
 | Operatore. | Controllo del periodo | Caso d'uso. |
 |---|---|---|
-| `auditTime`. | Tempo fisso (millisecondi) | Semplice controllo basato sul tempo |
-| `audit`. | **Osservabile personalizzato** | **Controllo dinamico del periodo**. |
+| AuditTime. | Tempo fisso (millisecondi) | Semplice controllo basato sul tempo |
+| `audit`. | **Osservable personalizzato**. | **Controllo dinamico del periodo**. |
 
 ```ts
 import { fromEvent, timer } from 'rxjs';
@@ -190,7 +216,7 @@ clicks$.pipe(
 
 ### 1. il primo valore non viene emesso immediatamente
 
-Dopo aver ricevuto il primo valore, `audit` attende la fine del periodo.
+Dopo aver ricevuto il primo valore, l'audit attende la fine del periodo.
 
 ```ts
 import { interval, timer } from 'rxjs';
@@ -208,9 +234,9 @@ interval(100).pipe(
 // 29 (3Secondi dopo,20~.29Ultimo valore di)
 ```
 
-### 2. L'osservabile Durata viene generato ogni volta.
+### 2. L'Observable della durata viene generato ogni volta.
 
-Le funzioni passate a `audit` **devono restituire ogni volta un nuovo Osservabile**.
+Le funzioni passate ad audit **devono restituire ogni volta un nuovo Observable**.
 
 ```ts
 // ❌ Esempio negativo: Se la stessaObservableviene utilizzata e riutilizzata
@@ -227,7 +253,7 @@ source$.pipe(
 
 ### 3. memoria e prestazioni
 
-L'uso di `audit` sui flussi in cui vengono emessi valori frequentemente consuma memoria.
+L'uso di audit sui flussi in cui vengono emessi valori consuma spesso memoria.
 
 ```ts
 import { interval, timer } from 'rxjs';
@@ -276,14 +302,14 @@ clicks$.pipe(
 - **[auditTime](. /auditTime)** - controllato da un tempo fisso (versione semplificata di `audit`).
 - **[throttle](. /throttleTime)** - primo valore emesso all'inizio del periodo.
 - **[debounce](. /debounceTime)** - emette un valore dopo un periodo di inattività.
-- **[sample](. /sampleTime)** - campiona al momento di un altro osservabile.
+- **[sample](. /sampleTime)** - campiona al momento di un altro Observable.
 
 ## Riepilogo.
 
-L'operatore `audit` emette l'ultimo valore all'interno di un periodo controllato dinamicamente da un Osservabile personalizzato.
+L'operatore audit emette l'ultimo valore all'interno di un periodo controllato dinamicamente da un Observable personalizzato.
 
-- È possibile il controllo dinamico del periodo.
+- È possibile un controllo dinamico del periodo.
 - ✅ Campionamento adattivo basato sul carico.
 - ✅ Controllo basato su altri flussi
-- ⚠️ È necessario generare ogni volta un nuovo osservabile.
+- ⚠️ È necessario generare ogni volta un nuovo Observable.
 - ⚠️ Sensibile alla memoria per emissioni frequenti

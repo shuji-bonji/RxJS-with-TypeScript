@@ -1,10 +1,10 @@
 ---
-description: "De findIndex operator is een RxJS filteroperator die de index van de eerste waarde die aan de voorwaarde voldoet retourneert. Als deze niet wordt gevonden, wordt -1 geretourneerd."
+description: "De operator findIndex is een filteroperator van RxJS die de index van de eerste waarde die aan de voorwaarde voldoet retourneert. Als deze niet wordt gevonden, wordt -1 geretourneerd."
 ---
 
 # findIndex - de index krijgen die overeenkomt met de voorwaarde
 
-De `findIndex` operator geeft **de index van de eerste waarde die overeenkomt met de voorwaarde** en voltooit de stream onmiddellijk. Geeft `-1` als er geen waarde wordt gevonden.
+De operator ` findIndex` geeft **de index van de eerste waarde die overeenkomt met de voorwaarde** en voltooit de stream onmiddellijk. Geeft `-1` als er geen waarde wordt gevonden.
 
 ## 🔰 Basissyntaxis en gebruik
 
@@ -27,12 +27,12 @@ numbers$.pipe(
 4. 7 (index 3) → oneven, overslaan
 5. 8 (index 4) → even getal, uitvoer index 4 en voltooien
 
-[🌐 Officiële RxJS documentatie - `findIndex`](https://rxjs.dev/api/operators/findIndex)
+[🌐 Officiële RxJS documentatie - findIndex](https://rxjs.dev/api/operators/findIndex)
 
 ## 💡 Typisch gebruikspatroon.
 
 - **Positioneren in een array**: het verkrijgen van de positie van een element dat voldoet aan een specifieke voorwaarde.
-- **De volgorde controleren**: hoe vaak komt een element dat aan een bepaalde voorwaarde voldoet voor?
+- **De volgorde controleren**: hoe vaak verschijnt een element dat aan een bepaalde voorwaarde voldoet?
 - Gegevens ordenen**: verwerken met behulp van indexinformatie.
 - **Existentiecontrole**: controleert of een element bestaat door te controleren of het -1 is of niet.
 
@@ -234,7 +234,7 @@ data$.pipe(
 
 ## Vergelijking met vergelijkbare operatoren
 
-### findIndex vs find vs elementAt
+### FindIndex vs find vs elementAt
 
 ```ts
 import { from } from 'rxjs';
@@ -261,15 +261,24 @@ numbers$.pipe(
 // Uitgang.: 30
 ```
 
-| Operator | Argumenten | Retourwaarde | Indien niet gevonden. |
-|---|---|---|---|
-| `vindIndex(predikaat)` | Voorwaardelijke functie | Index (numeriek). | `-1` |
-| `find(predicaat)` | Voorwaardelijke functie | Waarde zelf | `onbepaald` |
-| `elementAt(index)` | Index | Waarde zelf | Fout (geen standaardwaarde) |
+```ts
+import { from } from 'rxjs';
+import { findIndex } from 'rxjs';
 
-## Vergelijking met JavaScript's Array.findIndex()
+const numbers$ = from([1, 3, 5, 7, 8, 9, 10]);
 
-RxJS `findIndex` gedraagt zich vergelijkbaar met de JavaScript array methode `Array.prototype.findIndex()`.
+numbers$.pipe(
+  findIndex(n => n % 2 === 0)
+).subscribe(console.log);
+// Uitgang.: 4(eerste even8index van de eerste even)
+---
+description: findIndexオペレーターは、条件を満たす最初の値のインデックスを返すRxJSフィルタリングオペレーターです。見つからない場合は-1を返します。
+---
+
+
+## Vergelijking met Array.findIndex() in JavaScript
+
+RxJS `findIndex` gedraagt zich vergelijkbaar met de array-methode `Array.prototype.findIndex()` van JavaScript.
 
 ```ts
 // JavaScript Matrix van
@@ -289,7 +298,7 @@ numbers$.pipe(
 
 **Belangrijkste verschillen**.
 - **Array**: geeft het resultaat synchroon en onmiddellijk terug.
-- **Observable**: asynchroon, wacht op waarden die uit de stream stromen.
+- **Observable**: asynchroon, wacht tot er waarden uit de stream stromen.
 
 ## ⚠️ Opmerkingen.
 
@@ -392,16 +401,16 @@ items$.pipe(
 
 ## 📚 Verwante operatoren.
 
-- **[find](. /find)** - Verkrijg de eerste waarde die voldoet aan de voorwaarde.
+- **[find](. /find)** - Verkrijg de eerste waarde die aan de voorwaarde voldoet.
 - **[elementAt](. /elementAt)** - Verkrijg de waarde op de opgegeven index.
 - **[first](. /first)** - Verkrijg de eerste waarde.
-- **[filter](. /filter)** - verkrijg alle waarden die voldoen aan de voorwaarde
+- Filter](. /filter)** - verkrijg alle waarden die voldoen aan de voorwaarde
 
 ## Samenvatting.
 
-De `findIndex` operator geeft de index van de eerste waarde die aan de voorwaarde voldoet.
+De ` findIndex` operator geeft de index van de eerste waarde die aan de voorwaarde voldoet.
 
-- Vergelijkbaar gedrag met `Array.findIndex()` van JavaScript.
+- Vergelijkbaar met `Array.findIndex()` in JavaScript.
 - Ideaal wanneer indexinformatie nodig is
 - Geeft `-1` als het niet gevonden wordt (geen fout)
 - ✅ Wordt onmiddellijk voltooid als het wordt gevonden

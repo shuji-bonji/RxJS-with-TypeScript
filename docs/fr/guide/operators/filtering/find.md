@@ -1,5 +1,5 @@
 ---
-description: "find est un opérateur de filtrage RxJS qui trouve la première valeur qui satisfait une condition et l'affiche, complétant ainsi le flux immédiatement. Il est idéal pour les situations où vous souhaitez trouver un élément spécifique dans un tableau ou une liste, comme la recherche d'utilisateurs, la vérification de l'inventaire ou la détection des journaux d'erreurs. Si aucune valeur n'est trouvée, la sortie est indéfinie et, en TypeScript, la valeur de retour est de type T | indéfini."
+description: "find est un opérateur de filtrage RxJS qui trouve la première valeur qui satisfait une condition et la sort, complétant ainsi le flux immédiatement. Il est idéal pour les situations où vous souhaitez trouver un élément spécifique dans un tableau ou une liste, comme la recherche d'utilisateurs, la vérification de l'inventaire ou la détection des journaux d'erreurs. Si aucune valeur n'est trouvée, la sortie est indéfinie et, en TypeScript, la valeur de retour est de type T | indéfini."
 ---
 
 # find - trouver la première valeur qui satisfait la condition
@@ -27,7 +27,7 @@ numbers$.pipe(
 
 [🌐 Official RxJS documentation - `find`](https://rxjs.dev/api/operators/find)
 
-## 🆚 Contraste avec le premier
+## 🆚 Contraste avec first
 
 `find` et `first` sont similaires, mais leur utilisation est différente.
 
@@ -53,7 +53,7 @@ numbers$.pipe(
 | Opérateur. | Spécification de la condition | Si aucune valeur n'est trouvée | Cas d'utilisation. |
 |---|---|---|---|
 | `premier()` | Option | Erreur (`EmptyError`) | Obtenir la première valeur |
-| `first(predicate)` | Option | Erreur (`EmptyError`) | Obtention conditionnelle. |
+| first(predicate)` | Option | Erreur (`EmptyError`) | Obtention conditionnelle. |
 | `find(predicate)` | Obligatoire. | Sortie `undefined`. | Recherche et vérification de l'existence |
 
 ## 💡 Modèle d'utilisation typique
@@ -196,8 +196,8 @@ result.style.marginTop = '10px' ;
 container.appendChild(result) ;
 
 // Traitement de la recherche
-// Note : à l'origine, le modèle recommandé est d'aplatir avec un switchMap, mais..,
-// Note : Bien que le modèle recommandé soit d'aplatir avec un switchMap, // ici nous imbriquons le subscribe pour des raisons de lisibilité, // parce qu'il inclut la validation de l'interface utilisateur (retour anticipé).
+// Note : à l'origine, le schéma recommandé est d'aplatir avec un switchMap, mais,
+// Note : Bien que le pattern recommandé soit d'aplatir avec un switchMap, // ici nous imbriquons le subscribe pour la lisibilité, // parce qu'il inclut la validation de l'IU (retour anticipé).
 // Considérez une implémentation plate utilisant `switchMap` dans le code de production.
 fromEvent(searchButton, 'click').subscribe(() => {
   const maxPrice = parseInt(input.value) ;.
@@ -208,7 +208,7 @@ fromEvent(searchButton, 'click').subscribe(() => {
     return ;
   }
 
-  // Nest subscribe : recommandé à l'origine d'aplatir avec switchMap
+  // Nest subscribe : recommandé à l'origine pour aplatir avec switchMap
   from(produits).pipe(
     find(produit => produit.prix <= maxPrice)
   ).subscribe(produit => {
@@ -243,11 +243,11 @@ import { find, filter } from 'rxjs' ;
 
 const numbers$ = from([1, 3, 5, 7, 8, 9, 10]) ;
 
-// filtre : sortie de toutes les valeurs qui correspondent à la condition
+// filter : sort toutes les valeurs qui correspondent à la condition
 numbers$.pipe(
   filter(n => n > 5)
 ).subscribe({
-  next : console.log,.
+  next : console.log, .
   complete : () => console.log('filter complete')
 }) ;
 // Sortie : 7, 8, 9, 10, filtre terminé
@@ -256,10 +256,10 @@ numbers$.pipe(
 numbers$.pipe(
   find(n => n > 5)
 ).subscribe({
-  next : console.log,.
+  next : console.log, .
   complete : () => console.log('find complete')
 }) ;
-// résultat : 7, recherche complète
+// résultat : 7, find complete
 
 ```
 
@@ -281,32 +281,32 @@ import { find } from 'rxjs' ;
 interface Task {
   id : nombre ;
   title : chaîne de caractères ;
-  completed : booléen ;
+  complete : booléen ;
   priority : 'high' | 'medium' | 'low' ; }
 }
 
 function findTaskById(
-  tasks$ : Observable<Task>,.
+  tasks$ : Observable,.
   id : nombre
-) : Observable<Task | undefined> {
+) : Observable | undefined> {
   return tasks$.pipe(
     find(task => task.id === id)
   ) ;
 }
 
 function findFirstIncompleteTask(
-  tasks$ : Observable<Task>
-) : Observable<Task | undefined> {
+  tasks$ : Observable
+) : Observable | undefined> {
   return tasks$.pipe(
-    find(task => !task.completed)
+    find(task => !task.complete)
   ) ;
 }
 
 // Exemple d'utilisation
 const tasks$ = from([.
-  { id : 1, title : 'Tâche A', completed : true, priority : 'high' as const }
-  { id : 2, title : 'Tâche B', completed : false, priority : 'medium' as const }
-  { id : 3, title : 'Tâche C', completed : false, priority : 'low' as const }
+  { id : 1, title : 'Tâche A', complete : true, priority : 'high' as const }
+  { id : 2, title : 'Tâche B', complete : false, priority : 'medium' as const }
+  { id : 3, title : 'Tâche C', complete : false, priority : 'low' as const }
 ] en tant que Task[]) ;.
 
 // Recherche par ID
@@ -360,10 +360,10 @@ numbers$.pipe(
 | `find(predicate)` | Valeur elle-même | `undefined` |
 | `findIndex(predicate)` | Index (valeur numérique) | `-1` |
 
-## ⚠️ Erreurs courantes
+## ⚠️ Une erreur fréquente
 
 > [!NOTE]
-> `find` si la valeur n'est pas trouvée. `undefined` est édité. Cela n'entraîne pas d'erreur. Si une erreur est requise, utilisez `first` pour être utilisée.
+> `find` si la valeur n'est pas trouvée. `undefined` est affiché. Cela n'entraîne pas d'erreur. Si une erreur est nécessaire, il faut utiliser `first` pour être utilisée.
 
 ### Erreur.: Traitement de l'erreur attendue si la valeur n'est pas trouvée.
 
@@ -379,8 +379,8 @@ const numbers$ = from([1, 3, 5, 7]) ;
 numbers$.pipe(
   find(n => n > 10)
 ).subscribe({
-  next : console.log,.
-  error : err => console.log('Error:', err) // pas appelé
+  next : console.log, .
+  error : err => console.log('Error:', err) // non appelé
 }) ;
 // résultat : non défini
 
@@ -408,7 +408,7 @@ numbers$.pipe(
 }) ;
 // Résultat : non trouvé
 
-// ✅ Bon exemple 2 : utilisez le premier si vous avez besoin d'une erreur
+// ✅ Bon exemple 2 : utilisez le first si vous avez besoin d'une erreur
 numbers$.pipe(
   first(n => n > 10, 0) // spécifie la valeur par défaut
 ).subscribe({
@@ -426,7 +426,7 @@ numbers$.pipe(
 - ✅ Lorsque vous voulez traiter une valeur comme `undefined` si elle n'est pas trouvée.
 - ✅ Lorsque vous voulez trouver un élément spécifique dans un tableau ou une liste
 
-### Quand vous devez utiliser en premier
+### Quand vous devez utiliser first
 - ✅ Si vous voulez obtenir la première valeur
 - ✅ Si vous voulez afficher une erreur si la valeur n'est pas trouvée
 
@@ -443,5 +443,5 @@ numbers$.pipe(
 
 - **[first](. /first)** - apprendre à obtenir la première valeur.
 - **[filter](. /filter)** - Apprenez à filtrer sur la base de conditions.
-- **[findIndex](https://rxjs.dev/api/operators/findIndex)** - Apprenez à obtenir l'index de la première valeur qui satisfait une condition (documentation officielle).
+- **[findIndex](https://rxjs.dev/api/operators/findIndex)** - apprendre à obtenir l'index de la première valeur qui satisfait une condition (documentation officielle).
 - **[filtering-operator-practical-use-cases](. /practical-use-cases)** - apprendre des cas d'utilisation réels

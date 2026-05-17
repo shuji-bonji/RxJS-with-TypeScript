@@ -1,5 +1,5 @@
 ---
-description: "L'opérateur ignoreElements est un opérateur de filtrage RxJS qui ignore toutes les valeurs et ne prend en compte que les achèvements et les erreurs. Ceci est utile lorsque l'on attend que le processus se termine."
+description: "L'opérateur ignoreElements est un opérateur de filtrage RxJS qui ignore toutes les valeurs et ne laisse passer que les achèvements et les erreurs. Ceci est utile lorsque l'on attend que le processus se termine."
 ---
 
 # ignoreElements - seuls les achèvements/erreurs passent
@@ -32,7 +32,7 @@ source$.pipe(
 ## 💡 Modèle d'utilisation typique.
 
 - **Attendre l'achèvement du processus** : lorsque vous n'avez pas besoin de la valeur et que vous voulez seulement connaître l'achèvement.
-- Exécuter seulement les effets secondaires** : exécuter les effets secondaires avec tap et ignorer les valeurs.
+- Exécuter seulement les effets secondaires** : exécuter les effets secondaires avec le tap et ignorer les valeurs.
 - Gestion des erreurs** : lorsque vous souhaitez uniquement détecter les erreurs.
 - Synchronisation des séquences** : attente de l'achèvement de plusieurs processus
 
@@ -253,11 +253,94 @@ source$.pipe(
 // Sortie: take(0): Terminé
 ```
 
-| Opérateur | Traitement de la valeur | Notification d'achèvement | Cas d'utilisation. |
-|---|---|---|---|
-| `ignoreElements()` | Ignorer tous les éléments | passer | **Nécessaire uniquement pour l'achèvement** (recommandé) |
-| `filter(() => false)` | Filtrer tout | laisser passer | Filtrage conditionnel (exclure tout par hasard). |
-| `take(0)` | Complète immédiatement | laisser passer | Achèvement immédiat |
+```ts
+import { of } from 'rxjs';
+import { ignoreElements } from 'rxjs';
+
+const source$ = of(1, 2, 3, 4, 5);
+
+source$.pipe(
+  ignoreElements()
+).subscribe({
+  next: value => console.log('Valeur:', value), // Pas appelé
+  complete: () => console.log('Terminé')
+});
+// Sortie: Terminé
+```ts
+import { from, forkJoin, of } from 'rxjs';
+import { ignoreElements, tap, delay, concat } from 'rxjs';
+
+// UICréer
+const container = document.createElement('div');
+document.body.appendChild(container);
+
+const title = document.createElement('h3');
+title.textContent = 'アプリケーション初期化';
+container.appendChild(title);
+
+const statusArea = document.createElement('div');
+statusArea.style.marginTop = '10px';
+container.appendChild(statusArea);
+
+const completeMessage = document.createElement('div');
+completeMessage.style.marginTop = '10px';
+completeMessage.style.padding = '10px';
+completeMessage.style.display = 'none';
+container.appendChild(completeMessage);
+
+// ステータスログを追加する関数
+function addLog(message: string, color: string = 'black') {
+  const log = document.createElement('div');
+  log.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+  log.style.color = color;
+  statusArea.appendChild(log);
+}
+
+// 初期化処理1: データベース接続
+const initDatabase$ = from(['DB接続中...', 'テーブル確認中...', 'DB準備complété']).pipe(
+  tap(msg => addLog(msg, 'blue')),
+  delay(500),
+  ignoreElements() // valeurは無視、complétéのみ通知
+);
+
+// 初期化処理2: 設定ファイル読み込み
+const loadConfig$ = from(['設定ファイル読み込み中...', '設定解析中...', '設定適用complété']).pipe(
+  tap(msg => addLog(msg, 'green')),
+  delay(700),
+  ignoreElements()
+);
+
+// 初期化処理3: ユーザー認証
+const authenticate$ = from(['認証情報確認中...', 'トークン検証中...', '認証complété']).pipe(
+  tap(msg => addLog(msg, 'purple')),
+  delay(600),
+  ignoreElements()
+);
+
+// すべての初期化処理を実行
+addLog('初期化開始...', 'orange');
+
+forkJoin([
+  initDatabase$,
+  loadConfig$,
+  authenticate$
+]).subscribe({
+  complete: () => {
+    completeMessage.style.display = 'block';
+    completeMessage.style.backgroundColor = '#e8f5e9';
+    completeMessage.style.color = 'green';
+    completeMessage.style.fontWeight = 'bold';
+    completeMessage.textContent = '✅ すべての初期化がcomplétéしました！アプリケーションを起動できます。';
+    addLog('アプリケーション起動', 'green');
+  },
+  error: err => {
+    completeMessage.style.display = 'block';
+    completeMessage.style.backgroundColor = '#ffebee';
+    completeMessage.style.color = 'red';
+    completeMessage.textContent = `❌ 初期化エラー: ${err.message}`;
+  }
+});
+```
 
 **Recommandé** : utilisez `ignoreElements()` si vous voulez intentionnellement ignorer toutes les valeurs. L'intention du code sera claire.
 
@@ -322,7 +405,7 @@ of(1, 2, 3).pipe(
 // Terminé
 ```
 
-### Utilisation avec InfiniteObservable
+### 2. utilisation avec Observable
 
 Lorsqu'il est utilisé avec Infinite Observable, l'abonnement dure éternellement car il n'est jamais terminé.
 
@@ -372,7 +455,7 @@ result$.subscribe({
 
 ### 4. si l'achèvement n'est pas garanti
 
-Si la source n'est pas complète, les `ignoreElements` ne le seront pas non plus.
+Si la source ne s'achève pas, l'ignoreElements ne s'achèvera pas non plus.
 
 ```ts
 import { NEVER } from 'rxjs';
@@ -391,67 +474,58 @@ NEVER.pipe(
 ### Modèle 1 : Séquence d'initialisation
 
 ```ts
-import { of, concat } from 'rxjs';
-import { tap, ignoreElements, delay } from 'rxjs';
+import { of } from 'rxjs';
+import { ignoreElements } from 'rxjs';
 
-const initStep1$ = of('Step 1').pipe(
-  tap(console.log),
-  delay(1000),
+const source$ = of(1, 2, 3, 4, 5);
+
+source$.pipe(
   ignoreElements()
-);
-
-const initStep2$ = of('Step 2').pipe(
-  tap(console.log),
-  delay(1000),
-  ignoreElements()
-);
-
-const initStep3$ = of('Step 3').pipe(
-  tap(console.log),
-  delay(1000),
-  ignoreElements()
-);
-
-// Toutes les étapes sont exécutées séquentiellement
-concat(initStep1$, initStep2$, initStep3$).subscribe({
-  complete: () => console.log('✅ Toutes les initialisations sont terminées')
+).subscribe({
+  next: value => console.log('Valeur:', value), // Pas appelé
+  complete: () => console.log('Terminé')
 });
-```
+// Sortie: Terminé
+---
+description: ignoreElementsオペレーターは、すべての値を無視して完了とエラーのみを通すRxJSフィルタリングオペレーターです。処理の完了を待つ場合に便利です。
+---
+
 
 ### Schéma 2 : Processus de nettoyage
 
 ```ts
-import { from, of } from 'rxjs';
-import { tap, ignoreElements, mergeMap } from 'rxjs';
+import { of } from 'rxjs';
+import { ignoreElements } from 'rxjs';
 
-interface Resource {
-  id: number;
-  name: string;
-}
+const source$ = of(1, 2, 3, 4, 5);
 
-const resources: Resource[] = [
-  { id: 1, name: 'Database' },
-  { id: 2, name: 'Cache' },
-  { id: 3, name: 'Logger' }
-];
-
-from(resources).pipe(
-  mergeMap(resource =>
-    of(resource).pipe(
-      tap(() => console.log(`🧹 ${resource.name} Nettoyage en cours...`)),
-      ignoreElements()
-    )
-  )
+source$.pipe(
+  ignoreElements()
 ).subscribe({
-  complete: () => console.log('✅ Toutes les ressources ont été nettoyées')
+  next: value => console.log('Valeur:', value), // Pas appelé
+  complete: () => console.log('Terminé')
 });
+// Sortie: Terminé
+```ts
+import { of } from 'rxjs';
+import { ignoreElements } from 'rxjs';
+
+const source$ = of(1, 2, 3, 4, 5);
+
+source$.pipe(
+  ignoreElements()
+).subscribe({
+  next: value => console.log('valeur:', value), // 呼ばれない
+  complete: () => console.log('complétéしました')
+});
+// Sortie: complétéしました
 ```
 
 ## 📚 Opérateurs apparentés.
 
 - **[filter](. /filter)** - filtre les valeurs en fonction de conditions.
 - **[take](. /take)** - seules les N premières valeurs sont prises en compte.
-- **[skip](. /skip)** - ignore les N premières valeurs.
+- **[skip](. /skip)** - les N premières valeurs sont ignorées.
 - **[tap](. /utility/tap)** - effectuer une action latérale
 
 ## Résumé.
@@ -459,9 +533,9 @@ from(resources).pipe(
 L'opérateur `ignoreElements` ignore toutes les valeurs et ne transmet que les complétions et les erreurs.
 
 - ✅ Idéal lorsque seule une notification d'achèvement est requise.
-- Les effets secondaires (TAP) sont exécutés.
+- Les effets secondaires (Tap) sont exécutés.
 - ✅ Les notifications d'erreur sont également transmises
-- ✅ Intention plus claire que `filter(() => false)`
-- ⚠️ L'observable infini ne se termine pas
+- ✅ L'intention est plus claire que `filter(() => false)`.
+- ⚠️ L'Observable infini ne se termine pas
 - ⚠️ Le type de valeur de retour est `Observable<never>`.
 - ⚠️ La valeur est complètement ignorée, mais les effets de bord sont exécutés.

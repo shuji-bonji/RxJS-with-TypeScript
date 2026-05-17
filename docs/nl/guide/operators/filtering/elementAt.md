@@ -1,5 +1,5 @@
 ---
-description: "De elementAt operator is een RxJS filteroperator die alleen waarden ophaalt op een gegeven indexpositie. Het werkt vergelijkbaar met array index toegang."
+description: "De elementAt operator is een RxJS filteroperator die alleen waarden op een bepaalde indexpositie ophaalt. Het werkt vergelijkbaar met array index toegang."
 ---
 
 # elementAt - opgehaald door indexspecificatie
@@ -26,14 +26,14 @@ numbers$.pipe(
 3. 30 (index 2) → uitvoer en voltooien
 4. 40, 50 niet geëvalueerd
 
-[🌐 Officiële RxJS documentatie - `elementAt`](https://rxjs.dev/api/operators/elementAt)
+[🌐 Officiële RxJS documentatie - elementAt`](https://rxjs.dev/api/operators/elementAt)
 
 ## 💡 Typisch gebruikspatroon.
 
 - **Paginatie**: het eerste item op een specifieke pagina ophalen.
 - **Op volgorde gegarandeerde gegevens verkrijgen**: de N-de gebeurtenis of het N-de bericht verkrijgen.
 - **Testen en debuggen**: valideer de waarde van een specifieke positie.
-- **Array-achtige toegang**: behandel Observable als een array
+- **Array-achtige toegang**: behandel Observable als een array.
 
 ## Praktisch codevoorbeeld 1: Aftellen van gebeurtenissen
 
@@ -214,12 +214,20 @@ numbers$.pipe(
 // Uitvoer.: 30
 ```
 
-| Operator. | Te verkrijgen waarde | Aantal uitgangen | Gebruikscasus. |
-|---|---|---|---|
-| `elementAt(n)` | Alleen waarden bij index n | 1 | Neem de n-de waarde |
-| `take(n)` | n waarden vanaf het begin | n waarden | Verkrijg de eerste n waarden |
-| `eerst()` | Eerste waarde | 1 | Verkrijg de eerste. |
-| `skip(n) + first()` | Eerste na n overslaan | Eerste | Gelijkwaardig aan elementAt (verouderd) |
+```ts
+import { from } from 'rxjs';
+import { elementAt } from 'rxjs';
+
+const numbers$ = from([10, 20, 30, 40, 50]);
+
+numbers$.pipe(
+  elementAt(2)
+).subscribe(console.log);
+// Uitvoer.: 30(Index2Waarde)
+---
+description: elementAtオペレーターは、指定されたインデックス位置の値のみを取得するRxJSフィルタリングオペレーターです。配列のインデックスアクセスに似た動作をします。
+---
+
 
 ## ⚠️ Opmerkingen.
 
@@ -324,7 +332,7 @@ numbers$.pipe(
 - **[first](. /first)** - eerste waarde krijgen.
 - **[last](. /last)** - laatste waarde krijgen.
 - **[skip](. /skip)** - de eerste N waarden overslaan
-- **[takeLast](. /takeLast)** - de laatste N waarden ophalen
+- **[takeLast](. /takeLast)** - de laatste N waarden krijgen
 
 ## Samenvatting.
 

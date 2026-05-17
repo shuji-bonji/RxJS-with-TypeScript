@@ -1,8 +1,8 @@
 ---
-description: "O find é um operador de filtragem do RxJS que encontra o primeiro valor que satisfaz uma condição e o gera, completando o fluxo imediatamente. É ideal para situações em que se deseja localizar um elemento específico de uma matriz ou lista, como pesquisar usuários, verificar o inventário ou detectar logs de erros. Se nenhum valor for encontrado, a saída será indefinida e, no TypeScript, o valor de retorno será do tipo T | undefined."
+description: "O find é um operador de filtragem RxJS que encontra o primeiro valor que satisfaz uma condição e o produz, completando o fluxo imediatamente. É ideal para situações em que se deseja localizar um elemento específico de uma matriz ou lista, como pesquisar usuários, verificar o inventário ou detectar logs de erros. Se nenhum valor for encontrado, a saída será indefinida e, no TypeScript, o valor de retorno será do tipo T | undefined."
 ---
 
-# Encontrar - encontrar o primeiro valor que satisfaça a condição
+# Find - find o primeiro valor que satisfaz a condição
 
 O operador `find` encontra e gera o **primeiro valor que satisfaz a condição** e completa o fluxo imediatamente. Se nenhum valor for encontrado, ele produzirá `undefined`.
 
@@ -27,9 +27,9 @@ numbers$.pipe(
 
 [🌐 Documentação oficial do RxJS - `find`](https://rxjs.dev/api/operators/find)
 
-## 🆚 Contraste com o primeiro
+## 🆚 Contraste com o first
 
-`find` e `first` são semelhantes, mas seu uso é diferente.
+O `find` e o `first` são semelhantes, mas seu uso é diferente.
 
 ```ts
 import { from } from 'rxjs';
@@ -54,7 +54,7 @@ numbers$.pipe(
 |---|---|---|---|
 | `first()` | Opção | Erro (`EmptyError`) | Obter o primeiro valor |
 | `first(predicate)` | Opcional | Erro (`EmptyError`) | Obtenção condicional. |
-| `find(predicate)` | Obrigatório. | Saída `undefined`. | Pesquisa e verificação de existência |
+| find(predicate)` | Obrigatório. | Saída `undefined`. | Pesquisa e verificação de existência |
 
 ## 💡 Padrão de utilização típico
 
@@ -167,7 +167,7 @@ interface Product {
 
 const products: Product[] = [
   { id: 'P1', name: 'Wireless mouse', price: 2980, category: 'PC peripherals' }
-  { id: 'P2', name: 'Mechanical keyboard', price: 8980, category: 'PC peripherals' }
+  { id: 'P2', name: 'Mechanical Keyboard', price: 8980, category: 'PC Peripherals' }
   { id: 'P3', name: 'USB memory stick 64GB', price: 1480, category: 'Storage' }
   { id: 'P4', name: 'Monitor 27-inch', price: 29800, category: 'Displays' }
   { id: 'P5', name: 'laptop stand', price: 3980, category: 'PC peripherals' }
@@ -198,7 +198,7 @@ contêiner.appendChild(result);
 // Processamento de pesquisa
 // Observação: originalmente, o padrão recomendado é achatar com um switchMap, mas,
 // Observação: embora o padrão recomendado seja nivelar com um switchMap, // aqui aninhamos o subscribe para facilitar a leitura, // porque ele inclui a validação da IU (retorno antecipado).
-// Considere uma implementação plana usando `switchMap` no código de produção.
+// Considere uma implementação plana usando switchMap no código de produção.
 fromEvent(searchButton, 'click').subscribe(() => {
   const maxPrice = parseInt(input.value);.
 
@@ -208,7 +208,7 @@ fromEvent(searchButton, 'click').subscribe(() => {
     return;
   }
 
-  // Nest subscribe: originalmente recomendado para nivelar com switchMap
+  // Subscribe: originalmente recomendado para nivelar com switchMap
   from(products).pipe(
     find(product => product.price <= maxPrice)
   ).subscribe(product => {
@@ -222,7 +222,7 @@ fromEvent(searchButton, 'click').subscribe(() => {
       result.style.color = 'green';
     } else {
       result.textContent = `¥${maxPrice.toLocaleString()} or less product not found `;
-      result.style.color = 'orange'; }
+      result.style.color = 'range'; }
     }
   });
 });
@@ -243,14 +243,14 @@ import { find, filter } from 'rxjs';
 
 const numbers$ = from([1, 3, 5, 7, 8, 9, 10]);
 
-// filtro: gera todos os valores que correspondem à condição
+// filter: gera todos os valores que correspondem à condição
 numbers$.pipe(
   filter(n => n > 5)
 ).subscribe({
   next: console.log,.
-  complete: () => console.log('filtro completo')
+  complete: () => console.log('filter complete')
 });
-// Saída: 7, 8, 9, 10, filtro concluído
+// Saída: 7, 8, 9, 10, filter complete
 
 // find: gera apenas o primeiro valor que corresponde à condição
 numbers$.pipe(
@@ -259,7 +259,7 @@ numbers$.pipe(
   next: console.log,.
   complete: () => console.log('find complete')
 });
-// saída: 7, encontrar completo
+// saída: 7, find complete
 
 ```
 
@@ -286,17 +286,17 @@ interface Task {
 }
 
 function findTaskById(
-  tasks$: Observable<Task>,.
+  tasks$: Observable,.
   id: number
-): Observável<Task | undefined> {
+): Observable | undefined> {
   return tasks$.pipe(
     find(task => task.id === id)
   );
 }
 
 function findFirstIncompleteTask(
-  tasks$: Observable<Task>
-): Observável<Task | undefined> {
+  tasks$: Observable
+): Observable | undefined> {
   return tasks$.pipe(
     find(task => !task.completed)
   );
@@ -360,7 +360,7 @@ numbers$.pipe(
 | `find(predicate)` | O próprio valor | `undefined` |
 | `findIndex(predicate)` | Índice (valor numérico) | `-1` |
 
-## ⚠️ Erros comuns
+## ⚠️ Um erro comum
 
 > [!NOTE]
 > `find` se o valor não for encontrado. `undefined` é emitido. Isso não resulta em um erro. Se for necessário um erro, use `first` para ser usado.
@@ -410,7 +410,7 @@ numbers$.pipe(
 
 // ✅ Bom exemplo 2: use o primeiro se precisar de um erro
 numbers$.pipe(
-  first(n => n > 10, 0) // especifica o valor padrão
+  first(n => n > 10, 0) // especifique o valor padrão
 ).subscribe({
   next: console.log,.
   error: err => console.log('Error:', err.message)
@@ -421,16 +421,16 @@ numbers$.pipe(
 ## 🎓 Resumo
 
 ### Quando você deve usar find.
-- ✅ Se você quiser encontrar o primeiro valor que satisfaça uma condição
+- Quando você quiser encontrar o primeiro valor que satisfaça uma condição
 - Quando você quiser verificar a existência de um valor
 - Quando você quiser tratar um valor como "indefinido" se ele não for encontrado.
 - Quando você quiser encontrar um elemento específico em uma matriz ou lista
 
-### Quando você deve usar primeiro
+### Quando você deve usar first
 - Se você quiser obter o primeiro valor
 - Se você quiser emitir um erro se o valor não for encontrado
 
-### Quando o filtro deve ser usado?
+### Quando o filter deve ser usado?
 - Se você precisar de todos os valores que correspondem a uma condição
 - Se você quiser filtrar os dados
 

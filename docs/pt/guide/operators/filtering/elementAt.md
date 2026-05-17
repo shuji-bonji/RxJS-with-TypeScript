@@ -1,10 +1,10 @@
 ---
-description: "O operador elementAt é um operador de filtragem RxJS que recupera apenas valores em uma determinada posição de índice. Ele funciona de forma semelhante ao acesso ao índice da matriz."
+description: "O operador elementAt é um operador de filtragem do RxJS que recupera apenas valores em uma determinada posição de índice. Ele funciona de forma semelhante ao acesso ao índice da matriz."
 ---
 
 # elementAt - Recuperado por especificação de índice
 
-O operador `elementAt` recupera **apenas o valor na posição de índice especificada** do Observable e conclui o fluxo imediatamente. Ele funciona de forma semelhante a `array[index]` de uma matriz.
+O operador `elementAt` recupera **apenas o valor na posição de índice especificada** do Observable e completa o fluxo imediatamente. Ele funciona de forma semelhante a `array[index]` de uma matriz.
 
 ## Sintaxe básica e uso
 
@@ -26,14 +26,14 @@ numbers$.pipe(
 3. 30 (índice 2) → saída e conclusão
 4. 40, 50 não avaliados
 
-[🌐 Documentação oficial do RxJS - `elementAt`](https://rxjs.dev/api/operators/elementAt)
+[🌐 Documentação oficial do RxJS - elementAt](https://rxjs.dev/api/operators/elementAt)
 
 ## 💡 Padrão de utilização típico.
 
 - **Paginação**: obter o primeiro item em uma página específica.
 - Obtenção de dados com garantia de ordem**: obtenção do enésimo evento ou mensagem.
 - Testes e depuração**: validar o valor de uma posição específica.
-- Acesso semelhante a uma matriz**: tratar Observable como uma matriz
+- Acesso semelhante a uma matriz**: tratar o Observable como uma matriz
 
 ## Exemplo prático de código 1: contagem regressiva de eventos
 
@@ -54,7 +54,7 @@ document.body.appendChild(button);
 
 const counter = document.createElement('div');
 counter.style.marginTop = '10px';
-counter.textContent = 'mais5Clicar uma vez';
+counter.textContent = 'mais5Clique uma vez';
 output.appendChild(counter);
 
 const result = document.createElement('div');
@@ -73,7 +73,7 @@ clicks$.subscribe(() => {
   clickCount++;
   const remaining = 5 - clickCount;
   if (remaining > 0) {
-    counter.textContent = `mais${remaining}Clicar uma vez`;
+    counter.textContent = `mais${remaining}Clique uma vez`;
   } else {
     counter.textContent = '';
   }
@@ -117,7 +117,7 @@ input.style.marginRight = '10px';
 container.appendChild(input);
 
 const getButton = document.createElement('button');
-getButton.textContent = 'Recuperar';
+getButton.textContent = 'Obter';
 container.appendChild(getButton);
 
 const status = document.createElement('div');
@@ -194,13 +194,13 @@ import { elementAt, take, first, skip } from 'rxjs';
 
 const numbers$ = from([10, 20, 30, 40, 50]);
 
-// elementAt: Recuperar apenas valores para um índice específico
+// elementAt: Somente os valores em um índice específico são recuperados
 numbers$.pipe(
   elementAt(2)
 ).subscribe(console.log);
 // Saída.: 30
 
-// take: Desde o inícioNObter um valor
+// take: Desde o inícioNObter um valor desde o início
 numbers$.pipe(
   take(3)
 ).subscribe(console.log);
@@ -214,12 +214,20 @@ numbers$.pipe(
 // Saída.: 30
 ```
 
-| Operador. | Valor a ser obtido | Número de saídas | Caso de uso. |
-|---|---|---|---|
-| `elementAt(n)` | Somente valores no índice n | 1 | Pegar o enésimo valor |
-| `take(n)` | n valores desde o início | n valores | Obter os primeiros n valores |
-| `first()` | Primeiro valor | 1 | Obter o primeiro. |
-| `skip(n) + first()` | Primeiro após n pulos | 1 | Equivalente a elementAt (obsoleto) |
+```ts
+import { from } from 'rxjs';
+import { elementAt } from 'rxjs';
+
+const numbers$ = from([10, 20, 30, 40, 50]);
+
+numbers$.pipe(
+  elementAt(2)
+).subscribe(console.log);
+// Saída.: 30(Índice2Value)
+---
+description: elementAtオペレーターは、指定されたインデックス位置の値のみを取得するRxJSフィルタリングオペレーターです。配列のインデックスアクセスに似た動作をします。
+---
+
 
 ## ⚠️ Notas.
 
@@ -297,7 +305,7 @@ numbers$.pipe(
 // Erro: ArgumentOutOfRangeError: index out of range
 ```
 
-Use `takeLast` ou `last` para chegar ao final da matriz.
+Use takeLast ou last para chegar ao final do array.
 
 ```ts
 import { from } from 'rxjs';
@@ -328,7 +336,7 @@ numbers$.pipe(
 
 ## Resumo.
 
-O operador `elementAt` recupera apenas o valor na posição de índice especificada.
+O operador elementAt recupera apenas o valor na posição de índice especificada.
 
 - O mesmo comportamento do acesso ao índice da matriz.
 - Ideal para recuperar o enésimo valor

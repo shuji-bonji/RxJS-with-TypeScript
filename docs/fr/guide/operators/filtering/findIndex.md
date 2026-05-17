@@ -4,7 +4,7 @@ description: "L'opérateur findIndex est un opérateur de filtrage RxJS qui renv
 
 # findIndex - obtient l'index correspondant à la condition
 
-L'opérateur `findIndex` retourne **l'index de la première valeur qui correspond à la condition** et complète le flux immédiatement. Il retourne `-1` si aucune valeur n'est trouvée.
+L'opérateur `finIndex` retourne **l'index de la première valeur qui correspond à la condition** et complète le flux immédiatement. Il retourne `-1` si aucune valeur n'est trouvée.
 
 ## 🔰 Syntaxe de base et utilisation
 
@@ -246,7 +246,7 @@ const numbers$ = from([10, 20, 30, 40, 50]);
 numbers$.pipe(
   findIndex(n => n > 25)
 ).subscribe(console.log);
-// Sortie.: 2Renvoie l'index de la première valeur qui satisfait à la condition30indice du premier pair)
+// Sortie.: 2Renvoie l'index de la première valeur qui remplit la condition30indice du premier pair)
 
 // find: Renvoie la première valeur qui remplit la condition
 numbers$.pipe(
@@ -261,15 +261,24 @@ numbers$.pipe(
 // Sortie.: 30
 ```
 
-| Opérateur | Arguments | Valeur de retour | S'il n'est pas trouvé. |
-|---|---|---|---|
-| `findIndex(predicate)` | Fonction conditionnelle | Index (numérique). | `-1` |
-| `find(predicate)` | Fonction conditionnelle | Valeur elle-même | `undefined` |
-| `elementAt(index)` | Index | Valeur elle-même | Erreur (pas de valeur par défaut) |
+```ts
+import { from } from 'rxjs';
+import { findIndex } from 'rxjs';
 
-## 🔄 Comparaison avec JavaScript's Array.findIndex()
+const numbers$ = from([1, 3, 5, 7, 8, 9, 10]);
 
-RxJS `findIndex` se comporte de manière similaire à la méthode JavaScript array `Array.prototype.findIndex()`.
+numbers$.pipe(
+  findIndex(n => n % 2 === 0)
+).subscribe(console.log);
+// Sortie.: 4(premier pair8indice du premier pair)
+---
+description: findIndexオペレーターは、条件を満たす最初の値のインデックスを返すRxJSフィルタリングオペレーターです。見つからない場合は-1を返します。
+---
+
+
+## 🔄 Comparaison avec la fonction Array.findIndex() de JavaScript
+
+RxJS `findIndex` se comporte de manière similaire à la méthode de tableau JavaScript `Array.prototype.findIndex()`.
 
 ```ts
 // JavaScript Tableau de
@@ -337,9 +346,9 @@ interval(1000).pipe(
 // Index: 3
 ```
 
-### 3. la sécurité des types en TypeScript
+### 3. la sécurité de type dans TypeScript
 
-`findIndex` renvoie toujours le type `number`.
+`finIndex` renvoie toujours le type `number`.
 
 ```ts
 import { Observable, from } from 'rxjs';
@@ -392,18 +401,18 @@ items$.pipe(
 
 ## 📚 Opérateurs apparentés.
 
-- **[find](. /find)** - Obtient la première valeur qui satisfait la condition.
+- **[find](. /find)** - Obtenir la première valeur qui satisfait la condition.
 - **[elementAt](. /elementAt)** - Obtient la valeur à l'index spécifié.
 - **[first](. /first)** - Obtient la première valeur.
-- **[filter](. /filter)** - obtient toutes les valeurs qui satisfont à la condition.
+- **[filter](. /filter)** - Récupère toutes les valeurs qui satisfont à la condition.
 
 ## Résumé.
 
-L'opérateur `findIndex` renvoie l'index de la première valeur qui satisfait la condition.
+L'opérateur findIndex renvoie l'index de la première valeur qui satisfait la condition.
 
 - ✅ Comportement similaire à celui du JavaScript `Array.findIndex()`.
 - ✅ Idéal lorsque l'information sur l'index est nécessaire
 - ✅ Retourne `-1` si non trouvé (pas une erreur)
 - ✅ Complète immédiatement lorsqu'elle est trouvée
 - ⚠️ La valeur de retour est toujours de type `number` (-1 ou un entier supérieur ou égal à 0)
-- ⚠️ Utiliser `find` si la valeur elle-même est nécessaire
+- ⚠️ Utiliser `find` si la valeur elle-même est requise

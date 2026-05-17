@@ -1,10 +1,10 @@
 ---
-description: "auditTime est un opérateur de filtrage RxJS qui attend un temps spécifié lorsqu'une valeur est émise et produit la dernière valeur au cours de cette période. Il est préférable de l'utiliser lorsque vous souhaitez échantillonner périodiquement le dernier état d'événements à haute fréquence tels que le suivi de la position du défilement, le redimensionnement de la fenêtre, le mouvement de la souris, etc. Il est important de comprendre la différence entre cet opérateur, throttleTime et debounceTime, et de les utiliser de manière appropriée."
+description: "auditTime est un opérateur de filtrage de RxJS qui attend un temps spécifié lorsqu'une valeur est émise et produit la dernière valeur au cours de cette période. Il est préférable de l'utiliser lorsque vous souhaitez échantillonner périodiquement le dernier état sur des événements à haute fréquence tels que le suivi de la position du défilement, le redimensionnement de la fenêtre, le mouvement de la souris, etc. Il est important de comprendre la différence entre cet opérateur et throttleTime et debounceTime et de les utiliser de manière appropriée."
 ---
 
-# auditTime - dernière valeur émise après l'heure spécifiée
+# auditTime - dernière valeur émise après le temps spécifié
 
-L'opérateur `auditTime` attend un **temps spécifié** après l'émission d'une valeur et affiche la **dernière valeur** pendant cette période. Il attend ensuite l'arrivée de la valeur suivante.
+L'opérateur `auditTime` attend un **temps spécifié** après l'émission d'une valeur et produit la **dernière valeur** pendant cette période. Il attend ensuite l'arrivée de la valeur suivante.
 
 ## 🔰 Syntaxe de base et utilisation
 
@@ -60,11 +60,31 @@ audit:      -------3--------6--------9----|
                   (Dernière)   (Dernière)   (Dernière)
 ```
 
-| Opérateur. | Valeur à éditer | Moment de l'édition | Cas d'utilisation. |
-|---|---|---|---|
-| `throttleTime(ms)` | La **première** valeur de la période | Dès réception de la valeur | Réaction immédiate requise |
-| `auditTime(ms)` | La **dernière** valeur de la période | A la fin de la période | Nécessite un statut à jour |
-| `debounceTime(ms)` | La **dernière** valeur après le silence | Après l'arrêt de l'entrée | Attendre la fin de l'entrée |
+```ts
+import { fromEvent } from 'rxjs';
+import { auditTime } from 'rxjs';
+
+fromEvent(document, 'click').pipe(
+  auditTime(1000)
+).subscribe(() => console.log('Cliquez.！'));
+```ts
+import { interval } from 'rxjs';
+import { throttleTime, auditTime, take } from 'rxjs';
+
+const source$ = interval(300).pipe(take(10)); // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+
+// throttleTime: PremierのvaleurをSortie
+source$.pipe(
+  throttleTime(1000)
+).subscribe(console.log);
+// Sortie: 0, 4, 8（各périodeのPremierのvaleur）
+
+// auditTime: DernierのvaleurをSortie
+source$.pipe(
+  auditTime(1000)
+).subscribe(console.log);
+// Sortie: 3, 6, 9（各périodeのDernierのvaleur）
+```
 
 ## 💡 Modèle d'utilisation typique
 
@@ -185,7 +205,7 @@ fromEvent<MouseEvent>(container, 'mousemove').pipe(
       y : event.clientY - rect.top
     } ;
   }),
-  auditTime(100) // Obtenir la dernière position toutes les 100ms
+  auditTime(100) // Récupère la dernière position toutes les 100ms
 ).subscribe(position => {
   positionDisplay.textContent = `Dernière position (toutes les 100ms) : X=${position.x.toFixed(0)}, Y=${position.y.toFixed(0)}` ;
 
@@ -207,7 +227,7 @@ Ce code ne récupère et n'affiche la dernière position qu'à chaque fois que l
 
 | L'opérateur | l'opération | utilisation différente du système |
 |---|---|---|
-| `auditTime(ms)` | À l'arrivée d'une valeur**msToujours éditer après**(même si l'entrée se poursuit) | Échantillonnage périodique |
+| `auditTime(ms)` | À l'arrivée d'une valeur**msToujours éditer après**(même si l'entrée se poursuit) | Échantillonnage à intervalles réguliers |
 | `debounceTime(ms)` | **Après l'arrêt de l'entrée**msSortie après | Attendre la fin de l'entrée |
 
 ### Exemples spécifiques：Différences dans l'entrée de la recherche
@@ -246,11 +266,11 @@ Différence observée lorsqu'un utilisateur clique sur "ab'→'abc'→'abcd' lor
 
 Événement d'entrée : a--b--c--d------------|
               ↓
-auditTime: ------c-----d----------|
+auditTime : ------c-----d----------|
             (après 300 ms) (après 300 ms)
             → Recherche de 'abc', recherche de 'abcd' (2 fois au total)
 
-debounceTime: --------------------d-|
+debounceTime : --------------------d-|
                               (300 ms après l'arrêt)
             → Recherche de "abcd" (une seule fois au total)
 
@@ -268,7 +288,7 @@ ts.
 // ✅ auditTime si nécessaire
 // - Suivi de la position de défilement (nous voulons l'obtenir périodiquement, même si nous défilons tout le temps)
 fromEvent(window, 'scroll').pipe(
-  auditTime(100) // obtient la dernière position toutes les 100ms
+  auditTime(100) // récupère la dernière position toutes les 100ms
 ).subscribe(/* ... */) ;
 
 // ✅ si debounceTime est approprié.
@@ -297,8 +317,8 @@ interface MousePosition {
 
 function trackMousePosition(
   element : HTMLElement,.
-  intervalMs : nombre
-) : Observable<MousePosition> {
+  interval : nombre
+) : Observable {
   return fromEvent<MouseEvent>(element, 'mousemove').pipe(
     auditTime(intervalMs),.
     map(event => ({
@@ -324,7 +344,7 @@ trackMousePosition(canvas, 200).subscribe(position => {
 
 ## 🔄 auditTime et throttleTime Combinaison de
 
-Dans certains scénarios, les deux peuvent être combinés.
+Dans certains cas, les deux peuvent être combinés.
 
 ```
 
@@ -336,20 +356,21 @@ const source$ = interval(100).pipe(take(50)) ;.
 
 // ordre de throttleTime → auditTime
 source$.pipe(
-  throttleTime(1000), // passe la première valeur toutes les secondes
+  throttleTime(1000), // passer la première valeur toutes les secondes
   auditTime(500) // puis attendre 500ms et sortir la dernière valeur
 ).subscribe(console.log) ;.
 
-```
+```ts
+import { fromEvent } from 'rxjs';
+import { auditTime } from 'rxjs';
 
-## ⚠️ Une erreur courante
+fromEvent(document, 'click').pipe(
+  auditTime(1000)
+).subscribe(() => console.log('Cliquez.！'));
+---
+description: auditTimeは値が発行されたら指定時間待機し、その期間内の最後の値を出力するRxJSフィルタリングオペレーターです。スクロール位置の追跡、ウィンドウリサイズ、マウス移動などの高頻度イベントで最新の状態を定期的にサンプリングしたい場合に最適です。throttleTimeやdebounceTimeとの違いを理解して適切に使い分けることが重要です。
+---
 
-> [!WARNING]
-> `auditTime` et `debounceTime` Les deux types d'éléments sont différents en termes de comportement. Une entrée de recherche, par exemple, où l'utilisateur**Attendre que l'utilisateur s'arrête**Dans certains cas, tels que la saisie d'une recherche, vous devez utiliser `debounceTime` pour attendre que l'utilisateur arrête de taper, par exemple pour la saisie d'une recherche.`auditTime` émet des valeurs à intervalles réguliers au cours de la saisie.
-
-### S'il y a une erreur: auditTime et debounceTime confondre les
-
-```
 
 ts.
 import { fromEvent } from 'rxjs' ;
@@ -361,17 +382,27 @@ input.type = 'text' ;
 input.placeholder = 'Rechercher...' ;
 document.body.appendChild(input) ;
 
-// ❌ Mauvais exemple : utiliser auditTime pour l'entrée de recherche
+// ❌ Mauvais exemple : utilisation de l'auditTime pour l'entrée de recherche
 fromEvent(input, 'input').pipe(
   auditTime(300) // la recherche est effectuée toutes les 300ms pendant la saisie
 ).subscribe(() => {
   console.log('Search executed') ;
 }) ;
 
-```
+```ts
+import { fromEvent } from 'rxjs';
+import { auditTime } from 'rxjs';
 
-### correct: debounceTime utiliser la
+fromEvent(document, 'click').pipe(
+  auditTime(1000)
+).subscribe(() => console.log('Cliquez.！'));
+```ts
+import { fromEvent } from 'rxjs';
+import { auditTime } from 'rxjs';
 
+fromEvent(document, 'click').pipe(
+  auditTime(1000)
+).subscribe(() => console.log('クリック！'));
 ```
 
 ts.
@@ -400,8 +431,8 @@ fromEvent(input, 'input').pipe(
 - ✅ Lorsqu'un échantillonnage périodique est nécessaire
 - lorsque vous souhaitez refléter l'état le plus récent.
 
-### Quand throttleTime doit être utilisé.
-- ✅ Lorsqu'une réponse immédiate est requise
+### Quand throttleTime doit être utilisé .
+- ✅ Lorsqu'une réponse immédiate est nécessaire
 - ✅ Si vous voulez commencer le traitement avec la première valeur
 - ✅ Prévention de l'enfoncement des boutons
 
@@ -419,5 +450,5 @@ fromEvent(input, 'input').pipe(
 
 - **[throttleTime](. /throttleTime)** - apprendre à passer la première valeur.
 - **[debounceTime](. /debounceTime)** - apprenez à émettre des valeurs après l'arrêt de la saisie.
-- **[filter](. /filter)** - Apprenez à filtrer en fonction de conditions.
+- **[filter](. /filter)** - apprendre à filtrer en fonction de conditions.
 - **[filtering-operator-practical-use-cases](. /practical-use-cases)** - Apprenez à utiliser des cas d'utilisation réels.

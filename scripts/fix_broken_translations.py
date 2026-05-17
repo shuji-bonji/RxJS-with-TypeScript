@@ -106,7 +106,80 @@ def fix_leading_whitespace(text: str) -> tuple[str, int]:
     return text, (1 if text != original else 0)
 
 
-def process_file(lang: str, rel_path: str) -> tuple[bool, list[str]]:
+def fix_orphaned_code_fences(text: str, rel_path: str, lang: str,
+                              glossary: dict) -> tuple[str, int]:
+    """壊れたコードフェンス ```0___ などを JA の対応ブロックで復元
+
+    DeepL が ___CODE_N___ の _CODE_ 部分を消去して、コードブロックフェンスの
+    言語指定が ```0___ になってしまうケースに対応。
+
+    Args:
+        text: 現在の翻訳ファイル内容
+        rel_path: ファイルの相対パス
+        lang: 言語コード (fr, de, ...)
+        glossary: 用語集
+
+    Returns:
+        (修正済みテキスト, 修正箇所数)
+    """
+    ja_file = REPO / 'docs' / 'guide' / rel_path
+    if not ja_file.exists():
+        return text, 0
+    ja_text = ja_file.read_text(encoding='utf-8')
+
+    # JA の保護パッケージを再構築して blocks を取得
+    blocks = []
+
+    def save(content, prefix):
+        blocks.append(content)
+        return f"\n\n___{prefix}_{len(blocks)-1}___\n\n"
+
+    work_text = ja_text
+    # Frontmatter
+    fm_match = re.match(r'^---\n.*?\n---\n', work_text, re.DOTALL)
+    if fm_match:
+        work_text = save(fm_match.group(0), 'FM') + work_text[fm_match.end():]
+    # Code blocks
+    work_text = re.sub(r'```[^\n]*\n.*?\n```',
+                       lambda m: save(m.group(0), 'CODE'),
+                       work_text, flags=re.DOTALL)
+    # Tables
+    work_text = re.sub(r'((?:^\|.*\|\s*$\n?)+)',
+                       lambda m: save(m.group(0), 'TABLE'),
+                       work_text, flags=re.MULTILINE)
+    # Callouts
+    work_text = re.sub(r'^> \[![A-Z]+\][^\n]*\n',
+                       lambda m: save(m.group(0), 'CALLOUT'),
+                       work_text, flags=re.MULTILINE)
+
+    # code_jp マッピングを適用してコードブロックを翻訳
+    code_jp_map = glossary.get(lang, {}).get('code_jp', {})
+    for i in range(len(blocks)):
+        if not blocks[i].startswith('```'):
+            continue
+        code = blocks[i]
+        for jp, tr in sorted(code_jp_map.items(), key=lambda x: -len(x[0])):
+            code = code.replace(jp, tr)
+        blocks[i] = code
+
+    # ```N___ パターンを blocks[N] で置換
+    changes = 0
+
+    def repl(m):
+        nonlocal changes
+        idx = int(m.group(1))
+        if 0 <= idx < len(blocks):
+            changes += 1
+            return blocks[idx]
+        return m.group(0)
+
+    # ```0___ / ```0___. / ```0___\n などすべて捕捉
+    text = re.sub(r'```(\d+)___\.?', repl, text)
+
+    return text, changes
+
+
+def process_file(lang: str, rel_path: str, glossary: dict = None) -> tuple[bool, list[str]]:
     """1 ファイルを修正"""
     file = REPO / 'docs' / lang / 'guide' / rel_path
     if not file.exists():
@@ -135,6 +208,12 @@ def process_file(lang: str, rel_path: str) -> tuple[bool, list[str]]:
     if n3:
         actions.append('先頭空行除去')
 
+    # 4. 壊れたコードフェンス ```0___ などを JA ブロックで復元
+    if glossary is not None:
+        text, n4 = fix_orphaned_code_fences(text, rel_path, lang, glossary)
+        if n4:
+            actions.append(f'コードフェンス復元 ({n4}箇所)')
+
     if text != original:
         file.write_text(text, encoding='utf-8')
         return True, actions
@@ -153,11 +232,21 @@ def main():
         "operators/filtering/takeLast.md",
     ]
 
+    # Glossary 読み込み (壊れたコードフェンス復元時の code_jp 適用に使用)
+    glossary_path = REPO / '.claude' / 'skills' / 'rxjs-glossary' / 'glossary.json'
+    glossary = {}
+    if glossary_path.exists():
+        try:
+            import json
+            glossary = json.loads(glossary_path.read_text(encoding='utf-8'))
+        except Exception as e:
+            print(f"  ⚠️  Glossary 読み込み失敗: {e}")
+
     print("=== 修正開始 ===")
     fixed_count = 0
     for lang in LANGS:
         for rel in TARGET_FILES:
-            fixed, actions = process_file(lang, rel)
+            fixed, actions = process_file(lang, rel, glossary)
             if fixed:
                 print(f"  ✅ {lang}/{rel}: {', '.join(actions)}")
                 fixed_count += 1

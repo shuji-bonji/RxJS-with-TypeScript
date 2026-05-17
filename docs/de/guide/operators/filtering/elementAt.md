@@ -1,10 +1,10 @@
 ---
-description: "Der Operator elementAt ist ein RxJS-Filteroperator, der nur Werte an einer bestimmten Indexposition abruft. Er funktioniert ähnlich wie der Array-Index-Zugriff."
+description: "Der elementAt-Operator ist ein RxJS-Filterungsoperator, der nur Werte an einer bestimmten Indexposition abruft. Er funktioniert ähnlich wie der Array-Index-Zugriff."
 ---
 
 # elementAt - Abruf durch Indexangabe
 
-Der Operator "elementAt" holt **nur den Wert an der angegebenen Indexposition** aus dem Observable und schließt den Stream sofort ab. Er funktioniert ähnlich wie `array[index]` eines Arrays.
+Der Operator "elementAt" ruft **nur den Wert an der angegebenen Indexposition** aus dem Observable ab und schließt den Stream sofort ab. Er funktioniert ähnlich wie `array[index]` eines Arrays.
 
 ## 🔰 Grundlegende Syntax und Verwendung
 
@@ -26,7 +26,7 @@ numbers$.pipe(
 3. 30 (Index 2) → Ausgabe und Abschluss
 4. 40, 50 nicht ausgewertet
 
-[🌐 Offizielle RxJS-Dokumentation - `ElementAt`](https://rxjs.dev/api/operators/elementAt)
+[🌐 Offizielle RxJS-Dokumentation - `elementAt`](https://rxjs.dev/api/operators/elementAt)
 
 ## 💡 Typisches Nutzungsmuster.
 
@@ -200,7 +200,7 @@ numbers$.pipe(
 ).subscribe(console.log);
 // Ausgabe.: 30
 
-// take: Vom Anfang anNAbrufen eines Wertes vom Anfang an
+// take: Von Anfang anNEinen Wert abrufen
 numbers$.pipe(
   take(3)
 ).subscribe(console.log);
@@ -214,12 +214,20 @@ numbers$.pipe(
 // Ausgabe.: 30
 ```
 
-| Operator. | Zu erhaltender Wert | Anzahl der Ausgänge | Anwendungsfall. |
-|---|---|---|---|
-| `ElementAt(n)` | Nur Werte bei Index n | 1 | Nimm den n-ten Wert |
-| `Take(n)` | n Werte von Anfang an | n Werte | Ermitteln der ersten n Werte |
-| `erste()` | Erster Wert | 1 | Ermittelt den ersten Wert. |
-| `Überspringen(n) + erster()` | Erster nach n Überspringungen | 1 | Äquivalent zu elementAt (veraltet) |
+```ts
+import { from } from 'rxjs';
+import { elementAt } from 'rxjs';
+
+const numbers$ = from([10, 20, 30, 40, 50]);
+
+numbers$.pipe(
+  elementAt(2)
+).subscribe(console.log);
+// Ausgabe.: 30(Index2Wert)
+---
+description: elementAtオペレーターは、指定されたインデックス位置の値のみを取得するRxJSフィルタリングオペレーターです。配列のインデックスアクセスに似た動作をします。
+---
+
 
 ## ⚠️ Anmerkungen.
 
@@ -234,7 +242,7 @@ import { elementAt } from 'rxjs';
 const numbers$ = from([10, 20, 30]); // 3Nur einen
 
 numbers$.pipe(
-  elementAt(5) // Index5anfordern
+  elementAt(5) // Index5Anfrage
 ).subscribe({
   next: console.log,
   error: err => console.error('Fehler:', err.message)
@@ -328,11 +336,11 @@ numbers$.pipe(
 
 ## Zusammenfassung.
 
-Der Operator "ElementAt" ruft nur den Wert an der angegebenen Indexposition ab.
+Der Operator "elementAt" ruft nur den Wert an der angegebenen Indexposition ab.
 
 - ✅ Gleiches Verhalten wie beim Array-Index-Zugriff.
 - ✅ Ideal zum Abrufen des N-ten Wertes.
 - ✅ Es können Standardwerte angegeben werden, um Fehler zu vermeiden
 - ⚠️ Fehler, wenn der Index außerhalb des Bereichs liegt (kein Standardwert)
 - ⚠️ Negative Indizes sind nicht erlaubt
-- ⚠️ Asynchrone Ströme warten, bis der Wert erreicht ist
+- ⚠️ Asynchrone Streams warten, bis der Wert erreicht ist

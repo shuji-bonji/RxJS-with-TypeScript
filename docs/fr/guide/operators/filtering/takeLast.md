@@ -12,7 +12,7 @@ L'opérateur `takeLast` ne sort que les N dernières valeurs au moment où le fl
 import { range } from 'rxjs';
 import { takeLast } from 'rxjs';
 
-const numbers$ = range(0, 10); // 0de (à)9vers
+const numbers$ = range(0, 10); // 0de (à)9à
 
 numbers$.pipe(
   takeLast(3)
@@ -36,7 +36,7 @@ numbers$.pipe(
 import { range } from 'rxjs';
 import { take, takeLast } from 'rxjs';
 
-const numbers$ = range(0, 10); // 0de (à)9vers
+const numbers$ = range(0, 10); // 0de (à)9à
 
 // take: Le premierNObtenir le premier
 numbers$.pipe(
@@ -51,10 +51,20 @@ numbers$.pipe(
 // Sortie: 7, 8, 9(attendre l'achèvement avant d'éditer)
 ```
 
-| Opérateur | Position d'acquisition | Moment de la sortie | Action avant l'achèvement. |
-|---|---|---|---|
-| `prendre(n)` | Premier n | Sortie immédiate | Fin automatique après la prise de n pièces. |
-| `takeLast(n)` | Derniers n morceaux | Sortie collective après achèvement | Maintien en mémoire tampon |
+```ts
+import { range } from 'rxjs';
+import { takeLast } from 'rxjs';
+
+const numbers$ = range(0, 10); // 0de (à)9à
+
+numbers$.pipe(
+  takeLast(3)
+).subscribe(console.log);
+// Sortie: 7, 8, 9
+---
+description: takeLastはObservableストリームが完了した時点で、最後のN個の値のみを出力するRxJSフィルタリングオペレーターです。ログの最新件数取得、リーダーボードの上位N件表示、完了時の最終データサマリーなど、ストリーム全体から最後の値だけが必要な場面に最適です。完了するまでバッファに保持するため無限ストリームでは使用できません。
+---
+
 
 ## 💡 Modèle d'utilisation typique
 
@@ -172,10 +182,10 @@ const historyDisplay = document.createElement('div') ;
 historyDisplay.style.marginTop = '10px' ;
 container.appendChild(historyDisplay) ;
 
-// Sujet pour contenir les valeurs d'entrée
-const inputs$ = new Subject<string>() ;.
+// Subject pour contenir les valeurs d'entrée
+const inputs$ = new Subject() ;.
 
-// **IMPORTANT** : définir l'abonnement takeLast first
+// **IMPORTANT** : définir l'abonnement takeLast en premier
 inputs$.pipe(
   takeLast(3)
 ).subscribe({
@@ -209,7 +219,7 @@ fromEvent<KeyboardEvent>(input, 'keydown').subscribe(event => {
 // Compléter avec l'historique des clics et de l'affichage
 fromEvent(submitButton, 'click').subscribe(() => {
   historyDisplay.innerHTML = '<strong>History (latest 3):</strong><br>' ;
-  inputs$.complete() ; // flux complet → takeLast fires
+  inputs$.complete() ; // complete stream → takeLast fires
 }) ;
 
 ```
@@ -289,7 +299,7 @@ const numbers$ = range(0, 10) ;
 
 // last : seulement le dernier
 numbers$.pipe(
-  dernier()
+  last()
 ).subscribe(console.log) ;
 // sortie : 9
 
@@ -326,13 +336,13 @@ interface Transaction {
   id : string ;
   amount : nombre ;
   timestamp : Date ;
-  status : 'pending' | 'completed' | 'failed' ; }
+  status : 'pending' | 'complete' | 'failed' ; }
 }
 
 function getRecentTransactions(
-  transactions$ : Observable<Transaction>,.
+  transactions$ : Observable,.
   count : nombre
-) : Observable<Transaction> {
+) : Observable {
   return transactions$.pipe(
     takeLast(count)
   ) ;
@@ -340,10 +350,10 @@ function getRecentTransactions(
 
 // Exemple d'utilisation
 const transactions$ = from([.
-  { id : '1', amount : 100, timestamp : new Date('2025-01-01'), status : 'completed' as const }
-  { id : '2', amount : 200, timestamp : new Date('2025-01-02'), status : 'completed' as const }
+  { id : '1', amount : 100, timestamp : new Date('2025-01-01'), status : 'complete' as const }
+  { id : '2', amount : 200, timestamp : new Date('2025-01-02'), status : 'complete' as const }
   { id : '3', amount : 150, timestamp : new Date('2025-01-03'), status : 'pending' as const }
-  { id : '4', amount : 300, timestamp : new Date('2025-01-04'), status : 'completed' as const }
+  { id : '4', amount : 300, timestamp : new Date('2025-01-04'), status : 'complete' as const }
   { id : '5', amount : 250, timestamp : new Date('2025-01-05'), status : 'failed' as const }
 ] en tant que Transaction[]) ;.
 
@@ -353,7 +363,7 @@ getRecentTransactions(transactions$, 3).subscribe(tx => {
 }) ;
 // Sortie :.
 // 3 : 150 yen (en attente)
-// 4 : 300 yen (terminé)
+// 4 : 300 yen (complete)
 // 5 : 250 yens (échec)
 
 ```
@@ -372,8 +382,8 @@ const numbers$ = range(0, 10) ; // 0 à 9
 
 // sauter les 5 premiers et prendre les 3 derniers restants
 numbers$.pipe(
-  skip(5), // saute 0, 1, 2, 3, 4
-  takeLast(3) // prend les 3 derniers des 5, 6, 7, 8, 9 restants
+  skip(5), // skip 0, 1, 2, 3, 4
+  takeLast(3) // prend les 3 derniers parmi les 5, 6, 7, 8, 9 restants
 ).subscribe(console.log) ;.
 // Sortie : 7, 8, 9
 ```
@@ -386,7 +396,7 @@ numbers$.pipe(
 - ✅ Si la fin du flux est garantie
 - Si vous souhaitez afficher un résumé ou les N premiers enregistrements de données
 
-### Quand utiliser take.
+### Quand vous devez utiliser take.
 - ✅ Si vous avez besoin des N premières données du flux
 - ✅ Si vous voulez obtenir les résultats immédiatement
 - ✅ Si vous voulez obtenir une partie d'un flux infini
@@ -402,5 +412,5 @@ numbers$.pipe(
 - **[take](. /take)** - apprendre à obtenir les n premières valeurs.
 - **[last](. /last)** - apprendre à obtenir les 1 dernières valeurs.
 - **[skip](. /skip)** - apprendre à sauter les N premières valeurs.
-- **[filter](. /filter)** - Apprenez à filtrer en fonction de conditions.
+- **[filter](. /filter)** - apprendre à filtrer en fonction de conditions
 - **[filtering-operator-practical-use-cases](. /practical-use-cases)** - apprendre à utiliser des cas d'utilisation réels

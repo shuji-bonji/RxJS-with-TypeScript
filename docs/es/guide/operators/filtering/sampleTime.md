@@ -4,7 +4,7 @@ description: "El operador sampleTime es un operador de filtrado RxJS que muestre
 
 # sampleTime - obtener periódicamente el último valor
 
-El operador `sampleTime` periódicamente **muestrea** el último valor del Observable fuente en **intervalos de tiempo especificados** y lo emite.
+El operador `sampleTime` **muestrea periódicamente** el último valor del Observable fuente en **intervalos de tiempo especificados** y lo muestra.
 Al igual que una instantánea periódica, recupera el valor más reciente en ese momento.
 
 ## 🔰 Sintaxis básica y uso
@@ -29,7 +29,7 @@ clicks$.pipe(
 
 > [!WARNING] Atención en código de producción
 
-> El ejemplo anterior omite la desuscripción `fromEvent` para simplificar la explicación. En código real, utilice `takeUntil(destroy$)`, `take(N)` o `Subscription.unsubscribe()` para gestionar explícitamente el ciclo de vida. Más información: [Superando dificultades: gestión del ciclo de vida](/es/guide/overcoming-difficulties/lifecycle-management.md)
+> El ejemplo anterior omite la desuscripción de `fromEvent` para simplificar la explicación. En código real, utilice `takeUntil(destroy$)`, `take(N)` o `Subscription.unsubscribe()` para gestionar explícitamente el ciclo de vida. Más información: [Superando dificultades: gestión del ciclo de vida](/es/guide/overcoming-difficulties/lifecycle-management.md)
 
 [Documentación oficial de RxJS - `sampleTime`](https://rxjs.dev/api/operators/sampleTime)
 
@@ -228,11 +228,29 @@ source$.pipe(
 // Ejemplos de salida: 2, 5, 8(último valor de cada periodo)
 ```
 
-| Operador | Momento del encendido | Valor a emitir | Caso de uso. |
-|---|---|---|---|
-| `sampleTime(1000)` | **Cronometraje recurrente cada segundo**. | Valor más reciente en ese momento | Instantánea periódica |
-| `tiempoMuestra(1000)` | Se ignora durante 1 segundo después de recibir el valor | Primer valor al inicio del periodo | Aceleración de eventos |
-| `auditTime(1000)` | 1 segundo después de recibir el valor | Último valor en el periodo | Último estado en el periodo |
+```ts
+import { fromEvent } from 'rxjs';
+import { sampleTime } from 'rxjs';
+
+const clicks$ = fromEvent(document, 'click');
+
+clicks$.pipe(
+  sampleTime(2000)
+).subscribe(() => {
+  console.log('2Muestras segundo a segundo');
+});
+```ts
+import { fromEvent } from 'rxjs';
+import { sampleTime } from 'rxjs';
+
+const clicks$ = fromEvent(document, 'click');
+
+clicks$.pipe(
+  sampleTime(2000)
+).subscribe(() => {
+  console.log('2秒ごとのサンプル');
+});
+```
 
 **diferencias visuales**:.
 
@@ -318,40 +336,104 @@ interval(10).pipe(
 // La memoria sólo retiene los últimos1Sólo se retienen en memoria los dos valores más recientes
 ```
 
-## 💡 Diferencias con la muestra
+## 💡 Diferencias con sample
 
 `sample` utiliza otro Observable como disparador, mientras que `sampleTime` utiliza un intervalo de tiempo fijo.
 
 ```ts
-import { interval, fromEvent } from 'rxjs';
-import { sample, sampleTime } from 'rxjs';
+import { fromEvent } from 'rxjs';
+import { sampleTime } from 'rxjs';
 
-const source$ = interval(100);
-
-// sampleTime: Intervalo de tiempo fijo (1(cada segundo)
-source$.pipe(
-  sampleTime(1000)
-).subscribe(val => console.log('sampleTime:', val));
-
-// sample: mediante unObservableActivado por un
 const clicks$ = fromEvent(document, 'click');
-source$.pipe(
-  sample(clicks$)
-).subscribe(val => console.log('sample:', val));
-// Cada clic da salida al valor más reciente en ese momento
-```
 
-| Operador | Disparadores | Caso de uso. |
-|---|---|---|
-| `sampleTime(ms)` | Intervalo de tiempo fijo | Muestreo periódico |
-| `muestra(notificador$)` | Otro observable | Muestreo temporal dinámico |
+clicks$.pipe(
+  sampleTime(2000)
+).subscribe(() => {
+  console.log('2Muestras segundo a segundo');
+});
+---
+description: sampleTimeオペレーターは、指定した時間間隔で定期的にストリームの最新値をサンプリングするRxJSフィルタリングオペレーターです。定期的なスナップショット取得に最適です。
+---
+
+
+```ts
+import { fromEvent } from 'rxjs';
+import { sampleTime } from 'rxjs';
+
+const clicks$ = fromEvent(document, 'click');
+
+clicks$.pipe(
+  sampleTime(2000)
+).subscribe(() => {
+  console.log('2Muestras segundo a segundo');
+});
+```ts
+import { fromEvent } from 'rxjs';
+import { sampleTime, map } from 'rxjs';
+
+// UICrear
+const container = document.createElement('div');
+document.body.appendChild(container);
+
+const title = document.createElement('h3');
+title.textContent = 'マウス位置サンプリング（1秒ごと）';
+container.appendChild(title);
+
+const area = document.createElement('div');
+area.style.width = '100%';
+area.style.height = '300px';
+area.style.border = '2px solid #4CAF50';
+area.style.backgroundColor = '#f5f5f5';
+area.style.display = 'flex';
+area.style.alignItems = 'center';
+area.style.justifyContent = 'center';
+area.style.fontSize = '18px';
+area.textContent = 'この領域内でマウスを動かしてください';
+container.appendChild(area);
+
+const output = document.createElement('div');
+output.style.marginTop = '10px';
+output.style.maxHeight = '150px';
+output.style.overflow = 'auto';
+output.style.border = '1px solid #ccc';
+output.style.padding = '10px';
+container.appendChild(output);
+
+let sampleCount = 0;
+
+// マウス移動イベント
+fromEvent<MouseEvent>(area, 'mousemove').pipe(
+  map(event => ({
+    x: event.offsetX,
+    y: event.offsetY,
+    timestamp: Date.now()
+  })),
+  sampleTime(1000) // 1秒ごとにサンプリング
+).subscribe(pos => {
+  sampleCount++;
+  const log = document.createElement('div');
+  log.style.padding = '5px';
+  log.style.borderBottom = '1px solid #eee';
+  log.innerHTML = `
+    <strong>サンプル #${sampleCount}</strong>
+    [${new Date(pos.timestamp).toLocaleTimeString()}]
+    位置: (${pos.x}, ${pos.y})
+  `;
+  output.insertBefore(log, output.firstChild);
+
+  // Máx.10件まで表示
+  while (output.children.length > 10) {
+    output.removeChild(output.lastChild!);
+  }
+});
+```
 
 ## 📚 Operadores relacionados.
 
 - **[sample](https://rxjs.dev/api/operators/sample)** - Muestreo de otro Observable como disparador (documentación oficial).
 - **[throttleTime](. /throttleTime)** - Obtener el primer valor al inicio del periodo.
 - **[auditTime](. /auditTime)** - Obtener el último valor al final del periodo.
-- **[debounceTime](. /debounceTime)** - emitir valor después de la inactividad
+- **[debounceTime](. /debounceTime)** - obtener el valor después de la inactividad
 
 ## Resumen.
 
@@ -359,7 +441,7 @@ El operador `sampleTime` muestrea periódicamente el último valor en el interva
 
 - ✅ Ideal para tomar instantáneas periódicas.
 - ✅ Útil para adelgazar flujos de alta frecuencia.
-- ✅ Uso eficiente de la memoria (sólo se conserva un último valor)
+- ✅ Memoria eficiente (sólo se conserva un último valor)
 - ✅ Ideal para cuadros de mando y supervisión
 - ⚠️ Si no hay valores disponibles durante el periodo de muestreo, no se emite nada
 - ⚠️ Hay un periodo de espera hasta la primera muestra
