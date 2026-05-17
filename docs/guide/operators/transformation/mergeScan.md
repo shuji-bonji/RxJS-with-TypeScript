@@ -148,8 +148,9 @@ source$.pipe(
   mergeScan((acc, curr) => {
     return apiCall(curr).pipe(
       map(result => acc + result),
-      catchError(err => {
-        console.error('エラー発生:', err);
+      catchError((err: unknown) => {
+        const message = err instanceof Error ? err.message : String(err);
+        console.error('エラー発生:', message);
         // 累積値を維持して続行
         return of(acc);
       })

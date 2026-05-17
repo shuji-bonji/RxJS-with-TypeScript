@@ -53,8 +53,9 @@ let isLoading = true;
 
 throwError(() => new Error('データ取得エラー'))
   .pipe(
-    catchError((err) => {
-      console.error('エラー処理:', err.message);
+    catchError((err: unknown) => {
+      const message = err instanceof Error ? err.message : String(err);
+      console.error('エラー処理:', message);
       throw err; // エラーを再スロー
     }),
     finalize(() => {
@@ -207,7 +208,7 @@ function fetchData(id: string) {
 
   // APIリクエスト
   return ajax.getJSON(`https://jsonplaceholder.typicode.com/posts/${id}`).pipe(
-    catchError((error) => {
+    catchError((error: unknown) => {
       console.error('APIエラー:', error);
       return of({ error: true, message: 'データの取得に失敗しました' });
     }),

@@ -283,10 +283,11 @@ import { catchError } from 'rxjs';
 function errorBoundary<T>(label: string) {
   return (source: Observable<T>) =>
     source.pipe(
-      catchError(error => {
+      catchError((error: unknown) => {
+        const err = error instanceof Error ? error : new Error(String(error));
         console.error(`🔴 [${label}] エラーをキャッチ:`, {
-          message: error.message,
-          stack: error.stack,
+          message: err.message,
+          stack: err.stack,
           timestamp: new Date().toISOString()
         });
 

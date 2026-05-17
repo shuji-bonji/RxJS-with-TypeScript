@@ -74,8 +74,9 @@ of(1, 2, 3).pipe(
     if (x === 2) throw new Error('map内のエラー');  // ①
     return x * 10;
   }),
-  catchError(err => {
-    console.log('catchErrorで捕捉:', err.message);  // ②
+  catchError((err: unknown) => {
+    const message = err instanceof Error ? err.message : String(err);
+    console.log('catchErrorで捕捉:', message);  // ②
     return of(999); // リカバリー
   })
 ).subscribe({
@@ -155,8 +156,8 @@ import { ajax } from 'rxjs/ajax';
 
 // APIエラーをcatchErrorで処理
 ajax.get('/api/user/123').pipe(
-  catchError(err => {
-    if (err.status === 404) {
+  catchError((err: unknown) => {
+    if ((err as { status?: number }).status === 404) {
       // 404エラー → デフォルトユーザーを返す
       return of({ id: 123, name: 'デフォルトユーザー' });
     }
@@ -167,7 +168,7 @@ ajax.get('/api/user/123').pipe(
     // ユーザー取得後、プロフィールを取得
     return ajax.get(`/api/profile/${user.id}`);
   }),
-  catchError(err => {
+  catchError((err: unknown) => {
     console.log('プロフィール取得エラー:', err);
     // プロフィールなしで継続
     return of(null);
@@ -204,8 +205,9 @@ throwError(() => new Error('未処理エラー')).subscribe({
 // パターン2: catchErrorで再スロー
 of(1).pipe(
   map(() => { throw new Error('map内エラー'); }),
-  catchError(err => {
-    console.log('catchErrorで捕捉:', err.message);
+  catchError((err: unknown) => {
+    const message = err instanceof Error ? err.message : String(err);
+    console.log('catchErrorで捕捉:', message);
     // ログを記録後、エラーを再スロー
     return throwError(() => new Error('再スローしたエラー'));
   })
@@ -265,7 +267,7 @@ fetchUsers(true).pipe(
   // 成功時: { success: true, data: [...] } に変換
   map(users => ({ success: true, data: users } as ApiResult)),
   // エラー時: { success: false, error: '...' } に変換
-  catchError(err => {
+  catchError((err: unknown) => {
     return of<ApiResult>({
       success: false,
       error: 'ユーザー取得に失敗しました'
@@ -304,8 +306,9 @@ function fetchUsers(shouldFail: boolean) {
 }
 
 fetchUsers(true).pipe(
-  catchError(err => {
-    console.error('エラーが発生しました:', err.message);
+  catchError((err: unknown) => {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error('エラーが発生しました:', message);
     // 空配列をデフォルト値として返す
     return of<User[]>([]);
   })
@@ -338,8 +341,8 @@ import { ajax } from 'rxjs/ajax';
 
 ajax.getJSON('/api/critical-data').pipe(
   retry(2),
-  catchError(err => {
-    if (err.status === 401) {
+  catchError((err: unknown) => {
+    if ((err as { status?: number }).status === 401) {
       // 認証エラーは再スロー（グローバルで処理）
       return throwError(() => err);
     }
@@ -373,15 +376,16 @@ function fetchUserData(userId: string) {
     retry({ count: 2, delay: 1000 }),
 
     // レベル2: リカバリー可能なエラー
-    catchError((error) => {
-      if (error.status === 404) {
+    catchError((error: unknown) => {
+      const status = (error as { status?: number }).status;
+      if (status === 404) {
         // 404 → デフォルトデータで継続
         return of({
           error: true,
           message: 'ユーザーが見つかりません',
           data: null
         });
-      } else if (error.status >= 500) {
+      } else if (status !== undefined && status >= 500) {
         // 500系 → エラーメッセージで継続
         return of({
           error: true,
@@ -520,8 +524,8 @@ import { ajax } from 'rxjs/ajax';
 
 // アプローチ1: catchErrorでリダイレクト（ストリーム内で完結）
 ajax.getJSON('/api/protected-data').pipe(
-  catchError(err => {
-    if (err.status === 401) {
+  catchError((err: unknown) => {
+    if ((err as { status?: number }).status === 401) {
       // catchErrorで認証エラーを処理
       router.navigate(['/login']);
       return EMPTY; // ストリームを空にして終了
@@ -534,9 +538,9 @@ ajax.getJSON('/api/protected-data').pipe(
 
 // アプローチ2: subscribe.errorで集中管理
 ajax.getJSON('/api/protected-data').pipe(
-  catchError(err => {
+  catchError((err: unknown) => {
     // 認証エラーは再スロー（グローバルで処理）
-    if (err.status === 401) {
+    if ((err as { status?: number }).status === 401) {
       return throwError(() => err);
     }
     // その他は処理
@@ -585,14 +589,14 @@ import { ajax } from 'rxjs/ajax';
 
 ajax.getJSON('/api/data').pipe(
   // 早めにキャッチ
-  catchError(err => {
+  catchError((err: unknown) => {
     console.log('エラーをログ:', err);
     // 処理できないなら再スロー
     return throwError(() => err);
   }),
   map(data => transformData(data)),
   // 変換エラーもキャッチ
-  catchError(err => {
+  catchError((err: unknown) => {
     console.log('変換エラー:', err);
     return throwError(() => err);
   })
@@ -631,13 +635,15 @@ class FatalError extends Error {
 }
 
 ajax.getJSON('/api/data').pipe(
-  catchError(err => {
-    if (err.status === 404 || err.status === 500) {
+  catchError((err: unknown) => {
+    const status = (err as { status?: number }).status;
+    const errMessage = err instanceof Error ? err.message : String(err);
+    if (status === 404 || status === 500) {
       // リカバリー可能
-      return throwError(() => new RecoverableError(err.message));
+      return throwError(() => new RecoverableError(errMessage));
     }
     // 致命的エラー
-    return throwError(() => new FatalError(err.message));
+    return throwError(() => new FatalError(errMessage));
   })
 ).subscribe({
   next: data => console.log('データ:', data),
@@ -663,7 +669,7 @@ let isLoading = true;
 let resourceHandle: any = null;
 
 ajax.getJSON('/api/data').pipe(
-  catchError(err => {
+  catchError((err: unknown) => {
     console.log('エラー処理:', err);
     return of(null);
   }),
@@ -724,7 +730,7 @@ A: 通常は**catchErrorの後**に配置します。これにより、エラー
 ```typescript
 source$.pipe(
   retry(2),
-  catchError(err => of(defaultValue)),
+  catchError((err: unknown) => of(defaultValue)),
   finalize(() => cleanup()) // catchErrorの後
 )
 ```

@@ -20,7 +20,7 @@ of('response')
   .pipe(
     delay(500), // 👈 1500に指定すると、`タイムアウトエラー: fallback`と出力される
     timeout(1000),
-    catchError((err) => of('タイムアウトエラー: fallback', err))
+    catchError((err: unknown) => of('タイムアウトエラー: fallback', err))
   )
   .subscribe(console.log);
 // 出力:
@@ -51,14 +51,14 @@ const fast$ = interval(500).pipe(take(3));
 fast$
   .pipe(
     timeout(1000),
-    catchError((err) => of('fallback: timeout occurred'))
+    catchError((err: unknown) => of('fallback: timeout occurred'))
   )
   .subscribe(console.log);
 
 slow$
   .pipe(
     timeout(1000),
-    catchError((err) => of('fallback: timeout triggered'))
+    catchError((err: unknown) => of('fallback: timeout triggered'))
   )
   .subscribe(console.log);
 // 出力:
@@ -90,9 +90,10 @@ timeoutOutput.appendChild(timeoutSuccess);
 normalStream$
   .pipe(
     timeout(1000),
-    catchError((err) => {
+    catchError((err: unknown) => {
+      const message = err instanceof Error ? err.message : String(err);
       const errorMsg = document.createElement('div');
-      errorMsg.textContent = `エラー: ${err.message}`;
+      errorMsg.textContent = `エラー: ${message}`;
       errorMsg.style.color = 'red';
       timeoutSuccess.appendChild(errorMsg);
       return of('エラー後のフォールバック値');
@@ -114,9 +115,10 @@ timeoutOutput.appendChild(timeoutError);
 slowStream$
   .pipe(
     timeout(1000),
-    catchError((err) => {
+    catchError((err: unknown) => {
+      const message = err instanceof Error ? err.message : String(err);
       const errorMsg = document.createElement('div');
-      errorMsg.textContent = `エラー: ${err.message}`;
+      errorMsg.textContent = `エラー: ${message}`;
       errorMsg.style.color = 'red';
       timeoutError.appendChild(errorMsg);
       return of('タイムアウト後のフォールバック値');

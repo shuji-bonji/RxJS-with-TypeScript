@@ -387,11 +387,12 @@ class RefactoredComponent {
     });
 
     this.apiService.save().pipe(
-      catchError(error => {
+      catchError((error: unknown) => {
+        const message = error instanceof Error ? error.message : String(error);
         this.apiState$.next({
           ...this.apiState$.value,
           saving: false,
-          error: error.message
+          error: message
         });
         return EMPTY;
       })

@@ -400,7 +400,7 @@ class UserService {
     // 新しいリクエストを作成しキャッシュ
     console.log('新規リクエスト実行');
     this.cache$ = this.fetchUsersFromAPI().pipe(
-      catchError(err => {
+      catchError((err: unknown) => {
         this.cache$ = null;  // エラー時はキャッシュをクリア
         return throwError(() => err);
       }),

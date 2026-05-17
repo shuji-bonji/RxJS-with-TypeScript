@@ -51,7 +51,7 @@ class UserService {
     this.users$ = this.fetchUsersFromAPI().pipe(
       tap(() => console.log('API呼び出し完了')),
       shareReplay({ bufferSize: 1, refCount: true }), // 最後の1つの値をキャッシュ（refCountで全購読解除時に解放）
-      catchError(err => {
+      catchError((err: unknown) => {
         // エラー時はキャッシュをクリア
         this.users$ = null;
         throw err;
@@ -467,7 +467,7 @@ class LocalStorageCacheService {
         tap(data => {
           this.saveToStorage(options.key, data);
         }),
-        catchError(err => {
+        catchError((err: unknown) => {
           console.error('取得エラー:', err);
           throw err;
         })
@@ -658,7 +658,7 @@ class OfflineFirstCacheService {
             tap(data => {
               this.saveToCache(cacheKey, data);
             }),
-            catchError(err => {
+            catchError((err: unknown) => {
               console.error('API取得エラー - キャッシュにフォールバック');
               return this.getFromCache<T>(cacheKey);
             })

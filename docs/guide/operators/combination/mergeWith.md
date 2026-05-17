@@ -256,7 +256,7 @@ interval(1000).pipe(
   take(2),
   mergeWith(
     throwError(() => new Error('エラー発生')).pipe(
-      catchError(err => of('エラーを回復'))
+      catchError((err: unknown) => of('エラーを回復'))
     )
   )
 ).subscribe({

@@ -325,7 +325,7 @@ class ApiService {
         }
       }),
       retry(3),
-      catchError(err => this.handleError<T>(err))
+      catchError((err: unknown) => this.handleError<T>(err instanceof Error ? err : new Error(String(err))))
     );
   }
   

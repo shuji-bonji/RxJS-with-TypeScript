@@ -48,7 +48,7 @@ import { of } from 'rxjs';
 // Observableは購読するまで実行されない（Lazy）
 const observable$ = from(fetch('https://jsonplaceholder.typicode.com/posts/1')).pipe(
   switchMap(response => response.json()), // response.json()はPromiseを返すのでswitchMapを使用
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error(error);
     return of(null);
   })
@@ -432,7 +432,7 @@ fromEvent(submitButton, 'click').pipe(
     // Promise関数をObservableに変換
     return from(submitForm(formData));
   }),
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('送信エラー:', error);
     return of({ success: false });
   })
@@ -492,7 +492,7 @@ fromEvent(searchInput, 'input').pipe(
     // Promise関数をObservableに変換
     return from(searchAPI(query));
   }),
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error(error);
     return of({ items: [], total_count: 0 }); // エラー時は空の結果を返す
   })

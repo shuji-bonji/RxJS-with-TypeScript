@@ -391,8 +391,9 @@ of(1, 2, 3)
       }
       return of(value);
     }),
-    catchError(error => {
-      console.error('🔴 エラーをキャッチ:', error.message);
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('🔴 エラーをキャッチ:', message);
       return of(-1); // フォールバック値
     })
   )

@@ -212,7 +212,7 @@ const loadItems = () =>
     throttleTime(500),
     switchMap(() => ajax.getJSON<ApiRes>('/api/items')),
     map((res: ApiRes) => ({ items: res.items, error: null as string | null })),
-    catchError(err => of({ items: [] as string[], error: String(err?.message ?? err) }))
+    catchError((err: unknown) => of({ items: [] as string[], error: err instanceof Error ? err.message : String(err) }))
   );
 
 const result$ = clicks$.pipe(loadItems());

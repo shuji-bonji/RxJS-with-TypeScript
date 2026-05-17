@@ -267,10 +267,11 @@ formData$.pipe(
     return allPatches;
   }),
   concatMap(patches => saveToServer(patches)), // 順序を保証して送信
-  catchError(error => {
+  catchError((error: unknown) => {
+    const message = error instanceof Error ? error.message : String(error);
     console.error('自動保存エラー:', error);
-    updateStatus(`❌ 保存失敗: ${error.message}`, '#f44336');
-    return of({ success: false, message: error.message });
+    updateStatus(`❌ 保存失敗: ${message}`, '#f44336');
+    return of({ success: false, message });
   })
 ).subscribe(result => {
   if (result.success) {

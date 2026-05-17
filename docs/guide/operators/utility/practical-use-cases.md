@@ -80,9 +80,10 @@ function simulateFailRequest() {
     // APIレイテンシをシミュレート
     delay(1500),
     // エラーハンドリング
-    catchError(error => {
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
       const errorElement = document.createElement('div');
-      errorElement.textContent = `エラー: ${error.message}`;
+      errorElement.textContent = `エラー: ${message}`;
       errorElement.style.color = 'red';
       dataContainer.appendChild(errorElement);
       
@@ -301,8 +302,9 @@ fromEvent(form, 'submit').pipe(
     submitButton.disabled = false;
   }),
   // エラーハンドリング
-  catchError(error => {
-    formResult.textContent = `エラー: ${error.message}`;
+  catchError((error: unknown) => {
+    const message = error instanceof Error ? error.message : String(error);
+    formResult.textContent = `エラー: ${message}`;
     formResult.style.display = 'block';
     formResult.style.backgroundColor = '#ffebee';
     formResult.style.borderColor = '#f44336';

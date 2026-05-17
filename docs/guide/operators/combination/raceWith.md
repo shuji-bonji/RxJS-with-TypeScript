@@ -146,7 +146,7 @@ const userSearch$ = fromEvent(searchButton, 'click').pipe(
     // API呼び出しをシミュレート（3秒かかる）
     return timer(3000).pipe(
       map(() => '🔍 検索結果: 100件ヒット'),
-      catchError(err => of('❌ エラーが発生しました'))
+      catchError((err: unknown) => of('❌ エラーが発生しました'))
     );
   })
 );
@@ -210,7 +210,7 @@ button.addEventListener('click', () => {
         return throwError(() => new Error('メインAPI失敗'));
       }
     }),
-    catchError(err => {
+    catchError((err: unknown) => {
       console.log('メインAPI失敗、フォールバックへ...');
       // エラー時は遅延してフォールバックに譲る
       return of('').pipe(delay(10000));

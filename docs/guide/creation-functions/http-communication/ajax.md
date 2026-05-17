@@ -216,7 +216,7 @@ interface User {
 const fetchUser$ = ajax.getJSON<User>('https://api.example.com/users/1').pipe(
   timeout(5000), // 5秒でタイムアウト
   retry(2), // 失敗時に2回リトライ
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('ユーザー取得エラー:', error);
     // デフォルト値を返す
     return of({
@@ -531,7 +531,7 @@ const api$ = ajax.getJSON('https://api.example.com/slow-endpoint').pipe(
 **対処法:**
 ```typescript
 import { throwError, catchError } from 'rxjs';
-import { ajax } from 'rxjs/ajax';
+import { ajax, AjaxError } from 'rxjs/ajax';
 
 const api$ = ajax({
   url: 'https://api.example.com/protected',
@@ -539,8 +539,8 @@ const api$ = ajax({
     'Authorization': `Bearer ${getAccessToken()}`
   }
 }).pipe(
-  catchError(error => {
-    if (error.status === 401) {
+  catchError((error: unknown) => {
+    if (error instanceof AjaxError && error.status === 401) {
       // トークンをリフレッシュして再試行
       return refreshToken().pipe(
         switchMap(newToken =>
@@ -598,7 +598,7 @@ const todos$ = ajax.getJSON('https://jsonplaceholder.typicode.com/todos/1');
 ```typescript
 // ✅ 良い例: catchError でエラー処理
 const api$ = ajax.getJSON('/api/data').pipe(
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('エラー:', error);
     return of(defaultValue);
   })

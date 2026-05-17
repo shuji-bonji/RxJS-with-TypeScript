@@ -194,8 +194,9 @@ failingObservable$.pipe(
   // エラー発生時、3回リトライ
   retry(3),
   // それでもエラーになったら、代替Observableに切り替え
-  catchError(error => {
-    console.error('エラーをキャッチ:', error.message);
+  catchError((error: unknown) => {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error('エラーをキャッチ:', message);
     return of('エラー後の代替値');
   })
 ).subscribe({

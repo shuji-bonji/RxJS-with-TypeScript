@@ -68,8 +68,9 @@ function simulateFlakyRequest(): Observable<string> {
 simulateFlakyRequest()
   .pipe(
     retry(3),
-    catchError((error) => {
-      console.log('すべての再試行が失敗:', error.message);
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
+      console.log('すべての再試行が失敗:', message);
       return of('フォールバック値');
     })
   )
@@ -105,8 +106,9 @@ import { catchError } from 'rxjs';
 
 throwError(() => new Error('API呼び出しエラー')) // RxJS 7以降、関数形式推奨
   .pipe(
-    catchError((error) => {
-      console.error('エラー発生:', error.message);
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('エラー発生:', message);
       return of('エラー発生時のデフォルト値');
     })
   )
@@ -131,8 +133,9 @@ import { catchError } from 'rxjs';
 
 throwError(() => new Error('元のエラー')) // RxJS 7以降、関数形式推奨
   .pipe(
-    catchError((error) => {
-      console.error('エラーをログ記録:', error.message);
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('エラーをログ記録:', message);
       // エラーを再スロー
       return throwError(() => new Error('変換されたエラー'));
     })
@@ -165,8 +168,9 @@ function fetchData() {
     // 最大3回再試行
     retry(3),
     // すべての再試行が失敗した場合
-    catchError((error) => {
-      console.error('すべての再試行が失敗:', error.message);
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('すべての再試行が失敗:', message);
       // デフォルト値を返す
       return of({
         error: true,
@@ -220,8 +224,9 @@ function fetchWithRetry() {
       }
     }),
     // 最終的なフォールバック
-    catchError((error) => {
-      console.error('すべての再試行が失敗:', error.message);
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('すべての再試行が失敗:', message);
       return of({
         error: true,
         message: '接続に失敗しました。後ほど再試行してください。',
@@ -270,9 +275,10 @@ throwError(() => new Error('一時的なエラー'))
       }
     }),
     retry(2),
-    catchError((error) => {
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
       console.log(`最終試行回数: ${attemptCount}`);
-      return of(`最終エラー: ${error.message}`);
+      return of(`最終エラー: ${message}`);
     })
   )
   .subscribe({
@@ -314,9 +320,10 @@ throwError(() => new Error('一時的なエラー'))
         return timer(delayMs);
       }
     }),
-    catchError((error) => {
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
       console.log(`\n最終結果: すべてのリトライが失敗`);
-      return of(`最終エラー: ${error.message}`);
+      return of(`最終エラー: ${message}`);
     })
   )
   .subscribe(result => console.log('結果:', result));
@@ -369,9 +376,10 @@ const retryableStream$ = new Observable(subscriber => {
 retryableStream$
   .pipe(
     retry(2),
-    catchError((error) => {
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
       console.log(`[完了] 合計${attemptCount}回試行して失敗`);
-      return of(`最終エラー: ${error.message}`);
+      return of(`最終エラー: ${message}`);
     })
   )
   .subscribe({
@@ -418,7 +426,7 @@ function fetchWithRetryLogging(url: string, maxRetries = 3) {
         return timer(delayMs);
       }
     }),
-    catchError((error) => {
+    catchError((error: unknown) => {
       const totalTime = Date.now() - startTime;
       console.log(`\n❌ 最終的に失敗 (合計時間: ${totalTime}ms)`);
       return of({ error: true, message: 'データ取得失敗' });
@@ -459,9 +467,10 @@ throwError(() => new Error('一時的なエラー'))
       delay: 1000, // 1秒待ってリトライ（内部で asyncScheduler を使用）
       resetOnSuccess: true
     }),
-    catchError((error) => {
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
       console.log(`最終的に失敗（合計${attemptCount}回試行）`);
-      return of(`最終エラー: ${error.message}`);
+      return of(`最終エラー: ${message}`);
     })
   )
   .subscribe(result => console.log('結果:', result));
@@ -507,10 +516,11 @@ function fetchUserData(userId: string): Observable<any> {
     // ネットワークエラーは最大2回再試行
     retry(2),
     // エラーハンドリング
-    catchError((error) => {
-      if (error.status === 404) {
+    catchError((error: unknown) => {
+      const status = (error as { status?: number })?.status;
+      if (status === 404) {
         return of({ error: true, message: 'ユーザーが見つかりません' });
-      } else if (error.status >= 500) {
+      } else if (status !== undefined && status >= 500) {
         return of({ error: true, message: 'サーバーエラーが発生しました' });
       }
       return of({ error: true, message: '不明なエラーが発生しました' });

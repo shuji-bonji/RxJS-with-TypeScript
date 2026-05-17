@@ -174,7 +174,7 @@ function fetchStatus(): Promise<Status> {
 // 5秒ごとにAPIをポーリング
 const polling$ = interval(5000).pipe(
   switchMap(() => from(fetchStatus())),
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('API Error:', error);
     return of({ status: 'error', timestamp: Date.now() });
   })

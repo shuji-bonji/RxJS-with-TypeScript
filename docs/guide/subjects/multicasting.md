@@ -323,7 +323,7 @@ class UserService {
     console.log(`APIからユーザーID ${id} を取得`);
     const request$ = ajax.getJSON(`https://jsonplaceholder.typicode.com/users/${id}`).pipe(
       tap(response => console.log('APIレスポンス:', response)),
-      catchError(error => {
+      catchError((error: unknown) => {
         console.error('APIエラー:', error);
         // キャッシュから削除
         this.cache.delete(id);

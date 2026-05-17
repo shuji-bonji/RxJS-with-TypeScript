@@ -193,8 +193,9 @@ function fetchData(id: number) {
 }
 
 fetchData(-1).pipe(
-  catchError(err => {
-    console.error('エラー:', err.message);
+  catchError((err: unknown) => {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error('エラー:', message);
     return of({ id: 0, data: 'default data' }); // デフォルト値
   })
 ).subscribe(result => console.log(result));

@@ -217,7 +217,7 @@ import { concatWith, catchError } from 'rxjs';
 
 throwError(() => new Error('エラー発生'))
   .pipe(
-    catchError(err => of('エラーを回復')),
+    catchError((err: unknown) => of('エラーを回復')),
     concatWith(of('次の処理'))
   )
   .subscribe(console.log);

@@ -186,11 +186,11 @@ const subscription = interval(1000).subscribe(observer);
 
 ```typescript
 // これも内部で Subscriber が作成される
-const subscription = interval(1000).subscribe(
-  value => console.log(value),  // next
-  err => console.error(err),    // error
-  () => console.log('完了')     // complete
-);
+const subscription = interval(1000).subscribe({
+  next: value => console.log(value),
+  error: err => console.error(err),
+  complete: () => console.log('完了')
+});
 ```
 
 ## 実際の動作フロー

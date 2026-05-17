@@ -491,7 +491,7 @@ searchInput$.pipe(
   switchMap(query =>
     searchAPI(query).pipe(
       retry(2),                          // 2回までリトライ
-      catchError(err => {
+      catchError((err: unknown) => {
         console.error('検索エラー:', err);
         return of([]);                   // 空配列を返す
       })

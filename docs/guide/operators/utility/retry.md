@@ -18,7 +18,10 @@ import { retry, catchError } from 'rxjs';
 throwError(() => new Error('一時的なエラー'))
   .pipe(
     retry(2), // 最大2回まで再試行
-    catchError((error) => of(`最終エラー: ${error.message}`))
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
+      return of(`最終エラー: ${message}`);
+    })
   )
   .subscribe(console.log);
 // 出力:
@@ -50,7 +53,10 @@ throwError(() => new Error('一時的なエラー'))
       delay: 1000,        // 1秒待ってから再試行（内部で asyncScheduler を使用）
       resetOnSuccess: true // 成功したらカウントをリセット
     }),
-    catchError((error) => of(`最終エラー: ${error.message}`))
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
+      return of(`最終エラー: ${message}`);
+    })
   )
   .subscribe(console.log);
 
@@ -89,7 +95,10 @@ interval(1000)
       }
     }),
     retry(3),
-    catchError((err) => of(`最終失敗: ${err.message}`))
+    catchError((err: unknown) => {
+      const message = err instanceof Error ? err.message : String(err);
+      return of(`最終失敗: ${message}`);
+    })
   )
   .subscribe(console.log);
 // 出力:
@@ -150,9 +159,10 @@ function simulateRequest() {
       }
     }),
     retry(3),
-    catchError((err) => {
+    catchError((err: unknown) => {
+      const message = err instanceof Error ? err.message : String(err);
       const finalError = document.createElement('div');
-      finalError.textContent = `すべての再試行に失敗しました: ${err.message}`;
+      finalError.textContent = `すべての再試行に失敗しました: ${message}`;
       finalError.style.color = 'red';
       finalError.style.fontWeight = 'bold';
       requestStatus.appendChild(finalError);

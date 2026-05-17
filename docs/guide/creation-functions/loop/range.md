@@ -269,7 +269,7 @@ function fetchWithRetry(maxRetries: number = 3) {
       map(attempt => {
         console.log(`試行 ${attempt + 1}/${maxRetries}`);
         return fetchData().pipe(
-          catchError(error => {
+          catchError((error: unknown) => {
             if (attempt === maxRetries - 1) {
               return throwError(() => new Error('最大リトライ回数に到達'));
             }
@@ -455,8 +455,9 @@ range(1, 10).pipe(
     }
     return n * 2;
   }),
-  catchError(error => {
-    console.error('エラー発生:', error.message);
+  catchError((error: unknown) => {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error('エラー発生:', message);
     return of(-1); // デフォルト値を返す
   })
 ).subscribe(console.log);

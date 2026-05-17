@@ -183,10 +183,10 @@ range(1, 10).pipe(
   concatMap(page =>
     fetchPage(page).pipe(delay(1000))
   )
-).subscribe(
-  data => console.log(`ページ ${data.page} 取得:`, data.items),
-  err => console.error('エラー:', err)
-);
+).subscribe({
+  next: data => console.log(`ページ ${data.page} 取得:`, data.items),
+  error: err => console.error('エラー:', err)
+});
 ```
 
 ### リトライ処理での活用

@@ -518,7 +518,7 @@ import { of } from 'rxjs';
 sensorStream$
   .pipe(
     retry({ count: 3, delay: 1000 }),
-    catchError(error => {
+    catchError((error: unknown) => {
       console.error('センサーエラー:', error);
       // デフォルト値を返すか、フォールバック処理
       return of({ value: 0, error: true });

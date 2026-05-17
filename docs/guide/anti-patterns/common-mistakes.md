@@ -488,12 +488,13 @@ interface ApiResponse {
 }
 
 ajax.getJSON<ApiResponse>('https://api.example.com/data').pipe(
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('API Error:', error);
     // ユーザーに通知
     showErrorToast('データの取得に失敗しました');
     // エラー情報を含む代替値を返す
-    return of({ data: null, error: error.message } as ApiResponse);
+    const message = error instanceof Error ? error.message : String(error);
+    return of({ data: null, error: message } as ApiResponse);
   })
 ).subscribe((response) => {
   if (response.error) {

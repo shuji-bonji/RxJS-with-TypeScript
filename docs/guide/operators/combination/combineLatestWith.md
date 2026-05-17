@@ -340,7 +340,7 @@ interval(1000).pipe(
   take(2),
   combineLatestWith(
     throwError(() => new Error('エラー発生')).pipe(
-      catchError(err => of('回復'))
+      catchError((err: unknown) => of('回復'))
     )
   )
 ).subscribe({

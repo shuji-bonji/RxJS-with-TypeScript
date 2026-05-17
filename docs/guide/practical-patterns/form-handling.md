@@ -317,7 +317,7 @@ combineLatest([title$, content$]).pipe(
   switchMap(draft =>
     saveDraft(draft).pipe(
       map(savedDraft => ({ ...savedDraft, success: true })),
-      catchError(err => {
+      catchError((err: unknown) => {
         console.error('保存エラー:', err);
         return of({ ...draft, success: false });
       })
@@ -801,9 +801,10 @@ fromEvent(form, 'submit').pipe(
     };
 
     return submitForm(data).pipe(
-      catchError(err => {
+      catchError((err: unknown) => {
         console.error('送信エラー:', err);
-        return of({ success: false, error: err.message });
+        const message = err instanceof Error ? err.message : String(err);
+        return of({ success: false, error: message });
       })
     );
   }),

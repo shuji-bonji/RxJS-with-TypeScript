@@ -35,9 +35,10 @@ const data$ = fromFetch('https://jsonplaceholder.typicode.com/todos/1').pipe(
       return throwError(() => new Error(`HTTP Error: ${response.status}`));
     }
   }),
-  catchError(error => {
+  catchError((error: unknown) => {
+    const message = error instanceof Error ? error.message : String(error);
     console.error('エラー:', error);
-    return of({ error: true, message: error.message });
+    return of({ error: true, message });
   })
 );
 
@@ -729,7 +730,7 @@ const api$ = fromFetch('/api/data').pipe(
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     return response.json();
   }),
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('エラー:', error);
     return of(defaultValue);
   })

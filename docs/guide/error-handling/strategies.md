@@ -19,8 +19,9 @@ const error$ = throwError(() => new Error('エラーが発生しました')); //
 // 基本的なエラーハンドリング
 error$
   .pipe(
-    catchError((error) => {
-      console.error('エラーをキャッチ:', error.message);
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('エラーをキャッチ:', message);
       return of('エラー後のフォールバック値');
     })
   )
@@ -49,8 +50,9 @@ import { catchError } from 'rxjs';
 const source$ = throwError(() => new Error('データ取得エラー'));
 
 source$.pipe(
-  catchError(error => {
-    console.error('エラー発生:', error.message);
+  catchError((error: unknown) => {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error('エラー発生:', message);
     // 代替データを返す
     return of({ isError: true, data: [], message: 'デフォルトデータを表示します' });
   })
@@ -107,8 +109,9 @@ function fetchWithRetry() {
     // RxJS 7.3+ 推奨: retry({ count, delay }) 形式
     retry({
       count: 5, // 最大5回まで再試行
-      delay: (error, retryCount) => {
-        console.log('エラー発生:', error.message);
+      delay: (error: unknown, retryCount) => {
+        const message = error instanceof Error ? error.message : String(error);
+        console.log('エラー発生:', message);
         // 指数バックオフ（最大10秒で頭打ち）
         const delayMs = Math.min(1000 * Math.pow(2, retryCount), 10000);
         console.log(`${retryCount}回目の再試行を${delayMs}ms後に実行`);
@@ -116,8 +119,9 @@ function fetchWithRetry() {
       }
     }),
     // 最終的なフォールバック
-    catchError((error) => {
-      console.error('すべての再試行が失敗:', error.message);
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('すべての再試行が失敗:', message);
       return of({
         error: true,
         message: '接続に失敗しました。後ほど再試行してください。',
@@ -159,8 +163,9 @@ let isLoading = true;
 
 throwError(() => new Error('処理エラー'))
   .pipe(
-    catchError((error) => {
-      console.error('エラー処理:', error.message);
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('エラー処理:', message);
       return throwError(() => error); // エラーを再スロー
     }),
     finalize(() => {
@@ -202,9 +207,10 @@ function fetchData(shouldFail = false) {
       // 成功時の処理
       updateUI(data);
     }),
-    catchError((error) => {
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
       // エラー時のUI更新
-      showErrorMessage(error.message);
+      showErrorMessage(message);
       // 空のデータまたはデフォルト値を返す
       return of({ name: 'デフォルト', value: 0 });
     }),
@@ -260,20 +266,23 @@ function getComments() {
 // すべてのデータを取得し、部分的なエラーを許容
 forkJoin({
   user: getUser().pipe(
-    catchError((error) => {
-      console.error('ユーザー取得エラー:', error.message);
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('ユーザー取得エラー:', message);
       return of(null); // エラー時はnullを返す
     })
   ),
   posts: getPosts().pipe(
-    catchError((error) => {
-      console.error('投稿取得エラー:', error.message);
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('投稿取得エラー:', message);
       return of([]); // エラー時は空配列を返す
     })
   ),
   comments: getComments().pipe(
-    catchError((error) => {
-      console.error('コメント取得エラー:', error.message);
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('コメント取得エラー:', message);
       return of([]); // エラー時は空配列を返す
     })
   ),

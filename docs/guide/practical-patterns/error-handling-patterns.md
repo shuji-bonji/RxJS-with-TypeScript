@@ -215,7 +215,7 @@ class HttpClientService {
   get<T>(url: string): Observable<T> {
     return ajax.get<T>(url).pipe(
       tap(() => console.log(`GET ${url} - Success`)),
-      catchError(error => this.handleError(error, url))
+      catchError((error: unknown) => this.handleError(error, url))
     );
   }
 
@@ -225,14 +225,14 @@ class HttpClientService {
   post<T>(url: string, body: any): Observable<T> {
     return ajax.post<T>(url, body).pipe(
       tap(() => console.log(`POST ${url} - Success`)),
-      catchError(error => this.handleError(error, url))
+      catchError((error: unknown) => this.handleError(error, url))
     );
   }
 
   /**
    * 統一エラーハンドラー
    */
-  private handleError(error: any, url: string): Observable<never> {
+  private handleError(error: unknown, url: string): Observable<never> {
     console.error(`HTTP Error at ${url}:`, error);
 
     if (error instanceof AjaxError) {
@@ -246,9 +246,10 @@ class HttpClientService {
     }
 
     // AjaxError以外のエラー（プログラミングエラーなど）
+    const message = error instanceof Error ? error.message : 'Unknown error';
     return throwError(() => ({
       status: -1,
-      message: error.message || 'Unknown error',
+      message,
       retryable: false,
       userMessage: '予期しないエラーが発生しました。'
     }));
@@ -391,7 +392,7 @@ function retryWithBackoff(config: NetworkRetryConfig) {
   return <T>(source: Observable<T>) => source.pipe(
     retry({
       count: maxRetries,
-      delay: (error, retryCount) => {
+      delay: (error: unknown, retryCount) => {
         // 指数バックオフで遅延時間を計算
         const delay = Math.min(
           initialDelay * Math.pow(backoffMultiplier, retryCount - 1),
@@ -409,8 +410,8 @@ function retryWithBackoff(config: NetworkRetryConfig) {
       }
     }),
     // 最大リトライ回数を超えてエラーになった場合のメッセージ変換
-    catchError(error => throwError(() => ({
-      ...error,
+    catchError((error: unknown) => throwError(() => ({
+      ...(typeof error === 'object' && error !== null ? error : {}),
       message: `ネットワークエラー: ${maxRetries}回の再試行に失敗しました`,
       userMessage: 'ネットワークに接続できません。しばらく待ってから再試行してください。'
     })))
@@ -438,9 +439,10 @@ class NetworkAwareHttpClient {
     const config = { ...defaultConfig, ...retryConfig };
 
     return this.httpClient.get<T>(url).pipe(
-      catchError(error => {
+      catchError((error: unknown) => {
         // ネットワークエラー（status = 0）の場合のみリトライ
-        if (error.status === 0) {
+        const status = (error as { status?: number })?.status;
+        if (status === 0) {
           return throwError(() => error);
         }
         // それ以外のエラーはリトライせず即座に失敗
@@ -597,8 +599,9 @@ class TimeoutAwareHttpClient {
           userMessage: timeoutConfig.message
         }))
       }),
-      catchError(error => {
-        if (error.status === -2) {
+      catchError((error: unknown) => {
+        const status = (error as { status?: number })?.status;
+        if (status === -2) {
           console.error(`タイムアウト: ${url} (${timeoutConfig.duration}ms)`);
         }
         return throwError(() => error);
@@ -962,7 +965,7 @@ class UserService {
 
   loadUser(userId: number): Observable<User> {
     return this.httpClient.get<User>(`/api/users/${userId}`).pipe(
-      catchError(error => {
+      catchError((error: unknown) => {
         // グローバルエラーハンドラーに記録
         this.globalErrorHandler.handleError(
           error,
@@ -1016,7 +1019,7 @@ interface RetryConfig {
   maxRetries: number;
   initialDelay?: number;
   maxDelay?: number;
-  shouldRetry?: (error: any) => boolean;
+  shouldRetry?: (error: unknown) => boolean;
 }
 
 /**
@@ -1034,10 +1037,11 @@ function advancedRetry(config: RetryConfig) {
   return <T>(source: Observable<T>) => source.pipe(
     retry({
       count: maxRetries,
-      delay: (error, retryCount) => {
+      delay: (error: unknown, retryCount) => {
         // リトライ可能かチェック（不可能なら throw して retry を中断）
         if (!shouldRetry(error)) {
-          console.log('リトライ不可能なエラー:', error.message);
+          const message = error instanceof Error ? error.message : String(error);
+          console.log('リトライ不可能なエラー:', message);
           throw error;
         }
 
@@ -1054,11 +1058,12 @@ function advancedRetry(config: RetryConfig) {
       }
     }),
     // 最大リトライ回数を使い切ったエラーを変換
-    catchError(error => {
+    catchError((error: unknown) => {
       console.error(`リトライ失敗: ${maxRetries}回の試行後も失敗`);
+      const message = error instanceof Error ? error.message : String(error);
       return throwError(() => ({
-        ...error,
-        message: `${error.message} (${maxRetries}回のリトライに失敗)`,
+        ...(typeof error === 'object' && error !== null ? error : {}),
+        message: `${message} (${maxRetries}回のリトライに失敗)`,
         retriesExhausted: true
       }));
     })
@@ -1114,20 +1119,21 @@ class SmartRetryHttpClient {
         maxRetries: 3,
         initialDelay: 1000,
         maxDelay: 16000,
-        shouldRetry: (error) => {
+        shouldRetry: (error: unknown) => {
           // リトライすべきエラーかどうかを判定
+          const status = (error as { status?: number })?.status ?? 0;
 
           // ネットワークエラー -> リトライ
-          if (error.status === 0) return true;
+          if (status === 0) return true;
 
           // 5xx サーバーエラー -> リトライ
-          if (error.status >= 500) return true;
+          if (status >= 500) return true;
 
           // 429 Too Many Requests -> リトライ
-          if (error.status === 429) return true;
+          if (status === 429) return true;
 
           // 4xx クライアントエラー -> リトライしない
-          if (error.status >= 400 && error.status < 500) return false;
+          if (status >= 400 && status < 500) return false;
 
           // その他 -> リトライしない
           return false;
