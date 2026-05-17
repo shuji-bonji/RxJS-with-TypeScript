@@ -247,11 +247,11 @@ Similaire à `share()`, mais mémorise un nombre spécifié de valeurs passées 
 import { interval } from 'rxjs';
 import { take, shareReplay, tap } from 'rxjs';
 
-// Utilisation de shareReplay (taille de buffer 2)
+// Utilisation de shareReplay (taille de buffer 2, libéré avec refCount à l'annulation totale des souscriptions)
 const source$ = interval(1000).pipe(
   take(5),
   tap(value => console.log(`Source : ${value}`)),
-  shareReplay(2) // Bufferiser les 2 dernières valeurs
+  shareReplay({ bufferSize: 2, refCount: true }) // Bufferiser les 2 dernières valeurs
 );
 
 // Premier souscripteur
@@ -323,14 +323,14 @@ class UserService {
     console.log(`Récupération de l'utilisateur ID ${id} depuis l'API`);
     const request$ = ajax.getJSON(`https://jsonplaceholder.typicode.com/users/${id}`).pipe(
       tap(response => console.log('Réponse API:', response)),
-      catchError(error => {
+      catchError((error: unknown) => {
         console.error('Erreur API:', error);
         // Supprimer du cache
         this.cache.delete(id);
         return throwError(() => new Error('Échec de la récupération de l\'utilisateur'));
       }),
-      // Partager avec shareReplay (mettre en cache la valeur même après complétion)
-      shareReplay(1)
+      // Partager avec shareReplay (libéré avec refCount: true à l'annulation totale des souscriptions)
+      shareReplay({ bufferSize: 1, refCount: true })
     );
 
     // Enregistrer dans le cache

@@ -67,6 +67,8 @@ source$.pipe(
   window(trigger$)
 ).subscribe(window$ => {
   console.log('Fenêtre (Observable) :', window$);
+  // Subscription imbriquée : pattern requis par la spécification des opérateurs window
+  // (nécessaire pour consommer l'Observable interne émis par window)
   window$.subscribe(value => {
     console.log('  Valeur dans la fenêtre :', value);
   });
@@ -126,6 +128,7 @@ Chaque fenêtre est un Observable indépendant et doit être explicitement sousc
 source$.pipe(
   window(trigger$)
 ).subscribe(window$ => {
+  // Subscription imbriquée : pattern requis par la spécification des opérateurs window
   // Sans souscrire à la fenêtre elle-même, les valeurs ne circulent pas
   window$.subscribe(value => {
     console.log('Valeur :', value);

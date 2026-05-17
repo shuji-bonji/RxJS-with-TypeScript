@@ -170,6 +170,9 @@ fromEvent(submitButton, 'click').subscribe(() => {
 
 ```
 
+> [!WARNING] Hinweis für Produktionscode
+> Das obige Beispiel lässt die Abmeldung von `fromEvent` zur Vereinfachung der Erklärung weg. Verwenden Sie in echtem Code `takeUntil(destroy$)`, `take(N)` oder `Subscription.unsubscribe()`, um den Lebenszyklus explizit zu verwalten. Details: [Schwierigkeiten überwinden: Lebenszyklus-Verwaltung](/de/guide/overcoming-difficulties/lifecycle-management.md)
+
 ## Gleichzeitige Anfragen und Ladezustandsverwaltung
 
 Ein Beispiel zur parallelen Verarbeitung mehrerer API-Anfragen mit `forkJoin` und Zusammenfassung der Ergebnisse.

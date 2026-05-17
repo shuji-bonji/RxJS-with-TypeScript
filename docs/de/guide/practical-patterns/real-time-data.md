@@ -100,7 +100,7 @@ class CryptoPriceService {
           count: 5,
           delay: 1000
         }),
-        catchError(err => {
+        catchError((err: unknown) => {
           console.error('WebSocket-Fehler:', err);
           return EMPTY;
         })
@@ -237,7 +237,7 @@ WebSocket-Verbindungen können durch Netzwerkausfälle oder Server-Neustarts get
 Das Folgende ist ein Implementierungsbeispiel für automatische Wiederverbindung mit exponentieller Backoff-Strategie.
 
 ```typescript
-import { retryWhen, delay, tap, take } from 'rxjs';
+import { timer, retry } from 'rxjs';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 
 class ReconnectingWebSocketService {
@@ -263,18 +263,16 @@ class ReconnectingWebSocketService {
         }
       });
 
-      // Automatische Wiederverbindung
+      // Automatische Wiederverbindung (RxJS 7.3+ empfohlen: retry({ count, delay })-Form)
       this.socket$.pipe(
-        retryWhen(errors =>
-          errors.pipe(
-            tap(() => {
-              this.reconnectAttempts++;
-              console.log(`Wiederverbindungsversuch ${this.reconnectAttempts}/${this.maxReconnectAttempts}`);
-            }),
-            delay(this.getReconnectDelay()),
-            take(this.maxReconnectAttempts)
-          )
-        )
+        retry({
+          count: this.maxReconnectAttempts,
+          delay: (error, retryCount) => {
+            this.reconnectAttempts = retryCount;
+            console.log(`Wiederverbindungsversuch ${retryCount}/${this.maxReconnectAttempts}`);
+            return timer(this.getReconnectDelay());
+          }
+        })
       ).subscribe({
         next: message => console.log('Empfangen:', message),
         error: err => console.error('Maximale Anzahl von Wiederverbindungsversuchen erreicht:', err)
@@ -758,7 +756,7 @@ function createPolling<T>(
     switchMap(() =>
       from(fetchFn()).pipe(
         retry(3), // Bei Fehler 3x wiederholen
-        catchError(err => {
+        catchError((err: unknown) => {
           console.error('Polling-Fehler:', err);
           throw err; // Fehler erneut werfen
         })
@@ -1419,7 +1417,7 @@ class HealthCheckWebSocket {
         // Auf Pong-Empfang warten (mit Timeout)
         return this.socket$.pipe(
           timeout(this.timeoutMs),
-          catchError(err => {
+          catchError((err: unknown) => {
             console.error('Pong-Timeout - Verbindungsanomalie', err);
             throw err;
           })

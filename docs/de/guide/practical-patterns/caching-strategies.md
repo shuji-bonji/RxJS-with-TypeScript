@@ -50,8 +50,8 @@ class UserService {
     console.log('Neue Anfrage ausführen');
     this.users$ = this.fetchUsersFromAPI().pipe(
       tap(() => console.log('API-Aufruf abgeschlossen')),
-      shareReplay(1), // Letzten Wert cachen
-      catchError(err => {
+      shareReplay({ bufferSize: 1, refCount: true }), // Letzten Wert cachen (mit refCount bei vollständiger Abmeldung freigegeben)
+      catchError((err: unknown) => {
         // Bei Fehler Cache löschen
         this.users$ = null;
         throw err;
@@ -104,9 +104,9 @@ userService.getUsers().subscribe(users => {
 
 ```typescript
 import { shareReplay } from 'rxjs';
-// Grundlegende Verwendung
+// Grundlegende Verwendung (empfohlene Form: Cache wird bei vollständiger Abmeldung freigegeben)
 source$.pipe(
-  shareReplay(1) // Letzten Wert cachen
+  shareReplay({ bufferSize: 1, refCount: true }) // Letzten Wert cachen
 );
 
 // Detaillierte Konfiguration
@@ -173,7 +173,7 @@ class TTLCacheService<T> {
         data,
         timestamp: Date.now()
       })),
-      shareReplay(1)
+      shareReplay({ bufferSize: 1, refCount: true })
     );
 
     return this.cache$.pipe(map(cached => cached.data));
@@ -286,7 +286,7 @@ class RefreshableCacheService<T> {
     ).pipe(
       switchMap(() => fetchFn()),
       tap(data => console.log('Daten abgerufen:', data)),
-      shareReplay(1)
+      shareReplay({ bufferSize: 1, refCount: true })
     );
   }
 
@@ -381,7 +381,7 @@ class ConditionalCacheService {
       console.log('Daten abrufen:', options);
       return this.fetchData(options.userId);
     }),
-    shareReplay(1)
+    shareReplay({ bufferSize: 1, refCount: true })
   );
 
   getData(userId?: number): Observable<any> {
@@ -467,7 +467,7 @@ class LocalStorageCacheService {
         tap(data => {
           this.saveToStorage(options.key, data);
         }),
-        catchError(err => {
+        catchError((err: unknown) => {
           console.error('Abruffehler:', err);
           throw err;
         })
@@ -658,7 +658,7 @@ class OfflineFirstCacheService {
             tap(data => {
               this.saveToCache(cacheKey, data);
             }),
-            catchError(err => {
+            catchError((err: unknown) => {
               console.error('API-Abruffehler - Fallback auf Cache');
               return this.getFromCache<T>(cacheKey);
             })

@@ -74,8 +74,8 @@ of(1, 2, 3).pipe(
     if (x === 2) throw new Error('Fehler in map');  // ①
     return x * 10;
   }),
-  catchError(err => {
-    console.log('Abgefangen von catchError:', err.message);  // ②
+  catchError((err: unknown) => {
+    console.log('Abgefangen von catchError:', (err instanceof Error ? err.message : String(err)));  // ②
     return of(999); // Wiederherstellung
   })
 ).subscribe({
@@ -155,7 +155,7 @@ import { ajax } from 'rxjs/ajax';
 
 // API-Fehler mit catchError verarbeiten
 ajax.get('/api/user/123').pipe(
-  catchError(err => {
+  catchError((err: unknown) => {
     if (err.status === 404) {
       // 404-Fehler → Standardbenutzer zurückgeben
       return of({ id: 123, name: 'Standardbenutzer' });
@@ -167,7 +167,7 @@ ajax.get('/api/user/123').pipe(
     // Nach Benutzerabruf, Profil abrufen
     return ajax.get(`/api/profile/${user.id}`);
   }),
-  catchError(err => {
+  catchError((err: unknown) => {
     console.log('Profil-Abruffehler:', err);
     // Ohne Profil fortsetzen
     return of(null);
@@ -188,7 +188,7 @@ Der `error`-Callback von `subscribe` fängt folgende Fehler ab:
 | Fehlertyp | Beschreibung | Beispiel |
 |------------|------|-----|
 | **Nicht von catchError verarbeitete Fehler** | Fehler, die nicht in der Pipeline verarbeitet wurden | Fehler werden so wie sie sind propagiert |
-| **Nach catchError erneut geworfene Fehler** | Fehler, die explizit von catchError erneut geworfen wurden | `catchError(e => throwError(() => e))` |
+| **Nach catchError erneut geworfene Fehler** | Fehler, die explizit von catchError erneut geworfen wurden | `catchError((e: unknown) => throwError(() => e))` |
 
 ### Praxisbeispiel: Stufenweise Verarbeitung und erneutes Werfen
 
@@ -204,8 +204,8 @@ throwError(() => new Error('Unverarbeiteter Fehler')).subscribe({
 // Muster 2: Erneutes Werfen mit catchError
 of(1).pipe(
   map(() => { throw new Error('Fehler in map'); }),
-  catchError(err => {
-    console.log('Abgefangen von catchError:', err.message);
+  catchError((err: unknown) => {
+    console.log('Abgefangen von catchError:', (err instanceof Error ? err.message : String(err)));
     // Nach Protokollierung Fehler erneut werfen
     return throwError(() => new Error('Erneut geworfener Fehler'));
   })
@@ -265,7 +265,7 @@ fetchUsers(true).pipe(
   // Bei Erfolg: In { success: true, data: [...] } umwandeln
   map(users => ({ success: true, data: users } as ApiResult)),
   // Bei Fehler: In { success: false, error: '...' } umwandeln
-  catchError(err => {
+  catchError((err: unknown) => {
     return of<ApiResult>({
       success: false,
       error: 'Benutzerabruf fehlgeschlagen'
@@ -304,8 +304,8 @@ function fetchUsers(shouldFail: boolean) {
 }
 
 fetchUsers(true).pipe(
-  catchError(err => {
-    console.error('Fehler aufgetreten:', err.message);
+  catchError((err: unknown) => {
+    console.error('Fehler aufgetreten:', (err instanceof Error ? err.message : String(err)));
     // Leeres Array als Standardwert zurückgeben
     return of<User[]>([]);
   })
@@ -338,7 +338,7 @@ import { ajax } from 'rxjs/ajax';
 
 ajax.getJSON('/api/critical-data').pipe(
   retry(2),
-  catchError(err => {
+  catchError((err: unknown) => {
     if (err.status === 401) {
       // Authentifizierungsfehler erneut werfen (global verarbeiten)
       return throwError(() => err);
@@ -373,7 +373,7 @@ function fetchUserData(userId: string) {
     retry({ count: 2, delay: 1000 }),
 
     // Ebene 2: Wiederherstellbare Fehler
-    catchError((error) => {
+    catchError((error: unknown) => {
       if (error.status === 404) {
         // 404 → Mit Standarddaten fortsetzen
         return of({
@@ -520,7 +520,7 @@ import { ajax } from 'rxjs/ajax';
 
 // Ansatz 1: Redirect mit catchError (innerhalb des Streams abschließen)
 ajax.getJSON('/api/protected-data').pipe(
-  catchError(err => {
+  catchError((err: unknown) => {
     if (err.status === 401) {
       // Authentifizierungsfehler mit catchError verarbeiten
       router.navigate(['/login']);
@@ -534,7 +534,7 @@ ajax.getJSON('/api/protected-data').pipe(
 
 // Ansatz 2: Zentrale Verwaltung mit subscribe.error
 ajax.getJSON('/api/protected-data').pipe(
-  catchError(err => {
+  catchError((err: unknown) => {
     // Authentifizierungsfehler erneut werfen (global verarbeiten)
     if (err.status === 401) {
       return throwError(() => err);
@@ -585,14 +585,14 @@ import { ajax } from 'rxjs/ajax';
 
 ajax.getJSON('/api/data').pipe(
   // Früh abfangen
-  catchError(err => {
+  catchError((err: unknown) => {
     console.log('Fehler protokollieren:', err);
     // Wenn nicht verarbeitbar, erneut werfen
     return throwError(() => err);
   }),
   map(data => transformData(data)),
   // Transformationsfehler auch abfangen
-  catchError(err => {
+  catchError((err: unknown) => {
     console.log('Transformationsfehler:', err);
     return throwError(() => err);
   })
@@ -631,13 +631,13 @@ class FatalError extends Error {
 }
 
 ajax.getJSON('/api/data').pipe(
-  catchError(err => {
+  catchError((err: unknown) => {
     if (err.status === 404 || err.status === 500) {
       // Wiederherstellbar
-      return throwError(() => new RecoverableError(err.message));
+      return throwError(() => new RecoverableError((err instanceof Error ? err.message : String(err))));
     }
     // Kritischer Fehler
-    return throwError(() => new FatalError(err.message));
+    return throwError(() => new FatalError((err instanceof Error ? err.message : String(err))));
   })
 ).subscribe({
   next: data => console.log('Daten:', data),
@@ -663,7 +663,7 @@ let isLoading = true;
 let resourceHandle: any = null;
 
 ajax.getJSON('/api/data').pipe(
-  catchError(err => {
+  catchError((err: unknown) => {
     console.log('Fehlerverarbeitung:', err);
     return of(null);
   }),
@@ -724,7 +724,7 @@ A: Normalerweise **nach catchError**. Dadurch wird sichergestellt, dass das Clea
 ```typescript
 source$.pipe(
   retry(2),
-  catchError(err => of(defaultValue)),
+  catchError((err: unknown) => of(defaultValue)),
   finalize(() => cleanup()) // Nach catchError
 )
 ```

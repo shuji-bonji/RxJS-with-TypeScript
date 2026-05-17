@@ -68,8 +68,8 @@ function simulateFlakyRequest(): Observable<string> {
 simulateFlakyRequest()
   .pipe(
     retry(3),
-    catchError((error) => {
-      console.log('Alle Wiederholungen fehlgeschlagen:', error.message);
+    catchError((error: unknown) => {
+      console.log('Alle Wiederholungen fehlgeschlagen:', (error instanceof Error ? error.message : String(error)));
       return of('Fallback-Wert');
     })
   )
@@ -105,8 +105,8 @@ import { catchError } from 'rxjs';
 
 throwError(() => new Error('API-Aufruffehler')) // Ab RxJS 7, Funktionsform empfohlen
   .pipe(
-    catchError((error) => {
-      console.error('Fehler aufgetreten:', error.message);
+    catchError((error: unknown) => {
+      console.error('Fehler aufgetreten:', (error instanceof Error ? error.message : String(error)));
       return of('Standardwert bei Fehlerauftreten');
     })
   )
@@ -131,8 +131,8 @@ import { catchError } from 'rxjs';
 
 throwError(() => new Error('Ursprünglicher Fehler')) // Ab RxJS 7, Funktionsform empfohlen
   .pipe(
-    catchError((error) => {
-      console.error('Fehler protokollieren:', error.message);
+    catchError((error: unknown) => {
+      console.error('Fehler protokollieren:', (error instanceof Error ? error.message : String(error)));
       // Fehler erneut werfen
       return throwError(() => new Error('Transformierter Fehler'));
     })
@@ -165,8 +165,8 @@ function fetchData() {
     // Bis zu 3 Wiederholungen
     retry(3),
     // Wenn alle Wiederholungen fehlschlagen
-    catchError((error) => {
-      console.error('Alle Wiederholungen fehlgeschlagen:', error.message);
+    catchError((error: unknown) => {
+      console.error('Alle Wiederholungen fehlgeschlagen:', (error instanceof Error ? error.message : String(error)));
       // Standardwert zurückgeben
       return of({
         error: true,
@@ -188,11 +188,14 @@ fetchData().subscribe({
 // Verarbeitung abgeschlossen
 ```
 
-## Erweiterte Wiederholungsstrategie: retryWhen
+## Erweiterte Wiederholungsstrategie: retry({ count, delay })
 
-Wenn eine flexiblere Wiederholungsstrategie erforderlich ist, können Sie den `retryWhen`-Operator verwenden. Dadurch können Sie das Timing und die Logik der Wiederholung anpassen.
+Wenn eine flexiblere Wiederholungsstrategie erforderlich ist, verwenden Sie die **Konfigurationsobjekt-Form** des `retry`-Operators (ab RxJS 7.3). Damit können Sie die Anzahl der Wiederholungen und die Verzögerungslogik deklarativ angeben.
 
-[🌐 RxJS Official Documentation - retryWhen](https://rxjs.dev/api/index/function/retryWhen)
+> [!IMPORTANT] retryWhen ist deprecated
+> Der alte `retryWhen`-Operator (in v7.3 deprecated, in v8 zur Entfernung vorgesehen) sollte durch die in diesem Abschnitt vorgestellte `retry({ count, delay })`-Form ersetzt werden. Der `delay`-Callback erhält `(error, retryCount)` als Argumente und gibt ein `Observable` (z. B. `timer(ms)`) zurück, um die Wartezeit bis zur nächsten Wiederholung zu steuern.
+
+[🌐 RxJS Official Documentation - retry](https://rxjs.dev/api/index/function/retry)
 
 ### Wiederholung mit exponentiellem Backoff
 
@@ -200,35 +203,25 @@ Bei Netzwerkanfragen ist ein exponentielles Backoff-Muster (schrittweise Verlän
 
 ```ts
 import { throwError, timer, of } from 'rxjs';
-import { retryWhen, tap, concatMap, catchError } from 'rxjs';
+import { retry, catchError } from 'rxjs';
 
 function fetchWithRetry() {
-  let retryCount = 0;
-
   return throwError(() => new Error('Netzwerkfehler')).pipe(
-    retryWhen((errors) =>
-      errors.pipe(
-        // Fehlerzählung
-        tap((error) => console.log('Fehler aufgetreten:', error.message)),
-        // Verzögerung mit exponentiellem Backoff
-        concatMap(() => {
-          retryCount++;
-          const delayMs = Math.min(1000 * Math.pow(2, retryCount), 10000);
-          console.log(`${retryCount}. Wiederholung in ${delayMs}ms`);
-          // timer verwendet intern asyncScheduler
-          return timer(delayMs);
-        }),
-        // Bis zu 5 Wiederholungen
-        tap(() => {
-          if (retryCount >= 5) {
-            throw new Error('Maximale Wiederholungsanzahl überschritten');
-          }
-        })
-      )
-    ),
+    // Empfohlen ab RxJS 7.3+: retry({ count, delay })-Form
+    retry({
+      count: 5, // Bis zu 5 Wiederholungen
+      delay: (error, retryCount) => {
+        console.log('Fehler aufgetreten:', error.message);
+        // Exponentielles Backoff (auf 10 Sekunden begrenzt)
+        const delayMs = Math.min(1000 * Math.pow(2, retryCount), 10000);
+        console.log(`${retryCount}. Wiederholung in ${delayMs}ms`);
+        // timer verwendet intern asyncScheduler
+        return timer(delayMs);
+      }
+    }),
     // Finaler Fallback
-    catchError((error) => {
-      console.error('Alle Wiederholungen fehlgeschlagen:', error.message);
+    catchError((error: unknown) => {
+      console.error('Alle Wiederholungen fehlgeschlagen:', (error instanceof Error ? error.message : String(error)));
       return of({
         error: true,
         message: 'Verbindung fehlgeschlagen. Bitte später erneut versuchen.',
@@ -277,9 +270,9 @@ throwError(() => new Error('Vorübergehender Fehler'))
       }
     }),
     retry(2),
-    catchError((error) => {
+    catchError((error: unknown) => {
       console.log(`Finale Versuchsanzahl: ${attemptCount}`);
-      return of(`Finaler Fehler: ${error.message}`);
+      return of(`Finaler Fehler: ${(error instanceof Error ? error.message : String(error))}`);
     })
   )
   .subscribe({
@@ -298,39 +291,32 @@ throwError(() => new Error('Vorübergehender Fehler'))
 > [!NOTE] Einschränkung bei throwError
 > `throwError` gibt keinen Wert aus und gibt sofort einen Fehler aus, daher wird der `next`-Callback von `tap` nicht ausgeführt. Sie müssen den `error`-Callback verwenden.
 
-### Methode 2: Detaillierte Verfolgung mit retryWhen (Empfohlen)
+### Methode 2: Detaillierte Verfolgung mit retry({ count, delay }) (Empfohlen)
 
-Für detailliertere Informationen (Versuchsanzahl, Verzögerungszeit, Fehlerinhalt) verwenden Sie `retryWhen`.
+Für detailliertere Informationen (Versuchsanzahl, Verzögerungszeit, Fehlerinhalt) verwenden Sie die Konfigurationsobjekt-Form von `retry` (ab v7.3, Ersatz für `retryWhen`).
 
 ```typescript
-import { throwError, of, timer, retryWhen, mergeMap, catchError } from 'rxjs';
+import { throwError, of, timer, retry, catchError } from 'rxjs';
+
 throwError(() => new Error('Vorübergehender Fehler'))
   .pipe(
-    retryWhen((errors) =>
-      errors.pipe(
-        mergeMap((error, index) => {
-          const retryCount = index + 1;
-          console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
-          console.log(`🔄 Retry ${retryCount}. Versuch`);
-          console.log(`   Fehler: ${error.message}`);
+    retry({
+      count: 2, // Bis zu 2 Wiederholungen
+      delay: (error, retryCount) => {
+        console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+        console.log(`🔄 Retry ${retryCount}. Versuch`);
+        console.log(`   Fehler: ${error.message}`);
 
-          if (retryCount > 2) {
-            console.log(`❌ Maximale Retry-Anzahl erreicht`);
-            console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
-            throw error;
-          }
+        const delayMs = 1000;
+        console.log(`⏳ Wiederholung in ${delayMs}ms...`);
+        console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
 
-          const delayMs = 1000;
-          console.log(`⏳ Wiederholung in ${delayMs}ms...`);
-          console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
-
-          return timer(delayMs);
-        })
-      )
-    ),
-    catchError((error) => {
+        return timer(delayMs);
+      }
+    }),
+    catchError((error: unknown) => {
       console.log(`\nEndergebnis: Alle Retries fehlgeschlagen`);
-      return of(`Finaler Fehler: ${error.message}`);
+      return of(`Finaler Fehler: ${(error instanceof Error ? error.message : String(error))}`);
     })
   )
   .subscribe(result => console.log('Ergebnis:', result));
@@ -383,9 +369,9 @@ const retryableStream$ = new Observable(subscriber => {
 retryableStream$
   .pipe(
     retry(2),
-    catchError((error) => {
+    catchError((error: unknown) => {
       console.log(`[Abgeschlossen] Insgesamt ${attemptCount} Versuche fehlgeschlagen`);
-      return of(`Finaler Fehler: ${error.message}`);
+      return of(`Finaler Fehler: ${(error instanceof Error ? error.message : String(error))}`);
     })
   )
   .subscribe({
@@ -406,41 +392,33 @@ retryableStream$
 Praktisches Protokollierungsmuster für tatsächliche API-Anfragen.
 
 ```typescript
-import { timer, throwError, of, retryWhen, mergeMap, catchError, finalize } from 'rxjs';
+import { timer, of, retry, catchError, finalize } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 
 function fetchWithRetryLogging(url: string, maxRetries = 3) {
   let startTime = Date.now();
 
   return ajax.getJSON(url).pipe(
-    retryWhen((errors) =>
-      errors.pipe(
-        mergeMap((error, index) => {
-          const retryCount = index + 1;
-          const elapsed = Date.now() - startTime;
+    retry({
+      count: maxRetries,
+      delay: (error, retryCount) => {
+        const elapsed = Date.now() - startTime;
 
-          console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
-          console.log(`🔄 Retry-Information`);
-          console.log(`   Anzahl: ${retryCount}/${maxRetries}`);
-          console.log(`   Fehler: ${error.message || error.status}`);
-          console.log(`   Verstrichene Zeit: ${elapsed}ms`);
+        console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+        console.log(`🔄 Retry-Information`);
+        console.log(`   Anzahl: ${retryCount}/${maxRetries}`);
+        console.log(`   Fehler: ${error.message || error.status}`);
+        console.log(`   Verstrichene Zeit: ${elapsed}ms`);
 
-          if (retryCount >= maxRetries) {
-            console.log(`❌ Maximale Retry-Anzahl erreicht`);
-            console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
-            throw error;
-          }
+        // Exponentielles Backoff
+        const delayMs = Math.min(1000 * Math.pow(2, retryCount - 1), 10000);
+        console.log(`⏳ Wiederholung in ${delayMs}ms...`);
+        console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
 
-          // Exponentielles Backoff
-          const delayMs = Math.min(1000 * Math.pow(2, index), 10000);
-          console.log(`⏳ Wiederholung in ${delayMs}ms...`);
-          console.log(`━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
-
-          return timer(delayMs);
-        })
-      )
-    ),
-    catchError((error) => {
+        return timer(delayMs);
+      }
+    }),
+    catchError((error: unknown) => {
       const totalTime = Date.now() - startTime;
       console.log(`\n❌ Endgültig fehlgeschlagen (Gesamtzeit: ${totalTime}ms)`);
       return of({ error: true, message: 'Datenabruf fehlgeschlagen' });
@@ -481,9 +459,9 @@ throwError(() => new Error('Vorübergehender Fehler'))
       delay: 1000, // 1 Sekunde warten für Retry (verwendet intern asyncScheduler)
       resetOnSuccess: true
     }),
-    catchError((error) => {
+    catchError((error: unknown) => {
       console.log(`Endgültig fehlgeschlagen (insgesamt ${attemptCount} Versuche)`);
-      return of(`Finaler Fehler: ${error.message}`);
+      return of(`Finaler Fehler: ${(error instanceof Error ? error.message : String(error))}`);
     })
   )
   .subscribe(result => console.log('Ergebnis:', result));
@@ -529,7 +507,7 @@ function fetchUserData(userId: string): Observable<any> {
     // Netzwerkfehler bis zu 2x wiederholen
     retry(2),
     // Fehlerbehandlung
-    catchError((error) => {
+    catchError((error: unknown) => {
       if (error.status === 404) {
         return of({ error: true, message: 'Benutzer nicht gefunden' });
       } else if (error.status >= 500) {

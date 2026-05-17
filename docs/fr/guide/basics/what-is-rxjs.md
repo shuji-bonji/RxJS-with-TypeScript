@@ -29,6 +29,9 @@ fromEvent(document, 'click').subscribe(event => {
 });
 ```
 
+> [!WARNING] Attention en code de production
+> L'exemple ci-dessus omet la désinscription de `fromEvent` pour simplifier l'explication. Dans du code réel, gérez explicitement le cycle de vie avec `takeUntil(destroy$)`, `take(N)`, ou `Subscription.unsubscribe()`. Détails : [Surmonter les difficultés : gestion du cycle de vie](/fr/guide/overcoming-difficulties/lifecycle-management.md)
+
 ## Composants de base de RxJS
 
 Pour maîtriser RxJS, il est important de comprendre les composants de base suivants.

@@ -92,6 +92,9 @@ function validateEmail(email: string): ValidationResult {
 > - `distinctUntilChanged()` prévient la validation en double
 > - Feedback visuel des résultats de validation (classes CSS)
 
+> [!WARNING] Attention en code de production
+> L'exemple ci-dessus omet la désinscription de `fromEvent` pour simplifier l'explication. Dans du code réel, gérez explicitement le cycle de vie avec `takeUntil(destroy$)`, `take(N)`, ou `Subscription.unsubscribe()`. Détails : [Surmonter les difficultés : gestion du cycle de vie](/fr/guide/overcoming-difficulties/lifecycle-management.md)
+
 ### Combiner plusieurs règles de validation
 
 ```typescript
@@ -317,7 +320,7 @@ combineLatest([title$, content$]).pipe(
   switchMap(draft =>
     saveDraft(draft).pipe(
       map(savedDraft => ({ ...savedDraft, success: true })),
-      catchError(err => {
+      catchError((err: unknown) => {
         console.error('Erreur d\'enregistrement:', err);
         return of({ ...draft, success: false });
       })
@@ -801,9 +804,9 @@ fromEvent(form, 'submit').pipe(
     };
 
     return submitForm(data).pipe(
-      catchError(err => {
+      catchError((err: unknown) => {
         console.error('Erreur d\'envoi:', err);
-        return of({ success: false, error: err.message });
+        return of({ success: false, error: (err instanceof Error ? err.message : String(err)) });
       })
     );
   }),

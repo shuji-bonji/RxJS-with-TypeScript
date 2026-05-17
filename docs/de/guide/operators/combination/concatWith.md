@@ -146,7 +146,7 @@ userData$
 
 ```ts
 import { fromEvent, of } from 'rxjs';
-import { concatWith, take, mapTo } from 'rxjs';
+import { concatWith, take, map } from 'rxjs';
 
 // Button und Ausgabebereich erstellen
 const button = document.createElement('button');
@@ -163,7 +163,7 @@ const clicks$ = fromEvent(button, 'click');
 clicks$
   .pipe(
     take(3),                          // Erste 3 Klicks erhalten
-    mapTo('Wurde geklickt'),
+    map(() => 'Wurde geklickt'),
     concatWith(of('Abgeschlossen'))    // Nach Abschluss zusätzliche Nachricht
   )
   .subscribe(message => {
@@ -178,7 +178,7 @@ import { concat } from 'rxjs';
 concat(
   clicks$.pipe(
     take(3),
-    mapTo('Wurde geklickt')
+    map(() => 'Wurde geklickt')
   ),
   of('Abgeschlossen')
 ).subscribe(console.log);
@@ -217,7 +217,7 @@ import { concatWith, catchError } from 'rxjs';
 
 throwError(() => new Error('Fehler aufgetreten'))
   .pipe(
-    catchError(err => of('Fehler behoben')),
+    catchError((err: unknown) => of('Fehler behoben')),
     concatWith(of('Nächste Verarbeitung'))
   )
   .subscribe(console.log);

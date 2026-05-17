@@ -90,9 +90,9 @@ timeoutOutput.appendChild(timeoutSuccess);
 normalStream$
   .pipe(
     timeout(1000),
-    catchError((err) => {
+    catchError((err: unknown) => {
       const errorMsg = document.createElement('div');
-      errorMsg.textContent = `Fehler: ${err.message}`;
+      errorMsg.textContent = `Fehler: ${(err instanceof Error ? err.message : String(err))}`;
       errorMsg.style.color = 'red';
       timeoutSuccess.appendChild(errorMsg);
       return of('Fallback-Wert nach Fehler');
@@ -114,9 +114,9 @@ timeoutOutput.appendChild(timeoutError);
 slowStream$
   .pipe(
     timeout(1000),
-    catchError((err) => {
+    catchError((err: unknown) => {
       const errorMsg = document.createElement('div');
-      errorMsg.textContent = `Fehler: ${err.message}`;
+      errorMsg.textContent = `Fehler: ${(err instanceof Error ? err.message : String(err))}`;
       errorMsg.style.color = 'red';
       timeoutError.appendChild(errorMsg);
       return of('Fallback-Wert nach Timeout');

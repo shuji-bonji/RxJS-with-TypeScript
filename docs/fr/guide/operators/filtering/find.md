@@ -197,6 +197,9 @@ result.style.marginTop = '10px';
 container.appendChild(result);
 
 // Traitement de la recherche
+// Note : le pattern recommandé est d'aplatir avec `switchMap`,
+// mais ici nous incluons une validation UI (early return), donc le subscribe est imbriqué pour la lisibilité.
+// En code de production, envisagez une implémentation plate avec `switchMap`.
 fromEvent(searchButton, 'click').subscribe(() => {
   const maxPrice = parseInt(input.value);
 
@@ -206,6 +209,7 @@ fromEvent(searchButton, 'click').subscribe(() => {
     return;
   }
 
+  // Subscription imbriquée : le pattern recommandé est l'aplatissement avec `switchMap`
   from(products).pipe(
     find(product => product.price <= maxPrice)
   ).subscribe(product => {

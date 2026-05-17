@@ -368,7 +368,7 @@ async function riskyOperation(): Promise<string> {
 
 // ✅ Bon exemple: unifier avec la gestion d'erreurs d'Observable
 from(riskyOperation()).pipe(
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('Error caught in Observable pipeline:', error);
     return of('fallback value');
   })

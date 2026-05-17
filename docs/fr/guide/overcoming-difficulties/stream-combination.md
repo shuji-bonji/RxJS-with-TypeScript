@@ -332,6 +332,9 @@ setInterval(() => {
 }, 1000);
 ```
 
+> [!WARNING] Attention en code de production
+> L'exemple ci-dessus omet la désinscription de `fromEvent` pour simplifier l'explication. Dans du code réel, gérez explicitement le cycle de vie avec `takeUntil(destroy$)`, `take(N)`, ou `Subscription.unsubscribe()`. Détails : [Surmonter les difficultés : gestion du cycle de vie](/fr/guide/overcoming-difficulties/lifecycle-management.md)
+
 ### Exemple pratique 2: Soumission de formulaire + informations utilisateur actuelles
 
 ```typescript

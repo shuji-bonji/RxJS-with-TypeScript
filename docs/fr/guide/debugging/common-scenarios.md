@@ -248,11 +248,11 @@ const stop$ = timer(5000); // Se termine après 5 secondes
 
 interval(1000)
   .pipe(
-    takeUntil(stop$),
     tap({
       next: value => console.log('Valeur:', value),
       complete: () => console.log('Arrêt sur timeout')
-    })
+    }),
+    takeUntil(stop$)
   )
   .subscribe();
 ```
@@ -391,8 +391,8 @@ of(1, 2, 3)
       }
       return of(value);
     }),
-    catchError(error => {
-      console.error('🔴 Erreur capturée:', error.message);
+    catchError((error: unknown) => {
+      console.error('🔴 Erreur capturée:', (error instanceof Error ? error.message : String(error)));
       return of(-1); // Valeur de repli
     })
   )
@@ -437,35 +437,30 @@ Lors du retry automatique en cas d'erreur, le suivi du nombre réel de tentative
 
 ```ts
 import { throwError, of, timer } from 'rxjs';
-import { retryWhen, mergeMap, tap } from 'rxjs';
+import { retry } from 'rxjs';
 
 throwError(() => new Error('Erreur temporaire'))
   .pipe(
-    retryWhen((errors) =>
-      errors.pipe(
-        mergeMap((error, index) => {
-          const retryCount = index + 1;
-          console.log(`🔄 Tentative ${retryCount}`);
-
-          if (retryCount > 2) {
-            console.log('❌ Nombre maximum de tentatives atteint');
-            throw error;
-          }
-
-          return timer(1000);
-        })
-      )
-    )
+    // Recommandé en RxJS 7.3+ : forme retry({ count, delay })
+    retry({
+      count: 2, // Réessayer au maximum 2 fois
+      delay: (error, retryCount) => {
+        console.log(`🔄 Tentative ${retryCount}`);
+        return timer(1000);
+      }
+    })
   )
   .subscribe({
     next: value => console.log('✅ Succès:', value),
-    error: error => console.log('🔴 Erreur finale:', error.message)
+    error: error => {
+      console.log('❌ Nombre maximum de tentatives atteint');
+      console.log('🔴 Erreur finale:', error.message);
+    }
   });
 
 // Sortie:
 // 🔄 Tentative 1
 // 🔄 Tentative 2
-// 🔄 Tentative 3
 // ❌ Nombre maximum de tentatives atteint
 // 🔴 Erreur finale: Erreur temporaire
 ```

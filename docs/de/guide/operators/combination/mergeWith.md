@@ -256,7 +256,7 @@ interval(1000).pipe(
   take(2),
   mergeWith(
     throwError(() => new Error('Fehler aufgetreten')).pipe(
-      catchError(err => of('Fehler behoben'))
+      catchError((err: unknown) => of('Fehler behoben'))
     )
   )
 ).subscribe({

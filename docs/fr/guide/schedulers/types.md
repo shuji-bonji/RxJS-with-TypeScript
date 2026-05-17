@@ -449,11 +449,11 @@ fetchData(1)
 
 #### Utilisation du scheduler avec le backoff exponentiel
 
-Pour un contrôle plus avancé, vous pouvez implémenter un backoff exponentiel en combinant `retryWhen` et `asyncScheduler`.
+Pour un contrôle plus avancé, vous pouvez implémenter un backoff exponentiel en combinant `retry` et `asyncScheduler`.
 
 ```ts
 import { throwError, timer, of } from 'rxjs';
-import { retryWhen, mergeMap, tap } from 'rxjs';
+import { retry, mergeMap } from 'rxjs';
 
 function fetchDataWithBackoff(id: number) {
   return of(id).pipe(
@@ -469,30 +469,25 @@ function fetchDataWithBackoff(id: number) {
 
 fetchDataWithBackoff(1)
   .pipe(
-    retryWhen(errors =>
-      errors.pipe(
-        mergeMap((error, index) => {
-          const retryCount = index + 1;
+    // RxJS 7.3+ recommandé : forme retry({ count, delay })
+    retry({
+      count: 3, // Maximum 3 réessais
+      delay: (error, retryCount) => {
+        // Backoff exponentiel: 1s, 2s, 4s...
+        const delayTime = Math.pow(2, retryCount - 1) * 1000;
+        console.log(`🔄 Tentative ${retryCount} (dans ${delayTime}ms)`);
 
-          // Vérification du nombre maximal de tentatives
-          if (retryCount > 3) {
-            console.log('❌ Nombre maximal de tentatives atteint');
-            throw error;
-          }
-
-          // Backoff exponentiel: 1s, 2s, 4s...
-          const delayTime = Math.pow(2, index) * 1000;
-          console.log(`🔄 Tentative ${retryCount} (dans ${delayTime}ms)`);
-
-          // timer utilise asyncScheduler en interne
-          return timer(delayTime);
-        })
-      )
-    )
+        // timer utilise asyncScheduler en interne
+        return timer(delayTime);
+      }
+    })
   )
   .subscribe({
     next: result => console.log('✅ Succès:', result),
-    error: error => console.log('❌ Erreur finale:', error.message)
+    error: error => {
+      console.log('❌ Nombre maximal de tentatives atteint');
+      console.log('❌ Erreur finale:', error.message);
+    }
   });
 
 // Exemple de sortie:
@@ -509,23 +504,21 @@ En spécifiant explicitement un scheduler spécifique, vous obtenez un contrôle
 
 ```ts
 import { throwError, asyncScheduler, of } from 'rxjs';
-import { retryWhen, mergeMap, delay } from 'rxjs';
+import { retry, mergeMap, delay } from 'rxjs';
 
 function fetchDataWithScheduler(id: number, scheduler = asyncScheduler) {
   return of(id).pipe(
     mergeMap(() => throwError(() => new Error('Error'))),
-    retryWhen(errors =>
-      errors.pipe(
-        mergeMap((error, index) => {
-          if (index >= 2) throw error;
-
-          // Spécifier explicitement le scheduler
-          return of(null).pipe(
-            delay(1000, scheduler)
-          );
-        })
-      )
-    )
+    // RxJS 7.3+ recommandé : forme retry({ count, delay })
+    retry({
+      count: 2, // Maximum 2 réessais
+      delay: (error, retryCount) => {
+        // Spécifier explicitement le scheduler
+        return of(null).pipe(
+          delay(1000, scheduler)
+        );
+      }
+    })
   );
 }
 

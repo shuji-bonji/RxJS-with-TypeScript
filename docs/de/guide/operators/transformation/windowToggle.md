@@ -74,6 +74,8 @@ source$.pipe(
   windowToggle(opening$, closing)
 ).subscribe(window$ => {
   console.log('Fenster (Observable):', window$);
+  // Verschachtelte Subscription: erforderliches Pattern der window-Operatoren-Spezifikation
+  // (notwendig zum Konsumieren der inneren Observable, die von windowToggle emittiert wird)
   window$.subscribe(value => {
     console.log('  Wert innerhalb des Fensters:', value);
   });
@@ -291,6 +293,7 @@ Da jedes Fenster ein unabhängiges Observable ist, müssen Sie es explizit abonn
 source$.pipe(
   windowToggle(opening$, closing)
 ).subscribe(window$ => {
+  // Verschachtelte Subscription: erforderliches Pattern der window-Operatoren-Spezifikation
   // Werte fließen nicht, wenn das Fenster selbst nicht abonniert wird
   window$.subscribe(value => {
     console.log('Wert:', value);

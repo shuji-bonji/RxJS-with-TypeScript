@@ -48,7 +48,7 @@ import { of } from 'rxjs';
 // Observable wird nicht ausgeführt, bis es abonniert wird (Lazy)
 const observable$ = from(fetch('https://jsonplaceholder.typicode.com/posts/1')).pipe(
   switchMap(response => response.json()), // response.json() gibt Promise zurück, daher switchMap verwenden
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error(error);
     return of(null);
   })
@@ -275,6 +275,9 @@ fromEvent(searchInput, 'input').pipe(
 
 Dieses Beispiel ist ein typischer Fall, in dem RxJS seinen wahren Wert zeigt. Die Benutzereingabe wird überwacht, eine Wartezeit von 300ms wird eingerichtet, um unnötige Anfragen zu reduzieren, die Verarbeitung erfolgt nur bei Wertänderungen, und durch Aktivierung nur der neuesten Anfrage (`switchMap`) werden alte Anfrageergebnisse automatisch verworfen.
 
+> [!WARNING] Hinweis für Produktionscode
+> Das obige Beispiel lässt die Abmeldung von `fromEvent` zur Vereinfachung der Erklärung weg. Verwenden Sie in echtem Code `takeUntil(destroy$)`, `take(N)` oder `Subscription.unsubscribe()`, um den Lebenszyklus explizit zu verwalten. Details: [Schwierigkeiten überwinden: Lebenszyklus-Verwaltung](/de/guide/overcoming-difficulties/lifecycle-management.md)
+
 > [!IMPORTANT]
 > **Warum es mit Promise allein schwierig ist**
 > - Debounce (Steuerung kontinuierlicher Eingaben) muss manuell implementiert werden
@@ -432,7 +435,7 @@ fromEvent(submitButton, 'click').pipe(
     // Promise-Funktion in Observable umwandeln
     return from(submitForm(formData));
   }),
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('Übermittlungsfehler:', error);
     return of({ success: false });
   })
@@ -492,7 +495,7 @@ fromEvent(searchInput, 'input').pipe(
     // Promise-Funktion in Observable umwandeln
     return from(searchAPI(query));
   }),
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error(error);
     return of({ items: [], total_count: 0 }); // Bei Fehler leeres Ergebnis zurückgeben
   })

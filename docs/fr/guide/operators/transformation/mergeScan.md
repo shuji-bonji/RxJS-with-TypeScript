@@ -148,7 +148,7 @@ source$.pipe(
   mergeScan((acc, curr) => {
     return apiCall(curr).pipe(
       map(result => acc + result),
-      catchError(err => {
+      catchError((err: unknown) => {
         console.error('Erreur survenue :', err);
         // Maintenir la valeur accumulée et continuer
         return of(acc);

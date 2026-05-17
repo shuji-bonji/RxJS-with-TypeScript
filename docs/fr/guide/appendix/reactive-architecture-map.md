@@ -222,6 +222,9 @@ input$.subscribe(async searchTerm => {
 - Intégration facile de multiples traitements asynchrones
 :::
 
+> [!WARNING] Attention en code de production
+> L'exemple ci-dessus omet la désinscription de `fromEvent` pour simplifier l'explication. Dans du code réel, gérez explicitement le cycle de vie avec `takeUntil(destroy$)`, `take(N)`, ou `Subscription.unsubscribe()`. Détails : [Surmonter les difficultés : gestion du cycle de vie](/fr/guide/overcoming-difficulties/lifecycle-management.md)
+
 ## 2. Reactive Communication (Couche Communication)
 
 Couche réalisant le **streaming de données bidirectionnel** entre client/serveur.
@@ -256,7 +259,7 @@ const socket$ = webSocket<{ type: string; data: any }>({
 socket$
   .pipe(
     retry({ count: 3, delay: 1000 }),  // Reconnexion auto
-    catchError(error => {
+    catchError((error: unknown) => {
       console.error('Erreur WebSocket:', error);
       return of({ type: 'error', data: error });
     })
@@ -700,7 +703,7 @@ const autoSave$ = editorChange$.pipe(
       return res.json();
     });
   }),
-  catchError(error => {
+  catchError((error: unknown) => {
     statusDiv!.textContent = '❌ Échec sauvegarde';
     return of(null);
   })

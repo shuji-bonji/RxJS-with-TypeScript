@@ -72,6 +72,9 @@ arrayResult.style.marginTop = '20px';
 toArrayOutput.appendChild(arrayResult);
 
 // Einzelne Werte abonnieren
+// Hinweis: Die folgenden 2 subscribe sind separate Streams (parallele Subscriptions)
+// und keine verschachtelten subscribe. Sie sind absichtlich parallel subscribed,
+// um den Unterschied mit/ohne toArray zu vergleichen.
 interval(500)
   .pipe(take(5))
   .subscribe((val) => {
@@ -80,7 +83,7 @@ interval(500)
     individualValues.appendChild(valueItem);
   });
 
-// Denselben Stream als Array abonnieren
+// Denselben Stream als Array abonnieren (unabhängiger Stream vom obigen subscribe)
 interval(500)
   .pipe(take(5), toArray())
   .subscribe((array) => {

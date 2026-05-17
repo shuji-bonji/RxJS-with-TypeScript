@@ -196,7 +196,7 @@ class ApiCacheService {
           subject.next(data);
           subject.complete();
         }),
-        catchError((error) => {
+        catchError((error: unknown) => {
           // Bei Fehler aus Cache entfernen
           this.cache.delete(url);
           subject.error(error);

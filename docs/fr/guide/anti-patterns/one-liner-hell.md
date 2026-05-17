@@ -89,6 +89,9 @@ const subscription = processed$.subscribe({
 | **Imbrication peu profonde** | Traitement dans subscribe devient simple |
 | **Réutilisable** | Peut extraire le traitement du pipeline comme fonction |
 
+> [!WARNING] Attention en code de production
+> L'exemple ci-dessus omet la désinscription de `fromEvent` pour simplifier l'explication. Dans du code réel, gérez explicitement le cycle de vie avec `takeUntil(destroy$)`, `take(N)`, ou `Subscription.unsubscribe()`. Détails : [Surmonter les difficultés : gestion du cycle de vie](/fr/guide/overcoming-difficulties/lifecycle-management.md)
+
 
 ## Variation : séparation de fonction (modularisation)
 
@@ -177,7 +180,7 @@ const list = document.getElementById('list') as HTMLElement;
 fromEvent(button, 'click').pipe(
   throttleTime(500),
   switchMap(() => ajax.getJSON<ApiRes>('/api/items')),
-  catchError(err => of({ items: [], error: err.message }))
+  catchError((err: unknown) => of({ items: [], error: err.message }))
 ).subscribe(res => {
   list.innerHTML = res.items.map(item => `<li>${item}</li>`).join('');
   if (res.error) alert(res.error);
@@ -212,7 +215,7 @@ const loadItems = () =>
     throttleTime(500),
     switchMap(() => ajax.getJSON<ApiRes>('/api/items')),
     map((res: ApiRes) => ({ items: res.items, error: null as string | null })),
-    catchError(err => of({ items: [] as string[], error: String(err?.message ?? err) }))
+    catchError((err: unknown) => of({ items: [] as string[], error: err instanceof Error ? err.message : String(err) }))
   );
 
 const result$ = clicks$.pipe(loadItems());

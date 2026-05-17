@@ -157,7 +157,7 @@ class GoodComponent {
       )
     ),
     startWith('idle' as const),
-    shareReplay(1)
+    shareReplay({ bufferSize: 1, refCount: true })
   );
 
   // Abgeleitete Zustände auch deklarativ definieren
@@ -387,11 +387,12 @@ class RefactoredComponent {
     });
 
     this.apiService.save().pipe(
-      catchError(error => {
+      catchError((error: unknown) => {
+        const message = error instanceof Error ? error.message : String(error);
         this.apiState$.next({
           ...this.apiState$.value,
           saving: false,
-          error: error.message
+          error: message
         });
         return EMPTY;
       })

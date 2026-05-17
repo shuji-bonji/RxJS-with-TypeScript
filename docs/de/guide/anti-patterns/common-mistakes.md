@@ -488,12 +488,13 @@ interface ApiResponse {
 }
 
 ajax.getJSON<ApiResponse>('https://api.example.com/data').pipe(
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('API Error:', error);
     // Benutzer benachrichtigen
     showErrorToast('Fehler beim Abrufen der Daten');
     // Alternativen Wert mit Fehlerinformationen zurückgeben
-    return of({ data: null, error: error.message } as ApiResponse);
+    const message = error instanceof Error ? error.message : String(error);
+    return of({ data: null, error: message } as ApiResponse);
   })
 ).subscribe((response) => {
   if (response.error) {

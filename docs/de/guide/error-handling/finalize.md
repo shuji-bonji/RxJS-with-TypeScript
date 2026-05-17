@@ -53,8 +53,8 @@ let isLoading = true;
 
 throwError(() => new Error('Datenabruffehler'))
   .pipe(
-    catchError((err) => {
-      console.error('Fehlerverarbeitung:', err.message);
+    catchError((err: unknown) => {
+      console.error('Fehlerverarbeitung:', (err instanceof Error ? err.message : String(err)));
       throw err; // Fehler erneut werfen
     }),
     finalize(() => {
@@ -206,7 +206,7 @@ function fetchData(id: string) {
 
   // API-Anfrage
   return ajax.getJSON(`https://jsonplaceholder.typicode.com/posts/${id}`).pipe(
-    catchError((error) => {
+    catchError((error: unknown) => {
       console.error('API-Fehler:', error);
       return of({ error: true, message: 'Datenabruf fehlgeschlagen' });
     }),

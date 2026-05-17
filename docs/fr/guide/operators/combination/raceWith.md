@@ -146,7 +146,7 @@ const userSearch$ = fromEvent(searchButton, 'click').pipe(
     // Simule un appel API (prend 3 secondes)
     return timer(3000).pipe(
       map(() => '🔍 Résultats de recherche: 100 correspondances'),
-      catchError(err => of('❌ Une erreur est survenue'))
+      catchError((err: unknown) => of('❌ Une erreur est survenue'))
     );
   })
 );

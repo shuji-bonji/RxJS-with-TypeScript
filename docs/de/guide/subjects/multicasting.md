@@ -247,11 +247,11 @@ Auf diese Weise kann das Verhalten bei Stream-Ende oder wenn Abonnenten auf Null
 import { interval } from 'rxjs';
 import { take, shareReplay, tap } from 'rxjs';
 
-// Verwendung von shareReplay (Puffergröße 2)
+// Verwendung von shareReplay (Puffergröße 2, mit refCount bei vollständiger Abmeldung freigegeben)
 const source$ = interval(1000).pipe(
   take(5),
   tap(value => console.log(`Quelle: ${value}`)),
-  shareReplay(2) // Puffert die letzten 2 Werte
+  shareReplay({ bufferSize: 2, refCount: true }) // Puffert die letzten 2 Werte
 );
 
 // Erster Abonnent
@@ -323,14 +323,14 @@ class UserService {
     console.log(`Benutzer-ID ${id} von API abrufen`);
     const request$ = ajax.getJSON(`https://jsonplaceholder.typicode.com/users/${id}`).pipe(
       tap(response => console.log('API-Antwort:', response)),
-      catchError(error => {
+      catchError((error: unknown) => {
         console.error('API-Fehler:', error);
         // Aus Cache entfernen
         this.cache.delete(id);
         return throwError(() => new Error('Benutzerabruf fehlgeschlagen'));
       }),
-      // Mit shareReplay teilen (Wert auch nach Abschluss cachen)
-      shareReplay(1)
+      // Mit shareReplay teilen (mit refCount: true bei vollständiger Abmeldung freigegeben)
+      shareReplay({ bufferSize: 1, refCount: true })
     );
 
     // Im Cache speichern

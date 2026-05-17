@@ -491,7 +491,7 @@ searchInput$.pipe(
   switchMap(query =>
     searchAPI(query).pipe(
       retry(2),                          // Réessayer jusqu'à 2 fois
-      catchError(err => {
+      catchError((err: unknown) => {
         console.error('Erreur recherche:', err);
         return of([]);                   // Retourner tableau vide
       })

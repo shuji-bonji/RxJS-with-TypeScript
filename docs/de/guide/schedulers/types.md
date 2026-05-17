@@ -449,11 +449,11 @@ fetchData(1)
 
 #### Scheduler-Nutzung mit Exponential Backoff
 
-Für erweiterte Steuerung kann `retryWhen` mit `asyncScheduler` kombiniert werden, um Exponential Backoff zu implementieren.
+Für erweiterte Steuerung kann `retry` mit `asyncScheduler` kombiniert werden, um Exponential Backoff zu implementieren.
 
 ```ts
 import { throwError, timer, of } from 'rxjs';
-import { retryWhen, mergeMap, tap } from 'rxjs';
+import { retry, mergeMap } from 'rxjs';
 
 function fetchDataWithBackoff(id: number) {
   return of(id).pipe(
@@ -469,30 +469,25 @@ function fetchDataWithBackoff(id: number) {
 
 fetchDataWithBackoff(1)
   .pipe(
-    retryWhen(errors =>
-      errors.pipe(
-        mergeMap((error, index) => {
-          const retryCount = index + 1;
+    // RxJS 7.3+ empfohlen: retry({ count, delay })-Form
+    retry({
+      count: 3, // Maximal 3 Wiederholungen
+      delay: (error, retryCount) => {
+        // Exponential Backoff: 1s, 2s, 4s...
+        const delayTime = Math.pow(2, retryCount - 1) * 1000;
+        console.log(`🔄 Retry ${retryCount} (nach ${delayTime}ms)`);
 
-          // Maximale Retry-Anzahl prüfen
-          if (retryCount > 3) {
-            console.log('❌ Maximale Retry-Anzahl erreicht');
-            throw error;
-          }
-
-          // Exponential Backoff: 1s, 2s, 4s...
-          const delayTime = Math.pow(2, index) * 1000;
-          console.log(`🔄 Retry ${retryCount} (nach ${delayTime}ms)`);
-
-          // timer verwendet intern asyncScheduler
-          return timer(delayTime);
-        })
-      )
-    )
+        // timer verwendet intern asyncScheduler
+        return timer(delayTime);
+      }
+    })
   )
   .subscribe({
     next: result => console.log('✅ Erfolg:', result),
-    error: error => console.log('❌ Finaler Fehler:', error.message)
+    error: error => {
+      console.log('❌ Maximale Retry-Anzahl erreicht');
+      console.log('❌ Finaler Fehler:', error.message);
+    }
   });
 
 // Beispielausgabe:
@@ -509,23 +504,21 @@ Durch explizite Angabe eines bestimmten Schedulers wird flexiblere Steuerung mö
 
 ```ts
 import { throwError, asyncScheduler, of } from 'rxjs';
-import { retryWhen, mergeMap, delay } from 'rxjs';
+import { retry, mergeMap, delay } from 'rxjs';
 
 function fetchDataWithScheduler(id: number, scheduler = asyncScheduler) {
   return of(id).pipe(
     mergeMap(() => throwError(() => new Error('Error'))),
-    retryWhen(errors =>
-      errors.pipe(
-        mergeMap((error, index) => {
-          if (index >= 2) throw error;
-
-          // Scheduler explizit angeben
-          return of(null).pipe(
-            delay(1000, scheduler)
-          );
-        })
-      )
-    )
+    // RxJS 7.3+ empfohlen: retry({ count, delay })-Form
+    retry({
+      count: 2, // Maximal 2 Wiederholungen
+      delay: (error, retryCount) => {
+        // Scheduler explizit angeben
+        return of(null).pipe(
+          delay(1000, scheduler)
+        );
+      }
+    })
   );
 }
 

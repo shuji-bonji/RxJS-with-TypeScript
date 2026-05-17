@@ -170,6 +170,9 @@ fromEvent(submitButton, 'click').subscribe(() => {
 
 ```
 
+> [!WARNING] Attention en code de production
+> L'exemple ci-dessus omet la désinscription de `fromEvent` pour simplifier l'explication. Dans du code réel, gérez explicitement le cycle de vie avec `takeUntil(destroy$)`, `take(N)`, ou `Subscription.unsubscribe()`. Détails : [Surmonter les difficultés : gestion du cycle de vie](/fr/guide/overcoming-difficulties/lifecycle-management.md)
+
 ## Requêtes simultanées et gestion de l'état de chargement
 
 Un exemple utilisant `forkJoin` pour traiter plusieurs requêtes API en parallèle et rassembler les résultats.

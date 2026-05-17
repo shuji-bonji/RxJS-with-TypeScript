@@ -72,6 +72,9 @@ arrayResult.style.marginTop = '20px';
 toArrayOutput.appendChild(arrayResult);
 
 // S'abonner à des valeurs individuelles
+// Note : les 2 subscribe ci-dessous sont des flux séparés (souscriptions parallèles)
+// et non pas des subscribe imbriqués. Ils sont intentionnellement souscrits en parallèle
+// pour comparer la différence avec/sans toArray.
 interval(500)
   .pipe(take(5))
   .subscribe((val) => {
@@ -80,7 +83,7 @@ interval(500)
     individualValues.appendChild(valueItem);
   });
 
-// S'abonner au même flux en tant que tableau
+// S'abonner au même flux en tant que tableau (flux indépendant du subscribe ci-dessus)
 interval(500)
   .pipe(take(5), toArray())
   .subscribe((array) => {

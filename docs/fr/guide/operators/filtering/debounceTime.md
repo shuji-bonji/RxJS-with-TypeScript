@@ -29,6 +29,9 @@ fromEvent(searchBox, 'input')
 
 [🌐 Documentation officielle RxJS - `debounceTime`](https://rxjs.dev/api/operators/debounceTime)
 
+> [!WARNING] Attention en code de production
+> L'exemple ci-dessus omet la désinscription de `fromEvent` pour simplifier l'explication. Dans du code réel, gérez explicitement le cycle de vie avec `takeUntil(destroy$)`, `take(N)`, ou `Subscription.unsubscribe()`. Détails : [Surmonter les difficultés : gestion du cycle de vie](/fr/guide/overcoming-difficulties/lifecycle-management.md)
+
 ## 💡 Patterns d'utilisation typiques
 
 - Envoyer une requête après que l'utilisateur a fini de taper dans une boîte de recherche

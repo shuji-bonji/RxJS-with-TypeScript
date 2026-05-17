@@ -35,11 +35,11 @@ Diese Operationen sind das Gegenteil von "mehrere zu einem kombinieren" oder arb
 
 ```typescript
 import { race, timer } from 'rxjs';
-import { mapTo } from 'rxjs';
+import { map } from 'rxjs';
 
 // Nimmt die schnellste von mehreren Datenquellen
-const fast$ = timer(1000).pipe(mapTo('Fast API'));
-const slow$ = timer(3000).pipe(mapTo('Slow API'));
+const fast$ = timer(1000).pipe(map(() => 'Fast API'));
+const slow$ = timer(3000).pipe(map(() => 'Slow API'));
 
 race(fast$, slow$).subscribe(console.log);
 // Ausgabe: 'Fast API' (wird nach 1 Sekunde ausgegeben, slow$ wird abgebrochen)
@@ -79,12 +79,12 @@ Durch Verwendung von Multicasting-Operatoren (`share()`, `shareReplay()` usw.) k
 
 ```typescript
 import { race, timer } from 'rxjs';
-import { mapTo, share } from 'rxjs';
+import { map, share } from 'rxjs';
 
 // ❄️ Cold - Führt den Wettbewerb bei jedem Abonnement erneut aus
 const coldRace$ = race(
-  timer(1000).pipe(mapTo('Fast API')),
-  timer(3000).pipe(mapTo('Slow API'))
+  timer(1000).pipe(map(() => 'Fast API')),
+  timer(3000).pipe(map(() => 'Slow API'))
 );
 
 coldRace$.subscribe(val => console.log('Abonnent 1:', val));
@@ -93,8 +93,8 @@ coldRace$.subscribe(val => console.log('Abonnent 2:', val));
 
 // 🔥 Hot - Teilt das Wettbewerbsergebnis zwischen Abonnenten
 const hotRace$ = race(
-  timer(1000).pipe(mapTo('Fast API')),
-  timer(3000).pipe(mapTo('Slow API'))
+  timer(1000).pipe(map(() => 'Fast API')),
+  timer(3000).pipe(map(() => 'Slow API'))
 ).pipe(share());
 
 hotRace$.subscribe(val => console.log('Abonnent 1:', val));

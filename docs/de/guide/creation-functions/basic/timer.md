@@ -274,8 +274,8 @@ notifications$.pipe(
 
     // Nach 5 Sekunden automatisch ausblenden
     return timer(5000).pipe(
-      takeUntil(dismiss$), // Abbrechen wenn manuell ausgeblendet
-      map(() => notification.id)
+      map(() => notification.id),
+      takeUntil(dismiss$) // Abbrechen wenn manuell ausgeblendet
     );
   })
 ).subscribe(id => {

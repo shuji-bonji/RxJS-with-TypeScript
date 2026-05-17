@@ -80,9 +80,9 @@ function simulateFailRequest() {
     // Simuler la latence de l'API
     delay(1500),
     // Gestion des erreurs
-    catchError(error => {
+    catchError((error: unknown) => {
       const errorElement = document.createElement('div');
-      errorElement.textContent = `Erreur : ${error.message}`;
+      errorElement.textContent = `Erreur : ${(error instanceof Error ? error.message : String(error))}`;
       errorElement.style.color = 'red';
       dataContainer.appendChild(errorElement);
 
@@ -301,8 +301,8 @@ fromEvent(form, 'submit').pipe(
     submitButton.disabled = false;
   }),
   // Gestion des erreurs
-  catchError(error => {
-    formResult.textContent = `Erreur : ${error.message}`;
+  catchError((error: unknown) => {
+    formResult.textContent = `Erreur : ${(error instanceof Error ? error.message : String(error))}`;
     formResult.style.display = 'block';
     formResult.style.backgroundColor = '#ffebee';
     formResult.style.borderColor = '#f44336';

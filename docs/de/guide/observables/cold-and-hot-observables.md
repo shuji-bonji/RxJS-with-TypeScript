@@ -340,7 +340,7 @@ import { shareReplay, take } from 'rxjs';
 
 const request$ = interval(1000).pipe(
   take(3),
-  shareReplay(2)  // Cached die letzten 2 Werte
+  shareReplay({ bufferSize: 2, refCount: true })  // Cached die letzten 2 Werte
 );
 
 // 1. Subscription
@@ -398,11 +398,11 @@ class UserService {
     // Neue Anfrage erstellen und cachen
     console.log('Neue Anfrage ausgeführt');
     this.cache$ = this.fetchUsersFromAPI().pipe(
-      catchError(err => {
+      catchError((err: unknown) => {
         this.cache$ = null;  // Cache bei Fehler löschen
         return throwError(() => err);
       }),
-      shareReplay(1)  // Letztes Ergebnis cachen
+      shareReplay({ bufferSize: 1, refCount: true })  // Letztes Ergebnis cachen
     );
 
     return this.cache$;

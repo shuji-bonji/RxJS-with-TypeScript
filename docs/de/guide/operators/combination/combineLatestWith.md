@@ -340,7 +340,7 @@ interval(1000).pipe(
   take(2),
   combineLatestWith(
     throwError(() => new Error('Fehler aufgetreten')).pipe(
-      catchError(err => of('Wiederhergestellt'))
+      catchError((err: unknown) => of('Wiederhergestellt'))
     )
   )
 ).subscribe({

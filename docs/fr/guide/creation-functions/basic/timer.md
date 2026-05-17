@@ -274,8 +274,8 @@ notifications$.pipe(
 
     // Masquage automatique après 5 secondes
     return timer(5000).pipe(
-      takeUntil(dismiss$), // Annuler si fermé manuellement
-      map(() => notification.id)
+      map(() => notification.id),
+      takeUntil(dismiss$) // Annuler si fermé manuellement
     );
   })
 ).subscribe(id => {

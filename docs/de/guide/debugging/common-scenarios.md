@@ -247,11 +247,11 @@ const stop$ = timer(5000); // Nach 5 Sekunden abschließen
 
 interval(1000)
   .pipe(
-    takeUntil(stop$),
     tap({
       next: value => console.log('Wert:', value),
       complete: () => console.log('Durch Timeout gestoppt')
-    })
+    }),
+    takeUntil(stop$)
   )
   .subscribe();
 ```
@@ -390,8 +390,8 @@ of(1, 2, 3)
       }
       return of(value);
     }),
-    catchError(error => {
-      console.error('🔴 Fehler abgefangen:', error.message);
+    catchError((error: unknown) => {
+      console.error('🔴 Fehler abgefangen:', (error instanceof Error ? error.message : String(error)));
       return of(-1); // Fallback-Wert
     })
   )
@@ -436,35 +436,30 @@ Bei automatischen Retries nach Fehlern wird das Debugging und Logging durch die 
 
 ```ts
 import { throwError, of, timer } from 'rxjs';
-import { retryWhen, mergeMap, tap } from 'rxjs';
+import { retry } from 'rxjs';
 
 throwError(() => new Error('Temporärer Fehler'))
   .pipe(
-    retryWhen((errors) =>
-      errors.pipe(
-        mergeMap((error, index) => {
-          const retryCount = index + 1;
-          console.log(`🔄 Retry ${retryCount}. Versuch`);
-
-          if (retryCount > 2) {
-            console.log('❌ Maximale Retry-Anzahl erreicht');
-            throw error;
-          }
-
-          return timer(1000);
-        })
-      )
-    )
+    // Empfohlen ab RxJS 7.3+: retry({ count, delay })-Form
+    retry({
+      count: 2, // Maximal 2 Wiederholungen
+      delay: (error, retryCount) => {
+        console.log(`🔄 Retry ${retryCount}. Versuch`);
+        return timer(1000);
+      }
+    })
   )
   .subscribe({
     next: value => console.log('✅ Erfolg:', value),
-    error: error => console.log('🔴 Endgültiger Fehler:', error.message)
+    error: error => {
+      console.log('❌ Maximale Retry-Anzahl erreicht');
+      console.log('🔴 Endgültiger Fehler:', error.message);
+    }
   });
 
 // Ausgabe:
 // 🔄 Retry 1. Versuch
 // 🔄 Retry 2. Versuch
-// 🔄 Retry 3. Versuch
 // ❌ Maximale Retry-Anzahl erreicht
 // 🔴 Endgültiger Fehler: Temporärer Fehler
 ```

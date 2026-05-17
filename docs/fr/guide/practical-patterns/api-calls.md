@@ -70,7 +70,7 @@ function fetchUsers(): Observable<User[]> {
       })
   ).pipe(
     timeout(5000), // Timeout après 5 secondes
-    catchError(err => {
+    catchError((err: unknown) => {
       console.error('Erreur de récupération utilisateur:', err);
       throw err;
     })
@@ -127,7 +127,7 @@ function createPost(postData: CreatePostRequest): Observable<Post> {
       return response.json();
     })
   ).pipe(
-    catchError(err => {
+    catchError((err: unknown) => {
       console.error('Erreur de création de publication:', err);
       throw err;
     })
@@ -295,19 +295,19 @@ import { forkJoin, of, catchError } from 'rxjs';
 function fetchDashboardWithFallback(userId: number): Observable<Dashboard> {
   return forkJoin({
     user: fetchUserById(userId).pipe(
-      catchError(err => {
+      catchError((err: unknown) => {
         console.error('Erreur de récupération utilisateur:', err);
         return of(null); // Retourne null en cas d'erreur
       })
     ),
     posts: fetchPostsByUserId(userId).pipe(
-      catchError(err => {
+      catchError((err: unknown) => {
         console.error('Erreur de récupération des publications:', err);
         return of([]); // Retourne un tableau vide en cas d'erreur
       })
     ),
     comments: fetchCommentsByUserId(userId).pipe(
-      catchError(err => {
+      catchError((err: unknown) => {
         console.error('Erreur de récupération des commentaires:', err);
         return of([]); // Retourne un tableau vide en cas d'erreur
       })
@@ -368,7 +368,7 @@ function createPost(postData: CreatePostRequest): Observable<Post> {
       return response.json();
     })
   ).pipe(
-    catchError(err => {
+    catchError((err: unknown) => {
       console.error('Erreur de création de publication:', err);
       throw err;
     })
@@ -604,7 +604,7 @@ const search$ = fromEvent(searchInput, 'input').pipe(
       return of([]); // Tableau vide si moins de 2 caractères
     }
     return searchAPI(query).pipe(
-      catchError(err => {
+      catchError((err: unknown) => {
         console.error('Erreur de recherche:', err);
         return of([]); // Tableau vide en cas d'erreur
       })
@@ -710,11 +710,11 @@ submitButton$.pipe(
 
 Lorsque des erreurs réseau ou des timeouts se produisent, vous pouvez vouloir réessayer automatiquement.
 
-### Solution : Utiliser retry et retryWhen
+### Solution : Utiliser retry et retry({ count, delay })
 
 ```typescript
 import { from, Observable, timer } from 'rxjs';
-import { retry, retryWhen, mergeMap, catchError, of, timeout } from 'rxjs';
+import { retry, catchError, of, timeout } from 'rxjs';
 
 // Type User de l'API JSONPlaceholder
 // https://jsonplaceholder.typicode.com/users
@@ -753,7 +753,7 @@ function fetchUsers(): Observable<User[]> {
       })
   ).pipe(
     timeout(5000), // Timeout après 5 secondes
-    catchError(err => {
+    catchError((err: unknown) => {
       console.error('Erreur de récupération utilisateur:', err);
       throw err;
     })
@@ -764,35 +764,26 @@ function fetchUsers(): Observable<User[]> {
 function fetchWithSimpleRetry(): Observable<User[]> {
   return fetchUsers().pipe(
     retry(3), // Réessayer jusqu'à 3 fois en cas d'erreur
-    catchError(err => {
+    catchError((err: unknown) => {
       console.error('Erreur même après réessai:', err);
       return of([]); // Retourne un tableau vide en cas d'erreur finale
     })
   );
 }
 
-// Réessai avec backoff exponentiel
+// Réessai avec backoff exponentiel (RxJS 7.3+ recommandé : forme retry({ count, delay }))
 function fetchWithExponentialBackoff(): Observable<User[]> {
   return fetchUsers().pipe(
-    retryWhen(errors =>
-      errors.pipe(
-        mergeMap((error, index) => {
-          const retryAttempt = index + 1;
-
-          // Réessayer jusqu'à 3 fois maximum
-          if (retryAttempt > 3) {
-            throw error;
-          }
-
-          // Backoff exponentiel : 1 seconde, 2 secondes, 4 secondes
-          const delayMs = Math.pow(2, index) * 1000;
-          console.log(`Réessai ${retryAttempt}/3 (après ${delayMs}ms)`);
-
-          return timer(delayMs);
-        })
-      )
-    ),
-    catchError(err => {
+    retry({
+      count: 3, // Réessayer jusqu'à 3 fois maximum
+      delay: (error, retryCount) => {
+        // Backoff exponentiel : 1 seconde, 2 secondes, 4 secondes
+        const delayMs = Math.pow(2, retryCount - 1) * 1000;
+        console.log(`Réessai ${retryCount}/3 (après ${delayMs}ms)`);
+        return timer(delayMs);
+      }
+    }),
+    catchError((err: unknown) => {
       console.error('Erreur même après réessai:', err);
       return of([]);
     })
@@ -844,30 +835,23 @@ function shouldRetry(error: HttpError): boolean {
 
 function fetchWithConditionalRetry(): Observable<User[]> {
   return fetchUsers().pipe(
-    retryWhen(errors =>
-      errors.pipe(
-        mergeMap((error: HttpError, index) => {
-          const retryAttempt = index + 1;
+    // RxJS 7.3+ recommandé : forme retry({ count, delay })
+    retry({
+      count: 3, // Maximum 3 réessais
+      delay: (error: HttpError, retryCount) => {
+        // Pour une erreur non réessayable, lancer immédiatement (retry est interrompu)
+        if (!shouldRetry(error)) {
+          console.error('Erreur non réessayable:', error);
+          throw error;
+        }
 
-          // Erreur non réessayable
-          if (!shouldRetry(error)) {
-            console.error('Erreur non réessayable:', error);
-            return throwError(() => error);
-          }
+        const delayMs = Math.pow(2, retryCount - 1) * 1000;
+        console.log(`Réessai ${retryCount}/3 (status: ${error.status})`);
 
-          // Maximum 3 fois
-          if (retryAttempt > 3) {
-            return throwError(() => error);
-          }
-
-          const delayMs = Math.pow(2, index) * 1000;
-          console.log(`Réessai ${retryAttempt}/3 (status: ${error.status})`);
-
-          return timer(delayMs);
-        })
-      )
-    ),
-    catchError(err => {
+        return timer(delayMs);
+      }
+    }),
+    catchError((err: unknown) => {
       console.error('Erreur finale:', err);
       return of([]);
     })
@@ -928,7 +912,7 @@ function fetchUsers(): Observable<User[]> {
       })
   ).pipe(
     timeout(5000), // Timeout après 5 secondes
-    catchError(err => {
+    catchError((err: unknown) => {
       console.error('Erreur de récupération utilisateur:', err);
       throw err;
     })
@@ -939,7 +923,7 @@ function fetchUsers(): Observable<User[]> {
 function fetchWithTimeout(): Observable<User[]> {
   return fetchUsers().pipe(
     timeout(5000), // Erreur si pas de réponse dans les 5 secondes
-    catchError(err => {
+    catchError((err: unknown) => {
       if (err.name === 'TimeoutError') {
         console.error('La requête a expiré');
         // Traitement de secours en cas de timeout
@@ -957,8 +941,8 @@ function fetchWithCustomTimeout(): Observable<User[]> {
       each: 5000,
       with: () => throwError(() => new Error('Erreur de timeout personnalisée'))
     }),
-    catchError(err => {
-      console.error('Erreur:', err.message);
+    catchError((err: unknown) => {
+      console.error('Erreur:', (err instanceof Error ? err.message : String(err)));
       return of([]);
     })
   );
@@ -974,7 +958,7 @@ function fetchWithTimeoutAndRetry(): Observable<User[]> {
   return fetchUsers().pipe(
     timeout(5000),           // Timeout de 5 secondes pour chaque tentative
     retry(3),                // Réessayer 3 fois en cas de timeout
-    catchError(err => {
+    catchError((err: unknown) => {
       console.error('Erreur même après timeout et réessai:', err);
       return of([]);
     })
@@ -1043,7 +1027,7 @@ class UserListManager {
         })
     ).pipe(
       timeout(5000), // Timeout après 5 secondes
-      catchError(err => {
+      catchError((err: unknown) => {
         console.error('Erreur de récupération utilisateur:', err);
         throw err;
       })
@@ -1164,7 +1148,7 @@ fromEvent(loadButton, 'click').pipe(
 Exemple de classe de service complète utilisable en pratique, combinant tous les modèles précédents.
 
 ```typescript
-import { Observable, Subject, throwError, timer, catchError, retryWhen, mergeMap, timeout, shareReplay, takeUntil, from } from 'rxjs';
+import { Observable, Subject, throwError, timer, catchError, retry, timeout, shareReplay, takeUntil, from } from 'rxjs';
 
 // Type User de l'API JSONPlaceholder
 // https://jsonplaceholder.typicode.com/users
@@ -1227,7 +1211,7 @@ export class ApiService {
     }
 
     const request$ = this.get<T>(url, options).pipe(
-      shareReplay(1) // Mise en cache du résultat
+      shareReplay({ bufferSize: 1, refCount: true }) // Mise en cache du résultat (libéré avec refCount à l'annulation totale des souscriptions)
     );
 
     this.cache.set(cacheKey, request$);
@@ -1277,36 +1261,34 @@ export class ApiService {
       this.retryStrategy(options?.retry),
       // Les API publiques comme JSONPlaceholder retournent directement les données,
       // donc pas besoin de déballer response.data
-      catchError(err => this.handleError(err)),
+      catchError((err: unknown) => this.handleError(err)),
       takeUntil(this.destroy$) // Annulation automatique à la destruction du service
     );
   }
 
   /**
-   * Stratégie de réessai
+   * Stratégie de réessai (RxJS 7.3+ recommandé : forme retry({ count, delay }))
    */
   private retryStrategy(retryConfig?: RetryConfig) {
-    return retryWhen<any>(errors =>
-      errors.pipe(
-        mergeMap((error, index) => {
-          const retryAttempt = index + 1;
-          const maxRetries = retryConfig?.maxRetries || 3;
+    const maxRetries = retryConfig?.maxRetries || 3;
 
-          // Vérifier si réessayable
-          if (!this.shouldRetry(error) || retryAttempt > maxRetries) {
-            return throwError(() => error);
-          }
+    return retry<any>({
+      count: maxRetries,
+      delay: (error, retryCount) => {
+        // Pour une erreur non réessayable, lancer immédiatement (retry est interrompu)
+        if (!this.shouldRetry(error)) {
+          throw error;
+        }
 
-          // Backoff exponentiel
-          const delayMs = retryConfig?.useExponentialBackoff
-            ? Math.pow(2, index) * 1000
-            : (retryConfig?.delayMs || 1000);
+        // Backoff exponentiel
+        const delayMs = retryConfig?.useExponentialBackoff
+          ? Math.pow(2, retryCount - 1) * 1000
+          : (retryConfig?.delayMs || 1000);
 
-          console.log(`Réessai ${retryAttempt}/${maxRetries} (après ${delayMs}ms)`);
-          return timer(delayMs);
-        })
-      )
-    );
+        console.log(`Réessai ${retryCount}/${maxRetries} (après ${delayMs}ms)`);
+        return timer(delayMs);
+      }
+    });
   }
 
   /**

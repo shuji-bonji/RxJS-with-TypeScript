@@ -172,7 +172,7 @@ class UserService {
   // Benutzerinformationen cachen
   private userCache$ = ajax.getJSON<User>('https://jsonplaceholder.typicode.com/users/1').pipe(
     tap(() => console.log('API-Request ausgeführt')),
-    shareReplay(1) // Den letzten Wert dauerhaft cachen
+    shareReplay({ bufferSize: 1, refCount: true }) // Den letzten Wert cachen (mit refCount wird er freigegeben, wenn alle Subscriptions beendet sind)
   );
 
   getUser(): Observable<User> {
@@ -216,7 +216,7 @@ const appConfig$ = of({
 }).pipe(
   delay(1000), // Laden simulieren
   tap(() => console.log('Konfiguration geladen')),
-  shareReplay(1)
+  shareReplay({ bufferSize: 1, refCount: true })
 );
 
 // Konfiguration in mehreren Services verwenden

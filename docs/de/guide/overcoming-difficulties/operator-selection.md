@@ -491,7 +491,7 @@ searchInput$.pipe(
   switchMap(query =>
     searchAPI(query).pipe(
       retry(2),                          // Bis zu 2 Wiederholungen
-      catchError(err => {
+      catchError((err: unknown) => {
         console.error('Suchfehler:', err);
         return of([]);                   // Leeres Array zurückgeben
       })

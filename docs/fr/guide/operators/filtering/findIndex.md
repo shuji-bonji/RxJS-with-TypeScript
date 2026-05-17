@@ -104,7 +104,10 @@ result.style.display = 'none';
 container.appendChild(result);
 
 // Rechercher la première tâche non terminée
+// Note : le pattern recommandé est d'aplatir avec `switchMap`,
+// mais ici le subscribe est imbriqué pour la lisibilité (en production, préférez `switchMap`).
 fromEvent(button1, 'click').subscribe(() => {
+  // Subscription imbriquée : le pattern recommandé est l'aplatissement avec `switchMap`
   from(tasks).pipe(
     findIndex(task => !task.completed)
   ).subscribe(index => {
@@ -128,7 +131,9 @@ fromEvent(button1, 'click').subscribe(() => {
 });
 
 // Rechercher la première tâche haute priorité
+// Note : le pattern recommandé est d'aplatir avec `switchMap` (en production, préférez `switchMap`).
 fromEvent(button2, 'click').subscribe(() => {
+  // Subscription imbriquée : le pattern recommandé est l'aplatissement avec `switchMap`
   from(tasks).pipe(
     findIndex(task => task.priority === 'high')
   ).subscribe(index => {

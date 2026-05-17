@@ -150,9 +150,9 @@ function simulateRequest() {
       }
     }),
     retry(3),
-    catchError((err) => {
+    catchError((err: unknown) => {
       const finalError = document.createElement('div');
-      finalError.textContent = `Alle Wiederholungen fehlgeschlagen: ${err.message}`;
+      finalError.textContent = `Alle Wiederholungen fehlgeschlagen: ${(err instanceof Error ? err.message : String(err))}`;
       finalError.style.color = 'red';
       finalError.style.fontWeight = 'bold';
       requestStatus.appendChild(finalError);

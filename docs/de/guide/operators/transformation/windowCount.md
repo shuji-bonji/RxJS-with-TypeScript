@@ -72,6 +72,8 @@ source$.pipe(
   windowCount(5)
 ).subscribe(window$ => {
   console.log('Fenster (Observable):', window$);
+  // Verschachtelte Subscription: erforderliches Pattern der window-Operatoren-Spezifikation
+  // (notwendig zum Konsumieren der inneren Observable, die von windowCount emittiert wird)
   window$.subscribe(value => {
     console.log('  Wert im Fenster:', value);
   });

@@ -192,7 +192,7 @@ range(1, 10).pipe(
 ### Utilisation dans le traitement de réessai
 
 ```typescript
-import { range, throwError, of, Observable, mergeMap, retryWhen, delay } from 'rxjs';
+import { range, throwError, of, Observable, mergeMap, retry, delay } from 'rxjs';
 // Fonction pour simuler la récupération de données (échoue aléatoirement)
 function fetchData(): Observable<string> {
   const shouldFail = Math.random() > 0.6; // Taux de succès de 40%
@@ -209,19 +209,15 @@ function fetchData(): Observable<string> {
 
 function fetchWithRetry() {
   return fetchData().pipe(
-    retryWhen(errors =>
-      errors.pipe(
-        mergeMap((error, index) => {
-          // Réessayer jusqu'à 3 fois
-          if (index >= 3) {
-            return throwError(() => error);
-          }
-          console.log(`Réessai ${index + 1}/3`);
-          // Backoff exponentiel: 1s, 2s, 4s
-          return range(0, 1).pipe(delay(Math.pow(2, index) * 1000));
-        })
-      )
-    )
+    // Recommandé en RxJS 7.3+ : forme retry({ count, delay })
+    retry({
+      count: 3, // Réessayer jusqu'à 3 fois
+      delay: (error, retryCount) => {
+        console.log(`Réessai ${retryCount}/3`);
+        // Backoff exponentiel : 1s, 2s, 4s
+        return range(0, 1).pipe(delay(Math.pow(2, retryCount - 1) * 1000));
+      }
+    })
   );
 }
 

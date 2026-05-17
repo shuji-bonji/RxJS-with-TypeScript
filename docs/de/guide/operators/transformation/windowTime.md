@@ -70,6 +70,8 @@ source$.pipe(
   take(2)
 ).subscribe(window$ => {
   console.log('Fenster (Observable):', window$);
+  // Verschachtelte Subscription: erforderliches Pattern der window-Operatoren-Spezifikation
+  // (notwendig zum Konsumieren der inneren Observable, die von windowTime emittiert wird)
   window$.subscribe(value => {
     console.log('  Wert:', value);
   });
@@ -309,6 +311,7 @@ Da jedes Fenster ein unabhängiges Observable ist, muss es explizit abonniert we
 source$.pipe(
   windowTime(1000)
 ).subscribe(window$ => {
+  // Verschachtelte Subscription: erforderliches Pattern der window-Operatoren-Spezifikation
   // Werte fließen nicht, wenn das Fenster selbst nicht abonniert wird
   window$.subscribe(value => {
     console.log('Wert:', value);

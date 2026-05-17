@@ -215,7 +215,7 @@ class HttpClientService {
   get<T>(url: string): Observable<T> {
     return ajax.get<T>(url).pipe(
       tap(() => console.log(`GET ${url} - Success`)),
-      catchError(error => this.handleError(error, url))
+      catchError((error: unknown) => this.handleError(error, url))
     );
   }
 
@@ -225,7 +225,7 @@ class HttpClientService {
   post<T>(url: string, body: any): Observable<T> {
     return ajax.post<T>(url, body).pipe(
       tap(() => console.log(`POST ${url} - Success`)),
-      catchError(error => this.handleError(error, url))
+      catchError((error: unknown) => this.handleError(error, url))
     );
   }
 
@@ -366,7 +366,7 @@ userDetail.init();
 Netzwerkfehler sind häufig temporäre Probleme, daher implementieren Sie eine geeignete Retry-Strategie.
 
 ```typescript
-import { Observable, timer, throwError, retryWhen, mergeMap, tap } from 'rxjs';
+import { Observable, timer, throwError, retry, tap, catchError } from 'rxjs';
 /**
  * Retry-Konfiguration speziell für Netzwerkfehler
  */
@@ -378,7 +378,7 @@ interface NetworkRetryConfig {
 }
 
 /**
- * Netzwerk-Retry-Operator
+ * Netzwerk-Retry-Operator (RxJS 7.3+ empfohlen: retry({ count, delay })-Form)
  */
 function retryWithBackoff(config: NetworkRetryConfig) {
   const {
@@ -389,35 +389,31 @@ function retryWithBackoff(config: NetworkRetryConfig) {
   } = config;
 
   return <T>(source: Observable<T>) => source.pipe(
-    retryWhen(errors => errors.pipe(
-      mergeMap((error, index) => {
-        const retryAttempt = index + 1;
-
-        // Fehler werfen, wenn maximale Retry-Anzahl überschritten
-        if (retryAttempt > maxRetries) {
-          return throwError(() => ({
-            ...error,
-            message: `Netzwerkfehler: ${maxRetries} Wiederholungsversuche fehlgeschlagen`,
-            userMessage: 'Keine Netzwerkverbindung. Bitte warten Sie und versuchen Sie es erneut.'
-          }));
-        }
-
+    retry({
+      count: maxRetries,
+      delay: (error, retryCount) => {
         // Verzögerungszeit mit exponentiellem Backoff berechnen
         const delay = Math.min(
-          initialDelay * Math.pow(backoffMultiplier, index),
+          initialDelay * Math.pow(backoffMultiplier, retryCount - 1),
           maxDelay
         );
 
         console.log(
-          `Retry ${retryAttempt}/${maxRetries} - Wiederholung in ${delay}ms...`
+          `Retry ${retryCount}/${maxRetries} - Wiederholung in ${delay}ms...`
         );
 
         // Nach Verzögerung wiederholen
         return timer(delay).pipe(
-          tap(() => console.log(`Retry ${retryAttempt} wird ausgeführt...`))
+          tap(() => console.log(`Retry ${retryCount} wird ausgeführt...`))
         );
-      })
-    ))
+      }
+    }),
+    // Konvertierung der Fehlermeldung nach Überschreitung der maximalen Wiederholungsanzahl
+    catchError((error: unknown) => throwError(() => ({
+      ...error,
+      message: `Netzwerkfehler: ${maxRetries} Wiederholungsversuche fehlgeschlagen`,
+      userMessage: 'Keine Netzwerkverbindung. Bitte warten Sie und versuchen Sie es erneut.'
+    })))
   );
 }
 
@@ -442,7 +438,7 @@ class NetworkAwareHttpClient {
     const config = { ...defaultConfig, ...retryConfig };
 
     return this.httpClient.get<T>(url).pipe(
-      catchError(error => {
+      catchError((error: unknown) => {
         // Nur bei Netzwerkfehlern (status = 0) wiederholen
         if (error.status === 0) {
           return throwError(() => error);
@@ -601,7 +597,7 @@ class TimeoutAwareHttpClient {
           userMessage: timeoutConfig.message
         }))
       }),
-      catchError(error => {
+      catchError((error: unknown) => {
         if (error.status === -2) {
           console.error(`Timeout: ${url} (${timeoutConfig.duration}ms)`);
         }
@@ -966,7 +962,7 @@ class UserService {
 
   loadUser(userId: number): Observable<User> {
     return this.httpClient.get<User>(`/api/users/${userId}`).pipe(
-      catchError(error => {
+      catchError((error: unknown) => {
         // Im globalen Error-Handler protokollieren
         this.globalErrorHandler.handleError(
           error,
@@ -1001,7 +997,7 @@ const userService = new UserService(new HttpClientService(), globalErrorHandler)
 Implementierung flexibler Retry-Strategien entsprechend der Fehlerart und Situation.
 
 ```typescript
-import { Observable, throwError, timer, range, retryWhen, mergeMap, tap, finalize } from 'rxjs';
+import { Observable, throwError, timer, retry, catchError, tap, finalize } from 'rxjs';
 /**
  * Arten von Retry-Strategien
  */
@@ -1024,7 +1020,7 @@ interface RetryConfig {
 }
 
 /**
- * Erweiterter Retry-Operator
+ * Erweiterter Retry-Operator (RxJS 7.3+ empfohlen: retry({ count, delay })-Form)
  */
 function advancedRetry(config: RetryConfig) {
   const {
@@ -1036,38 +1032,36 @@ function advancedRetry(config: RetryConfig) {
   } = config;
 
   return <T>(source: Observable<T>) => source.pipe(
-    retryWhen(errors => errors.pipe(
-      mergeMap((error, index) => {
-        const retryAttempt = index + 1;
-
-        // Prüfen, ob Retry möglich
+    retry({
+      count: maxRetries,
+      delay: (error, retryCount) => {
+        // Prüfen, ob Retry möglich (sonst werfen, um retry abzubrechen)
         if (!shouldRetry(error)) {
           console.log('Fehler nicht wiederholbar:', error.message);
-          return throwError(() => error);
-        }
-
-        // Maximale Retry-Anzahl prüfen
-        if (retryAttempt > maxRetries) {
-          console.error(`Retry fehlgeschlagen: Nach ${maxRetries} Versuchen immer noch fehlgeschlagen`);
-          return throwError(() => ({
-            ...error,
-            message: `${error.message} (${maxRetries} Wiederholungen fehlgeschlagen)`,
-            retriesExhausted: true
-          }));
+          throw error;
         }
 
         // Verzögerungszeit entsprechend Retry-Strategie berechnen
-        const delay = calculateDelay(strategy, index, initialDelay, maxDelay);
+        const delay = calculateDelay(strategy, retryCount - 1, initialDelay, maxDelay);
 
         console.log(
           `Retry-Strategie: ${strategy} | ` +
-          `Versuch ${retryAttempt}/${maxRetries} | ` +
+          `Versuch ${retryCount}/${maxRetries} | ` +
           `Wiederholung in ${delay}ms...`
         );
 
         return timer(delay);
-      })
-    ))
+      }
+    }),
+    // Fehler konvertieren, wenn alle Retries aufgebraucht sind
+    catchError((error: unknown) => {
+      console.error(`Retry fehlgeschlagen: Nach ${maxRetries} Versuchen immer noch fehlgeschlagen`);
+      return throwError(() => ({
+        ...error,
+        message: `${(error instanceof Error ? error.message : String(error))} (${maxRetries} Wiederholungen fehlgeschlagen)`,
+        retriesExhausted: true
+      }));
+    })
   );
 }
 

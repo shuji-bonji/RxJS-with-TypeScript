@@ -19,8 +19,8 @@ const error$ = throwError(() => new Error('Fehler aufgetreten')); // Ab RxJS 7, 
 // Grundlegende Fehlerbehandlung
 error$
   .pipe(
-    catchError((error) => {
-      console.error('Fehler abgefangen:', error.message);
+    catchError((error: unknown) => {
+      console.error('Fehler abgefangen:', (error instanceof Error ? error.message : String(error)));
       return of('Fallback-Wert nach Fehler');
     })
   )
@@ -49,8 +49,8 @@ import { catchError } from 'rxjs';
 const source$ = throwError(() => new Error('Datenabruffehler'));
 
 source$.pipe(
-  catchError(error => {
-    console.error('Fehler aufgetreten:', error.message);
+  catchError((error: unknown) => {
+    console.error('Fehler aufgetreten:', (error instanceof Error ? error.message : String(error)));
     // Alternative Daten zurückgeben
     return of({ isError: true, data: [], message: 'Standarddaten werden angezeigt' });
   })
@@ -63,7 +63,7 @@ source$.pipe(
 
 ### 2. Bei Fehler wiederholen
 
-Verwenden Sie die Operatoren `retry` oder `retryWhen`, um den Stream bei Fehlerauftreten zu wiederholen.
+Verwenden Sie den `retry`-Operator, um den Stream bei Fehlerauftreten zu wiederholen (ab v7.3 wird die Form `retry({ count, delay })` empfohlen und ersetzt das alte `retryWhen`).
 
 ```ts
 import { interval, throwError, of } from 'rxjs';
@@ -100,34 +100,24 @@ Bei Netzwerkanfragen usw. ist „exponentielles Backoff", das die Wiederholungsi
 
 ```ts
 import { throwError, timer, of } from 'rxjs';
-import { retryWhen, tap, concatMap, catchError } from 'rxjs';
+import { retry, tap, catchError } from 'rxjs';
 
 function fetchWithRetry() {
-  let retryCount = 0;
-
   return throwError(() => new Error('Netzwerkfehler')).pipe(
-    retryWhen((errors) =>
-      errors.pipe(
-        // Fehlerzählung
-        tap((error) => console.log('Fehler aufgetreten:', error.message)),
-        // Verzögerung mit exponentiellem Backoff
-        concatMap(() => {
-          retryCount++;
-          const delayMs = Math.min(1000 * Math.pow(2, retryCount), 10000);
-          console.log(`${retryCount}. Wiederholung in ${delayMs}ms`);
-          return timer(delayMs);
-        }),
-        // Bis zu 5 Wiederholungen
-        tap(() => {
-          if (retryCount >= 5) {
-            throw new Error('Maximale Wiederholungsanzahl überschritten');
-          }
-        })
-      )
-    ),
+    // Empfohlen ab RxJS 7.3+: retry({ count, delay })-Form
+    retry({
+      count: 5, // Bis zu 5 Wiederholungen
+      delay: (error, retryCount) => {
+        console.log('Fehler aufgetreten:', error.message);
+        // Exponentielles Backoff (auf 10 Sekunden begrenzt)
+        const delayMs = Math.min(1000 * Math.pow(2, retryCount), 10000);
+        console.log(`${retryCount}. Wiederholung in ${delayMs}ms`);
+        return timer(delayMs);
+      }
+    }),
     // Finaler Fallback
-    catchError((error) => {
-      console.error('Alle Wiederholungen fehlgeschlagen:', error.message);
+    catchError((error: unknown) => {
+      console.error('Alle Wiederholungen fehlgeschlagen:', (error instanceof Error ? error.message : String(error)));
       return of({
         error: true,
         message: 'Verbindung fehlgeschlagen. Bitte später erneut versuchen.',
@@ -169,8 +159,8 @@ let isLoading = true;
 
 throwError(() => new Error('Verarbeitungsfehler'))
   .pipe(
-    catchError((error) => {
-      console.error('Fehlerverarbeitung:', error.message);
+    catchError((error: unknown) => {
+      console.error('Fehlerverarbeitung:', (error instanceof Error ? error.message : String(error)));
       return throwError(() => error); // Fehler erneut werfen
     }),
     finalize(() => {
@@ -212,9 +202,9 @@ function fetchData(shouldFail = false) {
       // Verarbeitung bei Erfolg
       updateUI(data);
     }),
-    catchError((error) => {
+    catchError((error: unknown) => {
       // UI-Aktualisierung bei Fehler
-      showErrorMessage(error.message);
+      showErrorMessage((error instanceof Error ? error.message : String(error)));
       // Leere Daten oder Standardwert zurückgeben
       return of({ name: 'Standard', value: 0 });
     }),
@@ -270,20 +260,20 @@ function getComments() {
 // Alle Daten abrufen und teilweise Fehler zulassen
 forkJoin({
   user: getUser().pipe(
-    catchError((error) => {
-      console.error('Benutzerabruffehler:', error.message);
+    catchError((error: unknown) => {
+      console.error('Benutzerabruffehler:', (error instanceof Error ? error.message : String(error)));
       return of(null); // Bei Fehler null zurückgeben
     })
   ),
   posts: getPosts().pipe(
-    catchError((error) => {
-      console.error('Beitragsabruffehler:', error.message);
+    catchError((error: unknown) => {
+      console.error('Beitragsabruffehler:', (error instanceof Error ? error.message : String(error)));
       return of([]); // Bei Fehler leeres Array zurückgeben
     })
   ),
   comments: getComments().pipe(
-    catchError((error) => {
-      console.error('Kommentarabruffehler:', error.message);
+    catchError((error: unknown) => {
+      console.error('Kommentarabruffehler:', (error instanceof Error ? error.message : String(error)));
       return of([]); // Bei Fehler leeres Array zurückgeben
     })
   ),

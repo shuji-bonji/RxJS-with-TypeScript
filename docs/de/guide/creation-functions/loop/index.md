@@ -192,7 +192,7 @@ range(1, 10).pipe(
 ### Anwendung in Retry-Logik
 
 ```typescript
-import { range, throwError, of, Observable, mergeMap, retryWhen, delay } from 'rxjs';
+import { range, throwError, of, Observable, mergeMap, retry, delay } from 'rxjs';
 // Funktion zur Simulation des Datenabrufs (scheitert zufällig)
 function fetchData(): Observable<string> {
   const shouldFail = Math.random() > 0.6; // 40% Erfolgswahrscheinlichkeit
@@ -209,19 +209,15 @@ function fetchData(): Observable<string> {
 
 function fetchWithRetry() {
   return fetchData().pipe(
-    retryWhen(errors =>
-      errors.pipe(
-        mergeMap((error, index) => {
-          // Maximal 3 Wiederholungen
-          if (index >= 3) {
-            return throwError(() => error);
-          }
-          console.log(`Wiederholung ${index + 1}/3`);
-          // Exponentieller Backoff: 1s, 2s, 4s
-          return range(0, 1).pipe(delay(Math.pow(2, index) * 1000));
-        })
-      )
-    )
+    // Empfohlen ab RxJS 7.3+: retry({ count, delay })-Form
+    retry({
+      count: 3, // Maximal 3 Wiederholungen
+      delay: (error, retryCount) => {
+        console.log(`Wiederholung ${retryCount}/3`);
+        // Exponentieller Backoff: 1s, 2s, 4s
+        return range(0, 1).pipe(delay(Math.pow(2, retryCount - 1) * 1000));
+      }
+    })
   );
 }
 

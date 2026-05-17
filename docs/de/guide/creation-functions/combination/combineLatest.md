@@ -81,6 +81,9 @@ combineLatest([name$, email$]).subscribe(([name, email]) => {
 - Bei der Eingabe in eines der beiden Felder werden sofort die **letzten beiden Eingabezustände angezeigt**.
 - Mit `startWith('')` wird das kombinierte Ergebnis von Anfang an erhalten.
 
+> [!WARNING] Hinweis für Produktionscode
+> Das obige Beispiel lässt die Abmeldung von `fromEvent` zur Vereinfachung der Erklärung weg. Verwenden Sie in echtem Code `takeUntil(destroy$)`, `take(N)` oder `Subscription.unsubscribe()`, um den Lebenszyklus explizit zu verwalten. Details: [Schwierigkeiten überwinden: Lebenszyklus-Verwaltung](/de/guide/overcoming-difficulties/lifecycle-management.md)
+
 ## Verwandte Operatoren
 
 - **[combineLatestWith](/de/guide/operators/combination/combineLatestWith)** - Pipeable Operator Version (wird in der Pipeline verwendet)

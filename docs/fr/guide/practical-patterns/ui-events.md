@@ -869,7 +869,7 @@ function handleDoubleClick(): void {
 ### Exemple pratique : Affichage retardé au survol
 
 ```typescript
-import { fromEvent, timer, switchMap, takeUntil, mapTo } from 'rxjs';
+import { fromEvent, timer, switchMap, takeUntil, map } from 'rxjs';
 // Approche traditionnelle (commentée pour référence)
 // const tooltip = document.querySelector<HTMLElement>('#tooltip');
 // const target = document.querySelector<HTMLElement>('#hover-target');
@@ -908,7 +908,7 @@ mouseEnter$.pipe(
   switchMap(() =>
     // Afficher tooltip après attente 500ms
     timer(500).pipe(
-      mapTo(true),
+      map(() => true),
       takeUntil(mouseLeave$) // Annuler si souris quitte
     )
   )

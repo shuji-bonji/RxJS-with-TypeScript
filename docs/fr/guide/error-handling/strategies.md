@@ -19,8 +19,8 @@ const error$ = throwError(() => new Error('Une erreur s\'est produite')); // RxJ
 // Gestion basique des erreurs
 error$
   .pipe(
-    catchError((error) => {
-      console.error('Erreur capturée:', error.message);
+    catchError((error: unknown) => {
+      console.error('Erreur capturée:', (error instanceof Error ? error.message : String(error)));
       return of('Valeur de repli après erreur');
     })
   )
@@ -49,8 +49,8 @@ import { catchError } from 'rxjs';
 const source$ = throwError(() => new Error('Erreur de récupération des données'));
 
 source$.pipe(
-  catchError(error => {
-    console.error('Erreur survenue:', error.message);
+  catchError((error: unknown) => {
+    console.error('Erreur survenue:', (error instanceof Error ? error.message : String(error)));
     // Retourne des données alternatives
     return of({ isError: true, data: [], message: 'Affichage des données par défaut' });
   })
@@ -63,7 +63,7 @@ source$.pipe(
 
 ### 2. Réessayer en cas d'erreur
 
-Utilisez les opérateurs `retry` ou `retryWhen` pour réessayer le flux en cas d'erreur.
+Utilisez l'opérateur `retry` pour réessayer le flux en cas d'erreur (depuis v7.3, la forme `retry({ count, delay })` est recommandée et remplace l'ancien `retryWhen`).
 
 ```ts
 import { interval, throwError, of } from 'rxjs';
@@ -100,34 +100,24 @@ Pour les requêtes réseau, le « backoff exponentiel » qui augmente progressiv
 
 ```ts
 import { throwError, timer, of } from 'rxjs';
-import { retryWhen, tap, concatMap, catchError } from 'rxjs';
+import { retry, tap, catchError } from 'rxjs';
 
 function fetchWithRetry() {
-  let retryCount = 0;
-
   return throwError(() => new Error('Erreur réseau')).pipe(
-    retryWhen((errors) =>
-      errors.pipe(
-        // Compter les erreurs
-        tap((error) => console.log('Erreur survenue:', error.message)),
-        // Délai avec backoff exponentiel
-        concatMap(() => {
-          retryCount++;
-          const delayMs = Math.min(1000 * Math.pow(2, retryCount), 10000);
-          console.log(`Retry ${retryCount} dans ${delayMs}ms`);
-          return timer(delayMs);
-        }),
-        // Maximum 5 retries
-        tap(() => {
-          if (retryCount >= 5) {
-            throw new Error('Nombre maximum de retries atteint');
-          }
-        })
-      )
-    ),
+    // Recommandé en RxJS 7.3+ : forme retry({ count, delay })
+    retry({
+      count: 5, // Maximum 5 retries
+      delay: (error, retryCount) => {
+        console.log('Erreur survenue:', error.message);
+        // Backoff exponentiel (plafonné à 10 secondes)
+        const delayMs = Math.min(1000 * Math.pow(2, retryCount), 10000);
+        console.log(`Retry ${retryCount} dans ${delayMs}ms`);
+        return timer(delayMs);
+      }
+    }),
     // Repli final
-    catchError((error) => {
-      console.error('Tous les retries ont échoué:', error.message);
+    catchError((error: unknown) => {
+      console.error('Tous les retries ont échoué:', (error instanceof Error ? error.message : String(error)));
       return of({
         error: true,
         message: 'La connexion a échoué. Veuillez réessayer plus tard.',
@@ -162,8 +152,8 @@ let isLoading = true;
 
 throwError(() => new Error('Erreur de traitement'))
   .pipe(
-    catchError((error) => {
-      console.error('Gestion de l\'erreur:', error.message);
+    catchError((error: unknown) => {
+      console.error('Gestion de l\'erreur:', (error instanceof Error ? error.message : String(error)));
       return throwError(() => error); // Re-throw l'erreur
     }),
     finalize(() => {
@@ -205,9 +195,9 @@ function fetchData(shouldFail = false) {
       // Traitement en cas de succès
       updateUI(data);
     }),
-    catchError((error) => {
+    catchError((error: unknown) => {
       // Mise à jour de l'UI en cas d'erreur
-      showErrorMessage(error.message);
+      showErrorMessage((error instanceof Error ? error.message : String(error)));
       // Retourne des données vides ou par défaut
       return of({ name: 'Par défaut', value: 0 });
     }),
@@ -263,20 +253,20 @@ function getComments() {
 // Récupérer toutes les données en tolérant les erreurs partielles
 forkJoin({
   user: getUser().pipe(
-    catchError((error) => {
-      console.error('Erreur utilisateur:', error.message);
+    catchError((error: unknown) => {
+      console.error('Erreur utilisateur:', (error instanceof Error ? error.message : String(error)));
       return of(null); // Retourne null en cas d'erreur
     })
   ),
   posts: getPosts().pipe(
-    catchError((error) => {
-      console.error('Erreur posts:', error.message);
+    catchError((error: unknown) => {
+      console.error('Erreur posts:', (error instanceof Error ? error.message : String(error)));
       return of([]); // Retourne un tableau vide en cas d'erreur
     })
   ),
   comments: getComments().pipe(
-    catchError((error) => {
-      console.error('Erreur commentaires:', error.message);
+    catchError((error: unknown) => {
+      console.error('Erreur commentaires:', (error instanceof Error ? error.message : String(error)));
       return of([]); // Retourne un tableau vide en cas d'erreur
     })
   ),

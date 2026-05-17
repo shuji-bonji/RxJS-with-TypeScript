@@ -267,10 +267,10 @@ formData$.pipe(
     return allPatches;
   }),
   concatMap(patches => saveToServer(patches)), // Mit Reihenfolgegarantie senden
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('Fehler beim automatischen Speichern:', error);
-    updateStatus(`❌ Speichern fehlgeschlagen: ${error.message}`, '#f44336');
-    return of({ success: false, message: error.message });
+    updateStatus(`❌ Speichern fehlgeschlagen: ${(error instanceof Error ? error.message : String(error))}`, '#f44336');
+    return of({ success: false, message: (error instanceof Error ? error.message : String(error)) });
   })
 ).subscribe(result => {
   if (result.success) {

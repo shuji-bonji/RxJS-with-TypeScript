@@ -869,7 +869,7 @@ function handleDoubleClick(): void {
 ### Praxisbeispiel: Verzögerte Anzeige beim Hovern
 
 ```typescript
-import { fromEvent, timer, switchMap, takeUntil, mapTo } from 'rxjs';
+import { fromEvent, timer, switchMap, takeUntil, map } from 'rxjs';
 // Traditional approach (commented for reference)
 // const tooltip = document.querySelector<HTMLElement>('#tooltip');
 // const target = document.querySelector<HTMLElement>('#hover-target');
@@ -908,7 +908,7 @@ mouseEnter$.pipe(
   switchMap(() =>
     // Tooltip nach 500ms anzeigen
     timer(500).pipe(
-      mapTo(true),
+      map(() => true),
       takeUntil(mouseLeave$) // Abbrechen, wenn Maus weg
     )
   )

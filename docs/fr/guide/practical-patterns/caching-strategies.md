@@ -827,7 +827,7 @@ class OfflineFirstCache<T> {
         this.setToLocalStorage(key, cacheItem);
         console.log('Données réseau obtenues et mises en cache');
       }),
-      catchError(err => {
+      catchError((err: unknown) => {
         console.error('Erreur réseau:', err);
         // Retourner le cache en cas d'erreur réseau
         return cached ? of(cached.data) : throwError(() => err);
@@ -960,7 +960,7 @@ class ResilientCache<T> {
             expiresAt: now + ttl
           });
         }),
-        catchError(err => {
+        catchError((err: unknown) => {
           console.error('Erreur réseau:', err);
 
           // Retourner le cache ancien en cas d'erreur
@@ -1149,7 +1149,7 @@ class PrefetchCache<T> {
         });
         console.log(`Prefetch terminé: ${key}`);
       }),
-      catchError(err => {
+      catchError((err: unknown) => {
         console.error(`Erreur de prefetch: ${key}`, err);
         return of(null); // Ignorer l'erreur
       })

@@ -82,6 +82,9 @@ combineLatest([name$, email$]).subscribe(([name, email]) => {
 - Lorsque vous tapez dans l'un des deux champs, les **deux derniers états de saisie** sont immédiatement affichés.
 - La fonction `startWith('')` est utilisée pour obtenir le résultat combiné depuis le début.
 
+> [!WARNING] Attention en code de production
+> L'exemple ci-dessus omet la désinscription de `fromEvent` pour simplifier l'explication. Dans du code réel, gérez explicitement le cycle de vie avec `takeUntil(destroy$)`, `take(N)`, ou `Subscription.unsubscribe()`. Détails : [Surmonter les difficultés : gestion du cycle de vie](/fr/guide/overcoming-difficulties/lifecycle-management.md)
+
 
 ## Opérateurs associés
 

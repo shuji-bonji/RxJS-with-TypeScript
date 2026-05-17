@@ -146,7 +146,7 @@ const userSearch$ = fromEvent(searchButton, 'click').pipe(
     // API-Aufruf simulieren (dauert 3 Sekunden)
     return timer(3000).pipe(
       map(() => '🔍 Suchergebnis: 100 Treffer'),
-      catchError(err => of('❌ Ein Fehler ist aufgetreten'))
+      catchError((err: unknown) => of('❌ Ein Fehler ist aufgetreten'))
     );
   })
 );
@@ -210,7 +210,7 @@ button.addEventListener('click', () => {
         return throwError(() => new Error('Haupt-API fehlgeschlagen'));
       }
     }),
-    catchError(err => {
+    catchError((err: unknown) => {
       console.log('Haupt-API fehlgeschlagen, zu Fallback wechseln...');
       // Bei Fehler verzögern, um Fallback den Vortritt zu lassen
       return of('').pipe(delay(10000));

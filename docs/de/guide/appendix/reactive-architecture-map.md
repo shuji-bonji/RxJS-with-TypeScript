@@ -222,6 +222,9 @@ input$.subscribe(async searchTerm => {
 - Einfache Integration mehrerer asynchroner Prozesse
 :::
 
+> [!WARNING] Hinweis für Produktionscode
+> Das obige Beispiel lässt die Abmeldung von `fromEvent` zur Vereinfachung der Erklärung weg. Verwenden Sie in echtem Code `takeUntil(destroy$)`, `take(N)` oder `Subscription.unsubscribe()`, um den Lebenszyklus explizit zu verwalten. Details: [Schwierigkeiten überwinden: Lebenszyklus-Verwaltung](/de/guide/overcoming-difficulties/lifecycle-management.md)
+
 ## 2. Reactive Communication (Kommunikationsschicht)
 
 Diese Schicht realisiert **bidirektionales Daten-Streaming** zwischen Client und Server.
@@ -256,7 +259,7 @@ const socket$ = webSocket<{ type: string; data: any }>({
 socket$
   .pipe(
     retry({ count: 3, delay: 1000 }),  // Automatische Wiederverbindung
-    catchError(error => {
+    catchError((error: unknown) => {
       console.error('WebSocket-Fehler:', error);
       return of({ type: 'error', data: error });
     })
@@ -700,7 +703,7 @@ const autoSave$ = editorChange$.pipe(
       return res.json();
     });
   }),
-  catchError(error => {
+  catchError((error: unknown) => {
     statusDiv!.textContent = '❌ Speichern fehlgeschlagen';
     return of(null);
   })

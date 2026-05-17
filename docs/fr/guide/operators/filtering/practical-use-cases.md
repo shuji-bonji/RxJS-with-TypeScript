@@ -41,6 +41,9 @@ fromEvent(searchInput, 'input')
 - La recherche n'est exécutée que si **3 caractères ou plus** sont saisis.
 - Les entrées consécutives du **même mot** sont ignorées.
 
+> [!WARNING] Attention en code de production
+> L'exemple ci-dessus omet la désinscription de `fromEvent` pour simplifier l'explication. Dans du code réel, gérez explicitement le cycle de vie avec `takeUntil(destroy$)`, `take(N)`, ou `Subscription.unsubscribe()`. Détails : [Surmonter les difficultés : gestion du cycle de vie](/fr/guide/overcoming-difficulties/lifecycle-management.md)
+
 
 ## Simulation de défilement infini
 

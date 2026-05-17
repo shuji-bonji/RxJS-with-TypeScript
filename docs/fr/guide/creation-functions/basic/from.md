@@ -213,7 +213,7 @@ function fetchUser(id: number): Observable<User> {
     fetch(`https://jsonplaceholder.typicode.com/users/${id}`)
       .then(response => response.json())
   ).pipe(
-    catchError(error => {
+    catchError((error: unknown) => {
       console.error('Erreur API:', error);
       return of({ id: 0, name: 'Inconnu', email: '' });
     })

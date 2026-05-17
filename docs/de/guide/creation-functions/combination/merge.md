@@ -82,6 +82,9 @@ merge(click$, timer$).subscribe((value) => {
 - **Der Timer erzeugt alle 3 Sekunden ein sich wiederholendes Ereignis**.
 - Erleben Sie die Möglichkeit, zwei verschiedene Arten von Observable in **Echtzeit zu kombinieren**.
 
+> [!WARNING] Hinweis für Produktionscode
+> Das obige Beispiel lässt die Abmeldung von `fromEvent` zur Vereinfachung der Erklärung weg. Verwenden Sie in echtem Code `takeUntil(destroy$)`, `take(N)` oder `Subscription.unsubscribe()`, um den Lebenszyklus explizit zu verwalten. Details: [Schwierigkeiten überwinden: Lebenszyklus-Verwaltung](/de/guide/overcoming-difficulties/lifecycle-management.md)
+
 ## Verwandte Operatoren
 
 - **[mergeWith](/de/guide/operators/combination/mergeWith)** - Pipeable Operator Version (wird in der Pipeline verwendet)

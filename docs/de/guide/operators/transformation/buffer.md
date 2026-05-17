@@ -114,13 +114,13 @@ Durch Kombination mehrerer Trigger-Observables ist flexiblere Steuerung möglich
 
 ```ts
 import { interval, merge, fromEvent, timer } from 'rxjs';
-import { buffer, mapTo } from 'rxjs';
+import { buffer, map } from 'rxjs';
 
 const source$ = interval(100);
 
 // Mehrere Trigger: Klick oder 5 Sekunden vergangen
-const clicks$ = fromEvent(document, 'click').pipe(mapTo('click'));
-const fiveSeconds$ = timer(5000, 5000).pipe(mapTo('timer'));
+const clicks$ = fromEvent(document, 'click').pipe(map(() => 'click'));
+const fiveSeconds$ = timer(5000, 5000).pipe(map(() => 'timer'));
 const trigger$ = merge(clicks$, fiveSeconds$);
 
 source$.pipe(
