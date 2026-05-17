@@ -1,0 +1,174 @@
+{
+  "no_translate": [
+    "forkJoin", "combineLatest", "withLatestFrom", "mergeWith", "concatWith", "raceWith",
+    "combineLatestWith", "merge", "concat", "zip", "race", "partition",
+    "Observable", "Subject", "BehaviorSubject", "ReplaySubject", "AsyncSubject",
+    "Observer", "Subscription", "Subscriber", "Scheduler",
+    "of", "from", "fromEvent", "fromFetch", "ajax", "interval", "timer", "range", "generate",
+    "iif", "defer", "scheduled", "using",
+    "map", "filter", "debounceTime", "throttleTime", "distinctUntilChanged", "distinct",
+    "mergeMap", "switchMap", "concatMap", "exhaustMap", "take", "takeUntil", "takeWhile",
+    "skip", "skipUntil", "skipWhile", "first", "last", "single", "find", "findIndex",
+    "elementAt", "ignoreElements", "sample", "sampleTime", "audit", "auditTime",
+    "buffer", "bufferTime", "bufferCount", "bufferToggle", "bufferWhen",
+    "window", "windowTime", "windowCount", "windowToggle", "windowWhen",
+    "tap", "delay", "timeout", "retry", "retryWhen", "catchError", "finalize", "throwIfEmpty",
+    "share", "shareReplay", "publish", "multicast", "refCount",
+    "toArray", "reduce", "scan", "mergeScan", "pairwise", "groupBy",
+    "materialize", "dematerialize", "every", "isEmpty", "count",
+    "TypeScript", "JavaScript", "Promise", "fetch", "async", "await",
+    "WebSocket", "RxJS", "Angular", "React", "Vue", "Signals", "NgRx",
+    "pipe", "subscribe", "unsubscribe", "complete", "next", "error",
+    "Creation Function", "Pipeable Operator"
+  ],
+  "fr": {
+    "table_headers": {
+      "特徴": "Caractéristique", "説明": "Description", "ユースケース": "Cas d'usage",
+      "例": "Exemple", "オペレーター": "Opérateur", "入力": "Entrée", "出力": "Sortie",
+      "結果": "Résultat", "注意": "Attention", "エラー": "Erreur", "期間": "Période",
+      "完了条件": "Condition de complétion", "出力タイミング": "Timing d'émission",
+      "出力値": "Valeur émise", "選択基準": "Critère de sélection",
+      "主な用途": "Cas d'usage principal", "無限ストリーム": "Flux infini"
+    },
+    "code_jp": {
+      "値": "valeur", "発行": "émission", "出力": "Sortie", "例": "Ex.",
+      "はい": "oui", "いいえ": "non", "比較": "Comparaison", "作成": "Créer",
+      "期間": "période", "結果": "résultat", "完了": "complété",
+      "並列取得": "acquisition parallèle", "初期データロード": "chargement initial des données",
+      "フォーム監視": "surveillance de formulaire", "リアルタイム同期": "synchronisation en temps réel",
+      "動的な期間": "période dynamique", "動的サンプリング": "échantillonnage dynamique",
+      "高負荷": "charge élevée", "中負荷": "charge moyenne", "低負荷": "charge faible",
+      "良い例": "Bon exemple", "悪い例": "Mauvais exemple",
+      "最大": "Max.", "最初": "Premier", "最後": "Dernier", "定期的": "Périodique"
+    },
+    "callouts": {
+      "production_warning": "> [!WARNING] Attention en code de production\n> L'exemple ci-dessus omet la désinscription de `fromEvent` pour simplifier l'explication. Dans du code réel, gérez explicitement le cycle de vie avec `takeUntil(destroy$)`, `take(N)`, ou `Subscription.unsubscribe()`. Détails : [Surmonter les difficultés : gestion du cycle de vie](/fr/guide/overcoming-difficulties/lifecycle-management.md)",
+      "retrywhen_deprecated": "> [!IMPORTANT] retryWhen est déprécié\n> L'ancien opérateur `retryWhen` (déprécié en v7.3, prévu pour suppression en v8) doit être remplacé par la forme `retry({ count, delay })` présentée dans cette section. Le callback `delay` reçoit `(error, retryCount)` en arguments et retourne un `Observable` (par exemple `timer(ms)`) pour contrôler le temps d'attente avant la nouvelle tentative."
+    }
+  },
+  "de": {
+    "table_headers": {
+      "特徴": "Merkmal", "説明": "Beschreibung", "ユースケース": "Anwendungsfall",
+      "例": "Beispiel", "オペレーター": "Operator", "入力": "Eingabe", "出力": "Ausgabe",
+      "結果": "Ergebnis", "注意": "Hinweis", "エラー": "Fehler", "期間": "Zeitraum",
+      "完了条件": "Abschlussbedingung", "出力タイミング": "Ausgabe-Timing",
+      "出力値": "Emittierter Wert", "選択基準": "Auswahlkriterium",
+      "主な用途": "Hauptanwendung", "無限ストリーム": "Unendlicher Stream"
+    },
+    "code_jp": {
+      "値": "Wert", "発行": "Ausgabe", "出力": "Ausgabe", "例": "Bsp.",
+      "はい": "ja", "いいえ": "nein", "比較": "Vergleich", "作成": "Erstellen",
+      "期間": "Periode", "結果": "Ergebnis", "完了": "abgeschlossen",
+      "並列取得": "paralleler Abruf", "初期データロード": "initiales Laden",
+      "フォーム監視": "Formularüberwachung", "リアルタイム同期": "Echtzeit-Synchronisation",
+      "動的な期間": "dynamischer Zeitraum", "動的サンプリング": "dynamisches Sampling",
+      "高負荷": "hohe Last", "中負荷": "mittlere Last", "低負荷": "niedrige Last",
+      "良い例": "Gutes Beispiel", "悪い例": "Schlechtes Beispiel",
+      "最大": "Max.", "最初": "Erste", "最後": "Letzte", "定期的": "Periodisch"
+    },
+    "callouts": {
+      "production_warning": "> [!WARNING] Hinweis für Produktionscode\n> Das obige Beispiel lässt die Abmeldung von `fromEvent` zur Vereinfachung der Erklärung weg. Verwenden Sie in echtem Code `takeUntil(destroy$)`, `take(N)` oder `Subscription.unsubscribe()`, um den Lebenszyklus explizit zu verwalten. Details: [Schwierigkeiten überwinden: Lebenszyklus-Verwaltung](/de/guide/overcoming-difficulties/lifecycle-management.md)",
+      "retrywhen_deprecated": "> [!IMPORTANT] retryWhen ist deprecated\n> Der alte `retryWhen`-Operator (in v7.3 deprecated, in v8 zur Entfernung vorgesehen) sollte durch die in diesem Abschnitt vorgestellte `retry({ count, delay })`-Form ersetzt werden. Der `delay`-Callback erhält `(error, retryCount)` als Argumente und gibt ein `Observable` (z. B. `timer(ms)`) zurück, um die Wartezeit bis zur nächsten Wiederholung zu steuern."
+    }
+  },
+  "it": {
+    "table_headers": {
+      "特徴": "Caratteristica", "説明": "Descrizione", "ユースケース": "Caso d'uso",
+      "例": "Esempio", "オペレーター": "Operatore", "入力": "Input", "出力": "Output",
+      "結果": "Risultato", "注意": "Attenzione", "エラー": "Errore", "期間": "Periodo",
+      "完了条件": "Condizione di completamento", "出力タイミング": "Timing di emissione",
+      "出力値": "Valore emesso", "選択基準": "Criterio di selezione",
+      "主な用途": "Uso principale", "無限ストリーム": "Stream infinito"
+    },
+    "code_jp": {
+      "値": "valore", "発行": "emissione", "出力": "Output", "例": "Es.",
+      "はい": "sì", "いいえ": "no", "比較": "Confronto", "作成": "Creare",
+      "期間": "periodo", "結果": "risultato", "完了": "completato",
+      "並列取得": "acquisizione parallela", "初期データロード": "caricamento iniziale dati",
+      "フォーム監視": "monitoraggio form", "リアルタイム同期": "sincronizzazione in tempo reale",
+      "動的な期間": "periodo dinamico", "動的サンプリング": "campionamento dinamico",
+      "高負荷": "carico alto", "中負荷": "carico medio", "低負荷": "carico basso",
+      "良い例": "Esempio positivo", "悪い例": "Esempio negativo",
+      "最大": "Max.", "最初": "Primo", "最後": "Ultimo", "定期的": "Periodico"
+    },
+    "callouts": {
+      "production_warning": "> [!WARNING] Attenzione in codice di produzione\n> L'esempio sopra omette la disiscrizione di `fromEvent` per semplificare la spiegazione. In codice reale, gestisci esplicitamente il ciclo di vita con `takeUntil(destroy$)`, `take(N)`, o `Subscription.unsubscribe()`. Dettagli: [Superare le difficoltà: gestione del ciclo di vita](/it/guide/overcoming-difficulties/lifecycle-management.md)",
+      "retrywhen_deprecated": "> [!IMPORTANT] retryWhen è deprecato\n> Il vecchio operatore `retryWhen` (deprecato in v7.3, previsto per la rimozione in v8) deve essere sostituito con la forma `retry({ count, delay })` presentata in questa sezione. Il callback `delay` riceve `(error, retryCount)` come argomenti e restituisce un `Observable` (per esempio `timer(ms)`) per controllare il tempo di attesa prima del nuovo tentativo."
+    }
+  },
+  "es": {
+    "table_headers": {
+      "特徴": "Característica", "説明": "Descripción", "ユースケース": "Caso de uso",
+      "例": "Ejemplo", "オペレーター": "Operador", "入力": "Entrada", "出力": "Salida",
+      "結果": "Resultado", "注意": "Atención", "エラー": "Error", "期間": "Periodo",
+      "完了条件": "Condición de finalización", "出力タイミング": "Tiempo de emisión",
+      "出力値": "Valor emitido", "選択基準": "Criterio de selección",
+      "主な用途": "Uso principal", "無限ストリーム": "Stream infinito"
+    },
+    "code_jp": {
+      "値": "valor", "発行": "emisión", "出力": "Salida", "例": "Ej.",
+      "はい": "sí", "いいえ": "no", "比較": "Comparación", "作成": "Crear",
+      "期間": "periodo", "結果": "resultado", "完了": "completado",
+      "並列取得": "adquisición paralela", "初期データロード": "carga inicial de datos",
+      "フォーム監視": "monitorización de formulario", "リアルタイム同期": "sincronización en tempo real",
+      "動的な期間": "periodo dinámico", "動的サンプリング": "muestreo dinámico",
+      "高負荷": "carga alta", "中負荷": "carga media", "低負荷": "carga baja",
+      "良い例": "Buen ejemplo", "悪い例": "Mal ejemplo",
+      "最大": "Máx.", "最初": "Primero", "最後": "Último", "定期的": "Periódico"
+    },
+    "callouts": {
+      "production_warning": "> [!WARNING] Atención en código de producción\n> El ejemplo anterior omite la cancelación de suscripción de `fromEvent` para simplificar la explicación. En código real, gestione explícitamente el ciclo de vida con `takeUntil(destroy$)`, `take(N)`, o `Subscription.unsubscribe()`. Detalles: [Superar dificultades: gestión del ciclo de vida](/es/guide/overcoming-difficulties/lifecycle-management.md)",
+      "retrywhen_deprecated": "> [!IMPORTANT] retryWhen está obsoleto\n> El antiguo operador `retryWhen` (obsoleto en v7.3, previsto para eliminación en v8) debe reemplazarse con la forma `retry({ count, delay })` presentada en esta sección. El callback `delay` recibe `(error, retryCount)` como argumentos y devuelve un `Observable` (por ejemplo `timer(ms)`) para controlar el tiempo de espera antes del nuevo intento."
+    }
+  },
+  "nl": {
+    "table_headers": {
+      "特徴": "Kenmerk", "説明": "Beschrijving", "ユースケース": "Gebruikscase",
+      "例": "Voorbeeld", "オペレーター": "Operator", "入力": "Invoer", "出力": "Uitvoer",
+      "結果": "Resultaat", "注意": "Let op", "エラー": "Fout", "期間": "Periode",
+      "完了条件": "Voltooiingsvoorwaarde", "出力タイミング": "Emissie-timing",
+      "出力値": "Geëmitteerde waarde", "選択基準": "Selectiecriterium",
+      "主な用途": "Hoofdgebruik", "無限ストリーム": "Oneindige stream"
+    },
+    "code_jp": {
+      "値": "waarde", "発行": "uitgifte", "出力": "Uitvoer", "例": "Bv.",
+      "はい": "ja", "いいえ": "nee", "比較": "Vergelijking", "作成": "Maken",
+      "期間": "periode", "結果": "resultaat", "完了": "voltooid",
+      "並列取得": "parallelle acquisitie", "初期データロード": "initieel data laden",
+      "フォーム監視": "formuliermonitoring", "リアルタイム同期": "realtime synchronisatie",
+      "動的な期間": "dynamische periode", "動的サンプリング": "dynamische bemonstering",
+      "高負荷": "hoge belasting", "中負荷": "gemiddelde belasting", "低負荷": "lage belasting",
+      "良い例": "Goed voorbeeld", "悪い例": "Slecht voorbeeld",
+      "最大": "Max.", "最初": "Eerste", "最後": "Laatste", "定期的": "Periodiek"
+    },
+    "callouts": {
+      "production_warning": "> [!WARNING] Let op in productiecode\n> Het bovenstaande voorbeeld laat het afmelden van `fromEvent` weg om de uitleg te vereenvoudigen. In echte code, beheer expliciet de levenscyclus met `takeUntil(destroy$)`, `take(N)`, of `Subscription.unsubscribe()`. Details: [Overwinnen van moeilijkheden: levenscyclusbeheer](/nl/guide/overcoming-difficulties/lifecycle-management.md)",
+      "retrywhen_deprecated": "> [!IMPORTANT] retryWhen is deprecated\n> De oude `retryWhen` operator (deprecated in v7.3, gepland voor verwijdering in v8) moet vervangen worden door de `retry({ count, delay })` vorm gepresenteerd in deze sectie. De `delay` callback ontvangt `(error, retryCount)` als argumenten en retourneert een `Observable` (bijvoorbeeld `timer(ms)`) om de wachttijd voor de volgende poging te besturen."
+    }
+  },
+  "pt": {
+    "table_headers": {
+      "特徴": "Característica", "説明": "Descrição", "ユースケース": "Caso de uso",
+      "例": "Exemplo", "オペレーター": "Operador", "入力": "Entrada", "出力": "Saída",
+      "結果": "Resultado", "注意": "Atenção", "エラー": "Erro", "期間": "Período",
+      "完了条件": "Condição de conclusão", "出力タイミング": "Timing de emissão",
+      "出力値": "Valor emitido", "選択基準": "Critério de seleção",
+      "主な用途": "Uso principal", "無限ストリーム": "Stream infinito"
+    },
+    "code_jp": {
+      "値": "valor", "発行": "emissão", "出力": "Saída", "例": "Ex.",
+      "はい": "sim", "いいえ": "não", "比較": "Comparação", "作成": "Criar",
+      "期間": "período", "結果": "resultado", "完了": "concluído",
+      "並列取得": "aquisição paralela", "初期データロード": "carregamento inicial de dados",
+      "フォーム監視": "monitoramento de formulário", "リアルタイム同期": "sincronização em tempo real",
+      "動的な期間": "período dinâmico", "動的サンプリング": "amostragem dinâmica",
+      "高負荷": "carga alta", "中負荷": "carga média", "低負荷": "carga baixa",
+      "良い例": "Bom exemplo", "悪い例": "Exemplo ruim",
+      "最大": "Máx.", "最初": "Primeiro", "最後": "Último", "定期的": "Periódico"
+    },
+    "callouts": {
+      "production_warning": "> [!WARNING] Atenção em código de produção\n> O exemplo acima omite o cancelamento da inscrição de `fromEvent` para simplificar a explicação. Em código real, gerencie explicitamente o ciclo de vida com `takeUntil(destroy$)`, `take(N)`, ou `Subscription.unsubscribe()`. Detalhes: [Superar dificuldades: gerenciamento do ciclo de vida](/pt/guide/overcoming-difficulties/lifecycle-management.md)",
+      "retrywhen_deprecated": "> [!IMPORTANT] retryWhen está deprecated\n> O antigo operador `retryWhen` (deprecated em v7.3, previsto para remoção em v8) deve ser substituído pela forma `retry({ count, delay })` apresentada nesta seção. O callback `delay` recebe `(error, retryCount)` como argumentos e retorna um `Observable` (por exemplo `timer(ms)`) para controlar o tempo de espera antes da próxima tentativa."
+    }
+  }
+}
