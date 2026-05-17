@@ -274,8 +274,8 @@ notifications$.pipe(
 
     // Auto-hide after 5 seconds
     return timer(5000).pipe(
-      takeUntil(dismiss$), // Cancel if manually dismissed
-      map(() => notification.id)
+      map(() => notification.id),
+      takeUntil(dismiss$) // Cancel if manually dismissed
     );
   })
 ).subscribe(id => {

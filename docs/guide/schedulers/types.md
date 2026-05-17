@@ -453,7 +453,7 @@ fetchData(1)
 
 ```ts
 import { throwError, timer, of } from 'rxjs';
-import { retryWhen, mergeMap, tap } from 'rxjs';
+import { retry, mergeMap } from 'rxjs';
 
 function fetchDataWithBackoff(id: number) {
   return of(id).pipe(
@@ -469,30 +469,25 @@ function fetchDataWithBackoff(id: number) {
 
 fetchDataWithBackoff(1)
   .pipe(
-    retryWhen(errors =>
-      errors.pipe(
-        mergeMap((error, index) => {
-          const retryCount = index + 1;
+    // RxJS 7.3+ 推奨: retry({ count, delay }) 形式
+    retry({
+      count: 3, // 最大3回まで再試行
+      delay: (error, retryCount) => {
+        // 指数バックオフ: 1秒, 2秒, 4秒...
+        const delayTime = Math.pow(2, retryCount - 1) * 1000;
+        console.log(`🔄 リトライ ${retryCount}回目 (${delayTime}ms後)`);
 
-          // 最大リトライ数チェック
-          if (retryCount > 3) {
-            console.log('❌ 最大リトライ数に到達');
-            throw error;
-          }
-
-          // 指数バックオフ: 1秒, 2秒, 4秒...
-          const delayTime = Math.pow(2, index) * 1000;
-          console.log(`🔄 リトライ ${retryCount}回目 (${delayTime}ms後)`);
-
-          // timer は内部的に asyncScheduler を使用
-          return timer(delayTime);
-        })
-      )
-    )
+        // timer は内部的に asyncScheduler を使用
+        return timer(delayTime);
+      }
+    })
   )
   .subscribe({
     next: result => console.log('✅ 成功:', result),
-    error: error => console.log('❌ 最終エラー:', error.message)
+    error: error => {
+      console.log('❌ 最大リトライ数に到達');
+      console.log('❌ 最終エラー:', error.message);
+    }
   });
 
 // 出力例:
@@ -509,23 +504,21 @@ fetchDataWithBackoff(1)
 
 ```ts
 import { throwError, asyncScheduler, of } from 'rxjs';
-import { retryWhen, mergeMap, delay } from 'rxjs';
+import { retry, mergeMap, delay } from 'rxjs';
 
 function fetchDataWithScheduler(id: number, scheduler = asyncScheduler) {
   return of(id).pipe(
     mergeMap(() => throwError(() => new Error('Error'))),
-    retryWhen(errors =>
-      errors.pipe(
-        mergeMap((error, index) => {
-          if (index >= 2) throw error;
-
-          // スケジューラーを明示的に指定
-          return of(null).pipe(
-            delay(1000, scheduler)
-          );
-        })
-      )
-    )
+    // RxJS 7.3+ 推奨: retry({ count, delay }) 形式
+    retry({
+      count: 2, // 最大2回まで再試行
+      delay: (error, retryCount) => {
+        // スケジューラーを明示的に指定
+        return of(null).pipe(
+          delay(1000, scheduler)
+        );
+      }
+    })
   );
 }
 

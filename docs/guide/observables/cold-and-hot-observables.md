@@ -342,7 +342,7 @@ import { shareReplay, take } from 'rxjs';
 
 const request$ = interval(1000).pipe(
   take(3),
-  shareReplay(2)  // 最後の2つの値をキャッシュ
+  shareReplay({ bufferSize: 2, refCount: true })  // 最後の2つの値をキャッシュ
 );
 
 // 1回目の購読
@@ -404,7 +404,7 @@ class UserService {
         this.cache$ = null;  // エラー時はキャッシュをクリア
         return throwError(() => err);
       }),
-      shareReplay(1)  // 最後の結果をキャッシュ
+      shareReplay({ bufferSize: 1, refCount: true })  // 最後の結果をキャッシュ
     );
 
     return this.cache$;

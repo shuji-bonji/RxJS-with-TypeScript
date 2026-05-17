@@ -237,7 +237,7 @@ WebSocket接続は、ネットワーク障害やサーバー再起動で切断�
 以下は、指数バックオフ戦略を使用した自動再接続の実装例です。
 
 ```typescript
-import { retryWhen, delay, tap, take } from 'rxjs';
+import { timer, retry } from 'rxjs';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 
 class ReconnectingWebSocketService {
@@ -263,18 +263,16 @@ class ReconnectingWebSocketService {
         }
       });
 
-      // 自動再接続
+      // 自動再接続（RxJS 7.3+ 推奨: retry({ count, delay }) 形式）
       this.socket$.pipe(
-        retryWhen(errors =>
-          errors.pipe(
-            tap(() => {
-              this.reconnectAttempts++;
-              console.log(`再接続試行 ${this.reconnectAttempts}/${this.maxReconnectAttempts}`);
-            }),
-            delay(this.getReconnectDelay()),
-            take(this.maxReconnectAttempts)
-          )
-        )
+        retry({
+          count: this.maxReconnectAttempts,
+          delay: (error, retryCount) => {
+            this.reconnectAttempts = retryCount;
+            console.log(`再接続試行 ${retryCount}/${this.maxReconnectAttempts}`);
+            return timer(this.getReconnectDelay());
+          }
+        })
       ).subscribe({
         next: message => console.log('受信:', message),
         error: err => console.error('最大再接続回数に達しました:', err)

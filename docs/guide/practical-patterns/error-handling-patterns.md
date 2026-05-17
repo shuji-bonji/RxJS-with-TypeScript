@@ -366,7 +366,7 @@ userDetail.init();
 ネットワークエラーは一時的な問題であることが多いため、適切なリトライ戦略を実装します。
 
 ```typescript
-import { Observable, timer, throwError, retryWhen, mergeMap, tap } from 'rxjs';
+import { Observable, timer, throwError, retry, tap, catchError } from 'rxjs';
 /**
  * ネットワークエラー専用リトライ設定
  */
@@ -378,7 +378,7 @@ interface NetworkRetryConfig {
 }
 
 /**
- * ネットワークリトライオペレーター
+ * ネットワークリトライオペレーター（RxJS 7.3+ 推奨: retry({ count, delay }) 形式）
  */
 function retryWithBackoff(config: NetworkRetryConfig) {
   const {
@@ -389,35 +389,31 @@ function retryWithBackoff(config: NetworkRetryConfig) {
   } = config;
 
   return <T>(source: Observable<T>) => source.pipe(
-    retryWhen(errors => errors.pipe(
-      mergeMap((error, index) => {
-        const retryAttempt = index + 1;
-
-        // 最大リトライ回数を超えたらエラーを投げる
-        if (retryAttempt > maxRetries) {
-          return throwError(() => ({
-            ...error,
-            message: `ネットワークエラー: ${maxRetries}回の再試行に失敗しました`,
-            userMessage: 'ネットワークに接続できません。しばらく待ってから再試行してください。'
-          }));
-        }
-
+    retry({
+      count: maxRetries,
+      delay: (error, retryCount) => {
         // 指数バックオフで遅延時間を計算
         const delay = Math.min(
-          initialDelay * Math.pow(backoffMultiplier, index),
+          initialDelay * Math.pow(backoffMultiplier, retryCount - 1),
           maxDelay
         );
 
         console.log(
-          `リトライ ${retryAttempt}/${maxRetries} - ${delay}ms後に再試行...`
+          `リトライ ${retryCount}/${maxRetries} - ${delay}ms後に再試行...`
         );
 
         // 遅延後にリトライ
         return timer(delay).pipe(
-          tap(() => console.log(`リトライ ${retryAttempt} 実行中...`))
+          tap(() => console.log(`リトライ ${retryCount} 実行中...`))
         );
-      })
-    ))
+      }
+    }),
+    // 最大リトライ回数を超えてエラーになった場合のメッセージ変換
+    catchError(error => throwError(() => ({
+      ...error,
+      message: `ネットワークエラー: ${maxRetries}回の再試行に失敗しました`,
+      userMessage: 'ネットワークに接続できません。しばらく待ってから再試行してください。'
+    })))
   );
 }
 
@@ -1001,7 +997,7 @@ const userService = new UserService(new HttpClientService(), globalErrorHandler)
 エラーの種類や状況に応じた、柔軟なリトライ戦略を実装します。
 
 ```typescript
-import { Observable, throwError, timer, range, retryWhen, mergeMap, tap, finalize } from 'rxjs';
+import { Observable, throwError, timer, retry, catchError, tap, finalize } from 'rxjs';
 /**
  * リトライ戦略の種類
  */
@@ -1024,7 +1020,7 @@ interface RetryConfig {
 }
 
 /**
- * 高度なリトライオペレーター
+ * 高度なリトライオペレーター（RxJS 7.3+ 推奨: retry({ count, delay }) 形式）
  */
 function advancedRetry(config: RetryConfig) {
   const {
@@ -1036,38 +1032,36 @@ function advancedRetry(config: RetryConfig) {
   } = config;
 
   return <T>(source: Observable<T>) => source.pipe(
-    retryWhen(errors => errors.pipe(
-      mergeMap((error, index) => {
-        const retryAttempt = index + 1;
-
-        // リトライ可能かチェック
+    retry({
+      count: maxRetries,
+      delay: (error, retryCount) => {
+        // リトライ可能かチェック（不可能なら throw して retry を中断）
         if (!shouldRetry(error)) {
           console.log('リトライ不可能なエラー:', error.message);
-          return throwError(() => error);
-        }
-
-        // 最大リトライ回数チェック
-        if (retryAttempt > maxRetries) {
-          console.error(`リトライ失敗: ${maxRetries}回の試行後も失敗`);
-          return throwError(() => ({
-            ...error,
-            message: `${error.message} (${maxRetries}回のリトライに失敗)`,
-            retriesExhausted: true
-          }));
+          throw error;
         }
 
         // リトライ戦略に応じた遅延時間を計算
-        const delay = calculateDelay(strategy, index, initialDelay, maxDelay);
+        const delay = calculateDelay(strategy, retryCount - 1, initialDelay, maxDelay);
 
         console.log(
           `リトライ戦略: ${strategy} | ` +
-          `試行 ${retryAttempt}/${maxRetries} | ` +
+          `試行 ${retryCount}/${maxRetries} | ` +
           `${delay}ms後に再試行...`
         );
 
         return timer(delay);
-      })
-    ))
+      }
+    }),
+    // 最大リトライ回数を使い切ったエラーを変換
+    catchError(error => {
+      console.error(`リトライ失敗: ${maxRetries}回の試行後も失敗`);
+      return throwError(() => ({
+        ...error,
+        message: `${error.message} (${maxRetries}回のリトライに失敗)`,
+        retriesExhausted: true
+      }));
+    })
   );
 }
 

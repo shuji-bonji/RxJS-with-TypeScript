@@ -35,11 +35,11 @@ description: "複数のObservableから1つを選択したり、1つのObservabl
 
 ```typescript
 import { race, timer } from 'rxjs';
-import { mapTo } from 'rxjs';
+import { map } from 'rxjs';
 
 // 複数のデータソースから最速のものを採用
-const fast$ = timer(1000).pipe(mapTo('Fast API'));
-const slow$ = timer(3000).pipe(mapTo('Slow API'));
+const fast$ = timer(1000).pipe(map(() => 'Fast API'));
+const slow$ = timer(3000).pipe(map(() => 'Slow API'));
 
 race(fast$, slow$).subscribe(console.log);
 // 出力: 'Fast API' (1秒後に出力され、slow$はキャンセルされる)
@@ -79,12 +79,12 @@ odd$.subscribe(val => console.log('Odd:', val));
 
 ```typescript
 import { race, timer } from 'rxjs';
-import { mapTo, share } from 'rxjs';
+import { map, share } from 'rxjs';
 
 // ❄️ Cold - 購読ごとに競争を再実行
 const coldRace$ = race(
-  timer(1000).pipe(mapTo('Fast API')),
-  timer(3000).pipe(mapTo('Slow API'))
+  timer(1000).pipe(map(() => 'Fast API')),
+  timer(3000).pipe(map(() => 'Slow API'))
 );
 
 coldRace$.subscribe(val => console.log('購読者1:', val));
@@ -93,8 +93,8 @@ coldRace$.subscribe(val => console.log('購読者2:', val));
 
 // 🔥 Hot - 購読者間で競争結果を共有
 const hotRace$ = race(
-  timer(1000).pipe(mapTo('Fast API')),
-  timer(3000).pipe(mapTo('Slow API'))
+  timer(1000).pipe(map(() => 'Fast API')),
+  timer(3000).pipe(map(() => 'Slow API'))
 ).pipe(share());
 
 hotRace$.subscribe(val => console.log('購読者1:', val));

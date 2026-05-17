@@ -146,7 +146,7 @@ userData$
 
 ```ts
 import { fromEvent, of } from 'rxjs';
-import { concatWith, take, mapTo } from 'rxjs';
+import { concatWith, take, map } from 'rxjs';
 
 // ボタンと出力エリア作成
 const button = document.createElement('button');
@@ -163,7 +163,7 @@ const clicks$ = fromEvent(button, 'click');
 clicks$
   .pipe(
     take(3),                          // 最初の3クリックを取得
-    mapTo('クリックされました'),
+    map(() => 'クリックされました'),
     concatWith(of('完了しました'))    // 完了後に追加メッセージ
   )
   .subscribe(message => {
@@ -178,7 +178,7 @@ import { concat } from 'rxjs';
 concat(
   clicks$.pipe(
     take(3),
-    mapTo('クリックされました')
+    map(() => 'クリックされました')
   ),
   of('完了しました')
 ).subscribe(console.log);

@@ -714,7 +714,7 @@ submitButton$.pipe(
 
 ```typescript
 import { from, Observable, timer } from 'rxjs';
-import { retry, retryWhen, mergeMap, catchError, of, timeout } from 'rxjs';
+import { retry, catchError, of, timeout } from 'rxjs';
 
 // JSONPlaceholder APIのUser型
 // https://jsonplaceholder.typicode.com/users
@@ -771,27 +771,18 @@ function fetchWithSimpleRetry(): Observable<User[]> {
   );
 }
 
-// 指数バックオフでリトライ
+// 指数バックオフでリトライ（RxJS 7.3+ 推奨: retry({ count, delay }) 形式）
 function fetchWithExponentialBackoff(): Observable<User[]> {
   return fetchUsers().pipe(
-    retryWhen(errors =>
-      errors.pipe(
-        mergeMap((error, index) => {
-          const retryAttempt = index + 1;
-
-          // 最大3回までリトライ
-          if (retryAttempt > 3) {
-            throw error;
-          }
-
-          // 指数バックオフ: 1秒、2秒、4秒
-          const delayMs = Math.pow(2, index) * 1000;
-          console.log(`リトライ ${retryAttempt}/3 (${delayMs}ms後)`);
-
-          return timer(delayMs);
-        })
-      )
-    ),
+    retry({
+      count: 3, // 最大3回までリトライ
+      delay: (error, retryCount) => {
+        // 指数バックオフ: 1秒、2秒、4秒
+        const delayMs = Math.pow(2, retryCount - 1) * 1000;
+        console.log(`リトライ ${retryCount}/3 (${delayMs}ms後)`);
+        return timer(delayMs);
+      }
+    }),
     catchError(err => {
       console.error('リトライ後もエラー:', err);
       return of([]);
@@ -844,29 +835,22 @@ function shouldRetry(error: HttpError): boolean {
 
 function fetchWithConditionalRetry(): Observable<User[]> {
   return fetchUsers().pipe(
-    retryWhen(errors =>
-      errors.pipe(
-        mergeMap((error: HttpError, index) => {
-          const retryAttempt = index + 1;
+    // RxJS 7.3+ 推奨: retry({ count, delay }) 形式
+    retry({
+      count: 3, // 最大3回までリトライ
+      delay: (error: HttpError, retryCount) => {
+        // リトライ不可能なエラーは即座に throw（retry が中断される）
+        if (!shouldRetry(error)) {
+          console.error('リトライ不可能なエラー:', error);
+          throw error;
+        }
 
-          // リトライ不可能なエラー
-          if (!shouldRetry(error)) {
-            console.error('リトライ不可能なエラー:', error);
-            return throwError(() => error);
-          }
+        const delayMs = Math.pow(2, retryCount - 1) * 1000;
+        console.log(`リトライ ${retryCount}/3 (status: ${error.status})`);
 
-          // 最大3回まで
-          if (retryAttempt > 3) {
-            return throwError(() => error);
-          }
-
-          const delayMs = Math.pow(2, index) * 1000;
-          console.log(`リトライ ${retryAttempt}/3 (status: ${error.status})`);
-
-          return timer(delayMs);
-        })
-      )
-    ),
+        return timer(delayMs);
+      }
+    }),
     catchError(err => {
       console.error('最終エラー:', err);
       return of([]);
@@ -1164,7 +1148,7 @@ fromEvent(loadButton, 'click').pipe(
 これまでのパターンをまとめた、実務で使える完全なサービスクラスの例です。
 
 ```typescript
-import { Observable, Subject, throwError, timer, catchError, retryWhen, mergeMap, timeout, shareReplay, takeUntil, from } from 'rxjs';
+import { Observable, Subject, throwError, timer, catchError, retry, timeout, shareReplay, takeUntil, from } from 'rxjs';
 
 // JSONPlaceholder APIのUser型
 // https://jsonplaceholder.typicode.com/users
@@ -1227,7 +1211,7 @@ export class ApiService {
     }
 
     const request$ = this.get<T>(url, options).pipe(
-      shareReplay(1) // 結果をキャッシュ
+      shareReplay({ bufferSize: 1, refCount: true }) // 結果をキャッシュ（refCountで全購読解除時に解放）
     );
 
     this.cache.set(cacheKey, request$);
@@ -1283,30 +1267,28 @@ export class ApiService {
   }
 
   /**
-   * リトライ戦略
+   * リトライ戦略（RxJS 7.3+ 推奨: retry({ count, delay }) 形式）
    */
   private retryStrategy(retryConfig?: RetryConfig) {
-    return retryWhen<any>(errors =>
-      errors.pipe(
-        mergeMap((error, index) => {
-          const retryAttempt = index + 1;
-          const maxRetries = retryConfig?.maxRetries || 3;
+    const maxRetries = retryConfig?.maxRetries || 3;
 
-          // リトライ可能かチェック
-          if (!this.shouldRetry(error) || retryAttempt > maxRetries) {
-            return throwError(() => error);
-          }
+    return retry<any>({
+      count: maxRetries,
+      delay: (error, retryCount) => {
+        // リトライ不可能なエラーは即座に throw（retry が中断される）
+        if (!this.shouldRetry(error)) {
+          throw error;
+        }
 
-          // 指数バックオフ
-          const delayMs = retryConfig?.useExponentialBackoff
-            ? Math.pow(2, index) * 1000
-            : (retryConfig?.delayMs || 1000);
+        // 指数バックオフ
+        const delayMs = retryConfig?.useExponentialBackoff
+          ? Math.pow(2, retryCount - 1) * 1000
+          : (retryConfig?.delayMs || 1000);
 
-          console.log(`リトライ ${retryAttempt}/${maxRetries} (${delayMs}ms後)`);
-          return timer(delayMs);
-        })
-      )
-    );
+        console.log(`リトライ ${retryCount}/${maxRetries} (${delayMs}ms後)`);
+        return timer(delayMs);
+      }
+    });
   }
 
   /**

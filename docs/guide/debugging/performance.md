@@ -103,7 +103,7 @@ console.log('\n=== shareReplay あり ===');
 computeCount = 0;
 const withShare$ = of(1, 2, 3).pipe(
   map(x => expensiveComputation(x)),
-  shareReplay(3)
+  shareReplay({ bufferSize: 3, refCount: true })
 );
 
 withShare$.subscribe(v => console.log('購読1:', v));

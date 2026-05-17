@@ -157,7 +157,7 @@ class GoodComponent {
       )
     ),
     startWith('idle' as const),
-    shareReplay(1)
+    shareReplay({ bufferSize: 1, refCount: true })
   );
 
   // 派生状態も宣言的に定義

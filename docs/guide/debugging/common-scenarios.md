@@ -248,11 +248,11 @@ const stop$ = timer(5000); // 5秒後に完了
 
 interval(1000)
   .pipe(
-    takeUntil(stop$),
     tap({
       next: value => console.log('値:', value),
       complete: () => console.log('タイムアウトで停止')
-    })
+    }),
+    takeUntil(stop$)
   )
   .subscribe();
 ```
@@ -437,35 +437,30 @@ Observable.create = function(subscribe: any) {
 
 ```ts
 import { throwError, of, timer } from 'rxjs';
-import { retryWhen, mergeMap, tap } from 'rxjs';
+import { retry } from 'rxjs';
 
 throwError(() => new Error('一時的なエラー'))
   .pipe(
-    retryWhen((errors) =>
-      errors.pipe(
-        mergeMap((error, index) => {
-          const retryCount = index + 1;
-          console.log(`🔄 リトライ ${retryCount}回目`);
-
-          if (retryCount > 2) {
-            console.log('❌ 最大リトライ数に到達');
-            throw error;
-          }
-
-          return timer(1000);
-        })
-      )
-    )
+    // RxJS 7.3+ 推奨: retry({ count, delay }) 形式
+    retry({
+      count: 2, // 最大2回まで再試行
+      delay: (error, retryCount) => {
+        console.log(`🔄 リトライ ${retryCount}回目`);
+        return timer(1000);
+      }
+    })
   )
   .subscribe({
     next: value => console.log('✅ 成功:', value),
-    error: error => console.log('🔴 最終エラー:', error.message)
+    error: error => {
+      console.log('❌ 最大リトライ数に到達');
+      console.log('🔴 最終エラー:', error.message);
+    }
   });
 
 // 出力:
 // 🔄 リトライ 1回目
 // 🔄 リトライ 2回目
-// 🔄 リトライ 3回目
 // ❌ 最大リトライ数に到達
 // 🔴 最終エラー: 一時的なエラー
 ```

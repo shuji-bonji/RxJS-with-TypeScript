@@ -247,11 +247,11 @@ Observer 2: 5
 import { interval } from 'rxjs';
 import { take, shareReplay, tap } from 'rxjs';
 
-// shareReplayを使用（バッファサイズ2）
+// shareReplayを使用（バッファサイズ2、refCountで全購読解除時に解放）
 const source$ = interval(1000).pipe(
   take(5),
   tap(value => console.log(`ソース: ${value}`)),
-  shareReplay(2) // 直近2つの値をバッファリング
+  shareReplay({ bufferSize: 2, refCount: true }) // 直近2つの値をバッファリング
 );
 
 // 最初の購読者
@@ -329,8 +329,8 @@ class UserService {
         this.cache.delete(id);
         return throwError(() => new Error('ユーザー取得に失敗しました'));
       }),
-      // shareReplayで共有化（完了後も値をキャッシュ）
-      shareReplay(1)
+      // shareReplayで共有化（refCount: trueで全購読解除時に解放）
+      shareReplay({ bufferSize: 1, refCount: true })
     );
     
     // キャッシュに保存

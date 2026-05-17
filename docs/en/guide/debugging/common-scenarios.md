@@ -268,11 +268,11 @@ const stop$ = timer(5000); // Complete after 5 seconds
 
 interval(1000)
   .pipe(
-    takeUntil(stop$),
     tap({
       next: value => console.log('Value:', value),
       complete: () => console.log('Stopped on timeout')
-    })
+    }),
+    takeUntil(stop$)
   )
   .subscribe();
 ```

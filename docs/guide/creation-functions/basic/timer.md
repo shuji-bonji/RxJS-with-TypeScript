@@ -274,8 +274,8 @@ notifications$.pipe(
 
     // 5秒後に自動非表示
     return timer(5000).pipe(
-      takeUntil(dismiss$), // 手動で非表示にされたら中止
-      map(() => notification.id)
+      map(() => notification.id),
+      takeUntil(dismiss$) // 手動で非表示にされたら中止
     );
   })
 ).subscribe(id => {

@@ -192,7 +192,7 @@ range(1, 10).pipe(
 ### リトライ処理での活用
 
 ```typescript
-import { range, throwError, of, Observable, mergeMap, retryWhen, delay } from 'rxjs';
+import { range, throwError, of, Observable, mergeMap, retry, delay } from 'rxjs';
 // データ取得をシミュレートする関数（ランダムに失敗する）
 function fetchData(): Observable<string> {
   const shouldFail = Math.random() > 0.6; // 40%の確率で成功
@@ -209,19 +209,15 @@ function fetchData(): Observable<string> {
 
 function fetchWithRetry() {
   return fetchData().pipe(
-    retryWhen(errors =>
-      errors.pipe(
-        mergeMap((error, index) => {
-          // 最大3回リトライ
-          if (index >= 3) {
-            return throwError(() => error);
-          }
-          console.log(`リトライ ${index + 1}/3`);
-          // 指数バックオフ: 1秒、2秒、4秒
-          return range(0, 1).pipe(delay(Math.pow(2, index) * 1000));
-        })
-      )
-    )
+    // RxJS 7.3+ 推奨: retry({ count, delay }) 形式
+    retry({
+      count: 3, // 最大3回リトライ
+      delay: (error, retryCount) => {
+        console.log(`リトライ ${retryCount}/3`);
+        // 指数バックオフ: 1秒、2秒、4秒
+        return range(0, 1).pipe(delay(Math.pow(2, retryCount - 1) * 1000));
+      }
+    })
   );
 }
 

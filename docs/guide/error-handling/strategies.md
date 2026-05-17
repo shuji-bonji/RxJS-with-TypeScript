@@ -63,7 +63,7 @@ source$.pipe(
 
 ### 2. エラーが発生したら再試行
 
-`retry`や`retryWhen`オペレーターを使用して、エラーが発生した場合にストリームを再試行します。
+`retry`オペレーターを使用して、エラーが発生した場合にストリームを再試行します（v7.3 以降は `retry({ count, delay })` 形式が推奨で、旧 `retryWhen` の代替になります）。
 
 ```ts
 import { interval, throwError, of } from 'rxjs';
@@ -100,31 +100,21 @@ interval(1000).pipe(
 
 ```ts
 import { throwError, timer, of } from 'rxjs';
-import { retryWhen, tap, concatMap, catchError } from 'rxjs';
+import { retry, tap, catchError } from 'rxjs';
 
 function fetchWithRetry() {
-  let retryCount = 0;
-
   return throwError(() => new Error('ネットワークエラー')).pipe(
-    retryWhen((errors) =>
-      errors.pipe(
-        // エラー回数をカウント
-        tap((error) => console.log('エラー発生:', error.message)),
-        // 指数バックオフで遅延
-        concatMap(() => {
-          retryCount++;
-          const delayMs = Math.min(1000 * Math.pow(2, retryCount), 10000);
-          console.log(`${retryCount}回目の再試行を${delayMs}ms後に実行`);
-          return timer(delayMs);
-        }),
-        // 最大5回まで再試行
-        tap(() => {
-          if (retryCount >= 5) {
-            throw new Error('最大再試行回数を超えました');
-          }
-        })
-      )
-    ),
+    // RxJS 7.3+ 推奨: retry({ count, delay }) 形式
+    retry({
+      count: 5, // 最大5回まで再試行
+      delay: (error, retryCount) => {
+        console.log('エラー発生:', error.message);
+        // 指数バックオフ（最大10秒で頭打ち）
+        const delayMs = Math.min(1000 * Math.pow(2, retryCount), 10000);
+        console.log(`${retryCount}回目の再試行を${delayMs}ms後に実行`);
+        return timer(delayMs);
+      }
+    }),
     // 最終的なフォールバック
     catchError((error) => {
       console.error('すべての再試行が失敗:', error.message);

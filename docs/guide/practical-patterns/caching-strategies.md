@@ -50,7 +50,7 @@ class UserService {
     console.log('新規リクエスト実行');
     this.users$ = this.fetchUsersFromAPI().pipe(
       tap(() => console.log('API呼び出し完了')),
-      shareReplay(1), // 最後の1つの値をキャッシュ
+      shareReplay({ bufferSize: 1, refCount: true }), // 最後の1つの値をキャッシュ（refCountで全購読解除時に解放）
       catchError(err => {
         // エラー時はキャッシュをクリア
         this.users$ = null;
@@ -104,9 +104,9 @@ userService.getUsers().subscribe(users => {
 
 ```typescript
 import { shareReplay } from 'rxjs';
-// 基本的な使い方
+// 基本的な使い方（推奨形式: 全購読解除でキャッシュを解放）
 source$.pipe(
-  shareReplay(1) // 最後の1つをキャッシュ
+  shareReplay({ bufferSize: 1, refCount: true }) // 最後の1つをキャッシュ
 );
 
 // 詳細な設定
@@ -173,7 +173,7 @@ class TTLCacheService<T> {
         data,
         timestamp: Date.now()
       })),
-      shareReplay(1)
+      shareReplay({ bufferSize: 1, refCount: true })
     );
 
     return this.cache$.pipe(map(cached => cached.data));
@@ -286,7 +286,7 @@ class RefreshableCacheService<T> {
     ).pipe(
       switchMap(() => fetchFn()),
       tap(data => console.log('データ取得完了:', data)),
-      shareReplay(1)
+      shareReplay({ bufferSize: 1, refCount: true })
     );
   }
 
@@ -381,7 +381,7 @@ class ConditionalCacheService {
       console.log('データ取得:', options);
       return this.fetchData(options.userId);
     }),
-    shareReplay(1)
+    shareReplay({ bufferSize: 1, refCount: true })
   );
 
   getData(userId?: number): Observable<any> {
