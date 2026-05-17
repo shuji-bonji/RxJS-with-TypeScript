@@ -104,7 +104,10 @@ result.style.display = 'none';
 container.appendChild(result);
 
 // 最初の未完了タスクを検索
+// 注: 本来は switchMap で平坦化するのが推奨パターンですが、
+// ここでは可読性優先で subscribe をネストしています（本番コードでは switchMap を推奨）。
 fromEvent(button1, 'click').subscribe(() => {
+  // ネスト subscribe: 本来は switchMap での平坦化を推奨
   from(tasks).pipe(
     findIndex(task => !task.completed)
   ).subscribe(index => {
@@ -128,7 +131,9 @@ fromEvent(button1, 'click').subscribe(() => {
 });
 
 // 最初の高優先度タスクを検索
+// 注: 本来は switchMap で平坦化するのが推奨パターン（本番コードでは switchMap を推奨）。
 fromEvent(button2, 'click').subscribe(() => {
+  // ネスト subscribe: 本来は switchMap での平坦化を推奨
   from(tasks).pipe(
     findIndex(task => task.priority === 'high')
   ).subscribe(index => {

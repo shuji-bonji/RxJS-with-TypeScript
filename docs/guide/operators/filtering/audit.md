@@ -30,6 +30,9 @@ clicks$.pipe(
 
 [🌐 RxJS公式ドキュメント - `audit`](https://rxjs.dev/api/operators/audit)
 
+> [!WARNING] 本番コードでの注意
+> 上記サンプルは説明の簡略化のため `fromEvent` の購読解除を省略しています。実コードでは `takeUntil(destroy$)`、`take(N)`、もしくは `Subscription.unsubscribe()` で明示的にライフサイクル管理してください。詳細: [困難点克服: ライフサイクル管理](/guide/overcoming-difficulties/lifecycle-management.md)
+
 ## 💡 典型的な活用パターン
 
 - **動的な間隔でのサンプリング**：負荷に応じて期間を調整

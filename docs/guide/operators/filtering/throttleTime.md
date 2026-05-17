@@ -25,6 +25,9 @@ fromEvent(document, 'click')
 - 2秒間隔で最初のクリックイベントだけを受け取り、それ以降のクリックは無視します。
 
 [🌐 RxJS公式ドキュメント - `throttleTime`](https://rxjs.dev/api/operators/throttleTime)
+
+> [!WARNING] 本番コードでの注意
+> 上記サンプルは説明の簡略化のため `fromEvent` の購読解除を省略しています。実コードでは `takeUntil(destroy$)`、`take(N)`、もしくは `Subscription.unsubscribe()` で明示的にライフサイクル管理してください。詳細: [困難点克服: ライフサイクル管理](/guide/overcoming-difficulties/lifecycle-management.md)
  
 
 ## 💡 典型的な活用パターン

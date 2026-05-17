@@ -28,6 +28,9 @@ fromEvent(searchBox, 'input')
 - 短時間に連続して発生するイベントをまとめる効果があります。
 
 [🌐 RxJS公式ドキュメント - `debounceTime`](https://rxjs.dev/api/operators/debounceTime)
+
+> [!WARNING] 本番コードでの注意
+> 上記サンプルは説明の簡略化のため `fromEvent` の購読解除を省略しています。実コードでは `takeUntil(destroy$)`、`take(N)`、もしくは `Subscription.unsubscribe()` で明示的にライフサイクル管理してください。詳細: [困難点克服: ライフサイクル管理](/guide/overcoming-difficulties/lifecycle-management.md)
  
 ## 💡 典型的な活用パターン
 

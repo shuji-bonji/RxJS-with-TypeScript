@@ -70,6 +70,8 @@ source$.pipe(
   take(2)
 ).subscribe(window$ => {
   console.log('ウィンドウ（Observable）:', window$);
+  // ネスト subscribe: window 系オペレーターの仕様上必要なパターン
+  // （windowTime が発行する内側 Observable を消費するために必要）
   window$.subscribe(value => {
     console.log('  値:', value);
   });
@@ -309,6 +311,7 @@ moves$.pipe(
 source$.pipe(
   windowTime(1000)
 ).subscribe(window$ => {
+  // ネスト subscribe: window 系オペレーターの仕様上必要なパターン
   // ウィンドウ自体を購読しないと値は流れない
   window$.subscribe(value => {
     console.log('値:', value);

@@ -72,6 +72,9 @@ arrayResult.style.marginTop = '20px';
 toArrayOutput.appendChild(arrayResult);
 
 // 個別の値を購読
+// 注: 以下の 2 つの subscribe は別々のストリーム（並列の購読）であり、
+// ネスト subscribe ではありません。toArray あり/なしの違いを比較するために
+// 意図的に 2 本のストリームを並列で購読しています。
 interval(500)
   .pipe(take(5))
   .subscribe((val) => {
@@ -80,7 +83,7 @@ interval(500)
     individualValues.appendChild(valueItem);
   });
 
-// 同じストリームを配列として購読
+// 同じストリームを配列として購読（上の subscribe とは独立した別ストリーム）
 interval(500)
   .pipe(take(5), toArray())
   .subscribe((array) => {

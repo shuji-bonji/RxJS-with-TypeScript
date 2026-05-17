@@ -84,6 +84,9 @@ merge(click$, timer$).subscribe((value) => {
 - **タイマーは3秒ごとに繰り返しイベントを発生**します。
 - 2つの異なる種類のObservableを**リアルタイムで統合**できることが体験できます。
 
+> [!WARNING] 本番コードでの注意
+> 上記サンプルは説明の簡略化のため `fromEvent` の購読解除を省略しています。実コードでは `takeUntil(destroy$)`、`take(N)`、もしくは `Subscription.unsubscribe()` で明示的にライフサイクル管理してください。詳細: [困難点克服: ライフサイクル管理](/guide/overcoming-difficulties/lifecycle-management.md)
+
 
 ## 関連オペレーター
 

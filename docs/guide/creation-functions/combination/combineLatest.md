@@ -82,6 +82,9 @@ combineLatest([name$, email$]).subscribe(([name, email]) => {
 - いずれかのフィールドに入力すると、**最新の2つの入力状態が即座に表示**されます。
 - `startWith('')` を使うことで、最初から組み合わせ結果を得られるようにしています。
 
+> [!WARNING] 本番コードでの注意
+> 上記サンプルは説明の簡略化のため `fromEvent` の購読解除を省略しています。実コードでは `takeUntil(destroy$)`、`take(N)`、もしくは `Subscription.unsubscribe()` で明示的にライフサイクル管理してください。詳細: [困難点克服: ライフサイクル管理](/guide/overcoming-difficulties/lifecycle-management.md)
+
 
 ## 関連オペレーター
 

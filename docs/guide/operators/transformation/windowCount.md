@@ -72,6 +72,8 @@ source$.pipe(
   windowCount(5)
 ).subscribe(window$ => {
   console.log('ウィンドウ（Observable）:', window$);
+  // ネスト subscribe: window 系オペレーターの仕様上必要なパターン
+  // （windowCount が発行する内側 Observable を消費するために必要）
   window$.subscribe(value => {
     console.log('  ウィンドウ内の値:', value);
   });
@@ -224,6 +226,7 @@ data$.pipe(
 source$.pipe(
   windowCount(5)
 ).subscribe(window$ => {
+  // ネスト subscribe: window 系オペレーターの仕様上必要なパターン
   // ウィンドウ自体を購読しないと値は流れない
   window$.subscribe(value => {
     console.log('値:', value);

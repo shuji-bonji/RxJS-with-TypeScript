@@ -197,6 +197,9 @@ result.style.marginTop = '10px';
 container.appendChild(result);
 
 // 検索処理
+// 注: 本来は switchMap で平坦化するのが推奨パターンですが、
+// ここでは UI バリデーション（早期 return）を含むため、可読性優先で subscribe をネストしています。
+// 本番コードでは `switchMap` を使ったフラットな実装を検討してください。
 fromEvent(searchButton, 'click').subscribe(() => {
   const maxPrice = parseInt(input.value);
 
@@ -206,6 +209,7 @@ fromEvent(searchButton, 'click').subscribe(() => {
     return;
   }
 
+  // ネスト subscribe: 本来は switchMap での平坦化を推奨
   from(products).pipe(
     find(product => product.price <= maxPrice)
   ).subscribe(product => {

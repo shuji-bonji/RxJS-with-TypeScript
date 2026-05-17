@@ -170,6 +170,9 @@ fromEvent(submitButton, 'click').subscribe(() => {
 
 ```
 
+> [!WARNING] 本番コードでの注意
+> 上記サンプルは説明の簡略化のため `fromEvent` の購読解除を省略しています。実コードでは `takeUntil(destroy$)`、`take(N)`、もしくは `Subscription.unsubscribe()` で明示的にライフサイクル管理してください。詳細: [困難点克服: ライフサイクル管理](/guide/overcoming-difficulties/lifecycle-management.md)
+
 ## 同時リクエストとローディング状態の管理
 
 `forkJoin`を使用して複数のAPIリクエストを並行して処理し、結果をまとめる例です。

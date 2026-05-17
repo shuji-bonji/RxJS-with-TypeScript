@@ -275,6 +275,9 @@ fromEvent(searchInput, 'input').pipe(
 
 この例は、RxJSの真価が発揮される典型的なケースです。ユーザーの入力を監視し、300msの待機時間を設けて無駄なリクエストを減らし、値が変わったときだけ処理を行い、さらに最新のリクエストだけを有効にする（`switchMap`）ことで、古いリクエストの結果を自動的に破棄します。
 
+> [!WARNING] 本番コードでの注意
+> 上記サンプルは説明の簡略化のため `fromEvent` の購読解除を省略しています。実コードでは `takeUntil(destroy$)`、`take(N)`、もしくは `Subscription.unsubscribe()` で明示的にライフサイクル管理してください。詳細: [困難点克服: ライフサイクル管理](/guide/overcoming-difficulties/lifecycle-management.md)
+
 > [!IMPORTANT]
 > **Promiseだけでは困難な理由**
 > - debounce（連続入力の制御）を手動実装する必要がある

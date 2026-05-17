@@ -68,6 +68,8 @@ source$.pipe(
   window(trigger$)
 ).subscribe(window$ => {
   console.log('ウィンドウ（Observable）:', window$);
+  // ネスト subscribe: window 系オペレーターの仕様上必要なパターン
+  // （window が発行する内側 Observable を消費するために必要）
   window$.subscribe(value => {
     console.log('  ウィンドウ内の値:', value);
   });
@@ -196,6 +198,7 @@ source$.pipe(
 source$.pipe(
   window(trigger$)
 ).subscribe(window$ => {
+  // ネスト subscribe: window 系オペレーターの仕様上必要なパターン
   // ウィンドウ自体を購読しないと値は流れない
   window$.subscribe(value => {
     console.log('値:', value);
