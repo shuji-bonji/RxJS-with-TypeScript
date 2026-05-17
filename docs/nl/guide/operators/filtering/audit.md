@@ -1,55 +1,51 @@
 ---
-description: "De `audit`-operator is een RxJS-filteroperator die alleen de laatste waarde emitteert binnen de periode die wordt gecontroleerd door een aangepaste Observable. Ideaal voor dynamische timing-controle."
-head:
-  - - meta
-    - name: keywords
-      content: RxJS, audit, filteroperator, dynamische timing-controle, Observable, TypeScript
+description: "De controle operator is een RxJS filter operator die alleen de laatste waarde afgeeft binnen de periode die wordt gecontroleerd door de aangepaste Observable. Het is ideaal voor dynamische timingcontrole."
 ---
 
-# audit - dernière valeur de la période de contrôle émise
+# audit - laatste waarde van controleperiode afgegeven
 
-L'opérateur `audit` attend qu'un Observable personnalisé émette une valeur et émet la **dernière valeur** émise par la source au cours de cette période.
-Alors que `auditTime` est contrôlé par un temps fixe, `audit` permet de **contrôler la période** avec un Observable dynamique.
+De `audit` operator wacht tot een aangepaste Observable een waarde afgeeft en geeft de **laatste waarde** afgegeven door de bron binnen die periode.
+Terwijl `auditTime` wordt gecontroleerd door een vaste tijd, staat `audit` **controle van de periode** toe met een dynamische Observable.
 
-## 🔰 Syntaxe de base et utilisation
+## 🔰 Basis syntaxis en gebruik
 
 ```ts
 import { fromEvent, interval } from 'rxjs';
 import { audit } from 'rxjs';
 
-// Klik-event
+// Klikgebeurtenis
 const clicks$ = fromEvent(document, 'click');
 
-// 1Periode elke N seconden afbakenen
+// 1Afzonderlijke tijdsperioden elke seconde
 clicks$.pipe(
   audit(() => interval(1000))
 ).subscribe(() => {
-  console.log('Klik geregistreerd');
+  console.log('Klik is opgenomen');
 });
 ```
 
-- Lorsqu'un clic se produit, une période d'une seconde commence.
-- Seul le dernier clic de cette période d'une seconde est émis.
-- Après une seconde, la période suivante commence.
+- Wanneer er een klik plaatsvindt, begint er een periode van één seconde.
+- Alleen de laatste klik van die periode van 1 seconde wordt uitgegeven.
+- Na één seconde begint de volgende periode.
 
-[🌐 Documentation officielle de RxJS - `audit`](https://rxjs.dev/api/operators/audit)
+[🌐 Officiële RxJS documentatie - `audit`](https://rxjs.dev/api/operators/audit)
 
-> [!WARNING] 本番コードでの注意
+> [!WARNING] Let op in productiecode
 
-> L'exemple ci-dessus omet de désabonner `fromEvent` pour simplifier l'explication. Dans le code réel, utilisez `takeUntil(destroy$)`, `take(N)` ou `Subscription.unsubscribe()` pour gérer explicitement le cycle de vie. Plus d'informations : [Surmonter les difficultés : gestion du cycle de vie](/nl/guide/overcoming-difficulties/lifecycle-management.md)
+> Het bovenstaande voorbeeld laat het uitschrijven van `fromEvent` weg voor de eenvoud van de uitleg. Gebruik in echte code `takeUntil(destroy$)`, `take(N)` of `Subscription.unsubscribe()` om de levenscyclus expliciet te beheren. Meer informatie: [Moeilijkheden overwinnen: levenscyclusbeheer](/nl/guide/overcoming-difficulties/lifecycle-management.md)
 
-## 💡 Modèles d'utilisation typiques
+## 💡 Typische gebruikspatronen
 
-- **Échantillonnage dynamique par intervalles** : ajuster la durée en fonction de la charge
-- **Contrôle de timing personnalisé** : contrôle de la période basé sur d'autres Observables
-- **Limitation adaptative des événements** : régulation sensible au contexte
+- Dynamische intervalsampling**: duur aanpassen aan belasting.
+- **Dynamische intervalsampling**: duur aanpassen op basis van belasting.
+- **Adaptieve gebeurtenisbeperking**: contextgevoelige uitdunning
 
-## 🔍 Différences avec auditTime
+## Verschillen met auditTime
 
-| Operator | Periode-controle | Gebruikscase |
+| Beheerder. | Periodecontrole | Gebruikscasus. |
 |---|---|---|
-| `auditTime` | Vaste tijd (milliseconden) | Eenvoudige tijd-gebaseerde controle |
-| `audit` | **Aangepaste Observable** | **Dynamische periode-controle** |
+| `auditTime`. | Vaste tijd (milliseconden) | Eenvoudige tijdsgebaseerde controle |
+| `audit`. | **Aangepaste waarneembaar** | **Dynamische periodecontrole**. |
 
 ```ts
 import { fromEvent, timer } from 'rxjs';
@@ -66,21 +62,21 @@ clicks$.pipe(
 let period = 1000;
 clicks$.pipe(
   audit(() => {
-    period = Math.random() * 2000; // 0~2Willekeurige periode van seconden
+    period = Math.random() * 2000; // 0~.2Willekeurige periode van seconden
     return timer(period);
   })
-).subscribe(() => console.log(`動的期間: ${period}ms`));
+).subscribe(() => console.log(`Dynamische periode: ${period}ms`));
 ```
 
-## 🧠 Exemple de code pratique 1 : Échantillonnage dynamique basé sur la charge
+## Praktisch codevoorbeeld 1: Op belasting gebaseerde dynamische bemonstering
 
-Voici un exemple d'ajustement de l'intervalle d'échantillonnage en fonction de la charge du système.
+Dit is een voorbeeld van het aanpassen van het bemonsteringsinterval aan de systeembelasting.
 
 ```ts
 import { fromEvent, timer } from 'rxjs';
 import { audit, map } from 'rxjs';
 
-// UIMaken
+// UIAanmaak
 const output = document.createElement('div');
 output.innerHTML = '<h3>Dynamische bemonstering</h3>';
 document.body.appendChild(output);
@@ -99,7 +95,7 @@ logDiv.style.maxHeight = '200px';
 logDiv.style.overflow = 'auto';
 output.appendChild(logDiv);
 
-// Belastingsniveau (0: Laag,1: Gemiddeld,2: Hoog)
+// Belastingsniveau (0: Lage belasting,1: Gemiddelde belasting,2: Hoge belasting)
 let loadLevel = 0;
 
 fromEvent(button, 'click').subscribe(() => {
@@ -108,13 +104,13 @@ fromEvent(button, 'click').subscribe(() => {
   statusDiv.textContent = `Huidige belasting: ${levels[loadLevel]}`;
 });
 
-// Mousemove-event
+// Gebeurtenis muisbeweging
 const moves$ = fromEvent<MouseEvent>(document, 'mousemove');
 
 moves$.pipe(
   audit(() => {
-    // Periode aanpassen aan belasting
-    const periods = [2000, 1000, 500]; // Lage belasting→Lange periode, hoge belasting→Korte periode
+    // Duur afhankelijk van belasting
+    const periods = [2000, 1000, 500]; // Lage belasting→Lange duur, hoge belasting→Korte duur
     return timer(periods[loadLevel]);
   }),
   map(event => ({ x: event.clientX, y: event.clientY }))
@@ -123,24 +119,24 @@ moves$.pipe(
   log.textContent = `[${new Date().toLocaleTimeString()}] Muispositie: (${pos.x}, ${pos.y})`;
   logDiv.insertBefore(log, logDiv.firstChild);
 
-  // Max.10items getoond
+  // Max.10Weergeven tot
   while (logDiv.children.length > 10) {
     logDiv.removeChild(logDiv.lastChild!);
   }
 });
 ```
 
-- Échantillonnage réduit à des intervalles de 2 s lorsque la charge est faible (mode économie d'énergie)
-- Échantillonnage fin à intervalles de 500 ms lorsque la charge est élevée
-- La période peut être ajustée dynamiquement en fonction de la charge
+- Gedundeerd tot intervallen van 2 s wanneer de belasting laag is (energiebesparende modus)
+- Fijne bemonstering met intervallen van 500 ms wanneer de belasting hoog is.
+- De periode kan dynamisch worden aangepast aan de belasting.
 
-## 🎯 Exemple de code pratique 2 : Contrôle de la période basé sur d'autres flux
+## Praktisch codevoorbeeld 2: Periodebesturing gebaseerd op andere streams
 
 ```ts
 import { fromEvent, timer } from 'rxjs';
 import { audit, map, startWith } from 'rxjs';
 
-// UIMaken
+// UIAanmaak
 const container = document.createElement('div');
 document.body.appendChild(container);
 
@@ -160,7 +156,7 @@ const output = document.createElement('div');
 output.style.marginTop = '10px';
 container.appendChild(output);
 
-// Schuifregelaarwaarde monitoren
+// Waarden schuifregelaar bewaken
 const sliderValue$ = fromEvent(slider, 'input').pipe(
   map(() => Number(slider.value)),
   startWith(1000)
@@ -170,31 +166,31 @@ sliderValue$.subscribe(value => {
   intervalDisplay.textContent = ` ${value}ms`;
 });
 
-// Klik-event
+// Klikgebeurtenis
 const clicks$ = fromEvent(document, 'click');
 
 let currentInterval = 1000;
 
-// Schuifregelaarwaarde bijwerken
+// Schuifwaarden bijwerken
 sliderValue$.subscribe(value => {
   currentInterval = value;
 });
 
-// Klikauditgestuurd door
+// Klik opauditGecontroleerd door
 clicks$.pipe(
   audit(() => timer(currentInterval))
 ).subscribe(() => {
   const log = document.createElement('div');
-  log.textContent = `[${new Date().toLocaleTimeString()}] Klik-opname (interval: ${currentInterval}ms)`;
+  log.textContent = `[${new Date().toLocaleTimeString()}] Klik record (interval: ${currentInterval}ms)`;
   output.insertBefore(log, output.firstChild);
 });
 ```
 
-## ⚠️ Points d'attention
+## ⚠️ Opmerkingen.
 
-### 1. La première valeur n'est pas émise immédiatement
+### 1. de eerste waarde wordt niet onmiddellijk afgegeven
 
-`audit` attend la fin de la période après avoir reçu la première valeur.
+Nadat de `audit` de eerste waarde heeft ontvangen, wacht hij tot het einde van de periode.
 
 ```ts
 import { interval, timer } from 'rxjs';
@@ -207,51 +203,46 @@ interval(100).pipe(
   console.log(val);
 });
 // Uitvoer:
-// 9  (1seconden later,0~9laatste waarde van)
-// 19 (2seconden later,10~19laatste waarde van)
-// 29 (3seconden later,20~29laatste waarde van)
+// 9  (1Seconden later,0~.9Laatste waarde van)
+// 19 (2Seconden later,10~.19Laatste waarde van)
+// 29 (3Seconden later,20~.29Laatste waarde van)
 ```
 
-### 2. L'Observable de durée est généré à chaque fois
+### 2. De duration Observable wordt elke keer opnieuw gegenereerd.
 
-La fonction passée à `audit` **doit retourner un nouvel Observable à chaque fois**.
+Functies die worden doorgegeven aan `audit` **moeten elke keer een nieuwe waarneembare waarde teruggeven**.
 
 ```ts
-// ❌ Slecht voorbeeld: ZelfdeObservableinstantie hergebruikt
+// ❌ Slecht voorbeeld: Als dezelfdeObservableinstantie wordt gebruikt en opnieuw wordt gebruikt
 const duration$ = timer(1000);
 source$.pipe(
-  audit(() => duration$) // 2werkt niet na de 2e keer
+  audit(() => duration$) // 2Werkt niet na de tweede keer
 ).subscribe();
 
-// ✅ Goed voorbeeld: Elke keer nieuwObservableGenereert
+// ✅ Goed voorbeeld: Elke keer een nieuwe instantie aanmakenObservableGenereer een
 source$.pipe(
   audit(() => timer(1000))
 ).subscribe();
 ```
 
-### 3. Mémoire et performance
+### 3. geheugen en prestaties
 
-L'utilisation de `audit` sur des flux où des valeurs sont fréquemment émises consomme de la mémoire.
+Het gebruik van `audit` op streams waar vaak waarden worden uitgegeven verbruikt geheugen.
 
 ```ts
 import { interval, timer } from 'rxjs';
 import { audit } from 'rxjs';
 
-// Snelle stream (10ms elke)
+// Snelle stream (10msper seconde)
 interval(10).pipe(
-  audit(() => timer(1000)) // 1Bemonstering elke seconde
+  audit(() => timer(1000)) // 1Elke seconde bemonsteren
 ).subscribe();
-// 1In N seconden,100waarden hopen op in geheugen en alleen de laatste1wordt geëmitteerd
+// 1per seconde100Waarden worden in het geheugen opgeslagen en alleen de laatste1Alleen de laatste wordt uitgegeven
 ```
 
-## 🆚 Comparaison avec des opérateurs similaires
+## Vergelijking met vergelijkbare operatoren
 
-| Operator | Wanneer emitteren | Geëmitteerde waarde | Gebruikscase |
-|---|---|---|---|
-| `audit` | Aan het **eind** van de periode | De **laatste** waarde van de periode | Laatste status binnen periode verkrijgen |
-| `throttle` | Aan het **begin** van de periode | De **eerste** waarde van de periode | Begin van een gebeurtenisreeks verkrijgen |
-| `debounce` | **Na stabilisatie** | Waarde net voor stabilisatie | Wachten op invoervoltooiing |
-| `sample` | **Wanneer een andere Observable triggert** | Meest recente waarde op dat moment | Periodieke snapshot |
+TABEL 10
 
 ```ts
 import { fromEvent, interval, timer } from 'rxjs';
@@ -259,40 +250,40 @@ import { audit, throttle, debounce, sample } from 'rxjs';
 
 const clicks$ = fromEvent(document, 'click');
 
-// audit: 1Laatste klik in N seconden
+// audit: 1Laatste klik in seconden
 clicks$.pipe(
   audit(() => timer(1000))
-).subscribe(() => console.log('audit: Laatste'));
+).subscribe(() => console.log('audit: Laatste klik'));
 
-// throttle: 1Eerste klik in N seconden
+// throttle: 1Eerste klik in seconden
 clicks$.pipe(
   throttle(() => timer(1000))
 ).subscribe(() => console.log('throttle: Eerste'));
 
-// debounce: Na klik-stop1seconden later
+// debounce: Nadat de klik is gestopt1Seconden na
 clicks$.pipe(
   debounce(() => timer(1000))
 ).subscribe(() => console.log('debounce: Na stop'));
 
-// sample: 1Bemonstering elke seconde
+// sample: 1Elke seconde bemonsteren
 clicks$.pipe(
   sample(interval(1000))
 ).subscribe(() => console.log('sample: Periodiek'));
 ```
 
-## 📚 Opérateurs associés
+## 📚 Verwante operatoren.
 
-- **[auditTime](./auditTime)** - contrôlé par un temps fixe (version simplifiée de `audit`)
-- **[throttle](./throttleTime)** - première valeur émise au début de la période
-- **[debounce](./debounceTime)** - émission d'une valeur après stabilisation
-- **[sample](./sampleTime)** - échantillonnage au moment d'un autre Observable
+- **[auditTime](. /auditTime)** - bestuurd door vaste tijd (vereenvoudigde versie van `audit`).
+- **[throttle](. /throttleTime)** - eerste waarde afgegeven aan het begin van de periode.
+- **[debounce](. /debounceTime)** - geeft een waarde na een periode van inactiviteit.
+- **[sample](. /sampleTime)** - sample op de timing van een andere observable.
 
-## Résumé
+## Samenvatting.
 
-L'opérateur `audit` émet la dernière valeur d'une période dynamiquement contrôlée par un Observable personnalisé.
+De `audit` operator geeft de laatste waarde binnen een periode die dynamisch wordt bepaald door een aangepaste Observable.
 
-- ✅ Contrôle dynamique de la période possible
-- ✅ Échantillonnage adaptatif basé sur la charge
-- ✅ Contrôle basé sur d'autres flux
-- ⚠️ Un nouvel Observable doit être généré à chaque fois
-- ⚠️ Attention à la mémoire en cas d'émission fréquente
+- Dynamische periodecontrole is mogelijk.
+- ✅ Adaptieve bemonstering gebaseerd op belasting
+- ✅ Regeling op basis van andere stromen
+- ⚠️ Elke keer moet een nieuwe Observable worden gegenereerd
+- ⚠️ Geheugengevoelig voor frequente uitgifte

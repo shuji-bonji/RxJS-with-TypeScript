@@ -1,13 +1,12 @@
 ---
-description: The findIndex operator is an RxJS filtering operator that returns the index of the first value that satisfies the condition. If not found, it returns -1.
-titleTemplate: ':title | RxJS'
+description: "O operador findIndex é um operador de filtragem RxJS que retorna o índice do primeiro valor que satisfaz a condição. Se não for encontrado, ele retorna -1."
 ---
 
-# findIndex - Get Index of First Value Matching Condition
+# findIndex - obtém o índice que corresponde à condição
 
-The `findIndex` operator returns **the index of the first value that satisfies the condition** and immediately completes the stream. If the value is not found, it returns `-1`.
+O operador `findIndex` retorna **o índice do primeiro valor que corresponde à condição** e completa o fluxo imediatamente. Retorna `-1` se nenhum valor for encontrado.
 
-## 🔰 Basic Syntax and Usage
+## 🔰 Sintaxe básica e uso
 
 ```ts
 import { from } from 'rxjs';
@@ -18,26 +17,222 @@ const numbers$ = from([1, 3, 5, 7, 8, 9, 10]);
 numbers$.pipe(
   findIndex(n => n % 2 === 0)
 ).subscribe(console.log);
-// Output: 4 (index of first even number 8)
+// Saída.: 4(primeiro par8índice do primeiro par)
 ```
 
-**Flow of operation**:
-1. 1 (index 0) → Odd, skip
-2. 3 (index 1) → Odd, skip
-3. 5 (index 2) → Odd, skip
-4. 7 (index 3) → Odd, skip
-5. 8 (index 4) → Even, output index 4 and complete
+**Fluxo de operação**:.
+1. 1 (índice 0) → ímpar, pular
+2. 3 (índice 1) → ímpar, pular
+3. 5 (índice 2) → Ímpar, pular
+4. 7 (índice 3) → Ímpar, pular
+5. 8 (índice 4) → número par, saída do índice 4 e conclusão
 
-[🌐 RxJS Official Documentation - `findIndex`](https://rxjs.dev/api/operators/findIndex)
+[🌐 Documentação oficial do RxJS - `findIndex`](https://rxjs.dev/api/operators/findIndex)
 
-## 💡 Typical Usage Patterns
+## 💡 Padrão de utilização típico.
 
-- **Locate position in array**: Get position of element matching specific condition
-- **Check order**: Determine at what position an element matching a condition appears
-- **Data sorting**: Processing using index information
-- **Existence check**: Check existence by whether it's -1 or not
+- **Posicionamento em uma matriz**: obter a posição de um elemento que satisfaça uma condição específica.
+- Verificação da ordem**: quantas vezes um elemento que atende a uma determinada condição aparece
+- Reorganização de dados**: processamento usando informações de índice.
+- Verificação de existência**: verifica a existência de um elemento, verificando se ele é -1 ou não.
 
-## 🆚 Comparison with Similar Operators
+## Exemplo prático de código 1: pesquisa em uma lista de tarefas
+
+Este é um exemplo de como encontrar o local de uma tarefa com condições específicas em uma lista de tarefas.
+
+```ts
+import { from, fromEvent } from 'rxjs';
+import { findIndex } from 'rxjs';
+
+interface Task {
+  id: number;
+  title: string;
+  priority: 'high' | 'medium' | 'low';
+  completed: boolean;
+}
+
+const tasks: Task[] = [
+  { id: 1, title: 'Resposta de e-mail', priority: 'low', completed: true },
+  { id: 2, title: 'Preparação de documentos', priority: 'medium', completed: true },
+  { id: 3, title: 'Preparação de reuniões', priority: 'high', completed: false },
+  { id: 4, title: 'Revisão de código', priority: 'high', completed: false },
+  { id: 5, title: 'Atualização de documentos', priority: 'low', completed: false }
+];
+
+// UICriar
+const container = document.createElement('div');
+document.body.appendChild(container);
+
+const title = document.createElement('h3');
+title.textContent = 'Pesquisa de tarefas';
+container.appendChild(title);
+
+// Exibição da lista de tarefas
+const taskList = document.createElement('ul');
+taskList.style.listStyle = 'none';
+taskList.style.padding = '0';
+tasks.forEach((task, index) => {
+  const li = document.createElement('li');
+  li.style.padding = '5px';
+  li.style.borderBottom = '1px solid #eee';
+  const status = task.completed ? '✅' : '⬜';
+  const priorityBadge = task.priority === 'high' ? '🔴' : task.priority === 'medium' ? '🟡' : '🟢';
+  li.textContent = `[${index}] ${status} ${priorityBadge} ${task.title}`;
+  taskList.appendChild(li);
+});
+container.appendChild(taskList);
+
+// Botão Pesquisar
+const buttonContainer = document.createElement('div');
+buttonContainer.style.marginTop = '10px';
+container.appendChild(buttonContainer);
+
+const button1 = document.createElement('button');
+button1.textContent = 'Pesquisar a primeira tarefa não concluída';
+button1.style.marginRight = '10px';
+buttonContainer.appendChild(button1);
+
+const button2 = document.createElement('button');
+button2.textContent = 'Pesquisar a primeira tarefa de alta prioridade';
+buttonContainer.appendChild(button2);
+
+const result = document.createElement('div');
+result.style.marginTop = '10px';
+result.style.padding = '10px';
+result.style.border = '1px solid #ccc';
+result.style.display = 'none';
+container.appendChild(result);
+
+// Pesquisar a primeira tarefa não concluída
+// NB.: Originalmente, o padrão recomendado era nivelar com switchMap O padrão recomendado é achatar com
+// Aqui, a prioridade de legibilidade é dada a subscribe aninhado (no código de produção switchMap recomendado).
+fromEvent(button1, 'click').subscribe(() => {
+  // Aninhamento subscribe: Originalmente, o padrão recomendado era nivelar com switchMap Recomenda-se achatar com
+  from(tasks).pipe(
+    findIndex(task => !task.completed)
+  ).subscribe(index => {
+    result.style.display = 'block';
+    if (index !== -1) {
+      const task = tasks[index];
+      result.innerHTML = `
+        <strong>✅ Encontrado em</strong><br>
+        Posição: Índice ${index}<br>
+        Tarefa: ${task.title}<br>
+        Prioridade: ${task.priority}
+      `;
+      result.style.backgroundColor = '#e8f5e9';
+      result.style.color = 'green';
+    } else {
+      result.textContent = '❌ Tarefa inacabada não encontrada';
+      result.style.backgroundColor = '#fff3e0';
+      result.style.color = 'orange';
+    }
+  });
+});
+
+// Pesquisar a primeira tarefa de alta prioridade
+// NB.: Originalmente, o padrão recomendado era nivelar com switchMap O padrão recomendado (no código de produção) é nivelar com switchMap recomendado).
+fromEvent(button2, 'click').subscribe(() => {
+  // Aninhamento subscribe: Originalmente, o padrão recomendado era nivelar com switchMap Recomenda-se achatar com
+  from(tasks).pipe(
+    findIndex(task => task.priority === 'high')
+  ).subscribe(index => {
+    result.style.display = 'block';
+    if (index !== -1) {
+      const task = tasks[index];
+      result.innerHTML = `
+        <strong>✅ Encontrado em</strong><br>
+        Posição: Índice ${index}<br>
+        Tarefa: ${task.title}<br>
+        Status de conclusão: ${task.completed ? 'Concluída' : 'Não concluída'}
+      `;
+      result.style.backgroundColor = '#e8f5e9';
+      result.style.color = 'green';
+    } else {
+      result.textContent = '❌ Não foram encontradas tarefas de alta prioridade';
+      result.style.backgroundColor = '#fff3e0';
+      result.style.color = 'orange';
+    }
+  });
+});
+```
+
+- Encontra a posição da primeira tarefa na lista de tarefas que satisfaz a condição.
+- Se não for encontrada, `-1` é retornado.
+
+## Exemplo prático de código 2: detecção de localização de dados em tempo real
+
+Esse exemplo detecta a posição do primeiro valor do fluxo que satisfaz a condição.
+
+```ts
+import { interval } from 'rxjs';
+import { findIndex, map, take } from 'rxjs';
+
+// UICriar
+const container = document.createElement('div');
+document.body.appendChild(container);
+
+const title = document.createElement('h3');
+title.textContent = 'Pesquisa de dados em tempo real';
+container.appendChild(title);
+
+const status = document.createElement('div');
+status.style.marginTop = '10px';
+status.textContent = '50Pesquisa de posições em que um valor maior ou igual a...';
+container.appendChild(status);
+
+const dataDisplay = document.createElement('div');
+dataDisplay.style.marginTop = '10px';
+dataDisplay.style.padding = '10px';
+dataDisplay.style.border = '1px solid #ccc';
+dataDisplay.style.maxHeight = '150px';
+dataDisplay.style.overflow = 'auto';
+container.appendChild(dataDisplay);
+
+const result = document.createElement('div');
+result.style.marginTop = '10px';
+result.style.padding = '10px';
+result.style.fontWeight = 'bold';
+container.appendChild(result);
+
+// Geração de valores aleatórios (0~100)
+const data$ = interval(500).pipe(
+  take(20),
+  map(i => ({ index: i, value: Math.floor(Math.random() * 100) }))
+);
+
+// Exibição de dados
+data$.subscribe(data => {
+  const div = document.createElement('div');
+  const highlight = data.value >= 50 ? 'background-color: #fff9c4;' : '';
+  div.style.cssText = `padding: 5px; ${highlight}`;
+  div.textContent = `[${data.index}] Valor: ${data.value}`;
+  dataDisplay.appendChild(div);
+  dataDisplay.scrollTop = dataDisplay.scrollHeight;
+});
+
+// 50Pesquisar o índice para o primeiro valor de mais de
+data$.pipe(
+  findIndex(data => data.value >= 50)
+).subscribe(index => {
+  status.textContent = '';
+  if (index !== -1) {
+    result.innerHTML = `
+      ✅ 50Valor maior ou igual a encontrado<br>
+      Posição: Índice ${index}
+    `;
+    result.style.color = 'green';
+  } else {
+    result.textContent = '❌ 50Não foram encontrados valores maiores ou iguais a';
+    result.style.color = 'orange';
+  }
+});
+```
+
+- Detecta a posição do primeiro valor acima de 50 a partir de valores aleatórios gerados a cada 0,5 segundo.
+- O realce é usado para maior clareza visual.
+
+## 🆚 Comparação com operadores semelhantes
 
 ### findIndex vs find vs elementAt
 
@@ -47,36 +242,60 @@ import { findIndex, find, elementAt } from 'rxjs';
 
 const numbers$ = from([10, 20, 30, 40, 50]);
 
-// findIndex: Return index of first value matching condition
+// findIndex: Retorna o índice do primeiro valor que satisfaz a condição
 numbers$.pipe(
   findIndex(n => n > 25)
 ).subscribe(console.log);
-// Output: 2 (index of 30)
+// Saída.: 2Retorna o índice do primeiro valor que satisfaz a condição30índice do primeiro par)
 
-// find: Return first value matching condition
+// find: Retorna o primeiro valor que satisfaz a condição
 numbers$.pipe(
   find(n => n > 25)
 ).subscribe(console.log);
-// Output: 30
+// Saída.: 30
 
-// elementAt: Return value at specified index
+// elementAt: Retorna o valor no índice especificado
 numbers$.pipe(
   elementAt(2)
 ).subscribe(console.log);
-// Output: 30
+// Saída.: 30
 ```
 
-| Operator | Argument | Return Value | When Not Found |
-|:---|:---|:---|:---|
-| `findIndex(predicate)` | Condition function | Index (number) | `-1` |
-| `find(predicate)` | Condition function | Value itself | `undefined` |
-| `elementAt(index)` | Index | Value itself | Error (no default value) |
+| Operador | Argumentos | Valor de retorno | Se não for encontrado. |
+|---|---|---|---|
+| `findIndex(predicate)` | Função condicional | Índice (numérico). | `-1` |
+| `find(predicado)` | Função de condição | Valor em si | `undefined` |
+| `elementAt(index)` | Índice | O próprio valor | Erro (nenhum valor padrão) |
 
-## ⚠️ Important Notes
+## 🔄 Comparação com Array.findIndex() do JavaScript
 
-### 1. Returns -1 if Not Found
+O `findIndex` do RxJS se comporta de forma semelhante ao método de matriz do JavaScript `Array.prototype.findIndex()`.
 
-If no value satisfies the condition, returns `-1` instead of an error.
+```ts
+// JavaScript Matriz de
+const numbers = [10, 20, 30, 40, 50];
+const index1 = numbers.findIndex(n => n > 25);
+console.log(index1); // 2
+
+// RxJS (retorna o primeiro valor no índice especificado que satisfaz a condição) Observable
+import { from } from 'rxjs';
+import { findIndex } from 'rxjs';
+
+const numbers$ = from([10, 20, 30, 40, 50]);
+numbers$.pipe(
+  findIndex(n => n > 25)
+).subscribe(console.log); // 2
+```
+
+**Principais diferenças**.
+- **Array**: retorna o resultado de forma síncrona e imediata.
+- Observável**: assíncrono, aguarda o fluxo de valores do fluxo
+
+## ⚠️ Notas.
+
+### 1. retorna -1 se não for encontrado
+
+Se nenhum valor satisfizer a condição, retorna `-1` em vez de um erro.
 
 ```ts
 import { from } from 'rxjs';
@@ -88,39 +307,39 @@ numbers$.pipe(
   findIndex(n => n > 10)
 ).subscribe(index => {
   if (index === -1) {
-    console.log('No value matching condition found');
+    console.log('Não foi encontrado nenhum valor que satisfaça a condição');
   } else {
-    console.log(`Index: ${index}`);
+    console.log(`Índice: ${index}`);
   }
 });
-// Output: No value matching condition found
+// Saída.: Não foi encontrado nenhum valor que satisfaça a condição
 ```
 
-### 2. Completes When First Match Found
+### 2. completo quando encontrado pela primeira vez.
 
-Stream completes immediately upon finding the first value matching the condition.
+O fluxo é concluído assim que o primeiro valor que satisfaz a condição é encontrado.
 
 ```ts
 import { interval } from 'rxjs';
 import { findIndex, tap } from 'rxjs';
 
 interval(1000).pipe(
-  tap(val => console.log(`Value: ${val}`)),
+  tap(val => console.log(`Valor: ${val}`)),
   findIndex(n => n >= 3)
 ).subscribe(index => {
-  console.log(`Index: ${index}`);
+  console.log(`Índice: ${index}`);
 });
-// Output:
-// Value: 0
-// Value: 1
-// Value: 2
-// Value: 3
-// Index: 3
+// Saída.:
+// Valor: 0
+// Valor: 1
+// Valor: 2
+// Valor: 3
+// Índice: 3
 ```
 
-### 3. Type Safety in TypeScript
+### Segurança de tipo no TypeScript
 
-`findIndex` always returns a `number` type.
+O `findIndex` sempre retorna o tipo `number`.
 
 ```ts
 import { Observable, from } from 'rxjs';
@@ -147,17 +366,17 @@ const users$ = from([
 ]);
 
 findFirstInactiveUserIndex(users$).subscribe(index => {
-  // index is number type
+  // index é uma matriz de number tipo
   if (index !== -1) {
-    console.log(`First inactive user is at index ${index}`);
+    console.log(`O primeiro usuário inativo é o índice ${index} é.`);
   }
 });
-// Output: First inactive user is at index 1
+// Saída.: O primeiro usuário inativo é o índice 1 é.
 ```
 
-### 4. Indexes Start at 0
+### 4. O índice começa em 0
 
-Like arrays, indexes start at 0.
+Assim como nos arrays, os índices começam em 0.
 
 ```ts
 import { from } from 'rxjs';
@@ -168,23 +387,23 @@ const items$ = from(['A', 'B', 'C', 'D']);
 items$.pipe(
   findIndex(item => item === 'A')
 ).subscribe(console.log);
-// Output: 0 (first element)
+// Saída.: 0(primeiro elemento)
 ```
 
-## 📚 Related Operators
+## 📚 Operadores relacionados.
 
-- **[find](/pt/guide/operators/filtering/find)** - Get first value matching condition
-- **[elementAt](/pt/guide/operators/filtering/elementAt)** - Get value at specified index
-- **[first](/pt/guide/operators/filtering/first)** - Get first value
-- **[filter](/pt/guide/operators/filtering/filter)** - Get all values matching condition
+- **[find](. /find)** - Obtém o primeiro valor que satisfaz a condição.
+- **[elementAt](. /elementAt)** - Obtém o valor no índice especificado.
+- **[first](. /first)** - obtém o primeiro valor.
+- **[filter](. /filter)** - obtém todos os valores que satisfazem a condição
 
-## Summary
+## Resumo.
 
-The `findIndex` operator returns the index of the first value matching the condition.
+O operador `findIndex` retorna o índice do primeiro valor que satisfaz a condição.
 
-- ✅ Similar behavior to JavaScript's `Array.findIndex()`
-- ✅ Ideal when index information is needed
-- ✅ Returns `-1` if not found (not an error)
-- ✅ Completes immediately when found
-- ⚠️ Return value is always `number` type (-1 or integer ≥ 0)
-- ⚠️ Use `find` if you need the value itself
+- Comportamento semelhante ao `Array.findIndex()` do JavaScript.
+- Ideal quando as informações de índice são necessárias
+- Retorna `-1` se não for encontrado (não é um erro)
+- Conclui imediatamente quando encontrado
+- ⚠️ O valor de retorno é sempre do tipo `number` (-1 ou um número inteiro maior ou igual a 0)
+- ⚠️ Use `find` se o valor em si for necessário

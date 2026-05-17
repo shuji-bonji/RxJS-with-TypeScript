@@ -1,12 +1,12 @@
 ---
-description: De elementAt operator is een RxJS filteroperator die alleen de waarde op een gespecificeerde indexpositie ophaalt. Het gedraagt zich vergelijkbaar met array-index toegang.
+description: "De elementAt operator is een RxJS filteroperator die alleen waarden ophaalt op een gegeven indexpositie. Het werkt vergelijkbaar met array index toegang."
 ---
 
-# elementAt - Haal waarde op gespecificeerde index
+# elementAt - opgehaald door indexspecificatie
 
-De `elementAt` operator haalt **alleen de waarde op de gespecificeerde indexpositie** van een Observable op en voltooit de stream onmiddellijk. Het gedraagt zich vergelijkbaar met `array[index]`.
+De `elementAt` operator haalt **alleen de waarde op de opgegeven indexpositie** op uit de Observable en voltooit de stroom onmiddellijk. Het werkt hetzelfde als `array[index]` van een array.
 
-## 🔰 Basissyntax en gebruik
+## 🔰 Basissyntaxis en gebruik
 
 ```ts
 import { from } from 'rxjs';
@@ -17,44 +17,44 @@ const numbers$ = from([10, 20, 30, 40, 50]);
 numbers$.pipe(
   elementAt(2)
 ).subscribe(console.log);
-// Output: 30 (waarde op index 2)
+// Uitvoer.: 30(Index2Waarde)
 ```
 
-**Werkingsstroom**:
-1. 10 (index 0) → Overslaan
-2. 20 (index 1) → Overslaan
-3. 30 (index 2) → Uitvoeren en voltooien
-4. 40, 50 worden niet geëvalueerd
+**Bewerkingsstroom**:.
+1. 10 (index 0) → overslaan
+2. 20 (index 1) → overslaan
+3. 30 (index 2) → uitvoer en voltooien
+4. 40, 50 niet geëvalueerd
 
-[🌐 RxJS Officiële Documentatie - `elementAt`](https://rxjs.dev/api/operators/elementAt)
+[🌐 Officiële RxJS documentatie - `elementAt`](https://rxjs.dev/api/operators/elementAt)
 
-## 💡 Typische gebruikspatronen
+## 💡 Typisch gebruikspatroon.
 
-- **Paginering**: Eerste item van een specifieke pagina ophalen
-- **Geordende data-ophaling**: Nde gebeurtenis of bericht ophalen
-- **Testen en debuggen**: Waarde op specifieke positie verifiëren
-- **Array-achtige toegang**: Observable behandelen als een array
+- **Paginatie**: het eerste item op een specifieke pagina ophalen.
+- **Op volgorde gegarandeerde gegevens verkrijgen**: de N-de gebeurtenis of het N-de bericht verkrijgen.
+- **Testen en debuggen**: valideer de waarde van een specifieke positie.
+- **Array-achtige toegang**: behandel Observable als een array
 
-## 🧠 Praktisch codevoorbeeld: Gebeurtenisaftelling
+## Praktisch codevoorbeeld 1: Aftellen van gebeurtenissen
 
-Voorbeeld van het uitvoeren van een actie op de Nde klik.
+Dit is een voorbeeld van het uitvoeren van een actie bij de N-de klik.
 
 ```ts
 import { fromEvent } from 'rxjs';
 import { elementAt, map } from 'rxjs';
 
-// Maak UI
+// UIMaak
 const output = document.createElement('div');
-output.innerHTML = '<h3>Toon bericht bij 5e klik</h3>';
+output.innerHTML = '<h3>5Klik eenmaal om het bericht weer te geven</h3>';
 document.body.appendChild(output);
 
 const button = document.createElement('button');
-button.textContent = 'Klik';
+button.textContent = 'Klik op';
 document.body.appendChild(button);
 
 const counter = document.createElement('div');
 counter.style.marginTop = '10px';
-counter.textContent = 'Klik nog 5 keer';
+counter.textContent = 'meer5Eenmaal klikken';
 output.appendChild(counter);
 
 const result = document.createElement('div');
@@ -65,68 +65,186 @@ output.appendChild(result);
 
 let clickCount = 0;
 
-// Klikgebeurtenis
+// Klik gebeurtenis
 const clicks$ = fromEvent(button, 'click');
 
-// Tellerweergave
+// Voor telweergave
 clicks$.subscribe(() => {
   clickCount++;
   const remaining = 5 - clickCount;
   if (remaining > 0) {
-    counter.textContent = `Nog ${remaining} klikken`;
+    counter.textContent = `meer${remaining}Eenmaal klikken`;
   } else {
     counter.textContent = '';
   }
 });
 
-// Detecteer 5e klik (index 4)
+// 5Tweede keer (index)4Gedetecteerde klikken van
 clicks$.pipe(
   elementAt(4)
 ).subscribe(() => {
-  result.textContent = '🎉 Bereikt!';
+  result.textContent = '🎉 Bereikt！';
   result.style.color = 'green';
   button.disabled = true;
 });
 ```
 
-- Voltooit bij de 5e klik (index 4).
-- Begint bij 0, hetzelfde als array-index.
+- De vijfde klik (index 4) voltooit de actie.
+- Het begint bij 0, net als de array-index.
 
-## 🆚 Vergelijking met vergelijkbare operators
+## Praktisch codevoorbeeld 2: Haal het N-de getal uit de gegevensstroom.
+
+Dit is een voorbeeld van het ophalen van een specifieke volgorde van waarden uit gegevens die met regelmatige tussenpozen worden gepubliceerd.
+
+```ts
+import { interval } from 'rxjs';
+import { elementAt, map } from 'rxjs';
+
+// UIMaak
+const container = document.createElement('div');
+document.body.appendChild(container);
+
+const title = document.createElement('h3');
+title.textContent = 'Uit de gegevensstroomNVerkrijg de tweede';
+container.appendChild(title);
+
+const input = document.createElement('input');
+input.type = 'number';
+input.placeholder = 'Voer de index in (0〜uit de gegevensstroom (9)';
+input.min = '0';
+input.max = '9';
+input.style.marginRight = '10px';
+container.appendChild(input);
+
+const getButton = document.createElement('button');
+getButton.textContent = 'Ophalen';
+container.appendChild(getButton);
+
+const status = document.createElement('div');
+status.style.marginTop = '10px';
+container.appendChild(status);
+
+const result = document.createElement('div');
+result.style.marginTop = '10px';
+result.style.padding = '10px';
+result.style.border = '1px solid #ccc';
+result.style.display = 'none';
+container.appendChild(result);
+
+// Gegevensstroom (0.5De waarden worden elke seconde uitgegeven,10maximaal 1)
+const data$ = interval(500).pipe(
+  map(i => ({ index: i, value: Math.floor(Math.random() * 100), timestamp: Date.now() }))
+);
+
+getButton.addEventListener('click', () => {
+  const index = parseInt(input.value);
+
+  if (isNaN(index) || index < 0 || index > 9) {
+    status.textContent = '0〜uit de gegevensstroom (9Voer een bereik in van';
+    status.style.color = 'red';
+    return;
+  }
+
+  status.textContent = `Index ${index} Waarde wordt opgehaald...`;
+  status.style.color = 'blue';
+  result.style.display = 'none';
+  getButton.disabled = true;
+  input.disabled = true;
+
+  data$.pipe(
+    elementAt(index)
+  ).subscribe({
+    next: data => {
+      status.textContent = '';
+      result.style.display = 'block';
+      result.innerHTML = `
+        <strong>✅ Succesvol ophalen</strong><br>
+        Index: ${data.index}<br>
+        Waarde: ${data.value}<br>
+        Tijdstempel: ${new Date(data.timestamp).toLocaleTimeString()}
+      `;
+      result.style.color = 'green';
+      result.style.backgroundColor = '#e8f5e9';
+      getButton.disabled = false;
+      input.disabled = false;
+    },
+    error: err => {
+      status.textContent = '';
+      result.style.display = 'block';
+      result.textContent = `❌ Fout: ${err.message}`;
+      result.style.color = 'red';
+      result.style.backgroundColor = '#ffebee';
+      getButton.disabled = false;
+      input.disabled = false;
+    }
+  });
+});
+```
+
+- Haalt waarden op bij een opgegeven index uit een stroom die elke 0,5 seconden wordt uitgegeven.
+- Er wordt een fout gegenereerd als de index buiten bereik is.
+
+## Vergelijking met vergelijkbare operatoren
 
 ### elementAt vs take vs first
 
-| Operator | Opgehaalde waarde | Aantal uitvoer | Gebruiksscenario |
-|:---|:---|:---|:---|
-| `elementAt(n)` | Alleen waarde op index n | 1 | Nde waarde ophalen |
-| `take(n)` | Eerste n waarden | n | Eerste N waarden ophalen |
-| `first()` | Eerste waarde | 1 | Eerste ophalen |
-| `skip(n) + first()` | Eerste na overslaan van n | 1 | Zelfde als elementAt (niet aanbevolen) |
+```ts
+import { from } from 'rxjs';
+import { elementAt, take, first, skip } from 'rxjs';
 
-## ⚠️ Opmerkingen
+const numbers$ = from([10, 20, 30, 40, 50]);
 
-### 1. Wanneer index buiten bereik is
+// elementAt: Alleen waarden op een specifieke index worden opgehaald
+numbers$.pipe(
+  elementAt(2)
+).subscribe(console.log);
+// Uitvoer.: 30
 
-Als de gespecificeerde index niet wordt bereikt voordat de stream voltooit, treedt een fout op.
+// take: Vanaf het beginNEén waarde vanaf het begin ophalen
+numbers$.pipe(
+  take(3)
+).subscribe(console.log);
+// Uitvoer.: 10, 20, 30
+
+// skip + first: elementAt Gelijk aan (overbodig)
+numbers$.pipe(
+  skip(2),
+  first()
+).subscribe(console.log);
+// Uitvoer.: 30
+```
+
+| Operator. | Te verkrijgen waarde | Aantal uitgangen | Gebruikscasus. |
+|---|---|---|---|
+| `elementAt(n)` | Alleen waarden bij index n | 1 | Neem de n-de waarde |
+| `take(n)` | n waarden vanaf het begin | n waarden | Verkrijg de eerste n waarden |
+| `eerst()` | Eerste waarde | 1 | Verkrijg de eerste. |
+| `skip(n) + first()` | Eerste na n overslaan | Eerste | Gelijkwaardig aan elementAt (verouderd) |
+
+## ⚠️ Opmerkingen.
+
+### 1. als de index buiten bereik is
+
+Als de opgegeven index niet is bereikt voordat de stream is voltooid, wordt er een fout gegenereerd.
 
 ```ts
 import { from } from 'rxjs';
 import { elementAt } from 'rxjs';
 
-const numbers$ = from([10, 20, 30]); // Slechts 3 items
+const numbers$ = from([10, 20, 30]); // 3Slechts één
 
 numbers$.pipe(
-  elementAt(5) // Vraag index 5
+  elementAt(5) // Index5Verzoek
 ).subscribe({
   next: console.log,
   error: err => console.error('Fout:', err.message)
 });
-// Output: Fout: no elements in sequence
+// Uitvoer.: Fout: no elements in sequence
 ```
 
-### 2. Standaardwaarde specificeren
+### 2. Geef standaardwaarden op.
 
-U kunt een standaardwaarde specificeren om fouten te voorkomen.
+Om fouten te voorkomen, kunnen standaardwaarden worden opgegeven.
 
 ```ts
 import { from } from 'rxjs';
@@ -134,36 +252,52 @@ import { elementAt } from 'rxjs';
 
 const numbers$ = from([10, 20, 30]);
 
-// Specificeer standaardwaarde
+// Geef een standaardwaarde op
 numbers$.pipe(
-  elementAt(5, 999) // Retourneer 999 als index 5 niet bestaat
+  elementAt(5, 999) // Index5Indien niet aanwezig, retourneert999Geeft een
 ).subscribe({
   next: console.log,
   error: err => console.error('Fout:', err.message)
 });
-// Output: 999
+// Uitvoer.: 999
 ```
 
 ### 3. Gebruik met asynchrone streams
 
-Voor asynchrone streams wacht het tot het de indexpositie bereikt.
+Wacht in asynchrone streams tot de indexpositie is bereikt.
 
 ```ts
 import { interval } from 'rxjs';
 import { elementAt } from 'rxjs';
 
-// Emitteer waarde elke seconde
+// 1Geeft elke seconde een waarde
 interval(1000).pipe(
-  elementAt(3) // Index 3 (4e waarde)
+  elementAt(3) // Index3(4(tweede waarde)
 ).subscribe(console.log);
-// Output na 3 seconden: 3
+// 3Uitvoer na seconden: 3
 ```
 
-### 4. Negatieve index niet beschikbaar
+### 4. Negatieve indexen zijn niet toegestaan
 
-Negatieve indexen kunnen niet worden gespecificeerd.
+Negatieve indexen kunnen niet worden opgegeven.
 
-Om vanaf het einde van de array te verkrijgen, gebruik `takeLast` of `last`.
+```ts
+import { from } from 'rxjs';
+import { elementAt } from 'rxjs';
+
+const numbers$ = from([10, 20, 30, 40, 50]);
+
+// ❌ Negatieve indexen zijn fouten
+numbers$.pipe(
+  elementAt(-1)
+).subscribe({
+  next: console.log,
+  error: err => console.error('Fout:', err.message)
+});
+// Fout: ArgumentOutOfRangeError: index out of range
+```
+
+Gebruik `takeLast` of `last` om aan het einde van de array te komen.
 
 ```ts
 import { from } from 'rxjs';
@@ -171,34 +305,34 @@ import { takeLast, last } from 'rxjs';
 
 const numbers$ = from([10, 20, 30, 40, 50]);
 
-// ✅ Haal laatste waarde
+// ✅ Laatste waarde krijgen
 numbers$.pipe(
   last()
 ).subscribe(console.log);
-// Output: 50
+// Uitvoer.: 50
 
-// ✅ Haal laatste N waarden
+// ✅ LaatsteNLaatste waarde
 numbers$.pipe(
   takeLast(2)
 ).subscribe(console.log);
-// Output: 40, 50
+// Uitvoer.: 40, 50
 ```
 
-## 📚 Gerelateerde operators
+## 📚 Verwante operatoren.
 
-- **[take](/nl/guide/operators/filtering/take)** - Haal eerste N waarden
-- **[first](/nl/guide/operators/filtering/first)** - Haal eerste waarde
-- **[last](/nl/guide/operators/filtering/last)** - Haal laatste waarde
-- **[skip](/nl/guide/operators/filtering/skip)** - Sla eerste N waarden over
-- **[takeLast](/nl/guide/operators/filtering/takeLast)** - Haal laatste N waarden
+- **[take](. /take)** - N genomen vanaf het begin.
+- **[first](. /first)** - eerste waarde krijgen.
+- **[last](. /last)** - laatste waarde krijgen.
+- **[skip](. /skip)** - de eerste N waarden overslaan
+- **[takeLast](. /takeLast)** - de laatste N waarden ophalen
 
-## Samenvatting
+## Samenvatting.
 
-De `elementAt` operator haalt alleen de waarde op de gespecificeerde indexpositie op.
+De `elementAt` operator haalt alleen de waarde op de opgegeven indexpositie op.
 
-- ✅ Zelfde gedrag als array-index toegang
-- ✅ Ideaal voor het ophalen van Nde waarde
-- ✅ Kan fouten vermijden door standaardwaarde te specificeren
-- ⚠️ Fout als index buiten bereik is (zonder standaardwaarde)
-- ⚠️ Negatieve index niet beschikbaar
-- ⚠️ Wacht tot positie bereikt voor asynchrone streams
+- ✅ Hetzelfde gedrag als array index toegang.
+- ✅ Ideaal voor het ophalen van de N-de waarde
+- Standaardwaarden kunnen gespecificeerd worden om fouten te vermijden
+- ⚠️ Fout als index buiten bereik is (geen standaardwaarde)
+- ⚠️ Negatieve indexen zijn niet toegestaan
+- ⚠️ Asynchrone streams wachten tot ze bereikt zijn

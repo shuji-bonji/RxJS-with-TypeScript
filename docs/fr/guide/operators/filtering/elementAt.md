@@ -1,10 +1,10 @@
 ---
-description: "L'opérateur elementAt est un opérateur de filtrage RxJS qui récupère uniquement la valeur à une position d'index spécifiée. Il fonctionne de manière similaire à l'accès par index des tableaux."
+description: "L'opérateur elementAt est un opérateur de filtrage RxJS qui ne récupère que les valeurs à une position d'index donnée. Son fonctionnement est similaire à celui de l'accès à l'index d'un tableau."
 ---
 
-# elementAt - Récupérer la valeur à un index spécifié
+# elementAt - Récupéré par spécification d'index
 
-L'opérateur `elementAt` récupère **uniquement la valeur à la position d'index spécifiée** d'un Observable et termine immédiatement le flux. Il fonctionne de manière similaire à `array[index]` pour les tableaux.
+L'opérateur `elementAt` récupère **uniquement la valeur à la position d'index spécifiée** de l'Observable et termine le flux immédiatement. Il fonctionne de la même manière que `array[index]` d'un tableau.
 
 ## 🔰 Syntaxe de base et utilisation
 
@@ -17,35 +17,35 @@ const numbers$ = from([10, 20, 30, 40, 50]);
 numbers$.pipe(
   elementAt(2)
 ).subscribe(console.log);
-// Sortie: 30 (valeur à l'index 2)
+// Sortie.: 30(Valeur2Valeur)
 ```
 
-**Flux d'opération** :
-1. 10 (index 0) → Ignoré
-2. 20 (index 1) → Ignoré
-3. 30 (index 2) → Émis puis terminé
-4. 40, 50 ne sont pas évalués
+**Flux d'opérations** :.
+1. 10 (index 0) → sauter
+2. 20 (index 1) → saut
+3. 30 (index 2) → sortie et complet
+4. 40, 50 non évalués
 
-[🌐 Documentation officielle RxJS - `elementAt`](https://rxjs.dev/api/operators/elementAt)
+[🌐 Official RxJS documentation - `elementAt`](https://rxjs.dev/api/operators/elementAt)
 
-## 💡 Patterns d'utilisation typiques
+## 💡 Modèle d'utilisation typique.
 
-- **Pagination** : Récupérer le premier élément d'une page spécifique
-- **Récupération de données ordonnées** : Récupérer le N-ième événement ou message
-- **Test et débogage** : Vérifier la valeur à une position spécifique
-- **Accès type tableau** : Traiter un Observable comme un tableau
+- **Pagination** : obtenir le premier élément d'une page spécifique.
+- Obtenir des données garanties par l'ordre** : obtenir le Nième événement ou message.
+- **Test et débogage** : valider la valeur d'une position spécifique.
+- **Accès de type tableau** : traiter Observable comme un tableau
 
 ## 🧠 Exemple de code pratique 1 : Compte à rebours d'événements
 
-Un exemple qui exécute une action au N-ième clic.
+Voici un exemple d'exécution d'une action au Nième clic.
 
 ```ts
 import { fromEvent } from 'rxjs';
 import { elementAt, map } from 'rxjs';
 
-// Création de l'UI
+// UICréer
 const output = document.createElement('div');
-output.innerHTML = '<h3>Message affiché après 5 clics</h3>';
+output.innerHTML = '<h3>5Cliquer une fois pour afficher le message</h3>';
 document.body.appendChild(output);
 
 const button = document.createElement('button');
@@ -54,7 +54,7 @@ document.body.appendChild(button);
 
 const counter = document.createElement('div');
 counter.style.marginTop = '10px';
-counter.textContent = 'Veuillez cliquer 5 fois';
+counter.textContent = 'plus5Cliquer une fois';
 output.appendChild(counter);
 
 const result = document.createElement('div');
@@ -65,52 +65,52 @@ output.appendChild(result);
 
 let clickCount = 0;
 
-// Événements de clic
+// Cliquer sur un événement
 const clicks$ = fromEvent(button, 'click');
 
-// Affichage du compteur
+// Pour l'affichage du compte
 clicks$.subscribe(() => {
   clickCount++;
   const remaining = 5 - clickCount;
   if (remaining > 0) {
-    counter.textContent = `Encore ${remaining} clics`;
+    counter.textContent = `plus${remaining}Cliquer une fois`;
   } else {
     counter.textContent = '';
   }
 });
 
-// Détecter le 5ème clic (index 4)
+// 5Deuxième fois (index)4Clics détectés de
 clicks$.pipe(
   elementAt(4)
 ).subscribe(() => {
-  result.textContent = '🎉 Accompli !';
+  result.textContent = '🎉 Atteint！';
   result.style.color = 'green';
   button.disabled = true;
 });
 ```
 
-- Terminé au 5ème clic (index 4).
-- Comme les indices de tableau, il commence à 0.
+- Le cinquième clic (index 4) termine l'action.
+- Il commence à 0, tout comme l'index du tableau.
 
-## 🎯 Exemple de code pratique 2 : Récupérer le N-ième élément d'un flux de données
+## 🎯 Exemple de code pratique 2 : Obtenir le Nième nombre du flux de données.
 
-Un exemple de récupération d'une valeur à un ordre spécifique à partir de données émises à intervalle régulier.
+Voici un exemple de récupération d'un ordre spécifique de valeurs à partir de données publiées à intervalles réguliers.
 
 ```ts
 import { interval } from 'rxjs';
 import { elementAt, map } from 'rxjs';
 
-// Création de l'UI
+// UICréer
 const container = document.createElement('div');
 document.body.appendChild(container);
 
 const title = document.createElement('h3');
-title.textContent = 'Récupérer le N-ième élément du flux de données';
+title.textContent = 'A partir du flux de donnéesNObtenir le deuxième';
 container.appendChild(title);
 
 const input = document.createElement('input');
 input.type = 'number';
-input.placeholder = 'Entrer un index (0-9)';
+input.placeholder = 'Saisir l'indice (0〜du flux de données (9)';
 input.min = '0';
 input.max = '9';
 input.style.marginRight = '10px';
@@ -131,7 +131,7 @@ result.style.border = '1px solid #ccc';
 result.style.display = 'none';
 container.appendChild(result);
 
-// Flux de données (émet toutes les 0.5 secondes, jusqu'à 10 éléments)
+// Flux de données (0.5Les valeurs sont émises toutes les secondes,10jusqu'à 1)
 const data$ = interval(500).pipe(
   map(i => ({ index: i, value: Math.floor(Math.random() * 100), timestamp: Date.now() }))
 );
@@ -140,12 +140,12 @@ getButton.addEventListener('click', () => {
   const index = parseInt(input.value);
 
   if (isNaN(index) || index < 0 || index > 9) {
-    status.textContent = 'Veuillez entrer une valeur entre 0 et 9';
+    status.textContent = '0〜du flux de données (9Veuillez saisir une plage de';
     status.style.color = 'red';
     return;
   }
 
-  status.textContent = `Récupération de la valeur à l'index ${index}...`;
+  status.textContent = `Index ${index} La valeur est en cours d'extraction...`;
   status.style.color = 'blue';
   result.style.display = 'none';
   getButton.disabled = true;
@@ -181,8 +181,8 @@ getButton.addEventListener('click', () => {
 });
 ```
 
-- Récupère la valeur à l'index spécifié d'un flux émettant toutes les 0.5 secondes.
-- Une erreur se produit si l'index est hors limites.
+- Récupère les valeurs à un index spécifié à partir d'un flux publié toutes les 0,5 secondes.
+- Une erreur est générée si l'index est hors de portée.
 
 ## 🆚 Comparaison avec des opérateurs similaires
 
@@ -194,57 +194,57 @@ import { elementAt, take, first, skip } from 'rxjs';
 
 const numbers$ = from([10, 20, 30, 40, 50]);
 
-// elementAt: récupère uniquement la valeur à un index spécifique
+// elementAt: Seules les valeurs d'un index spécifique sont récupérées
 numbers$.pipe(
   elementAt(2)
 ).subscribe(console.log);
-// Sortie: 30
+// Sortie.: 30
 
-// take: récupère les N premiers
+// take: Depuis le débutNObtenir une valeur
 numbers$.pipe(
   take(3)
 ).subscribe(console.log);
-// Sortie: 10, 20, 30
+// Sortie.: 10, 20, 30
 
-// skip + first: équivalent à elementAt (redondant)
+// skip + first: elementAt Équivalent à (redondant)
 numbers$.pipe(
   skip(2),
   first()
 ).subscribe(console.log);
-// Sortie: 30
+// Sortie.: 30
 ```
 
-| Opérateur | Valeur récupérée | Nombre de sorties | Cas d'utilisation |
-|:---|:---|:---|:---|
-| `elementAt(n)` | Uniquement la valeur à l'index n | 1 | Récupérer la N-ième valeur |
-| `take(n)` | Les n premiers | n | Récupérer les N premiers |
-| `first()` | La première valeur | 1 | Récupérer le premier |
-| `skip(n) + first()` | Le premier après avoir ignoré n | 1 | Équivalent à elementAt (non recommandé) |
+| Opérateur. | Valeur à obtenir | Nombre de sorties | Cas d'utilisation. |
+|---|---|---|---|
+| `elementAt(n)` | Uniquement les valeurs à l'indice n | 1 | Prendre la nième valeur |
+| `take(n)` | n valeurs depuis le début | n valeurs | Obtenir les n premières valeurs |
+| `first()` | Première valeur | 1 | Obtenir la première valeur. |
+| `skip(n) + first()` | Premier après n sauts | Premier | Equivalent à elementAt (obsolète) |
 
-## ⚠️ Points d'attention
+## ⚠️ Notes.
 
-### 1. Quand l'index est hors limites
+### 1. Si l'index est hors plage
 
-Une erreur se produit si l'index spécifié n'est pas atteint avant que le flux ne se termine.
+Si l'index spécifié n'est pas atteint avant la fin du flux, une erreur est générée.
 
 ```ts
 import { from } from 'rxjs';
 import { elementAt } from 'rxjs';
 
-const numbers$ = from([10, 20, 30]); // Seulement 3 éléments
+const numbers$ = from([10, 20, 30]); // 3Une seule
 
 numbers$.pipe(
-  elementAt(5) // Demande l'index 5
+  elementAt(5) // Index5Demander
 ).subscribe({
   next: console.log,
   error: err => console.error('Erreur:', err.message)
 });
-// Sortie: Erreur: no elements in sequence
+// Sortie.: Erreur: no elements in sequence
 ```
 
-### 2. Spécifier une valeur par défaut
+### Spécifier les valeurs par défaut.
 
-Vous pouvez spécifier une valeur par défaut pour éviter les erreurs.
+Pour éviter les erreurs, des valeurs par défaut peuvent être spécifiées.
 
 ```ts
 import { from } from 'rxjs';
@@ -254,32 +254,32 @@ const numbers$ = from([10, 20, 30]);
 
 // Spécifier une valeur par défaut
 numbers$.pipe(
-  elementAt(5, 999) // Retourne 999 si l'index 5 n'existe pas
+  elementAt(5, 999) // Index5S'il n'y en a pas, renvoie999Renvoie une
 ).subscribe({
   next: console.log,
   error: err => console.error('Erreur:', err.message)
 });
-// Sortie: 999
+// Sortie.: 999
 ```
 
-### 3. Utilisation avec des flux asynchrones
+### Utilisation avec des flux asynchrones
 
-Pour les flux asynchrones, il attend jusqu'à ce que la position d'index soit atteinte.
+Dans les flux asynchrones, attendez que la position de l'index soit atteinte.
 
 ```ts
 import { interval } from 'rxjs';
 import { elementAt } from 'rxjs';
 
-// Émet une valeur chaque seconde
+// 1Délivre une valeur toutes les secondes
 interval(1000).pipe(
-  elementAt(3) // Index 3 (4ème valeur)
+  elementAt(3) // Index3(4(valeur de la seconde)
 ).subscribe(console.log);
-// Sortie après 3 secondes: 3
+// 3Sortie après quelques secondes: 3
 ```
 
-### 4. Les indices négatifs ne sont pas utilisables
+### Les index négatifs ne sont pas autorisés.
 
-Les indices négatifs ne peuvent pas être spécifiés.
+Les index négatifs ne peuvent pas être spécifiés.
 
 ```ts
 import { from } from 'rxjs';
@@ -287,7 +287,7 @@ import { elementAt } from 'rxjs';
 
 const numbers$ = from([10, 20, 30, 40, 50]);
 
-// ❌ Les indices négatifs provoquent une erreur
+// ❌ Les index négatifs sont des erreurs
 numbers$.pipe(
   elementAt(-1)
 ).subscribe({
@@ -297,7 +297,7 @@ numbers$.pipe(
 // Erreur: ArgumentOutOfRangeError: index out of range
 ```
 
-Pour récupérer depuis la fin du tableau, utilisez `takeLast` ou `last`.
+Utilisez `takeLast` ou `last` pour aller à la fin du tableau.
 
 ```ts
 import { from } from 'rxjs';
@@ -305,34 +305,34 @@ import { takeLast, last } from 'rxjs';
 
 const numbers$ = from([10, 20, 30, 40, 50]);
 
-// ✅ Récupérer la dernière valeur
+// ✅ Obtenir la dernière valeur
 numbers$.pipe(
   last()
 ).subscribe(console.log);
-// Sortie: 50
+// Sortie.: 50
 
-// ✅ Récupérer les N derniers
+// ✅ Obtenir la dernière valeurNObtenir la dernière valeur
 numbers$.pipe(
   takeLast(2)
 ).subscribe(console.log);
-// Sortie: 40, 50
+// Sortie.: 40, 50
 ```
 
-## 📚 Opérateurs associés
+## 📚 Opérateurs apparentés.
 
-- **[take](./take)** - Récupérer les N premiers
-- **[first](./first)** - Récupérer la première valeur
-- **[last](./last)** - Récupérer la dernière valeur
-- **[skip](./skip)** - Ignorer les N premiers
-- **[takeLast](./takeLast)** - Récupérer les N derniers
+- **[take](. /take)** - N pris depuis le début.
+- **[first](. /first)** - obtient la première valeur.
+- **[last](. /last)** - obtient la dernière valeur.
+- **[skip](. /skip)** - Sauter les N premières valeurs
+- **[takeLast](. /takeLast)** - obtenir les N dernières valeurs
 
-## Résumé
+## Résumé.
 
-L'opérateur `elementAt` récupère uniquement la valeur à la position d'index spécifiée.
+L'opérateur `elementAt` ne récupère que la valeur à la position d'index spécifiée.
 
-- ✅ Même comportement que l'accès par index des tableaux
-- ✅ Optimal pour récupérer la N-ième valeur
-- ✅ Peut spécifier une valeur par défaut pour éviter les erreurs
-- ⚠️ Erreur si l'index est hors limites (sans valeur par défaut)
-- ⚠️ Les indices négatifs ne sont pas utilisables
-- ⚠️ Attend jusqu'à ce que la position soit atteinte pour les flux asynchrones
+- ✅ Même comportement que l'accès à l'index d'un tableau.
+- ✅ Idéal pour récupérer la Nième valeur
+- ✅ Les valeurs par défaut peuvent être spécifiées pour éviter les erreurs.
+- ⚠️ Erreur si l'index est en dehors de la plage (pas de valeur par défaut)
+- ⚠️ Les index négatifs ne sont pas autorisés
+- ⚠️ Les flux asynchrones attendent d'être atteints

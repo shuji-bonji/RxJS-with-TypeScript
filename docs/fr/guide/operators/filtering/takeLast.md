@@ -1,11 +1,10 @@
 ---
-description: "takeLast est un opérateur de filtrage RxJS qui ne produit que les N dernières valeurs lorsque le flux Observable se termine. Idéal pour obtenir les N dernières entrées du journal, afficher les N premiers éléments sur un tableau de classement, ou afficher un résumé final des données à la fin. Ne peut pas être utilisé avec des flux infinis car il conserve les valeurs dans un tampon jusqu'à la fin."
+description: "takeLast est un opérateur de filtrage RxJS qui ne produit que les N dernières valeurs lorsqu'un flux Observable est terminé. Il est idéal pour les situations où seule la dernière valeur de l'ensemble du flux est requise, comme l'obtention du dernier décompte dans le journal, l'affichage des N premières valeurs dans le tableau de classement, ou le résumé final des données à la fin. Cette fonction ne peut pas être utilisée avec des flux infinis, car elle est conservée dans un tampon jusqu'à ce qu'elle soit terminée."
 ---
 
-# takeLast - Récupérer les N dernières valeurs
+# takeLast - obtient les N dernières valeurs
 
-L'opérateur `takeLast` ne produit que les N dernières valeurs **au moment où le flux se termine**. Il conserve les valeurs dans un tampon jusqu'à la fin, puis les émet toutes ensemble.
-
+L'opérateur `takeLast` ne sort que les N dernières valeurs au moment où le flux est **complet**. Il conserve les valeurs dans un tampon jusqu'à ce que le flux se termine et les restitue ensemble une fois terminé.
 
 ## 🔰 Syntaxe de base et utilisation
 
@@ -13,7 +12,7 @@ L'opérateur `takeLast` ne produit que les N dernières valeurs **au moment où 
 import { range } from 'rxjs';
 import { takeLast } from 'rxjs';
 
-const numbers$ = range(0, 10); // 0 à 9
+const numbers$ = range(0, 10); // 0de (à)9vers
 
 numbers$.pipe(
   takeLast(3)
@@ -21,16 +20,15 @@ numbers$.pipe(
 // Sortie: 7, 8, 9
 ```
 
-**Flux d'opération** :
-1. Le flux émet 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
-2. Les 3 dernières valeurs sont conservées en interne dans le tampon
-3. Le flux se termine
-4. Les valeurs du tampon 7, 8, 9 sont émises dans l'ordre
+**Flux des opérations** :.
+1. le flux émet 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+2. maintien interne des 3 derniers dans la mémoire tampon
+3. flux terminé 4. valeurs de la mémoire tampon 7, 8, 9
+4. sortie des valeurs 7, 8, 9 de la mémoire tampon dans l'ordre
 
-[🌐 Documentation officielle RxJS - `takeLast`](https://rxjs.dev/api/operators/takeLast)
+[🌐 Official RxJS documentation - `takeLast`](https://rxjs.dev/api/operators/takeLast)
 
-
-## 🆚 Comparaison avec take
+## 🆚 Contraste avec take.
 
 `take` et `takeLast` ont des comportements opposés.
 
@@ -38,31 +36,31 @@ numbers$.pipe(
 import { range } from 'rxjs';
 import { take, takeLast } from 'rxjs';
 
-const numbers$ = range(0, 10); // 0 à 9
+const numbers$ = range(0, 10); // 0de (à)9vers
 
-// take: récupère les N premiers
+// take: Le premierNObtenir le premier
 numbers$.pipe(
   take(3)
 ).subscribe(console.log);
-// Sortie: 0, 1, 2 (émis immédiatement)
+// Sortie: 0, 1, 2(sortie immédiate)
 
-// takeLast: récupère les N derniers
+// takeLast: Obtenir le dernierNObtenir le premier
 numbers$.pipe(
   takeLast(3)
 ).subscribe(console.log);
-// Sortie: 7, 8, 9 (émis après la fin)
+// Sortie: 7, 8, 9(attendre l'achèvement avant d'éditer)
 ```
 
-| Opérateur | Position | Moment d'émission | Comportement avant fin |
+| Opérateur | Position d'acquisition | Moment de la sortie | Action avant l'achèvement. |
 |---|---|---|---|
-| `take(n)` | Les n premiers | Émission immédiate | Fin automatique après n éléments |
-| `takeLast(n)` | Les n derniers | Émission groupée après fin | Conservation dans le tampon |
+| `prendre(n)` | Premier n | Sortie immédiate | Fin automatique après la prise de n pièces. |
+| `takeLast(n)` | Derniers n morceaux | Sortie collective après achèvement | Maintien en mémoire tampon |
 
+## 💡 Modèle d'utilisation typique
 
-## 💡 Patterns d'utilisation typiques
+1. **Obtenir les N dernières entrées du journal**.
 
-1. **Récupérer les N dernières entrées de journal**
-   ```ts
+```ts
    import { from } from 'rxjs';
    import { takeLast } from 'rxjs';
 
@@ -73,26 +71,26 @@ numbers$.pipe(
    }
 
    const logs$ = from([
-     { timestamp: 1, level: 'info' as const, message: 'Application démarrée' },
-     { timestamp: 2, level: 'info' as const, message: 'Utilisateur connecté' },
-     { timestamp: 3, level: 'warn' as const, message: 'Requête lente détectée' },
-     { timestamp: 4, level: 'error' as const, message: 'Échec de connexion' },
-     { timestamp: 5, level: 'info' as const, message: 'Nouvelle tentative réussie' },
+     { timestamp: 1, level: 'info' as const, message: 'App started' },
+     { timestamp: 2, level: 'info' as const, message: 'User logged in' },
+     { timestamp: 3, level: 'warn' as const, message: 'Slow query detected' },
+     { timestamp: 4, level: 'error' as const, message: 'Connection failed' },
+     { timestamp: 5, level: 'info' as const, message: 'Retry successful' },
    ] as LogEntry[]);
 
-   // Récupère les 3 derniers logs
+   // Obtenir le dernier3Récupérer les journaux du
    logs$.pipe(
      takeLast(3)
    ).subscribe(log => {
      console.log(`[${log.level}] ${log.message}`);
    });
    // Sortie:
-   // [warn] Requête lente détectée
-   // [error] Échec de connexion
-   // [info] Nouvelle tentative réussie
+   // [warn] Slow query detected
+   // [error] Connection failed
+   // [info] Retry successful
    ```
 
-2. **Récupérer le top N d'un classement**
+2. **Haut du classementNRécupérer le haut du classement**
    ```ts
    import { from } from 'rxjs';
    import { takeLast } from 'rxjs';
@@ -109,10 +107,10 @@ numbers$.pipe(
      { player: 'Dave', score: 180 },
      { player: 'Eve', score: 220 }
    ] as Score[]).pipe(
-     // Supposé trié par score
+     // En supposant qu'il soit trié par score
    );
 
-   // Récupère le top 3
+   // Obtenir le top3Récupérer le top du classement
    scores$.pipe(
      takeLast(3)
    ).subscribe(score => {
@@ -121,12 +119,12 @@ numbers$.pipe(
    // Sortie: Charlie: 200, Dave: 180, Eve: 220
    ```
 
-3. **Résumé des N derniers éléments après traitement des données**
+3. **Résumé final après traitement des donnéesNRésumé des cas**
    ```ts
    import { interval } from 'rxjs';
    import { take, map, takeLast } from 'rxjs';
 
-   // Simulation de données de capteur
+   // Simulation des données des capteurs
    const sensorData$ = interval(100).pipe(
      take(20),
      map(i => ({
@@ -135,261 +133,274 @@ numbers$.pipe(
      }))
    );
 
-   // Calcule la température moyenne des 5 derniers
+   // Obtenir le dernier5Calcul de la température moyenne du boîtier
    sensorData$.pipe(
      takeLast(5)
    ).subscribe({
      next: data => {
-       console.log(`Données ${data.id}: ${data.temperature.toFixed(1)}°C`);
+       console.log(`données${data.id}: ${data.temperature.toFixed(1)}°C`);
      },
      complete: () => {
-       console.log('Récupération des 5 dernières données terminée');
+       console.log('Dernière acquisition5Acquisition des données du cas terminée');
      }
    });
    ```
 
+## 🧠 Exemple de code pratique (historique des entrées)
 
-## 🧠 Exemple de code pratique (historique de saisie)
+Exemple d'affichage des dernières valeurs3Il s'agit d'un exemple d'affichage des dernières valeurs saisies par l'utilisateur.
 
-Exemple d'affichage des 3 dernières valeurs saisies par l'utilisateur.
+```
 
-```ts
-import { fromEvent, Subject } from 'rxjs';
-import { takeLast } from 'rxjs';
+ts.
+import { fromEvent, Subject } from 'rxjs' ;
+import { takeLast } from 'rxjs' ;
 
-// Création des éléments UI
-const container = document.createElement('div');
-document.body.appendChild(container);
+// Création d'éléments d'interface utilisateur
+const container = document.createElement('div') ;
+document.body.appendChild(container) ;
 
-const input = document.createElement('input');
-input.placeholder = 'Entrez une valeur et appuyez sur Entrée';
-container.appendChild(input);
+const input = document.createElement('input') ;
+input.placeholder = 'Saisir une valeur et Enter' ;
+container.appendChild(input) ;
 
-const submitButton = document.createElement('button');
-submitButton.textContent = 'Afficher l\'historique (3 derniers)';
-container.appendChild(submitButton);
+const submitButton = document.createElement('button') ;
+submitButton.textContent = 'Afficher l'historique (3 derniers)' ;
+container.appendChild(submitButton) ;
 
-const historyDisplay = document.createElement('div');
-historyDisplay.style.marginTop = '10px';
-container.appendChild(historyDisplay);
+const historyDisplay = document.createElement('div') ;
+historyDisplay.style.marginTop = '10px' ;
+container.appendChild(historyDisplay) ;
 
-// Subject pour conserver les valeurs saisies
-const inputs$ = new Subject<string>();
+// Sujet pour contenir les valeurs d'entrée
+const inputs$ = new Subject<string>() ;.
 
-// **Important**: configurer la souscription à takeLast en premier
+// **IMPORTANT** : définir l'abonnement takeLast first
 inputs$.pipe(
   takeLast(3)
 ).subscribe({
-  next: (value) => {
-    const item = document.createElement('div');
-    item.textContent = `・ ${value}`;
-    historyDisplay.appendChild(item);
-  },
-  complete: () => {
-    const note = document.createElement('div');
-    note.style.marginTop = '5px';
-    note.style.color = 'gray';
-    note.textContent = '(Rechargez la page pour saisir à nouveau)';
-    historyDisplay.appendChild(note);
+  next : (value) => {
+    const item = document.createElement('div') ;
+    item.textContent = `- ${valeur}` ;
+    historyDisplay.appendChild(item) ;
+  },.
+  complete : () => {
+    const note = document.createElement('div') ;
+    note.style.marginTop = '5px' ;
+    note.style.colour = 'grey' ;
+    note.textContent = '(Reload the page to type again)' ;
+    historyDisplay.appendChild(note) ;
 
-    // Désactiver le champ de saisie et le bouton
-    input.disabled = true;
-    submitButton.disabled = true;
+    // Désactivation des champs de saisie et des boutons
+    input.disabled = true ;
+    submitButton.disabled = true ;
   }
-});
+}) ;
 
-// Ajouter l'entrée avec la touche Entrée
+// Ajout d'une entrée avec la touche Entrée
 fromEvent<KeyboardEvent>(input, 'keydown').subscribe(event => {
   if (event.key === 'Enter' && input.value.trim()) {
-    inputs$.next(input.value);
-    console.log(`Ajouté: ${input.value}`);
-    input.value = '';
+    inputs$.next(input.value) ;
+    console.log(`Add : ${input.value}`) ;
+    input.value = '' ;
   }
-});
+}) ;
 
-// Terminer et afficher l'historique au clic sur le bouton
+// Compléter avec l'historique des clics et de l'affichage
 fromEvent(submitButton, 'click').subscribe(() => {
-  historyDisplay.innerHTML = '<strong>Historique (3 derniers) :</strong><br>';
-  inputs$.complete(); // Terminer le flux → takeLast se déclenche
-});
+  historyDisplay.innerHTML = '<strong>History (latest 3):</strong><br>' ;
+  inputs$.complete() ; // flux complet → takeLast fires
+}) ;
+
 ```
 
 > [!IMPORTANT]
-> **Points importants** :
-> - La souscription à `takeLast(3)` doit être configurée **en premier**
-> - Lorsque vous appelez `complete()` au clic, les 3 dernières valeurs reçues sont émises
-> - Si vous faites `subscribe` **après** avoir appelé `complete()`, aucune valeur ne sera émise
+> **Points clés**:
+> - `takeLast(3)` S'abonner à la**d'abord.**doit être mis en place en premier
+> - lorsque l'on clique sur le bouton. `complete()` la dernière des valeurs reçues jusqu'à ce point sera éditée.3La dernière valeur reçue jusqu'à ce point est éditée.
+> - `complete()` Après l'appel**Après avoir appelé**à `subscribe` les valeurs ne circulent pas.
 
-
-## ⚠️ Points d'attention importants
+## ⚠️ Un point important à noter
 
 > [!WARNING]
-> `takeLast` **attend que le flux se termine**, il ne fonctionne donc pas avec les flux infinis. De plus, si n est grand dans `takeLast(n)`, cela consomme beaucoup de mémoire.
+> `takeLast` est d'attendre que le flux**Attendre l'achèvement**Par conséquent, cela ne fonctionne pas avec des flux infinis. De plus, la fonction`takeLast(n)` de la fonctionnest grande, elle consomme beaucoup de mémoire.
 
-### 1. Ne peut pas être utilisé avec des flux infinis
+### 1. Il ne peut pas être utilisé avec des flux infinis.
 
-`takeLast` attend la fin du flux, il ne fonctionne donc pas avec les flux infinis.
+`takeLast` ne fonctionne pas avec les flux infinis car il attend que le flux se termine.
 
-```ts
-import { interval } from 'rxjs';
-import { takeLast } from 'rxjs';
+```
 
-// ❌ Mauvais exemple: utiliser takeLast avec un flux infini
+ts.
+import { interval } from 'rxjs' ;
+import { takeLast } from 'rxjs' ;
+
+// ❌ Mauvais exemple : utilisation de takeLast avec des flux infinis
 interval(1000).pipe(
   takeLast(3)
-).subscribe(console.log);
-// Rien ne s'affiche (le flux ne se termine jamais)
+).subscribe(console.log) ;.
+// Rien n'est produit (parce que le flux ne se termine jamais)
+
 ```
 
-**Solution** : combiner avec `take` pour créer un flux fini
+**Solution.**: `take` Utilisez un flux fini en combinaison avec
 
-```ts
-import { interval } from 'rxjs';
-import { take, takeLast } from 'rxjs';
+```
 
-// ✅ Bon exemple: créer un flux fini puis utiliser takeLast
+ts.
+import { interval } from 'rxjs' ;
+import { take, takeLast } from 'rxjs' ;
+
+// ✅ Bon exemple : flux fini puis utilisation de takeLast
 interval(1000).pipe(
-  take(10),      // Terminer après les 10 premiers
-  takeLast(3)    // Récupérer les 3 derniers
-).subscribe(console.log);
-// Sortie: 7, 8, 9
+  take(10), // Complète avec les 10 premiers
+  takeLast(3) // prend les 3 derniers
+).subscribe(console.log) ;.
+// Sortie : 7, 8, 9
+
 ```
 
-### 2. Attention à l'utilisation mémoire
+### 2. Attention à l'utilisation de la mémoire
 
-`takeLast(n)` conserve les n derniers éléments dans le tampon, donc un n élevé consomme de la mémoire.
+`takeLast(n)` ne fonctionne pas avec les flux finis car il retient la dernière pièce dans la mémoire tampon, ce qui peut entraîner une perte de mémoire.npièce à conserver dans la mémoire tampon,nest grand, il consomme plus de mémoire.
 
-```ts
-import { range } from 'rxjs';
-import { takeLast } from 'rxjs';
+```
 
-// ⚠️ Attention: conservation de nombreuses données dans le tampon
+ts.
+import { range } from 'rxjs' ;
+import { takeLast } from 'rxjs' ;
+
+// ⚠️ Remarque : les grandes quantités de données sont conservées dans une mémoire tampon.
 range(0, 1000000).pipe(
-  takeLast(100000) // 100 000 éléments en mémoire
-).subscribe(console.log);
+  takeLast(100000) // 100 000 enregistrements conservés en mémoire
+).subscribe(console.log) ;.
+
 ```
 
+## 🎯 last La différence entre l
 
-## 🎯 Différence avec last
+```
 
-```ts
-import { range } from 'rxjs';
-import { last, takeLast } from 'rxjs';
+ts.
+import { range } from 'rxjs' ;
+import { last, takeLast } from 'rxjs' ;
 
-const numbers$ = range(0, 10);
+const numbers$ = range(0, 10) ;
 
-// last: uniquement le dernier
+// last : seulement le dernier
 numbers$.pipe(
-  last()
-).subscribe(console.log);
-// Sortie: 9
+  dernier()
+).subscribe(console.log) ;
+// sortie : 9
 
-// takeLast(1): le dernier (émis comme valeur unique, pas comme tableau)
+// takeLast(1) : dernier (sortie en tant que valeur unique, pas en tant que tableau)
 numbers$.pipe(
   takeLast(1)
-).subscribe(console.log);
-// Sortie: 9
+).subscribe(console.log) ;.
+// Sortie : 9
 
-// takeLast(3): les 3 derniers
+// takeLast(3) : dernier 3
 numbers$.pipe(
   takeLast(3)
-).subscribe(console.log);
-// Sortie: 7, 8, 9
+).subscribe(console.log) ;
+// Sortie : 7, 8, 9
+
 ```
 
-| Opérateur | Nombre | Condition | Cas d'utilisation |
+| l'opérateur | Nombre d'acquisitions | Spécification de la condition | Cas d'utilisation |
 |---|---|---|---|
-| `last()` | 1 | Possible | Le dernier ou le dernier satisfaisant une condition |
-| `takeLast(n)` | n | Impossible | Simplement récupérer les n derniers |
+| `last()` | 1Nombre d'acquisitions | possible | Obtenir le dernier1Pièces ou la dernière pièce qui remplit la condition1Nombre d'acquisitions |
+| `takeLast(n)` | nNombre d'acquisitions | Impossible | Obtenir le derniernIl suffit d'obtenir la dernière pièce qui remplit la condition. |
 
+## 📋 Utilisation sûre du point de vue du type
 
-## 📋 Utilisation type-safe
+TypeScript Il s'agit d'un exemple d'implémentation sûre du point de vue du type, qui utilise les génériques en
 
-Exemple d'implémentation type-safe avec les génériques TypeScript.
+```
 
-```ts
-import { Observable, from } from 'rxjs';
-import { takeLast } from 'rxjs';
+ts.
+import { Observable, from } from 'rxjs' ;
+import { takeLast } from 'rxjs' ;
 
 interface Transaction {
-  id: string;
-  amount: number;
-  timestamp: Date;
-  status: 'pending' | 'completed' | 'failed';
+  id : string ;
+  amount : nombre ;
+  timestamp : Date ;
+  status : 'pending' | 'completed' | 'failed' ; }
 }
 
 function getRecentTransactions(
-  transactions$: Observable<Transaction>,
-  count: number
-): Observable<Transaction> {
+  transactions$ : Observable<Transaction>,.
+  count : nombre
+) : Observable<Transaction> {
   return transactions$.pipe(
     takeLast(count)
-  );
+  ) ;
 }
 
 // Exemple d'utilisation
-const transactions$ = from([
-  { id: '1', amount: 100, timestamp: new Date('2025-01-01'), status: 'completed' as const },
-  { id: '2', amount: 200, timestamp: new Date('2025-01-02'), status: 'completed' as const },
-  { id: '3', amount: 150, timestamp: new Date('2025-01-03'), status: 'pending' as const },
-  { id: '4', amount: 300, timestamp: new Date('2025-01-04'), status: 'completed' as const },
-  { id: '5', amount: 250, timestamp: new Date('2025-01-05'), status: 'failed' as const },
-] as Transaction[]);
+const transactions$ = from([.
+  { id : '1', amount : 100, timestamp : new Date('2025-01-01'), status : 'completed' as const }
+  { id : '2', amount : 200, timestamp : new Date('2025-01-02'), status : 'completed' as const }
+  { id : '3', amount : 150, timestamp : new Date('2025-01-03'), status : 'pending' as const }
+  { id : '4', amount : 300, timestamp : new Date('2025-01-04'), status : 'completed' as const }
+  { id : '5', amount : 250, timestamp : new Date('2025-01-05'), status : 'failed' as const }
+] en tant que Transaction[]) ;.
 
-// Récupère les 3 dernières transactions
+// Obtenir les trois transactions les plus récentes
 getRecentTransactions(transactions$, 3).subscribe(tx => {
-  console.log(`${tx.id}: ${tx.amount}€ (${tx.status})`);
-});
-// Sortie:
-// 3: 150€ (pending)
-// 4: 300€ (completed)
-// 5: 250€ (failed)
+  console.log(`${tx.id} : ${tx.amount} yen (${tx.status})`) ;
+}) ;
+// Sortie :.
+// 3 : 150 yen (en attente)
+// 4 : 300 yen (terminé)
+// 5 : 250 yens (échec)
+
 ```
 
+## 🔄 skip et takeLast la combinaison de
 
-## 🔄 Combinaison de skip et takeLast
+La partie centrale de la valeur est exclue et seul le dernier morceau peut être récupéré.NSeule la dernière peut être récupérée.
 
-Vous pouvez exclure les valeurs intermédiaires et récupérer uniquement les N dernières.
+```
 
-```ts
-import { range } from 'rxjs';
-import { skip, takeLast } from 'rxjs';
+ts
+import { range } from 'rxjs' ;
+import { skip, takeLast } from 'rxjs' ;
 
-const numbers$ = range(0, 10); // 0 à 9
+const numbers$ = range(0, 10) ; // 0 à 9
 
-// Ignorer les 5 premiers et récupérer les 3 derniers du reste
+// sauter les 5 premiers et prendre les 3 derniers restants
 numbers$.pipe(
-  skip(5),      // Ignorer 0, 1, 2, 3, 4
-  takeLast(3)   // Les 3 derniers parmi 5, 6, 7, 8, 9
-).subscribe(console.log);
-// Sortie: 7, 8, 9
+  skip(5), // saute 0, 1, 2, 3, 4
+  takeLast(3) // prend les 3 derniers des 5, 6, 7, 8, 9 restants
+).subscribe(console.log) ;.
+// Sortie : 7, 8, 9
 ```
-
 
 ## 🎓 Résumé
 
-### Quand utiliser takeLast
-- ✅ Lorsque vous avez besoin des N dernières données du flux
-- ✅ Lorsque vous voulez récupérer les N dernières entrées de journal ou transactions
-- ✅ Lorsque la fin du flux est garantie
-- ✅ Lorsque vous voulez afficher un résumé ou le top N
+### Quand takeLast doit être utilisé.
+- ✅ Si vous avez besoin des N dernières données d'un flux.
+- ✅ Si vous voulez obtenir les N derniers journaux ou transactions
+- ✅ Si la fin du flux est garantie
+- Si vous souhaitez afficher un résumé ou les N premiers enregistrements de données
 
-### Quand utiliser take
-- ✅ Lorsque vous avez besoin des N premières données du flux
-- ✅ Lorsque vous voulez obtenir des résultats immédiatement
-- ✅ Lorsque vous voulez récupérer une partie d'un flux infini
+### Quand utiliser take.
+- ✅ Si vous avez besoin des N premières données du flux
+- ✅ Si vous voulez obtenir les résultats immédiatement
+- ✅ Si vous voulez obtenir une partie d'un flux infini
 
-### Points d'attention
-- ⚠️ Ne peut pas être utilisé avec des flux infinis (ne se termine jamais)
-- ⚠️ Un n élevé dans `takeLast(n)` consomme de la mémoire
-- ⚠️ L'émission est groupée après la fin (pas d'émission immédiate)
-- ⚠️ Souvent nécessaire de combiner avec `take(n)` pour créer un flux fini
+### Notes.
+- ⚠️ Ne peut pas être utilisé avec des flux infinis (car ils ne se terminent pas).
+- ⚠️ Un grand n dans `takeLast(n)` consomme de la mémoire
+- ⚠️ La sortie est compilée après achèvement (pas immédiatement)
+- ⚠️ Doit souvent être combiné avec `take(n)` pour obtenir un flux fini.
 
+## 🚀 Prochaine étape.
 
-## 🚀 Prochaines étapes
-
-- **[take](./take)** - Apprendre à récupérer les N premières valeurs
-- **[last](./last)** - Apprendre à récupérer la dernière valeur
-- **[skip](./skip)** - Apprendre à ignorer les N premières valeurs
-- **[filter](./filter)** - Apprendre le filtrage basé sur les conditions
-- **[Exemples pratiques d'opérateurs de filtrage](./practical-use-cases)** - Apprendre des cas d'utilisation réels
+- **[take](. /take)** - apprendre à obtenir les n premières valeurs.
+- **[last](. /last)** - apprendre à obtenir les 1 dernières valeurs.
+- **[skip](. /skip)** - apprendre à sauter les N premières valeurs.
+- **[filter](. /filter)** - Apprenez à filtrer en fonction de conditions.
+- **[filtering-operator-practical-use-cases](. /practical-use-cases)** - apprendre à utiliser des cas d'utilisation réels

@@ -1,36 +1,34 @@
 ---
-description: takeLast is een RxJS filteroperator die alleen de laatste N waarden uitvoert wanneer de Observable-stream voltooit. Het is ideaal voor scenario's waar alleen de laatste waarden van de hele stream nodig zijn, zoals het ophalen van de nieuwste logvermeldingen, het weergeven van top N items op een ranglijst, en einddata-samenvattingen bij voltooiing. Het kan niet worden gebruikt met oneindige streams omdat het waarden in een buffer vasthoudt tot voltooiing.
+description: "takeLast is een RxJS filteroperator die alleen de laatste N waarden uitvoert wanneer een Observable stream wordt voltooid. Het is ideaal voor situaties waarin alleen de laatste waarde van de hele stream nodig is, zoals het krijgen van de laatste telling in het log, het weergeven van de top N waarden in het leaderboard, of de laatste gegevens samenvatting bij voltooiing. Kan niet worden gebruikt met oneindige streams omdat het wordt vastgehouden in een buffer tot voltooiing."
 ---
 
-# takeLast - Haal laatste N waarden op
+# takeLast - de laatste N waarden krijgen
 
-De `takeLast` operator voert alleen de laatste N waarden uit wanneer de stream **voltooit**. Het houdt waarden in een buffer vast tot de stream voltooit, en voert ze dan allemaal tegelijk uit.
+De `takeLast` operator voert alleen de laatste N waarden uit op het moment dat de stream **voltooid** is. Het bewaart de waarden in een buffer totdat de stream is voltooid en voert ze samen uit na voltooiing.
 
-
-## 🔰 Basissyntax en gebruik
+## 🔰 Basis syntaxis en gebruik
 
 ```ts
 import { range } from 'rxjs';
 import { takeLast } from 'rxjs';
 
-const numbers$ = range(0, 10); // 0 tot 9
+const numbers$ = range(0, 10); // 0van (tot)9naar
 
 numbers$.pipe(
   takeLast(3)
 ).subscribe(console.log);
-// Output: 7, 8, 9
+// Uitgang: 7, 8, 9
 ```
 
-**Werkingsstroom**:
-1. Stream geeft 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 uit
-2. Houdt intern laatste 3 waarden in buffer vast
-3. Stream voltooit
-4. Voert bufferwaarden 7, 8, 9 op volgorde uit
+**Bewerkingsstroom**:.
+1. stream geeft 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 uit
+2. intern houden laatste 3 in buffer
+3. stream voltooid 4. bufferwaarden 7, 8, 9
+4. bufferwaarden 7, 8, 9 worden achtereenvolgens uitgevoerd
 
-[🌐 RxJS Officiële Documentatie - `takeLast`](https://rxjs.dev/api/operators/takeLast)
+[🌐 Officiële RxJS documentatie - `takeLast`](https://rxjs.dev/api/operators/takeLast)
 
-
-## 🆚 Contrast met take
+## 🆚 Contrast met take.
 
 `take` en `takeLast` hebben contrasterend gedrag.
 
@@ -38,31 +36,28 @@ numbers$.pipe(
 import { range } from 'rxjs';
 import { take, takeLast } from 'rxjs';
 
-const numbers$ = range(0, 10); // 0 tot 9
+const numbers$ = range(0, 10); // 0van (tot)9naar
 
-// take: Haal eerste N waarden op
+// take: De eersteNDe eerste krijgen
 numbers$.pipe(
   take(3)
 ).subscribe(console.log);
-// Output: 0, 1, 2 (onmiddellijk uitvoer)
+// Uitgang: 0, 1, 2(onmiddellijke uitvoer)
 
-// takeLast: Haal laatste N waarden op
+// takeLast: De laatsteNDe eerste krijgen
 numbers$.pipe(
   takeLast(3)
 ).subscribe(console.log);
-// Output: 7, 8, 9 (uitvoer na wachten op voltooiing)
+// Uitgang: 7, 8, 9(wacht op voltooiing voor uitvoer)
 ```
 
-| Operator | Ophaal positie | Uitvoertiming | Gedrag voor voltooiing |
-|---|---|---|---|
-| `take(n)` | Eerste n waarden | Onmiddellijk uitvoer | Auto-voltooien na n waarden |
-| `takeLast(n)` | Laatste n waarden | Allemaal samen uitvoeren na voltooiing | Vasthouden in buffer |
+TABEL 10
 
+## 💡 Typisch gebruikspatroon
 
-## 💡 Typische gebruikspatronen
+1. **Verzamel de laatste N logboekvermeldingen**.
 
-1. **Haal nieuwste N logvermeldingen op**
-   ```ts
+```ts
    import { from } from 'rxjs';
    import { takeLast } from 'rxjs';
 
@@ -73,26 +68,26 @@ numbers$.pipe(
    }
 
    const logs$ = from([
-     { timestamp: 1, level: 'info' as const, message: 'App gestart' },
-     { timestamp: 2, level: 'info' as const, message: 'Gebruiker ingelogd' },
-     { timestamp: 3, level: 'warn' as const, message: 'Trage query gedetecteerd' },
-     { timestamp: 4, level: 'error' as const, message: 'Verbinding mislukt' },
-     { timestamp: 5, level: 'info' as const, message: 'Nieuwe poging succesvol' },
+     { timestamp: 1, level: 'info' as const, message: 'App started' },
+     { timestamp: 2, level: 'info' as const, message: 'User logged in' },
+     { timestamp: 3, level: 'warn' as const, message: 'Slow query detected' },
+     { timestamp: 4, level: 'error' as const, message: 'Connection failed' },
+     { timestamp: 5, level: 'info' as const, message: 'Retry successful' },
    ] as LogEntry[]);
 
-   // Haal nieuwste 3 logvermeldingen op
+   // De laatste3Logs ophalen van de
    logs$.pipe(
      takeLast(3)
    ).subscribe(log => {
      console.log(`[${log.level}] ${log.message}`);
    });
-   // Output:
-   // [warn] Trage query gedetecteerd
-   // [error] Verbinding mislukt
-   // [info] Nieuwe poging succesvol
+   // Uitgang:
+   // [warn] Slow query detected
+   // [error] Connection failed
+   // [info] Retry successful
    ```
 
-2. **Haal top N op ranglijst op**
+2. **Top van leaderboardNDe top ophalen**
    ```ts
    import { from } from 'rxjs';
    import { takeLast } from 'rxjs';
@@ -108,124 +103,301 @@ numbers$.pipe(
      { player: 'Charlie', score: 200 },
      { player: 'Dave', score: 180 },
      { player: 'Eve', score: 220 }
-   ] as Score[]);
+   ] as Score[]).pipe(
+     // Aangenomen gesorteerd op score
+   );
 
-   // Haal top 3 op
+   // Verkrijg de top3Verkrijg de
    scores$.pipe(
      takeLast(3)
    ).subscribe(score => {
      console.log(`${score.player}: ${score.score}`);
    });
-   // Output: Charlie: 200, Dave: 180, Eve: 220
+   // Uitgang: Charlie: 200, Dave: 180, Eve: 220
    ```
 
+3. **Definitieve samenvatting nadat de gegevensverwerking is voltooidNSamenvatting van gevallen**
+   ```ts
+   import { interval } from 'rxjs';
+   import { take, map, takeLast } from 'rxjs';
 
-## ⚠️ Belangrijke opmerkingen
+   // Simulatie van sensorgegevens
+   const sensorData$ = interval(100).pipe(
+     take(20),
+     map(i => ({
+       id: i,
+       temperature: 20 + Math.random() * 10
+     }))
+   );
+
+   // De laatste5Berekening van de gemiddelde temperatuur van de koffer
+   sensorData$.pipe(
+     takeLast(5)
+   ).subscribe({
+     next: data => {
+       console.log(`gegevens${data.id}: ${data.temperature.toFixed(1)}°C`);
+     },
+     complete: () => {
+       console.log('Laatste5Gegevensverwerving van de koffer voltooid');
+     }
+   });
+   ```
+
+## 🧠 Praktisch codevoorbeeld (invoerhistoriek)
+
+Voorbeeld van weergave van de laatste3Dit is een voorbeeld van het weergeven van de laatste door de gebruiker ingevoerde waarden.
+
+```
+
+ts.
+import { fromEvent, Subject } from 'rxjs';
+import { takeLast } from 'rxjs';
+
+// UI-elementen maken
+const container = document.createElement('div');
+document.body.appendChild(container);
+
+const input = document.createElement('input');
+input.placeholder = "Voer een waarde in en Enter";
+container.appendChild(input);
+
+const submitButton = document.createElement('knop');
+submitButton.textContent = "Toon geschiedenis (laatste 3)";
+container.appendChild(submitButton);
+
+const historyDisplay = document.createElement('div');
+historyDisplay.style.marginTop = '10px';
+container.appendChild(historyDisplay);
+
+// Onderwerp voor invoerwaarden
+const inputs$ = nieuw Onderwerp<string>();.
+
+// **IMPORTANT**: takeLast-abonnement eerst instellen
+inputs$.pipe(
+  takeLast(3)
+).subscribe({
+  volgende: (waarde) => {
+    const item = document.createElement('div');
+    item.textContent = `- ${waarde}`;
+    historyDisplay.appendChild(item);
+  },.
+  compleet: () => {
+    const note = document.createElement('div');
+    note.style.marginTop = '5px';
+    noot.style.kleur = 'grijs';
+    note.textContent = '(Herlaad de pagina om opnieuw te typen)';
+    historyDisplay.appendChild(noot);
+
+    // Invoervelden en knoppen uitschakelen
+    input.disabled = true;
+    submitButton.disabled = true;
+  }
+});
+
+// Input toevoegen met de Enter-toets
+fromEvent<KeyboardEvent>(input, 'keydown').subscribe(event => {
+  if (event.key === 'Enter' && input.value.trim()) {
+    inputs$.next(input.value);
+    console.log(`Toevoegen: ${input.value}`);
+    input.value = '';
+  }
+});
+
+// Voltooien met knopklik en geschiedenis weergeven
+fromEvent(submitButton, 'click').subscribe() => {
+  historyDisplay.innerHTML = '<strong>Geschiedenis (laatste 3):</strong><br>';
+  inputs$.complete(); // complete stream → takeLast brands
+});
+
+```
+
+> [!IMPORTANT]
+> **Belangrijke punten**:
+> - `takeLast(3)` Abonneren op de**eerste.**moet eerst worden ingesteld
+> - wanneer op de knop wordt geklikt. `complete()` de laatste van de tot dan toe ontvangen waarden wordt uitgevoerd.3De laatste van de tot dan toe ontvangen waarden wordt uitgevoerd.
+> - `complete()` Na oproepen**Na het oproepen van**naar `subscribe` stromen de waarden niet.
+
+## ⚠️ Een belangrijk punt om op te merken
 
 > [!WARNING]
-> `takeLast` **wacht tot de stream voltooit**, dus het werkt niet met oneindige streams. Ook, als n in `takeLast(n)` groot is, verbruikt het veel geheugen.
+> `takeLast` is om te wachten tot de stroom**Wachten tot voltooiing**Daarom werkt het niet met oneindige streams. Ook moet de`takeLast(n)` van dengroot is, verbruikt het veel geheugen.
 
-### 1. Kan niet gebruiken met oneindige streams
+### 1. Kan niet gebruikt worden met oneindige streams.
 
-`takeLast` wacht tot de stream voltooit, dus het werkt niet met oneindige streams.
+`takeLast` werkt niet met oneindige streams omdat het wacht tot de stream voltooid is.
 
-```ts
+```
+
+ts.
 import { interval } from 'rxjs';
 import { takeLast } from 'rxjs';
 
-// ❌ Slecht voorbeeld: Gebruik takeLast met oneindige stream
+// ❌ Slecht voorbeeld: takeLast gebruiken met oneindige streams
 interval(1000).pipe(
   takeLast(3)
-).subscribe(console.log);
-// Niets uitgevoerd (omdat stream nooit voltooit)
+).subscribe(console.log);.
+// Er wordt niets uitgevoerd (omdat de stream nooit wordt voltooid)
+
 ```
 
-**Oplossing**: Maak het een eindige stream door te combineren met `take`
+**Oplossing.**: `take` Gebruik een eindige stream in combinatie met
 
-```ts
+```
+
+ts.
 import { interval } from 'rxjs';
 import { take, takeLast } from 'rxjs';
 
-// ✅ Goed voorbeeld: Gebruik takeLast na het maken van eindige stream
+// ✅ Goed voorbeeld: eindige stream gebruik dan takeLast
 interval(1000).pipe(
-  take(10),      // Voltooi met eerste 10 waarden
-  takeLast(3)    // Haal laatste 3 daarvan op
-).subscribe(console.log);
-// Output: 7, 8, 9
+  take(10), // compleet met de eerste 10
+  takeLast(3) // neem de laatste 3 mee
+).subscribe(console.log);.
+// Uitvoer: 7, 8, 9
+
 ```
 
-### 2. Let op geheugengebruik
+### 2. Let op het geheugengebruik
 
-`takeLast(n)` houdt de laatste n waarden in een buffer vast, dus grote n verbruikt geheugen.
+`takeLast(n)` werkt niet met eindige streams omdat het de laatste van hetnstuk vasthoudt in de buffer,ngroot is, verbruikt het meer geheugen.
 
-```ts
+```
+
+ts.
 import { range } from 'rxjs';
 import { takeLast } from 'rxjs';
 
-// ⚠️ Let op: Houd grote hoeveelheid data in buffer vast
+// ⚠️ Opmerking: grote hoeveelheden gegevens worden bewaard in een buffer
 range(0, 1000000).pipe(
-  takeLast(100000) // Houd 100.000 items in geheugen vast
-).subscribe(console.log);
+  takeLast(100000) // 100.000 records bewaard in het geheugen
+).subscribe(console.log);.
+
 ```
 
+## 🎯 last Het verschil tussen
 
-## 🎯 Verschil met last
+```
 
-```ts
+ts.
 import { range } from 'rxjs';
 import { last, takeLast } from 'rxjs';
 
-const numbers$ = range(0, 10);
+const. nummers$ = bereik(0, 10);
 
-// last: Alleen laatste 1 waarde
-numbers$.pipe(
-  last()
+// last: alleen de laatste
+getallen$.pipe(
+  laatste()
 ).subscribe(console.log);
-// Output: 9
+// uitvoer: 9
 
-// takeLast(1): Laatste 1 waarde (uitvoer als enkele waarde, niet array)
-numbers$.pipe(
+// takeLast(1): laatste (uitvoer als enkele waarde, niet array)
+getallen$.pipe(
   takeLast(1)
-).subscribe(console.log);
-// Output: 9
+).subscribe(console.log);.
+// Uitvoer: 9
 
-// takeLast(3): Laatste 3 waarden
-numbers$.pipe(
+// takeLast(3): laatste 3
+getallen$.pipe(
   takeLast(3)
 ).subscribe(console.log);
-// Output: 7, 8, 9
+// Uitvoer: 7, 8, 9
+
 ```
 
-| Operator | Ophaal aantal | Voorwaarde specificatie | Gebruiksscenario |
+| operator | Aantal overnames | Specificatie voorwaarde | Gebruik |
 |---|---|---|---|
-| `last()` | 1 waarde | Mogelijk | Laatste 1 waarde of laatste 1 waarde die aan voorwaarde voldoet |
-| `takeLast(n)` | n waarden | Niet mogelijk | Simpelweg laatste n waarden ophalen |
+| `last()` | 1Aantal | Mogelijk | De laatste1Stukken of het laatste stuk dat aan de voorwaarde voldoet1Aantal |
+| `takeLast(n)` | nAantal | Onmogelijk | De laatstenVerkrijg gewoon het laatste stuk dat aan de voorwaarde voldoet |
 
+## 📋 Type-veilig gebruik
 
-## 🎓 Samenvatting
+TypeScript Dit is een voorbeeld van een typeveilige implementatie die gebruik maakt van generics in
 
-### Wanneer takeLast gebruiken
-- ✅ Wanneer u de laatste N data van de stream nodig heeft
-- ✅ Wanneer u nieuwste N entries van logs of transacties wilt ophalen
-- ✅ Wanneer streamvoltooiing gegarandeerd is
-- ✅ Wanneer u data-samenvatting of top N items wilt weergeven
+```
 
-### Wanneer take gebruiken
-- ✅ Wanneer u de eerste N data van de stream nodig heeft
-- ✅ Wanneer u onmiddellijk resultaten wilt ophalen
-- ✅ Wanneer u een deel van een oneindige stream wilt ophalen
+ts.
+import { Observable, from } from 'rxjs';
+import { takeLast } from 'rxjs';
 
-### Opmerkingen
-- ⚠️ Kan niet gebruiken met oneindige streams (voltooit niet)
+interface Transactie {
+  id: string;
+  bedrag: getal;
+  tijdstempel: datum;
+  status: 'pending' | 'completed' | 'failed'; }
+}
+
+functie getRecentTransactions(
+  transacties$: waarneembare<transactie>,.
+  count: getal
+): Waarneembare<Transactie> {
+  return transacties$.pipe(
+    takeLast(count)
+  );
+}
+
+// Gebruiksvoorbeeld
+const transacties$ = from([.
+  { id: '1', bedrag: 100, tijdstempel: nieuwe Datum('2025-01-01'), status: 'voltooid' als const }
+  { id: '2', bedrag: 200, tijdstempel: nieuwe Datum('2025-01-02'), status: 'voltooid' als const }
+  { id: '3', amount: 150, timestamp: new Date('2025-01-03'), status: 'pending' as const }
+  { id: '4', bedrag: 300, tijdstempel: nieuwe Datum('2025-01-04'), status: 'voltooid' als const }
+  { id: '5', bedrag: 250, tijdstempel: nieuwe Datum('2025-01-05'), status: 'mislukt' als const }
+] als Transactie[]);.
+
+// Verkrijg de drie meest recente transacties
+getRecentTransactions(transactions$, 3).subscribe(tx => {
+  console.log(`${tx.id}: ${tx.amount} yen (${tx.status})`);
+});
+// Uitvoer:.
+// 3: 150 yen (in behandeling)
+// 4: 300 yen (voltooid)
+// 5: 250 yen (mislukt)
+
+```
+
+## 🔄 skip en takeLast combinatie van
+
+Het middelste deel van de waarde wordt uitgesloten en alleen de laatsteNAlleen de laatste kan worden opgehaald.
+
+```
+
+ts
+import { range } from 'rxjs';
+import { skip, takeLast } from 'rxjs';
+
+const nummers$ = bereik(0, 10); // 0 tot 9
+
+// sla de eerste 5 over en neem de resterende laatste 3
+getallen$.pipe(
+  skip(5), // sla 0, 1, 2, 3, 4 over
+  takeLast(3) // neem de laatste 3 van de resterende 5, 6, 7, 8, 9
+).subscribe(console.log);.
+// uitvoer: 7, 8, 9
+```
+
+## Samenvatting
+
+### Wanneer takeLast moet worden gebruikt.
+- ✅ Als je de laatste N gegevens in een stroom nodig hebt
+- ✅ Als je de laatste N logs of transacties wilt krijgen
+- ✅ Als de stream gegarandeerd wordt voltooid
+- ✅ Als je een samenvatting of top N records van gegevens wilt weergeven
+
+### Wanneer u take moet gebruiken.
+- ✅ Als je de eerste N gegevens in de stream nodig hebt
+- ✅ Als je de resultaten onmiddellijk wilt krijgen
+- ✅ Als je een deel van een oneindige stroom wilt krijgen
+
+### Opmerkingen.
+- ⚠️ Kan niet gebruikt worden met oneindige stromen (omdat ze niet compleet zijn)
 - ⚠️ Grote n in `takeLast(n)` verbruikt geheugen
-- ⚠️ Uitvoer gebeurt allemaal samen na voltooiing (niet onmiddellijk uitvoer)
-- ⚠️ Moet vaak worden gecombineerd met `take(n)` om eindige stream te maken
+- ⚠️ Uitvoer wordt gecompileerd na voltooiing (niet onmiddellijk)
+- ⚠️ Moet vaak gecombineerd worden met `take(n)` om een eindige stroom te maken
 
+## Volgende stap.
 
-## 🚀 Volgende stappen
-
-- **[take](/nl/guide/operators/filtering/take)** - Leer hoe u eerste N waarden ophaalt
-- **[last](/nl/guide/operators/filtering/last)** - Leer hoe u laatste 1 waarde ophaalt
-- **[skip](/nl/guide/operators/filtering/skip)** - Leer hoe u eerste N waarden overslaat
-- **[filter](/nl/guide/operators/filtering/filter)** - Leer hoe u filtert op basis van voorwaarden
-- **[Filteroperator praktische voorbeelden](/nl/guide/operators/filtering/practical-use-cases)** - Leer echte use cases
+- **[take](. /take)** - leren hoe je de eerste n waarden krijgt.
+- **[last](. /last)** - leren hoe je de laatste 1 waarde krijgt
+- **[skip](. /skip)** - leer hoe je de eerste N waarden overslaat
+- Filter](. /filter)** - leer filteren op basis van voorwaarden
+- **[filtering-operator-praktische-gebruiksgevallen](. /practical-use-cases)** - leer hoe u echte use-cases kunt gebruiken

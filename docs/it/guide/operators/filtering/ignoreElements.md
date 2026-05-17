@@ -1,13 +1,12 @@
 ---
-description: L'operatore ignoreElements è un operatore di filtraggio RxJS che ignora tutti i valori e fa passare solo le notifiche di completamento ed errore. È utile quando si attende il completamento di un processo.
-titleTemplate: ':title'
+description: "L'operatore ignoreElements è un operatore di filtraggio di RxJS che ignora tutti i valori e passa solo attraverso i completamenti e gli errori. È utile quando si attende il completamento del processo."
 ---
 
-# ignoreElements - Solo Completamento
+# ignoraElementi - passano solo i completamenti/errori
 
-L'operatore `ignoreElements` ignora **tutti i valori** emessi dall'Observable sorgente e fa passare **solo le notifiche di completamento ed errore** a valle.
+L'operatore `ignoreElements` **ignora tutti i valori** emessi dall'osservabile sorgente e solo le **notifiche di completamento e di errore** vengono passate a valle.
 
-## 🔰 Sintassi e Utilizzo Base
+## 🔰 Sintassi di base e utilizzo
 
 ```ts
 import { of } from 'rxjs';
@@ -21,36 +20,36 @@ source$.pipe(
   next: value => console.log('Valore:', value), // Non chiamato
   complete: () => console.log('Completato')
 });
-// Output: Completato
+// Uscita: Completato
 ```
 
-**Flusso di operazione**:
-1. 1, 2, 3, 4, 5 sono tutti ignorati
-2. Solo la notifica di completamento viene propagata a valle
+**Flusso operativo**:.
+1. tutti i punti 1, 2, 3, 4 e 5 vengono ignorati
+2. solo le notifiche di completamento vengono passate a valle
 
-[🌐 Documentazione Ufficiale RxJS - `ignoreElements`](https://rxjs.dev/api/operators/ignoreElements)
+[🌐 Documentazione ufficiale di RxJS - `ignoreElements`](https://rxjs.dev/api/operators/ignoreElements)
 
-## 💡 Pattern di Utilizzo Tipici
+## 💡 Tipico modello di utilizzo.
 
-- **Attesa completamento processo**: Quando i valori non servono e serve solo il completamento
-- **Esegui solo side effect**: Esegui side effect con tap e ignora i valori
-- **Gestione errori**: Quando vuoi catturare solo gli errori
-- **Sincronizzazione sequenze**: Attendi il completamento di più processi
+- **Attendere il completamento del processo**: quando non si ha bisogno del valore e si vuole solo conoscere il completamento.
+- **Eseguire solo gli effetti collaterali**: eseguire gli effetti collaterali con tap e ignorare i valori.
+- **Gestione degli errori**: quando si desidera catturare solo gli errori.
+- **Sincronizzazione delle sequenze**: attesa del completamento di più processi
 
-## 🧠 Esempio di Codice Pratico 1: Attesa Completamento Inizializzazione
+## 🧠 Esempio pratico di codice 1: Attendere il completamento del processo di inizializzazione
 
-Esempio di attesa del completamento di più processi di inizializzazione.
+Questo è un esempio di attesa del completamento di più processi di inizializzazione.
 
 ```ts
 import { from, forkJoin, of } from 'rxjs';
 import { ignoreElements, tap, delay, concat } from 'rxjs';
 
-// Crea UI
+// UICreato
 const container = document.createElement('div');
 document.body.appendChild(container);
 
 const title = document.createElement('h3');
-title.textContent = 'Inizializzazione Applicazione';
+title.textContent = 'Inizializzazione dell'applicazione';
 container.appendChild(title);
 
 const statusArea = document.createElement('div');
@@ -63,7 +62,7 @@ completeMessage.style.padding = '10px';
 completeMessage.style.display = 'none';
 container.appendChild(completeMessage);
 
-// Funzione per aggiungere log di stato
+// Funzione per aggiungere il registro di stato
 function addLog(message: string, color: string = 'black') {
   const log = document.createElement('div');
   log.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
@@ -71,28 +70,28 @@ function addLog(message: string, color: string = 'black') {
   statusArea.appendChild(log);
 }
 
-// Processo inizializzazione 1: Connessione database
-const initDatabase$ = from(['Connessione DB...', 'Verifica tabelle...', 'DB pronto']).pipe(
+// Processo di inizializzazione1: Connessione al database
+const initDatabase$ = from(['DBConnessione...', 'Verifica della tabella...', 'DBPronto']).pipe(
   tap(msg => addLog(msg, 'blue')),
   delay(500),
-  ignoreElements() // Ignora valori, notifica solo completamento
+  ignoreElements() // Valori ignorati, viene notificato solo il completamento
 );
 
-// Processo inizializzazione 2: Caricamento file config
-const loadConfig$ = from(['Caricamento file config...', 'Parsing config...', 'Config applicata']).pipe(
+// Processo di inizializzazione2: File di configurazione in lettura
+const loadConfig$ = from(['File di configurazione in lettura...', 'Analisi della configurazione in corso...', 'Applicazione di configurazione completata']).pipe(
   tap(msg => addLog(msg, 'green')),
   delay(700),
   ignoreElements()
 );
 
-// Processo inizializzazione 3: Autenticazione utente
-const authenticate$ = from(['Verifica credenziali...', 'Validazione token...', 'Autenticazione completata']).pipe(
+// Processo di inizializzazione3: Autenticazione dell'utente
+const authenticate$ = from(['Informazioni di autenticazione in corso di verifica...', 'Verifica del token in corso...', 'Autenticazione completata']).pipe(
   tap(msg => addLog(msg, 'purple')),
   delay(600),
   ignoreElements()
 );
 
-// Esegui tutti i processi di inizializzazione
+// Tutti i processi di inizializzazione vengono eseguiti.
 addLog('Inizializzazione avviata...', 'orange');
 
 forkJoin([
@@ -105,36 +104,166 @@ forkJoin([
     completeMessage.style.backgroundColor = '#e8f5e9';
     completeMessage.style.color = 'green';
     completeMessage.style.fontWeight = 'bold';
-    completeMessage.textContent = '✅ Tutta l\'inizializzazione completata! L\'applicazione può avviarsi.';
-    addLog('Avvio applicazione', 'green');
+    completeMessage.textContent = '✅ Tutta l'inizializzazione è stata completata.！L'applicazione può essere avviata.';
+    addLog('Applicazione avviata', 'green');
   },
   error: err => {
     completeMessage.style.display = 'block';
     completeMessage.style.backgroundColor = '#ffebee';
     completeMessage.style.color = 'red';
-    completeMessage.textContent = `❌ Errore inizializzazione: ${err.message}`;
+    completeMessage.textContent = `❌ Errore di inizializzazione: ${err.message}`;
   }
 });
 ```
 
-- I log dettagliati per ogni processo di inizializzazione vengono mostrati, ma i valori sono ignorati.
-- Un messaggio di completamento viene visualizzato quando tutti i processi completano.
+- Viene visualizzato un registro dettagliato di ciascun processo di inizializzazione, ma i valori vengono ignorati.
+- Quando tutti i processi sono stati completati, viene visualizzato un messaggio di completamento.
 
-## 🆚 Confronto con Operatori Simili
+## 🎯 Esempio pratico di codice 2: Attesa del completamento del caricamento dei file
+
+Questo è un esempio di visualizzazione dell'avanzamento del caricamento di più file, ma con la sola notifica del completamento.
+
+```ts
+import { from, of, concat } from 'rxjs';
+import { ignoreElements, tap, delay, mergeMap } from 'rxjs';
+
+// UICreato
+const container = document.createElement('div');
+document.body.appendChild(container);
+
+const title = document.createElement('h3');
+title.textContent = 'Caricamento dei file';
+container.appendChild(title);
+
+const button = document.createElement('button');
+button.textContent = 'Caricamento avviato';
+container.appendChild(button);
+
+const progressArea = document.createElement('div');
+progressArea.style.marginTop = '10px';
+container.appendChild(progressArea);
+
+const result = document.createElement('div');
+result.style.marginTop = '10px';
+result.style.padding = '10px';
+result.style.display = 'none';
+container.appendChild(result);
+
+interface FileUpload {
+  name: string;
+  size: number;
+}
+
+const files: FileUpload[] = [
+  { name: 'document.pdf', size: 2500 },
+  { name: 'image.jpg', size: 1800 },
+  { name: 'video.mp4', size: 5000 }
+];
+
+// Processo di caricamento dei file (con indicazione dell'avanzamento)
+function uploadFile(file: FileUpload) {
+  const fileDiv = document.createElement('div');
+  fileDiv.style.marginTop = '5px';
+  fileDiv.style.padding = '5px';
+  fileDiv.style.border = '1px solid #ccc';
+  progressArea.appendChild(fileDiv);
+
+  const progressSteps = [0, 25, 50, 75, 100];
+
+  return from(progressSteps).pipe(
+    delay(200),
+    tap(progress => {
+      fileDiv.textContent = `📄 ${file.name} (${file.size}KB) - ${progress}%`;
+      if (progress === 100) {
+        fileDiv.style.backgroundColor = '#e8f5e9';
+      }
+    }),
+    ignoreElements() // I valori di avanzamento vengono ignorati, viene notificato solo il completamento
+  );
+}
+
+button.addEventListener('click', () => {
+  button.disabled = true;
+  progressArea.innerHTML = '';
+  result.style.display = 'none';
+
+  // Tutti i file vengono caricati in sequenza
+  from(files).pipe(
+    mergeMap(file => uploadFile(file), 2) // Max.23 file in parallelo
+  ).subscribe({
+    complete: () => {
+      result.style.display = 'block';
+      result.style.backgroundColor = '#e8f5e9';
+      result.style.color = 'green';
+      result.innerHTML = `
+        <strong>✅ Caricamento completato</strong><br>
+        ${files.length}Un file è stato caricato
+      `;
+      button.disabled = false;
+    },
+    error: err => {
+      result.style.display = 'block';
+      result.style.backgroundColor = '#ffebee';
+      result.style.color = 'red';
+      result.textContent = `❌ Errore: ${err.message}`;
+      button.disabled = false;
+    }
+  });
+});
+```
+
+- Viene visualizzato l'avanzamento di ciascun file, ma i valori di avanzamento stessi non scorrono a valle.
+- Un messaggio di completamento viene visualizzato quando tutti i caricamenti sono stati completati.
+
+## 🆚 Confronto con operatori simili
 
 ### ignoreElements vs filter(() => false) vs take(0)
 
-| Operatore | Elaborazione Valori | Notifica Completamento | Caso d'Uso |
-|:---|:---|:---|:---|
-| `ignoreElements()` | Ignora tutti | Fa passare | **Serve solo completamento** (raccomandato) |
-| `filter(() => false)` | Filtra tutti | Fa passare | Filtraggio condizionale (tutti esclusi per caso) |
-| `take(0)` | Completa immediatamente | Fa passare | Vuoi completare immediatamente |
+```ts
+import { of } from 'rxjs';
+import { ignoreElements, filter, take } from 'rxjs';
 
-**Raccomandato**: Usa `ignoreElements()` quando intenzionalmente ignori tutti i valori. Rende chiaro l'intento del codice.
+const source$ = of(1, 2, 3);
 
-## 🔄 Gestione Notifiche di Errore
+// ignoreElements: Ignorare tutti i valori, il completamento viene superato
+source$.pipe(
+  ignoreElements()
+).subscribe({
+  next: v => console.log('Valore:', v),
+  complete: () => console.log('ignoreElements: Completato')
+});
+// Uscita: ignoreElements: Completato
 
-`ignoreElements` ignora i valori ma **fa passare le notifiche di errore**.
+// filter(() => false): Filtra tutti i valori, lascia passare il completamento
+source$.pipe(
+  filter(() => false)
+).subscribe({
+  next: v => console.log('Valore:', v),
+  complete: () => console.log('filter: Completato')
+});
+// Uscita: filter: Completato
+
+// take(0): Completato immediatamente
+source$.pipe(
+  take(0)
+).subscribe({
+  next: v => console.log('Valore:', v),
+  complete: () => console.log('take(0): Completato')
+});
+// Uscita: take(0): Completato
+```
+
+| Operatore | Elaborazione del valore | Notifica di completamento | Caso d'uso. |
+|---|---|---|---|
+| `IgnoraElementi()` | Ignora tutti i | passare attraverso | **Necessario solo per il completamento** (consigliato) |
+| `filtro(() => false)` | Filtra tutti i | lascia passare | Filtraggio condizionato (escludere tutti per caso). |
+| `prendere(0)` | Completa immediatamente | far passare attraverso | Completamento immediato |
+
+**Consigliato**: usare `ignoreElements()` se si vuole intenzionalmente ignorare tutti i valori. L'intento del codice sarà chiaro.
+
+## 🔄 Gestione delle notifiche di errore.
+
+`ignoreElements` ignora i valori, ma **passa le notifiche di errore**.
 
 ```ts
 import { throwError, of, concat } from 'rxjs';
@@ -147,79 +276,79 @@ const success$ = of(1, 2, 3).pipe(
 
 const error$ = concat(
   of(1, 2, 3),
-  throwError(() => new Error('Si è verificato un errore'))
+  throwError(() => new Error('Si verifica un errore'))
 ).pipe(
   ignoreElements()
 );
 
-// Caso successo
+// Caso di successo
 success$.subscribe({
   next: v => console.log('Valore:', v),
-  complete: () => console.log('✅ Completo'),
+  complete: () => console.log('✅ Completato'),
   error: err => console.error('❌ Errore:', err.message)
 });
-// Output: ✅ Completo
+// Uscita: ✅ Completato
 
-// Caso errore
+// Caso di errore
 error$.subscribe({
   next: v => console.log('Valore:', v),
-  complete: () => console.log('✅ Completo'),
+  complete: () => console.log('✅ Completato'),
   error: err => console.error('❌ Errore:', err.message)
 });
-// Output: ❌ Errore: Si è verificato un errore
+// Uscita: ❌ Errore: Si verifica un errore
 ```
 
-## ⚠️ Note
+## ⚠️ Note.
 
-### 1. I Side Effect Vengono Eseguiti
+### 1. gli effetti collaterali vengono eseguiti
 
-`ignoreElements` ignora i valori ma i side effect (come `tap`) vengono eseguiti.
+`ignoreElements` ignora i valori, ma gli effetti collaterali (ad esempio `tap`) vengono eseguiti.
 
 ```ts
 import { of } from 'rxjs';
 import { ignoreElements, tap } from 'rxjs';
 
 of(1, 2, 3).pipe(
-  tap(v => console.log('Side effect:', v)),
+  tap(v => console.log('Effetti collaterali:', v)),
   ignoreElements()
 ).subscribe({
   next: v => console.log('Valore:', v),
-  complete: () => console.log('Completo')
+  complete: () => console.log('Completato')
 });
-// Output:
-// Side effect: 1
-// Side effect: 2
-// Side effect: 3
-// Completo
+// Uscita:
+// Effetti collaterali: 1
+// Effetti collaterali: 2
+// Effetti collaterali: 3
+// Completato
 ```
 
-### 2. Uso con Observable Infiniti
+### 2. Utilizzo con InfiniteObservable
 
-Con Observable infiniti, la subscription continua per sempre poiché il completamento non arriva mai.
+Quando viene utilizzata con Infinite Observable, la sottoscrizione dura per sempre, poiché il completamento non arriva mai.
 
 ```ts
 import { interval } from 'rxjs';
 import { ignoreElements, take } from 'rxjs';
 
-// ❌ Esempio sbagliato: Non completa
+// ❌ Caso negativo: Non completato
 interval(1000).pipe(
   ignoreElements()
 ).subscribe({
-  complete: () => console.log('Completo') // Non chiamato
+  complete: () => console.log('Completato') // Non chiamato
 });
 
-// ✅ Esempio corretto: Completa con take
+// ✅ Buon esempio: take Completato in
 interval(1000).pipe(
   take(5),
   ignoreElements()
 ).subscribe({
-  complete: () => console.log('Completo') // Chiamato dopo 5 secondi
+  complete: () => console.log('Completato') // 5Chiamato dopo un secondo
 });
 ```
 
-### 3. Tipo TypeScript
+### 3. Tipi in TypeScript
 
-Il valore restituito da `ignoreElements` è di tipo `Observable<never>`.
+Il valore di ritorno di `ignoreElements` è di tipo `Observable<never>`.
 
 ```ts
 import { Observable, of } from 'rxjs';
@@ -227,35 +356,87 @@ import { ignoreElements } from 'rxjs';
 
 const numbers$: Observable<number> = of(1, 2, 3);
 
-// Il risultato di ignoreElements è Observable<never>
+// ignoreElements Il risultato di Observable<never>
 const result$: Observable<never> = numbers$.pipe(
   ignoreElements()
 );
 
 result$.subscribe({
   next: value => {
-    // value è di tipo never, quindi questo blocco non viene eseguito
+    // value è di tipo never quindi questo blocco non viene eseguito
     console.log(value);
   },
-  complete: () => console.log('Solo completamento')
+  complete: () => console.log('Solo il completamento')
 });
 ```
 
-## 📚 Operatori Correlati
+### 4. se il completamento non è garantito
 
-- **[filter](/it/guide/operators/filtering/filter)** - Filtra valori in base a condizioni
-- **[take](/it/guide/operators/filtering/take)** - Ottieni solo primi N valori
-- **[skip](/it/guide/operators/filtering/skip)** - Salta primi N valori
-- **[tap](https://rxjs.dev/api/operators/tap)** - Esegui side effect (documentazione ufficiale)
+Se l'origine non viene completata, anche la funzione `ignoreElements` non verrà completata.
 
-## Riepilogo
+```ts
+import { NEVER } from 'rxjs';
+import { ignoreElements } from 'rxjs';
 
-L'operatore `ignoreElements` ignora tutti i valori e fa passare solo completamento ed errore.
+// ❌ NEVERnon completa né emette un errore
+NEVER.pipe(
+  ignoreElements()
+).subscribe({
+  complete: () => console.log('Completato') // Non chiamato
+});
+```
 
-- ✅ Ideale quando serve solo la notifica di completamento
-- ✅ I side effect (tap) vengono eseguiti
-- ✅ Fa passare anche le notifiche di errore
-- ✅ Intento più chiaro di `filter(() => false)`
-- ⚠️ Non completa con Observable infiniti
-- ⚠️ Il tipo del valore restituito è `Observable<never>`
-- ⚠️ I valori sono completamente ignorati ma i side effect vengono eseguiti
+## 💡 Modelli di combinazione pratici
+
+### Schema 1: sequenza di inizializzazione
+
+```ts
+import { of, concat } from 'rxjs';
+import { tap, ignoreElements, delay } from 'rxjs';
+
+const initStep1$ = of('Step 1').pipe(
+  tap(console.log),
+  delay(1000),
+  ignoreElements()
+);
+
+const initStep2$ = of('Step 2').pipe(
+  tap(console.log),
+  delay(1000),
+  ignoreElements()
+);
+
+const initStep3$ = of('Step 3').pipe(
+  tap(console.log),
+  delay(1000),
+  ignoreElements()
+);
+
+// Tutti i passi vengono eseguiti in modo sequenziale
+concat(initStep1$, initStep2$, initStep3$).subscribe({
+  complete: () => console.log('✅ Tutta l'inizializzazione è stata completata')
+});
+```
+
+### Schema 2: Processo di pulizia
+
+{__CODE_11___
+
+## 📚 Operatori correlati.
+
+- **[filtro](. /filtro)** - filtra i valori in base alle condizioni.
+- **[take](. /take)** - prende solo i primi N valori.
+- **[skip](. /skip)** - salta i primi N valori.
+- **[tap](. /utility/tap)** - esegue un'azione secondaria.
+
+## Riepilogo.
+
+L'operatore `ignoreElements` ignora tutti i valori e passa solo attraverso i completamenti e gli errori.
+
+- Ideale quando è richiesta solo la notifica del completamento.
+- ✅ Gli effetti collaterali (TAP) vengono eseguiti
+- ✅ Vengono passate anche le notifiche di errore.
+- ✅ Intento più chiaro di `filtro(() => false)`.
+- ⚠️ L'osservabile infinito non viene completato
+- ⚠️ Il tipo di valore di ritorno è `Osservabile<mai>`.
+- ⚠️ Il valore è completamente ignorato, ma vengono eseguiti gli effetti collaterali

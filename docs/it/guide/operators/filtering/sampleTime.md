@@ -1,14 +1,13 @@
 ---
-description: L'operatore sampleTime è un operatore di filtraggio RxJS che campiona periodicamente l'ultimo valore da uno stream a intervalli di tempo specificati. È ideale per scattare snapshot periodici.
-titleTemplate: ':title | RxJS'
+description: "L'operatore sampleTime è un operatore di filtraggio RxJS che campiona periodicamente i valori più recenti del flusso a intervalli di tempo specificati. È ideale per scattare istantanee periodiche."
 ---
 
-# sampleTime - Campionamento Periodico
+# sampleTime - ottiene periodicamente il valore più recente
 
-L'operatore `sampleTime` **campiona periodicamente** ed emette l'**ultimo valore** dall'Observable sorgente a **intervalli di tempo specificati**.
-Come snapshot periodici, ottiene l'ultimo valore a quel momento.
+L'operatore `sampleTime` periodicamente **campiona** il valore più recente dell'osservabile di origine a **specificati intervalli di tempo** e lo restituisce.
+Come un'istantanea periodica, recupera il valore più recente in quel momento.
 
-## 🔰 Sintassi e Utilizzo Base
+## 🔰 Sintassi e utilizzo di base
 
 ```ts
 import { fromEvent } from 'rxjs';
@@ -19,41 +18,42 @@ const clicks$ = fromEvent(document, 'click');
 clicks$.pipe(
   sampleTime(2000)
 ).subscribe(() => {
-  console.log('Campiona ogni 2 secondi');
+  console.log('2Campioni secondo per secondo');
 });
 ```
 
-**Flusso di operazione**:
-1. Il timer si attiva periodicamente ogni 2 secondi
-2. Se c'è un ultimo evento click a quel momento, emettilo
-3. Se non c'è valore durante il periodo di campionamento, non emette nulla
-
-[🌐 Documentazione Ufficiale RxJS - `sampleTime`](https://rxjs.dev/api/operators/sampleTime)
+**Flusso di funzionamento**:.
+1. il timer scatta periodicamente ogni 2 secondi
+2. uscita se c'è un evento click recente in quel momento
+3. se non c'è alcun valore durante il periodo di campionamento, non viene emesso alcun risultato.
 
 > [!WARNING] Attenzione in codice di produzione
-> L'esempio sopra omette la disiscrizione di `fromEvent` per semplificare la spiegazione. In codice reale, gestisci esplicitamente il ciclo di vita con `takeUntil(destroy$)`, `take(N)`, o `Subscription.unsubscribe()`. Dettagli: [Superare le difficoltà: gestione del ciclo di vita](/it/guide/overcoming-difficulties/lifecycle-management.md)
 
-## 💡 Pattern di Utilizzo Tipici
+> L'esempio precedente omette la sottoscrizione di `fromEvent` per semplicità di spiegazione. Nel codice reale, usare `takeUntil(destroy$)`, `take(N)` o `Subscription.unsubscribe()` per gestire esplicitamente il ciclo di vita. Ulteriori informazioni: [Superare le difficoltà: la gestione del ciclo di vita] (/it/guide/ Superare le difficoltà/gestione del ciclo di vita.md)
 
-- **Acquisizione periodica dati sensore**: Ultime informazioni su temperatura o posizione ogni secondo
-- **Dashboard real-time**: Aggiornamenti di stato periodici
-- **Monitoraggio prestazioni**: Raccolta metriche a intervalli regolari
-- **Elaborazione frame gioco**: Campionamento periodico per controllo FPS
+[🌐 Documentazione ufficiale di RxJS - `sampleTime`](https://rxjs.dev/api/operators/sampleTime)
 
-## 🧠 Esempio di Codice Pratico: Campionamento Periodico Posizione Mouse
+## 💡 Modelli di utilizzo tipici
 
-Esempio di campionamento e visualizzazione posizione mouse ogni secondo.
+- Acquisizione ricorrente dei dati dei sensori**: informazioni aggiornate sulla temperatura e sulla posizione ogni secondo.
+- **Dashboard in tempo reale**: aggiornamenti regolari dello stato.
+- **Monitoraggio delle prestazioni**: raccolta di metriche a intervalli regolari.
+- **Elaborazione dei fotogrammi di gioco**: campionamento periodico per il controllo degli FPS
+
+## 🧠 Esempio pratico di codice 1: campionamento periodico della posizione del mouse
+
+Questo è un esempio di campionamento della posizione del mouse ogni secondo.
 
 ```ts
 import { fromEvent } from 'rxjs';
 import { sampleTime, map } from 'rxjs';
 
-// Crea UI
+// UICreazione
 const container = document.createElement('div');
 document.body.appendChild(container);
 
 const title = document.createElement('h3');
-title.textContent = 'Campionamento Posizione Mouse (ogni secondo)';
+title.textContent = 'Campionamento della posizione del mouse (1(ogni secondo)';
 container.appendChild(title);
 
 const area = document.createElement('div');
@@ -65,7 +65,7 @@ area.style.display = 'flex';
 area.style.alignItems = 'center';
 area.style.justifyContent = 'center';
 area.style.fontSize = '18px';
-area.textContent = 'Muovi il mouse in questa area';
+area.textContent = 'Spostamento del mouse all'interno di quest'area';
 container.appendChild(area);
 
 const output = document.createElement('div');
@@ -78,83 +78,249 @@ container.appendChild(output);
 
 let sampleCount = 0;
 
-// Evento movimento mouse
+// Evento di spostamento del mouse
 fromEvent<MouseEvent>(area, 'mousemove').pipe(
   map(event => ({
     x: event.offsetX,
     y: event.offsetY,
     timestamp: Date.now()
   })),
-  sampleTime(1000) // Campiona ogni secondo
+  sampleTime(1000) // 1Campionamento ogni secondo
 ).subscribe(pos => {
   sampleCount++;
   const log = document.createElement('div');
   log.style.padding = '5px';
   log.style.borderBottom = '1px solid #eee';
   log.innerHTML = `
-    <strong>Campione #${sampleCount}</strong>
+    <strong>Campionamento #${sampleCount}</strong>
     [${new Date(pos.timestamp).toLocaleTimeString()}]
     Posizione: (${pos.x}, ${pos.y})
   `;
   output.insertBefore(log, output.firstChild);
 
-  // Mostra massimo 10 elementi
+  // Massimo.10Visualizzazione di un massimo di
   while (output.children.length > 10) {
     output.removeChild(output.lastChild!);
   }
 });
 ```
 
-- Anche se continui a muovere il mouse, solo l'ultima posizione a quel momento viene campionata ogni secondo.
-- Se non muovi il mouse per 1 secondo, non emette nulla durante quel periodo.
+- Se il mouse viene spostato continuamente, ogni secondo viene campionata solo l'ultima posizione corrente.
+- Se il mouse non viene spostato per un secondo, non viene emesso nulla per quel periodo.
 
-## 🆚 Confronto con Operatori Simili
+## 🎯 Esempio pratico di codice 2: cruscotto di dati in tempo reale
+
+Questo esempio mostra come i dati del sensore possano essere campionati periodicamente e visualizzati su un cruscotto.
+
+```ts
+import { interval } from 'rxjs';
+import { sampleTime, map } from 'rxjs';
+
+// UICreazione
+const container = document.createElement('div');
+document.body.appendChild(container);
+
+const title = document.createElement('h3');
+title.textContent = 'Cruscotto di monitoraggio dei sensori';
+container.appendChild(title);
+
+const dashboard = document.createElement('div');
+dashboard.style.display = 'grid';
+dashboard.style.gridTemplateColumns = '1fr 1fr';
+dashboard.style.gap = '10px';
+dashboard.style.marginTop = '10px';
+container.appendChild(dashboard);
+
+// Creazione della scheda del cruscotto
+function createCard(label: string, unit: string) {
+  const card = document.createElement('div');
+  card.style.padding = '20px';
+  card.style.border = '2px solid #2196F3';
+  card.style.borderRadius = '8px';
+  card.style.backgroundColor = '#E3F2FD';
+
+  const labelDiv = document.createElement('div');
+  labelDiv.textContent = label;
+  labelDiv.style.fontSize = '14px';
+  labelDiv.style.color = '#666';
+  card.appendChild(labelDiv);
+
+  const valueDiv = document.createElement('div');
+  valueDiv.style.fontSize = '32px';
+  valueDiv.style.fontWeight = 'bold';
+  valueDiv.style.marginTop = '10px';
+  valueDiv.textContent = '--';
+  card.appendChild(valueDiv);
+
+  const unitDiv = document.createElement('div');
+  unitDiv.textContent = unit;
+  unitDiv.style.fontSize = '14px';
+  unitDiv.style.color = '#666';
+  card.appendChild(unitDiv);
+
+  dashboard.appendChild(card);
+  return valueDiv;
+}
+
+const tempValue = createCard('Temperatura', '°C');
+const humidityValue = createCard('Umidità', '%');
+const pressureValue = createCard('Pressione barometrica', 'hPa');
+const lightValue = createCard('Illuminamento', 'lux');
+
+// Flusso di dati del sensore (100msAggiornato ogni)
+const sensorData$ = interval(100).pipe(
+  map(() => ({
+    temperature: (20 + Math.random() * 10).toFixed(1),
+    humidity: (40 + Math.random() * 40).toFixed(1),
+    pressure: (1000 + Math.random() * 30).toFixed(1),
+    light: Math.floor(Math.random() * 1000)
+  }))
+);
+
+// 2Campionamento e aggiornamento del cruscotto ogni secondo
+sensorData$.pipe(
+  sampleTime(2000)
+).subscribe(data => {
+  tempValue.textContent = data.temperature;
+  humidityValue.textContent = data.humidity;
+  pressureValue.textContent = data.pressure;
+  lightValue.textContent = data.light.toString();
+
+  // Effetto animazione
+  [tempValue, humidityValue, pressureValue, lightValue].forEach(elem => {
+    elem.style.color = '#2196F3';
+    setTimeout(() => {
+      elem.style.color = 'black';
+    }, 500);
+  });
+});
+```
+
+- I dati del sensore vengono aggiornati ogni 100 ms, mentre il cruscotto viene aggiornato con i valori campionati ogni 2 secondi.
+- Le prestazioni possono essere ottimizzate visualizzando flussi di dati ad alta frequenza a intervalli appropriati.
+
+## 🆚 Confronto con operatori simili
 
 ### sampleTime vs throttleTime vs auditTime
 
-| Operatore | Timing Attivazione | Valore Emesso | Caso d'Uso |
-|:---|:---|:---|:---|
-| `sampleTime(1000)` | **Timing regolare ogni 1 secondo** | Ultimo valore a quel momento | Snapshot periodici |
-| `throttleTime(1000)` | Ignora per 1 secondo dopo ricezione valore | Primo valore all'inizio del periodo | Diradamento eventi |
-| `auditTime(1000)` | 1 secondo dopo ricezione valore | Ultimo valore nel periodo | Ultimo stato nel periodo |
+```ts
+import { interval } from 'rxjs';
+import { sampleTime, throttleTime, auditTime, take } from 'rxjs';
 
-**Differenza Visiva**:
+const source$ = interval(300).pipe(take(10)); // 0, 1, 2, 3, ...
+
+// sampleTime: 1Campionamento dell'ultimo valore in quel momento ogni secondo
+source$.pipe(
+  sampleTime(1000)
+).subscribe(val => console.log('sampleTime:', val));
+// Esempi di output: 2, 5, 8(1Istantanea ogni secondo)
+
+// throttleTime: Dopo l'emissione del primo valore,1Ignorato per 2 secondi dopo l'emissione del primo valore
+source$.pipe(
+  throttleTime(1000)
+).subscribe(val => console.log('throttleTime:', val));
+// Esempi di output: 0, 3, 6, 9(primo valore di ogni periodo)
+
+// auditTime: Emissione dell'ultimo valore del periodo1secondi dopo il primo valore, viene emesso l'ultimo valore del periodo
+source$.pipe(
+  auditTime(1000)
+).subscribe(val => console.log('auditTime:', val));
+// Esempi di output: 2, 5, 8(ultimo valore di ogni periodo)
+```
+
+| Operatore | Tempi di accensione | Valore da emettere | Caso d'uso. |
+|---|---|---|---|
+| Tempo campione(1000)` | **Tempo ricorrente ogni secondo**. | Ultimo valore in quel momento | Istantanea periodica |
+| Tempo di accelerazione(1000)` | Ignorato per 1 secondo dopo la ricezione del valore. | Primo valore all'inizio del periodo | Strozzatura degli eventi |
+| Tempo di verifica (1000) | 1 secondo dopo la ricezione del valore | Ultimo valore nel periodo | Ultimo stato nel periodo |
+
+**differenze visive**:.
 
 ```
-Input: --|1|2|3|---|4|5|6|---|7|8|9|
+Ingresso: --|1|2|3|---|4|5|6|---|7|8|9|
       0s  1s      2s      3s
 
 sampleTime(1s):  -------|3|-------|6|-------|9|
-                 (campiona periodicamente)
+                 (Campionamento periodico)
 
 throttleTime(1s): |1|--------------|4|--------------|7|
-                  (passa primo e ignora durante periodo)
+                  (Ignorato durante il periodo fino all'inizio)
 
 auditTime(1s):    -------|3|-------|6|-------|9|
-                  (ultimo valore alla fine del periodo)
+                  (Ultimo valore alla fine del periodo)
 ```
 
-## ⚠️ Note
+## ⚠️ Note.
 
-### 1. Quando Non C'è Valore Durante il Periodo di Campionamento
+### 1. nessun valore durante il periodo di campionamento
 
-Se non c'è nuovo valore al timing del campionamento, non emette nulla.
+Se non ci sono nuovi valori durante il periodo di campionamento, non viene prodotta alcuna uscita.
 
-### 2. Attendi Fino al Primo Timing di Campionamento
+```ts
+import { fromEvent } from 'rxjs';
+import { sampleTime } from 'rxjs';
 
-`sampleTime` non emette nulla finché non è trascorso il tempo specificato.
+const clicks$ = fromEvent(document, 'click');
 
-### 3. Timing di Completamento
+clicks$.pipe(
+  sampleTime(2000)
+).subscribe(() => {
+  console.log('Campioni prelevati');
+});
+// 2Durante i secondi1Nessuna uscita se non vengono effettuati clic
+```
 
-Anche se la sorgente completa, il completamento non viene propagato fino al prossimo timing di campionamento.
+### 2. Attendere il primo tempo di campionamento
 
-### 4. Utilizzo Memoria
+Il parametro `sampleTime` non emetterà nulla finché non sarà trascorso il tempo specificato.
 
-L'efficienza della memoria è buona perché mantiene internamente solo un ultimo valore.
+```ts
+import { interval } from 'rxjs';
+import { sampleTime } from 'rxjs';
 
-## 💡 Differenza da sample
+interval(100).pipe(
+  sampleTime(1000)
+).subscribe(console.log);
+// Il primo valore è1secondi dopo l'emissione del primo valore
+```
 
-`sample` usa un altro Observable come trigger, mentre `sampleTime` usa intervalli di tempo fissi.
+### 3. completionTime
+
+Quando una sorgente viene completata, il completamento non viene propagato fino alla successiva temporizzazione del campione.
+
+```ts
+import { of } from 'rxjs';
+import { sampleTime, delay } from 'rxjs';
+
+of(1, 2, 3).pipe(
+  delay(100),
+  sampleTime(1000)
+).subscribe({
+  next: console.log,
+  complete: () => console.log('Completato')
+});
+// 1Secondi dopo: 3
+// 1Secondi dopo: Completato
+```
+
+### 4. utilizzo della memoria
+
+L'efficienza della memoria è buona, poiché viene mantenuto internamente solo un ultimo valore.
+
+```ts
+import { interval } from 'rxjs';
+import { sampleTime } from 'rxjs';
+
+// Flusso ad alta frequenza (10msal secondo)
+interval(10).pipe(
+  sampleTime(1000) // 1Campionamento ogni secondo
+).subscribe(console.log);
+// La memoria conserva solo i valori più recenti1Vengono mantenuti in memoria solo i due valori più recenti.
+```
+
+## 💡 Differenze con il campione
+
+`sample` utilizza un altro osservabile come trigger, mentre `sampleTime` utilizza un intervallo di tempo fisso.
 
 ```ts
 import { interval, fromEvent } from 'rxjs';
@@ -162,39 +328,39 @@ import { sample, sampleTime } from 'rxjs';
 
 const source$ = interval(100);
 
-// sampleTime: Intervallo tempo fisso (ogni 1 secondo)
+// sampleTime: Intervallo di tempo fisso (1(ogni secondo)
 source$.pipe(
   sampleTime(1000)
 ).subscribe(val => console.log('sampleTime:', val));
 
-// sample: Usa altro Observable come trigger
+// sample: utilizzando un diversoObservableAttivato da un
 const clicks$ = fromEvent(document, 'click');
 source$.pipe(
   sample(clicks$)
 ).subscribe(val => console.log('sample:', val));
-// Emetti ultimo valore a quel momento ogni volta che clicchi
+// Ogni clic produce il valore più recente in quel momento
 ```
 
-| Operatore | Trigger | Caso d'Uso |
-|:---|:---|:---|
-| `sampleTime(ms)` | Intervallo tempo fisso | Campionamento periodico |
-| `sample(notifier$)` | Altro Observable | Campionamento a timing dinamico |
+| Operatore | Trigger | Caso d'uso. |
+|---|---|---|
+| `sampleTime(ms)` | Intervallo di tempo fisso | Campionamento periodico |
+| `campione(notificatore$)` | Un altro osservabile | Campionamento temporale dinamico |
 
-## 📚 Operatori Correlati
+## 📚 Operatori correlati.
 
-- **[sample](https://rxjs.dev/api/operators/sample)** - Campiona usando altro Observable come trigger (documentazione ufficiale)
-- **[throttleTime](/it/guide/operators/filtering/throttleTime)** - Ottieni primo valore all'inizio del periodo
-- **[auditTime](/it/guide/operators/filtering/auditTime)** - Ottieni ultimo valore alla fine del periodo
-- **[debounceTime](/it/guide/operators/filtering/debounceTime)** - Emetti valore dopo silenzio
+- **[sample](https://rxjs.dev/api/operators/sample)** - Campionamento di un altro osservabile come trigger (documentazione ufficiale).
+- **[throttleTime](. /throttleTime)** - Ottiene il primo valore all'inizio del periodo.
+- **[auditTime](. /auditTime)** - ottiene l'ultimo valore alla fine del periodo.
+- **[debounceTime](. /debounceTime)** - rilascia il valore dopo la quiescenza
 
-## Riepilogo
+## Riepilogo.
 
-L'operatore `sampleTime` campiona periodicamente l'ultimo valore a intervalli di tempo specificati.
+L'operatore `sampleTime` campiona periodicamente il valore più recente nell'intervallo di tempo specificato.
 
-- ✅ Ideale per acquisizione snapshot periodici
-- ✅ Efficace per diradare stream ad alta frequenza
-- ✅ Buona efficienza memoria (mantiene solo 1 ultimo valore)
+- Ideale per ottenere istantanee periodiche.
+- ✅ Utile per sfoltire i flussi ad alta frequenza
+- ✅ Efficiente dal punto di vista della memoria (viene conservato solo l'ultimo valore)
 - ✅ Ideale per dashboard e monitoraggio
-- ⚠️ Non emette nulla se non c'è valore durante il periodo di campionamento
-- ⚠️ Tempo di attesa fino al primo campionamento
-- ⚠️ Il completamento si propaga al prossimo timing di campionamento
+- ⚠️ Se non sono disponibili valori durante il periodo di campionamento, non viene emesso nulla.
+- ⚠️ C'è un periodo di attesa fino al primo campione
+- ⚠️ Il completamento viene propagato alla successiva tempistica di campionamento

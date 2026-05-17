@@ -1,11 +1,10 @@
 ---
-description: "auditTime est un opérateur de filtrage RxJS qui attend une durée spécifiée après la réception d'une valeur et émet la dernière valeur de cette période. Idéal pour échantillonner périodiquement le dernier état lors d'événements à haute fréquence comme le suivi de la position de défilement, le redimensionnement de fenêtre ou le mouvement de souris. Il est important de comprendre les différences avec throttleTime et debounceTime pour un usage approprié."
+description: "auditTime est un opérateur de filtrage RxJS qui attend un temps spécifié lorsqu'une valeur est émise et produit la dernière valeur au cours de cette période. Il est préférable de l'utiliser lorsque vous souhaitez échantillonner périodiquement le dernier état d'événements à haute fréquence tels que le suivi de la position du défilement, le redimensionnement de la fenêtre, le mouvement de la souris, etc. Il est important de comprendre la différence entre cet opérateur, throttleTime et debounceTime, et de les utiliser de manière appropriée."
 ---
 
-# auditTime - Dernière valeur par période
+# auditTime - dernière valeur émise après l'heure spécifiée
 
-L'opérateur `auditTime` **attend la durée spécifiée** après la réception d'une valeur et émet la **dernière valeur** de cette période. Ensuite, il attend la prochaine valeur.
-
+L'opérateur `auditTime` attend un **temps spécifié** après l'émission d'une valeur et affiche la **dernière valeur** pendant cette période. Il attend ensuite l'arrivée de la valeur suivante.
 
 ## 🔰 Syntaxe de base et utilisation
 
@@ -15,21 +14,20 @@ import { auditTime } from 'rxjs';
 
 fromEvent(document, 'click').pipe(
   auditTime(1000)
-).subscribe(() => console.log('Clic !'));
+).subscribe(() => console.log('Cliquez.！'));
 ```
 
-**Flux d'opération** :
-1. Premier clic
-2. Attend 1 seconde (les clics pendant cette période sont enregistrés mais non émis)
-3. Émet le dernier clic après 1 seconde
-4. Attend le clic suivant
+**Flux des opérations** :.
+1. le premier clic se produit
+2. attendre 1 seconde (les clics pendant ce temps sont enregistrés mais ne sont pas émis)
+3. sortie du dernier clic après 1 seconde
+Attendre le clic suivant
 
-[🌐 Documentation officielle RxJS - `auditTime`](https://rxjs.dev/api/operators/auditTime)
+[🌐 RxJS official documentation - `auditTime`](https://rxjs.dev/api/operators/auditTime)
 
+## 🆚 Contraste avec throttleTime
 
-## 🆚 Comparaison avec throttleTime
-
-`throttleTime` et `auditTime` sont similaires mais émettent des valeurs différentes.
+`throttleTime` et `auditTime` sont similaires, mais diffèrent dans les valeurs qu'ils produisent.
 
 ```ts
 import { interval } from 'rxjs';
@@ -37,48 +35,49 @@ import { throttleTime, auditTime, take } from 'rxjs';
 
 const source$ = interval(300).pipe(take(10)); // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 
-// throttleTime: émet la première valeur
+// throttleTime: Sortie de la première valeur
 source$.pipe(
   throttleTime(1000)
 ).subscribe(console.log);
-// Sortie: 0, 4, 8 (première valeur de chaque période)
+// Sortie.: 0, 4, 8(première valeur de chaque période)
 
-// auditTime: émet la dernière valeur
+// auditTime: Sortie de la dernière valeur
 source$.pipe(
   auditTime(1000)
 ).subscribe(console.log);
-// Sortie: 3, 6, 9 (dernière valeur de chaque période)
+// Sortie.: 3, 6, 9(dernière valeur de chaque période)
 ```
 
-**Comparaison chronologique** :
+**Comparaison de lignes de temps** :.
+
 ```
 Source:     0--1--2--3--4--5--6--7--8--9--|
             |        |        |
 throttle:   0--------4--------8------------|
-            (première) (première) (première)
+            (Première)   (Première)   (Première)
 
 audit:      -------3--------6--------9----|
-                  (dernière) (dernière) (dernière)
+                  (Dernière)   (Dernière)   (Dernière)
 ```
 
-| Opérateur | Valeur émise | Moment d'émission | Cas d'utilisation |
+| Opérateur. | Valeur à éditer | Moment de l'édition | Cas d'utilisation. |
 |---|---|---|---|
-| `throttleTime(ms)` | **Première** valeur de la période | À la réception | Réponse immédiate nécessaire |
-| `auditTime(ms)` | **Dernière** valeur de la période | Fin de période | Dernier état nécessaire |
-| `debounceTime(ms)` | **Dernière** valeur après silence | Après arrêt de saisie | Attendre la fin de saisie |
+| `throttleTime(ms)` | La **première** valeur de la période | Dès réception de la valeur | Réaction immédiate requise |
+| `auditTime(ms)` | La **dernière** valeur de la période | A la fin de la période | Nécessite un statut à jour |
+| `debounceTime(ms)` | La **dernière** valeur après le silence | Après l'arrêt de l'entrée | Attendre la fin de l'entrée |
 
+## 💡 Modèle d'utilisation typique
 
-## 💡 Patterns d'utilisation typiques
+1. **Optimiser le redimensionnement des fenêtres**.
 
-1. **Optimisation du redimensionnement de fenêtre**
-   ```ts
+```ts
    import { fromEvent } from 'rxjs';
    import { auditTime } from 'rxjs';
 
    fromEvent(window, 'resize').pipe(
-     auditTime(200) // Obtenir la dernière taille toutes les 200ms
+     auditTime(200) // 200msObtenir la dernière taille dans l'intervalle
    ).subscribe(() => {
-     console.log(`Taille de fenêtre: ${window.innerWidth}x${window.innerHeight}`);
+     console.log(`Taille de la fenêtre: ${window.innerWidth}x${window.innerHeight}`);
    });
    ```
 
@@ -94,16 +93,16 @@ audit:      -------3--------6--------9----|
        scrollX: window.scrollX
      }))
    ).subscribe(position => {
-     console.log(`Position de défilement: Y=${position.scrollY}, X=${position.scrollX}`);
+     console.log(`Position du défilement: Y=${position.scrollY}, X=${position.scrollX}`);
    });
    ```
 
-3. **Mouvement de glisser-déposer fluide**
+3. **Mouvement de glissement en douceur**
    ```ts
    import { fromEvent } from 'rxjs';
    import { auditTime, map, takeUntil, switchMap } from 'rxjs';
 
-   // Création d'un élément déplaçable
+   // Créer des éléments pouvant être glissés
    const box = document.createElement('div');
    box.style.width = '100px';
    box.style.height = '100px';
@@ -112,7 +111,7 @@ audit:      -------3--------6--------9----|
    box.style.cursor = 'move';
    box.style.left = '100px';
    box.style.top = '100px';
-   box.textContent = 'Glisser';
+   box.textContent = 'Glissement';
    box.style.display = 'flex';
    box.style.alignItems = 'center';
    box.style.justifyContent = 'center';
@@ -123,14 +122,14 @@ audit:      -------3--------6--------9----|
    const mouseMove$ = fromEvent<MouseEvent>(document, 'mousemove');
    const mouseUp$ = fromEvent<MouseEvent>(document, 'mouseup');
 
-   // Implémentation du glisser-déposer
+   // Mettre en œuvre des opérations de glissement
    mouseDown$.pipe(
      switchMap(startEvent => {
        const startX = startEvent.clientX - box.offsetLeft;
        const startY = startEvent.clientY - box.offsetTop;
 
        return mouseMove$.pipe(
-         auditTime(16), // Mise à jour de position à ~60FPS (16ms)
+         auditTime(16), // Approximativement.60FPS(voir aussi16ms) pour mettre à jour la position
          map(moveEvent => ({
            x: moveEvent.clientX - startX,
            y: moveEvent.clientY - startY
@@ -144,266 +143,281 @@ audit:      -------3--------6--------9----|
    });
    ```
 
+## 🧠 Exemple de code pratique (suivi de la souris)
 
-## 🧠 Exemple de code pratique (Suivi de souris)
+Cet exemple suit les mouvements de la souris et affiche la dernière position à intervalles réguliers.
 
-Un exemple de suivi du mouvement de la souris et d'affichage de la dernière position à intervalles réguliers.
+```
 
-```ts
-import { fromEvent } from 'rxjs';
-import { auditTime, map } from 'rxjs';
+ts.
+import { fromEvent } from 'rxjs' ;
+import { auditTime, map } from 'rxjs' ;
 
-// Création des éléments UI
-const container = document.createElement('div');
-container.style.height = '300px';
-container.style.border = '2px solid #3498db';
-container.style.padding = '20px';
-container.style.position = 'relative';
-container.textContent = 'Déplacez la souris dans cette zone';
-document.body.appendChild(container);
+// Création d'éléments d'interface utilisateur
+const container = document.createElement('div') ;.
+container.style.height = '300px' ;
+container.style.border = '2px solid #3498db' ;
+container.style.padding = '20px' ;
+container.style.position = 'relative' ;
+container.textContent = "Veuillez déplacer la souris dans cette zone" ;
+document.body.appendChild(container) ;
 
-const positionDisplay = document.createElement('div');
-positionDisplay.style.marginTop = '10px';
-positionDisplay.style.fontFamily = 'monospace';
-document.body.appendChild(positionDisplay);
+const positionDisplay = document.createElement('div') ;
+positionDisplay.style.marginTop = '10px' ;
+positionDisplay.style.fontFamily = 'monospace' ;
+document.body.appendChild(positionDisplay) ;
 
-const dot = document.createElement('div');
-dot.style.width = '10px';
-dot.style.height = '10px';
-dot.style.borderRadius = '50%';
-dot.style.backgroundColor = '#e74c3c';
-dot.style.position = 'absolute';
-dot.style.display = 'none';
-container.appendChild(dot);
+const dot = document.createElement('div') ;
+dot.style.width = '10px' ;
+dot.style.height = '10px' ;
+dot.style.borderRadius = '50%' ;
+dot.style.backgroundColor = '#e74c3c' ;
+dot.style.position = 'absolute' ;
+dot.style.display = 'none' ;
+container.appendChild(dot) ;
 
-// Événement de mouvement de souris
+// Événement de déplacement de la souris
 fromEvent<MouseEvent>(container, 'mousemove').pipe(
   map(event => {
-    const rect = container.getBoundingClientRect();
+    const rect = container.getBoundingClientRect() ;
     return {
-      x: event.clientX - rect.left,
-      y: event.clientY - rect.top
-    };
+      x : event.clientX - rect.left,.
+      y : event.clientY - rect.top
+    } ;
   }),
   auditTime(100) // Obtenir la dernière position toutes les 100ms
 ).subscribe(position => {
-  positionDisplay.textContent = `Dernière position (intervalle 100ms): X=${position.x.toFixed(0)}, Y=${position.y.toFixed(0)}`;
+  positionDisplay.textContent = `Dernière position (toutes les 100ms) : X=${position.x.toFixed(0)}, Y=${position.y.toFixed(0)}` ;
 
-  // Déplacer le point à la dernière position
-  dot.style.left = `${position.x - 5}px`;
-  dot.style.top = `${position.y - 5}px`;
-  dot.style.display = 'block';
-});
+  // Déplacer le point vers la dernière position
+  dot.style.left = `${position.x - 5}px` ;
+  dot.style.top = `${position.y - 5}px` ;
+  dot.style.display = 'block' ;
+}) ;
+
 ```
 
-Ce code récupère et affiche uniquement la dernière position toutes les 100ms même si la souris se déplace fréquemment.
+Ce code ne récupère et n'affiche la dernière position qu'à chaque fois que la souris est déplacée, même si la souris est déplacée fréquemment,100msLe code ne récupère et n'affiche la dernière position que pour chaque mouvement de la souris.
 
+## 🎯 debounceTime Différences entre
 
-## 🎯 Différence avec debounceTime
+`auditTime` et `debounceTime` est que**affichent tous deux la dernière valeur**mais le code**Le timing est complètement différent**la dernière valeur est émise.
 
-`auditTime` et `debounceTime` **émettent tous deux la dernière valeur** mais à des **moments complètement différents**.
+### La différence décisive
 
-### Différence fondamentale
-
-| Opérateur | Comportement | Cas d'utilisation |
+| L'opérateur | l'opération | utilisation différente du système |
 |---|---|---|
-| `auditTime(ms)` | **Émet après ms** après réception (même si l'entrée continue) | Échantillonnage périodique |
-| `debounceTime(ms)` | Émet **après que l'entrée s'arrête** pendant ms | Attendre la fin de saisie |
+| `auditTime(ms)` | À l'arrivée d'une valeur**msToujours éditer après**(même si l'entrée se poursuit) | Échantillonnage périodique |
+| `debounceTime(ms)` | **Après l'arrêt de l'entrée**msSortie après | Attendre la fin de l'entrée |
 
-### Exemple concret : Différence avec l'entrée de recherche
+### Exemples spécifiques：Différences dans l'entrée de la recherche
 
-```ts
-import { fromEvent } from 'rxjs';
-import { auditTime, debounceTime } from 'rxjs';
+```
 
-const input = document.createElement('input');
-input.placeholder = 'Entrer terme de recherche';
-document.body.appendChild(input);
+ts.
+import { fromEvent } from 'rxjs' ;
+import { auditTime, debounceTime } from 'rxjs' ;
 
-// auditTime: exécute la recherche toutes les 300ms même pendant la saisie
+const input = document.createElement('input') ;
+input.placeholder = 'Search word input' ;
+document.body.appendChild(input) ;
+
+// auditTime : Exécution de la recherche toutes les 300 ms même pendant la saisie
 fromEvent(input, 'input').pipe(
   auditTime(300)
 ).subscribe(() => {
-  console.log('auditTime → Recherche:', input.value);
-});
+  console.log('auditTime → Search:', input.value) ;
+}) ;
 
-// debounceTime: exécute la recherche 300ms après l'arrêt de saisie
+// debounceTime : attendre 300ms après l'arrêt de l'entrée, puis exécuter la recherche
 fromEvent(input, 'input').pipe(
   debounceTime(300)
 ).subscribe(() => {
-  console.log('debounceTime → Recherche:', input.value);
-});
-```
-
-### Visualisation chronologique
-
-Quand l'utilisateur tape rapidement "ab" → "abc" → "abcd":
+  console.log('debounceTime → Search:', input.value) ;
+}) ;
 
 ```
-Événements de saisie:   a--b--c--d------------|
-                        ↓
-auditTime:              ------c-----d----------|
-                      (après 300ms) (après 300ms)
-                      → Recherche "abc", recherche "abcd" (2 fois)
 
-debounceTime:           --------------------d-|
-                                        (300ms après arrêt)
-                      → Recherche "abcd" (1 fois seulement)
+### Différences observées dans la ligne de temps
+
+Différence observée lorsqu'un utilisateur clique sur "ab'→'abc'→'abcd' lors d'une saisie rapide:
+
 ```
 
-**Moyen mnémotechnique** :
-- **`auditTime`**: "Audit périodique" → Vérification régulière obligatoire
-- **`debounceTime`**: "Attendre le calme" → Attendre que ça se calme
+Événement d'entrée : a--b--c--d------------|
+              ↓
+auditTime: ------c-----d----------|
+            (après 300 ms) (après 300 ms)
+            → Recherche de 'abc', recherche de 'abcd' (2 fois au total)
+
+debounceTime: --------------------d-|
+                              (300 ms après l'arrêt)
+            → Recherche de "abcd" (une seule fois au total)
+
+```
+
+**Facile à retenir**:
+- **`auditTime`**: Régulièrement contrôlé (audit)"→ "Toujours vérifier à intervalles réguliers
+- **`debounceTime`**: Attendez qu'il se calme (...)".debounceAttendez que ce soit calme.→ Attendre qu'il y ait du calme
 
 ### Utilisation pratique
 
-```ts
-// ✅ auditTime approprié
-// - Suivi de position de défilement (obtenir périodiquement même pendant un défilement continu)
-fromEvent(window, 'scroll').pipe(
-  auditTime(100)  // Obtenir la dernière position toutes les 100ms
-).subscribe(/* ... */);
-
-// ✅ debounceTime approprié
-// - Boîte de recherche (rechercher après la fin de saisie)
-fromEvent(searchInput, 'input').pipe(
-  debounceTime(300)  // Attendre 300ms après l'arrêt de saisie
-).subscribe(/* ... */);
 ```
 
+ts.
+// ✅ auditTime si nécessaire
+// - Suivi de la position de défilement (nous voulons l'obtenir périodiquement, même si nous défilons tout le temps)
+fromEvent(window, 'scroll').pipe(
+  auditTime(100) // obtient la dernière position toutes les 100ms
+).subscribe(/* ... */) ;
 
-## 📋 Utilisation type-safe
+// ✅ si debounceTime est approprié.
+// - boîte de recherche (nous voulons effectuer une recherche une fois la saisie terminée)
+fromEvent(searchInput, 'input').pipe(
+  debounceTime(300) // attend 300ms après l'arrêt de la saisie
+).subscribe(/* ... */) ;
 
-Un exemple d'implémentation type-safe utilisant les génériques TypeScript.
+```
 
-```ts
-import { Observable, fromEvent } from 'rxjs';
-import { auditTime, map } from 'rxjs';
+## 📋 Utilisation sûre du point de vue du type
+
+TypeScript Il s'agit d'un exemple d'implémentation sûre du point de vue du type, qui utilise les éléments génériques dans le cadre d'un projet de développement.
+
+```
+
+ts.
+import { Observable, fromEvent } from 'rxjs' ;
+import { auditTime, map } from 'rxjs' ;
 
 interface MousePosition {
-  x: number;
-  y: number;
-  timestamp: number;
+  x : nombre ;
+  y : nombre ;
+  timestamp : nombre ; }
 }
 
 function trackMousePosition(
-  element: HTMLElement,
-  intervalMs: number
-): Observable<MousePosition> {
+  element : HTMLElement,.
+  intervalMs : nombre
+) : Observable<MousePosition> {
   return fromEvent<MouseEvent>(element, 'mousemove').pipe(
-    auditTime(intervalMs),
+    auditTime(intervalMs),.
     map(event => ({
-      x: event.clientX,
-      y: event.clientY,
-      timestamp: Date.now()
+      x : event.clientX, event.
+      y : event.clientY,.
+      timestamp : Date.now())
     } as MousePosition))
-  );
+  ) ;
 }
 
 // Exemple d'utilisation
-const canvas = document.createElement('div');
-canvas.style.width = '400px';
-canvas.style.height = '300px';
-canvas.style.border = '1px solid black';
-document.body.appendChild(canvas);
+const canvas = document.createElement('div') ;
+canvas.style.width = '400px' ;
+canvas.style.height = '300px' ;
+canvas.style.border = '1px solid black' ;
+document.body.appendChild(canvas) ;
 
 trackMousePosition(canvas, 200).subscribe(position => {
-  console.log(`Position: (${position.x}, ${position.y}) à ${position.timestamp}`);
-});
+  console.log(`Position : (${position.x}, ${position.y}) at ${position.timestamp}`) ;
+}) ;
+
 ```
 
-
-## 🔄 Combinaison auditTime et throttleTime
+## 🔄 auditTime et throttleTime Combinaison de
 
 Dans certains scénarios, les deux peuvent être combinés.
 
-```ts
-import { interval } from 'rxjs';
-import { throttleTime, auditTime, take } from 'rxjs';
-
-const source$ = interval(100).pipe(take(50));
-
-// Ordre throttleTime → auditTime
-source$.pipe(
-  throttleTime(1000),  // Laisser passer la première valeur chaque seconde
-  auditTime(500)       // Puis attendre 500ms et émettre la dernière valeur
-).subscribe(console.log);
 ```
 
+ts.
+import { interval } from 'rxjs' ;
+import { throttleTime, auditTime, take } from 'rxjs' ;
 
-## ⚠️ Erreurs courantes
+const source$ = interval(100).pipe(take(50)) ;.
+
+// ordre de throttleTime → auditTime
+source$.pipe(
+  throttleTime(1000), // passe la première valeur toutes les secondes
+  auditTime(500) // puis attendre 500ms et sortir la dernière valeur
+).subscribe(console.log) ;.
+
+```
+
+## ⚠️ Une erreur courante
 
 > [!WARNING]
-> `auditTime` et `debounceTime` ont des comportements différents. Pour les entrées de recherche où vous voulez **attendre que l'utilisateur arrête de taper**, utilisez `debounceTime`. `auditTime` émet des valeurs à intervalles réguliers même pendant la saisie.
+> `auditTime` et `debounceTime` Les deux types d'éléments sont différents en termes de comportement. Une entrée de recherche, par exemple, où l'utilisateur**Attendre que l'utilisateur s'arrête**Dans certains cas, tels que la saisie d'une recherche, vous devez utiliser `debounceTime` pour attendre que l'utilisateur arrête de taper, par exemple pour la saisie d'une recherche.`auditTime` émet des valeurs à intervalles réguliers au cours de la saisie.
 
-### Incorrect : Confondre auditTime et debounceTime
+### S'il y a une erreur: auditTime et debounceTime confondre les
 
-```ts
-import { fromEvent } from 'rxjs';
-import { auditTime } from 'rxjs';
-
-// Création du champ de recherche
-const input = document.createElement('input');
-input.type = 'text';
-input.placeholder = 'Recherche...';
-document.body.appendChild(input);
-
-// ❌ Mauvais exemple: utiliser auditTime pour l'entrée de recherche
-fromEvent(input, 'input').pipe(
-  auditTime(300) // La recherche est exécutée toutes les 300ms même pendant la saisie
-).subscribe(() => {
-  console.log('Recherche exécutée');
-});
 ```
 
-### Correct : Utiliser debounceTime
+ts.
+import { fromEvent } from 'rxjs' ;
+import { auditTime } from 'rxjs' ;
 
-```ts
-import { fromEvent } from 'rxjs';
-import { debounceTime } from 'rxjs';
+// Création d'un champ de saisie de recherche
+const input = document.createElement('input') ;.
+input.type = 'text' ;
+input.placeholder = 'Rechercher...' ;
+document.body.appendChild(input) ;
 
-// Création du champ de recherche
-const input = document.createElement('input');
-input.type = 'text';
-input.placeholder = 'Recherche...';
-document.body.appendChild(input);
-
-// ✅ Bon exemple: utiliser debounceTime pour l'entrée de recherche
+// ❌ Mauvais exemple : utiliser auditTime pour l'entrée de recherche
 fromEvent(input, 'input').pipe(
-  debounceTime(300) // Attend 300ms après l'arrêt de saisie avant de rechercher
+  auditTime(300) // la recherche est effectuée toutes les 300ms pendant la saisie
 ).subscribe(() => {
-  console.log('Recherche exécutée', input.value);
-});
+  console.log('Search executed') ;
+}) ;
+
 ```
 
+### correct: debounceTime utiliser la
+
+```
+
+ts.
+import { fromEvent } from 'rxjs' ;
+import { debounceTime } from 'rxjs' ;
+
+// Création d'un champ de saisie de recherche
+const input = document.createElement('input') ;.
+input.type = 'text' ;
+input.placeholder = 'Rechercher...' ;
+document.body.appendChild(input) ;
+
+// ✅ Bon exemple : utiliser debounceTime pour une entrée de recherche
+fromEvent(input, 'input').pipe(
+  debounceTime(300) // Attendre 300ms après l'arrêt de l'entrée avant d'effectuer une recherche
+).subscribe(() => {
+  console.log('Search executed', input.value) ;
+}) ;
+```
 
 ## 🎓 Résumé
 
-### Quand utiliser auditTime
-- ✅ Quand vous avez besoin de la dernière valeur à intervalles réguliers
-- ✅ Événements à haute fréquence comme le défilement, le redimensionnement, le mouvement de souris
-- ✅ Quand un échantillonnage périodique est nécessaire
-- ✅ Quand vous voulez refléter le dernier état
+### Quand auditTime doit être utilisé.
+- ✅ Lorsque des valeurs actualisées sont requises à intervalles réguliers.
+- ✅ Événements à haute fréquence tels que le défilement, le redimensionnement, le mouvement de la souris.
+- ✅ Lorsqu'un échantillonnage périodique est nécessaire
+- lorsque vous souhaitez refléter l'état le plus récent.
 
-### Quand utiliser throttleTime
-- ✅ Quand une réponse immédiate est nécessaire
-- ✅ Quand vous voulez démarrer le traitement avec la première valeur
-- ✅ Prévention de clics répétés
+### Quand throttleTime doit être utilisé.
+- ✅ Lorsqu'une réponse immédiate est requise
+- ✅ Si vous voulez commencer le traitement avec la première valeur
+- ✅ Prévention de l'enfoncement des boutons
 
-### Quand utiliser debounceTime
-- ✅ Quand vous voulez attendre la fin de saisie
-- ✅ Recherche, auto-complétion
-- ✅ Attendre que l'utilisateur arrête de taper
+### Quand utiliser debounceTime.
+- ✅ Si vous voulez attendre que l'entrée soit terminée
+- ✅ Recherche, autocomplétion
+- ✅ Attendre que l'utilisateur arrête de taper.
 
-### Points d'attention
-- ⚠️ `auditTime` émet uniquement la dernière valeur de la période (les valeurs intermédiaires sont ignorées)
-- ⚠️ Pas très efficace si défini sur un intervalle court
-- ⚠️ `throttleTime` ou `debounceTime` peut être plus approprié selon le cas
+### Notes.
+- ⚠️ `auditTime` ne produit que la dernière valeur de la période (les valeurs intermédiaires sont rejetées).
+- ⚠️ N'est pas très efficace si elle est définie pour des intervalles courts.
+- ⚠️ `throttleTime` ou `debounceTime` peuvent être plus appropriés en fonction de l'application.
 
+## 🚀 Prochaines étapes.
 
-## 🚀 Prochaines étapes
-
-- **[throttleTime](./throttleTime)** - Apprendre à laisser passer la première valeur
-- **[debounceTime](./debounceTime)** - Apprendre à émettre des valeurs après l'arrêt de saisie
-- **[filter](./filter)** - Apprendre le filtrage basé sur les conditions
-- **[Exemples pratiques d'opérateurs de filtrage](./practical-use-cases)** - Apprendre des cas d'utilisation réels
+- **[throttleTime](. /throttleTime)** - apprendre à passer la première valeur.
+- **[debounceTime](. /debounceTime)** - apprenez à émettre des valeurs après l'arrêt de la saisie.
+- **[filter](. /filter)** - Apprenez à filtrer en fonction de conditions.
+- **[filtering-operator-practical-use-cases](. /practical-use-cases)** - Apprenez à utiliser des cas d'utilisation réels.

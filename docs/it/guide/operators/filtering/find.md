@@ -1,14 +1,12 @@
 ---
-description: find è un operatore di filtraggio RxJS che trova ed emette il primo valore che soddisfa una condizione e completa immediatamente lo stream. È ideale per scenari dove vuoi cercare un elemento specifico da un array o lista, come ricerca utenti, controllo inventario e rilevamento log errori. Se nessun valore viene trovato, emette undefined, e in TypeScript il valore di ritorno è di tipo T | undefined.
-titleTemplate: ':title | RxJS'
+description: "find è un operatore di filtraggio RxJS che trova il primo valore che soddisfa una condizione e lo invia in output, completando immediatamente il flusso. È ideale per le situazioni in cui si desidera trovare un elemento specifico da un array o da un elenco, come la ricerca di utenti, il controllo dell'inventario o il rilevamento di log di errore. Se non viene trovato alcun valore, viene emesso undefined e in TypeScript il valore di ritorno è di tipo T | undefined."
 ---
 
-# find - Trova il Primo Valore che Soddisfa una Condizione
+# trova - trova il primo valore che soddisfa la condizione
 
-L'operatore `find` trova ed emette il **primo valore che soddisfa una condizione** e completa immediatamente lo stream. Se nessun valore viene trovato, emette `undefined`.
+L'operatore `find` trova ed emette il **primo valore che soddisfa la condizione** e completa immediatamente il flusso. Se non viene trovato alcun valore, viene emesso `undefined`.
 
-
-## 🔰 Sintassi e Utilizzo Base
+## 🔰 Sintassi e uso di base
 
 ```ts
 import { from } from 'rxjs';
@@ -19,51 +17,33 @@ const numbers$ = from([1, 3, 5, 7, 8, 9, 10]);
 numbers$.pipe(
   find(n => n % 2 === 0)
 ).subscribe(console.log);
-// Output: 8 (primo numero pari)
+// Uscita.: 8(primo numero pari)
 ```
 
-**Flusso di operazione**:
-1. Controlla 1, 3, 5, 7 → Non soddisfano la condizione
-2. Controlla 8 → Soddisfa la condizione → Emetti 8 e completa
-3. 9, 10 non vengono valutati
+**Flusso delle operazioni**:.
+1. controllo 1, 3, 5, 7 → condizione non soddisfatta
+2. controllo 8 → condizione soddisfatta → uscita 8 e completa
+3. 9, 10 non valutati
 
-[🌐 Documentazione Ufficiale RxJS - `find`](https://rxjs.dev/api/operators/find)
+[🌐 Documentazione ufficiale di RxJS - `find`](https://rxjs.dev/api/operators/find)
 
+## 🆚 Contrasto con il primo
 
-## 🆚 Confronto con first
+`find` e `first` sono simili, ma il loro utilizzo è diverso.
 
-`find` e `first` sono simili ma usati diversamente.
+{\AN8}CONOSCENZA_2___
+
+| Operatore. | Specifica della condizione | Se non viene trovato alcun valore | Caso d'uso. |
+|---|---|---|---|
+| `primo()` | Opzione | Errore (`EmptyError`) | Ottenere il primo valore |
+| `primo(predicato)` | Opzionale | Errore (`EmptyError`) | Ottenere in modo condizionale. |
+| Trova (predicato) | Richiesto. | Uscita `indefinita`. | Ricerca e controllo dell'esistenza |
+
+## 💡 Modello di utilizzo tipico
+
+1. **Ricerca dell'utente**.
 
 ```ts
-import { from } from 'rxjs';
-import { find, first } from 'rxjs';
-
-const numbers$ = from([1, 3, 5, 7, 8, 9, 10]);
-
-// first: Primo valore che soddisfa la condizione (condizione opzionale)
-numbers$.pipe(
-  first(n => n > 5)
-).subscribe(console.log);
-// Output: 7
-
-// find: Primo valore che soddisfa la condizione (condizione obbligatoria)
-numbers$.pipe(
-  find(n => n > 5)
-).subscribe(console.log);
-// Output: 7
-```
-
-| Operatore | Specifica Condizione | Quando Valore Non Trovato | Caso d'Uso |
-|---|---|---|---|
-| `first()` | Opzionale | Errore (`EmptyError`) | Ottieni primo valore |
-| `first(predicate)` | Opzionale | Errore (`EmptyError`) | Ottieni condizionale |
-| `find(predicate)` | Obbligatoria | Emetti `undefined` | Ricerca/verifica esistenza |
-
-
-## 💡 Pattern di Utilizzo Tipici
-
-1. **Ricerca Utente**
-   ```ts
    import { from } from 'rxjs';
    import { find } from 'rxjs';
 
@@ -79,7 +59,7 @@ numbers$.pipe(
      { id: 3, name: 'Charlie', email: 'charlie@example.com' }
    ] as User[]);
 
-   // Cerca utente con ID 2
+   // ID(la condizione è facoltativa)2Ricerca di utenti con
    users$.pipe(
      find(user => user.id === 2)
    ).subscribe(user => {
@@ -89,10 +69,10 @@ numbers$.pipe(
        console.log('Utente non trovato');
      }
    });
-   // Output: Trovato: Bob
+   // Uscita.: Trovato: Bob
    ```
 
-2. **Controllo Inventario**
+2. **Controllo dell'inventario**
    ```ts
    import { from } from 'rxjs';
    import { find } from 'rxjs';
@@ -104,139 +84,347 @@ numbers$.pipe(
    }
 
    const products$ = from([
-     { id: 'A1', name: 'Laptop', stock: 0 },
+     { id: 'A1', name: 'TaccuinoPC', stock: 0 },
      { id: 'A2', name: 'Mouse', stock: 15 },
-     { id: 'A3', name: 'Tastiera', stock: 8 }
+     { id: 'A3', name: 'Tastiere', stock: 8 }
    ] as Product[]);
 
-   // Trova prodotto esaurito
+   // Scopri cosa è esaurito
    products$.pipe(
      find(product => product.stock === 0)
    ).subscribe(product => {
      if (product) {
        console.log(`Esaurito: ${product.name}`);
      } else {
-       console.log('Tutto disponibile');
+       console.log('Tutti in magazzino');
      }
    });
-   // Output: Esaurito: Laptop
+   // Uscita.: Esaurito: TaccuinoPC
    ```
 
+3. **Ricerca del registro degli errori**
+   ```ts
+   import { from } from 'rxjs';
+   import { find } from 'rxjs';
 
-## 🎯 Differenza da filter
+   interface LogEntry {
+     timestamp: number;
+     level: 'info' | 'warn' | 'error';
+     message: string;
+   }
 
-`find` e `filter` sono usati per scopi diversi.
+   const logs$ = from([
+     { timestamp: 1, level: 'info' as const, message: 'App started' },
+     { timestamp: 2, level: 'info' as const, message: 'User logged in' },
+     { timestamp: 3, level: 'error' as const, message: 'Connection failed' },
+     { timestamp: 4, level: 'info' as const, message: 'Retry successful' }
+   ] as LogEntry[]);
 
-```ts
-import { from } from 'rxjs';
-import { find, filter } from 'rxjs';
+   // Ricerca del primo errore
+   logs$.pipe(
+     find(log => log.level === 'error')
+   ).subscribe(log => {
+     if (log) {
+       console.log(`Rilevamento dell'errore: ${log.message} (Tempo: ${log.timestamp})`);
+     }
+   });
+   // Uscita.: Rilevamento dell'errore: Connection failed (Tempo: 3)
+   ```
+
+## 🧠 Esempio pratico di codice (ricerca di prodotti)
+
+Questo è un esempio di ricerca di prodotti corrispondenti a criteri specifici dal magazzino.
+
+```
+
+ts.
+import { from, fromEvent } da 'rxjs';
+importare { find } da 'rxjs';
+
+interfaccia Prodotto {
+  id: stringa;
+  nome: stringa
+  prezzo: numero
+  categoria: stringa;
+}
+
+const products: Product[] = [
+  { id: 'P1', nome: 'Mouse wireless', prezzo: 2980, categoria: 'Periferiche PC' }
+  { id: 'P2', nome: 'Tastiera meccanica', prezzo: 8980, categoria: 'Periferiche per PC' }
+  { id: 'P3', nome: 'Chiavetta USB 64GB', prezzo: 1480, categoria: 'Archiviazione' }
+  { id: 'P4', nome: 'Monitor 27 pollici', prezzo: 29800, categoria: 'Display' }
+  { id: 'P5', nome: 'Supporto per laptop', prezzo: 3980, categoria: 'Periferiche per PC' }; id: 'P5', nome: 'Supporto per laptop', prezzo: 3980, categoria: 'Periferiche per PC' }
+];
+
+// Creazione di elementi dell'interfaccia utente
+const container = document.createElement('div');.
+document.body.appendChild(container);
+
+const title = document.createElement('h3');
+title.textContent = 'Ricerca prodotti';
+container.appendChild(title);
+
+const input = document.createElement('input');
+input.type = 'number';
+input.placeholder = 'Inserisci il prezzo massimo';
+input.style.marginRight = '10px';
+container.appendChild(input);
+
+const searchButton = document.createElement('button');
+searchButton.textContent = 'search';
+container.appendChild(searchButton);
+
+const result = document.createElement('div');
+result.style.marginTop = '10px';
+container.appendChild(result);
+
+// Elaborazione della ricerca
+// Nota: originariamente lo schema consigliato è di appiattire con una switchMap, ma,
+// Nota: sebbene lo schema raccomandato sia quello di appiattire con una switchMap, // qui annidiamo la sottoscrizione per la leggibilità, // perché include la validazione dell'interfaccia utente (ritorno anticipato).
+// Considerare un'implementazione piatta usando `switchMap` nel codice di produzione.
+fromEvent(searchButton, 'click').subscribe(() => {
+  const maxPrice = parseInt(input.value);.
+
+  if (isNaN(maxPrice)) {
+    result.textContent = 'Inserisci un prezzo';
+    result.style.color = 'red';
+    return;
+  }
+
+  // Sottoscrizione del nido: originariamente si consigliava di appiattire con switchMap
+  from(prodotti).pipe(
+    find(product => product.price <= maxPrice)
+  ).subscribe(prodotto => {
+    if (prodotto) {
+      result.innerHTML = `
+        <strong>Trovato! </strong><br>
+        Nome del prodotto: ${product.name}<br>
+        Prezzo: ${product.price.toLocaleString()}<br>
+        Categoria: ${product.category}
+      `;
+      result.style.color = 'green';
+    } else {
+      result.textContent = `¥${maxPrice.toLocaleString()} o meno prodotto non trovato `;
+      result.style.color = 'arancione'; }
+    }
+  });
+});
+
+```
+
+Questo codice cerca e visualizza il primo prodotto al di sotto del prezzo inserito dall'utente.
+
+## 🎯 filter La differenza tra
+
+`find` e `filter` sono utilizzati per scopi diversi.
+
+```
+
+ts.
+importare { from } da 'rxjs';
+importare { find, filter } da 'rxjs';
 
 const numbers$ = from([1, 3, 5, 7, 8, 9, 10]);
 
-// filter: Emetti tutti i valori che corrispondono alla condizione
+// filtro: produce tutti i valori che corrispondono alla condizione
 numbers$.pipe(
-  filter(n => n > 5)
+  filtro(n => n > 5)
 ).subscribe({
-  next: console.log,
-  complete: () => console.log('filter completato')
+  next: console.log,.
+  complete: () => console.log('filtro completato')
 });
-// Output: 7, 8, 9, 10, filter completato
+// Output: 7, 8, 9, 10, filtro completato
 
-// find: Emetti solo il primo valore che corrisponde alla condizione
+// find: produce solo il primo valore che corrisponde alla condizione
 numbers$.pipe(
   find(n => n > 5)
 ).subscribe({
-  next: console.log,
-  complete: () => console.log('find completato')
+  next: console.log,.
+  complete: () => console.log('find complete')
 });
-// Output: 7, find completato
+// uscita: 7, trovare completo
+
 ```
 
-| Operatore | Conteggio Output | Timing Completamento | Caso d'Uso |
+| Operatore | Numero di uscite | Tempi di completamento | Caso d'uso |
 |---|---|---|---|
-| `filter(predicate)` | Tutti i valori che corrispondono | Quando lo stream originale completa | Filtraggio dati |
-| `find(predicate)` | Solo primo valore che corrisponde | Immediatamente quando trovato | Ricerca/verifica esistenza |
+| `filter(predicate)` | Tutti i valori che corrispondono alla condizione | Al completamento del flusso originale | Raffinamento dei dati |
+| `find(predicate)` | Solo il primo valore che corrisponde ai criteri | Immediatamente dopo la scoperta | Ricerca e controllo dell'esistenza |
 
+## 📋 Utilizzo sicuro per i tipi
 
-## ⚠️ Errori Comuni
+TypeScript Questo è un esempio di implementazione type-safe che utilizza i generici in
+
+```
+
+ts.
+import { Observable, from } da 'rxjs';
+importare { find } da 'rxjs';
+
+interfaccia Task {
+  id: numero;
+  titolo: stringa
+  completato: booleano;
+  priorità: 'alta' | 'media' | 'bassa'; }
+}
+
+function findTaskById(
+  tasks$: Observable<Task>,.
+  id: numero
+): Osservabile<Compito | indefinito> {
+  return tasks$.pipe(
+    find(task => task.id === id)
+  );
+}
+
+function findFirstIncompleteTask(
+  tasks$: osservabile<compito>
+): Observable<Task | undefined> {
+  return tasks$.pipe(
+    find(task => !task.completed)
+  );
+}
+
+// Esempio di utilizzo
+const tasks$ = from([.
+  { id: 1, titolo: 'Compito A', completato: true, priorità: 'alta' as const }
+  { id: 2, titolo: 'Compito B', completato: false, priorità: 'media' as const }
+  { id: 3, title: 'Task C', completed: false, priority: 'low' as const }
+] come Task[]);.
+
+// Ricerca per ID
+findTaskById(tasks$, 2).subscribe(task => {
+  if (task) {
+    console.log(`trovato: ${task.title}`);
+  } else {
+    console.log('Compito non trovato'); }
+  }
+});
+// Output: trovato: compito B
+
+// Trova i compiti non completati
+findFirstIncompleteTask(tasks$).subscribe(task => {
+  if (task) {
+    console.log(`Prossimo compito: ${task.title} (priorità: ${task.priority})`);
+  }
+});
+// Output: prossimo task: task B (priorità: media)
+
+```
+
+## 🔄 find e findIndex La differenza tra
+
+RxJSnegli operatori `findIndex` sono disponibili anche gli operatori
+
+```
+
+ts
+importare { from } da 'rxjs';
+importare { find, findIndex } da 'rxjs';
+
+const numbers$ = from([10, 20, 30, 40, 50]);
+
+// find: restituisce un valore
+numbers$.pipe(
+  find(n => n > 25)
+).subscribe(console.log);.
+// uscita: 30
+
+// findIndex: restituisce l'indice
+numbers$.pipe(
+  findIndex(n => n > 25)
+).subscribe(console.log);.
+// Output: 2 (indice di 30)
+
+```
+
+| Operatore | Valore di ritorno | se il valore non viene trovato |
+|---|---|---|
+| `find(predicate)` | Valore stesso | `undefined` |
+| `findIndex(predicate)` | Indice (valore numerico) | `-1` |
+
+## ⚠️ Errori comuni
 
 > [!NOTE]
-> `find` emette `undefined` quando il valore non viene trovato. Non genera errore. Usa `first` se hai bisogno di un errore.
+> `find` se il valore non viene trovato. `undefined` viene emesso. Questo non comporta un errore. Se è richiesto un errore, utilizzare `first` da utilizzare.
 
-### Sbagliato: Aspettarsi Gestione Errori Quando il Valore Non Viene Trovato
+### Errore.: Gestione dell'errore previsto se il valore non viene trovato.
 
-```ts
-import { from } from 'rxjs';
-import { find } from 'rxjs';
+```
+
+ts.
+importare { from } da 'rxjs';
+importare { find } da 'rxjs';
 
 const numbers$ = from([1, 3, 5, 7]);
 
-// ❌ Esempio sbagliato: Aspettandosi gestione errori ma non chiamato
+// ❌ Cattivo esempio: la gestione degli errori è prevista ma non viene chiamata
 numbers$.pipe(
   find(n => n > 10)
 ).subscribe({
-  next: console.log,
-  error: err => console.log('Errore:', err) // Non chiamato
+  next: console.log,.
+  error: err => console.log('Error:', err) // non chiamato
 });
-// Output: undefined
+// uscita: indefinita
+
 ```
 
-### Corretto: Controlla undefined o Usa first
+### Positivo: undefined Controlla o first utilizzare il valore
 
-```ts
-import { from } from 'rxjs';
-import { find, first } from 'rxjs';
+```
+
+ts.
+importare { from } da 'rxjs';
+importare { find, first } da 'rxjs';
 
 const numbers$ = from([1, 3, 5, 7]);
 
-// ✅ Esempio corretto 1: Controlla undefined
+// ✅ Buon esempio 1: controllo degli indefiniti
 numbers$.pipe(
   find(n => n > 10)
 ).subscribe(result => {
-  if (result !== undefined) {
-    console.log('Trovato:', result);
+  if (result ! == undefined) {
+    console.log('Trovato:', risultato);
   } else {
-    console.log('Non trovato');
+    console.log('Non trovato:'); }
   }
 });
-// Output: Non trovato
+// Output: non trovato
 
-// ✅ Esempio corretto 2: Usa first se serve errore
+// ✅ Buon esempio 2: utilizzare il primo se si ha bisogno di un errore
 numbers$.pipe(
-  first(n => n > 10, 0) // Specifica valore predefinito
+  first(n => n > 10, 0) // specifica il valore predefinito
 ).subscribe({
-  next: console.log,
-  error: err => console.log('Errore:', err.message)
+  next: console.log,.
+  error: err => console.log('Error:', err.message)
 });
-// Output: 0
+// Uscita: 0
 ```
-
 
 ## 🎓 Riepilogo
 
-### Quando Usare find
-- ✅ Quando vuoi cercare il primo valore che soddisfa una condizione
-- ✅ Quando vuoi verificare l'esistenza di un valore
-- ✅ Quando vuoi gestire il caso non trovato con `undefined`
-- ✅ Quando vuoi cercare un elemento specifico da un array o lista
+### Quando si dovrebbe usare find.
+- ✅ Se si vuole trovare il primo valore che soddisfa una condizione
+- ✅ Quando si vuole verificare l'esistenza di un valore
+- ✅ Quando si vuole trattare un valore come `undefined` se non viene trovato.
+- ✅ Quando si vuole trovare un elemento specifico in una matrice o in un elenco
 
-### Quando Usare first
-- ✅ Quando vuoi ottenere il primo valore
-- ✅ Quando vuoi emettere un errore se il valore non viene trovato
+### Quando si dovrebbe usare prima
+- ✅ Se si vuole ottenere il primo valore
+- ✅ Se si vuole dare un errore se il valore non è trovato
 
-### Quando Usare filter
-- ✅ Quando hai bisogno di tutti i valori che corrispondono alla condizione
-- ✅ Quando lo scopo è il filtraggio dati
+### Quando si dovrebbe usare il filtro?
+- ✅ Se si ha bisogno di tutti i valori che corrispondono a una condizione
+- ✅ Se si vogliono filtrare i dati
 
-### Note
-- ⚠️ `find` emette `undefined` quando non trovato (non un errore)
+### Note.
+- ⚠️ `find` restituisce `undefined` se non viene trovato (non è un errore).
 - ⚠️ Completa immediatamente con il primo valore che soddisfa la condizione
-- ⚠️ In TypeScript, il valore di ritorno è di tipo `T | undefined`
+- ⚠️ TypeScript restituisce un valore di tipo `T | undefined`.
 
+## 🚀 Passo successivo.
 
-## 🚀 Prossimi Passi
-
-- **[first](/it/guide/operators/filtering/first)** - Impara come ottenere il primo valore
-- **[filter](/it/guide/operators/filtering/filter)** - Impara come filtrare in base a condizioni
-- **[findIndex](https://rxjs.dev/api/operators/findIndex)** - Impara come ottenere l'indice del primo valore che soddisfa la condizione (documentazione ufficiale)
-- **[Esempi Pratici Operatori di Filtraggio](/it/guide/operators/filtering/practical-use-cases)** - Impara casi d'uso reali
+- **[first](. /first)** - imparare a ottenere il primo valore.
+- **[filter](. /filtro)** - imparare a filtrare in base alle condizioni.
+- **[findIndex](https://rxjs.dev/api/operators/findIndex)** - per imparare a ottenere l'indice del primo valore che soddisfa una condizione (documentazione ufficiale).
+- **[filtering-operator-practical-use-cases](. /practical-use-cases)** - per imparare casi d'uso reali.
