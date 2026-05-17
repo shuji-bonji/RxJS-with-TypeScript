@@ -419,8 +419,9 @@ of(1, 2, 3)
       }
       return of(value);
     }),
-    catchError(error => {
-      console.error('🔴 Caught error:', error.message);
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('🔴 Caught error:', message);
       return of(-1); // Fallback value
     })
   )
@@ -465,39 +466,32 @@ When retrying automatically when an error occurs, tracking how many retries are 
 
 ### Basic Retry Debugging
 
-Use `retryWhen` to log the number of retries.
-
 ```ts
 import { throwError, of, timer } from 'rxjs';
-import { retryWhen, mergeMap, tap } from 'rxjs';
+import { retry } from 'rxjs';
 
 throwError(() => new Error('Temporary error'))
   .pipe(
-    retryWhen((errors) =>
-      errors.pipe(
-        mergeMap((error, index) => {
-          const retryCount = index + 1;
-          console.log(`🔄 Retry attempt ${retryCount}`);
-
-          if (retryCount > 2) {
-            console.log('❌ Maximum retry count reached');
-            throw error;
-          }
-
-          return timer(1000);
-        })
-      )
-    )
+    // RxJS 7.3+ recommended: retry({ count, delay }) form
+    retry({
+      count: 2, // Retry up to 2 times
+      delay: (error, retryCount) => {
+        console.log(`🔄 Retry attempt ${retryCount}`);
+        return timer(1000);
+      }
+    })
   )
   .subscribe({
     next: value => console.log('✅ Success:', value),
-    error: error => console.log('🔴 Final error:', error.message)
+    error: error => {
+      console.log('❌ Maximum retry count reached');
+      console.log('🔴 Final error:', error.message);
+    }
   });
 
 // Output:
 // 🔄 Retry attempt 1
 // 🔄 Retry attempt 2
-// 🔄 Retry attempt 3
 // ❌ Maximum retry count reached
 // 🔴 Final error: Temporary error
 ```
@@ -505,7 +499,7 @@ throwError(() => new Error('Temporary error'))
 > [!TIP]
 > For more detailed implementation patterns on debugging retries, see the "Debugging Retries" section of [retry and catchError](/en/guide/error-handling/retry-catch#debugging-retries).
 > - Basic tracking using the tap error callback
-> - Detailed logging with retryWhen
+> - Detailed logging with retry config
 > - Exponential backoff and logging
 > - RxJS 7.4+ retry configuration object
 
@@ -518,7 +512,7 @@ Solutions to common debugging scenarios
 - ✅ **Subscription not completed** → use `take` or `takeUntil` for infinite streams
 - ✅ **Memory leak** → auto unsubscribe with `takeUntil` pattern
 - ✅ **Missing errors** → implement proper error handling
-- ✅ **retry tracking** → logging with `retryWhen` or configuration object
+- ✅ **retry tracking** → logging with `retry` configuration object
 
 ## Related Pages
 

@@ -69,6 +69,8 @@ source$.pipe(
   window(trigger$)
 ).subscribe(window$ => {
   console.log('Window (Observable):', window$);
+  // Nested subscribe: required pattern for window-family operators
+  // (necessary to consume inner Observables emitted by window)
   window$.subscribe(value => {
     console.log('  Value in window:', value);
   });
@@ -197,6 +199,7 @@ Each window is an independent Observable, so it must be explicitly subscribed to
 source$.pipe(
   window(trigger$)
 ).subscribe(window$ => {
+  // Nested subscribe: required pattern for window-family operators
   // Values won't flow unless you subscribe to the window itself
   window$.subscribe(value => {
     console.log('Value:', value);

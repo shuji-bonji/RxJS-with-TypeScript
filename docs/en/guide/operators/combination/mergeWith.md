@@ -257,7 +257,7 @@ interval(1000).pipe(
   take(2),
   mergeWith(
     throwError(() => new Error('Error occurred')).pipe(
-      catchError(err => of('Error recovered'))
+      catchError((err: unknown) => of('Error recovered'))
     )
   )
 ).subscribe({

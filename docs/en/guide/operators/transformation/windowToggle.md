@@ -75,6 +75,8 @@ source$.pipe(
   windowToggle(opening$, closing)
 ).subscribe(window$ => {
   console.log('Window (Observable):', window$);
+  // Nested subscribe: required pattern for window-family operators
+  // (necessary to consume inner Observables emitted by windowToggle)
   window$.subscribe(value => {
     console.log('  Value in window:', value);
   });
@@ -292,6 +294,7 @@ Each window is an independent Observable, so you must either subscribe to it exp
 source$.pipe(
   windowToggle(opening$, closing)
 ).subscribe(window$ => {
+  // Nested subscribe: required pattern for window-family operators
   // Values won't flow unless you subscribe to the window itself
   window$.subscribe(value => {
     console.log('Value:', value);

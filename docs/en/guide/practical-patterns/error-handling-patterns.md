@@ -215,7 +215,7 @@ class HttpClientService {
   get<T>(url: string): Observable<T> {
     return ajax.get<T>(url).pipe(
       tap(() => console.log(`GET ${url} - Success`)),
-      catchError(error => this.handleError(error, url))
+      catchError((error: unknown) => this.handleError(error, url))
     );
   }
 
@@ -225,14 +225,14 @@ class HttpClientService {
   post<T>(url: string, body: any): Observable<T> {
     return ajax.post<T>(url, body).pipe(
       tap(() => console.log(`POST ${url} - Success`)),
-      catchError(error => this.handleError(error, url))
+      catchError((error: unknown) => this.handleError(error, url))
     );
   }
 
   /**
    * Unified error handler
    */
-  private handleError(error: any, url: string): Observable<never> {
+  private handleError(error: unknown, url: string): Observable<never> {
     console.error(`HTTP Error at ${url}:`, error);
 
     if (error instanceof AjaxError) {
@@ -246,9 +246,10 @@ class HttpClientService {
     }
 
     // Non-AjaxError errors (e.g., programming errors)
+    const message = error instanceof Error ? error.message : 'Unknown error';
     return throwError(() => ({
       status: -1,
-      message: error.message || 'Unknown error',
+      message,
       retryable: false,
       userMessage: 'An unexpected error has occurred.'
     }));
@@ -366,7 +367,7 @@ userDetail.init();
 Since network errors are often temporary problems, implement an appropriate retry strategy.
 
 ```typescript
-import { Observable, timer, throwError, retryWhen, mergeMap, tap } from 'rxjs';
+import { Observable, timer, throwError, retry, tap, catchError } from 'rxjs';
 /**
  * Network error specific retry configuration
  */
@@ -378,7 +379,7 @@ interface NetworkRetryConfig {
 }
 
 /**
- * Network retry operator
+ * Network retry operator (RxJS 7.3+ recommended: retry({ count, delay }) form)
  */
 function retryWithBackoff(config: NetworkRetryConfig) {
   const {
@@ -389,35 +390,31 @@ function retryWithBackoff(config: NetworkRetryConfig) {
   } = config;
 
   return <T>(source: Observable<T>) => source.pipe(
-    retryWhen(errors => errors.pipe(
-      mergeMap((error, index) => {
-        const retryAttempt = index + 1;
-
-        // Throw error if max retries exceeded
-        if (retryAttempt > maxRetries) {
-          return throwError(() => ({
-            ...error,
-            message: `Network error: ${maxRetries} retries failed`,
-            userMessage: 'Unable to connect to the network. Please wait a moment and try again.'
-          }));
-        }
-
+    retry({
+      count: maxRetries,
+      delay: (error: unknown, retryCount) => {
         // Calculate delay with exponential backoff
         const delay = Math.min(
-          initialDelay * Math.pow(backoffMultiplier, index),
+          initialDelay * Math.pow(backoffMultiplier, retryCount - 1),
           maxDelay
         );
 
         console.log(
-          `Retry ${retryAttempt}/${maxRetries} - Retry after ${delay}ms...`
+          `Retry ${retryCount}/${maxRetries} - Retry after ${delay}ms...`
         );
 
         // Retry after delay
         return timer(delay).pipe(
-          tap(() => console.log(`Retry ${retryAttempt} in progress...`))
+          tap(() => console.log(`Retry ${retryCount} in progress...`))
         );
-      })
-    ))
+      }
+    }),
+    // Transform error message after max retries exhausted
+    catchError((error: unknown) => throwError(() => ({
+      ...(typeof error === 'object' && error !== null ? error : {}),
+      message: `Network error: ${maxRetries} retries failed`,
+      userMessage: 'Unable to connect to the network. Please wait a moment and try again.'
+    })))
   );
 }
 
@@ -442,9 +439,10 @@ class NetworkAwareHttpClient {
     const config = { ...defaultConfig, ...retryConfig };
 
     return this.httpClient.get<T>(url).pipe(
-      catchError(error => {
+      catchError((error: unknown) => {
         // Retry only for network errors (status = 0)
-        if (error.status === 0) {
+        const status = (error as { status?: number })?.status;
+        if (status === 0) {
           return throwError(() => error);
         }
         // Fail immediately for other errors without retry
@@ -601,8 +599,9 @@ class TimeoutAwareHttpClient {
           userMessage: timeoutConfig.message
         }))
       }),
-      catchError(error => {
-        if (error.status === -2) {
+      catchError((error: unknown) => {
+        const status = (error as { status?: number })?.status;
+        if (status === -2) {
           console.error(`Timeout: ${url} (${timeoutConfig.duration}ms)`);
         }
         return throwError(() => error);
@@ -966,7 +965,7 @@ class UserService {
 
   loadUser(userId: number): Observable<User> {
     return this.httpClient.get<User>(`/api/users/${userId}`).pipe(
-      catchError(error => {
+      catchError((error: unknown) => {
         // Record in global error handler
         this.globalErrorHandler.handleError(
           error,
@@ -1001,7 +1000,7 @@ const userService = new UserService(new HttpClientService(), globalErrorHandler)
 Implement flexible retry strategies based on error type and situation.
 
 ```typescript
-import { Observable, throwError, timer, range, retryWhen, mergeMap, tap, finalize } from 'rxjs';
+import { Observable, throwError, timer, retry, catchError, tap, finalize } from 'rxjs';
 /**
  * Retry strategy types
  */
@@ -1020,11 +1019,11 @@ interface RetryConfig {
   maxRetries: number;
   initialDelay?: number;
   maxDelay?: number;
-  shouldRetry?: (error: any) => boolean;
+  shouldRetry?: (error: unknown) => boolean;
 }
 
 /**
- * Advanced retry operator
+ * Advanced retry operator (RxJS 7.3+ recommended: retry({ count, delay }) form)
  */
 function advancedRetry(config: RetryConfig) {
   const {
@@ -1036,38 +1035,38 @@ function advancedRetry(config: RetryConfig) {
   } = config;
 
   return <T>(source: Observable<T>) => source.pipe(
-    retryWhen(errors => errors.pipe(
-      mergeMap((error, index) => {
-        const retryAttempt = index + 1;
-
-        // Check if error is retryable
+    retry({
+      count: maxRetries,
+      delay: (error: unknown, retryCount) => {
+        // Check if error is retryable (throw to abort retry if not)
         if (!shouldRetry(error)) {
-          console.log('Non-retriable error:', error.message);
-          return throwError(() => error);
-        }
-
-        // Check max retry attempts
-        if (retryAttempt > maxRetries) {
-          console.error(`Retry failure: Failed after ${maxRetries} attempts`);
-          return throwError(() => ({
-            ...error,
-            message: `${error.message} (${maxRetries} retries failed)`,
-            retriesExhausted: true
-          }));
+          const message = error instanceof Error ? error.message : String(error);
+          console.log('Non-retriable error:', message);
+          throw error;
         }
 
         // Calculate delay based on retry strategy
-        const delay = calculateDelay(strategy, index, initialDelay, maxDelay);
+        const delay = calculateDelay(strategy, retryCount - 1, initialDelay, maxDelay);
 
         console.log(
           `Retry strategy: ${strategy} | ` +
-          `Attempt ${retryAttempt}/${maxRetries} | ` +
+          `Attempt ${retryCount}/${maxRetries} | ` +
           `Retry after ${delay}ms...`
         );
 
         return timer(delay);
-      })
-    ))
+      }
+    }),
+    // Transform error after max retries exhausted
+    catchError((error: unknown) => {
+      console.error(`Retry failure: Failed after ${maxRetries} attempts`);
+      const message = error instanceof Error ? error.message : String(error);
+      return throwError(() => ({
+        ...(typeof error === 'object' && error !== null ? error : {}),
+        message: `${message} (${maxRetries} retries failed)`,
+        retriesExhausted: true
+      }));
+    })
   );
 }
 
@@ -1120,20 +1119,21 @@ class SmartRetryHttpClient {
         maxRetries: 3,
         initialDelay: 1000,
         maxDelay: 16000,
-        shouldRetry: (error) => {
+        shouldRetry: (error: unknown) => {
           // Determine if error should be retried
+          const status = (error as { status?: number })?.status ?? 0;
 
           // Network error -> retry
-          if (error.status === 0) return true;
+          if (status === 0) return true;
 
           // 5xx Server error -> retry
-          if (error.status >= 500) return true;
+          if (status >= 500) return true;
 
           // 429 Too Many Requests -> retry
-          if (error.status === 429) return true;
+          if (status === 429) return true;
 
           // 4xx Client error -> don't retry
-          if (error.status >= 400 && error.status < 500) return false;
+          if (status >= 400 && status < 500) return false;
 
           // Other -> don't retry
           return false;

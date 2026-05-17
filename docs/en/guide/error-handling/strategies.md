@@ -1,5 +1,5 @@
 ---
-description: A comprehensive error handling strategy for RxJS will be described, including how to combine catchError, retry, retryWhen, and finalize operators, retry with exponential backoff, resource release on error, fallback handling, and other practical patterns.
+description: A comprehensive error handling strategy for RxJS will be described, including how to combine catchError, retry, and finalize operators, retry with exponential backoff, resource release on error, fallback handling, and other practical patterns.
 ---
 # RxJS Error Handling Strategies
 
@@ -19,8 +19,9 @@ const error$ = throwError(() => new Error('An error occurred')); // RxJS 7+, fun
 // Basic error handling
 error$
   .pipe(
-    catchError((error) => {
-      console.error('Error caught:', error.message);
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('Error caught:', message);
       return of('Fallback value after error');
     })
   )
@@ -49,8 +50,9 @@ import { catchError } from 'rxjs';
 const source$ = throwError(() => new Error('Data retrieval error'));
 
 source$.pipe(
-  catchError(error => {
-    console.error('Error occurred:', error.message);
+  catchError((error: unknown) => {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error('Error occurred:', message);
     // Return alternate data
     return of({ isError: true, data: [], message: 'Displaying default data' });
   })
@@ -63,7 +65,7 @@ source$.pipe(
 
 ### 2. Retry if Error Occurs
 
-Use the `retry` or `retryWhen` operator to retry the stream if an error occurs.
+Use the `retry` operator to retry the stream if an error occurs (the `retry({ count, delay })` form is recommended for v7.3+, replacing the legacy `retryWhen`).
 
 ```ts
 import { interval, throwError, of } from 'rxjs';
@@ -100,34 +102,26 @@ For network requests, for example, "exponential backoff," which gradually increa
 
 ```ts
 import { throwError, timer, of } from 'rxjs';
-import { retryWhen, tap, concatMap, catchError } from 'rxjs';
+import { retry, catchError } from 'rxjs';
 
 function fetchWithRetry() {
-  let retryCount = 0;
-
   return throwError(() => new Error('Network error')).pipe(
-    retryWhen((errors) =>
-      errors.pipe(
-        // Count error occurrences
-        tap((error) => console.log('Error occurred:', error.message)),
-        // Delay with exponential backoff
-        concatMap(() => {
-          retryCount++;
-          const delayMs = Math.min(1000 * Math.pow(2, retryCount), 10000);
-          console.log(`Retry attempt ${retryCount} after ${delayMs}ms`);
-          return timer(delayMs);
-        }),
-        // Retry up to 5 times
-        tap(() => {
-          if (retryCount >= 5) {
-            throw new Error('Maximum retry attempts exceeded');
-          }
-        })
-      )
-    ),
+    // RxJS 7.3+ recommended: retry({ count, delay }) form
+    retry({
+      count: 5, // Retry up to 5 times
+      delay: (error: unknown, retryCount) => {
+        const message = error instanceof Error ? error.message : String(error);
+        console.log('Error occurred:', message);
+        // Exponential backoff (capped at 10 seconds)
+        const delayMs = Math.min(1000 * Math.pow(2, retryCount), 10000);
+        console.log(`Retry attempt ${retryCount} after ${delayMs}ms`);
+        return timer(delayMs);
+      }
+    }),
     // Final fallback
-    catchError((error) => {
-      console.error('All retries failed:', error.message);
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('All retries failed:', message);
       return of({
         error: true,
         message: 'Connection failed. Please try again later.',
@@ -169,8 +163,9 @@ let isLoading = true;
 
 throwError(() => new Error('Processing error'))
   .pipe(
-    catchError((error) => {
-      console.error('Error handling:', error.message);
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('Error handling:', message);
       return throwError(() => error); // Re-throw error
     }),
     finalize(() => {
@@ -212,9 +207,10 @@ function fetchData(shouldFail = false) {
       // Processing on success
       updateUI(data);
     }),
-    catchError((error) => {
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
       // Update UI on error
-      showErrorMessage(error.message);
+      showErrorMessage(message);
       // Return empty data or default value
       return of({ name: 'Default', value: 0 });
     }),
@@ -270,20 +266,23 @@ function getComments() {
 // Retrieve all data and allow partial errors
 forkJoin({
   user: getUser().pipe(
-    catchError((error) => {
-      console.error('User retrieval error:', error.message);
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('User retrieval error:', message);
       return of(null); // Return null on error
     })
   ),
   posts: getPosts().pipe(
-    catchError((error) => {
-      console.error('Post retrieval error:', error.message);
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('Post retrieval error:', message);
       return of([]); // Return empty array on error
     })
   ),
   comments: getComments().pipe(
-    catchError((error) => {
-      console.error('Comment retrieval error:', error.message);
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('Comment retrieval error:', message);
       return of([]); // Return empty array on error
     })
   ),

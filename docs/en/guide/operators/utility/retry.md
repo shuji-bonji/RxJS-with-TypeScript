@@ -18,7 +18,10 @@ import { retry, catchError } from 'rxjs';
 throwError(() => new Error('Temporary error'))
   .pipe(
     retry(2), // Retry up to 2 times
-    catchError((error) => of(`Final error: ${error.message}`))
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
+      return of(`Final error: ${message}`);
+    })
   )
   .subscribe(console.log);
 // Output:
@@ -50,7 +53,10 @@ throwError(() => new Error('Temporary error'))
       delay: 1000,        // Wait 1 second before retrying (uses asyncScheduler internally)
       resetOnSuccess: true // Reset count on success
     }),
-    catchError((error) => of(`Final error: ${error.message}`))
+    catchError((error: unknown) => {
+      const message = error instanceof Error ? error.message : String(error);
+      return of(`Final error: ${message}`);
+    })
   )
   .subscribe(console.log);
 
@@ -89,7 +95,10 @@ interval(1000)
       }
     }),
     retry(3),
-    catchError((err) => of(`Final failure: ${err.message}`))
+    catchError((err: unknown) => {
+      const message = err instanceof Error ? err.message : String(err);
+      return of(`Final failure: ${message}`);
+    })
   )
   .subscribe(console.log);
 // Output:
@@ -150,9 +159,10 @@ function simulateRequest() {
       }
     }),
     retry(3),
-    catchError((err) => {
+    catchError((err: unknown) => {
+      const message = err instanceof Error ? err.message : String(err);
       const finalError = document.createElement('div');
-      finalError.textContent = `All retries failed: ${err.message}`;
+      finalError.textContent = `All retries failed: ${message}`;
       finalError.style.color = 'red';
       finalError.style.fontWeight = 'bold';
       requestStatus.appendChild(finalError);

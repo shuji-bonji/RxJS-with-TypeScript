@@ -72,6 +72,9 @@ arrayResult.style.marginTop = '20px';
 toArrayOutput.appendChild(arrayResult);
 
 // Subscribe to individual values
+// Note: The two subscribe statements below represent separate streams (parallel subscriptions)
+// and are not nested subscribe statements. We are intentionally subscribing to two streams
+// in parallel to compare the difference between using toArray and not using it.
 interval(500)
   .pipe(take(5))
   .subscribe((val) => {
@@ -80,7 +83,7 @@ interval(500)
     individualValues.appendChild(valueItem);
   });
 
-// Subscribe to same stream as array
+// Subscribe to the same stream as an array (a separate stream independent of the subscribe above)
 interval(500)
   .pipe(take(5), toArray())
   .subscribe((array) => {

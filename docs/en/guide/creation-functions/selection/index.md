@@ -87,28 +87,28 @@ However, by using multicast operators (`share()`, `shareReplay()`, etc.), you ca
 ### Practical Example: Sharing Execution
 
 ```typescript
-import { race, timer, share } from 'rxjs';
-import { map } from 'rxjs';
+import { race, timer } from 'rxjs';
+import { map, share } from 'rxjs';
 
-// ❄️ Cold - Independent execution for each subscription
+// ❄️ Cold - Re-run competition for each subscription
 const coldRace$ = race(
-  timer(1000).pipe(map(() => 'API1')),
-  timer(500).pipe(map(() => 'API2'))
+  timer(1000).pipe(map(() => 'Fast API')),
+  timer(3000).pipe(map(() => 'Slow API'))
 );
 
 coldRace$.subscribe(val => console.log('Subscriber 1:', val));
 coldRace$.subscribe(val => console.log('Subscriber 2:', val));
-// → Each subscriber executes independent race (2x requests)
+// → Each subscriber runs an independent competition (2 competitions)
 
-// 🔥 Hot - Share execution among subscribers
+// 🔥 Hot - Share competition result among subscribers
 const hotRace$ = race(
-  timer(1000).pipe(map(() => 'API1')),
-  timer(500).pipe(map(() => 'API2'))
+  timer(1000).pipe(map(() => 'Fast API')),
+  timer(3000).pipe(map(() => 'Slow API'))
 ).pipe(share());
 
 hotRace$.subscribe(val => console.log('Subscriber 1:', val));
 hotRace$.subscribe(val => console.log('Subscriber 2:', val));
-// → Share race execution (requests only once)
+// → Share the result of a single competition
 ```
 
 > [!TIP]

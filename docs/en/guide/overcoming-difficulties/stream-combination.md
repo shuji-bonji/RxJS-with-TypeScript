@@ -332,6 +332,9 @@ setInterval(() => {
 }, 1000);
 ```
 
+> [!WARNING] Note for Production Code
+> The above sample omits unsubscribing from `fromEvent` for the sake of simplicity. In production code, please explicitly manage the lifecycle using `takeUntil(destroy$)`, `take(N)`, or `Subscription.unsubscribe()`. Details: [Overcoming Difficulties: Lifecycle Management](/en/guide/overcoming-difficulties/lifecycle-management.md)
+
 ### Practice Example 2: Form Submission + Current User Information
 
 ```typescript
@@ -561,7 +564,7 @@ function getUserData(userId: number) {
         comments: ajax.getJSON<Comment[]>(`/api/users/${userId}/comments`)
       })
     ),
-    catchError(error => {
+    catchError((error: unknown) => {
       console.error('Error:', error);
       return of({
         user: null,
@@ -965,19 +968,19 @@ import { ajax } from 'rxjs/ajax';
 
 forkJoin({
   users: ajax.getJSON('/api/users').pipe(
-    catchError(error => {
+    catchError((error: unknown) => {
       console.error('User fetch failed:', error);
       return of([]); // Return empty array
     })
   ),
   products: ajax.getJSON('/api/products').pipe(
-    catchError(error => {
+    catchError((error: unknown) => {
       console.error('Product fetch failed:', error);
       return of([]);
     })
   ),
   orders: ajax.getJSON('/api/orders').pipe(
-    catchError(error => {
+    catchError((error: unknown) => {
       console.error('Order fetch failed:', error);
       return of([]);
     })

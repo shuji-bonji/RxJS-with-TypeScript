@@ -37,8 +37,9 @@ try {
 
 timer(1000).pipe(
   mergeMap(() => throwError(() => new Error('Asynchronous error'))),
-  catchError(error => {
-    console.error('Caught:', error.message); // ✅ Executed
+  catchError((error: unknown) => {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error('Caught:', message); // ✅ Executed
     return of('Default value');
   })
 ).subscribe();
@@ -228,7 +229,7 @@ ajax.getJSON<ApiResponse>('https://api.example.com/data').pipe(
     }
   }),
   // Level 2: Handle asynchronous errors with catchError
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('API call error:', error);
     return of({ decoded: '', timestamp: Date.now() });
   }),
@@ -347,12 +348,14 @@ function validateAndFetchUser(userId: string): Observable<UserData> {
         throw new Error('Data validation error');
       }
     }),
-    catchError(error => {
+    catchError((error: unknown) => {
       // Handle asynchronous errors (HTTP errors, etc.)
-      if (error.status) {
+      const status = (error as { status?: number; message?: string }).status;
+      if (status) {
+        const errMessage = error instanceof Error ? error.message : String(error);
         const networkError = new NetworkError(
-          `HTTP ${error.status}: ${error.message}`,
-          error.status
+          `HTTP ${status}: ${errMessage}`,
+          status
         );
         return throwError(() => networkError);
       }
@@ -432,8 +435,8 @@ import { of, catchError } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 
 ajax.getJSON('https://api.example.com/data').pipe(
-  catchError(error => {
-    console.error('HTTPError:', error);
+  catchError((error: unknown) => {
+    console.error('HTTP error:', error);
     return of(null);
   })
 ).subscribe({
@@ -491,7 +494,7 @@ of('invalid-json').pipe(
     if (result.success) {
       console.log('Data:', result.data);
     } else {
-      console.error('パースError:', result.error);
+      console.error('Parse error:', result.error);
     }
   }
 });
@@ -525,7 +528,7 @@ of('{"value": 1}', 'invalid', '{"value": 2}').pipe(
       // JSON.parse may throw exceptions, so try-catch is needed
       return JSON.parse(json);
     } catch (error) {
-      console.error('JSON解析Error:', error);
+      console.error('JSON parse error:', error);
       return { value: 0 };
     }
   })
@@ -549,13 +552,13 @@ ajax.getJSON<{ data: string }>('https://api.example.com/data').pipe(
     try {
       return JSON.parse(response.data);
     } catch (error) {
-      console.error('パースError:', error);
+      console.error('Parse error:', error);
       return {};
     }
   }),
   // Asynchronous errors → catchError
-  catchError(error => {
-    console.error('APIError:', error);
+  catchError((error: unknown) => {
+    console.error('API error:', error);
     return of({});
   }),
   // Errors during cleanup → try-catch
@@ -563,7 +566,7 @@ ajax.getJSON<{ data: string }>('https://api.example.com/data').pipe(
     try {
       // Resource release processing
     } catch (error) {
-      console.error('クリーンアップError:', error);
+      console.error('Cleanup error:', error);
     }
   })
 ).subscribe();
@@ -638,8 +641,8 @@ of({ raw: 'some-data' }).pipe(
 ).subscribe({
   next: data => console.log('Processed:', data),
   error: (err: DataProcessingError) => {
-    console.error(`エラー (${err.step}):`, err.message);
-    console.error('入力Data:', err.data);
+    console.error(`Error (${err.step}):`, err.message);
+    console.error('Input data:', err.data);
   }
 });
 
@@ -672,8 +675,8 @@ ajax.getJSON('https://api.example.com/data').pipe(
       throw error; // Propagate to catchError
     }
   }),
-  catchError(error => {
-    logError('API Request', error);
+  catchError((error: unknown) => {
+    logError('API Request', error instanceof Error ? error : new Error(String(error)));
     return of(null);
   })
 ).subscribe();

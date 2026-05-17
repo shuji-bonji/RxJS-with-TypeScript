@@ -153,16 +153,16 @@ race(fast$, slow$).subscribe(console.log);
 
 ```ts
 import { fromEvent, timer } from 'rxjs';
-import { raceWith, map, mapTo, take } from 'rxjs';
+import { raceWith, map, take } from 'rxjs';
 
 // User click vs auto-advance competition
 const userClick$ = fromEvent(document, 'click').pipe(
   take(1),
-  mapTo('User clicked')
+  map(() => 'User clicked')
 );
 
 const autoAdvance$ = timer(5000).pipe(
-  mapTo('Auto-advanced')
+  map(() => 'Auto-advanced')
 );
 
 // ✅ Pipeable Operator version - add processing to main stream
@@ -249,7 +249,7 @@ import { of } from 'rxjs';
 timer(1000).pipe(
   raceWith(
     throwError(() => new Error('Error occurred')).pipe(
-      catchError(err => of('Error recovered'))
+      catchError((err: unknown) => of('Error recovered'))
     )
   )
 ).subscribe({

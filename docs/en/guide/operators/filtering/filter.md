@@ -76,6 +76,9 @@ input$.subscribe(value => {
 // If non-numeric characters are entered, the event is filtered out
 ```
 
+> [!WARNING] Note for Production Code
+> The above sample omits unsubscribing from `fromEvent` for simplicity. In production code, please explicitly manage the lifecycle using `takeUntil(destroy$)`, `take(N)`, or `Subscription.unsubscribe()`. Details: [Overcoming Difficulties: Lifecycle Management](/en/guide/overcoming-difficulties/lifecycle-management.md)
+
 ## 🔍 Difference from buffer
 
 | Operator | Behavior | Output |

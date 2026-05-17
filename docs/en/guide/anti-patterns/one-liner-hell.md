@@ -89,6 +89,9 @@ const subscription = processed$.subscribe({
 | **Shallow nesting** | Processing in subscribe is simple |
 | **Reusable** | Pipeline processing can be extracted as functions |
 
+> [!WARNING] Note for Production Code
+> The sample code above omits the `fromEvent` unsubscription to simplify the explanation. In production code, please explicitly manage the lifecycle using `takeUntil(destroy$)`, `take(N)`, or `Subscription.unsubscribe()`. Details: [Overcoming Difficulties: Lifecycle Management](/en/guide/overcoming-difficulties/lifecycle-management.md)
+
 
 ## Variation: Function separation (modularization)
 
@@ -212,7 +215,7 @@ const loadItems = () =>
     throttleTime(500),
     switchMap(() => ajax.getJSON<ApiRes>('/api/items')),
     map((res: ApiRes) => ({ items: res.items, error: null as string | null })),
-    catchError(err => of({ items: [] as string[], error: String(err?.message ?? err) }))
+    catchError((err: unknown) => of({ items: [] as string[], error: err instanceof Error ? err.message : String(err) }))
   );
 
 const result$ = clicks$.pipe(loadItems());

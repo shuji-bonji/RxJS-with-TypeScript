@@ -170,6 +170,9 @@ fromEvent(submitButton, 'click').subscribe(() => {
 
 ```
 
+> [!WARNING] Note for Production Code
+> The sample above omits unsubscribing from `fromEvent` to simplify the explanation. In production code, please explicitly manage the lifecycle using `takeUntil(destroy$)`, `take(N)`, or `Subscription.unsubscribe()`. Details: [Overcoming Difficulties: Lifecycle Management](/en/guide/overcoming-difficulties/lifecycle-management.md)
+
 ## Concurrent Requests and Loading State Management
 
 Here is an example of using `forkJoin` to process multiple API requests in parallel and summarize the results.
@@ -417,7 +420,7 @@ function searchApi(term: string) {
     // Random delay between 2-5 seconds
     delay(2000 + Math.random() * 3000),
     // Error handling
-    catchError((err) => {
+    catchError((err: unknown) => {
       console.error('Search error:', err);
       return EMPTY;
     })

@@ -692,6 +692,13 @@ function getDistance(touch1: Touch, touch2: Touch): number {
 }
 ```
 
+> [!NOTE] Key Considerations for Implementing Pinch-to-Zoom
+> - Detect two-finger touch with `touches.length === 2`
+> - Record initial distance on `touchstart`
+> - Calculate current distance on `touchmove` and update scale
+> - Calculate diff with previous value using `pairwise()`
+> - Limit scale range to improve usability
+
 ## Event Cleanup
 
 ### Problem: Prevent Memory Leaks

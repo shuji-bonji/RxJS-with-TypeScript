@@ -27,6 +27,9 @@ fromEvent(document, 'click')
 
 [🌐 RxJS Official Documentation - `throttleTime`](https://rxjs.dev/api/operators/throttleTime)
 
+> [!WARNING] Note for Production Code
+> The above sample omits unsubscribing from `fromEvent` for simplicity. In production code, please explicitly manage the lifecycle using `takeUntil(destroy$)`, `take(N)`, or `Subscription.unsubscribe()`. Details: [Overcoming Difficulties: Lifecycle Management](/en/guide/overcoming-difficulties/lifecycle-management.md)
+
 
 ## 💡 Typical Usage Patterns
 

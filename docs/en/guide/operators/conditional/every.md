@@ -221,3 +221,6 @@ form.addEventListener('submit', (event) => {
   console.log('Submitted data:', formData);
 });
 ```
+
+> [!WARNING] Note for Production Code
+> The sample above omits unsubscribing from `fromEvent` to simplify the explanation. In production code, please explicitly manage the lifecycle using `takeUntil(destroy$)`, `take(N)`, or `Subscription.unsubscribe()`. Details: [Overcoming Difficulties: Lifecycle Management](/en/guide/overcoming-difficulties/lifecycle-management.md)

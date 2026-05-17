@@ -70,3 +70,6 @@ fromEvent(searchInput, 'input')
 
 - If the input text does not change, it will not be requested.
 - This can be used for efficient search processing and API communication optimization.
+
+> [!WARNING] Note for Production Code
+> The above sample omits unsubscribing from `fromEvent` for simplicity. In production code, please explicitly manage the lifecycle using `takeUntil(destroy$)`, `take(N)`, or `Subscription.unsubscribe()`. Details: [Overcoming Difficulties: Lifecycle Management](/en/guide/overcoming-difficulties/lifecycle-management.md)

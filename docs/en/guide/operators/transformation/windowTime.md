@@ -71,6 +71,8 @@ source$.pipe(
   take(2)
 ).subscribe(window$ => {
   console.log('Window (Observable):', window$);
+  // Nested subscribe: required pattern for window-family operators
+  // (necessary to consume inner Observables emitted by windowTime)
   window$.subscribe(value => {
     console.log('  Value:', value);
   });
@@ -310,6 +312,7 @@ Each window is an independent Observable and must be explicitly subscribed to.
 source$.pipe(
   windowTime(1000)
 ).subscribe(window$ => {
+  // Nested subscribe: required pattern for window-family operators
   // Values won't flow unless you subscribe to the window itself
   window$.subscribe(value => {
     console.log('Value:', value);

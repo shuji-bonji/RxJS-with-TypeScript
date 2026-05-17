@@ -222,6 +222,9 @@ input$.subscribe(async searchTerm => {
 - Easy integration of multiple asynchronous processes
 :::
 
+> [!WARNING] Note for Production Code
+> The sample code above omits the `fromEvent` unsubscription to simplify the explanation. In production code, please explicitly manage the lifecycle using `takeUntil(destroy$)`, `take(N)`, or `Subscription.unsubscribe()`. Details: [Overcoming Difficulties: Lifecycle Management](/en/guide/overcoming-difficulties/lifecycle-management.md)
+
 ## 2. Reactive Communication (communication layer)
 
 This layer enables **bidirectional data streaming** between client/server.
@@ -256,7 +259,7 @@ const socket$ = webSocket<{ type: string; data: any }>({
 socket$
   .pipe(
     retry({ count: 3, delay: 1000 }),  // Automatic reconnection
-    catchError(error => {
+    catchError((error: unknown) => {
       console.error('WebSocket error:', error);
       return of({ type: 'error', data: error });
     })
@@ -700,7 +703,7 @@ const autoSave$ = editorChange$.pipe(
       return res.json();
     });
   }),
-  catchError(error => {
+  catchError((error: unknown) => {
     statusDiv!.textContent = '❌ Failed to save';
     return of(null);
   })

@@ -120,3 +120,6 @@ fromEvent(input, 'input')
     resultBox.style.color = noResults ? 'red' : 'green';
   });
 ```
+
+> [!WARNING] Note for Production Code
+> The above sample omits unsubscribing from `fromEvent` for simplicity. In production code, please explicitly manage the lifecycle using `takeUntil(destroy$)`, `take(N)`, or `Subscription.unsubscribe()`. Details: [Overcoming Difficulties: Lifecycle Management](/en/guide/overcoming-difficulties/lifecycle-management.md)

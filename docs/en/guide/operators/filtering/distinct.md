@@ -209,6 +209,9 @@ fromEvent<KeyboardEvent>(tagInput, 'keydown').subscribe(event => {
 
 This code ensures that the same tag is added to the list only once, even if it is entered multiple times.
 
+> [!WARNING] Note for Production Code
+> The above sample omits unsubscribing from `fromEvent` for simplicity. In production code, please explicitly manage the lifecycle using `takeUntil(destroy$)`, `take(N)`, or `Subscription.unsubscribe()`. Details: [Overcoming Difficulties: Lifecycle Management](/en/guide/overcoming-difficulties/lifecycle-management.md)
+
 
 ## ⚠️ Note on Memory Usage
 

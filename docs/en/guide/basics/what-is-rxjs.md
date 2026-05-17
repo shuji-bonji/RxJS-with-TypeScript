@@ -29,6 +29,9 @@ fromEvent(document, 'click').subscribe(event => {
 });
 ```
 
+> [!WARNING] Note for Production Code
+> The sample code above omits the `fromEvent` unsubscription to simplify the explanation. In production code, please explicitly manage the lifecycle using `takeUntil(destroy$)`, `take(N)`, or `Subscription.unsubscribe()`. Details: [Overcoming Difficulties: Lifecycle Management](/en/guide/overcoming-difficulties/lifecycle-management.md)
+
 ## Basic Components of RxJS
 
 To master RxJS, it is important to understand the following core components.

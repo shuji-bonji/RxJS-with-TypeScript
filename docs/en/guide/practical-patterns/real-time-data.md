@@ -100,7 +100,7 @@ class CryptoPriceService {
           count: 5,
           delay: 1000
         }),
-        catchError(err => {
+        catchError((err: unknown) => {
           console.error('WebSocket error:', err);
           return EMPTY;
         })
@@ -237,7 +237,7 @@ WebSocket connections can be disconnected due to network failure or server resta
 Below is an example implementation of automatic reconnection using an exponential backoff strategy.
 
 ```typescript
-import { retryWhen, delay, tap, take } from 'rxjs';
+import { timer, retry } from 'rxjs';
 import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 
 class ReconnectingWebSocketService {
@@ -263,18 +263,16 @@ class ReconnectingWebSocketService {
         }
       });
 
-      // Auto-reconnect
+      // Auto-reconnect (RxJS 7.3+ recommended: retry({ count, delay }) form)
       this.socket$.pipe(
-        retryWhen(errors =>
-          errors.pipe(
-            tap(() => {
-              this.reconnectAttempts++;
-              console.log(`Reconnect attempt ${this.reconnectAttempts}/${this.maxReconnectAttempts}`);
-            }),
-            delay(this.getReconnectDelay()),
-            take(this.maxReconnectAttempts)
-          )
-        )
+        retry({
+          count: this.maxReconnectAttempts,
+          delay: (error, retryCount) => {
+            this.reconnectAttempts = retryCount;
+            console.log(`Reconnect attempt ${retryCount}/${this.maxReconnectAttempts}`);
+            return timer(this.getReconnectDelay());
+          }
+        })
       ).subscribe({
         next: message => console.log('Received:', message),
         error: err => console.error('Max reconnection attempts reached:', err)
@@ -760,7 +758,7 @@ function createPolling<T>(
     switchMap(() =>
       from(fetchFn()).pipe(
         retry(3), // Retry 3 times on error
-        catchError(err => {
+        catchError((err: unknown) => {
           console.error('Polling error:', err);
           throw err; // Re-throw error
         })
@@ -1425,7 +1423,7 @@ class HealthCheckWebSocket {
         // Wait for pong (with timeout)
         return this.socket$.pipe(
           timeout(this.timeoutMs),
-          catchError(err => {
+          catchError((err: unknown) => {
             console.error('Pong timeout - connection abnormal', err);
             throw err;
           })

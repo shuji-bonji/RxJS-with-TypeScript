@@ -48,7 +48,7 @@ import { of } from 'rxjs';
 // Observable does not execute until subscribed (Lazy)
 const observable$ = from(fetch('https://jsonplaceholder.typicode.com/posts/1')).pipe(
   switchMap(response => response.json()), // response.json() returns a Promise, so use switchMap
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error(error);
     return of(null);
   })
@@ -275,6 +275,9 @@ fromEvent(searchInput, 'input').pipe(
 
 This example is a typical case where RxJS shows its true value. It monitors user input, provides a 300ms wait time to reduce unnecessary requests, processes only when the value changes, and by making only the latest request valid (`switchMap`), it automatically discards the results of old requests.
 
+> [!WARNING] Note for Production Code
+> The sample code above omits the `fromEvent` unsubscription to simplify the explanation. In production code, please explicitly manage the lifecycle using `takeUntil(destroy$)`, `take(N)`, or `Subscription.unsubscribe()`. Details: [Overcoming Difficulties: Lifecycle Management](/en/guide/overcoming-difficulties/lifecycle-management.md)
+
 > [!IMPORTANT]
 > **Why it's difficult with Promise alone**
 > - Must manually implement debounce (continuous input control)
@@ -432,7 +435,7 @@ fromEvent(submitButton, 'click').pipe(
     // Convert Promise function to Observable
     return from(submitForm(formData));
   }),
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('Submission error:', error);
     return of({ success: false });
   })
@@ -493,7 +496,7 @@ fromEvent(searchInput, 'input').pipe(
     // Convert Promise function to Observable
     return from(searchAPI(query));
   }),
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error(error);
     return of({ items: [], total_count: 0 }); // Return empty result on error
   })

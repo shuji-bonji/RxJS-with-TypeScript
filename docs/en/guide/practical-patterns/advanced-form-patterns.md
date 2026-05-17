@@ -267,10 +267,11 @@ formData$.pipe(
     return allPatches;
   }),
   concatMap(patches => saveToServer(patches)), // Send with guaranteed order
-  catchError(error => {
+  catchError((error: unknown) => {
+    const message = error instanceof Error ? error.message : String(error);
     console.error('Auto-save error:', error);
-    updateStatus(`❌ Save failed: ${error.message}`, '#f44336');
-    return of({ success: false, message: error.message });
+    updateStatus(`❌ Save failed: ${message}`, '#f44336');
+    return of({ success: false, message });
   })
 ).subscribe(result => {
   if (result.success) {

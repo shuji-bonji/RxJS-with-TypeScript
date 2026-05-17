@@ -92,6 +92,9 @@ function validateEmail(email: string): ValidationResult {
 > - Prevent duplicate validation with `distinctUntilChanged()`
 > - Visual feedback of validation results (CSS classes)
 
+> [!WARNING] Note for Production Code
+> The above sample omits unsubscribing from `fromEvent` for the sake of simplicity. In production code, please explicitly manage the lifecycle using `takeUntil(destroy$)`, `take(N)`, or `Subscription.unsubscribe()`. Details: [Overcoming Difficulties: Lifecycle Management](/en/guide/overcoming-difficulties/lifecycle-management.md)
+
 ### Combining Multiple Validation Rules
 
 ```typescript
@@ -317,7 +320,7 @@ combineLatest([title$, content$]).pipe(
   switchMap(draft =>
     saveDraft(draft).pipe(
       map(savedDraft => ({ ...savedDraft, success: true })),
-      catchError(err => {
+      catchError((err: unknown) => {
         console.error('Save error:', err);
         return of({ ...draft, success: false });
       })
@@ -801,9 +804,10 @@ fromEvent(form, 'submit').pipe(
     };
 
     return submitForm(data).pipe(
-      catchError(err => {
+      catchError((err: unknown) => {
         console.error('Submit error:', err);
-        return of({ success: false, error: err.message });
+        const message = err instanceof Error ? err.message : String(err);
+        return of({ success: false, error: message });
       })
     );
   }),

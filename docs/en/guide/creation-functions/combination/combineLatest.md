@@ -82,6 +82,9 @@ combineLatest([name$, email$]).subscribe(([name, email]) => {
 - When you type in either field, the **latest two input states** are immediately displayed.
 - The `startWith('')` is used to get the combined result from the beginning.
 
+> [!WARNING] Note for Production Code
+> The sample code above omits the `fromEvent` unsubscription to simplify the explanation. In production code, please explicitly manage the lifecycle using `takeUntil(destroy$)`, `take(N)`, or `Subscription.unsubscribe()`. Details: [Overcoming Difficulties: Lifecycle Management](/en/guide/overcoming-difficulties/lifecycle-management.md)
+
 
 ## Related Operators
 
