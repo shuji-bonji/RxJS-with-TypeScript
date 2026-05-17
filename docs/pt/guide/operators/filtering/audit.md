@@ -31,6 +31,9 @@ clicks$.pipe(
 
 [🌐 Documentação Oficial RxJS - `audit`](https://rxjs.dev/api/operators/audit)
 
+> [!WARNING] Atenção em código de produção
+> O exemplo acima omite o cancelamento da inscrição de `fromEvent` para simplificar a explicação. Em código real, gerencie explicitamente o ciclo de vida com `takeUntil(destroy$)`, `take(N)`, ou `Subscription.unsubscribe()`. Detalhes: [Superar dificuldades: gerenciamento do ciclo de vida](/pt/guide/overcoming-difficulties/lifecycle-management.md)
+
 ## 💡 Padrões de Uso Típicos
 
 - **Amostragem em intervalos dinâmicos**: Ajustar período de acordo com a carga

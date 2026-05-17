@@ -251,7 +251,7 @@ import { take, shareReplay, tap } from 'rxjs';
 const source$ = interval(1000).pipe(
   take(5),
   tap(value => console.log(`Bron: ${value}`)),
-  shareReplay(2) // Buffer de laatste 2 waarden
+  shareReplay({ bufferSize: 2, refCount: true }) // Buffer de laatste 2 waarden
 );
 
 // Eerste abonnee
@@ -323,14 +323,14 @@ class UserService {
     console.log(`Gebruiker ID ${id} ophalen via API`);
     const request$ = ajax.getJSON(`https://jsonplaceholder.typicode.com/users/${id}`).pipe(
       tap(response => console.log('API Response:', response)),
-      catchError(error => {
+      catchError((error: unknown) => {
         console.error('API Error:', error);
         // Verwijder uit cache
         this.cache.delete(id);
         return throwError(() => new Error('Ophalen gebruiker mislukt'));
       }),
       // Deel met shareReplay (cache waarde ook na complete)
-      shareReplay(1)
+      shareReplay({ bufferSize: 1, refCount: true })
     );
 
     // Opslaan in cache

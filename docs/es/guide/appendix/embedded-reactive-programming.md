@@ -519,7 +519,7 @@ import { of } from 'rxjs';
 sensorStream$
   .pipe(
     retry({ count: 3, delay: 1000 }),
-    catchError(error => {
+    catchError((error: unknown) => {
       console.error('Error de sensor:', error);
       // Retornar valor predeterminado o manejo de respaldo
       return of({ value: 0, error: true });

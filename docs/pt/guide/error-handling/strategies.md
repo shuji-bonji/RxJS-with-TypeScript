@@ -19,8 +19,8 @@ const error$ = throwError(() => new Error('An error occurred')); // RxJS 7+, fun
 // Basic error handling
 error$
   .pipe(
-    catchError((error) => {
-      console.error('Error caught:', error.message);
+    catchError((error: unknown) => {
+      console.error('Error caught:', (error instanceof Error ? error.message : String(error)));
       return of('Fallback value after error');
     })
   )
@@ -49,8 +49,8 @@ import { catchError } from 'rxjs';
 const source$ = throwError(() => new Error('Data retrieval error'));
 
 source$.pipe(
-  catchError(error => {
-    console.error('Error occurred:', error.message);
+  catchError((error: unknown) => {
+    console.error('Error occurred:', (error instanceof Error ? error.message : String(error)));
     // Return alternate data
     return of({ isError: true, data: [], message: 'Displaying default data' });
   })
@@ -126,8 +126,8 @@ function fetchWithRetry() {
       )
     ),
     // Final fallback
-    catchError((error) => {
-      console.error('All retries failed:', error.message);
+    catchError((error: unknown) => {
+      console.error('All retries failed:', (error instanceof Error ? error.message : String(error)));
       return of({
         error: true,
         message: 'Connection failed. Please try again later.',
@@ -169,8 +169,8 @@ let isLoading = true;
 
 throwError(() => new Error('Processing error'))
   .pipe(
-    catchError((error) => {
-      console.error('Error handling:', error.message);
+    catchError((error: unknown) => {
+      console.error('Error handling:', (error instanceof Error ? error.message : String(error)));
       return throwError(() => error); // Re-throw error
     }),
     finalize(() => {
@@ -212,9 +212,9 @@ function fetchData(shouldFail = false) {
       // Processing on success
       updateUI(data);
     }),
-    catchError((error) => {
+    catchError((error: unknown) => {
       // Update UI on error
-      showErrorMessage(error.message);
+      showErrorMessage((error instanceof Error ? error.message : String(error)));
       // Return empty data or default value
       return of({ name: 'Default', value: 0 });
     }),
@@ -270,20 +270,20 @@ function getComments() {
 // Retrieve all data and allow partial errors
 forkJoin({
   user: getUser().pipe(
-    catchError((error) => {
-      console.error('User retrieval error:', error.message);
+    catchError((error: unknown) => {
+      console.error('User retrieval error:', (error instanceof Error ? error.message : String(error)));
       return of(null); // Return null on error
     })
   ),
   posts: getPosts().pipe(
-    catchError((error) => {
-      console.error('Post retrieval error:', error.message);
+    catchError((error: unknown) => {
+      console.error('Post retrieval error:', (error instanceof Error ? error.message : String(error)));
       return of([]); // Return empty array on error
     })
   ),
   comments: getComments().pipe(
-    catchError((error) => {
-      console.error('Comment retrieval error:', error.message);
+    catchError((error: unknown) => {
+      console.error('Comment retrieval error:', (error instanceof Error ? error.message : String(error)));
       return of([]); // Return empty array on error
     })
   ),

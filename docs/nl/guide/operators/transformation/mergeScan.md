@@ -149,7 +149,7 @@ source$.pipe(
   mergeScan((acc, curr) => {
     return apiCall(curr).pipe(
       map(result => acc + result),
-      catchError(err => {
+      catchError((err: unknown) => {
         console.error('Fout opgetreden:', err);
         // Ga door met behoud van geaccumuleerde waarde
         return of(acc);

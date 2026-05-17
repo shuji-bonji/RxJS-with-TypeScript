@@ -273,7 +273,7 @@ interval(1000).pipe(
   take(2),
   combineLatestWith(
     throwError(() => new Error('Ocurrió un error')).pipe(
-      catchError(err => of('Error recuperado'))
+      catchError((err: unknown) => of('Error recuperado'))
     )
   )
 ).subscribe({

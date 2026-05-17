@@ -146,7 +146,7 @@ userData$
 
 ```ts
 import { fromEvent, of } from 'rxjs';
-import { concatWith, take, mapTo } from 'rxjs';
+import { concatWith, take, mapTo } from 'rxjs'; } from 'rxjs';
 
 // Maak knop en output-gebied
 const button = document.createElement('button');
@@ -163,7 +163,7 @@ const clicks$ = fromEvent(button, 'click');
 clicks$
   .pipe(
     take(3),                          // neem eerste 3 kliks
-    mapTo('Geklikt'),
+    map(() => 'Geklikt'),
     concatWith(of('Voltooid'))        // voeg bericht toe na voltooiing
   )
   .subscribe(message => {
@@ -178,7 +178,7 @@ import { concat } from 'rxjs';
 concat(
   clicks$.pipe(
     take(3),
-    mapTo('Geklikt')
+    map(() => 'Geklikt')
   ),
   of('Voltooid')
 ).subscribe(console.log);
@@ -217,7 +217,7 @@ import { concatWith, catchError } from 'rxjs';
 
 throwError(() => new Error('Fout opgetreden'))
   .pipe(
-    catchError(err => of('Fout hersteld')),
+    catchError((err: unknown) => of('Fout hersteld')),
     concatWith(of('Volgende verwerking'))
   )
   .subscribe(console.log);

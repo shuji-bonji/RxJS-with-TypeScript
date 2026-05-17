@@ -216,7 +216,7 @@ interface User {
 const fetchUser$ = ajax.getJSON<User>('https://api.example.com/users/1').pipe(
   timeout(5000), // Timeout en 5 segundos
   retry(2), // Reintentar dos veces en caso de fallo
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('Error al obtener usuario:', error);
     // Retornar valor predeterminado
     return of({
@@ -539,7 +539,7 @@ const api$ = ajax({
     'Authorization': `Bearer ${getAccessToken()}`
   }
 }).pipe(
-  catchError(error => {
+  catchError((error: unknown) => {
     if (error.status === 401) {
       // Refrescar el token y reintentar
       return refreshToken().pipe(
@@ -598,7 +598,7 @@ const todos$ = ajax.getJSON('https://jsonplaceholder.typicode.com/todos/1');
 ```typescript
 // ✅ Buen ejemplo: Manejo de errores con catchError
 const api$ = ajax.getJSON('/api/data').pipe(
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('Error:', error);
     return of(defaultValue);
   })

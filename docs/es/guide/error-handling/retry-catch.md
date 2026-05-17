@@ -69,8 +69,8 @@ function simulateFlakyRequest(): Observable<string> {
 simulateFlakyRequest()
   .pipe(
     retry(3),
-    catchError((error) => {
-      console.log('Fallaron todos los reintentos:', error.message);
+    catchError((error: unknown) => {
+      console.log('Fallaron todos los reintentos:', (error instanceof Error ? error.message : String(error)));
       return of('Valor de fallback');
     })
   )
@@ -106,8 +106,8 @@ import { catchError } from 'rxjs';
 
 throwError(() => new Error('Error en la llamada de API')) // RxJS 7+, forma funcional recomendada
   .pipe(
-    catchError((error) => {
-      console.error('Ocurrió un error:', error.message);
+    catchError((error: unknown) => {
+      console.error('Ocurrió un error:', (error instanceof Error ? error.message : String(error)));
       return of('Valor predeterminado en caso de error');
     })
   )
@@ -132,8 +132,8 @@ import { catchError } from 'rxjs';
 
 throwError(() => new Error('Error original')) // RxJS 7+, forma funcional recomendada
   .pipe(
-    catchError((error) => {
-      console.error('Registrando error:', error.message);
+    catchError((error: unknown) => {
+      console.error('Registrando error:', (error instanceof Error ? error.message : String(error)));
       // Relanzar error
       return throwError(() => new Error('Error convertido'));
     })
@@ -166,8 +166,8 @@ function fetchData() {
     // Reintentar hasta 3 veces
     retry(3),
     // Si fallan todos los reintentos
-    catchError((error) => {
-      console.error('Fallaron todos los reintentos:', error.message);
+    catchError((error: unknown) => {
+      console.error('Fallaron todos los reintentos:', (error instanceof Error ? error.message : String(error)));
       // Retornar valor predeterminado
       return of({
         error: true,
@@ -229,8 +229,8 @@ function fetchWithRetry() {
       )
     ),
     // Fallback final
-    catchError((error) => {
-      console.error('Fallaron todos los reintentos:', error.message);
+    catchError((error: unknown) => {
+      console.error('Fallaron todos los reintentos:', (error instanceof Error ? error.message : String(error)));
       return of({
         error: true,
         message: 'Conexión fallida. Por favor, inténtelo de nuevo más tarde.',
@@ -279,9 +279,9 @@ throwError(() => new Error('Error temporal'))
       }
     }),
     retry(2),
-    catchError((error) => {
+    catchError((error: unknown) => {
       console.log(`Conteo final de intentos: ${attemptCount}`);
-      return of(`Error final: ${error.message}`);
+      return of(`Error final: ${(error instanceof Error ? error.message : String(error))}`);
     })
   )
   .subscribe({
@@ -330,9 +330,9 @@ throwError(() => new Error('Error temporal'))
         })
       )
     ),
-    catchError((error) => {
+    catchError((error: unknown) => {
       console.log(`\nResultado final: Fallaron todos los reintentos`);
-      return of(`Error final: ${error.message}`);
+      return of(`Error final: ${(error instanceof Error ? error.message : String(error))}`);
     })
   )
   .subscribe(result => console.log('Resultado:', result));
@@ -385,9 +385,9 @@ const retryableStream$ = new Observable(subscriber => {
 retryableStream$
   .pipe(
     retry(2),
-    catchError((error) => {
+    catchError((error: unknown) => {
       console.log(`[Completado] Falló después de un total de ${attemptCount} intentos`);
-      return of(`Error final: ${error.message}`);
+      return of(`Error final: ${(error instanceof Error ? error.message : String(error))}`);
     })
   )
   .subscribe({
@@ -442,7 +442,7 @@ function fetchWithRetryLogging(url: string, maxRetries = 3) {
         })
       )
     ),
-    catchError((error) => {
+    catchError((error: unknown) => {
       const totalTime = Date.now() - startTime;
       console.log(`\n❌ Fallo final (tiempo total: ${totalTime}ms)`);
       return of({ error: true, message: 'Falló la adquisición de datos' });
@@ -483,9 +483,9 @@ throwError(() => new Error('Error temporal'))
       delay: 1000, // Esperar 1 segundo antes del reintento (usa asyncScheduler internamente)
       resetOnSuccess: true
     }),
-    catchError((error) => {
+    catchError((error: unknown) => {
       console.log(`Fallo final (total de ${attemptCount} intentos)`);
-      return of(`Error final: ${error.message}`);
+      return of(`Error final: ${(error instanceof Error ? error.message : String(error))}`);
     })
   )
   .subscribe(result => console.log('Resultado:', result));
@@ -531,7 +531,7 @@ function fetchUserData(userId: string): Observable<any> {
     // Reintentar errores de red hasta 2 veces
     retry(2),
     // Manejo de errores
-    catchError((error) => {
+    catchError((error: unknown) => {
       if (error.status === 404) {
         return of({ error: true, message: 'Usuario no encontrado' });
       } else if (error.status >= 500) {

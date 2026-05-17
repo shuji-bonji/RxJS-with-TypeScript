@@ -256,7 +256,7 @@ const socket$ = webSocket<{ type: string; data: any }>({
 socket$
   .pipe(
     retry({ count: 3, delay: 1000 }),  // Automatische herverbinding
-    catchError(error => {
+    catchError((error: unknown) => {
       console.error('WebSocket fout:', error);
       return of({ type: 'error', data: error });
     })
@@ -700,7 +700,7 @@ const autoSave$ = editorChange$.pipe(
       return res.json();
     });
   }),
-  catchError(error => {
+  catchError((error: unknown) => {
     statusDiv!.textContent = '❌ Opslaan mislukt';
     return of(null);
   })

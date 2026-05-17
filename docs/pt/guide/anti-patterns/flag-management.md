@@ -157,7 +157,7 @@ class GoodComponent {
       )
     ),
     startWith('idle' as const),
-    shareReplay(1)
+    shareReplay({ bufferSize: 1, refCount: true })
   );
 
   // Derived states are also defined declaratively
@@ -387,11 +387,11 @@ class RefactoredComponent {
     });
 
     this.apiService.save().pipe(
-      catchError(error => {
+      catchError((error: unknown) => {
         this.apiState$.next({
           ...this.apiState$.value,
           saving: false,
-          error: error.message
+          error: (error instanceof Error ? error.message : String(error))
         });
         return EMPTY;
       })

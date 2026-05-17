@@ -335,7 +335,7 @@ class UserApiService {
         subject.next(user);
         subject.complete();
       }),
-      catchError(error => {
+      catchError((error: unknown) => {
         this.cache.delete(id);
         this.cacheExpiry.delete(id);
         subject.error(error);
@@ -692,7 +692,7 @@ class TaskQueue {
               result
             });
           }),
-          catchError(error => {
+          catchError((error: unknown) => {
             this.results$.next({
               taskId: task.id,
               success: false,

@@ -27,6 +27,9 @@ numbers$.pipe(
 
 [🌐 Documentación Oficial de RxJS - `distinctUntilChanged`](https://rxjs.dev/api/operators/distinctUntilChanged)
 
+> [!WARNING] Atención en código de producción
+> El ejemplo anterior omite la cancelación de suscripción de `fromEvent` para simplificar la explicación. En código real, gestione explícitamente el ciclo de vida con `takeUntil(destroy$)`, `take(N)`, o `Subscription.unsubscribe()`. Detalles: [Superar dificultades: gestión del ciclo de vida](/es/guide/overcoming-difficulties/lifecycle-management.md)
+
 
 ## 💡 Patrones de Uso Típicos
 

@@ -53,8 +53,8 @@ let isLoading = true;
 
 throwError(() => new Error('Data ophalen mislukt'))
   .pipe(
-    catchError((err) => {
-      console.error('Error afhandeling:', err.message);
+    catchError((err: unknown) => {
+      console.error('Error afhandeling:', (err instanceof Error ? err.message : String(err)));
       throw err; // Error opnieuw gooien
     }),
     finalize(() => {
@@ -207,7 +207,7 @@ function fetchData(id: string) {
 
   // API verzoek
   return ajax.getJSON(`https://jsonplaceholder.typicode.com/posts/${id}`).pipe(
-    catchError((error) => {
+    catchError((error: unknown) => {
       console.error('API error:', error);
       return of({ error: true, message: 'Data ophalen mislukt' });
     }),

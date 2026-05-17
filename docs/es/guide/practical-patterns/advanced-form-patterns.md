@@ -267,10 +267,10 @@ formData$.pipe(
     return allPatches;
   }),
   concatMap(patches => saveToServer(patches)), // Enviar con orden garantizado
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('Error de autoguardado:', error);
-    updateStatus(`❌ Fallo al guardar: ${error.message}`, '#f44336');
-    return of({ success: false, message: error.message });
+    updateStatus(`❌ Fallo al guardar: ${(error instanceof Error ? error.message : String(error))}`, '#f44336');
+    return of({ success: false, message: (error instanceof Error ? error.message : String(error)) });
   })
 ).subscribe(result => {
   if (result.success) {

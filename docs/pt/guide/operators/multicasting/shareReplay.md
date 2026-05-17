@@ -20,7 +20,7 @@ import { take, shareReplay, tap } from 'rxjs';
 const source$ = interval(1000).pipe(
   take(5),
   tap(value => console.log(`Source: ${value}`)),
-  shareReplay(2) // Buffer latest 2 values
+  shareReplay({ bufferSize: 2, refCount: true }) // Buffer latest 2 values
 );
 
 // First subscriber
@@ -127,7 +127,7 @@ import { take, shareReplay, tap } from 'rxjs';
 const source$ = interval(1000).pipe(
   take(3),
   tap(value => console.log(`Source: ${value}`)),
-  shareReplay(2) // Buffer latest 2 values
+  shareReplay({ bufferSize: 2, refCount: true }) // Buffer latest 2 values
 );
 
 source$.subscribe(value => console.log(`Observer 1: ${value}`));
@@ -172,7 +172,7 @@ class UserService {
   // Cache user information
   private userCache$ = ajax.getJSON<User>('https://jsonplaceholder.typicode.com/users/1').pipe(
     tap(() => console.log('API request executed')),
-    shareReplay(1) // Permanently cache latest 1 value
+    shareReplay({ bufferSize: 1, refCount: true }) // Permanently cache latest 1 value
   );
 
   getUser(): Observable<User> {
@@ -216,7 +216,7 @@ const appConfig$ = of({
 }).pipe(
   delay(1000), // Simulate loading
   tap(() => console.log('Settings loaded')),
-  shareReplay(1)
+  shareReplay({ bufferSize: 1, refCount: true })
 );
 
 // Use settings in multiple services
@@ -283,7 +283,7 @@ const infiniteStream$ = interval(1000).pipe(
 ```typescript
 // ✅ Limit buffer size
 const safeStream$ = interval(1000).pipe(
-  shareReplay(1) // Keep only latest 1
+  shareReplay({ bufferSize: 1, refCount: true }) // Keep only latest 1
 );
 
 // ✅ Use refCount

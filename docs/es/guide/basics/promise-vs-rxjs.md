@@ -48,7 +48,7 @@ import { of } from 'rxjs';
 // Observable no se ejecuta hasta que se suscribe (Lazy)
 const observable$ = from(fetch('https://jsonplaceholder.typicode.com/posts/1')).pipe(
   switchMap(response => response.json()), // response.json() devuelve una Promise, así que usa switchMap
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error(error);
     return of(null);
   })
@@ -432,7 +432,7 @@ fromEvent(submitButton, 'click').pipe(
     // Convertir función Promise a Observable
     return from(submitForm(formData));
   }),
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('Error de envío:', error);
     return of({ success: false });
   })
@@ -493,7 +493,7 @@ fromEvent(searchInput, 'input').pipe(
     // Convertir función Promise a Observable
     return from(searchAPI(query));
   }),
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error(error);
     return of({ items: [], total_count: 0 }); // Devolver resultado vacío en caso de error
   })

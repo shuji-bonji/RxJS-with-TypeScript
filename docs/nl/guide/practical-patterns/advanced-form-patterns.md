@@ -267,10 +267,10 @@ formData$.pipe(
     return allPatches;
   }),
   concatMap(patches => saveToServer(patches)), // Verzenden met gegarandeerde volgorde
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('Automatisch opslaan fout:', error);
-    updateStatus(`❌ Opslaan mislukt: ${error.message}`, '#f44336');
-    return of({ success: false, message: error.message });
+    updateStatus(`❌ Opslaan mislukt: ${(error instanceof Error ? error.message : String(error))}`, '#f44336');
+    return of({ success: false, message: (error instanceof Error ? error.message : String(error)) });
   })
 ).subscribe(result => {
   if (result.success) {

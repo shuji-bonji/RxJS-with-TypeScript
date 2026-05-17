@@ -251,7 +251,7 @@ import { take, shareReplay, tap } from 'rxjs';
 const source$ = interval(1000).pipe(
   take(5),
   tap(value => console.log(`Sorgente: ${value}`)),
-  shareReplay(2) // bufferizza gli ultimi due valori
+  shareReplay({ bufferSize: 2, refCount: true }) // bufferizza gli ultimi due valori
 );
 
 // Primo sottoscrittore
@@ -323,14 +323,14 @@ class UserService {
     console.log(`Recupero ID utente ${id} dall'API`);
     const request$ = ajax.getJSON(`https://jsonplaceholder.typicode.com/users/${id}`).pipe(
       tap(response => console.log('Risposta API:', response)),
-      catchError(error => {
+      catchError((error: unknown) => {
         console.error('Errore API:', error);
         // Rimuovi dalla cache
         this.cache.delete(id);
         return throwError(() => new Error('Recupero utente fallito'));
       }),
       // shareReplay per condividere (valore ancora in cache dopo il completamento)
-      shareReplay(1)
+      shareReplay({ bufferSize: 1, refCount: true })
     );
 
     // Memorizza nella cache

@@ -48,7 +48,7 @@ import { of } from 'rxjs';
 // Observable wordt pas uitgevoerd bij subscribe (Lazy)
 const observable$ = from(fetch('https://jsonplaceholder.typicode.com/posts/1')).pipe(
   switchMap(response => response.json()), // response.json() retourneert Promise dus we gebruiken switchMap
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error(error);
     return of(null);
   })
@@ -432,7 +432,7 @@ fromEvent(submitButton, 'click').pipe(
     // Promise-functie converteren naar Observable
     return from(submitForm(formData));
   }),
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('Verzendfout:', error);
     return of({ success: false });
   })
@@ -492,7 +492,7 @@ fromEvent(searchInput, 'input').pipe(
     // Promise-functie converteren naar Observable
     return from(searchAPI(query));
   }),
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error(error);
     return of({ items: [], total_count: 0 }); // Bij fout lege resultaten retourneren
   })

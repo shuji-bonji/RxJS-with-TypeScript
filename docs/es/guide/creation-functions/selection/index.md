@@ -35,11 +35,11 @@ Estas realizan operaciones en dirección opuesta o desde una perspectiva diferen
 
 ```typescript
 import { race, timer } from 'rxjs';
-import { mapTo } from 'rxjs';
+import { apTo } from 'rxjs'; } from 'rxjs';
 
 // Adoptar el más rápido de múltiples fuentes de datos
-const fast$ = timer(1000).pipe(mapTo('API Rápida'));
-const slow$ = timer(3000).pipe(mapTo('API Lenta'));
+const fast$ = timer(1000).pipe(map(() => 'API Rápida'));
+const slow$ = timer(3000).pipe(map(() => 'API Lenta'));
 
 race(fast$, slow$).subscribe(console.log);
 // Salida: 'API Rápida' (se emite después de 1 segundo, slow$ se cancela)
@@ -79,12 +79,12 @@ Usando operadores de multicast (`share()`, `shareReplay()`, etc.), puedes conver
 
 ```typescript
 import { race, timer } from 'rxjs';
-import { mapTo, share } from 'rxjs';
+import { apTo, share } from 'rxjs'; } from 'rxjs';
 
 // ❄️ Cold - Re-ejecuta la competencia por cada suscripción
 const coldRace$ = race(
-  timer(1000).pipe(mapTo('API Rápida')),
-  timer(3000).pipe(mapTo('API Lenta'))
+  timer(1000).pipe(map(() => 'API Rápida')),
+  timer(3000).pipe(map(() => 'API Lenta'))
 );
 
 coldRace$.subscribe(val => console.log('Suscriptor 1:', val));
@@ -93,8 +93,8 @@ coldRace$.subscribe(val => console.log('Suscriptor 2:', val));
 
 // 🔥 Hot - Comparte el resultado de la competencia entre suscriptores
 const hotRace$ = race(
-  timer(1000).pipe(mapTo('API Rápida')),
-  timer(3000).pipe(mapTo('API Lenta'))
+  timer(1000).pipe(map(() => 'API Rápida')),
+  timer(3000).pipe(map(() => 'API Lenta'))
 ).pipe(share());
 
 hotRace$.subscribe(val => console.log('Suscriptor 1:', val));

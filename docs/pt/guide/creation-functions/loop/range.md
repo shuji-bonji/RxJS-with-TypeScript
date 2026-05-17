@@ -269,7 +269,7 @@ function fetchWithRetry(maxRetries: number = 3) {
       map(attempt => {
         console.log(`Tentativa ${attempt + 1}/${maxRetries}`);
         return fetchData().pipe(
-          catchError(error => {
+          catchError((error: unknown) => {
             if (attempt === maxRetries - 1) {
               return throwError(() => new Error('Número máximo de tentativas atingido'));
             }
@@ -455,8 +455,8 @@ range(1, 10).pipe(
     }
     return n * 2;
   }),
-  catchError(error => {
-    console.error('Erro ocorreu:', error.message);
+  catchError((error: unknown) => {
+    console.error('Erro ocorreu:', (error instanceof Error ? error.message : String(error)));
     return of(-1); // Retornar valor padrão
   })
 ).subscribe(console.log);

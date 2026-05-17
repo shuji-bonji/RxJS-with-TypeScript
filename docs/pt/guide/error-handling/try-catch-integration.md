@@ -37,8 +37,8 @@ try {
 
 timer(1000).pipe(
   mergeMap(() => throwError(() => new Error('Asynchronous error'))),
-  catchError(error => {
-    console.error('Caught:', error.message); // ✅ Executed
+  catchError((error: unknown) => {
+    console.error('Caught:', (error instanceof Error ? error.message : String(error))); // ✅ Executed
     return of('Default value');
   })
 ).subscribe();
@@ -228,7 +228,7 @@ ajax.getJSON<ApiResponse>('https://api.example.com/data').pipe(
     }
   }),
   // Level 2: Handle asynchronous errors with catchError
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('API call error:', error);
     return of({ decoded: '', timestamp: Date.now() });
   }),
@@ -347,11 +347,11 @@ function validateAndFetchUser(userId: string): Observable<UserData> {
         throw new Error('Data validation error');
       }
     }),
-    catchError(error => {
+    catchError((error: unknown) => {
       // Handle asynchronous errors (HTTP errors, etc.)
       if (error.status) {
         const networkError = new NetworkError(
-          `HTTP ${error.status}: ${error.message}`,
+          `HTTP ${error.status}: ${(error instanceof Error ? error.message : String(error))}`,
           error.status
         );
         return throwError(() => networkError);
@@ -432,7 +432,7 @@ import { of, catchError } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 
 ajax.getJSON('https://api.example.com/data').pipe(
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('HTTPError:', error);
     return of(null);
   })
@@ -554,7 +554,7 @@ ajax.getJSON<{ data: string }>('https://api.example.com/data').pipe(
     }
   }),
   // Asynchronous errors → catchError
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('APIError:', error);
     return of({});
   }),
@@ -672,7 +672,7 @@ ajax.getJSON('https://api.example.com/data').pipe(
       throw error; // Propagate to catchError
     }
   }),
-  catchError(error => {
+  catchError((error: unknown) => {
     logError('API Request', error);
     return of(null);
   })

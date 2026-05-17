@@ -340,7 +340,7 @@ import { shareReplay, take } from 'rxjs';
 
 const request$ = interval(1000).pipe(
   take(3),
-  shareReplay(2)  // Almacenar en caché los últimos 2 valores
+  shareReplay({ bufferSize: 2, refCount: true })  // Almacenar en caché los últimos 2 valores
 );
 
 // Primera suscripción
@@ -398,11 +398,11 @@ class UserService {
     // Crear nueva solicitud y almacenar en caché
     console.log('Ejecutando nueva solicitud');
     this.cache$ = this.fetchUsersFromAPI().pipe(
-      catchError(err => {
+      catchError((err: unknown) => {
         this.cache$ = null;  // Limpiar caché en caso de error
         return throwError(() => err);
       }),
-      shareReplay(1)  // Almacenar en caché el último resultado
+      shareReplay({ bufferSize: 1, refCount: true })  // Almacenar en caché el último resultado
     );
 
     return this.cache$;
@@ -468,7 +468,7 @@ Componente 3: [{id: 1, name: 'Taro Yamada'}, {id: 2, name: 'Hanako Sato'}]
 ```
 
 **Puntos:**
-- Almacenar en caché la última respuesta con `shareReplay(1)`
+- Almacenar en caché la última respuesta con `shareReplay({ bufferSize: 1, refCount: true })`
 - Múltiples componentes comparten datos (solo una llamada de API)
 - Descartar caché apropiadamente en caso de error o limpiar
 

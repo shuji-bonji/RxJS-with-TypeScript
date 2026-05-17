@@ -175,7 +175,7 @@ function fetchStatus(): Promise<Status> {
 // Polling API ogni 5 secondi
 const polling$ = interval(5000).pipe(
   switchMap(() => from(fetchStatus())),
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('Errore API:', error);
     return of({ status: 'error', timestamp: Date.now() });
   })

@@ -51,8 +51,8 @@ class UserService {
     console.log('Uitvoeren van nieuw verzoek');
     this.users$ = this.fetchUsersFromAPI().pipe(
       tap(() => console.log('API-aanroep voltooid')),
-      shareReplay(1), // Cache de laatste 1 waarde
-      catchError(err => {
+      shareReplay({ bufferSize: 1, refCount: true }), // Cache de laatste 1 waarde
+      catchError((err: unknown) => {
         // Wis cache bij fout
         this.users$ = null;
         throw err;
@@ -108,7 +108,7 @@ import { shareReplay } from 'rxjs';
 
 // Basisgebruik
 source$.pipe(
-  shareReplay(1) // Cache de laatste 1 waarde
+  shareReplay({ bufferSize: 1, refCount: true }) // Cache de laatste 1 waarde
 );
 
 // Gedetailleerde configuratie
@@ -176,7 +176,7 @@ class TTLCacheService<T> {
         data,
         timestamp: Date.now()
       })),
-      shareReplay(1)
+      shareReplay({ bufferSize: 1, refCount: true })
     );
 
     return this.cache$.pipe(map(cached => cached.data));
@@ -290,7 +290,7 @@ class RefreshableCacheService<T> {
     ).pipe(
       switchMap(() => fetchFn()),
       tap(data => console.log('Gegevens ophalen voltooid:', data)),
-      shareReplay(1)
+      shareReplay({ bufferSize: 1, refCount: true })
     );
   }
 
@@ -386,7 +386,7 @@ class ConditionalCacheService {
       console.log('Gegevens ophalen:', options);
       return this.fetchData(options.userId);
     }),
-    shareReplay(1)
+    shareReplay({ bufferSize: 1, refCount: true })
   );
 
   getData(userId?: number): Observable<any> {
@@ -473,7 +473,7 @@ class LocalStorageCacheService {
         tap(data => {
           this.saveToStorage(options.key, data);
         }),
-        catchError(err => {
+        catchError((err: unknown) => {
           console.error('Ophalingsfout:', err);
           throw err;
         })
@@ -665,7 +665,7 @@ class OfflineFirstCacheService {
             tap(data => {
               this.saveToCache(cacheKey, data);
             }),
-            catchError(err => {
+            catchError((err: unknown) => {
               console.error('API-ophalingsfout - terugvallen op cache');
               return this.getFromCache<T>(cacheKey);
             })

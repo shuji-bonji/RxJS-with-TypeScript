@@ -103,7 +103,7 @@ console.log('\n=== Con shareReplay ===');
 computeCount = 0;
 const withShare$ = of(1, 2, 3).pipe(
   map(x => expensiveComputation(x)),
-  shareReplay(3)
+  shareReplay({ bufferSize: 3, refCount: true })
 );
 
 withShare$.subscribe(v => console.log('Subscription 1:', v));
@@ -283,9 +283,9 @@ import { catchError } from 'rxjs';
 function errorBoundary<T>(label: string) {
   return (source: Observable<T>) =>
     source.pipe(
-      catchError(error => {
+      catchError((error: unknown) => {
         console.error(`🔴 [${label}] Errore catturato:`, {
-          message: error.message,
+          message: (error instanceof Error ? error.message : String(error)),
           stack: error.stack,
           timestamp: new Date().toISOString()
         });

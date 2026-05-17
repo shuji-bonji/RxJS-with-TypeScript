@@ -1,5 +1,5 @@
 ---
-description: "Explica los criterios para elegir el operador apropiado entre m·s de 100 operadores de RxJS. Diagramas de flujo de selecciÛn por categorÌas, los 20 operadores m·s usados, uso diferenciado de switchMap vs mergeMap vs concatMap, tabla de correspondencia de operadores por propÛsito con ejemplos de cÛdigo TypeScript."
+description: "Explica los criterios para elegir el operador apropiado entre m√°s de 100 operadores de RxJS. Diagramas de flujo de selecci√≥n por categor√≠as, los 20 operadores m√°s usados, uso diferenciado de switchMap vs mergeMap vs concatMap, tabla de correspondencia de operadores por prop√≥sito con ejemplos de c√≥digo TypeScript."
 ---
 
 <style scoped>
@@ -16,82 +16,82 @@ description: "Explica los criterios para elegir el operador apropiado entre m·s 
   }
 }
 
-/* Aumentar el tamaÒo de fuente de la parte del tÌtulo */
+/* Aumentar el tama√±o de fuente de la parte del t√≠tulo */
 .comparison-cards .tip .custom-block-title {
   font-size: 1.1rem;
   font-weight: 600;
 }
 </style>
 
-# La confusiÛn de selecciÛn de operadores
+# La confusi√≥n de selecci√≥n de operadores
 
-RxJS tiene m·s de 100 tipos de operadores, y **dudar sobre cu·l usar** es una dificultad que todos experimentan. Esta p·gina proporciona criterios de selecciÛn pr·cticos y diagramas de flujo.
+RxJS tiene m√°s de 100 tipos de operadores, y **dudar sobre cu√°l usar** es una dificultad que todos experimentan. Esta p√°gina proporciona criterios de selecci√≥n pr√°cticos y diagramas de flujo.
 
-## Criterios para elegir entre m·s de 100 operadores
+## Criterios para elegir entre m√°s de 100 operadores
 
 ### Problema: Demasiadas opciones
 
 ```typescript
-// Quiero transformar un array... ømap? øscan? øreduce? øtoArray?
-// Quiero llamar m˙ltiples APIs... ømergeMap? øswitchMap? øconcatMap? øexhaustMap?
-// Quiero filtrar valores... øfilter? øtake? øfirst? ødistinctUntilChanged?
-// Quiero combinar m˙ltiples streams... ømerge? øcombineLatest? øzip? øforkJoin?
+// Quiero transformar un array... ¬ømap? ¬øscan? ¬øreduce? ¬øtoArray?
+// Quiero llamar m√∫ltiples APIs... ¬ømergeMap? ¬øswitchMap? ¬øconcatMap? ¬øexhaustMap?
+// Quiero filtrar valores... ¬øfilter? ¬øtake? ¬øfirst? ¬ødistinctUntilChanged?
+// Quiero combinar m√∫ltiples streams... ¬ømerge? ¬øcombineLatest? ¬øzip? ¬øforkJoin?
 ```
 
-### SoluciÛn: Acotar por categorÌa + propÛsito
+### Soluci√≥n: Acotar por categor√≠a + prop√≥sito
 
 ```mermaid
 graph LR
-    A[øQuÈ quieres hacer?] --> B{øTransformar datos?}
-    A --> C{øFiltrar?}
-    A --> D{øCombinar m˙ltiples streams?}
-    A --> E{øManejo de errores?}
+    A[¬øQu√© quieres hacer?] --> B{¬øTransformar datos?}
+    A --> C{¬øFiltrar?}
+    A --> D{¬øCombinar m√∫ltiples streams?}
+    A --> E{¬øManejo de errores?}
 
     B --> B1[Transformar valores: map]
     B --> B2[Procesamiento acumulativo: scan/reduce]
-    B --> B3[Procesamiento asÌncrono: *Map˚]
+    B --> B3[Procesamiento as√≠ncrono: *Map√ª]
 
-    C --> C1[CondiciÛn: filter]
-    C --> C2[LÌmite de cantidad: take/skip]
+    C --> C1[Condici√≥n: filter]
+    C --> C2[L√≠mite de cantidad: take/skip]
     C --> C3[Excluir duplicados: distinct*]
     C --> C4[Control de tiempo: debounce/throttle]
 
     D --> D1[Paralelo: merge]
-    D --> D2[Valores m·s recientes: combineLatest]
+    D --> D2[Valores m√°s recientes: combineLatest]
     D --> D3[Pares: zip]
-    D --> D4[Esperar finalizaciÛn completa: forkJoin]
+    D --> D4[Esperar finalizaci√≥n completa: forkJoin]
 
     E --> E1[Reintentar: retry]
     E --> E2[Valor alternativo: catchError]
 ```
 
-### Diagrama de flujo de selecciÛn m·s detallado
+### Diagrama de flujo de selecci√≥n m√°s detallado
 
-El siguiente diagrama de flujo muestra el procedimiento para elegir operadores seg˙n propÛsitos especÌficos.
+El siguiente diagrama de flujo muestra el procedimiento para elegir operadores seg√∫n prop√≥sitos espec√≠ficos.
 
 ```mermaid
 graph LR
-    A[øQuÈ quieres hacer?] --> B{øTransformar?}
-    A --> C{øFiltrar?}
-    A --> D{øCombinar?}
-    A --> E{øManejo de errores?}
+    A[¬øQu√© quieres hacer?] --> B{¬øTransformar?}
+    A --> C{¬øFiltrar?}
+    A --> D{¬øCombinar?}
+    A --> E{¬øManejo de errores?}
 
     B --> B1[map: transformar valores]
-    B --> B2[mergeMap: transformaciÛn asÌncrona<br/>ejecuciÛn paralela]
-    B --> B3[switchMap: transformaciÛn asÌncrona<br/>solo el m·s reciente]
-    B --> B4[concatMap: transformaciÛn asÌncrona<br/>garantÌa de orden]
+    B --> B2[mergeMap: transformaci√≥n as√≠ncrona<br/>ejecuci√≥n paralela]
+    B --> B3[switchMap: transformaci√≥n as√≠ncrona<br/>solo el m√°s reciente]
+    B --> B4[concatMap: transformaci√≥n as√≠ncrona<br/>garant√≠a de orden]
     B --> B5[scan: procesamiento acumulativo]
 
-    C --> C1[filter: filtrar por condiciÛn]
-    C --> C2[take: lÌmite de cantidad]
-    C --> C3[debounceTime: filtrar por retraso<br/>solo el ˙ltimo valor]
+    C --> C1[filter: filtrar por condici√≥n]
+    C --> C2[take: l√≠mite de cantidad]
+    C --> C3[debounceTime: filtrar por retraso<br/>solo el √∫ltimo valor]
     C --> C4[throttleTime: filtrar a intervalos regulares<br/>solo el primer valor]
     C --> C5[distinctUntilChanged: eliminar duplicados<br/>valores consecutivos iguales]
 
-    D --> D1[combineLatest: combinar todos<br/>los valores m·s recientes]
-    D --> D2[merge: unificar m˙ltiples<br/>orden de llegada]
+    D --> D1[combineLatest: combinar todos<br/>los valores m√°s recientes]
+    D --> D2[merge: unificar m√∫ltiples<br/>orden de llegada]
     D --> D3[zip: emparejar<br/>valores correspondientes]
-    D --> D4[forkJoin: despuÈs de finalizaciÛn completa<br/>combinar ˙ltimos valores]
+    D --> D4[forkJoin: despu√©s de finalizaci√≥n completa<br/>combinar √∫ltimos valores]
     D --> D5[withLatestFrom: al emitir lado principal<br/>combinar]
 
     E --> E1[catchError: manejar error<br/>valor alternativo]
@@ -107,21 +107,21 @@ graph LR
     style C4 fill:#ffe1f5
 ```
 
-## 1. Operadores de transformaciÛn (Transformation)
+## 1. Operadores de transformaci√≥n (Transformation)
 
-**øCu·ndo usar?** Cuando quieres cambiar la forma de los datos, llamar procesamiento asÌncrono
+**¬øCu√°ndo usar?** Cuando quieres cambiar la forma de los datos, llamar procesamiento as√≠ncrono
 
-| Operador | PropÛsito | Casos de uso comunes |
+| Operador | Prop√≥sito | Casos de uso comunes |
 |---|---|---|
-| **map** | TransformaciÛn 1:1 de valores | Obtener propiedades, c·lculos, conversiÛn de tipos |
+| **map** | Transformaci√≥n 1:1 de valores | Obtener propiedades, c√°lculos, conversi√≥n de tipos |
 | **scan** | Procesamiento acumulativo (fluye valores intermedios) | Contador, suma, historial |
-| **reduce** | Procesamiento acumulativo (solo valor final) | Suma de array, valor m·ximo |
-| **mergeMap** | EjecuciÛn paralela de procesamiento asÌncrono | Llamadas paralelas a m˙ltiples APIs |
-| **switchMap** | Cambiar procesamiento asÌncrono | API de b˙squeda (solo el m·s reciente) |
-| **concatMap** | EjecuciÛn secuencial de procesamiento asÌncrono | Procesamiento donde el orden es importante |
-| **exhaustMap** | Ignorar nuevo procesamiento durante ejecuciÛn | PrevenciÛn de clics m˙ltiples (botÛn enviar) |
+| **reduce** | Procesamiento acumulativo (solo valor final) | Suma de array, valor m√°ximo |
+| **mergeMap** | Ejecuci√≥n paralela de procesamiento as√≠ncrono | Llamadas paralelas a m√∫ltiples APIs |
+| **switchMap** | Cambiar procesamiento as√≠ncrono | API de b√∫squeda (solo el m√°s reciente) |
+| **concatMap** | Ejecuci√≥n secuencial de procesamiento as√≠ncrono | Procesamiento donde el orden es importante |
+| **exhaustMap** | Ignorar nuevo procesamiento durante ejecuci√≥n | Prevenci√≥n de clics m√∫ltiples (bot√≥n enviar) |
 
-### Ejemplo pr·ctico: SelecciÛn por caso de uso
+### Ejemplo pr√°ctico: Selecci√≥n por caso de uso
 
 #### Caso de uso 1: Obtener propiedad
 ```typescript
@@ -131,7 +131,7 @@ import { map } from 'rxjs';
 interface User { id: number; name: string; }
 
 of({ id: 1, name: 'Alice' }).pipe(
-  map(user => user.name) // TransformaciÛn 1:1 de valor í map
+  map(user => user.name) // Transformaci√≥n 1:1 de valor ¬í map
 ).subscribe(name => console.log(name)); // 'Alice'
 ```
 
@@ -143,11 +143,11 @@ import { scan } from 'rxjs';
 const button = document.querySelector('button')!;
 
 fromEvent(button, 'click').pipe(
-  scan(count => count + 1, 0) // Procesamiento acumulativo í scan
-).subscribe(count => console.log(`N˙mero de clics: ${count}`));
+  scan(count => count + 1, 0) // Procesamiento acumulativo ¬í scan
+).subscribe(count => console.log(`N√∫mero de clics: ${count}`));
 ```
 
-#### Caso de uso 3: Llamada a API de b˙squeda
+#### Caso de uso 3: Llamada a API de b√∫squeda
 ```typescript
 import { fromEvent } from 'rxjs';
 import { debounceTime, map, switchMap } from 'rxjs';
@@ -157,37 +157,37 @@ const searchInput = document.querySelector('input')!;
 fromEvent(searchInput, 'input').pipe(
   debounceTime(300),
   map(e => (e.target as HTMLInputElement).value),
-  switchMap(query => searchAPI(query)) // Solo el m·s reciente í switchMap
+  switchMap(query => searchAPI(query)) // Solo el m√°s reciente ¬í switchMap
 ).subscribe(results => console.log(results));
 ```
 
 ## 2. Operadores de filtrado (Filtering)
 
-### øCu·ndo usar?
+### ¬øCu√°ndo usar?
 Cuando quieres seleccionar valores, controlar el timing
 
-| Operador | PropÛsito | Casos de uso comunes |
+| Operador | Prop√≥sito | Casos de uso comunes |
 |---|---|---|
-| **filter** | Pasar solo valores que cumplen condiciÛn | Solo n˙meros pares, solo valores no nulos |
+| **filter** | Pasar solo valores que cumplen condici√≥n | Solo n√∫meros pares, solo valores no nulos |
 | **take** | Solo los primeros N | Obtener primeros 5 elementos |
 | **first** | Solo el primero | Obtener valor inicial |
 | **distinctUntilChanged** | Solo valores diferentes del anterior | Excluir duplicados |
-| **debounceTime** | Emitir despuÈs de tiempo transcurrido | Entrada de b˙squeda (despuÈs de completar entrada) |
+| **debounceTime** | Emitir despu√©s de tiempo transcurrido | Entrada de b√∫squeda (despu√©s de completar entrada) |
 | **throttleTime** | Reducir a intervalos regulares | Evento de scroll |
 
-### Ejemplo pr·ctico: SelecciÛn por caso de uso
+### Ejemplo pr√°ctico: Selecci√≥n por caso de uso
 
-#### Caso de uso 1: Obtener solo n˙meros pares
+#### Caso de uso 1: Obtener solo n√∫meros pares
 ```typescript
 import { of } from 'rxjs';
 import { filter } from 'rxjs';
 
 of(1, 2, 3, 4, 5).pipe(
-  filter(n => n % 2 === 0) // Solo valores que cumplen condiciÛn í filter
+  filter(n => n % 2 === 0) // Solo valores que cumplen condici√≥n ¬í filter
 ).subscribe(console.log); // 2, 4
 ```
 
-#### Caso de uso 2: OptimizaciÛn de entrada de b˙squeda
+#### Caso de uso 2: Optimizaci√≥n de entrada de b√∫squeda
 ```typescript
 import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs';
@@ -195,49 +195,49 @@ import { debounceTime, distinctUntilChanged, map } from 'rxjs';
 const input = document.querySelector('input')!;
 
 fromEvent(input, 'input').pipe(
-  debounceTime(300),              // Esperar finalizaciÛn de entrada í debounceTime
+  debounceTime(300),              // Esperar finalizaci√≥n de entrada ¬í debounceTime
   map(e => (e.target as HTMLInputElement).value),
-  distinctUntilChanged()          // Excluir duplicados í distinctUntilChanged
-).subscribe(query => console.log('B˙squeda:', query));
+  distinctUntilChanged()          // Excluir duplicados ¬í distinctUntilChanged
+).subscribe(query => console.log('B√∫squeda:', query));
 ```
 
-#### Caso de uso 3: ReducciÛn de eventos de scroll
+#### Caso de uso 3: Reducci√≥n de eventos de scroll
 ```typescript
 import { fromEvent } from 'rxjs';
 import { throttleTime } from 'rxjs';
 
 fromEvent(window, 'scroll').pipe(
-  throttleTime(200) // Solo una vez cada 200ms í throttleTime
-).subscribe(() => console.log('PosiciÛn de scroll:', window.scrollY));
+  throttleTime(200) // Solo una vez cada 200ms ¬í throttleTime
+).subscribe(() => console.log('Posici√≥n de scroll:', window.scrollY));
 ```
 
-## 3. Operadores de combinaciÛn (Combination)
+## 3. Operadores de combinaci√≥n (Combination)
 
-### øCu·ndo usar?
-Cuando quieres combinar m˙ltiples streams
+### ¬øCu√°ndo usar?
+Cuando quieres combinar m√∫ltiples streams
 
-| Operador | PropÛsito | Casos de uso comunes |
+| Operador | Prop√≥sito | Casos de uso comunes |
 |---|---|---|
-| **merge** | M˙ltiples streams en paralelo | Monitoreo de m˙ltiples eventos |
-| **combineLatest** | Combinar todos los valores m·s recientes | ValidaciÛn de formularios |
+| **merge** | M√∫ltiples streams en paralelo | Monitoreo de m√∫ltiples eventos |
+| **combineLatest** | Combinar todos los valores m√°s recientes | Validaci√≥n de formularios |
 | **zip** | Emparejar valores correspondientes | Relacionar resultados de 2 APIs |
-| **forkJoin** | Resultados en array despuÈs de finalizaciÛn completa | EjecuciÛn paralela de m˙ltiples APIs |
+| **forkJoin** | Resultados en array despu√©s de finalizaci√≥n completa | Ejecuci√≥n paralela de m√∫ltiples APIs |
 | **withLatestFrom** | Stream principal + valor auxiliar | Evento + estado actual |
 
-### Ejemplo pr·ctico: SelecciÛn por caso de uso
+### Ejemplo pr√°ctico: Selecci√≥n por caso de uso
 
-#### Caso de uso 1: Monitorear m˙ltiples eventos
+#### Caso de uso 1: Monitorear m√∫ltiples eventos
 ```typescript
 import { fromEvent, merge } from 'rxjs';
 
 const clicks$ = fromEvent(document, 'click');
 const keypresses$ = fromEvent(document, 'keypress');
 
-merge(clicks$, keypresses$).pipe() // Monitoreo paralelo í merge
-  .subscribe(() => console.log('OcurriÛ alg˙n evento'));
+merge(clicks$, keypresses$).pipe() // Monitoreo paralelo ¬í merge
+  .subscribe(() => console.log('Ocurri√≥ alg√∫n evento'));
 ```
 
-#### Caso de uso 2: ValidaciÛn de formularios
+#### Caso de uso 2: Validaci√≥n de formularios
 ```typescript
 import { combineLatest } from 'rxjs';
 import { map } from 'rxjs';
@@ -245,12 +245,12 @@ import { map } from 'rxjs';
 const email$ = getFormControl('email');
 const password$ = getFormControl('password');
 
-combineLatest([email$, password$]).pipe( // Todos los valores m·s recientes í combineLatest
+combineLatest([email$, password$]).pipe( // Todos los valores m√°s recientes ¬í combineLatest
   map(([email, password]) => email.length > 0 && password.length > 7)
-).subscribe(isValid => console.log('Formulario v·lido:', isValid));
+).subscribe(isValid => console.log('Formulario v√°lido:', isValid));
 ```
 
-#### Caso de uso 3: EjecuciÛn paralela de m˙ltiples APIs
+#### Caso de uso 3: Ejecuci√≥n paralela de m√∫ltiples APIs
 ```typescript
 import { forkJoin } from 'rxjs';
 
@@ -258,43 +258,43 @@ forkJoin({
   user: getUserAPI(),
   posts: getPostsAPI(),
   comments: getCommentsAPI()
-}).subscribe(({ user, posts, comments }) => { // Espera finalizaciÛn completa í forkJoin
-  console.log('ObtenciÛn completa de todos los datos', { user, posts, comments });
+}).subscribe(({ user, posts, comments }) => { // Espera finalizaci√≥n completa ¬í forkJoin
+  console.log('Obtenci√≥n completa de todos los datos', { user, posts, comments });
 });
 ```
 
-## Los 20 operadores m·s usados
+## Los 20 operadores m√°s usados
 
-Los siguientes son los operadores **m·s utilizados frecuentemente** en el trabajo. Primero domina estos 20.
+Los siguientes son los operadores **m√°s utilizados frecuentemente** en el trabajo. Primero domina estos 20.
 
 <div class="comparison-cards">
 
-::: tip >G M·s frecuentes (obligatorios)
+::: tip >G M√°s frecuentes (obligatorios)
 1. **map** - Transformar valores
-2. **filter** - Filtrar por condiciÛn
-3. **switchMap** - B˙squeda, etc., solo necesario el m·s reciente
-4. **tap** - DepuraciÛn, efectos secundarios
+2. **filter** - Filtrar por condici√≥n
+3. **switchMap** - B√∫squeda, etc., solo necesario el m√°s reciente
+4. **tap** - Depuraci√≥n, efectos secundarios
 5. **take** - Primeros N
 6. **first** - Primero 1
 7. **catchError** - Manejo de errores
-8. **takeUntil** - Cancelar suscripciÛn
+8. **takeUntil** - Cancelar suscripci√≥n
 :::
 
-::: tip >H Frecuentes (uso com˙n)
-9. **mergeMap** - Procesamiento asÌncrono paralelo
-10. **debounceTime** - Esperar finalizaciÛn de entrada
+::: tip >H Frecuentes (uso com√∫n)
+9. **mergeMap** - Procesamiento as√≠ncrono paralelo
+10. **debounceTime** - Esperar finalizaci√≥n de entrada
 11. **distinctUntilChanged** - Excluir duplicados
-12. **combineLatest** - Combinar m˙ltiples valores
+12. **combineLatest** - Combinar m√∫ltiples valores
 13. **startWith** - Establecer valor inicial
 14. **scan** - Procesamiento acumulativo
 15. **shareReplay** - Cachear resultados
 :::
 
-::: tip >I Uso com˙n (deberÌas conocer)
+::: tip >I Uso com√∫n (deber√≠as conocer)
 16. **concatMap** - Procesamiento secuencial
-17. **throttleTime** - ReducciÛn de eventos
+17. **throttleTime** - Reducci√≥n de eventos
 18. **withLatestFrom** - Obtener valor auxiliar
-19. **forkJoin** - Espera de m˙ltiples APIs
+19. **forkJoin** - Espera de m√∫ltiples APIs
 20. **retry** - Procesamiento de reintento
 :::
 
@@ -303,160 +303,160 @@ Los siguientes son los operadores **m·s utilizados frecuentemente** en el trabaj
 
 ## switchMap vs mergeMap vs concatMap vs exhaustMap
 
-Estos 4 son los operadores **m·s confundidos**. Entendamos claramente sus diferencias.
+Estos 4 son los operadores **m√°s confundidos**. Entendamos claramente sus diferencias.
 
 ### Tabla comparativa
 
-| Operador | MÈtodo de ejecuciÛn | Procesamiento anterior | Nuevo procesamiento | DÛnde usar |
+| Operador | M√©todo de ejecuci√≥n | Procesamiento anterior | Nuevo procesamiento | D√≥nde usar |
 |---|---|---|---|---|
-| **switchMap** | Cambiar | **Cancelar** | Iniciar inmediatamente | B˙squeda, autocompletar |
-| **mergeMap** | EjecuciÛn paralela | Continuar | Iniciar inmediatamente | Subida de archivos, an·lisis |
-| **concatMap** | EjecuciÛn secuencial | Esperar finalizaciÛn | **Iniciar despuÈs de esperar** | Procesamiento donde el orden es importante |
-| **exhaustMap** | Ignorar durante ejecuciÛn | Continuar | **Ignorar** | PrevenciÛn de clics m˙ltiples en botÛn |
+| **switchMap** | Cambiar | **Cancelar** | Iniciar inmediatamente | B√∫squeda, autocompletar |
+| **mergeMap** | Ejecuci√≥n paralela | Continuar | Iniciar inmediatamente | Subida de archivos, an√°lisis |
+| **concatMap** | Ejecuci√≥n secuencial | Esperar finalizaci√≥n | **Iniciar despu√©s de esperar** | Procesamiento donde el orden es importante |
+| **exhaustMap** | Ignorar durante ejecuci√≥n | Continuar | **Ignorar** | Prevenci√≥n de clics m√∫ltiples en bot√≥n |
 
-### ComparaciÛn con diagramas de m·rmol
+### Comparaci√≥n con diagramas de m√°rmol
 
 ```
 Exterior: ----A----B----C----|
 
-Interior: A í --1--2|
-      B í --3--4|
-      C í --5--6|
+Interior: A ¬í --1--2|
+      B ¬í --3--4|
+      C ¬í --5--6|
 
 switchMap:  ----1--3--5--6|  (A se cancela antes de 2, B se cancela antes de 4)
-mergeMap:   ----1-23-45-6|   (todo ejecuciÛn paralela)
-concatMap:  ----1--2--3--4--5--6|  (ejecuciÛn secuencial)
+mergeMap:   ----1-23-45-6|   (todo ejecuci√≥n paralela)
+concatMap:  ----1--2--3--4--5--6|  (ejecuci√≥n secuencial)
 exhaustMap: ----1--2|            (B, C se ignoran)
 ```
 
-### Ejemplo pr·ctico: Diferencia de los 4 en el mismo procesamiento
+### Ejemplo pr√°ctico: Diferencia de los 4 en el mismo procesamiento
 
-**SituaciÛn**: Llamar API (tarda 1 segundo) con cada clic del botÛn. Usuario hace clic cada 0.5 segundos.
+**Situaci√≥n**: Llamar API (tarda 1 segundo) con cada clic del bot√≥n. Usuario hace clic cada 0.5 segundos.
 
-#### switchMap - ”ptimo para b˙squeda
+#### switchMap - √ìptimo para b√∫squeda
 
 ```typescript
 import { fromEvent } from 'rxjs';
 import { switchMap } from 'rxjs';
 
 fromEvent(button, 'click').pipe(
-  switchMap(() => searchAPI()) // Solo ejecutar el m·s reciente, cancelar solicitudes antiguas
+  switchMap(() => searchAPI()) // Solo ejecutar el m√°s reciente, cancelar solicitudes antiguas
 ).subscribe(result => console.log(result));
 
-// 0.0 seg: Clic1 í Inicio API1
-// 0.5 seg: Clic2 í Cancelar API1, Inicio API2
-// 1.0 seg: Clic3 í Cancelar API2, Inicio API3
-// 2.0 seg: Completar API3 í Mostrar resultado (solo API3)
+// 0.0 seg: Clic1 ¬í Inicio API1
+// 0.5 seg: Clic2 ¬í Cancelar API1, Inicio API2
+// 1.0 seg: Clic3 ¬í Cancelar API2, Inicio API3
+// 2.0 seg: Completar API3 ¬í Mostrar resultado (solo API3)
 ```
 
-::: tip =° DÛnde usar
-- **B˙squeda/autocompletar**: Solo necesario el valor de entrada m·s reciente
-- **Cambio de pestaÒas**: Solo necesarios datos de la pestaÒa mostrada
-- **PaginaciÛn**: Solo mostrar la p·gina m·s reciente
+::: tip =¬° D√≥nde usar
+- **B√∫squeda/autocompletar**: Solo necesario el valor de entrada m√°s reciente
+- **Cambio de pesta√±as**: Solo necesarios datos de la pesta√±a mostrada
+- **Paginaci√≥n**: Solo mostrar la p√°gina m√°s reciente
 :::
 
-#### mergeMap - ”ptimo para procesamiento paralelo
+#### mergeMap - √ìptimo para procesamiento paralelo
 
 ```typescript
 import { fromEvent } from 'rxjs';
 import { mergeMap } from 'rxjs';
 
 fromEvent(button, 'click').pipe(
-  mergeMap(() => uploadFileAPI()) // Todo ejecuciÛn paralela
+  mergeMap(() => uploadFileAPI()) // Todo ejecuci√≥n paralela
 ).subscribe(result => console.log(result));
 
-// 0.0 seg: Clic1 í Inicio API1
-// 0.5 seg: Clic2 í Inicio API2 (API1 contin˙a)
-// 1.0 seg: Clic3 í Inicio API3 (API1, API2 contin˙an)
-// 1.0 seg: Completar API1 í Mostrar resultado
-// 1.5 seg: Completar API2 í Mostrar resultado
-// 2.0 seg: Completar API3 í Mostrar resultado
+// 0.0 seg: Clic1 ¬í Inicio API1
+// 0.5 seg: Clic2 ¬í Inicio API2 (API1 contin√∫a)
+// 1.0 seg: Clic3 ¬í Inicio API3 (API1, API2 contin√∫an)
+// 1.0 seg: Completar API1 ¬í Mostrar resultado
+// 1.5 seg: Completar API2 ¬í Mostrar resultado
+// 2.0 seg: Completar API3 ¬í Mostrar resultado
 ```
 
-::: tip =° DÛnde usar
-- **Subida de archivos**: Subir m˙ltiples archivos simult·neamente
-- **An·lisis/envÌo de logs**: Ejecutar procesamientos independientes en paralelo
-- **Sistema de notificaciones**: Procesar m˙ltiples notificaciones simult·neamente
+::: tip =¬° D√≥nde usar
+- **Subida de archivos**: Subir m√∫ltiples archivos simult√°neamente
+- **An√°lisis/env√≠o de logs**: Ejecutar procesamientos independientes en paralelo
+- **Sistema de notificaciones**: Procesar m√∫ltiples notificaciones simult√°neamente
 :::
 
-#### concatMap - ”ptimo para procesamiento donde el orden es importante
+#### concatMap - √ìptimo para procesamiento donde el orden es importante
 
 ```typescript
 import { fromEvent } from 'rxjs';
 import { concatMap } from 'rxjs';
 
 fromEvent(button, 'click').pipe(
-  concatMap(() => updateDatabaseAPI()) // EjecuciÛn secuencial (esperar finalizaciÛn anterior)
+  concatMap(() => updateDatabaseAPI()) // Ejecuci√≥n secuencial (esperar finalizaci√≥n anterior)
 ).subscribe(result => console.log(result));
 
-// 0.0 seg: Clic1 í Inicio API1
-// 0.5 seg: Clic2 í Esperar (aÒadir a cola)
-// 1.0 seg: Clic3 í Esperar (aÒadir a cola)
-// 1.0 seg: Completar API1 í Mostrar resultado, Inicio API2
-// 2.0 seg: Completar API2 í Mostrar resultado, Inicio API3
-// 3.0 seg: Completar API3 í Mostrar resultado
+// 0.0 seg: Clic1 ¬í Inicio API1
+// 0.5 seg: Clic2 ¬í Esperar (a√±adir a cola)
+// 1.0 seg: Clic3 ¬í Esperar (a√±adir a cola)
+// 1.0 seg: Completar API1 ¬í Mostrar resultado, Inicio API2
+// 2.0 seg: Completar API2 ¬í Mostrar resultado, Inicio API3
+// 3.0 seg: Completar API3 ¬í Mostrar resultado
 ```
 
-::: tip =° DÛnde usar
-- **ActualizaciÛn de base de datos**: Procesamiento de escritura donde el orden es importante
+::: tip =¬° D√≥nde usar
+- **Actualizaci√≥n de base de datos**: Procesamiento de escritura donde el orden es importante
 - **Transacciones**: Usar resultado del procesamiento anterior en el siguiente
 - **Animaciones**: Procesos que quieres ejecutar en orden
 :::
 
-#### exhaustMap - ”ptimo para prevenciÛn de clics m˙ltiples
+#### exhaustMap - √ìptimo para prevenci√≥n de clics m√∫ltiples
 
 ```typescript
 import { fromEvent } from 'rxjs';
 import { exhaustMap } from 'rxjs';
 
 fromEvent(button, 'click').pipe(
-  exhaustMap(() => submitFormAPI()) // Ignorar nuevas solicitudes durante ejecuciÛn
+  exhaustMap(() => submitFormAPI()) // Ignorar nuevas solicitudes durante ejecuci√≥n
 ).subscribe(result => console.log(result));
 
-// 0.0 seg: Clic1 í Inicio API1
-// 0.5 seg: Clic2 í Ignorar (API1 en ejecuciÛn)
-// 1.0 seg: Clic3 í Ignorar (API1 en ejecuciÛn)
-// 1.0 seg: Completar API1 í Mostrar resultado
-// 1.5 seg: Clic4 í Inicio API4 (anterior ya completado)
+// 0.0 seg: Clic1 ¬í Inicio API1
+// 0.5 seg: Clic2 ¬í Ignorar (API1 en ejecuci√≥n)
+// 1.0 seg: Clic3 ¬í Ignorar (API1 en ejecuci√≥n)
+// 1.0 seg: Completar API1 ¬í Mostrar resultado
+// 1.5 seg: Clic4 ¬í Inicio API4 (anterior ya completado)
 ```
 
-::: tip =° DÛnde usar
-- **BotÛn enviar**: PrevenciÛn de envÌo doble
-- **Procesamiento de login**: Prevenir errores por clics m˙ltiples
-- **Procesamiento de pago**: Prevenir ejecuciÛn duplicada
+::: tip =¬° D√≥nde usar
+- **Bot√≥n enviar**: Prevenci√≥n de env√≠o doble
+- **Procesamiento de login**: Prevenir errores por clics m√∫ltiples
+- **Procesamiento de pago**: Prevenir ejecuci√≥n duplicada
 :::
 
-### Diagrama de flujo de selecciÛn
+### Diagrama de flujo de selecci√≥n
 
 ```mermaid
 graph TD
-    A[Quiero ejecutar procesamiento asÌncrono] --> B{øSolo necesario el m·s reciente?}
-    B -->|SÌ| C[switchMap]
-    B -->|No| D{øEs importante el orden?}
-    D -->|SÌ| E[concatMap]
-    D -->|No| F{øSi est· en ejecuciÛn?}
+    A[Quiero ejecutar procesamiento as√≠ncrono] --> B{¬øSolo necesario el m√°s reciente?}
+    B -->|S√≠| C[switchMap]
+    B -->|No| D{¬øEs importante el orden?}
+    D -->|S√≠| E[concatMap]
+    D -->|No| F{¬øSi est√° en ejecuci√≥n?}
     F -->|Ignorar el nuevo| G[exhaustMap]
-    F -->|EjecuciÛn paralela| H[mergeMap]
+    F -->|Ejecuci√≥n paralela| H[mergeMap]
 
-    C --> C1[B˙squeda, cambio de pestaÒas]
-    E --> E1[ActualizaciÛn DB, transacciones]
-    G --> G1[BotÛn enviar, login]
-    H --> H1[Subida de archivos, an·lisis]
+    C --> C1[B√∫squeda, cambio de pesta√±as]
+    E --> E1[Actualizaci√≥n DB, transacciones]
+    G --> G1[Bot√≥n enviar, login]
+    H --> H1[Subida de archivos, an√°lisis]
 ```
 
-## Criterios de decisiÛn en la pr·ctica
+## Criterios de decisi√≥n en la pr√°ctica
 
-### Paso 1: Clarificar quÈ quieres lograr
+### Paso 1: Clarificar qu√© quieres lograr
 
 ```typescript
-// L Mal ejemplo: Usar mergeMap sin m·s
+// L Mal ejemplo: Usar mergeMap sin m√°s
 observable$.pipe(
   mergeMap(value => someAPI(value))
 );
 
-//  Buen ejemplo: Elegir despuÈs de clarificar el propÛsito
-// PropÛsito: Para la entrada de b˙squeda del usuario, quiero mostrar solo el resultado m·s reciente
-// í DeberÌa cancelar solicitudes antiguas í switchMap
+//  Buen ejemplo: Elegir despu√©s de clarificar el prop√≥sito
+// Prop√≥sito: Para la entrada de b√∫squeda del usuario, quiero mostrar solo el resultado m√°s reciente
+// ¬í Deber√≠a cancelar solicitudes antiguas ¬í switchMap
 searchInput$.pipe(
   switchMap(query => searchAPI(query))
 );
@@ -464,10 +464,10 @@ searchInput$.pipe(
 
 ### Paso 2: Considerar el rendimiento
 
-#### ElecciÛn de debounceTime vs throttleTime
+#### Elecci√≥n de debounceTime vs throttleTime
 
 ```typescript
-// Entrada de b˙squeda: Ejecutar despuÈs de que el usuario "complete" la entrada
+// Entrada de b√∫squeda: Ejecutar despu√©s de que el usuario "complete" la entrada
 searchInput$.pipe(
   debounceTime(300), // Ejecutar si no hay entrada durante 300ms
   switchMap(query => searchAPI(query))
@@ -491,9 +491,9 @@ searchInput$.pipe(
   switchMap(query =>
     searchAPI(query).pipe(
       retry(2),                          // Reintentar hasta 2 veces
-      catchError(err => {
-        console.error('Error de b˙squeda:', err);
-        return of([]);                   // Devolver array vacÌo
+      catchError((err: unknown) => {
+        console.error('Error de b√∫squeda:', err);
+        return of([]);                   // Devolver array vac√≠o
       })
     )
   )
@@ -524,72 +524,72 @@ class SearchComponent {
 }
 ```
 
-## Lista de verificaciÛn de comprensiÛn
+## Lista de verificaci√≥n de comprensi√≥n
 
 Verifica si puedes responder a las siguientes preguntas.
 
 ```markdown
-## ComprensiÛn b·sica
-- [ ] Puedo clasificar operadores por categorÌa (transformaciÛn, filtrado, combinaciÛn)
-- [ ] Puedo explicar m·s de 10 de los 20 operadores m·s usados
+## Comprensi√≥n b√°sica
+- [ ] Puedo clasificar operadores por categor√≠a (transformaci√≥n, filtrado, combinaci√≥n)
+- [ ] Puedo explicar m√°s de 10 de los 20 operadores m√°s usados
 - [ ] Puedo explicar las diferencias entre switchMap, mergeMap, concatMap, exhaustMap
 
-## SelecciÛn pr·ctica
-- [ ] Puedo elegir operadores adecuados para funciÛn de b˙squeda (switchMap + debounceTime)
-- [ ] Puedo elegir operadores adecuados para llamadas paralelas a m˙ltiples APIs (forkJoin or mergeMap)
-- [ ] Puedo elegir operadores adecuados para validaciÛn de formularios (combineLatest)
+## Selecci√≥n pr√°ctica
+- [ ] Puedo elegir operadores adecuados para funci√≥n de b√∫squeda (switchMap + debounceTime)
+- [ ] Puedo elegir operadores adecuados para llamadas paralelas a m√∫ltiples APIs (forkJoin or mergeMap)
+- [ ] Puedo elegir operadores adecuados para validaci√≥n de formularios (combineLatest)
 
 ## Rendimiento
 - [ ] Puedo diferenciar el uso de debounceTime y throttleTime
-- [ ] Conozco mÈtodos de optimizaciÛn para eventos de alta frecuencia
+- [ ] Conozco m√©todos de optimizaci√≥n para eventos de alta frecuencia
 - [ ] Puedo implementar patrones para prevenir fugas de memoria
 
 ## Manejo de errores
-- [ ] Puedo usar catchError y retry en combinaciÛn
+- [ ] Puedo usar catchError y retry en combinaci√≥n
 - [ ] Puedo implementar procesamiento de fallback en caso de error
 - [ ] Puedo dar feedback de errores al usuario
 ```
 
-## PrÛximos pasos
+## Pr√≥ximos pasos
 
-Una vez que entiendas la selecciÛn de operadores, aprende sobre **timing y orden**.
+Una vez que entiendas la selecci√≥n de operadores, aprende sobre **timing y orden**.
 
-í **ComprensiÛn de timing y orden** (en preparaciÛn) - Cu·ndo fluyen los valores, comprensiÛn de sincronÌa vs asincronÌa
+¬í **Comprensi√≥n de timing y orden** (en preparaci√≥n) - Cu√°ndo fluyen los valores, comprensi√≥n de sincron√≠a vs asincron√≠a
 
-## P·ginas relacionadas
+## P√°ginas relacionadas
 
-- **[Chapter 4: ComprensiÛn de operadores](/es/guide/operators/)** - Detalles de todos los operadores
-- **[Chapter 13: ColecciÛn de patrones pr·cticos](/es/guide/)** - Casos de uso reales (en preparaciÛn)
-- **[Chapter 10: Errores comunes y soluciones](/es/guide/anti-patterns/common-mistakes)** - Antipatrones de selecciÛn inadecuada de operadores
+- **[Chapter 4: Comprensi√≥n de operadores](/es/guide/operators/)** - Detalles de todos los operadores
+- **[Chapter 13: Colecci√≥n de patrones pr√°cticos](/es/guide/)** - Casos de uso reales (en preparaci√≥n)
+- **[Chapter 10: Errores comunes y soluciones](/es/guide/anti-patterns/common-mistakes)** - Antipatrones de selecci√≥n inadecuada de operadores
 
-## <Ø Ejercicios de pr·ctica
+## <¬Ø Ejercicios de pr√°ctica
 
 ### Problema 1: Seleccionar operador adecuado
 
-Elige el operador m·s Ûptimo para los siguientes escenarios.
+Elige el operador m√°s √≥ptimo para los siguientes escenarios.
 
-1. Usuario ingresa en caja de b˙squeda í Llamada a API
-2. Clic de botÛn para subir m˙ltiples archivos
-3. Determinar si todos los campos del formulario son v·lidos
-4. Prevenir clics m˙ltiples en botÛn enviar
+1. Usuario ingresa en caja de b√∫squeda ¬í Llamada a API
+2. Clic de bot√≥n para subir m√∫ltiples archivos
+3. Determinar si todos los campos del formulario son v√°lidos
+4. Prevenir clics m√∫ltiples en bot√≥n enviar
 
 <details>
 <summary>Ejemplo de respuesta</summary>
 
-**1. Caja de b˙squeda í Llamada a API**
+**1. Caja de b√∫squeda ¬í Llamada a API**
 ```typescript
 searchInput$.pipe(
-  debounceTime(300),      // Esperar finalizaciÛn de entrada
+  debounceTime(300),      // Esperar finalizaci√≥n de entrada
   distinctUntilChanged(), // Excluir duplicados
-  switchMap(query => searchAPI(query)) // Solo el m·s reciente
+  switchMap(query => searchAPI(query)) // Solo el m√°s reciente
 ).subscribe(results => displayResults(results));
 ```
-> [!NOTE]RazÛn
-> La b˙squeda solo necesita el resultado m·s reciente, por lo que `switchMap`. Espera finalizaciÛn de entrada con `debounceTime`.
+> [!NOTE]Raz√≥n
+> La b√∫squeda solo necesita el resultado m√°s reciente, por lo que `switchMap`. Espera finalizaci√≥n de entrada con `debounceTime`.
 
 ---
 
-**2. Subir m˙ltiples archivos**
+**2. Subir m√∫ltiples archivos**
 ```typescript
 fromEvent(uploadButton, 'click').pipe(
   mergeMap(() => {
@@ -598,8 +598,8 @@ fromEvent(uploadButton, 'click').pipe(
   })
 ).subscribe(results => console.log('Subida completa de todos los archivos', results));
 ```
-> [!NOTE]RazÛn
-> Para subir m˙ltiples archivos en paralelo, `forkJoin`. TambiÈn es posible `mergeMap` para procesamientos independientes.
+> [!NOTE]Raz√≥n
+> Para subir m√∫ltiples archivos en paralelo, `forkJoin`. Tambi√©n es posible `mergeMap` para procesamientos independientes.
 
 ---
 
@@ -616,25 +616,25 @@ combineLatest([
 ).subscribe(isValid => submitButton.disabled = !isValid);
 ```
 
-> [!NOTE]RazÛn
-> Para combinar los valores m·s recientes de todos los campos, `combineLatest`.
+> [!NOTE]Raz√≥n
+> Para combinar los valores m√°s recientes de todos los campos, `combineLatest`.
 
 ---
 
-**4. PrevenciÛn de clics m˙ltiples en botÛn enviar**
+**4. Prevenci√≥n de clics m√∫ltiples en bot√≥n enviar**
 ```typescript
 fromEvent(submitButton, 'click').pipe(
   exhaustMap(() => submitFormAPI())
-).subscribe(result => console.log('EnvÌo completado', result));
+).subscribe(result => console.log('Env√≠o completado', result));
 ```
-> [!NOTE]RazÛn
-> Para proteger el procesamiento en ejecuciÛn e ignorar nuevos clics, `exhaustMap`.
+> [!NOTE]Raz√≥n
+> Para proteger el procesamiento en ejecuci√≥n e ignorar nuevos clics, `exhaustMap`.
 
 </details>
 
-### Problema 2: ElecciÛn de switchMap y mergeMap
+### Problema 2: Elecci√≥n de switchMap y mergeMap
 
-El siguiente cÛdigo usa `mergeMap`, pero hay un problema. CorrÌgelo.
+El siguiente c√≥digo usa `mergeMap`, pero hay un problema. Corr√≠gelo.
 
 ```typescript
 searchInput$.pipe(
@@ -649,31 +649,31 @@ searchInput$.pipe(
 ```typescript
 searchInput$.pipe(
   debounceTime(300),
-  switchMap(query => searchAPI(query)) // mergeMap í switchMap
+  switchMap(query => searchAPI(query)) // mergeMap ¬í switchMap
 ).subscribe(results => displayResults(results));
 ```
 
 > [!IMPORTANT] Problema
-> - Con `mergeMap`, todas las solicitudes de b˙squeda se ejecutan en paralelo
-> - Si el usuario ingresa "a"í"ab"í"abc", se ejecutan las 3 solicitudes
-> - Solicitudes antiguas (resultado de "a") pueden regresar despuÈs y sobrescribir el resultado m·s reciente
+> - Con `mergeMap`, todas las solicitudes de b√∫squeda se ejecutan en paralelo
+> - Si el usuario ingresa "a"¬í"ab"¬í"abc", se ejecutan las 3 solicitudes
+> - Solicitudes antiguas (resultado de "a") pueden regresar despu√©s y sobrescribir el resultado m√°s reciente
 
-> [!NOTE] RazÛn de correcciÛn
-> - Usando `switchMap`, cuando comienza una nueva b˙squeda, se cancelan las solicitudes antiguas
-> - Siempre se muestra solo el resultado de b˙squeda m·s reciente
+> [!NOTE] Raz√≥n de correcci√≥n
+> - Usando `switchMap`, cuando comienza una nueva b√∫squeda, se cancelan las solicitudes antiguas
+> - Siempre se muestra solo el resultado de b√∫squeda m√°s reciente
 
 </details>
 
-### Problema 3: Escenario pr·ctico
+### Problema 3: Escenario pr√°ctico
 
-Escribe cÛdigo que cumpla los siguientes requisitos.
+Escribe c√≥digo que cumpla los siguientes requisitos.
 
 > [!NOTE] Puntos clave
-> - Usuario hace clic en botÛn
-> - Obtener en paralelo 3 APIs (informaciÛn de usuario, lista de posts, lista de comentarios)
-> - Mostrar datos cuando todo estÈ completo
-> - Si ocurre error, devolver datos vacÌos
-> - Cancelar suscripciÛn al destruir componente
+> - Usuario hace clic en bot√≥n
+> - Obtener en paralelo 3 APIs (informaci√≥n de usuario, lista de posts, lista de comentarios)
+> - Mostrar datos cuando todo est√© completo
+> - Si ocurre error, devolver datos vac√≠os
+> - Cancelar suscripci√≥n al destruir componente
 
 <details>
 <summary>Ejemplo de respuesta</summary>
@@ -703,7 +703,7 @@ class DataComponent {
       ),
       takeUntil(this.destroy$)
     ).subscribe(({ user, posts, comments }) => {
-      console.log('ObtenciÛn de datos completada', { user, posts, comments });
+      console.log('Obtenci√≥n de datos completada', { user, posts, comments });
     });
   }
 
@@ -719,9 +719,9 @@ class DataComponent {
 ```
 
 > [!NOTE] Puntos
-> - `forkJoin` ejecuta 3 APIs en paralelo y espera finalizaciÛn completa
+> - `forkJoin` ejecuta 3 APIs en paralelo y espera finalizaci√≥n completa
 > - Establecer valor de fallback en caso de error con `catchError` en cada API
-> - `switchMap` cambia a nueva solicitud con cada clic del botÛn
-> - CancelaciÛn autom·tica al destruir componente con `takeUntil`
+> - `switchMap` cambia a nueva solicitud con cada clic del bot√≥n
+> - Cancelaci√≥n autom√°tica al destruir componente con `takeUntil`
 
 </details>

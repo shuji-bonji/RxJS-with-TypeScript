@@ -488,12 +488,12 @@ interface ApiResponse {
 }
 
 ajax.getJSON<ApiResponse>('https://api.example.com/data').pipe(
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('API Fout:', error);
     // Informeer gebruiker
     showErrorToast('Ophalen van data is mislukt');
     // Retourneer alternatieve waarde met foutinformatie
-    return of({ data: null, error: error.message } as ApiResponse);
+    return of({ data: null, error: (error instanceof Error ? error.message : String(error)) } as ApiResponse);
   })
 ).subscribe((response) => {
   if (response.error) {

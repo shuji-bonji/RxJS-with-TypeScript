@@ -177,7 +177,7 @@ const list = document.getElementById('list') as HTMLElement;
 fromEvent(button, 'click').pipe(
   throttleTime(500),
   switchMap(() => ajax.getJSON<ApiRes>('/api/items')),
-  catchError(err => of({ items: [], error: err.message }))
+  catchError((err: unknown) => of({ items: [], error: err.message }))
 ).subscribe(res => {
   list.innerHTML = res.items.map(item => `<li>${item}</li>`).join('');
   if (res.error) alert(res.error);
@@ -212,7 +212,7 @@ const loadItems = () =>
     throttleTime(500),
     switchMap(() => ajax.getJSON<ApiRes>('/api/items')),
     map((res: ApiRes) => ({ items: res.items, error: null as string | null })),
-    catchError(err => of({ items: [] as string[], error: String(err?.message ?? err) }))
+    catchError((err: unknown) => of({ items: [] as string[], error: String(err?.message ?? err) }))
   );
 
 const result$ = clicks$.pipe(loadItems());

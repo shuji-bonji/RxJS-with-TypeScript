@@ -51,8 +51,8 @@ class UserService {
     console.log('Executing new request');
     this.users$ = this.fetchUsersFromAPI().pipe(
       tap(() => console.log('API call completed')),
-      shareReplay(1), // Cache the last 1 value
-      catchError(err => {
+      shareReplay({ bufferSize: 1, refCount: true }), // Cache the last 1 value
+      catchError((err: unknown) => {
         // Clear cache on error
         this.users$ = null;
         throw err;
@@ -108,7 +108,7 @@ import { shareReplay } from 'rxjs';
 
 // Basic usage
 source$.pipe(
-  shareReplay(1) // Cache the last 1 value
+  shareReplay({ bufferSize: 1, refCount: true }) // Cache the last 1 value
 );
 
 // Detailed configuration
@@ -176,7 +176,7 @@ class TTLCacheService<T> {
         data,
         timestamp: Date.now()
       })),
-      shareReplay(1)
+      shareReplay({ bufferSize: 1, refCount: true })
     );
 
     return this.cache$.pipe(map(cached => cached.data));
@@ -290,7 +290,7 @@ class RefreshableCacheService<T> {
     ).pipe(
       switchMap(() => fetchFn()),
       tap(data => console.log('Data fetch completed:', data)),
-      shareReplay(1)
+      shareReplay({ bufferSize: 1, refCount: true })
     );
   }
 
@@ -386,7 +386,7 @@ class ConditionalCacheService {
       console.log('Fetching data:', options);
       return this.fetchData(options.userId);
     }),
-    shareReplay(1)
+    shareReplay({ bufferSize: 1, refCount: true })
   );
 
   getData(userId?: number): Observable<any> {
@@ -473,7 +473,7 @@ class LocalStorageCacheService {
         tap(data => {
           this.saveToStorage(options.key, data);
         }),
-        catchError(err => {
+        catchError((err: unknown) => {
           console.error('Fetch error:', err);
           throw err;
         })
@@ -665,7 +665,7 @@ class OfflineFirstCacheService {
             tap(data => {
               this.saveToCache(cacheKey, data);
             }),
-            catchError(err => {
+            catchError((err: unknown) => {
               console.error('API fetch error - falling back to cache');
               return this.getFromCache<T>(cacheKey);
             })

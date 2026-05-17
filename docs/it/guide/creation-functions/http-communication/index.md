@@ -113,7 +113,7 @@ interface User {
 const fetchUser$ = ajax.getJSON<User>('https://api.example.com/users/1').pipe(
   timeout(5000), // Timeout di 5 secondi
   retry(2), // Riprova 2 volte in caso di fallimento
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('Errore recupero utente:', error);
     return of(null); // Restituisce null in caso di errore
   })

@@ -249,8 +249,8 @@ import { of } from 'rxjs';
 userService.getUser(id).pipe(
   filter(user => user !== null),
   throwIfEmpty(() => new Error('User not found')),
-  catchError(err => {
-    console.error('Error:', err.message);
+  catchError((err: unknown) => {
+    console.error('Error:', (err instanceof Error ? err.message : String(err)));
     return of(null);
   })
 ).subscribe(user => {

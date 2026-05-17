@@ -388,8 +388,8 @@ range(1, 10).pipe(
     }
     return n * 2;
   }),
-  catchError(error => {
-    console.error('Si è verificato un errore:', error.message);
+  catchError((error: unknown) => {
+    console.error('Si è verificato un errore:', (error instanceof Error ? error.message : String(error)));
     return of(-1); // Ritorna valore default
   })
 ).subscribe(console.log);

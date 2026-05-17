@@ -249,7 +249,7 @@ import { of } from 'rxjs';
 timer(1000).pipe(
   raceWith(
     throwError(() => new Error('Ocurrió un error')).pipe(
-      catchError(err => of('Error recuperado'))
+      catchError((err: unknown) => of('Error recuperado'))
     )
   )
 ).subscribe({

@@ -193,8 +193,8 @@ function fetchData(id: number) {
 }
 
 fetchData(-1).pipe(
-  catchError(err => {
-    console.error('Error:', err.message);
+  catchError((err: unknown) => {
+    console.error('Error:', (err instanceof Error ? err.message : String(err)));
     return of({ id: 0, data: 'datos predeterminados' }); // Valor predeterminado
   })
 ).subscribe(result => console.log(result));

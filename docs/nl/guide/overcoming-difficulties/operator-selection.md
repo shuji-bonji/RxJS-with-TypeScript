@@ -499,7 +499,7 @@ searchInput$.pipe(
   switchMap(query =>
     searchAPI(query).pipe(
       retry(2),                          // tot 2 keer opnieuw proberen
-      catchError(err => {
+      catchError((err: unknown) => {
         console.error('Zoekfout:', err);
         return of([]);                   // lege array retourneren
       })

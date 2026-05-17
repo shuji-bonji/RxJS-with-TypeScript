@@ -198,8 +198,8 @@ failingObservable$.pipe(
   // Reintentar 3 veces cuando ocurra un error
   retry(3),
   // Si aún ocurre un error, cambiar a Observable alternativo
-  catchError(error => {
-    console.error('Error capturado:', error.message);
+  catchError((error: unknown) => {
+    console.error('Error capturado:', (error instanceof Error ? error.message : String(error)));
     return of('Valor alternativo después del error');
   })
 ).subscribe({

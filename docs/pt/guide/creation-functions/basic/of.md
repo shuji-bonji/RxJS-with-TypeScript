@@ -193,8 +193,8 @@ function fetchData(id: number) {
 }
 
 fetchData(-1).pipe(
-  catchError(err => {
-    console.error('Erro:', err.message);
+  catchError((err: unknown) => {
+    console.error('Erro:', (err instanceof Error ? err.message : String(err)));
     return of({ id: 0, data: 'dados padrão' }); // Valor padrão
   })
 ).subscribe(result => console.log(result));

@@ -19,8 +19,8 @@ const error$ = throwError(() => new Error('Error opgetreden')); // RxJS 7 en lat
 // Basis error handling
 error$
   .pipe(
-    catchError((error) => {
-      console.error('Error opgevangen:', error.message);
+    catchError((error: unknown) => {
+      console.error('Error opgevangen:', (error instanceof Error ? error.message : String(error)));
       return of('Fallback waarde na error');
     })
   )
@@ -49,8 +49,8 @@ import { catchError } from 'rxjs';
 const source$ = throwError(() => new Error('Data ophalen error'));
 
 source$.pipe(
-  catchError(error => {
-    console.error('Error opgetreden:', error.message);
+  catchError((error: unknown) => {
+    console.error('Error opgetreden:', (error instanceof Error ? error.message : String(error)));
     // Alternatieve data retourneren
     return of({ isError: true, data: [], message: 'Standaarddata wordt weergegeven' });
   })
@@ -126,8 +126,8 @@ function fetchWithRetry() {
       )
     ),
     // Definitieve fallback
-    catchError((error) => {
-      console.error('Alle retry pogingen mislukt:', error.message);
+    catchError((error: unknown) => {
+      console.error('Alle retry pogingen mislukt:', (error instanceof Error ? error.message : String(error)));
       return of({
         error: true,
         message: 'Verbinding mislukt. Probeer later opnieuw.',
@@ -169,8 +169,8 @@ let isLoading = true;
 
 throwError(() => new Error('Verwerkingsfout'))
   .pipe(
-    catchError((error) => {
-      console.error('Error verwerking:', error.message);
+    catchError((error: unknown) => {
+      console.error('Error verwerking:', (error instanceof Error ? error.message : String(error)));
       return throwError(() => error); // Error opnieuw gooien
     }),
     finalize(() => {
@@ -212,9 +212,9 @@ function fetchData(shouldFail = false) {
       // Verwerking bij succes
       updateUI(data);
     }),
-    catchError((error) => {
+    catchError((error: unknown) => {
       // UI update bij error
-      showErrorMessage(error.message);
+      showErrorMessage((error instanceof Error ? error.message : String(error)));
       // Lege data of standaardwaarde retourneren
       return of({ name: 'Standaard', value: 0 });
     }),
@@ -270,20 +270,20 @@ function getComments() {
 // Alle data ophalen en gedeeltelijke errors toestaan
 forkJoin({
   user: getUser().pipe(
-    catchError((error) => {
-      console.error('Gebruiker ophalen error:', error.message);
+    catchError((error: unknown) => {
+      console.error('Gebruiker ophalen error:', (error instanceof Error ? error.message : String(error)));
       return of(null); // Retourneer null bij error
     })
   ),
   posts: getPosts().pipe(
-    catchError((error) => {
-      console.error('Posts ophalen error:', error.message);
+    catchError((error: unknown) => {
+      console.error('Posts ophalen error:', (error instanceof Error ? error.message : String(error)));
       return of([]); // Retourneer lege array bij error
     })
   ),
   comments: getComments().pipe(
-    catchError((error) => {
-      console.error('Comments ophalen error:', error.message);
+    catchError((error: unknown) => {
+      console.error('Comments ophalen error:', (error instanceof Error ? error.message : String(error)));
       return of([]); // Retourneer lege array bij error
     })
   ),

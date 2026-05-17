@@ -342,7 +342,7 @@ import { shareReplay, take } from 'rxjs';
 
 const request$ = interval(1000).pipe(
   take(3),
-  shareReplay(2)  // Cache degli ultimi 2 valori
+  shareReplay({ bufferSize: 2, refCount: true })  // Cache degli ultimi 2 valori
 );
 
 // Prima sottoscrizione
@@ -400,11 +400,11 @@ class UserService {
     // Crea una nuova richiesta e mettila in cache
     console.log('Esecuzione nuova richiesta');
     this.cache$ = this.fetchUsersFromAPI().pipe(
-      catchError(err => {
+      catchError((err: unknown) => {
         this.cache$ = null;  // Cancella la cache in caso di errore
         return throwError(() => err);
       }),
-      shareReplay(1)  // Cache dell'ultimo risultato
+      shareReplay({ bufferSize: 1, refCount: true })  // Cache dell'ultimo risultato
     );
 
     return this.cache$;
@@ -470,7 +470,7 @@ Componente 3: [{id: 1, name: 'Mario Rossi'}, {id: 2, name: 'Anna Bianchi'}]
 ```
 
 **Punti:**
-- Cache dell'ultima risposta con `shareReplay(1)`
+- Cache dell'ultima risposta con `shareReplay({ bufferSize: 1, refCount: true })`
 - Più componenti condividono i dati (solo una chiamata API)
 - La cache viene distrutta correttamente in caso di errore o quando viene cancellata
 

@@ -20,7 +20,7 @@ import { take, shareReplay, tap } from 'rxjs';
 const source$ = interval(1000).pipe(
   take(5),
   tap(value => console.log(`Sorgente: ${value}`)),
-  shareReplay(2) // Buffer degli ultimi 2 valori
+  shareReplay({ bufferSize: 2, refCount: true }) // Buffer degli ultimi 2 valori
 );
 
 // Primo subscriber
@@ -127,7 +127,7 @@ import { take, shareReplay, tap } from 'rxjs';
 const source$ = interval(1000).pipe(
   take(3),
   tap(value => console.log(`Sorgente: ${value}`)),
-  shareReplay(2) // Buffer degli ultimi 2 valori
+  shareReplay({ bufferSize: 2, refCount: true }) // Buffer degli ultimi 2 valori
 );
 
 source$.subscribe(value => console.log(`Observer 1: ${value}`));
@@ -172,7 +172,7 @@ class UserService {
   // Cache informazioni utente
   private userCache$ = ajax.getJSON<User>('https://jsonplaceholder.typicode.com/users/1').pipe(
     tap(() => console.log('Richiesta API eseguita')),
-    shareReplay(1) // Cache permanente dell'ultimo 1 valore
+    shareReplay({ bufferSize: 1, refCount: true }) // Cache permanente dell'ultimo 1 valore
   );
 
   getUser(): Observable<User> {
@@ -216,7 +216,7 @@ const appConfig$ = of({
 }).pipe(
   delay(1000), // Simula caricamento
   tap(() => console.log('Impostazioni caricate')),
-  shareReplay(1)
+  shareReplay({ bufferSize: 1, refCount: true })
 );
 
 // Usa impostazioni in più servizi
@@ -283,7 +283,7 @@ const infiniteStream$ = interval(1000).pipe(
 ```typescript
 // ✅ Limita dimensione buffer
 const safeStream$ = interval(1000).pipe(
-  shareReplay(1) // Mantieni solo l'ultimo 1
+  shareReplay({ bufferSize: 1, refCount: true }) // Mantieni solo l'ultimo 1
 );
 
 // ✅ Usa refCount

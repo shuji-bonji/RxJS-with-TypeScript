@@ -68,8 +68,8 @@ function simulateFlakyRequest(): Observable<string> {
 simulateFlakyRequest()
   .pipe(
     retry(3),
-    catchError((error) => {
-      console.log('Alle retry pogingen mislukt:', error.message);
+    catchError((error: unknown) => {
+      console.log('Alle retry pogingen mislukt:', (error instanceof Error ? error.message : String(error)));
       return of('Fallback waarde');
     })
   )
@@ -105,8 +105,8 @@ import { catchError } from 'rxjs';
 
 throwError(() => new Error('API aanroep error')) // RxJS 7 en later, functie vorm aanbevolen
   .pipe(
-    catchError((error) => {
-      console.error('Error opgetreden:', error.message);
+    catchError((error: unknown) => {
+      console.error('Error opgetreden:', (error instanceof Error ? error.message : String(error)));
       return of('Standaardwaarde bij error');
     })
   )
@@ -131,8 +131,8 @@ import { catchError } from 'rxjs';
 
 throwError(() => new Error('Oorspronkelijke error')) // RxJS 7 en later, functie vorm aanbevolen
   .pipe(
-    catchError((error) => {
-      console.error('Error loggen:', error.message);
+    catchError((error: unknown) => {
+      console.error('Error loggen:', (error instanceof Error ? error.message : String(error)));
       // Error opnieuw gooien
       return throwError(() => new Error('Getransformeerde error'));
     })
@@ -165,8 +165,8 @@ function fetchData() {
     // Maximaal 3 keer opnieuw proberen
     retry(3),
     // Als alle retry pogingen mislukken
-    catchError((error) => {
-      console.error('Alle retry pogingen mislukt:', error.message);
+    catchError((error: unknown) => {
+      console.error('Alle retry pogingen mislukt:', (error instanceof Error ? error.message : String(error)));
       // Standaardwaarde retourneren
       return of({
         error: true,
@@ -228,8 +228,8 @@ function fetchWithRetry() {
       )
     ),
     // Definitieve fallback
-    catchError((error) => {
-      console.error('Alle retry pogingen mislukt:', error.message);
+    catchError((error: unknown) => {
+      console.error('Alle retry pogingen mislukt:', (error instanceof Error ? error.message : String(error)));
       return of({
         error: true,
         message: 'Verbinding mislukt. Probeer later opnieuw.',
@@ -278,9 +278,9 @@ throwError(() => new Error('Tijdelijke error'))
       }
     }),
     retry(2),
-    catchError((error) => {
+    catchError((error: unknown) => {
       console.log(`Finaal aantal pogingen: ${attemptCount}`);
-      return of(`Finale error: ${error.message}`);
+      return of(`Finale error: ${(error instanceof Error ? error.message : String(error))}`);
     })
   )
   .subscribe({
@@ -329,9 +329,9 @@ throwError(() => new Error('Tijdelijke error'))
         })
       )
     ),
-    catchError((error) => {
+    catchError((error: unknown) => {
       console.log(`\nEindresultaat: Alle retry mislukt`);
-      return of(`Finale error: ${error.message}`);
+      return of(`Finale error: ${(error instanceof Error ? error.message : String(error))}`);
     })
   )
   .subscribe(result => console.log('Resultaat:', result));
@@ -384,9 +384,9 @@ const retryableStream$ = new Observable(subscriber => {
 retryableStream$
   .pipe(
     retry(2),
-    catchError((error) => {
+    catchError((error: unknown) => {
       console.log(`[Voltooid] Totaal ${attemptCount} keer geprobeerd en mislukt`);
-      return of(`Finale error: ${error.message}`);
+      return of(`Finale error: ${(error instanceof Error ? error.message : String(error))}`);
     })
   )
   .subscribe({
@@ -441,7 +441,7 @@ function fetchWithRetryLogging(url: string, maxRetries = 3) {
         })
       )
     ),
-    catchError((error) => {
+    catchError((error: unknown) => {
       const totalTime = Date.now() - startTime;
       console.log(`\n❌ Definitief mislukt (totale tijd: ${totalTime}ms)`);
       return of({ error: true, message: 'Data ophalen mislukt' });
@@ -482,9 +482,9 @@ throwError(() => new Error('Tijdelijke error'))
       delay: 1000, // 1 seconde wachten voor retry (gebruikt intern asyncScheduler)
       resetOnSuccess: true
     }),
-    catchError((error) => {
+    catchError((error: unknown) => {
       console.log(`Definitief mislukt (totaal ${attemptCount} keer geprobeerd)`);
-      return of(`Finale error: ${error.message}`);
+      return of(`Finale error: ${(error instanceof Error ? error.message : String(error))}`);
     })
   )
   .subscribe(result => console.log('Resultaat:', result));
@@ -530,7 +530,7 @@ function fetchUserData(userId: string): Observable<any> {
     // Netwerkfouten maximaal 2 keer opnieuw proberen
     retry(2),
     // Error handling
-    catchError((error) => {
+    catchError((error: unknown) => {
       if (error.status === 404) {
         return of({ error: true, message: 'Gebruiker niet gevonden' });
       } else if (error.status >= 500) {

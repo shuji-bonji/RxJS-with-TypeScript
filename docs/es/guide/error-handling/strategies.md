@@ -19,8 +19,8 @@ const error$ = throwError(() => new Error('Ocurrió un error')); // RxJS 7+, for
 // Manejo básico de errores
 error$
   .pipe(
-    catchError((error) => {
-      console.error('Error capturado:', error.message);
+    catchError((error: unknown) => {
+      console.error('Error capturado:', (error instanceof Error ? error.message : String(error)));
       return of('Valor de fallback después del error');
     })
   )
@@ -49,8 +49,8 @@ import { catchError } from 'rxjs';
 const source$ = throwError(() => new Error('Error en la obtención de datos'));
 
 source$.pipe(
-  catchError(error => {
-    console.error('Ocurrió un error:', error.message);
+  catchError((error: unknown) => {
+    console.error('Ocurrió un error:', (error instanceof Error ? error.message : String(error)));
     // Retornar datos alternativos
     return of({ isError: true, data: [], message: 'Mostrando datos predeterminados' });
   })
@@ -126,8 +126,8 @@ function fetchWithRetry() {
       )
     ),
     // Fallback final
-    catchError((error) => {
-      console.error('Todos los reintentos fallaron:', error.message);
+    catchError((error: unknown) => {
+      console.error('Todos los reintentos fallaron:', (error instanceof Error ? error.message : String(error)));
       return of({
         error: true,
         message: 'Conexión fallida. Por favor, inténtelo de nuevo más tarde.',
@@ -169,8 +169,8 @@ let isLoading = true;
 
 throwError(() => new Error('Error de procesamiento'))
   .pipe(
-    catchError((error) => {
-      console.error('Manejo de errores:', error.message);
+    catchError((error: unknown) => {
+      console.error('Manejo de errores:', (error instanceof Error ? error.message : String(error)));
       return throwError(() => error); // Relanzar error
     }),
     finalize(() => {
@@ -212,9 +212,9 @@ function fetchData(shouldFail = false) {
       // Procesamiento en caso de éxito
       updateUI(data);
     }),
-    catchError((error) => {
+    catchError((error: unknown) => {
       // Actualizar UI en caso de error
-      showErrorMessage(error.message);
+      showErrorMessage((error instanceof Error ? error.message : String(error)));
       // Retornar datos vacíos o valor predeterminado
       return of({ name: 'Predeterminado', value: 0 });
     }),
@@ -270,20 +270,20 @@ function getComments() {
 // Obtener todos los datos y permitir errores parciales
 forkJoin({
   user: getUser().pipe(
-    catchError((error) => {
-      console.error('Error en la obtención de usuario:', error.message);
+    catchError((error: unknown) => {
+      console.error('Error en la obtención de usuario:', (error instanceof Error ? error.message : String(error)));
       return of(null); // Retornar null en caso de error
     })
   ),
   posts: getPosts().pipe(
-    catchError((error) => {
-      console.error('Error en la obtención de publicaciones:', error.message);
+    catchError((error: unknown) => {
+      console.error('Error en la obtención de publicaciones:', (error instanceof Error ? error.message : String(error)));
       return of([]); // Retornar array vacío en caso de error
     })
   ),
   comments: getComments().pipe(
-    catchError((error) => {
-      console.error('Error en la obtención de comentarios:', error.message);
+    catchError((error: unknown) => {
+      console.error('Error en la obtención de comentarios:', (error instanceof Error ? error.message : String(error)));
       return of([]); // Retornar array vacío en caso de error
     })
   ),

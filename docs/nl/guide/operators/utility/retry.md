@@ -18,7 +18,7 @@ import { retry, catchError } from 'rxjs';
 throwError(() => new Error('Tijdelijke fout'))
   .pipe(
     retry(2), // Probeer tot 2 keer opnieuw
-    catchError((error) => of(`Definitieve fout: ${error.message}`))
+    catchError((error: unknown) => of(`Definitieve fout: ${error.message}`))
   )
   .subscribe(console.log);
 // Uitvoer:
@@ -50,7 +50,7 @@ throwError(() => new Error('Tijdelijke fout'))
       delay: 1000,        // Wacht 1 seconde voor opnieuw proberen (gebruikt asyncScheduler intern)
       resetOnSuccess: true // Reset telling bij succes
     }),
-    catchError((error) => of(`Definitieve fout: ${error.message}`))
+    catchError((error: unknown) => of(`Definitieve fout: ${error.message}`))
   )
   .subscribe(console.log);
 
@@ -89,7 +89,7 @@ interval(1000)
       }
     }),
     retry(3),
-    catchError((err) => of(`Definitieve fout: ${err.message}`))
+    catchError((err: unknown) => of(`Definitieve fout: ${err.message}`))
   )
   .subscribe(console.log);
 // Uitvoer:
@@ -150,9 +150,9 @@ function simulateRequest() {
       }
     }),
     retry(3),
-    catchError((err) => {
+    catchError((err: unknown) => {
       const finalError = document.createElement('div');
-      finalError.textContent = `Alle pogingen mislukt: ${err.message}`;
+      finalError.textContent = `Alle pogingen mislukt: ${(err instanceof Error ? err.message : String(err))}`;
       finalError.style.color = 'red';
       finalError.style.fontWeight = 'bold';
       requestStatus.appendChild(finalError);

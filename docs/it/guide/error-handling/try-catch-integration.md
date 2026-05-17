@@ -38,8 +38,8 @@ try {
 
 timer(1000).pipe(
   mergeMap(() => throwError(() => new Error('Errore asincrono'))),
-  catchError(error => {
-    console.error('Catturato:', error.message); // ✅ Eseguito
+  catchError((error: unknown) => {
+    console.error('Catturato:', (error instanceof Error ? error.message : String(error))); // ✅ Eseguito
     return of('Valore predefinito');
   })
 ).subscribe();
@@ -229,7 +229,7 @@ ajax.getJSON<ApiResponse>('https://api.example.com/data').pipe(
     }
   }),
   // Livello 2: gli errori asincroni sono gestiti da catchError
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('Errore di chiamata API:', error);
     return of({ decoded: '', timestamp: Date.now() });
   }),
@@ -348,11 +348,11 @@ function validateAndFetchUser(userId: string): Observable<UserData> {
         throw new Error('Errore di validazione dei dati');
       }
     }),
-    catchError(error => {
+    catchError((error: unknown) => {
       // Gestisce gli errori asincroni (ad esempio gli errori HTTP)
       if (error.status) {
         const networkError = new NetworkError(
-          `HTTP ${error.status}: ${error.message}`,
+          `HTTP ${error.status}: ${(error instanceof Error ? error.message : String(error))}`,
           error.status
         );
         return throwError(() => networkError);
@@ -433,7 +433,7 @@ import { of, catchError } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
 
 ajax.getJSON('https://api.example.com/data').pipe(
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('Errore HTTP:', error);
     return of(null);
   })
@@ -555,7 +555,7 @@ ajax.getJSON<{ data: string }>('https://api.example.com/data').pipe(
     }
   }),
   // Errori asincroni → catchError
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('Errore API:', error);
     return of({});
   }),
@@ -672,7 +672,7 @@ ajax.getJSON('https://api.example.com/data').pipe(
       throw error; // Propaga a catchError
     }
   }),
-  catchError(error => {
+  catchError((error: unknown) => {
     logError('API Request', error);
     return of(null);
   })

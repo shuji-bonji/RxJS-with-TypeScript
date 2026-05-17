@@ -216,7 +216,7 @@ interface User {
 const fetchUser$ = ajax.getJSON<User>('https://api.example.com/users/1').pipe(
   timeout(5000), // Timeout in 5 seconden
   retry(2), // Twee keer opnieuw proberen bij falen
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('Fout bij ophalen gebruiker:', error);
     // Standaardwaarde retourneren
     return of({
@@ -539,7 +539,7 @@ const api$ = ajax({
     'Authorization': `Bearer ${getAccessToken()}`
   }
 }).pipe(
-  catchError(error => {
+  catchError((error: unknown) => {
     if (error.status === 401) {
       // Token vernieuwen en opnieuw proberen
       return refreshToken().pipe(
@@ -598,7 +598,7 @@ const todos$ = ajax.getJSON('https://jsonplaceholder.typicode.com/todos/1');
 ```typescript
 // ✅ Goed voorbeeld: Foutafhandeling met catchError
 const api$ = ajax.getJSON('/api/data').pipe(
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('Fout:', error);
     return of(defaultValue);
   })

@@ -20,8 +20,8 @@ const error$ = throwError(() => new Error('Si è verificato un errore')); // RxJ
 // Gestione degli errori di base
 error$
   .pipe(
-    catchError((error) => {
-      console.error('Errore rilevato:', error.message);
+    catchError((error: unknown) => {
+      console.error('Errore rilevato:', (error instanceof Error ? error.message : String(error)));
       return of('Valore di fallback dopo l\'errore');
     })
   )
@@ -50,8 +50,8 @@ import { catchError } from 'rxjs';
 const source$ = throwError(() => new Error('Errore nel recupero dei dati'));
 
 source$.pipe(
-  catchError(error => {
-    console.error('Si è verificato un errore:', error.message);
+  catchError((error: unknown) => {
+    console.error('Si è verificato un errore:', (error instanceof Error ? error.message : String(error)));
     // Restituisce dati alternativi
     return of({ isError: true, data: [], message: 'Visualizzazione dei dati predefiniti' });
   })
@@ -127,8 +127,8 @@ function fetchWithRetry() {
       )
     ),
     // Fallback finale
-    catchError((error) => {
-      console.error('Tutti i tentativi sono falliti:', error.message);
+    catchError((error: unknown) => {
+      console.error('Tutti i tentativi sono falliti:', (error instanceof Error ? error.message : String(error)));
       return of({
         error: true,
         message: 'Connessione fallita. Riprovare più tardi.',
@@ -170,8 +170,8 @@ let isLoading = true;
 
 throwError(() => new Error('Errore di elaborazione'))
   .pipe(
-    catchError((error) => {
-      console.error('Gestione errore:', error.message);
+    catchError((error: unknown) => {
+      console.error('Gestione errore:', (error instanceof Error ? error.message : String(error)));
       return throwError(() => error); // Rilancia l'errore
     }),
     finalize(() => {
@@ -213,9 +213,9 @@ function fetchData(shouldFail = false) {
       // Elaborazione in caso di successo
       updateUI(data);
     }),
-    catchError((error) => {
+    catchError((error: unknown) => {
       // Aggiornamento dell'interfaccia utente in caso di errore
-      showErrorMessage(error.message);
+      showErrorMessage((error instanceof Error ? error.message : String(error)));
       // Restituisce dati vuoti o un valore predefinito
       return of({ name: 'default', value: 0 });
     }),
@@ -271,20 +271,20 @@ function getComments() {
 // Ottenere tutti i dati, consentire errori parziali
 forkJoin({
   user: getUser().pipe(
-    catchError((error) => {
-      console.error('Errore nel recupero utente:', error.message);
+    catchError((error: unknown) => {
+      console.error('Errore nel recupero utente:', (error instanceof Error ? error.message : String(error)));
       return of(null); // Restituisce null in caso di errore
     })
   ),
   posts: getPosts().pipe(
-    catchError((error) => {
-      console.error('Errore nel recupero dei post:', error.message);
+    catchError((error: unknown) => {
+      console.error('Errore nel recupero dei post:', (error instanceof Error ? error.message : String(error)));
       return of([]); // Restituisce un array vuoto in caso di errore
     })
   ),
   comments: getComments().pipe(
-    catchError((error) => {
-      console.error('Errore nel recupero dei commenti:', error.message);
+    catchError((error: unknown) => {
+      console.error('Errore nel recupero dei commenti:', (error instanceof Error ? error.message : String(error)));
       return of([]); // Restituisce un array vuoto in caso di errore
     })
   ),

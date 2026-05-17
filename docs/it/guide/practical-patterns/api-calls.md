@@ -70,7 +70,7 @@ function fetchUsers(): Observable<User[]> {
       })
   ).pipe(
     timeout(5000), // Timeout in 5 secondi
-    catchError(err => {
+    catchError((err: unknown) => {
       console.error('Errore nel recupero degli utenti:', err);
       throw err;
     })
@@ -127,7 +127,7 @@ function createPost(postData: CreatePostRequest): Observable<Post> {
       return response.json();
     })
   ).pipe(
-    catchError(err => {
+    catchError((err: unknown) => {
       console.error('Errore nella creazione del post:', err);
       throw err;
     })
@@ -295,19 +295,19 @@ import { forkJoin, of, catchError } from 'rxjs';
 function fetchDashboardWithFallback(userId: number): Observable<Dashboard> {
   return forkJoin({
     user: fetchUserById(userId).pipe(
-      catchError(err => {
+      catchError((err: unknown) => {
         console.error('Errore nel recupero dell\'utente:', err);
         return of(null); // Restituisce null in caso di errore
       })
     ),
     posts: fetchPostsByUserId(userId).pipe(
-      catchError(err => {
+      catchError((err: unknown) => {
         console.error('Errore nel recupero dei post:', err);
         return of([]); // Restituisce un array vuoto in caso di errore
       })
     ),
     comments: fetchCommentsByUserId(userId).pipe(
-      catchError(err => {
+      catchError((err: unknown) => {
         console.error('Errore nel recupero dei commenti:', err);
         return of([]); // Restituisce un array vuoto in caso di errore
       })
@@ -368,7 +368,7 @@ function createPost(postData: CreatePostRequest): Observable<Post> {
       return response.json();
     })
   ).pipe(
-    catchError(err => {
+    catchError((err: unknown) => {
       console.error('Errore nella creazione del post:', err);
       throw err;
     })
@@ -604,7 +604,7 @@ const search$ = fromEvent(searchInput, 'input').pipe(
       return of([]); // Array vuoto se meno di 2 caratteri
     }
     return searchAPI(query).pipe(
-      catchError(err => {
+      catchError((err: unknown) => {
         console.error('Errore di ricerca:', err);
         return of([]); // Array vuoto in caso di errore
       })
@@ -753,7 +753,7 @@ function fetchUsers(): Observable<User[]> {
       })
   ).pipe(
     timeout(5000), // Timeout in 5 secondi
-    catchError(err => {
+    catchError((err: unknown) => {
       console.error('Errore nel recupero degli utenti:', err);
       throw err;
     })
@@ -764,7 +764,7 @@ function fetchUsers(): Observable<User[]> {
 function fetchWithSimpleRetry(): Observable<User[]> {
   return fetchUsers().pipe(
     retry(3), // Riprova fino a 3 volte in caso di errore
-    catchError(err => {
+    catchError((err: unknown) => {
       console.error('Ancora errore dopo il retry:', err);
       return of([]); // Restituisce un array vuoto se l'errore è definitivo
     })
@@ -792,7 +792,7 @@ function fetchWithExponentialBackoff(): Observable<User[]> {
         })
       )
     ),
-    catchError(err => {
+    catchError((err: unknown) => {
       console.error('Ancora errore dopo il retry:', err);
       return of([]);
     })
@@ -867,7 +867,7 @@ function fetchWithConditionalRetry(): Observable<User[]> {
         })
       )
     ),
-    catchError(err => {
+    catchError((err: unknown) => {
       console.error('Errore finale:', err);
       return of([]);
     })
@@ -928,7 +928,7 @@ function fetchUsers(): Observable<User[]> {
       })
   ).pipe(
     timeout(5000), // Timeout in 5 secondi
-    catchError(err => {
+    catchError((err: unknown) => {
       console.error('Errore nel recupero degli utenti:', err);
       throw err;
     })
@@ -939,7 +939,7 @@ function fetchUsers(): Observable<User[]> {
 function fetchWithTimeout(): Observable<User[]> {
   return fetchUsers().pipe(
     timeout(5000), // Errore se non c'è risposta entro 5 secondi
-    catchError(err => {
+    catchError((err: unknown) => {
       if (err.name === 'TimeoutError') {
         console.error('La richiesta è scaduta');
         // Elaborazione di ripiego in caso di timeout
@@ -957,8 +957,8 @@ function fetchWithCustomTimeout(): Observable<User[]> {
       each: 5000,
       with: () => throwError(() => new Error('Errore di timeout personalizzato'))
     }),
-    catchError(err => {
-      console.error('Errore:', err.message);
+    catchError((err: unknown) => {
+      console.error('Errore:', (err instanceof Error ? err.message : String(err)));
       return of([]);
     })
   );
@@ -974,7 +974,7 @@ function fetchWithTimeoutAndRetry(): Observable<User[]> {
   return fetchUsers().pipe(
     timeout(5000),           // Timeout di 5 secondi per ogni tentativo
     retry(3),                // Riprova tre volte dopo il timeout
-    catchError(err => {
+    catchError((err: unknown) => {
       console.error('Errore dopo il timeout e il retry:', err);
       return of([]);
     })
@@ -1043,7 +1043,7 @@ class UserListManager {
         })
     ).pipe(
       timeout(5000), // Timeout in 5 secondi
-      catchError(err => {
+      catchError((err: unknown) => {
         console.error('Errore nel recupero degli utenti:', err);
         throw err;
       })
@@ -1227,7 +1227,7 @@ export class ApiService {
     }
 
     const request$ = this.get<T>(url, options).pipe(
-      shareReplay(1) // Cache del risultato
+      shareReplay({ bufferSize: 1, refCount: true }) // Cache del risultato
     );
 
     this.cache.set(cacheKey, request$);
@@ -1277,7 +1277,7 @@ export class ApiService {
       this.retryStrategy(options?.retry),
       // API pubbliche come JSONPlaceholder restituiscono direttamente i dati,
       // Non è necessario decomprimere response.data
-      catchError(err => this.handleError(err)),
+      catchError((err: unknown) => this.handleError(err)),
       takeUntil(this.destroy$) // Cancellazione automatica quando il servizio viene distrutto
     );
   }

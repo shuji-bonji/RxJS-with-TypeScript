@@ -50,8 +50,8 @@ class UserService {
     console.log('Ejecutando nueva solicitud');
     this.users$ = this.fetchUsersFromAPI().pipe(
       tap(() => console.log('Llamada a API completada')),
-      shareReplay(1), // Cachear el último valor
-      catchError(err => {
+      shareReplay({ bufferSize: 1, refCount: true }), // Cachear el último valor
+      catchError((err: unknown) => {
         // Limpiar caché en caso de error
         this.users$ = null;
         throw err;
@@ -106,7 +106,7 @@ userService.getUsers().subscribe(users => {
 import { shareReplay } from 'rxjs';
 // Uso básico
 source$.pipe(
-  shareReplay(1) // Cachear el último valor
+  shareReplay({ bufferSize: 1, refCount: true }) // Cachear el último valor
 );
 
 // Configuración detallada
@@ -173,7 +173,7 @@ class TTLCacheService<T> {
         data,
         timestamp: Date.now()
       })),
-      shareReplay(1)
+      shareReplay({ bufferSize: 1, refCount: true })
     );
 
     return this.cache$.pipe(map(cached => cached.data));
@@ -286,7 +286,7 @@ class RefreshableCacheService<T> {
     ).pipe(
       switchMap(() => fetchFn()),
       tap(data => console.log('Obtención de datos completada:', data)),
-      shareReplay(1)
+      shareReplay({ bufferSize: 1, refCount: true })
     );
   }
 
@@ -381,7 +381,7 @@ class ConditionalCacheService {
       console.log('Obtención de datos:', options);
       return this.fetchData(options.userId);
     }),
-    shareReplay(1)
+    shareReplay({ bufferSize: 1, refCount: true })
   );
 
   getData(userId?: number): Observable<any> {
@@ -467,7 +467,7 @@ class LocalStorageCacheService {
         tap(data => {
           this.saveToStorage(options.key, data);
         }),
-        catchError(err => {
+        catchError((err: unknown) => {
           console.error('Error de obtención:', err);
           throw err;
         })
@@ -658,7 +658,7 @@ class OfflineFirstCacheService {
             tap(data => {
               this.saveToCache(cacheKey, data);
             }),
-            catchError(err => {
+            catchError((err: unknown) => {
               console.error('Error de obtención de API - fallback a caché');
               return this.getFromCache<T>(cacheKey);
             })

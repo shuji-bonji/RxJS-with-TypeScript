@@ -100,7 +100,7 @@ class CryptoPriceService {
           count: 5,
           delay: 1000
         }),
-        catchError(err => {
+        catchError((err: unknown) => {
           console.error('Error de WebSocket:', err);
           return EMPTY;
         })
@@ -758,7 +758,7 @@ function createPolling<T>(
     switchMap(() =>
       from(fetchFn()).pipe(
         retry(3), // Reintentar 3 veces en caso de error
-        catchError(err => {
+        catchError((err: unknown) => {
           console.error('Error de Polling:', err);
           throw err; // Relanzar error
         })
@@ -1419,7 +1419,7 @@ class HealthCheckWebSocket {
         // Esperar recepción de pong (con timeout)
         return this.socket$.pipe(
           timeout(this.timeoutMs),
-          catchError(err => {
+          catchError((err: unknown) => {
             console.error('Timeout de Pong - Conexión anormal', err);
             throw err;
           })

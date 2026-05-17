@@ -796,7 +796,7 @@ function handleDoubleClick(): void {
 ### Esempio pratico: visualizzazione ritardata su hover
 
 ```ts
-import { fromEvent, timer, switchMap, takeUntil, mapTo } from 'rxjs';
+import { fromEvent, timer, switchMap, takeUntil, mapTo } from 'rxjs'; } from 'rxjs';
 
 const target = document.createElement('div');
 target.id = 'hover-target';
@@ -831,7 +831,7 @@ mouseEnter$.pipe(
   switchMap(() =>
     // Attendi 500ms prima di mostrare il tooltip
     timer(500).pipe(
-      mapTo(true),
+      map(() => true),
       takeUntil(mouseLeave$) // Annulla se il mouse esce
     )
   )

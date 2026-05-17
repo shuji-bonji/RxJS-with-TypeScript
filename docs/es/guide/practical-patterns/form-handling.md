@@ -317,7 +317,7 @@ combineLatest([title$, content$]).pipe(
   switchMap(draft =>
     saveDraft(draft).pipe(
       map(savedDraft => ({ ...savedDraft, success: true })),
-      catchError(err => {
+      catchError((err: unknown) => {
         console.error('Error al guardar:', err);
         return of({ ...draft, success: false });
       })
@@ -801,9 +801,9 @@ fromEvent(form, 'submit').pipe(
     };
 
     return submitForm(data).pipe(
-      catchError(err => {
+      catchError((err: unknown) => {
         console.error('Error de envío:', err);
-        return of({ success: false, error: err.message });
+        return of({ success: false, error: (err instanceof Error ? err.message : String(err)) });
       })
     );
   }),

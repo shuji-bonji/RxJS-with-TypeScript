@@ -419,8 +419,8 @@ of(1, 2, 3)
       }
       return of(value);
     }),
-    catchError(error => {
-      console.error('🔴 Error capturado:', error.message);
+    catchError((error: unknown) => {
+      console.error('🔴 Error capturado:', (error instanceof Error ? error.message : String(error)));
       return of(-1); // Valor de respaldo
     })
   )

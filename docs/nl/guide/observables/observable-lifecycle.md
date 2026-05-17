@@ -194,8 +194,8 @@ failingObservable$.pipe(
   // Bij fout, 3 keer opnieuw proberen
   retry(3),
   // Als het dan nog steeds een fout is, overschakelen naar alternatieve Observable
-  catchError(error => {
-    console.error('Fout gevangen:', error.message);
+  catchError((error: unknown) => {
+    console.error('Fout gevangen:', (error instanceof Error ? error.message : String(error)));
     return of('Alternatieve waarde na fout');
   })
 ).subscribe({

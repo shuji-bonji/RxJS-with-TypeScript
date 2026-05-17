@@ -20,7 +20,7 @@ of('respuesta')
   .pipe(
     delay(500), // 👈 Si se establece en 1500, muestra `Error de tiempo de espera: respaldo`
     timeout(1000),
-    catchError((err) => of('Error de tiempo de espera: respaldo', err))
+    catchError((err: unknown) => of('Error de tiempo de espera: respaldo', err))
   )
   .subscribe(console.log);
 // Salida:
@@ -51,14 +51,14 @@ const fast$ = interval(500).pipe(take(3));
 fast$
   .pipe(
     timeout(1000),
-    catchError((err) => of('respaldo: tiempo de espera ocurrido'))
+    catchError((err: unknown) => of('respaldo: tiempo de espera ocurrido'))
   )
   .subscribe(console.log);
 
 slow$
   .pipe(
     timeout(1000),
-    catchError((err) => of('respaldo: tiempo de espera activado'))
+    catchError((err: unknown) => of('respaldo: tiempo de espera activado'))
   )
   .subscribe(console.log);
 // Salida:
@@ -90,9 +90,9 @@ timeoutOutput.appendChild(timeoutSuccess);
 normalStream$
   .pipe(
     timeout(1000),
-    catchError((err) => {
+    catchError((err: unknown) => {
       const errorMsg = document.createElement('div');
-      errorMsg.textContent = `Error: ${err.message}`;
+      errorMsg.textContent = `Error: ${(err instanceof Error ? err.message : String(err))}`;
       errorMsg.style.color = 'red';
       timeoutSuccess.appendChild(errorMsg);
       return of('Valor de respaldo después del error');
@@ -114,9 +114,9 @@ timeoutOutput.appendChild(timeoutError);
 slowStream$
   .pipe(
     timeout(1000),
-    catchError((err) => {
+    catchError((err: unknown) => {
       const errorMsg = document.createElement('div');
-      errorMsg.textContent = `Error: ${err.message}`;
+      errorMsg.textContent = `Error: ${(err instanceof Error ? err.message : String(err))}`;
       errorMsg.style.color = 'red';
       timeoutError.appendChild(errorMsg);
       return of('Valor de respaldo después del tiempo de espera');

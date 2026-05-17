@@ -267,10 +267,10 @@ formData$.pipe(
     return allPatches;
   }),
   concatMap(patches => saveToServer(patches)), // Invia con ordine garantito
-  catchError(error => {
+  catchError((error: unknown) => {
     console.error('Errore salvataggio automatico:', error);
-    updateStatus(`❌ Salvataggio fallito: ${error.message}`, '#f44336');
-    return of({ success: false, message: error.message });
+    updateStatus(`❌ Salvataggio fallito: ${(error instanceof Error ? error.message : String(error))}`, '#f44336');
+    return of({ success: false, message: (error instanceof Error ? error.message : String(error)) });
   })
 ).subscribe(result => {
   if (result.success) {

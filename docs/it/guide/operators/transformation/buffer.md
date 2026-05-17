@@ -115,13 +115,13 @@ mouseMoves$.pipe(
 
 ```ts
 import { interval, merge, fromEvent, timer } from 'rxjs';
-import { buffer, mapTo } from 'rxjs';
+import { buffer, mapTo } from 'rxjs'; } from 'rxjs';
 
 const source$ = interval(100);
 
 // Trigger multipli: click o 5 secondi trascorsi
-const clicks$ = fromEvent(document, 'click').pipe(mapTo('click'));
-const fiveSeconds$ = timer(5000, 5000).pipe(mapTo('timer'));
+const clicks$ = fromEvent(document, 'click').pipe(map(() => 'click'));
+const fiveSeconds$ = timer(5000, 5000).pipe(map(() => 'timer'));
 const trigger$ = merge(clicks$, fiveSeconds$);
 
 source$.pipe(

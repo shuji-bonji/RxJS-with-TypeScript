@@ -332,7 +332,7 @@ source$
     mergeScan(
       (acc, val) =>
         fetchData(val).pipe(
-          catchError(err => {
+          catchError((err: unknown) => {
             console.error('Errore:', err);
             return of(acc); // Restituisci valore precedente in caso di errore
           })

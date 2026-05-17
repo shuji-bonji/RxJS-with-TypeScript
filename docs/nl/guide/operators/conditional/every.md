@@ -223,3 +223,6 @@ form.addEventListener('submit', (event) => {
 });
 
 ```
+
+> [!WARNING] Let op in productiecode
+> Het bovenstaande voorbeeld laat het afmelden van `fromEvent` weg om de uitleg te vereenvoudigen. In echte code, beheer expliciet de levenscyclus met `takeUntil(destroy$)`, `take(N)`, of `Subscription.unsubscribe()`. Details: [Overwinnen van moeilijkheden: levenscyclusbeheer](/nl/guide/overcoming-difficulties/lifecycle-management.md)

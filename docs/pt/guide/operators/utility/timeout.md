@@ -20,7 +20,7 @@ of('resposta')
   .pipe(
     delay(500), // 👈 Se definido como 1500, gera `Erro de timeout: fallback`
     timeout(1000),
-    catchError((err) => of('Erro de timeout: fallback', err))
+    catchError((err: unknown) => of('Erro de timeout: fallback', err))
   )
   .subscribe(console.log);
 // Saída:
@@ -51,14 +51,14 @@ const fast$ = interval(500).pipe(take(3));
 fast$
   .pipe(
     timeout(1000),
-    catchError((err) => of('fallback: timeout ocorreu'))
+    catchError((err: unknown) => of('fallback: timeout ocorreu'))
   )
   .subscribe(console.log);
 
 slow$
   .pipe(
     timeout(1000),
-    catchError((err) => of('fallback: timeout disparado'))
+    catchError((err: unknown) => of('fallback: timeout disparado'))
   )
   .subscribe(console.log);
 // Saída:
@@ -90,9 +90,9 @@ timeoutOutput.appendChild(timeoutSuccess);
 normalStream$
   .pipe(
     timeout(1000),
-    catchError((err) => {
+    catchError((err: unknown) => {
       const errorMsg = document.createElement('div');
-      errorMsg.textContent = `Erro: ${err.message}`;
+      errorMsg.textContent = `Erro: ${(err instanceof Error ? err.message : String(err))}`;
       errorMsg.style.color = 'red';
       timeoutSuccess.appendChild(errorMsg);
       return of('Valor de fallback após erro');
@@ -114,9 +114,9 @@ timeoutOutput.appendChild(timeoutError);
 slowStream$
   .pipe(
     timeout(1000),
-    catchError((err) => {
+    catchError((err: unknown) => {
       const errorMsg = document.createElement('div');
-      errorMsg.textContent = `Erro: ${err.message}`;
+      errorMsg.textContent = `Erro: ${(err instanceof Error ? err.message : String(err))}`;
       errorMsg.style.color = 'red';
       timeoutError.appendChild(errorMsg);
       return of('Valor de fallback após timeout');

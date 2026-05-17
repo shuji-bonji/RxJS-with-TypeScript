@@ -54,8 +54,8 @@ let isLoading = true;
 
 throwError(() => new Error('Errore nel recupero dati'))
   .pipe(
-    catchError((err) => {
-      console.error('Gestione errore:', err.message);
+    catchError((err: unknown) => {
+      console.error('Gestione errore:', (err instanceof Error ? err.message : String(err)));
       throw err; // Rilancia l'errore
     }),
     finalize(() => {
@@ -207,7 +207,7 @@ function fetchData(id: string) {
 
   // Richiesta API
   return ajax.getJSON(`https://jsonplaceholder.typicode.com/posts/${id}`).pipe(
-    catchError((error) => {
+    catchError((error: unknown) => {
       console.error('Errore API:', error);
       return of({ error: true, message: 'Recupero dati fallito' });
     }),

@@ -54,8 +54,8 @@ let isLoading = true;
 
 throwError(() => new Error('Data fetch error'))
   .pipe(
-    catchError((err) => {
-      console.error('Error handling:', err.message);
+    catchError((err: unknown) => {
+      console.error('Error handling:', (err instanceof Error ? err.message : String(err)));
       throw err; // Re-throw error
     }),
     finalize(() => {
@@ -208,7 +208,7 @@ function fetchData(id: string) {
 
   // API request
   return ajax.getJSON(`https://jsonplaceholder.typicode.com/posts/${id}`).pipe(
-    catchError((error) => {
+    catchError((error: unknown) => {
       console.error('API error:', error);
       return of({ error: true, message: 'Failed to retrieve data' });
     }),

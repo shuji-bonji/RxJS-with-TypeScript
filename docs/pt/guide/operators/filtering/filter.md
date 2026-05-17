@@ -172,3 +172,6 @@ O operador `filter` é a ferramenta de filtragem mais básica no RxJS.
 - ✅ Pode ser usado da mesma forma que `.filter()` para arrays
 - ✅ Pode ser usado como type guard do TypeScript
 - ⚠️ Funções predicado devem ser funções puras
+
+> [!WARNING] Atenção em código de produção
+> O exemplo acima omite o cancelamento da inscrição de `fromEvent` para simplificar a explicação. Em código real, gerencie explicitamente o ciclo de vida com `takeUntil(destroy$)`, `take(N)`, ou `Subscription.unsubscribe()`. Detalhes: [Superar dificuldades: gerenciamento do ciclo de vida](/pt/guide/overcoming-difficulties/lifecycle-management.md)

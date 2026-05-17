@@ -147,7 +147,7 @@ userData$
 
 ```ts
 import { fromEvent, of } from 'rxjs';
-import { concatWith, take, mapTo } from 'rxjs';
+import { concatWith, take, mapTo } from 'rxjs'; } from 'rxjs';
 
 // Crea pulsante e area output
 const button = document.createElement('button');
@@ -164,7 +164,7 @@ const clicks$ = fromEvent(button, 'click');
 clicks$
   .pipe(
     take(3),                          // Ottieni i primi 3 click
-    mapTo('Cliccato'),
+    map(() => 'Cliccato'),
     concatWith(of('Completato'))       // Aggiungi messaggio dopo il completamento
   )
   .subscribe(message => {
@@ -179,7 +179,7 @@ import { concat } from 'rxjs';
 concat(
   clicks$.pipe(
     take(3),
-    mapTo('Cliccato')
+    map(() => 'Cliccato')
   ),
   of('Completato')
 ).subscribe(console.log);
@@ -218,7 +218,7 @@ import { concatWith, catchError } from 'rxjs';
 
 throwError(() => new Error('Si è verificato un errore'))
   .pipe(
-    catchError(err => of('Errore recuperato')),
+    catchError((err: unknown) => of('Errore recuperato')),
     concatWith(of('Processo successivo'))
   )
   .subscribe(console.log);

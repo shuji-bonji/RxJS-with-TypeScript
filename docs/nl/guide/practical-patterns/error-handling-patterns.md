@@ -215,7 +215,7 @@ class HttpClientService {
   get<T>(url: string): Observable<T> {
     return ajax.get<T>(url).pipe(
       tap(() => console.log(`GET ${url} - Success`)),
-      catchError(error => this.handleError(error, url))
+      catchError((error: unknown) => this.handleError(error, url))
     );
   }
 
@@ -225,7 +225,7 @@ class HttpClientService {
   post<T>(url: string, body: any): Observable<T> {
     return ajax.post<T>(url, body).pipe(
       tap(() => console.log(`POST ${url} - Success`)),
-      catchError(error => this.handleError(error, url))
+      catchError((error: unknown) => this.handleError(error, url))
     );
   }
 
@@ -442,7 +442,7 @@ class NetworkAwareHttpClient {
     const config = { ...defaultConfig, ...retryConfig };
 
     return this.httpClient.get<T>(url).pipe(
-      catchError(error => {
+      catchError((error: unknown) => {
         // Retry alleen voor netwerkfouten (status = 0)
         if (error.status === 0) {
           return throwError(() => error);
@@ -601,7 +601,7 @@ class TimeoutAwareHttpClient {
           userMessage: timeoutConfig.message
         }))
       }),
-      catchError(error => {
+      catchError((error: unknown) => {
         if (error.status === -2) {
           console.error(`Timeout: ${url} (${timeoutConfig.duration}ms)`);
         }
@@ -966,7 +966,7 @@ class UserService {
 
   loadUser(userId: number): Observable<User> {
     return this.httpClient.get<User>(`/api/users/${userId}`).pipe(
-      catchError(error => {
+      catchError((error: unknown) => {
         // Registreer in globale foutafhandeling
         this.globalErrorHandler.handleError(
           error,

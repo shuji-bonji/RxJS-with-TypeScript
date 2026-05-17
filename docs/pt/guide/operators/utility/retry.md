@@ -18,7 +18,7 @@ import { retry, catchError } from 'rxjs';
 throwError(() => new Error('Erro temporário'))
   .pipe(
     retry(2), // Tentar novamente até 2 vezes
-    catchError((error) => of(`Erro final: ${error.message}`))
+    catchError((error: unknown) => of(`Erro final: ${error.message}`))
   )
   .subscribe(console.log);
 // Saída:
@@ -50,7 +50,7 @@ throwError(() => new Error('Erro temporário'))
       delay: 1000,        // Aguardar 1 segundo antes de tentar novamente (usa asyncScheduler internamente)
       resetOnSuccess: true // Redefinir contagem em caso de sucesso
     }),
-    catchError((error) => of(`Erro final: ${error.message}`))
+    catchError((error: unknown) => of(`Erro final: ${error.message}`))
   )
   .subscribe(console.log);
 
@@ -89,7 +89,7 @@ interval(1000)
       }
     }),
     retry(3),
-    catchError((err) => of(`Falha final: ${err.message}`))
+    catchError((err: unknown) => of(`Falha final: ${err.message}`))
   )
   .subscribe(console.log);
 // Saída:
@@ -150,9 +150,9 @@ function simulateRequest() {
       }
     }),
     retry(3),
-    catchError((err) => {
+    catchError((err: unknown) => {
       const finalError = document.createElement('div');
-      finalError.textContent = `Todas as tentativas falharam: ${err.message}`;
+      finalError.textContent = `Todas as tentativas falharam: ${(err instanceof Error ? err.message : String(err))}`;
       finalError.style.color = 'red';
       finalError.style.fontWeight = 'bold';
       requestStatus.appendChild(finalError);

@@ -340,7 +340,7 @@ import { shareReplay, take } from 'rxjs';
 
 const request$ = interval(1000).pipe(
   take(3),
-  shareReplay(2)  // Cachet laatste 2 waarden
+  shareReplay({ bufferSize: 2, refCount: true })  // Cachet laatste 2 waarden
 );
 
 // 1e abonnement
@@ -398,11 +398,11 @@ class UserService {
     // Maak nieuwe request en cache het
     console.log('Nieuwe request uitvoeren');
     this.cache$ = this.fetchUsersFromAPI().pipe(
-      catchError(err => {
+      catchError((err: unknown) => {
         this.cache$ = null;  // Wis cache bij fout
         return throwError(() => err);
       }),
-      shareReplay(1)  // Cache laatste resultaat
+      shareReplay({ bufferSize: 1, refCount: true })  // Cache laatste resultaat
     );
 
     return this.cache$;
@@ -468,7 +468,7 @@ Component 3: [{id: 1, name: 'Taro Yamada'}, {id: 2, name: 'Hanako Sato'}]
 ```
 
 **Punten:**
-- Cache laatste response met `shareReplay(1)`
+- Cache laatste response met `shareReplay({ bufferSize: 1, refCount: true })`
 - Meerdere componenten delen data (API aanroep slechts 1 keer)
 - Passend weggooien van cache bij fout of wissen
 

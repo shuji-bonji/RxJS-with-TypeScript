@@ -519,7 +519,7 @@ import { of } from 'rxjs';
 sensorStream$
   .pipe(
     retry({ count: 3, delay: 1000 }),
-    catchError(error => {
+    catchError((error: unknown) => {
       console.error('Sensor error:', error);
       // Return default value or fallback handling
       return of({ value: 0, error: true });

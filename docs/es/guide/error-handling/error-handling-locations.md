@@ -74,8 +74,8 @@ of(1, 2, 3).pipe(
     if (x === 2) throw new Error('Error en map');  // ①
     return x * 10;
   }),
-  catchError(err => {
-    console.log('Capturado por catchError:', err.message);  // ②
+  catchError((err: unknown) => {
+    console.log('Capturado por catchError:', (err instanceof Error ? err.message : String(err)));  // ②
     return of(999); // Recuperación
   })
 ).subscribe({
@@ -155,7 +155,7 @@ import { ajax } from 'rxjs/ajax';
 
 // Manejar errores de API con catchError
 ajax.get('/api/user/123').pipe(
-  catchError(err => {
+  catchError((err: unknown) => {
     if (err.status === 404) {
       // Error 404 → retornar usuario predeterminado
       return of({ id: 123, name: 'Usuario Predeterminado' });
@@ -167,7 +167,7 @@ ajax.get('/api/user/123').pipe(
     // Después de obtener usuario, obtener perfil
     return ajax.get(`/api/profile/${user.id}`);
   }),
-  catchError(err => {
+  catchError((err: unknown) => {
     console.log('Error al obtener perfil:', err);
     // Continuar sin perfil
     return of(null);
@@ -188,7 +188,7 @@ El callback `error` de `subscribe` captura los siguientes errores:
 | Tipo de Error | Descripción | Ejemplo |
 |------------|------|-----|
 | **No manejado por catchError** | Errores no manejados en pipeline | Error propagado tal cual |
-| **Relanzado después de catchError** | Errores explícitamente relanzados en catchError | `catchError(e => throwError(() => e))` |
+| **Relanzado después de catchError** | Errores explícitamente relanzados en catchError | `catchError((e: unknown) => throwError(() => e))` |
 
 ### Ejemplo: Procesamiento por Etapas de Errores y Relanzamiento
 
@@ -204,8 +204,8 @@ throwError(() => new Error('Error no manejado')).subscribe({
 // Patrón 2: Relanzar en catchError
 of(1).pipe(
   map(() => { throw new Error('Error en map'); }),
-  catchError(err => {
-    console.log('Capturado por catchError:', err.message);
+  catchError((err: unknown) => {
+    console.log('Capturado por catchError:', (err instanceof Error ? err.message : String(err)));
     // Registrar, luego relanzar error
     return throwError(() => new Error('Error relanzado'));
   })
@@ -265,7 +265,7 @@ fetchUsers(true).pipe(
   // En éxito: convertir a { success: true, data: [...] }
   map(users => ({ success: true, data: users } as ApiResult)),
   // En error: convertir a { success: false, error: '...' }
-  catchError(err => {
+  catchError((err: unknown) => {
     return of<ApiResult>({
       success: false,
       error: 'Falló la obtención de usuario'
@@ -304,8 +304,8 @@ function fetchUsers(shouldFail: boolean) {
 }
 
 fetchUsers(true).pipe(
-  catchError(err => {
-    console.error('Ha ocurrido un error:', err.message);
+  catchError((err: unknown) => {
+    console.error('Ha ocurrido un error:', (err instanceof Error ? err.message : String(err)));
     // Retornar array vacío como valor predeterminado
     return of<User[]>([]);
   })
@@ -338,7 +338,7 @@ import { ajax } from 'rxjs/ajax';
 
 ajax.getJSON('/api/critical-data').pipe(
   retry(2),
-  catchError(err => {
+  catchError((err: unknown) => {
     if (err.status === 401) {
       // Relanzar errores de autenticación (manejar globalmente)
       return throwError(() => err);
@@ -373,7 +373,7 @@ function fetchUserData(userId: string) {
     retry({ count: 2, delay: 1000 }),
 
     // Nivel 2: Errores recuperables
-    catchError((error) => {
+    catchError((error: unknown) => {
       if (error.status === 404) {
         // 404 → continuar con datos predeterminados
         return of({
@@ -520,7 +520,7 @@ import { ajax } from 'rxjs/ajax';
 
 // Enfoque 1: Redirigir con catchError (completar en flujo)
 ajax.getJSON('/api/protected-data').pipe(
-  catchError(err => {
+  catchError((err: unknown) => {
     if (err.status === 401) {
       // Manejar error de autenticación con catchError
       router.navigate(['/login']);
@@ -534,7 +534,7 @@ ajax.getJSON('/api/protected-data').pipe(
 
 // Enfoque 2: Centralizar con subscribe.error
 ajax.getJSON('/api/protected-data').pipe(
-  catchError(err => {
+  catchError((err: unknown) => {
     // Relanzar errores de autenticación (manejar globalmente)
     if (err.status === 401) {
       return throwError(() => err);
@@ -585,14 +585,14 @@ import { ajax } from 'rxjs/ajax';
 
 ajax.getJSON('/api/data').pipe(
   // Capturar temprano
-  catchError(err => {
+  catchError((err: unknown) => {
     console.log('Registrar error:', err);
     // Relanzar si no se puede manejar
     return throwError(() => err);
   }),
   map(data => transformData(data)),
   // Capturar errores de transformación también
-  catchError(err => {
+  catchError((err: unknown) => {
     console.log('Error de transformación:', err);
     return throwError(() => err);
   })
@@ -631,13 +631,13 @@ class FatalError extends Error {
 }
 
 ajax.getJSON('/api/data').pipe(
-  catchError(err => {
+  catchError((err: unknown) => {
     if (err.status === 404 || err.status === 500) {
       // Recuperable
-      return throwError(() => new RecoverableError(err.message));
+      return throwError(() => new RecoverableError((err instanceof Error ? err.message : String(err))));
     }
     // Error fatal
-    return throwError(() => new FatalError(err.message));
+    return throwError(() => new FatalError((err instanceof Error ? err.message : String(err))));
   })
 ).subscribe({
   next: data => console.log('Datos:', data),
@@ -663,7 +663,7 @@ let isLoading = true;
 let resourceHandle: any = null;
 
 ajax.getJSON('/api/data').pipe(
-  catchError(err => {
+  catchError((err: unknown) => {
     console.log('Manejo de errores:', err);
     return of(null);
   }),
@@ -724,7 +724,7 @@ R: Normalmente **después de catchError**. Esto asegura que la limpieza se ejecu
 ```typescript
 source$.pipe(
   retry(2),
-  catchError(err => of(defaultValue)),
+  catchError((err: unknown) => of(defaultValue)),
   finalize(() => cleanup()) // Después de catchError
 )
 ```

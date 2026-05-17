@@ -390,8 +390,8 @@ of(1, 2, 3)
       }
       return of(value);
     }),
-    catchError(error => {
-      console.error('🔴 Errore catturato:', error.message);
+    catchError((error: unknown) => {
+      console.error('🔴 Errore catturato:', (error instanceof Error ? error.message : String(error)));
       return of(-1); // Valore di fallback
     })
   )

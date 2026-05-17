@@ -38,6 +38,9 @@ clicks$
 
 [🌐 RxJS Official Documentation - `withLatestFrom`](https://rxjs.dev/api/index/function/withLatestFrom)
 
+> [!WARNING] Atenção em código de produção
+> O exemplo acima omite o cancelamento da inscrição de `fromEvent` para simplificar a explicação. Em código real, gerencie explicitamente o ciclo de vida com `takeUntil(destroy$)`, `take(N)`, ou `Subscription.unsubscribe()`. Detalhes: [Superar dificuldades: gerenciamento do ciclo de vida](/pt/guide/overcoming-difficulties/lifecycle-management.md)
+
 
 ## 💡 Typical Usage Patterns
 
