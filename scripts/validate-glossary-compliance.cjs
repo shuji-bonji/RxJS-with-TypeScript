@@ -157,13 +157,19 @@ function validateFile(jaPath, transPath, relPath, lang, glossary) {
   const transLines = trans.split('\n');
   jaCalloutPhrases.forEach(phrase => {
     transLines.forEach((line, i) => {
-      if (line.includes(phrase)) {
-        violations.callouts_ja_residual.push({
-          phrase,
-          lineNo: i + 1,
-          line: line.trim().slice(0, 100),
-        });
-      }
+      if (!line.includes(phrase)) return;
+      // URL アンカー (#xxx-忘れ-メモリリーク 等) や Markdown リンク内は誤検出として除外
+      // [...](.../#anchor-含む-JA) パターンや、(.../#anchor#JA) などをスキップ
+      const lineWithoutLinks = line.replace(/\[[^\]]*\]\([^)]*\)/g, ''); // [text](url) を除去
+      if (!lineWithoutLinks.includes(phrase)) return;
+      // インラインコード ``...`` 内も除外
+      const noInlineCode = lineWithoutLinks.replace(/`[^`]+`/g, '');
+      if (!noInlineCode.includes(phrase)) return;
+      violations.callouts_ja_residual.push({
+        phrase,
+        lineNo: i + 1,
+        line: line.trim().slice(0, 100),
+      });
     });
   });
 

@@ -106,6 +106,43 @@ def fix_leading_whitespace(text: str) -> tuple[str, int]:
     return text, (1 if text != original else 0)
 
 
+def fix_malformed_fence_languages(text: str) -> tuple[str, int]:
+    r"""壊れた言語マーカーを持つコードフェンスを正規化
+
+    Vue ビルドで以下のような警告が出るパターンに対処:
+        ```}     <- 言語マーカーが '}' になっている (Vue 補間の破片)
+        ```\d+___ <- (別関数で処理)
+        ```ts.   <- 末尾にピリオド
+        ```A___ etc.
+
+    対策: フェンスの言語マーカーが英数字以外を含む or 妥当でない場合、
+    マーカー部分を空にする (just '```')。
+    ただし通常の言語 (ts, javascript, python, mermaid 等) は保持。
+    """
+    VALID_LANGS = {'ts', 'typescript', 'js', 'javascript', 'json', 'python', 'py',
+                   'sh', 'bash', 'shell', 'html', 'css', 'scss', 'mermaid', 'yaml',
+                   'yml', 'xml', 'md', 'markdown', 'sql', 'rust', 'go', 'java',
+                   'cpp', 'c', 'csharp', 'cs', 'kotlin', 'swift', 'ruby', 'rb',
+                   'php', 'plaintext', 'text', 'txt', 'diff'}
+    changes = 0
+
+    def repl(m):
+        nonlocal changes
+        lang = m.group(1).strip()
+        # 既知の有効な言語ならそのまま
+        if lang.lower() in VALID_LANGS:
+            return m.group(0)
+        # 識別子っぽい (英数字とハイフン、アンダーバー) 場合は許容
+        if re.match(r'^[a-zA-Z][a-zA-Z0-9_-]*$', lang):
+            return m.group(0)
+        # 不正なマーカー (}, .ts., 0___ 等) は剥がす
+        changes += 1
+        return '```'
+
+    new_text = re.sub(r'^```([^\n]*)$', repl, text, flags=re.MULTILINE)
+    return new_text, changes
+
+
 def fix_residual_placeholder_fences(text: str) -> tuple[str, int]:
     """残存した ```N___ 形式の orphan fence を除去
 
@@ -525,6 +562,11 @@ def process_file(lang: str, rel_path: str, glossary: dict = None) -> tuple[bool,
     if n9:
         actions.append(f'ジェネリック型エスケープ ({n9}箇所)')
 
+    # 10. 不正な言語マーカー (```} 等) を ``` に正規化
+    text, n10 = fix_malformed_fence_languages(text)
+    if n10:
+        actions.append(f'不正フェンスマーカー修正 ({n10}箇所)')
+
     if text != original:
         file.write_text(text, encoding='utf-8')
         return True, actions
@@ -598,6 +640,9 @@ def main():
                     text, n9 = fix_unescaped_generics(text)
                     if n9:
                         actions.append(f'ジェネリック型エスケープ ({n9}箇所)')
+                    text, n10 = fix_malformed_fence_languages(text)
+                    if n10:
+                        actions.append(f'不正フェンスマーカー修正 ({n10}箇所)')
                 if text != original:
                     md.write_text(text, encoding='utf-8')
                     print(f"  ✅ {lang}/{rel}: {', '.join(actions)}")

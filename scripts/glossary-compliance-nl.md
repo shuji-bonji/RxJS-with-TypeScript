@@ -5,92 +5,40 @@
 | 項目 | 値 |
 |------|-----|
 | 検査ファイル数 | 181 |
-| 違反のあるファイル数 | 11 |
-| 違反総数 | 21 |
+| 違反のあるファイル数 | 3 |
+| 違反総数 | 9 |
 
 ### 違反タイプ別
 
 | タイプ | 件数 |
 |--------|------|
-| 🔴 no_translate (固有名詞消失) | 21 |
+| 🔴 no_translate (固有名詞消失) | 9 |
 | 🟡 callouts JA 残存 | 0 |
 | 🟠 code_jp 残存 (コード内日本語) | 0 |
 
 ## 違反詳細 (Top 30)
 
-### `operators/transformation/expand.md` (違反 6 件)
+### `practical-patterns/api-calls.md` (違反 4 件)
 
 **no_translate 違反:**
 
 | 用語 | JA出現 | 翻訳出現 | 比率 |
 |------|--------|----------|------|
-| `Observable` | 7 | 0 | 0 |
-| `defer` | 3 | 0 | 0 |
-| `filter` | 3 | 0 | 0 |
-| `reduce` | 7 | 0 | 0 |
-| `count` | 5 | 0 | 0 |
-| `error` | 3 | 0 | 0 |
+| `Subject` | 4 | 0 | 0 |
+| `exhaustMap` | 3 | 0 | 0 |
+| `count` | 6 | 0 | 0 |
+| `Promise` | 6 | 0 | 0 |
 
-### `error-handling/strategies.md` (違反 2 件)
+### `practical-patterns/ui-events.md` (違反 4 件)
 
 **no_translate 違反:**
 
 | 用語 | JA出現 | 翻訳出現 | 比率 |
 |------|--------|----------|------|
-| `delay` | 3 | 0 | 0 |
-| `count` | 3 | 0 | 0 |
-
-### `operators/combination/combineLatestWith.md` (違反 2 件)
-
-**no_translate 違反:**
-
-| 用語 | JA出現 | 翻訳出現 | 比率 |
-|------|--------|----------|------|
-| `first` | 3 | 0 | 0 |
-| `last` | 3 | 0 | 0 |
-
-### `operators/combination/raceWith.md` (違反 2 件)
-
-**no_translate 違反:**
-
-| 用語 | JA出現 | 翻訳出現 | 比率 |
-|------|--------|----------|------|
-| `mergeMap` | 6 | 0 | 0 |
-| `delay` | 4 | 0 | 0 |
-
-### `operators/combination/zipWith.md` (違反 2 件)
-
-**no_translate 違反:**
-
-| 用語 | JA出現 | 翻訳出現 | 比率 |
-|------|--------|----------|------|
-| `concatMap` | 4 | 0 | 0 |
-| `delay` | 4 | 0 | 0 |
-
-### `practical-patterns/ui-events.md` (違反 2 件)
-
-**no_translate 違反:**
-
-| 用語 | JA出現 | 翻訳出現 | 比率 |
-|------|--------|----------|------|
+| `of` | 7 | 0 | 0 |
 | `timer` | 4 | 0 | 0 |
 | `buffer` | 4 | 0 | 0 |
-
-### `creation-functions/loop/index.md` (違反 1 件)
-
-**no_translate 違反:**
-
-| 用語 | JA出現 | 翻訳出現 | 比率 |
-|------|--------|----------|------|
-| `retry` | 3 | 0 | 0 |
-
-### `operators/combination/combineLatestAll.md` (違反 1 件)
-
-**no_translate 違反:**
-
-| 用語 | JA出現 | 翻訳出現 | 比率 |
-|------|--------|----------|------|
-| `timer` | 4 | 0 | 0 |
+| `catchError` | 4 | 0 | 0 |
 
 ### `operators/filtering/skipUntil.md` (違反 1 件)
 
@@ -98,25 +46,9 @@
 
 | 用語 | JA出現 | 翻訳出現 | 比率 |
 |------|--------|----------|------|
-| `count` | 5 | 0 | 0 |
-
-### `operators/transformation/bufferToggle.md` (違反 1 件)
-
-**no_translate 違反:**
-
-| 用語 | JA出現 | 翻訳出現 | 比率 |
-|------|--------|----------|------|
-| `bufferWhen` | 5 | 0 | 0 |
-
-### `practical-patterns/api-calls.md` (違反 1 件)
-
-**no_translate 違反:**
-
-| 用語 | JA出現 | 翻訳出現 | 比率 |
-|------|--------|----------|------|
-| `count` | 6 | 0 | 0 |
+| `Observable` | 3 | 0 | 0 |
 
 
 ---
 
-生成日時: 2026-05-18T00:49:05.477Z
+生成日時: 2026-05-18T01:43:50.125Z

@@ -1,34 +1,34 @@
 {
   "language": "de",
   "totalFiles": 181,
-  "filesWithViolations": 6,
-  "totalViolations": 9,
+  "filesWithViolations": 3,
+  "totalViolations": 6,
   "files": [
     {
-      "file": "operators/filtering/skipWhile.md",
+      "file": "creation-functions/basic/fromEvent.md",
       "violations": {
         "no_translate": [
           {
-            "term": "fromEvent",
-            "ja_count": 3,
-            "trans_count": 0,
-            "ratio": 0
-          },
-          {
-            "term": "interval",
-            "ja_count": 4,
-            "trans_count": 0,
-            "ratio": 0
-          },
-          {
             "term": "map",
-            "ja_count": 8,
+            "ja_count": 10,
             "trans_count": 0,
             "ratio": 0
           },
           {
-            "term": "take",
-            "ja_count": 4,
+            "term": "window",
+            "ja_count": 5,
+            "trans_count": 0,
+            "ratio": 0
+          },
+          {
+            "term": "count",
+            "ja_count": 5,
+            "trans_count": 0,
+            "ratio": 0
+          },
+          {
+            "term": "pipe",
+            "ja_count": 8,
             "trans_count": 0,
             "ratio": 0
           }
@@ -39,43 +39,12 @@
       "total": 4
     },
     {
-      "file": "anti-patterns/checklist.md",
-      "violations": {
-        "no_translate": [],
-        "callouts_ja_residual": [
-          {
-            "phrase": "メモリリーク",
-            "lineNo": 17,
-            "line": "| <input type=\"checkbox\" /> | **[Unendliche Streams immer abbestellen](./common-mistakes#3-unsubscri"
-          }
-        ],
-        "code_jp_residual": []
-      },
-      "total": 1
-    },
-    {
       "file": "appendix/rxjs-and-reactive-streams-ecosystem.md",
       "violations": {
         "no_translate": [
           {
-            "term": "Subscriber",
+            "term": "Observable",
             "ja_count": 3,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 1
-    },
-    {
-      "file": "creation-functions/basic/fromEvent.md",
-      "violations": {
-        "no_translate": [
-          {
-            "term": "count",
-            "ja_count": 5,
             "trans_count": 0,
             "ratio": 0
           }
@@ -102,20 +71,13 @@
       "total": 1
     },
     {
-      "file": "operators/filtering/skipLast.md",
+      "file": "anti-patterns/checklist.md",
       "violations": {
-        "no_translate": [
-          {
-            "term": "error",
-            "ja_count": 5,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
+        "no_translate": [],
         "callouts_ja_residual": [],
         "code_jp_residual": []
       },
-      "total": 1
+      "total": 0
     },
     {
       "file": "anti-patterns/common-mistakes.md",
@@ -973,7 +935,25 @@
       "total": 0
     },
     {
+      "file": "operators/filtering/skipLast.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
       "file": "operators/filtering/skipUntil.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/filtering/skipWhile.md",
       "violations": {
         "no_translate": [],
         "callouts_ja_residual": [],

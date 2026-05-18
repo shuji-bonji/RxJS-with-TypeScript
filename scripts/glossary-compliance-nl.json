@@ -1,112 +1,34 @@
 {
   "language": "nl",
   "totalFiles": 181,
-  "filesWithViolations": 11,
-  "totalViolations": 21,
+  "filesWithViolations": 3,
+  "totalViolations": 9,
   "files": [
     {
-      "file": "operators/transformation/expand.md",
+      "file": "practical-patterns/api-calls.md",
       "violations": {
         "no_translate": [
           {
-            "term": "Observable",
-            "ja_count": 7,
+            "term": "Subject",
+            "ja_count": 4,
             "trans_count": 0,
             "ratio": 0
           },
           {
-            "term": "defer",
-            "ja_count": 3,
-            "trans_count": 0,
-            "ratio": 0
-          },
-          {
-            "term": "filter",
-            "ja_count": 3,
-            "trans_count": 0,
-            "ratio": 0
-          },
-          {
-            "term": "reduce",
-            "ja_count": 7,
-            "trans_count": 0,
-            "ratio": 0
-          },
-          {
-            "term": "count",
-            "ja_count": 5,
-            "trans_count": 0,
-            "ratio": 0
-          },
-          {
-            "term": "error",
-            "ja_count": 3,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 6
-    },
-    {
-      "file": "error-handling/strategies.md",
-      "violations": {
-        "no_translate": [
-          {
-            "term": "delay",
+            "term": "exhaustMap",
             "ja_count": 3,
             "trans_count": 0,
             "ratio": 0
           },
           {
             "term": "count",
-            "ja_count": 3,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 2
-    },
-    {
-      "file": "operators/combination/combineLatestWith.md",
-      "violations": {
-        "no_translate": [
-          {
-            "term": "first",
-            "ja_count": 3,
-            "trans_count": 0,
-            "ratio": 0
-          },
-          {
-            "term": "last",
-            "ja_count": 3,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 2
-    },
-    {
-      "file": "operators/combination/raceWith.md",
-      "violations": {
-        "no_translate": [
-          {
-            "term": "mergeMap",
             "ja_count": 6,
             "trans_count": 0,
             "ratio": 0
           },
           {
-            "term": "delay",
-            "ja_count": 4,
+            "term": "Promise",
+            "ja_count": 6,
             "trans_count": 0,
             "ratio": 0
           }
@@ -114,34 +36,18 @@
         "callouts_ja_residual": [],
         "code_jp_residual": []
       },
-      "total": 2
-    },
-    {
-      "file": "operators/combination/zipWith.md",
-      "violations": {
-        "no_translate": [
-          {
-            "term": "concatMap",
-            "ja_count": 4,
-            "trans_count": 0,
-            "ratio": 0
-          },
-          {
-            "term": "delay",
-            "ja_count": 4,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 2
+      "total": 4
     },
     {
       "file": "practical-patterns/ui-events.md",
       "violations": {
         "no_translate": [
+          {
+            "term": "of",
+            "ja_count": 7,
+            "trans_count": 0,
+            "ratio": 0
+          },
           {
             "term": "timer",
             "ja_count": 4,
@@ -153,35 +59,9 @@
             "ja_count": 4,
             "trans_count": 0,
             "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 2
-    },
-    {
-      "file": "creation-functions/loop/index.md",
-      "violations": {
-        "no_translate": [
+          },
           {
-            "term": "retry",
-            "ja_count": 3,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 1
-    },
-    {
-      "file": "operators/combination/combineLatestAll.md",
-      "violations": {
-        "no_translate": [
-          {
-            "term": "timer",
+            "term": "catchError",
             "ja_count": 4,
             "trans_count": 0,
             "ratio": 0
@@ -190,47 +70,15 @@
         "callouts_ja_residual": [],
         "code_jp_residual": []
       },
-      "total": 1
+      "total": 4
     },
     {
       "file": "operators/filtering/skipUntil.md",
       "violations": {
         "no_translate": [
           {
-            "term": "count",
-            "ja_count": 5,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 1
-    },
-    {
-      "file": "operators/transformation/bufferToggle.md",
-      "violations": {
-        "no_translate": [
-          {
-            "term": "bufferWhen",
-            "ja_count": 5,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 1
-    },
-    {
-      "file": "practical-patterns/api-calls.md",
-      "violations": {
-        "no_translate": [
-          {
-            "term": "count",
-            "ja_count": 6,
+            "term": "Observable",
+            "ja_count": 3,
             "trans_count": 0,
             "ratio": 0
           }
@@ -601,6 +449,15 @@
       "total": 0
     },
     {
+      "file": "creation-functions/loop/index.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
       "file": "creation-functions/loop/range.md",
       "violations": {
         "no_translate": [],
@@ -700,6 +557,15 @@
       "total": 0
     },
     {
+      "file": "error-handling/strategies.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
       "file": "error-handling/try-catch-integration.md",
       "violations": {
         "no_translate": [],
@@ -790,6 +656,24 @@
       "total": 0
     },
     {
+      "file": "operators/combination/combineLatestAll.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/combination/combineLatestWith.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
       "file": "operators/combination/concatAll.md",
       "violations": {
         "no_translate": [],
@@ -853,6 +737,15 @@
       "total": 0
     },
     {
+      "file": "operators/combination/raceWith.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
       "file": "operators/combination/switchAll.md",
       "violations": {
         "no_translate": [],
@@ -872,6 +765,15 @@
     },
     {
       "file": "operators/combination/zipAll.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/combination/zipWith.md",
       "violations": {
         "no_translate": [],
         "callouts_ja_residual": [],
@@ -1204,6 +1106,15 @@
       "total": 0
     },
     {
+      "file": "operators/transformation/bufferToggle.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
       "file": "operators/transformation/bufferWhen.md",
       "violations": {
         "no_translate": [],
@@ -1223,6 +1134,15 @@
     },
     {
       "file": "operators/transformation/exhaustMap.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/transformation/expand.md",
       "violations": {
         "no_translate": [],
         "callouts_ja_residual": [],

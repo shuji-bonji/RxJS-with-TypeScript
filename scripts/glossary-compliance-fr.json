@@ -1,148 +1,43 @@
 {
   "language": "fr",
   "totalFiles": 181,
-  "filesWithViolations": 14,
-  "totalViolations": 18,
+  "filesWithViolations": 3,
+  "totalViolations": 5,
   "files": [
-    {
-      "file": "creation-functions/index.md",
-      "violations": {
-        "no_translate": [
-          {
-            "term": "Creation Function",
-            "ja_count": 9,
-            "trans_count": 0,
-            "ratio": 0
-          },
-          {
-            "term": "Pipeable Operator",
-            "ja_count": 10,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 2
-    },
-    {
-      "file": "operators/transformation/bufferToggle.md",
-      "violations": {
-        "no_translate": [
-          {
-            "term": "timer",
-            "ja_count": 5,
-            "trans_count": 0,
-            "ratio": 0
-          },
-          {
-            "term": "bufferWhen",
-            "ja_count": 5,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 2
-    },
-    {
-      "file": "operators/utility/dematerialize.md",
-      "violations": {
-        "no_translate": [
-          {
-            "term": "interval",
-            "ja_count": 4,
-            "trans_count": 0,
-            "ratio": 0
-          },
-          {
-            "term": "take",
-            "ja_count": 4,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 2
-    },
-    {
-      "file": "practical-patterns/caching-strategies.md",
-      "violations": {
-        "no_translate": [
-          {
-            "term": "BehaviorSubject",
-            "ja_count": 4,
-            "trans_count": 0,
-            "ratio": 0
-          },
-          {
-            "term": "distinctUntilChanged",
-            "ja_count": 4,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 2
-    },
-    {
-      "file": "anti-patterns/checklist.md",
-      "violations": {
-        "no_translate": [],
-        "callouts_ja_residual": [
-          {
-            "phrase": "メモリリーク",
-            "lineNo": 17,
-            "line": "| <input type=\"checkbox\" /> | **[Toujours se désabonner des flux infinis](./common-mistakes#3-unsubs"
-          }
-        ],
-        "code_jp_residual": []
-      },
-      "total": 1
-    },
-    {
-      "file": "anti-patterns/common-mistakes.md",
-      "violations": {
-        "no_translate": [],
-        "callouts_ja_residual": [
-          {
-            "phrase": "メモリリーク",
-            "lineNo": 13,
-            "line": "3. [Oubli d'unsubscribe (fuites mémoire)](#3-unsubscribe-忘れ-メモリリーク)"
-          }
-        ],
-        "code_jp_residual": []
-      },
-      "total": 1
-    },
-    {
-      "file": "anti-patterns/index.md",
-      "violations": {
-        "no_translate": [],
-        "callouts_ja_residual": [
-          {
-            "phrase": "メモリリーク",
-            "lineNo": 29,
-            "line": "| **[Oubli d'unsubscribe](./common-mistakes#3-unsubscribe-忘れ-メモリリーク)** | Ne pas se désabonner des fl"
-          }
-        ],
-        "code_jp_residual": []
-      },
-      "total": 1
-    },
     {
       "file": "creation-functions/basic/fromEvent.md",
       "violations": {
         "no_translate": [
           {
-            "term": "Observer",
+            "term": "window",
+            "ja_count": 5,
+            "trans_count": 0,
+            "ratio": 0
+          },
+          {
+            "term": "count",
+            "ja_count": 5,
+            "trans_count": 0,
+            "ratio": 0
+          }
+        ],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 2
+    },
+    {
+      "file": "creation-functions/basic/timer.md",
+      "violations": {
+        "no_translate": [
+          {
+            "term": "Subject",
+            "ja_count": 3,
+            "trans_count": 0,
+            "ratio": 0
+          },
+          {
+            "term": "map",
             "ja_count": 6,
             "trans_count": 0,
             "ratio": 0
@@ -151,95 +46,15 @@
         "callouts_ja_residual": [],
         "code_jp_residual": []
       },
-      "total": 1
+      "total": 2
     },
     {
-      "file": "creation-functions/basic/interval.md",
-      "violations": {
-        "no_translate": [
-          {
-            "term": "Observer",
-            "ja_count": 12,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 1
-    },
-    {
-      "file": "creation-functions/basic/timer.md",
-      "violations": {
-        "no_translate": [
-          {
-            "term": "Observer",
-            "ja_count": 8,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 1
-    },
-    {
-      "file": "operators/combination/combineLatestWith.md",
-      "violations": {
-        "no_translate": [
-          {
-            "term": "range",
-            "ja_count": 3,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 1
-    },
-    {
-      "file": "operators/combination/concatWith.md",
-      "violations": {
-        "no_translate": [
-          {
-            "term": "Creation Function",
-            "ja_count": 3,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 1
-    },
-    {
-      "file": "operators/transformation/groupBy.md",
-      "violations": {
-        "no_translate": [
-          {
-            "term": "fromEvent",
-            "ja_count": 4,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 1
-    },
-    {
-      "file": "operators/transformation/windowTime.md",
+      "file": "creation-functions/index.md",
       "violations": {
         "no_translate": [
           {
             "term": "Observable",
-            "ja_count": 3,
+            "ja_count": 13,
             "trans_count": 0,
             "ratio": 0
           }
@@ -250,7 +65,34 @@
       "total": 1
     },
     {
+      "file": "anti-patterns/checklist.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "anti-patterns/common-mistakes.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
       "file": "anti-patterns/flag-management.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "anti-patterns/index.md",
       "violations": {
         "no_translate": [],
         "callouts_ja_residual": [],
@@ -377,6 +219,15 @@
     },
     {
       "file": "creation-functions/basic/index.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "creation-functions/basic/interval.md",
       "violations": {
         "no_translate": [],
         "callouts_ja_residual": [],
@@ -763,7 +614,25 @@
       "total": 0
     },
     {
+      "file": "operators/combination/combineLatestWith.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
       "file": "operators/combination/concatAll.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/combination/concatWith.md",
       "violations": {
         "no_translate": [],
         "callouts_ja_residual": [],
@@ -1195,6 +1064,15 @@
       "total": 0
     },
     {
+      "file": "operators/transformation/bufferToggle.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
       "file": "operators/transformation/bufferWhen.md",
       "violations": {
         "no_translate": [],
@@ -1223,6 +1101,15 @@
     },
     {
       "file": "operators/transformation/expand.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/transformation/groupBy.md",
       "violations": {
         "no_translate": [],
         "callouts_ja_residual": [],
@@ -1330,6 +1217,15 @@
       "total": 0
     },
     {
+      "file": "operators/transformation/windowTime.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
       "file": "operators/transformation/windowToggle.md",
       "violations": {
         "no_translate": [],
@@ -1358,6 +1254,15 @@
     },
     {
       "file": "operators/utility/delayWhen.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/utility/dematerialize.md",
       "violations": {
         "no_translate": [],
         "callouts_ja_residual": [],
@@ -1574,6 +1479,15 @@
     },
     {
       "file": "practical-patterns/api-calls.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "practical-patterns/caching-strategies.md",
       "violations": {
         "no_translate": [],
         "callouts_ja_residual": [],
