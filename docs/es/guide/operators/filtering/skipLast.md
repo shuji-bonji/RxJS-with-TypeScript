@@ -285,11 +285,8 @@ numbers$.pipe(
 // (7, 8, 9 se omite)
 ```
 
-```4___
-
 **diferencias visuales**:.
 
-```
 Entrada: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 
 skipLast(3): 0, 1, 2, 3, 4, 5, 6 | [7, 8, 9 Saltar]
@@ -395,15 +392,12 @@ numbers$.pipe(
 // (7, 8, 9 se omite)
 ```
 
-```0___
-
 ## 💡 Patrones de combinación prácticos
 
 ### Patrón 1: Consigue sólo la parte intermedia.
 
 Sáltate el principio y el final y obtén sólo la parte intermedia
 
-```
 
 ```ts
 import { range } from 'rxjs';
@@ -417,14 +411,11 @@ numbers$.pipe(
 // Salida: 0, 1, 2, 3, 4, 5, 6
 // (7, 8, 9 se omite)
 ```
-
-```1___.
 
 ### Patrón 2: Validación de datos
 
 Si se requiere la verificación de valores posteriores
 
-```
 
 ```ts
 import { range } from 'rxjs';
@@ -438,14 +429,11 @@ numbers$.pipe(
 // Salida: 0, 1, 2, 3, 4, 5, 6
 // (7, 8, 9 se omite)
 ```
-
-```2___.
 
 ### Patrón 3: Tratamiento de ventanas
 
 Procesamiento de ventana con datos que excluyen los últimos N casos
 
-```
 
 ```ts
 import { range } from 'rxjs';
@@ -459,8 +447,6 @@ numbers$.pipe(
 // Salida: 0, 1, 2, 3, 4, 5, 6
 // (7, 8, 9 se omite)
 ```
-
-```3___.
 
 ## 📚 Operadores relacionados
 

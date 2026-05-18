@@ -285,11 +285,8 @@ numbers$.pipe(
 // (7, 8, 9 wordt overgeslagen)
 ```
 
-```4___
-
 **visuele verschillen**:.
 
-```
 Invoer: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 
 skipLast(3): 0, 1, 2, 3, 4, 5, 6 | [7, 8, 9 Overslaan]
@@ -395,15 +392,12 @@ numbers$.pipe(
 // (7, 8, 9 wordt overgeslagen)
 ```
 
-```0___
-
 ## 💡 Praktische combinatiepatronen
 
 ### Patroon 1: Alleen het tussenliggende deel krijgen
 
 Sla het begin en einde over en krijg alleen het tussenstuk
 
-```
 
 ```ts
 import { range } from 'rxjs';
@@ -417,14 +411,11 @@ numbers$.pipe(
 // Uitgang: 0, 1, 2, 3, 4, 5, 6
 // (7, 8, 9 wordt overgeslagen)
 ```
-
-```1___.
 
 ### Patroon 2: Gegevensvalidatie
 
 Als verificatie vereist is op volgende waarden
 
-```
 
 ```ts
 import { range } from 'rxjs';
@@ -438,14 +429,11 @@ numbers$.pipe(
 // Uitgang: 0, 1, 2, 3, 4, 5, 6
 // (7, 8, 9 wordt overgeslagen)
 ```
-
-```2___.
 
 ### Patroon 3: Vensterverwerking
 
 Vensterverwerking met gegevens exclusief de laatste N gevallen
 
-```
 
 ```ts
 import { range } from 'rxjs';
@@ -459,8 +447,6 @@ numbers$.pipe(
 // Uitgang: 0, 1, 2, 3, 4, 5, 6
 // (7, 8, 9 wordt overgeslagen)
 ```
-
-```3___.
 
 ## Gerelateerde operatoren
 

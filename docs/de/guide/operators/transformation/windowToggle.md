@@ -51,7 +51,7 @@ source$.pipe(
 | Operator | Ausgabe | Anwendungsfall |
 |:---|:---|:---|
 | `bufferToggle` | **Array (T[])** | Verarbeitung gruppierter Werte zusammen |
-| `windowToggle` | **Observable\\<T>** | Unterschiedliche Stream-Verarbeitung für jede Gruppe |
+| `windowToggle` | **Observable\<T>** | Unterschiedliche Stream-Verarbeitung für jede Gruppe |
 
 ```ts
 import { interval } from 'rxjs';

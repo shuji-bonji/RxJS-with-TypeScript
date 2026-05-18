@@ -346,11 +346,8 @@ source$.pipe(
 // 6Commence à la seconde,7Fin à la seconde → Valeur: 12, 13
 ```
 
-```0___
-
 ## 🆚 Comparaison des opérateurs basés sur les fenêtres
 
-```
 
 ```ts
 import { interval } from 'rxjs';
@@ -376,11 +373,8 @@ source$.pipe(
 // 6Commence à la seconde,7Fin à la seconde → Valeur: 12, 13
 ```
 
-```3___
-
 ## 🔄 Différences avec windowWhen
 
-```
 
 ```ts
 import { interval, timer } from 'rxjs';
@@ -427,8 +421,6 @@ source$.pipe(
 // 4Commence à la seconde,5Fin à la seconde → Valeur: 8, 9
 // 6Commence à la seconde,7Fin à la seconde → Valeur: 12, 13
 ```
-
-```4___
 
 ## 📚 Opérateurs apparentés.
 

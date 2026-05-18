@@ -270,8 +270,6 @@ source$.pipe(
 // Fenêtre4: 5, 6    (après3Début des secondes → 4(Fin des secondes)
 ```
 
-```1___
-
 **Points d'utilisation** :.
 - **`fenêtreWhen`** : pour traiter toutes les données en continu et sans omissions (journalisation, agrégation de données, etc.).
 - **`windowToggle`** : pour traiter les données uniquement pendant une période de temps spécifique (par exemple, pendant les heures de bureau, lors de l'appui sur un bouton).
@@ -280,7 +278,6 @@ source$.pipe(
 
 Voici un exemple d'ajustement automatique de la période de fenêtre suivante en fonction des résultats de la fenêtre précédente.
 
-```
 
 ```ts
 import { interval, timer } from 'rxjs';
@@ -402,8 +399,6 @@ source$.pipe(
 // Fenêtre3: 3, 4    (après2Début des secondes → 3(Fin des secondes)
 // Fenêtre4: 5, 6    (après3Début des secondes → 4(Fin des secondes)
 ```
-
-```2___
 
 ## 📚 Opérateurs apparentés.
 

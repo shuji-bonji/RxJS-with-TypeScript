@@ -67,13 +67,10 @@ source$.pipe(
 // (erster2zweiter Wert 0, 1, 2, 3 werden übersprungen)
 ```
 
-```0___
-
 ## 💡 Typisches Nutzungsmuster
 
 1. **Start der Datenverarbeitung nach Benutzerauthentifizierung**.
 
-```
 
 ```ts
    import { interval, Subject } from 'rxjs';

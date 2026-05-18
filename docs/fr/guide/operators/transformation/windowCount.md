@@ -307,11 +307,8 @@ source$.pipe(
 // ...
 ```
 
-```0___
-
 ## 🆚 Comparaison des opérateurs basés sur les fenêtres
 
-```
 
 ```ts
 import { interval } from 'rxjs';
@@ -337,8 +334,6 @@ source$.pipe(
 // Valeur dans la fenêtre: 5
 // ...
 ```
-
-```2___
 
 ## 📚 Opérateurs apparentés.
 

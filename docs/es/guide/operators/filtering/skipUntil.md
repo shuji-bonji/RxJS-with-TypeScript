@@ -67,13 +67,10 @@ source$.pipe(
 // (primer2segundo valor 0, 1, 2, 3 se omiten)
 ```
 
-```0___
-
 ## 💡 Patrón típico de utilización
 
 1. **Inicio del procesamiento de datos tras la autenticación del usuario**.
 
-```
 
 ```ts
    import { interval, Subject } from 'rxjs';
@@ -340,14 +337,11 @@ source$.pipe(
 // (primer2segundo valor 0, 1, 2, 3 se omiten)
 ```
 
-```1___
-
 0 1 2 3 4 5 6 7 8 9 10
       ↑ arriba arriba arriba arriba arriba
    SKIP inicio TAKE fin
    (desde 4) (hasta 9)
 
-```
 
 ## ⚠️ Un error común
 

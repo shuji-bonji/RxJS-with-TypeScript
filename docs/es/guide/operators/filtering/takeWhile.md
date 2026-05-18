@@ -71,15 +71,12 @@ source$.pipe(
 // Salida: 0, 1, 2, 3, 4, Finalización
 ```
 
-```0___
-
 \* Los valores que por defecto son `false` no se muestran, pero pueden incluirse con la opción `inclusive: true
 
 ## 🎯 opción inclusiva.
 
 Especifique `inclusive: true` si desea incluir valores para los que la condición es `false`.
 
-```
 
 ```ts
 import { range } from 'rxjs';

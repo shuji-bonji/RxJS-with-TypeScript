@@ -5,7 +5,7 @@ description: "L'opérateur windowTime divise l'Observable à intervalles de temp
 # windowTime - Fenêtre Temporelle
 
 L'opérateur `windowTime` regroupe les valeurs de l'Observable source **à intervalles réguliers** et produit ce groupe **comme un nouvel Observable**.
-Alors que `bufferTime` renvoie un tableau, `windowTime` renvoie **Observable\\<T>**, permettant d'appliquer d'autres opérateurs à chaque fenêtre.
+Alors que `bufferTime` renvoie un tableau, `windowTime` renvoie **Observable\<T>**, permettant d'appliquer d'autres opérateurs à chaque fenêtre.
 
 ## 🔰 Syntaxe de base et utilisation
 
@@ -47,7 +47,7 @@ source$.pipe(
 | Opérateur | Sortie | Cas d'utilisation |
 |:---|:---|:---|
 | `bufferTime` | **Tableau (T[])** | Traitement groupé des valeurs |
-| `windowTime` | **Observable\\<T>** | Traitement de flux différent par fenêtre temporelle |
+| `windowTime` | **Observable\<T>** | Traitement de flux différent par fenêtre temporelle |
 
 ## 🧠 Exemple de code pratique : compter les clics par seconde
 

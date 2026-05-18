@@ -5,7 +5,7 @@ description: window es un operador de RxJS que divide el Observable fuente en Ob
 # window - Ventana por Evento
 
 El operador `window` agrupa los valores del Observable fuente **hasta que otro Observable emite un valor**, y emite ese grupo como **un nuevo Observable**.
-Mientras que `buffer` devuelve un array, `window` **devuelve un Observable\\<T>**, lo que permite aplicar operadores adicionales a cada ventana.
+Mientras que `buffer` devuelve un array, `window` **devuelve un Observable\<T>**, lo que permite aplicar operadores adicionales a cada ventana.
 
 ## 🔰 Sintaxis básica y uso
 
@@ -46,7 +46,7 @@ source$.pipe(
 | Operador | Salida | Caso de uso |
 |:---|:---|:---|
 | `buffer` | **Array (T[])** | Procesar valores agrupados juntos |
-| `window` | **Observable\\<T>** | Procesamiento de stream diferente por grupo |
+| `window` | **Observable\<T>** | Procesamiento de stream diferente por grupo |
 
 ```ts
 import { interval, timer } from 'rxjs';

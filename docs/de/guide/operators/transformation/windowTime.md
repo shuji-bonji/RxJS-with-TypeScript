@@ -5,7 +5,7 @@ description: "Der windowTime-Operator teilt Observable in Zeitintervallen. Verar
 # windowTime - Observable in festen Zeitintervallen teilen
 
 Der `windowTime`-Operator gruppiert die Werte eines Quell-Observables **in festen Zeitintervallen** und gibt diese Gruppen als **neue Observables** aus.
-Während `bufferTime` Arrays zurückgibt, gibt `windowTime` **Observable\\<T> zurück**, sodass auf jedes Fenster weitere Operatoren angewendet werden können.
+Während `bufferTime` Arrays zurückgibt, gibt `windowTime` **Observable\<T> zurück**, sodass auf jedes Fenster weitere Operatoren angewendet werden können.
 
 ## 🔰 Grundlegende Syntax und Verwendung
 
@@ -47,7 +47,7 @@ source$.pipe(
 | Operator | Ausgabe | Anwendungsfall |
 |:---|:---|:---|
 | `bufferTime` | **Array (T[])** | Gruppierte Werte gemeinsam verarbeiten |
-| `windowTime` | **Observable\\<T>** | Unterschiedliche Stream-Verarbeitung pro Zeitfenster |
+| `windowTime` | **Observable\<T>** | Unterschiedliche Stream-Verarbeitung pro Zeitfenster |
 
 ```ts
 import { interval } from 'rxjs';

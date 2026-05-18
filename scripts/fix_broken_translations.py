@@ -109,17 +109,18 @@ def fix_leading_whitespace(text: str) -> tuple[str, int]:
 def fix_residual_placeholder_fences(text: str) -> tuple[str, int]:
     """残存した ```N___ 形式の orphan fence を除去
 
-    Issue #34 翻訳時のプレースホルダー復元バグで、
-        ```          <- 直前の閉じ
-        (空行)
-        ```N___       <- orphan: ___CODE_N___ の残骸が言語マーカー扱い
-        (空行)
-        ```           <- 閉じ (空のコードブロックを閉じる)
-        (空行)
-        ```ts         <- 次の正常な開き
-    のパターンが残ることがある。
+    Issue #34 翻訳時のプレースホルダー復元バグで、___CODE_N___ プレースホルダーが
+    そのまま ```N___ という形でフェンスとして残ることがある。
+    対応する閉じ ``` も含めてペアで除去し、間にある内容 (見出し・段落等) を本文に戻す。
 
-    対策: ```N___ を含む空のコードブロック (内容ほぼ空白) を 3 行とも削除。
+    パターン例:
+        ```        <- 直前のコードブロックを閉じる
+        (空行)
+        ```N___    <- orphan opening
+        (見出しや段落)
+        ```        <- orphan closing (実際は次のセクション開始位置)
+        (空行)
+        ```ts      <- 次の正常なコードブロック
     """
     lines = text.split('\n')
     result = []
@@ -128,18 +129,46 @@ def fix_residual_placeholder_fences(text: str) -> tuple[str, int]:
     while i < len(lines):
         # ```N___ または ```N___. のパターン (orphan placeholder fence)
         if re.match(r'^```\d+___\.?\s*$', lines[i]):
-            # 直後の空行をスキップ → 次の ``` 単独 (close) を探す
+            # 次の ``` 単独 (orphan close) を探す
             j = i + 1
-            while j < len(lines) and lines[j].strip() == '':
+            while j < len(lines):
+                if re.match(r'^```\s*$', lines[j]):
+                    break
+                # 別のフェンスが先に出てきたら相方は見つからず → 単独除去のみ
+                if re.match(r'^```\S', lines[j]):
+                    j = -1  # 相方なし
+                    break
                 j += 1
-            if j < len(lines) and re.match(r'^```\s*$', lines[j]):
-                # i から j まで (含む) を削除
-                # 前の result 末尾の空行も整理
+
+            if j > 0 and j < len(lines):
+                # ペアで除去: L[i] と L[j] を削除、間 (L[i+1:j]) は保持
+                # ただし result の末尾空行と L[i+1] の空行を整理
                 while result and result[-1].strip() == '':
                     result.pop()
-                # 1 つだけ空行を残す
-                result.append('')
+                result.append('')  # 区切り空行 1 つ
+                # 間の content を追加 (前後の空行をトリム)
+                inner = lines[i+1:j]
+                # 前後の空行を除去
+                while inner and inner[0].strip() == '':
+                    inner.pop(0)
+                while inner and inner[-1].strip() == '':
+                    inner.pop()
+                if inner:
+                    result.extend(inner)
+                    result.append('')
                 i = j + 1
+                removed += 1
+                continue
+            else:
+                # 相方なし: 単独の ```N___ 行のみ削除
+                # 前後空行整理
+                while result and result[-1].strip() == '':
+                    result.pop()
+                result.append('')
+                i += 1
+                # 次の空行も飛ばす
+                while i < len(lines) and lines[i].strip() == '':
+                    i += 1
                 removed += 1
                 continue
         result.append(lines[i])
@@ -187,7 +216,9 @@ def fix_unescaped_generics(text: str) -> tuple[str, int]:
             j = 0
             while j < len(line):
                 m = re.match(r'<([A-Z][a-zA-Z0-9]*)>', line[j:])
-                if m and not is_inside_code(j):
+                # 既に \< でエスケープされている場合は重複エスケープしない
+                already_escaped = j > 0 and line[j-1] == '\\'
+                if m and not is_inside_code(j) and not already_escaped:
                     new_line.append('\\<' + m.group(1) + '>')
                     j += m.end()
                     changes += 1

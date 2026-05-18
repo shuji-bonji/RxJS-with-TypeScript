@@ -264,11 +264,8 @@ numbers$.pipe(
 // Salida: 5, 6, 7, 8, 9
 ```
 
-```3___
-
 **diferencias visuales**:.
 
-```
 Entrada: 0, 1, 2, 3, 4, 5, 4, 3, 2, 1, 0
 
 skipWhile(n => n < 5):
@@ -391,13 +388,10 @@ numbers$.pipe(
 // Salida: 5, 6, 7, 8, 9
 ```
 
-```0___.
-
 ### Patrón 2: Filtrado basado en marcas de tiempo
 
 Sólo procesa datos después de una hora específica
 
-```
 
 ```ts
 import { range } from 'rxjs';
@@ -410,14 +404,11 @@ numbers$.pipe(
 ).subscribe(console.log);
 // Salida: 5, 6, 7, 8, 9
 ```
-
-```1___.
 
 ### Patrón 3: Omisión basada en el estado
 
 Omitir hasta que el sistema esté listo
 
-```
 
 ```ts
 import { range } from 'rxjs';
@@ -430,8 +421,6 @@ numbers$.pipe(
 ).subscribe(console.log);
 // Salida: 5, 6, 7, 8, 9
 ```
-
-```2___.
 
 ## 📚 Operadores relacionados.
 
