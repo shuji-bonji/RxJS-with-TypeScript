@@ -1,12 +1,11 @@
 ---
-description: combineLatestAll takes a Higher-order Observable (Observable of Observables) and combines the latest value of each when all internal Observables have fired at least once.
-titleTemplate: ':title'
+description: "combineLatestAll is an operator that takes a Higher-order Observable (Observable of Observables) and combines the latest value of each with the output once all internal Observables have fired at least once."
 ---
 
-# combineLatestAll - Combine Inner Latest Values
+# combineLatestAll - combine the latest value of the internal Observable
 
 The `combineLatestAll` operator takes a **Higher-order Observable** (Observable of Observables),
-**once all internal Observables have fired at least once**, combines their **latest values** and outputs them as an array.
+**Once all internal Observables have fired at least once**, combine their **latest values** and output them as an **array**.
 
 ## 🔰 Basic Syntax and Usage
 
@@ -14,45 +13,92 @@ The `combineLatestAll` operator takes a **Higher-order Observable** (Observable 
 import { interval, of } from 'rxjs';
 import { combineLatestAll, take } from 'rxjs';
 
-// Higher-order Observable with three internal Observables
+// 3The two internalObservablewithHigher-order Observable
 const higherOrder$ = of(
   interval(1000).pipe(take(3)), // 0, 1, 2
   interval(500).pipe(take(4)),  // 0, 1, 2, 3
   interval(2000).pipe(take(2))  // 0, 1
 );
 
-// Combine latest values once all internal Observables have fired at least once
+// All internalsObservablehave at least1fires once, combine the latest value
 higherOrder$
   .pipe(combineLatestAll())
   .subscribe(values => console.log(values));
 
 // Output:
-// [1, 3, 0] ← When all have fired at least once (after 2 seconds)
-// [2, 3, 0] ← 1st Observable fires 2 (after 3 seconds)
-// [2, 3, 1] ← 3rd Observable fires 1 (after 4 seconds)
+// [1, 3, 0] ← When all have fired at least1When all have fired at least once (after2seconds after)
+// [2, 3, 0] ← 1The secondObservableis fired (after 1.5 seconds)2fires (after3seconds after)
+// [2, 3, 1] ← 3The secondObservableis fired (after 1.5 seconds)1fires (after4seconds after)
 ```
 
-- Collects internal Observables when Higher-order Observable **completes**
-- **Once all internal Observables have fired at least once**, starts combining
-- Whenever any internal Observable emits a value, **combines all latest values** and outputs
+- Collect internal Observables when Higher-order Observable is **complete**.
+- **Start combining when all internal Observables have fired** at least once
+- Whenever any internal Observable issues a value, **combine** all the latest values and **output
 
 [🌐 RxJS Official Documentation - `combineLatestAll`](https://rxjs.dev/api/index/function/combineLatestAll)
 
-## 💡 Typical Usage Patterns
+## 💡 Typical utilization pattern
 
-- **Combine latest results of multiple API calls**
-- **Synchronize latest values of multiple form inputs**
+- **combine the latest results of multiple API calls**
+- **Synchronize the latest values of multiple form inputs**
 - **Integrate multiple real-time data sources**
 
-## 🔄 Related Creation Function
+## 🧠 Practical Code Examples
+
+Example of combining the latest results of multiple API calls
+
+```ts
+import { of, timer, Observable } from 'rxjs';
+import { map, combineLatestAll, take } from 'rxjs';
+
+const output = document.createElement('div');
+document.body.appendChild(output);
+
+// 3Two simulatedAPICreate a call (Higher-order ObservableCreate a call ()
+const apiCalls$: Observable<Observable<string>> = of(
+  // API 1: User information (1Completed in seconds,3updated once)
+  timer(0, 1000).pipe(
+    take(3),
+    map(n => `User: User${n}`)
+  ),
+  // API 2: Number of notifications (0.5Completed in seconds,4updated once)
+  timer(0, 500).pipe(
+    take(4),
+    map(n => `Notifications: ${n}Notifications`)
+  ),
+  // API 3: Status2Completed in seconds,2updated once)
+  timer(0, 2000).pipe(
+    take(2),
+    map(n => n === 0 ? 'Status: Offline' : 'Status: Online')
+  )
+);
+
+// AllAPICombined latest value of calls
+apiCalls$
+  .pipe(combineLatestAll())
+  .subscribe(values => {
+    output.innerHTML = '<strong>Latest status:</strong><br>';
+    values.forEach((value, index) => {
+      const item = document.createElement('div');
+      item.textContent = `${index + 1}. ${value}`;
+      output.appendChild(item);
+    });
+  });
+```
+
+- Three API calls are executed in parallel
+- After **all** have fired at least once, the combined results will be displayed
+- Whenever any API is updated, the **latest combination** is displayed
+
+## 🔄 Related Creation Functions
 
 While `combineLatestAll` is primarily used for flattening Higher-order Observables,
-use the **Creation Function** `combineLatest` for normal multi-Observable combinations.
+For normal combinations of multiple Observables, use the **Creation Function** `combineLatest`.
 
 ```ts
 import { combineLatest, interval } from 'rxjs';
 
-// Creation Function version (more common usage)
+// Creation FunctionEdition (more common usage)
 const combined$ = combineLatest([
   interval(1000),
   interval(500),
@@ -62,57 +108,48 @@ const combined$ = combineLatest([
 combined$.subscribe(console.log);
 ```
 
-See [Chapter 3: Creation Functions - combineLatest](/en/guide/creation-functions/combination/combineLatest).
+See [Chapter 3 Creation Functions - combineLatest](/en/guide/creation-functions/combination/combineLatest).
 
 ## 🔄 Related Operators
 
-| Operator | Description |
+| Operator | Description. |
 |---|---|
-| [mergeAll](/en/guide/operators/combination/mergeAll) | Subscribe to all internal Observables in parallel |
-| [concatAll](/en/guide/operators/combination/concatAll) | Subscribe to internal Observables in order |
-| [switchAll](/en/guide/operators/combination/switchAll) | Switch to new internal Observable |
-| [zipAll](/en/guide/operators/combination/zipAll) | Pair values in corresponding order from each internal Observable |
+| [mergeAll](. /mergeAll) | Subscribe all internal Observables in parallel |
+| [concatAll](. /concatAll) | Subscribe to internal Observables in order |
+| [switchAll](. /switchAll) | Switch to a new internal Observable |
+| [zipAll](. /zipAll) | Pair the values of each internal Observable in the corresponding order |
 
-## ⚠️ Important Notes
+## ⚠️ Notes.
 
-### Higher-order Observable Must Complete
+### Higher-order Observable must be completed
 
-`combineLatestAll` waits to collect internal Observables until the Higher-order Observable (outer Observable) **completes**.
+`combineLatestAll` waits to collect the internal Observable until the Higher-order Observable (outer Observable) is **completed**.
 
-#### ❌ Nothing output because Higher-order Observable doesn't complete
+#### ❌ Higher-order Observable does not complete, so nothing is output
+
 ```ts
 interval(1000).pipe(
   map(() => of(1, 2, 3)),
   combineLatestAll()
-).subscribe(console.log); // Nothing output
+).subscribe(console.log); // Nothing is output
 ```
 
-#### ✅ Complete with take
-```ts
-interval(1000).pipe(
-  take(3), // Complete after 3
-  map(() => of(1, 2, 3)),
-  combineLatestAll()
-).subscribe(console.log);
-```
+#### ✅ Take to complete
 
-### All Internal Observables Must Fire at Least Once
+### All internal Observables must fire at least once
 
-No values will be output until all internal Observables have **fired at least once**.
+No value will be output until all internal Observables have fired **at least once**.
 
 ```ts
-import { of, NEVER } from 'rxjs';
-import { combineLatestAll } from 'rxjs';
-
-// Nothing output if even one internal Observable never fires
+// 1If any of the internalObservableNothing is output if there are
 of(
   of(1, 2, 3),
   NEVER // Never fires
 ).pipe(
   combineLatestAll()
-).subscribe(console.log); // Nothing output
+).subscribe(console.log); // Nothing is output
 ```
 
-### Memory Usage
+### memory usage
 
-Note memory usage if there are many internal Observables, since **latest values of all internal Observables are kept in memory**.
+Note the memory usage if there are many internal Observables, since the **latest values of all internal Observables are kept in memory**.
