@@ -37,8 +37,8 @@ interface User {
 }
 
 const users$: Observable<User> = of(
-  { id: 1, name: '山田' },
-  { id: 2, name: '佐藤' }
+  { id: 1, name: 'Smith' },
+  { id: 2, name: 'Johnson' }
 );
 
 // Operation where types are transformed
@@ -347,7 +347,7 @@ const products$ = apiService.get<Product[]>('/api/products');
 
 products$.subscribe(products => {
   // products are treated as type Product[]
-  products.forEach(p => console.log(`${p.name}: ${p.price}円`));
+  products.forEach(p => console.log(`${p.name}: ${p.price}¥`));
 });
 
 // By using generic types in this way, API response types can be defined in a reusable form, making service classes more generic.

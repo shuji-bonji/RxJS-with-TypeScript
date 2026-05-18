@@ -41,17 +41,44 @@ done
 
 ### 3. L1: XCOMET 評価実行
 
+**推奨: `evaluate_xcomet.py` (Python, MCP 不要)**
+
+xcomet-mcp-server v0.5.0+ で HTTP サーバーが廃止されたため `auto-evaluate.cjs` は動作しません。代わりに `comet` ライブラリを直接利用する Python スクリプトを使います。
+
 ```bash
+# 前提: unbabel-comet が venv にインストール済みであること
+# xcomet-mcp-server セットアップ時の venv (~/.xcomet-venv) を再利用するのが最短
+# (Homebrew Python は PEP 668 で直接 pip 不可)
+
+# venv が無ければ作成
+python3 -m venv ~/.xcomet-venv
+source ~/.xcomet-venv/bin/activate
+pip install "unbabel-comet>=2.2.0"
+huggingface-cli login
+python -c "from comet import download_model; download_model('Unbabel/XCOMET-XL')"
+deactivate
+
+# 既存 venv の Python を直接指定して実行 (activate 不要、推奨)
 # 単一言語
-node scripts/auto-evaluate.cjs fr
+~/.xcomet-venv/bin/python scripts/evaluate_xcomet.py fr
 
 # 全 7 言語
-for lang in en fr de it es nl pt; do
-  node scripts/auto-evaluate.cjs $lang
-done
+~/.xcomet-venv/bin/python scripts/evaluate_xcomet.py all
+
+# 強制再評価 (既存結果を上書き)
+~/.xcomet-venv/bin/python scripts/evaluate_xcomet.py all --force
+
+# GPU 利用 (CUDA 環境のみ高速化)
+~/.xcomet-venv/bin/python scripts/evaluate_xcomet.py all --gpu --batch-size 16
+
+# 代替: venv を activate してから実行
+# source ~/.xcomet-venv/bin/activate
+# python scripts/evaluate_xcomet.py all
 ```
 
-各 `scripts/evaluation-results-{lang}.json` が更新される。**既評価ファイルはスキップ**されるため、再評価したい場合は対象ファイルのエントリを削除する。
+各 `scripts/evaluation-results-{lang}.json` が更新される。**既評価ファイルはスキップ**されるため、強制再評価は `--force` を指定。
+
+**旧版: `auto-evaluate.cjs`** (xcomet-mcp-server v0.3.x の HTTP サーバー前提) — 現在は非推奨。
 
 ### 4. レポート生成
 

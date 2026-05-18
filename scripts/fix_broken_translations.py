@@ -22,7 +22,7 @@ import re
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-LANGS = ['fr', 'de', 'it', 'es', 'nl', 'pt']
+LANGS = ['en', 'fr', 'de', 'it', 'es', 'nl', 'pt']
 
 # Phase 3 で追加された production warning callout ヘッダー (全言語)
 CALLOUT_PROD_WARNING = {
@@ -104,6 +104,110 @@ def fix_leading_whitespace(text: str) -> tuple[str, int]:
     # frontmatter 直後の余分な空行 (--- の後に複数空行) を 1 行に
     text = re.sub(r'(\n---\n)\n{2,}', r'\1\n', text, count=1)
     return text, (1 if text != original else 0)
+
+
+def fix_adjacent_double_close(text: str) -> tuple[str, int]:
+    """連続する閉じ ``` のうち余分な方を除去 (見出し直前のみ、厳格)
+
+    安全な検出条件:
+        - 第 1 の ``` (閉じ)
+        - 空行
+        - 第 2 の ``` (この時点では opener の可能性も close 重複の可能性もある)
+        - **空行** (これが重要: opener の場合は直後にコンテンツが続く)
+        - 見出し (#) で始まる行 ← これが決定打
+
+    Markdown では opener の直後に空行を入れることはほぼ無い。空行 + 見出し
+    が来る場合は第 2 の ``` が orphan close の可能性が極めて高い。
+
+    判定が曖昧な場合は触らない (false positive を避ける)。
+    """
+    pattern = re.compile(
+        r'^```\s*$\n+'                # 閉じ ```
+        r'^```\s*$'                   # 余分な ``` 候補
+        r'\n[ \t]*\n+'                # 必ず空行が後続 (1+ 行の空行)
+        r'(?=#)',                     # 直後の文字は # (heading)
+        re.MULTILINE
+    )
+    new_text, n = pattern.subn('```\n\n', text)
+    return new_text, n
+
+
+def fix_double_close_bare_lang(text: str) -> tuple[str, int]:
+    """過去のパッチで壊された fence ペアを修復
+
+    パターン:
+        ```           <- 閉じ
+                      <- 空行
+        ```           <- 余計な閉じ (= 開きだった残骸)
+                      <- 空行
+        ts            <- 裸 lang
+        code...
+        ```           <- 本来の閉じ
+
+    修正後:
+        ```           <- 元のブロックの閉じ
+                      <- 空行
+        ```ts         <- 新規ブロック開き
+        code...
+        ```           <- 本来の閉じ
+
+    (連続した ``` ペアと、その後の bare lang を結合)
+    """
+    LANGS = r'(?:ts|typescript|js|javascript|json|python|py|sh|bash|html|css|scss|mermaid|yaml|yml|sql|rust|go|java|cpp|c|csharp|kotlin|swift|ruby|rb|php|plaintext|text|txt|diff)'
+    # ```\n+```\n+lang\n の連続パターン
+    pattern = re.compile(
+        r'^```\s*$\n+'              # 閉じ ```
+        r'^```\s*$\n+'              # 余計な閉じ ```
+        r'^(' + LANGS + r')\s*$',   # bare lang
+        re.MULTILINE
+    )
+    changes = 0
+
+    def repl(m):
+        nonlocal changes
+        changes += 1
+        lang = m.group(1)
+        return f'```\n\n```{lang}'
+
+    new_text = pattern.sub(repl, text)
+    return new_text, changes
+
+
+def fix_split_fence_pair(text: str) -> tuple[str, int]:
+    """DeepL が壊した「閉じフェンス + 開きフェンス」ペアを修復
+
+    パターン:
+        ```text       <- 閉じ ``` の後ろに余計な (...) が付加
+         (extra)
+                      <- 空行
+        ts            <- 開き ```ts が ``` を失って lang だけになっている
+        import ...
+        ```
+
+    修正後:
+        ```           <- 正しい閉じ
+                      <- 空行
+        ```ts         <- 正しい開き
+        import ...
+        ```
+    """
+    LANGS = r'(?:ts|typescript|js|javascript|json|python|py|sh|bash|html|css|scss|mermaid|yaml|yml|sql|rust|go|java|cpp|c|csharp|kotlin|swift|ruby|rb|php|plaintext|text|txt|diff)'
+    pattern = re.compile(
+        r'^```\s+\([^)\n]*\)\s*$'   # 閉じフェンスに余計な (...) が付いている行
+        r'(\n\s*)*'                  # 空行
+        r'^(' + LANGS + r')\s*$',    # bare lang 行
+        re.MULTILINE
+    )
+    changes = 0
+
+    def repl(m):
+        nonlocal changes
+        changes += 1
+        lang = m.group(2)
+        return f'```\n\n```{lang}'
+
+    new_text = pattern.sub(repl, text)
+    return new_text, changes
 
 
 def fix_malformed_fence_languages(text: str) -> tuple[str, int]:
@@ -562,10 +666,25 @@ def process_file(lang: str, rel_path: str, glossary: dict = None) -> tuple[bool,
     if n9:
         actions.append(f'ジェネリック型エスケープ ({n9}箇所)')
 
-    # 10. 不正な言語マーカー (```} 等) を ``` に正規化
-    text, n10 = fix_malformed_fence_languages(text)
+    # 10. ```text(...) + bare-lang の split-fence-pair を修復 (先に実行: パターンを温存)
+    text, n10 = fix_split_fence_pair(text)
     if n10:
-        actions.append(f'不正フェンスマーカー修正 ({n10}箇所)')
+        actions.append(f'split fence pair 修復 ({n10}箇所)')
+
+    # 11. 不正な言語マーカー (```} 等) を ``` に正規化 (split fence pair 後に実行)
+    text, n11 = fix_malformed_fence_languages(text)
+    if n11:
+        actions.append(f'不正フェンスマーカー修正 ({n11}箇所)')
+
+    # 12. recovery: 過去のパッチが ``` + ``` + bare lang を作ってしまった分を修復
+    text, n12 = fix_double_close_bare_lang(text)
+    if n12:
+        actions.append(f'double-close 修復 ({n12}箇所)')
+
+    # 13. recovery: 連続する余分な閉じ ``` を除去
+    text, n13 = fix_adjacent_double_close(text)
+    if n13:
+        actions.append(f'隣接 close 重複除去 ({n13}箇所)')
 
     if text != original:
         file.write_text(text, encoding='utf-8')
@@ -640,9 +759,18 @@ def main():
                     text, n9 = fix_unescaped_generics(text)
                     if n9:
                         actions.append(f'ジェネリック型エスケープ ({n9}箇所)')
-                    text, n10 = fix_malformed_fence_languages(text)
+                    text, n10 = fix_split_fence_pair(text)
                     if n10:
-                        actions.append(f'不正フェンスマーカー修正 ({n10}箇所)')
+                        actions.append(f'split fence pair 修復 ({n10}箇所)')
+                    text, n11 = fix_malformed_fence_languages(text)
+                    if n11:
+                        actions.append(f'不正フェンスマーカー修正 ({n11}箇所)')
+                    text, n12 = fix_double_close_bare_lang(text)
+                    if n12:
+                        actions.append(f'double-close 修復 ({n12}箇所)')
+                    text, n13 = fix_adjacent_double_close(text)
+                    if n13:
+                        actions.append(f'隣接 close 重複除去 ({n13}箇所)')
                 if text != original:
                     md.write_text(text, encoding='utf-8')
                     print(f"  ✅ {lang}/{rel}: {', '.join(actions)}")

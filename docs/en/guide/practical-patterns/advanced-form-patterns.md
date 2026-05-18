@@ -39,7 +39,7 @@ This article describes an advanced form pattern using **JSON Patch (RFC 6902)**.
 // Form data before change
 const before = {
   profile: {
-    name: "田中太郎",
+    name: "John Doe",
     email: "tanaka@example.com",
     age: 30
   }
@@ -48,7 +48,7 @@ const before = {
 // Form data after change
 const after = {
   profile: {
-    name: "田中太郎",
+    name: "John Doe",
     email: "tanaka.updated@example.com", // changed
     age: 31 // changed
   }
@@ -77,7 +77,7 @@ const patch = [
 const formData = {
   user: {
     profile: {
-      name: "田中太郎"
+      name: "John Doe"
     },
     settings: {
       notifications: true
@@ -86,9 +86,9 @@ const formData = {
 };
 
 // JSON Pointer examples
-"/user/profile/name"           // → "田中太郎"
+"/user/profile/name"           // → "John Doe"
 "/user/settings/notifications" // → true
-"/user/profile"                // → { name: "田中太郎" }
+"/user/profile"                // → { name: "John Doe" }
 ```
 
 ### Difference detection in RxJS
@@ -125,13 +125,13 @@ const patches$ = formData$.pipe(
 
 patches$.subscribe(patches => {
   console.log('Detected changes:', patches);
-  // Example: [{ op: "replace", path: "/profile/name", value: "田中太郎" }]
+  // Example: [{ op: "replace", path: "/profile/name", value: "John Doe" }]
 });
 
 // Simulate form update
 formData$.next({
   profile: {
-    name: "田中太郎",
+    name: "John Doe",
     email: "tanaka@example.com",
     age: 30
   }

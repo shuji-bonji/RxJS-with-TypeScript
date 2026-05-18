@@ -1,0 +1,12 @@
+{
+  "category_2b_en_coverage": [
+    {
+      "file": "operators/filtering/find.md",
+      "lang": "en"
+    },
+    {
+      "file": "operators/filtering/findIndex.md",
+      "lang": "en"
+    }
+  ]
+}

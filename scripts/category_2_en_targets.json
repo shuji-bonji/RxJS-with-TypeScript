@@ -1,0 +1,16 @@
+{
+  "category_2_en_coverage": [
+    {
+      "file": "operators/filtering/elementAt.md",
+      "lang": "en"
+    },
+    {
+      "file": "operators/combination/raceWith.md",
+      "lang": "en"
+    },
+    {
+      "file": "operators/filtering/takeLast.md",
+      "lang": "en"
+    }
+  ]
+}

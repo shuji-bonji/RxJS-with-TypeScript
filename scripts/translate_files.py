@@ -74,6 +74,7 @@ DEEPL_GLOSSARY_IDS_PATH = SKILLS_DIR / 'rxjs-glossary' / 'deepl_glossary_ids.jso
 
 # 言語コード: ディレクトリ名 → DeepL ターゲット言語コード
 LANGS = {
+    'en': 'EN-US',
     'fr': 'FR',
     'de': 'DE',
     'it': 'IT',

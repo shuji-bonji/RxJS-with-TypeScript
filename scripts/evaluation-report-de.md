@@ -18,6 +18,40 @@
 | 🟡 要改善 (0.70-0.84) | 29 | 16.1% |
 | 🔴 要修正 (<0.70) | 29 | 16.1% |
 
+## 🔴 要修正ファイル (スコア < 0.70)
+
+| スコア | ファイル | ペア数 |
+|--------|----------|--------|
+| 🔴 0.369 | `creation-functions/loop/range.md` | 22 |
+| 🔴 0.378 | `creation-functions/loop/generate.md` | 24 |
+| 🔴 0.420 | `testing/marble-testing.md` | 12 |
+| 🔴 0.432 | `creation-functions/basic/from.md` | 17 |
+| 🔴 0.464 | `observables/cold-and-hot-observables.md` | 30 |
+| 🔴 0.465 | `operators/filtering/skipWhile.md` | 12 |
+| 🔴 0.471 | `creation-functions/basic/of.md` | 18 |
+| 🔴 0.480 | `operators/filtering/ignoreElements.md` | 8 |
+| 🔴 0.481 | `operators/multicasting/shareReplay.md` | 9 |
+| 🔴 0.515 | `creation-functions/basic/fromEvent.md` | 15 |
+| 🔴 0.521 | `creation-functions/conditional/index.md` | 13 |
+| 🔴 0.524 | `operators/filtering/skipLast.md` | 16 |
+| 🔴 0.528 | `creation-functions/control/using.md` | 12 |
+| 🔴 0.533 | `creation-functions/http-communication/fromFetch.md` | 15 |
+| 🔴 0.534 | `overcoming-difficulties/debugging-guide.md` | 19 |
+| 🔴 0.542 | `practical-patterns/real-time-data.md` | 48 |
+| 🔴 0.549 | `appendix/rxjs-and-reactive-streams-ecosystem.md` | 25 |
+| 🔴 0.559 | `creation-functions/basic/interval.md` | 15 |
+| 🔴 0.566 | `operators/filtering/sampleTime.md` | 8 |
+| 🔴 0.579 | `creation-functions/basic/timer.md` | 18 |
+| 🔴 0.580 | `creation-functions/control/scheduled.md` | 14 |
+| 🔴 0.589 | `creation-functions/http-communication/ajax.md` | 14 |
+| 🔴 0.594 | `creation-functions/combination/forkJoin-vs-combineLatest.md` | 5 |
+| 🔴 0.595 | `operators/filtering/elementAt.md` | 8 |
+| 🔴 0.601 | `operators/multicasting/share.md` | 12 |
+| 🔴 0.603 | `operators/filtering/findIndex.md` | 8 |
+| 🔴 0.612 | `operators/utility/subscribeOn.md` | 16 |
+| 🔴 0.639 | `typescript-advanced/type-safety.md` | 1 |
+| 🔴 0.649 | `operators/filtering/find.md` | 8 |
+
 ## ファイル別一覧
 
 
@@ -286,6 +320,7 @@
 | 🔵 0.949 | typescript-advanced/_typeScript-and-rxjs-integration.md | 19 |
 | 🔴 0.639 | typescript-advanced/type-safety.md | 1 |
 
+
 ---
 
-生成日時: 2025-12-24
+最終更新: 2025-12-24T13:17:44.749Z

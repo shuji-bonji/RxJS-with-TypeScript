@@ -18,6 +18,56 @@
 | 🟡 要改善 (0.70-0.84) | 82 | 45.6% |
 | 🔴 要修正 (<0.70) | 45 | 25.0% |
 
+## 🔴 要修正ファイル (スコア < 0.70)
+
+| スコア | ファイル | ペア数 |
+|--------|----------|--------|
+| 🔴 0.285 | `creation-functions/selection/index.md` | 13 |
+| 🔴 0.292 | `observables/observable-lifecycle.md` | 11 |
+| 🔴 0.312 | `creation-functions/loop/generate.md` | 24 |
+| 🔴 0.321 | `creation-functions/basic/fromEvent.md` | 16 |
+| 🔴 0.325 | `creation-functions/loop/range.md` | 22 |
+| 🔴 0.368 | `creation-functions/basic/from.md` | 17 |
+| 🔴 0.375 | `creation-functions/basic/of.md` | 18 |
+| 🔴 0.379 | `practical-patterns/caching-strategies.md` | 15 |
+| 🔴 0.404 | `testing/marble-testing.md` | 12 |
+| 🔴 0.411 | `observables/cold-and-hot-observables.md` | 30 |
+| 🔴 0.429 | `operators/transformation/bufferToggle.md` | 7 |
+| 🔴 0.439 | `creation-functions/basic/timer.md` | 18 |
+| 🔴 0.459 | `creation-functions/conditional/index.md` | 13 |
+| 🔴 0.466 | `operators/multicasting/shareReplay.md` | 9 |
+| 🔴 0.470 | `operators/transformation/windowToggle.md` | 11 |
+| 🔴 0.471 | `creation-functions/basic/interval.md` | 16 |
+| 🔴 0.474 | `operators/transformation/windowTime.md` | 13 |
+| 🔴 0.479 | `overcoming-difficulties/debugging-guide.md` | 19 |
+| 🔴 0.482 | `operators/transformation/groupBy.md` | 10 |
+| 🔴 0.498 | `creation-functions/control/using.md` | 12 |
+| 🔴 0.499 | `operators/transformation/window.md` | 12 |
+| 🔴 0.500 | `operators/transformation/windowWhen.md` | 11 |
+| 🔴 0.501 | `practical-patterns/real-time-data.md` | 48 |
+| 🔴 0.507 | `creation-functions/combination/forkJoin-vs-combineLatest.md` | 5 |
+| 🔴 0.521 | `creation-functions/http-communication/fromFetch.md` | 15 |
+| 🔴 0.538 | `operators/transformation/pairwise.md` | 12 |
+| 🔴 0.540 | `operators/multicasting/share.md` | 12 |
+| 🔴 0.542 | `creation-functions/control/scheduled.md` | 14 |
+| 🔴 0.551 | `operators/transformation/windowCount.md` | 12 |
+| 🔴 0.554 | `operators/combination/zipWith.md` | 13 |
+| 🔴 0.566 | `observables/creation.md` | 29 |
+| 🔴 0.572 | `operators/utility/dematerialize.md` | 8 |
+| 🔴 0.572 | `operators/utility/subscribeOn.md` | 16 |
+| 🔴 0.577 | `operators/combination/combineLatestWith.md` | 14 |
+| 🔴 0.584 | `creation-functions/http-communication/ajax.md` | 14 |
+| 🔴 0.589 | `operators/utility/materialize.md` | 9 |
+| 🔴 0.604 | `operators/transformation/reduce.md` | 11 |
+| 🔴 0.607 | `operators/combination/mergeWith.md` | 13 |
+| 🔴 0.613 | `operators/utility/timestamp.md` | 16 |
+| 🔴 0.625 | `operators/combination/raceWith.md` | 13 |
+| 🔴 0.662 | `operators/utility/index.md` | 3 |
+| 🔴 0.667 | `operators/transformation/bufferWhen.md` | 8 |
+| 🔴 0.669 | `operators/transformation/concatMap.md` | 5 |
+| 🔴 0.670 | `operators/transformation/map.md` | 5 |
+| 🔴 0.678 | `operators/filtering/practical-use-cases.md` | 3 |
+
 ## ファイル別一覧
 
 
@@ -286,6 +336,7 @@
 | 🔵 0.922 | typescript-advanced/_typeScript-and-rxjs-integration.md | 19 |
 | 🔵 0.936 | typescript-advanced/type-safety.md | 1 |
 
+
 ---
 
-生成日時: 2025-12-24
+最終更新: 2025-12-24T10:21:44.010Z

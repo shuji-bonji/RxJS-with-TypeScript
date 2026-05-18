@@ -5,18 +5,35 @@
 | 項目 | 値 |
 |------|-----|
 | ファイル数 | 181 |
-| 平均スコア | 0.898 |
+| 平均スコア | 0.897 |
 | 最小スコア | 0.354 |
-| 最大スコア | 0.987 |
+| 最大スコア | 0.983 |
 
 ### 品質分布
 
 | 品質 | 件数 | 割合 |
 |------|------|------|
-| 🟢 優秀 (≥0.95) | 43 | 23.8% |
-| 🔵 良好 (0.85-0.94) | 113 | 62.4% |
+| 🟢 優秀 (≥0.95) | 41 | 22.7% |
+| 🔵 良好 (0.85-0.94) | 115 | 63.5% |
 | 🟡 要改善 (0.70-0.84) | 13 | 7.2% |
 | 🔴 要修正 (<0.70) | 12 | 6.6% |
+
+## 🔴 要修正ファイル (スコア < 0.70)
+
+| スコア | ファイル | ペア数 |
+|--------|----------|--------|
+| 🔴 0.354 | `creation-functions/selection/index.md` | 11 |
+| 🔴 0.443 | `operators/filtering/filter.md` | 4 |
+| 🔴 0.468 | `operators/filtering/findIndex.md` | 7 |
+| 🔴 0.572 | `schedulers/types.md` | 13 |
+| 🔴 0.575 | `operators/combination/combineLatestWith.md` | 11 |
+| 🔴 0.587 | `operators/filtering/auditTime.md` | 10 |
+| 🔴 0.590 | `operators/combination/raceWith.md` | 10 |
+| 🔴 0.642 | `operators/combination/zipWith.md` | 10 |
+| 🔴 0.646 | `operators/combination/combineLatestAll.md` | 5 |
+| 🔴 0.657 | `operators/filtering/ignoreElements.md` | 9 |
+| 🔴 0.673 | `operators/filtering/sampleTime.md` | 8 |
+| 🔴 0.679 | `operators/filtering/find.md` | 6 |
 
 ## ファイル別一覧
 
@@ -40,15 +57,15 @@
 | 🟢 0.977 | appendix/embedded-reactive-programming.md | 29 |
 | 🟢 0.974 | appendix/index.md | 6 |
 | 🔵 0.941 | appendix/reactive-architecture-map.md | 47 |
-| 🟢 0.987 | appendix/reactive-patterns-beyond-rxjs.md | 16 |
-| 🟢 0.971 | appendix/reactive-programming-reconsidered.md | 23 |
-| 🟢 0.971 | appendix/rxjs-and-reactive-streams-ecosystem.md | 18 |
+| 🟢 0.955 | appendix/reactive-patterns-beyond-rxjs.md | 24 |
+| 🟢 0.963 | appendix/reactive-programming-reconsidered.md | 24 |
+| 🟢 0.966 | appendix/rxjs-and-reactive-streams-ecosystem.md | 19 |
 
 ### basics
 
 | スコア | ファイル | ペア数 |
 |--------|----------|--------|
-| 🟢 0.960 | basics/promise-vs-rxjs.md | 21 |
+| 🔵 0.908 | basics/promise-vs-rxjs.md | 38 |
 | 🟢 0.953 | basics/what-is-a-stream.md | 6 |
 | 🟢 0.974 | basics/what-is-rxjs.md | 17 |
 
@@ -58,7 +75,7 @@
 |--------|----------|--------|
 | 🔵 0.947 | creation-functions/basic/from.md | 16 |
 | 🟢 0.954 | creation-functions/basic/fromEvent.md | 15 |
-| 🔵 0.908 | creation-functions/basic/index.md | 14 |
+| 🔵 0.910 | creation-functions/basic/index.md | 14 |
 | 🟢 0.979 | creation-functions/basic/interval.md | 15 |
 | 🟢 0.972 | creation-functions/basic/of.md | 17 |
 | 🟢 0.970 | creation-functions/basic/timer.md | 17 |
@@ -66,7 +83,7 @@
 | 🔵 0.881 | creation-functions/combination/concat.md | 6 |
 | 🔵 0.898 | creation-functions/combination/forkJoin-vs-combineLatest.md | 12 |
 | 🔵 0.943 | creation-functions/combination/forkJoin.md | 5 |
-| 🔵 0.889 | creation-functions/combination/index.md | 12 |
+| 🔵 0.888 | creation-functions/combination/index.md | 12 |
 | 🟡 0.799 | creation-functions/combination/merge.md | 6 |
 | 🔵 0.851 | creation-functions/combination/zip.md | 6 |
 | 🔵 0.871 | creation-functions/conditional/defer.md | 8 |
@@ -90,7 +107,7 @@
 
 | スコア | ファイル | ペア数 |
 |--------|----------|--------|
-| 🔵 0.936 | debugging/common-scenarios.md | 11 |
+| 🔵 0.930 | debugging/common-scenarios.md | 11 |
 | 🔵 0.939 | debugging/custom-tools.md | 7 |
 | 🔵 0.945 | debugging/index.md | 17 |
 | 🟢 0.954 | debugging/performance.md | 11 |
@@ -101,8 +118,8 @@
 |--------|----------|--------|
 | 🔵 0.922 | error-handling/error-handling-locations.md | 25 |
 | 🔵 0.905 | error-handling/finalize.md | 11 |
-| 🟢 0.965 | error-handling/retry-catch.md | 19 |
-| 🟢 0.954 | error-handling/strategies.md | 13 |
+| 🟢 0.959 | error-handling/retry-catch.md | 19 |
+| 🔵 0.947 | error-handling/strategies.md | 13 |
 | 🟢 0.958 | error-handling/try-catch-integration.md | 15 |
 
 ### index.md
@@ -121,7 +138,7 @@
 
 | スコア | ファイル | ペア数 |
 |--------|----------|--------|
-| 🔵 0.916 | observables/cold-and-hot-observables.md | 27 |
+| 🔵 0.910 | observables/cold-and-hot-observables.md | 27 |
 | 🟡 0.797 | observables/creation.md | 27 |
 | 🔵 0.935 | observables/events-list.md | 2 |
 | 🟢 0.955 | observables/events.md | 18 |
@@ -287,6 +304,7 @@
 | 🔵 0.908 | typescript-advanced/_typeScript-and-rxjs-integration.md | 18 |
 | 🟢 0.982 | typescript-advanced/type-safety.md | 4 |
 
+
 ---
 
-生成日時: 2025-12-24
+最終更新: 2026-05-18T19:21:56Z

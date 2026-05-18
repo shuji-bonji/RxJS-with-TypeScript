@@ -70,7 +70,6 @@ throttleTime(1000): ●              ●
                    Verwerking uitvoeren      Verwerking uitvoeren
 ```
 
-```
 Gebruiker klikt: ●    ●●●        ●  ●●
                     |    |          |  |
 throttleTime(1000): ●              ●
@@ -85,6 +84,8 @@ throttleTime(1000): ●              ●
 
 Verwerk gebeurtenissen na een bepaalde periode nadat ze zijn gestopt.
 
+
+```
 
 ```typescript
 import { fromEvent, debounceTime } from 'rxjs';
@@ -125,7 +126,6 @@ debounceTime(300):   300ms       300ms  300msWachten
                      Verwerking         Verwerking   Verwerking uitvoeren
 ```
 
-```
 Gebruiker klikt: ●    ●●●        ●  ●●
                     |    |          |  |
 throttleTime(1000): ●              ●
@@ -148,6 +148,8 @@ throttleTime(1000): ●              ●
 
 Vergelijk met de vorige waarde en sla verwerking over als dezelfde waarde opeenvolgend is.
 
+
+```
 
 ```typescript
 import { fromEvent, map, debounceTime, distinctUntilChanged } from 'rxjs';
@@ -178,7 +180,6 @@ fromEvent(searchInput, 'input').pipe(
 // distinctUntilChangedJa, als de waarde hetzelfde is als de vorige keer.: 1Zoekactie slechts één keer uitvoeren (dezelfde waarde, tweede zoekactie overslaan)2De tweede zoekopdracht wordt overgeslagen)
 ```
 
-```
 Gebruiker klikt: ●    ●●●        ●  ●●
                     |    |          |  |
 throttleTime(1000): ●              ●
@@ -199,6 +200,8 @@ Scroll-events worden zeer vaak geactiveerd en kunnen prestatieproblemen veroorza
 
 ### Oplossing: Verdun met throttleTime.
 
+
+```
 
 ```typescript
 import { fromEvent, throttleTime, map } from 'rxjs';

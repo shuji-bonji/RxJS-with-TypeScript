@@ -1,10 +1,10 @@
 ---
-description: The elementAt operator is an RxJS filtering operator that retrieves only the value at a specified index position. It behaves similarly to array index access.
+description: "The elementAt operator is an RxJS filtering operator that retrieves only the values at a given index position. It works similar to array index access."
 ---
 
-# elementAt - Get Value at Specified Index
+# elementAt - get by index specification
 
-The `elementAt` operator retrieves **only the value at the specified index position** from an Observable and immediately completes the stream. It behaves similarly to `array[index]`.
+The `elementAt` operator retrieves **only the value at the specified index position** from the Observable and completes the stream immediately. It works similar to `array[index]` of an array.
 
 ## 🔰 Basic Syntax and Usage
 
@@ -17,35 +17,35 @@ const numbers$ = from([10, 20, 30, 40, 50]);
 numbers$.pipe(
   elementAt(2)
 ).subscribe(console.log);
-// Output: 30 (value at index 2)
+// Output: 30(Index2value)
 ```
 
-**Flow of operation**:
-1. 10 (index 0) → Skip
-2. 20 (index 1) → Skip
-3. 30 (index 2) → Output and complete
+**Flow of operation**:.
+1. 10 (index 0) → skip
+2. 20 (index 1) → skip
+3. 30 (index 2) → output and complete
 4. 40, 50 are not evaluated
 
 [🌐 RxJS Official Documentation - `elementAt`](https://rxjs.dev/api/operators/elementAt)
 
-## 💡 Typical Usage Patterns
+## 💡 Typical utilization pattern
 
-- **Pagination**: Get first item of a specific page
-- **Ordered data retrieval**: Get Nth event or message
-- **Testing and debugging**: Verify value at specific position
-- **Array-like access**: Treat Observable like an array
+- **Pagination**: Get the first item on a specific page
+- **Get Order Guarantee Data**: Get the Nth event or message
+- **Testing and Debugging**: Validate the value of a specific position
+- **Array-like access**: treat Observable like an array
 
-## 🧠 Practical Code Example: Event Countdown
+## 🧠 Practical Code Example 1: Event Countdown
 
-Example of executing an action on the Nth click.
+This is an example of executing an action on the Nth click.
 
 ```ts
 import { fromEvent } from 'rxjs';
 import { elementAt, map } from 'rxjs';
 
-// Create UI
+// UICreate
 const output = document.createElement('div');
-output.innerHTML = '<h3>Display message on 5th click</h3>';
+output.innerHTML = '<h3>5Click once to display message</h3>';
 document.body.appendChild(output);
 
 const button = document.createElement('button');
@@ -54,7 +54,7 @@ document.body.appendChild(button);
 
 const counter = document.createElement('div');
 counter.style.marginTop = '10px';
-counter.textContent = 'Please click 5 more times';
+counter.textContent = 'more5Click once';
 output.appendChild(counter);
 
 const result = document.createElement('div');
@@ -68,55 +68,179 @@ let clickCount = 0;
 // Click event
 const clicks$ = fromEvent(button, 'click');
 
-// Count display
+// For count display
 clicks$.subscribe(() => {
   clickCount++;
   const remaining = 5 - clickCount;
   if (remaining > 0) {
-    counter.textContent = `${remaining} more clicks`;
+    counter.textContent = `more${remaining}Click once`;
   } else {
     counter.textContent = '';
   }
 });
 
-// Detect 5th click (index 4)
+// 5Second (index)4Detected clicks of
 clicks$.pipe(
   elementAt(4)
 ).subscribe(() => {
-  result.textContent = '🎉 Achieved!';
+  result.textContent = '🎉 Achieved！';
   result.style.color = 'green';
   button.disabled = true;
 });
 ```
 
-- Completes on the 5th click (index 4).
-- Starts from 0, same as array index.
+- The fifth click (index 4) completes the action.
+- It starts at 0, just like the array index.
 
-## 🆚 Comparison with Similar Operators
+## 🎯 Practical Code Example 2: Retrieve the Nth from the data stream
+
+This is an example of retrieving a specific order of values from data issued at regular intervals.
+
+```ts
+import { interval } from 'rxjs';
+import { elementAt, map } from 'rxjs';
+
+// UICreate
+const container = document.createElement('div');
+document.body.appendChild(container);
+
+const title = document.createElement('h3');
+title.textContent = 'From data streamNGet the second';
+container.appendChild(title);
+
+const input = document.createElement('input');
+input.type = 'number';
+input.placeholder = 'Input the index (0~ (~)9)';
+input.min = '0';
+input.max = '9';
+input.style.marginRight = '10px';
+container.appendChild(input);
+
+const getButton = document.createElement('button');
+getButton.textContent = 'Get';
+container.appendChild(getButton);
+
+const status = document.createElement('div');
+status.style.marginTop = '10px';
+container.appendChild(status);
+
+const result = document.createElement('div');
+result.style.marginTop = '10px';
+result.style.padding = '10px';
+result.style.border = '1px solid #ccc';
+result.style.display = 'none';
+container.appendChild(result);
+
+// Data stream (0.5A value is issued every second,10(up to 1 piece)
+const data$ = interval(500).pipe(
+  map(i => ({ index: i, value: Math.floor(Math.random() * 100), timestamp: Date.now() }))
+);
+
+getButton.addEventListener('click', () => {
+  const index = parseInt(input.value);
+
+  if (isNaN(index) || index < 0 || index > 9) {
+    status.textContent = '0~ (~)9Please enter a range of';
+    status.style.color = 'red';
+    return;
+  }
+
+  status.textContent = `Index ${index} value is being retrieved...`;
+  status.style.color = 'blue';
+  result.style.display = 'none';
+  getButton.disabled = true;
+  input.disabled = true;
+
+  data$.pipe(
+    elementAt(index)
+  ).subscribe({
+    next: data => {
+      status.textContent = '';
+      result.style.display = 'block';
+      result.innerHTML = `
+        <strong>✅ Success</strong><br>
+        Index: ${data.index}<br>
+        Value: ${data.value}<br>
+        Timestamp: ${new Date(data.timestamp).toLocaleTimeString()}
+      `;
+      result.style.color = 'green';
+      result.style.backgroundColor = '#e8f5e9';
+      getButton.disabled = false;
+      input.disabled = false;
+    },
+    error: err => {
+      status.textContent = '';
+      result.style.display = 'block';
+      result.textContent = `❌ Error: ${err.message}`;
+      result.style.color = 'red';
+      result.style.backgroundColor = '#ffebee';
+      getButton.disabled = false;
+      input.disabled = false;
+    }
+  });
+});
+```
+
+- Obtains values at a specified index from a stream issued every 0.5 seconds.
+- If the index is out of range, an error is generated.
+
+## 🆚 Comparison with similar operators
 
 ### elementAt vs take vs first
 
-| Operator | Retrieved Value | Output Count | Use Case |
-|:---|:---|:---|:---|
-| `elementAt(n)` | Only value at index n | 1 | Get Nth value |
-| `take(n)` | First n values | n | Get first N values |
-| `first()` | First value | 1 | Get first one |
-| `skip(n) + first()` | First after skipping n | 1 | Same as elementAt (not recommended) |
+```ts
+import { from } from 'rxjs';
+import { elementAt, take, first, skip } from 'rxjs';
 
-## ⚠️ Notes
+const numbers$ = from([10, 20, 30, 40, 50]);
 
-### 1. When Index is Out of Range
+// elementAt: Retrieving only the value of a specific index
+numbers$.pipe(
+  elementAt(2)
+).subscribe(console.log);
+// Output: 30
 
-If the specified index is not reached before the stream completes, an error occurs.
+// take: From the beginningNObtain one index from the beginning
+numbers$.pipe(
+  take(3)
+).subscribe(console.log);
+// Output: 10, 20, 30
+
+// skip + first: elementAt Equivalent to (redundant)
+numbers$.pipe(
+  skip(2),
+  first()
+).subscribe(console.log);
+// Output: 30
+```
 
 ```ts
 import { from } from 'rxjs';
 import { elementAt } from 'rxjs';
 
-const numbers$ = from([10, 20, 30]); // Only 3 items
+const numbers$ = from([10, 20, 30, 40, 50]);
 
 numbers$.pipe(
-  elementAt(5) // Request index 5
+  elementAt(2)
+).subscribe(console.log);
+// Output: 30(Index2value)
+```
+
+## ⚠️ Notes.
+
+### 1. if the index is out of range
+
+If the specified index is not reached before the stream completes, an error is generated.
+
+
+```ts
+import { from } from 'rxjs';
+import { elementAt } from 'rxjs';
+
+const numbers$ = from([10, 20, 30]); // 3only one
+
+numbers$.pipe(
+  elementAt(5) // Index5Request
 ).subscribe({
   next: console.log,
   error: err => console.error('Error:', err.message)
@@ -124,9 +248,9 @@ numbers$.pipe(
 // Output: Error: no elements in sequence
 ```
 
-### 2. Specifying Default Value
+### 2. specify default value
 
-You can specify a default value to prevent errors.
+To prevent errors, default values can be specified.
 
 ```ts
 import { from } from 'rxjs';
@@ -136,7 +260,7 @@ const numbers$ = from([10, 20, 30]);
 
 // Specify default value
 numbers$.pipe(
-  elementAt(5, 999) // Return 999 if index 5 does not exist
+  elementAt(5, 999) // Index5If not present, returns999Returns
 ).subscribe({
   next: console.log,
   error: err => console.error('Error:', err.message)
@@ -144,26 +268,42 @@ numbers$.pipe(
 // Output: 999
 ```
 
-### 3. Use with Asynchronous Streams
+### 3. use with asynchronous streams
 
-For asynchronous streams, it waits until reaching the index position.
+For asynchronous streams, wait until the index position is reached.
 
 ```ts
 import { interval } from 'rxjs';
 import { elementAt } from 'rxjs';
 
-// Emit value every second
+// 1Issue value every second
 interval(1000).pipe(
-  elementAt(3) // Index 3 (4th value)
+  elementAt(3) // Index3(The4(the second value)
 ).subscribe(console.log);
-// Output after 3 seconds: 3
+// 3Output after 2 seconds: 3
 ```
 
-### 4. Negative Index Not Available
+### 4. negative indexes are not allowed
 
 Negative indexes cannot be specified.
 
-To get from the end of the array, use `takeLast` or `last`.
+```ts
+import { from } from 'rxjs';
+import { elementAt } from 'rxjs';
+
+const numbers$ = from([10, 20, 30, 40, 50]);
+
+// ❌ Negative indexes are errors
+numbers$.pipe(
+  elementAt(-1)
+).subscribe({
+  next: console.log,
+  error: err => console.error('Error:', err.message)
+});
+// Error: ArgumentOutOfRangeError: index out of range
+```
+
+Use `takeLast` or `last` if you want to get from the end of the array.
 
 ```ts
 import { from } from 'rxjs';
@@ -177,7 +317,7 @@ numbers$.pipe(
 ).subscribe(console.log);
 // Output: 50
 
-// ✅ Get last N values
+// ✅ Get lastNGet the last value
 numbers$.pipe(
   takeLast(2)
 ).subscribe(console.log);
@@ -186,19 +326,19 @@ numbers$.pipe(
 
 ## 📚 Related Operators
 
-- **[take](/en/guide/operators/filtering/take)** - Get first N values
-- **[first](/en/guide/operators/filtering/first)** - Get first value
-- **[last](/en/guide/operators/filtering/last)** - Get last value
-- **[skip](/en/guide/operators/filtering/skip)** - Skip first N values
-- **[takeLast](/en/guide/operators/filtering/takeLast)** - Get last N values
+- **[take](. /take)** - take N from the beginning
+- **[first](. /first)** - get the first value
+- **[last](. /last)** - get the last value
+- **[skip](. /skip)** - skip the first N values
+- **[takeLast](. /takeLast)** - get the last N values
 
 ## Summary
 
-The `elementAt` operator retrieves only the value at the specified index position.
+The `elementAt` operator retrieves only the value at a given index position.
 
 - ✅ Same behavior as array index access
-- ✅ Ideal for getting Nth value
-- ✅ Can avoid errors by specifying default value
-- ⚠️ Error if index is out of range (without default value)
-- ⚠️ Negative index not available
-- ⚠️ Waits until reaching position for asynchronous streams
+- ✅ Ideal for retrieving the Nth value
+- ✅ Can specify default values to avoid errors
+- ⚠️ Error if index is out of range (no default value)
+- ⚠️ Negative indexes are not allowed
+- ⚠️ Asynchronous streams wait until reached

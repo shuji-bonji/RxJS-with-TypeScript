@@ -18,6 +18,54 @@
 | 🟡 要改善 (0.70-0.84) | 101 | 56.1% |
 | 🔴 要修正 (<0.70) | 43 | 23.9% |
 
+## 🔴 要修正ファイル (スコア < 0.70)
+
+| スコア | ファイル | ペア数 |
+|--------|----------|--------|
+| 🔴 0.266 | `subjects/use-cases.md` | 14 |
+| 🔴 0.319 | `creation-functions/selection/index.md` | 13 |
+| 🔴 0.335 | `basics/what-is-rxjs.md` | 16 |
+| 🔴 0.345 | `operators/transformation/expand.md` | 8 |
+| 🔴 0.359 | `creation-functions/basic/of.md` | 18 |
+| 🔴 0.375 | `operators/filtering/findIndex.md` | 11 |
+| 🔴 0.387 | `operators/transformation/groupBy.md` | 14 |
+| 🔴 0.408 | `testing/marble-testing.md` | 12 |
+| 🔴 0.410 | `observables/cold-and-hot-observables.md` | 30 |
+| 🔴 0.421 | `operators/transformation/mergeScan.md` | 12 |
+| 🔴 0.425 | `operators/combination/combineLatestWith.md` | 14 |
+| 🔴 0.431 | `operators/filtering/sampleTime.md` | 15 |
+| 🔴 0.438 | `operators/combination/combineLatestAll.md` | 9 |
+| 🔴 0.441 | `practical-patterns/ui-events.md` | 23 |
+| 🔴 0.449 | `operators/filtering/ignoreElements.md` | 14 |
+| 🔴 0.450 | `basics/promise-vs-rxjs.md` | 38 |
+| 🔴 0.453 | `overcoming-difficulties/debugging-guide.md` | 19 |
+| 🔴 0.460 | `creation-functions/conditional/index.md` | 13 |
+| 🔴 0.460 | `operators/filtering/elementAt.md` | 14 |
+| 🔴 0.460 | `operators/multicasting/shareReplay.md` | 9 |
+| 🔴 0.465 | `operators/combination/raceWith.md` | 13 |
+| 🔴 0.472 | `operators/combination/zipWith.md` | 14 |
+| 🔴 0.484 | `creation-functions/control/using.md` | 12 |
+| 🔴 0.490 | `creation-functions/combination/forkJoin-vs-combineLatest.md` | 5 |
+| 🔴 0.508 | `creation-functions/http-communication/fromFetch.md` | 15 |
+| 🔴 0.508 | `practical-patterns/real-time-data.md` | 48 |
+| 🔴 0.516 | `operators/multicasting/share.md` | 12 |
+| 🔴 0.525 | `operators/filtering/auditTime.md` | 13 |
+| 🔴 0.530 | `creation-functions/control/scheduled.md` | 14 |
+| 🔴 0.532 | `operators/utility/subscribeOn.md` | 16 |
+| 🔴 0.569 | `creation-functions/http-communication/ajax.md` | 14 |
+| 🔴 0.599 | `operators/utility/timestamp.md` | 16 |
+| 🔴 0.606 | `operators/filtering/takeLast.md` | 10 |
+| 🔴 0.630 | `creation-functions/loop/range.md` | 21 |
+| 🔴 0.652 | `operators/filtering/audit.md` | 11 |
+| 🔴 0.665 | `operators/multicasting/index.md` | 4 |
+| 🔴 0.673 | `operators/utility/index.md` | 3 |
+| 🔴 0.684 | `operators/combination/concatWith.md` | 13 |
+| 🔴 0.688 | `operators/utility/finalize.md` | 5 |
+| 🔴 0.689 | `creation-functions/loop/generate.md` | 19 |
+| 🔴 0.689 | `operators/filtering/find.md` | 8 |
+| 🔴 0.697 | `operators/combination/concatAll.md` | 9 |
+| 🔴 0.698 | `operators/utility/retry.md` | 7 |
+
 ## ファイル別一覧
 
 
@@ -286,6 +334,7 @@
 | 🟡 0.849 | typescript-advanced/_typeScript-and-rxjs-integration.md | 19 |
 | 🔵 0.897 | typescript-advanced/type-safety.md | 1 |
 
+
 ---
 
-生成日時: 2025-12-24
+最終更新: 2025-12-24T10:45:24.089Z

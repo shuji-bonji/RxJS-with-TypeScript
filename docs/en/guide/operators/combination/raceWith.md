@@ -1,267 +1,429 @@
 ---
-description: raceWith is an RxJS combination operator that adopts only the first stream that emits a value among the original Observable and other Observables. It is the Pipeable Operator version of Creation Function race, and is ideal for situations where the fastest response is a priority, such as timeout implementations, parallel acquisition from multiple CDNs (fallback), and competing acquisition from multiple data sources. It is effective when you want to compete with other streams while converting and processing the main stream.
-titleTemplate: ':title | RxJS'
+description: "raceWith is a RxJS join operator that adopts only the first stream of the original Observable and other Observables that issued values. It is ideal for timeout implementations, fallback operations, fastest adoption from multiple data sources, and other situations where selection by race condition is required."
 ---
 
-# raceWith - Adopt the Fastest Stream (Within Pipeline)
+# raceWith - adopt the fastest stream
 
-The `raceWith` operator **adopts only the first stream that emits a value** among the original Observable and the specified other Observables, and ignores all others.
-This is the Pipeable Operator version of the Creation Function `race`.
+The `raceWith` operator **adopts only the first Observable that issues a value** out of the original Observable and any other Observables specified,
+After that, it ignores the other Observables.
+This is the Pipeable Operator version of Creation Function's `race`.
 
 ## 🔰 Basic Syntax and Usage
 
 ```ts
-import { interval, timer } from 'rxjs';
-import { raceWith, map, take } from 'rxjs';
+import { timer } from 'rxjs';
+import { raceWith, map } from 'rxjs';
 
-const source1$ = interval(1000).pipe(
-  take(3),
-  map(val => `Source 1: ${val}`)
-);
+const slow$ = timer(5000).pipe(map(() => 'Slowly (5Seconds)'));
+const medium$ = timer(3000).pipe(map(() => 'Normal (3Seconds)'));
+const fast$ = timer(2000).pipe(map(() => 'Fast (2Seconds)'));
 
-const source2$ = timer(500).pipe(
-  take(3),
-  map(val => `Source 2: ${val}`)
-);
-
-source1$
-  .pipe(raceWith(source2$))
+slow$
+  .pipe(raceWith(medium$, fast$))
   .subscribe(console.log);
 
-// Output:
-// Source 2: 0 (after 500ms)
-// * source1$ is ignored because source2$ emitted first
+// Output: Fast (2Seconds)
 ```
 
-- **The first Observable to emit a value** wins the race, and only that stream is adopted.
-- Other Observables are automatically unsubscribed and ignored.
+- Only the Observable that issued the value first (`fast$` in this example) is the winner and continues with subsequent streams.
+- Other Observables are ignored.
 
 [🌐 RxJS Official Documentation - `raceWith`](https://rxjs.dev/api/operators/raceWith)
 
+## 💡 Typical utilization pattern
 
-## 💡 Typical Usage Patterns
+- **Timeout implementation**: race the timeout timer against the main process
+- **Fallback processing**: adopt the fastest one from multiple data sources
+- **User Interaction**: Adopt the faster of click and auto-progress
 
-- **Timeout implementation**: Compete main processing with timeout error after a certain time
-- **Parallel acquisition from multiple CDNs**: Request multiple CDNs simultaneously and adopt the fastest response (fallback strategy)
-- **Competing acquisition from multiple data sources**: Execute local cache and API call concurrently, and use whichever returns first
-- **User action vs timer competition**: Compete click action with auto-advance, and adopt whichever occurs first
+## 🧠 Practical Code Examples (with UI)
 
-
-## 🧠 Practical Code Example (with UI)
-
-Example of fetching data from multiple CDNs in parallel and adopting the fastest response.
-
-```ts
-import { fromFetch } from 'rxjs/fetch';
-import { raceWith, map, catchError, timeout } from 'rxjs';
-import { of } from 'rxjs';
-
-// Build the UI
-const container = document.createElement('div');
-container.innerHTML = `
-  <h3>raceWith Practical Example: Parallel Fetch from Multiple CDNs</h3>
-  <button id="fetch-button">Fetch Data</button>
-  <div id="status" style="margin-top: 10px; padding: 10px; border: 1px solid #ccc;">
-    Waiting...
-  </div>
-  <div id="result" style="margin-top: 10px;"></div>
-`;
-document.body.appendChild(container);
-
-const fetchButton = document.getElementById('fetch-button') as HTMLButtonElement;
-const statusDiv = document.getElementById('status')!;
-const resultDiv = document.getElementById('result')!;
-
-// Start fetching data on button click
-fetchButton.addEventListener('click', () => {
-  statusDiv.textContent = 'Fetching from multiple CDNs in parallel...';
-  statusDiv.style.backgroundColor = '#fff3e0';
-  resultDiv.innerHTML = '';
-
-  // Multiple CDNs (actually dummy endpoints)
-  const cdn1$ = fromFetch('https://jsonplaceholder.typicode.com/posts/1').pipe(
-    map(response => response.json()),
-    map(() => ({ source: 'CDN 1', data: 'Data fetched successfully' })),
-    timeout(3000),
-    catchError(() => of({ source: 'CDN 1', data: 'Error' }))
-  );
-
-  const cdn2$ = fromFetch('https://jsonplaceholder.typicode.com/posts/2').pipe(
-    map(response => response.json()),
-    map(() => ({ source: 'CDN 2', data: 'Data fetched successfully' })),
-    timeout(3000),
-    catchError(() => of({ source: 'CDN 2', data: 'Error' }))
-  );
-
-  const cdn3$ = fromFetch('https://jsonplaceholder.typicode.com/posts/3').pipe(
-    map(response => response.json()),
-    map(() => ({ source: 'CDN 3', data: 'Data fetched successfully' })),
-    timeout(3000),
-    catchError(() => of({ source: 'CDN 3', data: 'Error' }))
-  );
-
-  // ✅ Adopt fastest response with raceWith
-  cdn1$
-    .pipe(raceWith(cdn2$, cdn3$))
-    .subscribe({
-      next: (result) => {
-        statusDiv.textContent = `✅ Successfully fetched from ${result.source}`;
-        statusDiv.style.backgroundColor = '#e8f5e9';
-        resultDiv.innerHTML = `<strong>${result.source}</strong>: ${result.data}`;
-      },
-      error: (err) => {
-        statusDiv.textContent = '❌ Failed to fetch from all CDNs';
-        statusDiv.style.backgroundColor = '#ffebee';
-        resultDiv.textContent = `Error: ${err.message}`;
-      }
-    });
-});
-```
-
-- Requests multiple CDNs simultaneously, and **adopts the first CDN** that returns a response.
-- Responses from other CDNs are automatically ignored.
-
-
-## 🔄 Difference from Creation Function `race`
-
-### Basic Differences
-
-| | `race` (Creation Function) | `raceWith` (Pipeable Operator) |
-|:---|:---|:---|
-| **Usage Location** | Used as independent function | Used within `.pipe()` chain |
-| **Syntax** | `race(obs1$, obs2$, obs3$)` | `obs1$.pipe(raceWith(obs2$, obs3$))` |
-| **First Stream** | Treats all equally | Treats as main stream |
-| **Advantage** | Simple and readable | Easy to combine with other operators |
-
-### Specific Usage Examples
-
-**Creation Function is Recommended for Simple Competition Only**
-
-```ts
-import { race, timer } from 'rxjs';
-import { map } from 'rxjs';
-
-const fast$ = timer(100).pipe(map(() => 'Fast wins!'));
-const slow$ = timer(500).pipe(map(() => 'Slow wins!'));
-
-// Simple and readable
-race(fast$, slow$).subscribe(console.log);
-// Output: Fast wins!
-```
-
-**Pipeable Operator is Recommended When Adding Transformation Processing to Main Stream**
+This is an example of competing manual click and auto-progress timers and adopting the faster one.
 
 ```ts
 import { fromEvent, timer } from 'rxjs';
 import { raceWith, map, take } from 'rxjs';
 
-// User click vs auto-advance competition
-const userClick$ = fromEvent(document, 'click').pipe(
+// Output Area Creation
+const output = document.createElement('div');
+output.innerHTML = '<h3>raceWith Practical examples of:</h3>';
+document.body.appendChild(output);
+
+// Button creation
+const button = document.createElement('button');
+button.textContent = 'Proceed manually (5Click within seconds)';
+document.body.appendChild(button);
+
+// Waiting message
+const waiting = document.createElement('div');
+waiting.textContent = '5Click button within seconds or wait for automatic advance...';
+waiting.style.marginTop = '10px';
+output.appendChild(waiting);
+
+// Manual Click Stream
+const manualClick$ = fromEvent(button, 'click').pipe(
   take(1),
-  map(() => 'User clicked')
+  map(() => '👆 Manual click has been selected！')
 );
 
-const autoAdvance$ = timer(5000).pipe(
-  map(() => 'Auto-advanced')
+// Auto advance timer (5(after 2 seconds)
+const autoProgress$ = timer(5000).pipe(
+  map(() => '⏰ Auto progress has been selected！')
 );
 
-// ✅ Pipeable Operator version - add processing to main stream
-userClick$
-  .pipe(
-    map(message => `[${new Date().toLocaleTimeString()}] ${message}`),
-    raceWith(autoAdvance$.pipe(
-      map(message => `[${new Date().toLocaleTimeString()}] ${message}`)
-    ))
-  )
+// Race Execution
+manualClick$
+  .pipe(raceWith(autoProgress$))
+  .subscribe((winner) => {
+    waiting.remove();
+    button.disabled = true;
+
+    const result = document.createElement('div');
+    result.innerHTML = `<strong>${winner}</strong>`;
+    result.style.color = 'green';
+    result.style.fontSize = '18px';
+    result.style.marginTop = '10px';
+    output.appendChild(result);
+  });
+```
+
+- If the button is clicked within 5 seconds, the manual click is adopted.
+- After 5 seconds, the automatic progression is adopted.
+- **First one to do so is the winner**, and the later one is ignored.
+
+## 🔄 Difference from Creation Function `race`.
+
+### Basic differences
+
+```ts
+import { timer } from 'rxjs';
+import { raceWith, map } from 'rxjs';
+
+const slow$ = timer(5000).pipe(map(() => 'Slowly (5Seconds)'));
+const medium$ = timer(3000).pipe(map(() => 'Normal (3Seconds)'));
+const fast$ = timer(2000).pipe(map(() => 'Fast (2Seconds)'));
+
+slow$
+  .pipe(raceWith(medium$, fast$))
   .subscribe(console.log);
 
-// ❌ Creation Function version - becomes verbose
+// Output: Fast (2Seconds)
+```
+
+### Specific examples of usage
+
+**If you only need a simple race, Creation Function is the way to go**.
+
+
+```ts
+import { race, timer } from 'rxjs';
+import { map } from 'rxjs';
+
+const server1$ = timer(3000).pipe(map(() => 'Response from server1Response from'));
+const server2$ = timer(2000).pipe(map(() => 'Response from server2Response from'));
+const server3$ = timer(4000).pipe(map(() => 'Response from server3Response from'));
+
+// Simple and easy to read
+race(server1$, server2$, server3$).subscribe(response => {
+  console.log('Adopted:', response);
+});
+// Output: Adopted: Response from server2Response from (Fastest2Seconds)
+```
+
+**If you want to add a conversion process to the main stream, Pipeable Operator is recommended**.
+
+```ts
+import { fromEvent, timer, of } from 'rxjs';
+import { raceWith, map, switchMap, catchError } from 'rxjs';
+
+const searchButton = document.createElement('button');
+searchButton.textContent = 'Search';
+document.body.appendChild(searchButton);
+
+const output = document.createElement('div');
+output.style.marginTop = '10px';
+document.body.appendChild(output);
+
+// Mainstream: User search requests
+const userSearch$ = fromEvent(searchButton, 'click').pipe(
+  switchMap(() => {
+    output.textContent = 'Searching...';
+
+    // APISimulate a call (3(takes seconds)
+    return timer(3000).pipe(
+      map(() => '🔍 Search results: 100Hits per page'),
+      catchError((err: unknown) => of('❌ Error occurred'))
+    );
+  })
+);
+
+// ✅ Pipeable OperatorEdition - Complete in one pipeline
+userSearch$
+  .pipe(
+    raceWith(
+      // Timeout (2seconds)
+      timer(2000).pipe(
+        map(() => '⏱️ Timeout: Search is taking a long time')
+      )
+    )
+  )
+  .subscribe(result => {
+    output.textContent = result;
+  });
+
+// ❌ Creation FunctionEdition - Mainstream needs to be written separately
 import { race } from 'rxjs';
 race(
-  userClick$.pipe(
-    map(message => `[${new Date().toLocaleTimeString()}] ${message}`)
-  ),
-  autoAdvance$.pipe(
-    map(message => `[${new Date().toLocaleTimeString()}] ${message}`)
+  userSearch$,
+  timer(2000).pipe(
+    map(() => '⏱️ Timeout: Search is taking a long time')
   )
-).subscribe(console.log);
+).subscribe(result => {
+  output.textContent = result;
+});
+```
+
+**Implementation of fallback processing**
+
+```ts
+import { timer, throwError } from 'rxjs';
+import { raceWith, map, mergeMap, catchError, delay } from 'rxjs';
+import { of } from 'rxjs';
+
+// UICreate
+const output = document.createElement('div');
+output.innerHTML = '<h3>Data acquisition (with fallback)</h3>';
+document.body.appendChild(output);
+
+const button = document.createElement('button');
+button.textContent = 'Start of data acquisition';
+document.body.appendChild(button);
+
+const statusArea = document.createElement('div');
+statusArea.style.marginTop = '10px';
+output.appendChild(statusArea);
+
+button.addEventListener('click', () => {
+  statusArea.textContent = 'Acquisition in progress...';
+
+  // MainAPI(priority)：Time々Failure
+  const mainApi$ = timer(1500).pipe(
+    mergeMap(() => {
+      const success = Math.random() > 0.5;
+      if (success) {
+        return of('✅ MainAPISuccessful acquisition from');
+      } else {
+        return throwError(() => new Error('MainAPIFailure'));
+      }
+    }),
+    catchError((err: unknown) => {
+      console.log('MainAPIFailure, go to fallback...');
+      // Delay on error and yield to fallback
+      return of('').pipe(delay(10000));
+    })
+  );
+
+  // ✅ Pipeable OperatorEdition - MainAPIAdd fallback to
+  mainApi$
+    .pipe(
+      raceWith(
+        // BackupAPI(fallback)：Slightly slower, but reliable
+        timer(2000).pipe(
+          map(() => '🔄 BackupAPIRetrieve from')
+        )
+      )
+    )
+    .subscribe(result => {
+      if (result) {
+        statusArea.textContent = result;
+        statusArea.style.color = result.includes('Main') ? 'green' : 'orange';
+      }
+    });
+});
+```
+
+**Adopt fastest from multiple data sources** ```ts
+import { timer, throwError } from 'rxjs';
+import { raceWith, map, mergeMap, catchError, delay } from 'rxjs';
+import { of } from 'rxjs';
+
+// UICreate
+const output = document.createElement('div');
+output.innerHTML = '<h3>Data acquisition (with fallback)</h3>';
+document.body.appendChild(output);
+
+const button = document.createElement('button');
+button.textContent = 'Start of data acquisition';
+document.body.appendChild(button);
+
+const statusArea = document.createElement('div');
+statusArea.style.marginTop = '10px';
+output.appendChild(statusArea);
+
+button.addEventListener('click', () => {
+  statusArea.textContent = 'Acquisition in progress...';
+
+  // MainAPI(priority)：Time々Failure
+  const mainApi$ = timer(1500).pipe(
+    mergeMap(() => {
+      const success = Math.random() > 0.5;
+      if (success) {
+        return of('✅ MainAPISuccessful acquisition from');
+      } else {
+        return throwError(() => new Error('MainAPIFailure'));
+      }
+    }),
+    catchError((err: unknown) => {
+      console.log('MainAPIFailure, go to fallback...');
+      // Delay on error and yield to fallback
+      return of('').pipe(delay(10000));
+    })
+  );
+
+  // ✅ Pipeable OperatorEdition - MainAPIAdd fallback to
+  mainApi$
+    .pipe(
+      raceWith(
+        // BackupAPI(fallback)：Slightly slower, but reliable
+        timer(2000).pipe(
+          map(() => '🔄 BackupAPIRetrieve from')
+        )
+      )
+    )
+    .subscribe(result => {
+      if (result) {
+        statusArea.textContent = result;
+        statusArea.style.color = result.includes('Main') ? 'green' : 'orange';
+      }
+    });
+});
+```
+
+```
+
+```ts
+import { timer, fromEvent } from 'rxjs';
+import { raceWith, map, mergeMap } from 'rxjs';
+
+const output = document.createElement('div');
+output.innerHTML = '<h3>MultipleCDNFastest load from</h3>';
+document.body.appendChild(output);
+
+const loadButton = document.createElement('button');
+loadButton.textContent = 'Loading libraries';
+document.body.appendChild(loadButton);
+
+const result = document.createElement('div');
+result.style.marginTop = '10px';
+output.appendChild(result);
+
+fromEvent(loadButton, 'click').pipe(
+  mergeMap(() => {
+    result.textContent = 'Loading...';
+
+    // CDN1Loading (simulate) from
+    const cdn1$ = timer(Math.random() * 3000).pipe(
+      map(() => ({ source: 'CDN1 (US)', data: 'library.js' }))
+    );
+
+    // ✅ Pipeable OperatorEdition - CDN1as main and otherCDNas competitors
+    return cdn1$.pipe(
+      raceWith(
+        // CDN2Loading (simulate) from
+        timer(Math.random() * 3000).pipe(
+          map(() => ({ source: 'CDN2 (EU)', data: 'library.js' }))
+        ),
+        // CDN3Loading (simulate) from
+        timer(Math.random() * 3000).pipe(
+          map(() => ({ source: 'CDN3 (Asia)', data: 'library.js' }))
+        )
+      )
+    );
+  })
+).subscribe(response => {
+  result.innerHTML = `
+    <strong>✅ Loading completed</strong><br>
+    Acquired from: ${response.source}<br>
+    file: ${response.data}
+  `;
+  result.style.color = 'green';
+});
 ```
 
 ### Summary
 
-- **`race`**: Optimal for simply competing multiple streams
-- **`raceWith`**: Optimal when you want to compete with other streams while transforming or processing the main stream
+- **`race`**: best if you simply want to adopt the fastest one from multiple streams
+- **`raceWith`**: best if you want to implement timeouts and fallbacks while transforming and processing the main stream
 
+## ⚠️ Notes.
 
-## ⚠️ Important Notes
+### Example timeout implementation
 
-### First Emission Wins
-
-The stream with the **earliest emission timing** is adopted. Not the subscription start timing.
+Implementing timeout processing using `raceWith`.
 
 ```ts
-import { timer, of } from 'rxjs';
-import { raceWith, map } from 'rxjs';
+import { of, timer, throwError } from 'rxjs';
+import { raceWith, delay, mergeMap } from 'rxjs';
 
-const immediate$ = of('Emit immediately');
-const delayed$ = timer(1000).pipe(map(() => 'Emit after 1 second'));
+// Time-consuming process (3seconds)
+const slowRequest$ = of('Data acquisition succeeded').pipe(delay(3000));
 
-immediate$
-  .pipe(raceWith(delayed$))
-  .subscribe(console.log);
-// Output: Emit immediately
+// Timeout (2seconds)
+const timeout$ = timer(2000).pipe(
+  mergeMap(() => throwError(() => new Error('Timeout')))
+);
+
+slowRequest$
+  .pipe(raceWith(timeout$))
+  .subscribe({
+    next: console.log,
+    error: err => console.error(err.message)
+  });
+// Output: Timeout
 ```
 
-### All Observables are Subscribed
+### all streams are subscribed to
 
-`raceWith` **subscribes to all Observables simultaneously**, but ignores all except the first one that emits.
+`raceWith` will subscribe to all Observables until a winner is determined.
+After the winner is determined, the losing Observable is automatically unsubscribed.
 
 ```ts
 import { timer } from 'rxjs';
-import { raceWith, tap } from 'rxjs';
+import { raceWith, tap, map } from 'rxjs';
 
-const source1$ = timer(100).pipe(
-  tap(() => console.log('Source 1 emits'))
+const slow$ = timer(3000).pipe(
+  tap(() => console.log('slow$ Firing')),
+  map(() => 'slow')
 );
 
-const source2$ = timer(200).pipe(
-  tap(() => console.log('Source 2 emits'))
+const fast$ = timer(1000).pipe(
+  tap(() => console.log('fast$ Firing')),
+  map(() => 'fast')
 );
 
-source1$
-  .pipe(raceWith(source2$))
-  .subscribe(console.log);
+slow$.pipe(raceWith(fast$)).subscribe(console.log);
 // Output:
-// Source 1 emits
-// 0
-// Source 2 emits ← Subscribed, but value is ignored
+// fast$ Firing
+// fast
+// (slow$is1Unsubscribed at second,3seconds and does not fire after)
 ```
 
-### Error Handling
+### For a synchronous Observable.
 
-If there is an Observable that errors first, the entire stream terminates with an error.
+If everything is issued synchronously, the first one registered is the winner.
 
 ```ts
-import { throwError, timer } from 'rxjs';
-import { raceWith, catchError } from 'rxjs';
 import { of } from 'rxjs';
+import { raceWith } from 'rxjs';
 
-timer(1000).pipe(
-  raceWith(
-    throwError(() => new Error('Error occurred')).pipe(
-      catchError((err: unknown) => of('Error recovered'))
-    )
-  )
-).subscribe({
-  next: console.log,
-  error: err => console.error('Error:', err.message)
-});
-// Output: Error recovered
+of('A').pipe(
+  raceWith(of('B'), of('C'))
+).subscribe(console.log);
+// Output: A (since it was first subscribed to)
 ```
-
 
 ## 📚 Related Operators
 
 - **[race](/en/guide/creation-functions/selection/race)** - Creation Function version
-- **[mergeWith](/en/guide/operators/combination/mergeWith)** - Execute all streams in parallel
-- **[concatWith](/en/guide/operators/combination/concatWith)** - Execute streams sequentially
+- **[timeout](/en/guide/operators/utility/timeout)** - Timeout-only operator
+- **[mergeWith](/en/guide/operators/combination/mergeWith)** - Merge all streams

@@ -70,6 +70,7 @@ IDS_PATH = SKILL_DIR / 'deepl_glossary_ids.json'
 # 言語ディレクトリ名 → DeepL target_lang コード
 # DeepL Glossary 対応言語: JA → EN-US/EN-GB/DE/FR/IT/ES/NL/PT-BR/PT-PT/RU/ZH 等
 LANG_MAP = {
+    'en': 'EN-US',
     'fr': 'FR',
     'de': 'DE',
     'it': 'IT',

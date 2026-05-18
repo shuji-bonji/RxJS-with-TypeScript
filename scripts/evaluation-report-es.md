@@ -18,6 +18,47 @@
 | 🟡 要改善 (0.70-0.84) | 73 | 40.6% |
 | 🔴 要修正 (<0.70) | 36 | 20.0% |
 
+## 🔴 要修正ファイル (スコア < 0.70)
+
+| スコア | ファイル | ペア数 |
+|--------|----------|--------|
+| 🔴 0.260 | `operators/filtering/filter.md` | 6 |
+| 🔴 0.280 | `practical-patterns/index.md` | 26 |
+| 🔴 0.337 | `observables/observable-lifecycle.md` | 11 |
+| 🔴 0.394 | `testing/marble-testing.md` | 12 |
+| 🔴 0.403 | `schedulers/types.md` | 14 |
+| 🔴 0.407 | `observables/cold-and-hot-observables.md` | 30 |
+| 🔴 0.409 | `debugging/custom-tools.md` | 7 |
+| 🔴 0.440 | `overcoming-difficulties/debugging-guide.md` | 19 |
+| 🔴 0.449 | `testing/test-scheduler.md` | 6 |
+| 🔴 0.453 | `debugging/common-scenarios.md` | 12 |
+| 🔴 0.458 | `operators/combination/combineLatestAll.md` | 9 |
+| 🔴 0.473 | `operators/combination/combineLatestWith.md` | 14 |
+| 🔴 0.475 | `operators/filtering/skipLast.md` | 7 |
+| 🔴 0.492 | `operators/filtering/ignoreElements.md` | 8 |
+| 🔴 0.495 | `operators/multicasting/shareReplay.md` | 9 |
+| 🔴 0.496 | `operators/combination/zipWith.md` | 14 |
+| 🔴 0.511 | `creation-functions/conditional/index.md` | 13 |
+| 🔴 0.517 | `creation-functions/http-communication/fromFetch.md` | 15 |
+| 🔴 0.520 | `creation-functions/control/using.md` | 12 |
+| 🔴 0.524 | `operators/combination/raceWith.md` | 13 |
+| 🔴 0.534 | `practical-patterns/real-time-data.md` | 48 |
+| 🔴 0.536 | `operators/filtering/elementAt.md` | 7 |
+| 🔴 0.539 | `creation-functions/control/scheduled.md` | 14 |
+| 🔴 0.540 | `operators/filtering/skipWhile.md` | 7 |
+| 🔴 0.554 | `operators/filtering/audit.md` | 7 |
+| 🔴 0.560 | `schedulers/async-control.md` | 14 |
+| 🔴 0.572 | `observables/creation.md` | 29 |
+| 🔴 0.574 | `operators/multicasting/share.md` | 12 |
+| 🔴 0.576 | `creation-functions/combination/forkJoin-vs-combineLatest.md` | 5 |
+| 🔴 0.578 | `creation-functions/http-communication/ajax.md` | 14 |
+| 🔴 0.579 | `operators/filtering/findIndex.md` | 7 |
+| 🔴 0.581 | `operators/filtering/sampleTime.md` | 7 |
+| 🔴 0.587 | `operators/utility/subscribeOn.md` | 16 |
+| 🔴 0.624 | `operators/utility/timestamp.md` | 16 |
+| 🔴 0.655 | `operators/filtering/auditTime.md` | 4 |
+| 🔴 0.687 | `operators/filtering/distinct.md` | 4 |
+
 ## ファイル別一覧
 
 
@@ -286,6 +327,7 @@
 | 🔵 0.901 | typescript-advanced/_typeScript-and-rxjs-integration.md | 19 |
 | 🟡 0.835 | typescript-advanced/type-safety.md | 1 |
 
+
 ---
 
-生成日時: 2025-12-24
+最終更新: 2025-12-24T09:56:37.835Z

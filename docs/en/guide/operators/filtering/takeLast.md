@@ -1,11 +1,10 @@
 ---
-description: takeLast is an RxJS filtering operator that outputs only the last N values when the Observable stream completes. It is ideal for scenarios where only the last values from the entire stream are needed, such as getting the latest log entries, displaying top N items on a leaderboard, and final data summaries upon completion. It cannot be used with infinite streams because it holds values in a buffer until completion.
+description: "takeLast is an RxJS filtering operator that outputs only the last N values when an Observable stream is completed. It is ideal for situations where only the last value from the entire stream is needed, such as getting the latest count in a log, displaying the top N values on a leaderboard, or a final data summary upon completion. It cannot be used with infinite streams as it is held in a buffer until completion."
 ---
 
-# takeLast - Get Last N Values
+# takeLast - get the last N values
 
-The `takeLast` operator outputs only the last N values when the stream **completes**. It holds values in a buffer until the stream completes, then outputs them all at once.
-
+The `takeLast` operator outputs only the last N values at the time the stream is **completed**. It keeps the values in a buffer until the stream completes, and outputs them together after completion.
 
 ## 🔰 Basic Syntax and Usage
 
@@ -13,7 +12,7 @@ The `takeLast` operator outputs only the last N values when the stream **complet
 import { range } from 'rxjs';
 import { takeLast } from 'rxjs';
 
-const numbers$ = range(0, 10); // 0 to 9
+const numbers$ = range(0, 10); // 0from9to
 
 numbers$.pipe(
   takeLast(3)
@@ -21,14 +20,13 @@ numbers$.pipe(
 // Output: 7, 8, 9
 ```
 
-**Flow of operation**:
-1. Stream emits 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
-2. Internally holds last 3 values in buffer
-3. Stream completes
-4. Outputs buffer values 7, 8, 9 in order
+**Flow of operation**: 1.
+Stream issues 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 2.
+Internally hold last 3 in buffer 3.
+3. stream completes 4. buffer value 7, 8, 9
+4. output buffer values 7, 8, 9 in sequence
 
 [🌐 RxJS Official Documentation - `takeLast`](https://rxjs.dev/api/operators/takeLast)
-
 
 ## 🆚 Contrast with take
 
@@ -38,31 +36,39 @@ numbers$.pipe(
 import { range } from 'rxjs';
 import { take, takeLast } from 'rxjs';
 
-const numbers$ = range(0, 10); // 0 to 9
+const numbers$ = range(0, 10); // 0from9to
 
-// take: Get first N values
+// take: FirstNGet the first piece
 numbers$.pipe(
   take(3)
 ).subscribe(console.log);
-// Output: 0, 1, 2 (output immediately)
+// Output: 0, 1, 2(output immediately)
 
-// takeLast: Get last N values
+// takeLast: Get the lastNGet the first piece
 numbers$.pipe(
   takeLast(3)
 ).subscribe(console.log);
-// Output: 7, 8, 9 (output after waiting for completion)
+// Output: 7, 8, 9(wait for completion before outputting)
 ```
 
-| Operator | Get Position | Output Timing | Behavior Before Completion |
-|---|---|---|---|
-| `take(n)` | First n values | Output immediately | Auto-complete after n values |
-| `takeLast(n)` | Last n values | Output all together after completion | Hold in buffer |
+```ts
+import { range } from 'rxjs';
+import { takeLast } from 'rxjs';
+
+const numbers$ = range(0, 10); // 0from9to
+
+numbers$.pipe(
+  takeLast(3)
+).subscribe(console.log);
+// Output: 7, 8, 9
+```
+
+## 💡 Typical utilization pattern
+
+1. **Get the latest N log entries**.
 
 
-## 💡 Typical Usage Patterns
-
-1. **Get Latest N Log Entries**
-   ```ts
+```ts
    import { from } from 'rxjs';
    import { takeLast } from 'rxjs';
 
@@ -80,7 +86,7 @@ numbers$.pipe(
      { timestamp: 5, level: 'info' as const, message: 'Retry successful' },
    ] as LogEntry[]);
 
-   // Get latest 3 log entries
+   // Get the latest3Retrieve logs of
    logs$.pipe(
      takeLast(3)
    ).subscribe(log => {
@@ -92,7 +98,7 @@ numbers$.pipe(
    // [info] Retry successful
    ```
 
-2. **Get Top N on Leaderboard**
+2. **Top of leaderboardNRetrieve the top**
    ```ts
    import { from } from 'rxjs';
    import { takeLast } from 'rxjs';
@@ -108,9 +114,11 @@ numbers$.pipe(
      { player: 'Charlie', score: 200 },
      { player: 'Dave', score: 180 },
      { player: 'Eve', score: 220 }
-   ] as Score[]);
+   ] as Score[]).pipe(
+     // Assume sorted by score
+   );
 
-   // Get top 3
+   // Get the top3Retrieve the
    scores$.pipe(
      takeLast(3)
    ).subscribe(score => {
@@ -119,113 +127,288 @@ numbers$.pipe(
    // Output: Charlie: 200, Dave: 180, Eve: 220
    ```
 
+3. **Final summary after data processing is completeNSummary of cases**
+   ```ts
+   import { interval } from 'rxjs';
+   import { take, map, takeLast } from 'rxjs';
 
-## ⚠️ Important Notes
+   // Simulation of sensor data
+   const sensorData$ = interval(100).pipe(
+     take(20),
+     map(i => ({
+       id: i,
+       temperature: 20 + Math.random() * 10
+     }))
+   );
+
+   // Get the last5Calculate average temperature of
+   sensorData$.pipe(
+     takeLast(5)
+   ).subscribe({
+     next: data => {
+       console.log(`data${data.id}: ${data.temperature.toFixed(1)}°C`);
+     },
+     complete: () => {
+       console.log('Latest5Completed data acquisition for the case');
+     }
+   });
+   ```
+
+## 🧠 Practical code example (input history)
+
+This is an example of displaying the latest3The following is an example of displaying the latest values entered by the user.
+
+```
+
+ts
+import { fromEvent, Subject } from 'rxjs';
+import { takeLast } from 'rxjs';
+
+// Create UI elements
+const container = document.createElement('div');
+document.body.appendChild(container);
+
+const input = document.createElement('input');
+input.placeholder = 'Enter a value and Enter';
+container.appendChild(input);
+
+const submitButton = document.createElement('button');
+submitButton.textContent = 'Show history (latest 3)';
+container.appendChild(submitButton);
+
+const historyDisplay = document.createElement('div');
+historyDisplay.style.marginTop = '10px';
+container.appendChild(historyDisplay);
+
+// Subject to hold input values
+const inputs$ = new Subject<string>();
+
+// **IMPORTANT**: set takeLast subscription first
+inputs$.pipe(
+  takeLast(3)
+).subscribe({
+  next: (value) => {
+    const item = document.createElement('div');
+    item.textContent = `- ${value}`;
+    historyDisplay.appendChild(item);
+  },
+  complete: () => {
+    const note = document.createElement('div');
+    note.style.marginTop = '5px';
+    note.style.color = 'gray';
+    note.textContent = '(You can type again if you reload the page)';
+    historyDisplay.appendChild(note);
+
+    // disable input fields and buttons
+    input.disabled = true;
+    submitButton.disabled = true;
+  }
+});
+
+// Add input with Enter key
+fromEvent\<KeyboardEvent>(input, 'keydown').subscribe(event => {
+  if (event.key === 'Enter' && input.value.trim()) {
+    inputs$.next(input.value);
+    console.log(`Add: ${input.value}`);
+    input.value = '';
+  }
+});
+
+// Complete with button click and display history
+fromEvent(submitButton, 'click').subscribe(() => {
+  historyDisplay.innerHTML = '<strong>History (latest 3):</strong><br>';
+  inputs$.complete(); // stream completed → takeLast fires
+});
+
+```
+
+> [!IMPORTANT]
+> **Important point**:
+> - `takeLast(3)` Subscribe to the**must be set up ahead of time**must be set up first
+> - When the button is clicked `complete()` the last of the values received up to that point will be output.3is output, the last value received up to that point is output.
+> - `complete()` After calling**After calling**to `subscribe` does not cause any values to flow.
+
+## ⚠️ An important note
 
 > [!WARNING]
-> `takeLast` **waits until the stream completes**, so it does not work with infinite streams. Also, if n in `takeLast(n)` is large, it consumes a lot of memory.
+> `takeLast` is to wait until the stream**waits until the stream completes**It does not work with infinite streams because it waits until the stream completes. Also, the`takeLast(n)` is large, it will consume a lot of memory.nis large, it consumes a lot of memory.
 
-### 1. Cannot Use with Infinite Streams
+### 1. Cannot be used with infinite streams
 
-`takeLast` waits for the stream to complete, so it does not work with infinite streams.
+`takeLast` does not work with infinite streams because it waits until the stream completes.
 
-```ts
+```
+
+ts
 import { interval } from 'rxjs';
 import { takeLast } from 'rxjs';
 
-// ❌ Bad example: Use takeLast with infinite stream
+// ❌ Bad example: using takeLast with infinite streams
 interval(1000).pipe(
   takeLast(3)
 ).subscribe(console.log);
-// Nothing output (because stream never completes)
+// nothing is output (because the stream never completes)
+
 ```
 
-**Solution**: Make it a finite stream by combining with `take`
+**Solution**: `take` Make it a finite stream by combining it with
 
-```ts
+```
+
+ts
 import { interval } from 'rxjs';
 import { take, takeLast } from 'rxjs';
 
-// ✅ Good example: Use takeLast after making it finite stream
+// ✅ Good example: finite stream, then use takeLast
 interval(1000).pipe(
-  take(10),      // Complete with first 10 values
-  takeLast(3)    // Get last 3 from them
+  take(10), // first 10 complete
+  takeLast(3) // take the last 3 of them
 ).subscribe(console.log);
-// Output: 7, 8, 9
+// output: 7, 8, 9
+
 ```
 
-### 2. Be Mindful of Memory Usage
+### 2. Pay attention to memory usage
 
-`takeLast(n)` holds the last n values in a buffer, so large n consumes memory.
+`takeLast(n)` does not work with infinite streams because it waits until the lastnto keep the last one in the buffer,nis large, it consumes more memory.
 
-```ts
+```
+
+ts
 import { range } from 'rxjs';
 import { takeLast } from 'rxjs';
 
-// ⚠️ Caution: Hold large amount of data in buffer
+// ⚠️ Note: keep large amount of data in buffer
 range(0, 1000000).pipe(
-  takeLast(100000) // Hold 100,000 items in memory
+  takeLast(100000) // 100,000 records held in memory
 ).subscribe(console.log);
+
 ```
 
+## 🎯 last Difference between
 
-## 🎯 Difference from last
+```
 
-```ts
+ts
 import { range } from 'rxjs';
 import { last, takeLast } from 'rxjs';
 
 const numbers$ = range(0, 10);
 
-// last: Only last 1 value
+// last: take only the last one
 numbers$.pipe(
   last()
 ).subscribe(console.log);
-// Output: 9
+// output: 9
 
-// takeLast(1): Last 1 value (output as single value, not array)
+// takeLast(1): last one (output as a single value, not an array)
 numbers$.pipe(
   takeLast(1)
 ).subscribe(console.log);
 // Output: 9
 
-// takeLast(3): Last 3 values
+// takeLast(3): last 3
 numbers$.pipe(
   takeLast(3)
 ).subscribe(console.log);
 // Output: 7, 8, 9
+
 ```
 
-| Operator | Get Count | Condition Specification | Use Case |
+| operator | Number of acquisitions | Condition specification | Use case |
 |---|---|---|---|
-| `last()` | 1 value | Possible | Last 1 value or last 1 value meeting condition |
-| `takeLast(n)` | n values | Not possible | Simply get last n values |
+| `last()` | 1Number of | Possible | Get the last1Pieces or the last piece that satisfies the condition1Number of |
+| `takeLast(n)` | nNumber of | Impossible | Get the lastnSimply get the last one that satisfies the condition |
 
+## 📋 Type-Safe Usage
+
+TypeScript The following is an example of a type-safe implementation that utilizes generics in
+
+```
+
+ts
+import { Observable, from } from 'rxjs';
+import { takeLast } from 'rxjs';
+
+interface Transaction {
+  id: string;
+  amount: number;
+  timestamp: Date;
+  status: 'pending' | 'completed' | 'failed'; }
+}
+
+function getRecentTransactions(
+  transactions$: Observable\<Transaction>, count: number
+  count: number
+): Observable\<Transaction> {
+  return transactions$.pipe(
+    takeLast(count)
+  ); }
+}
+
+// Example of use
+const transactions$ = from([
+  { id: '1', amount: 100, timestamp: new Date('2025-01-01'), status: 'completed' as const }
+  { id: '2', amount: 200, timestamp: new Date('2025-01-02'), status: 'completed' as const }
+  { id: '3', amount: 150, timestamp: new Date('2025-01-03'), status: 'pending' as const }
+  { id: '4', amount: 300, timestamp: new Date('2025-01-04'), status: 'completed' as const }
+  { id: '5', amount: 250, timestamp: new Date('2025-01-05'), status: 'failed' as const }
+] as Transaction[]);
+
+// Get the last 3 transactions
+getRecentTransactions(transactions$, 3).subscribe(tx => {
+  console.log(`${tx.id}: ${tx.amount} yen (${tx.status})`);
+});
+// Output: ${tx.id}: ${tx.status}
+// 3: 150 yen (pending)
+// 4: 300 yen (completed)
+// 5: 250 yen (failed)
+
+```
+
+## 🔄 skip and takeLast Combination of
+
+can be used to exclude values in the middle and retrieve only the lastNOnly the last one can be retrieved, excluding values in the middle part.
+
+```
+
+```ts
+import { range } from 'rxjs';
+import { skip, takeLast } from 'rxjs';
+
+const numbers$ = range(0, 10); // 0 to 9
+
+// skip the first 5 and take the last 3
+numbers$.pipe(
+  skip(5), // skip 0, 1, 2, 3, 4
+  takeLast(3) // take the last 3 from the remaining 5, 6, 7, 8, 9
+).subscribe(console.log);
+// Output: 7, 8, 9
+```
 
 ## 🎓 Summary
 
-### When to Use takeLast
-- ✅ When you need the last N data from the stream
-- ✅ When you want to get latest N entries of logs or transactions
-- ✅ When stream completion is guaranteed
-- ✅ When you want to display data summary or top N items
+### When should takeLast be used?
+- ✅ If you need the last N data in a stream
+- ✅ If you want to get the last N logs or transactions
+- ✅ If the stream is guaranteed to complete
+- ✅ If you want to display a summary or top N records of data
 
-### When to Use take
-- ✅ When you need the first N data from the stream
-- ✅ When you want to get results immediately
-- ✅ When you want to get a portion from infinite stream
+### When should you use take?
+- ✅ If you need the first N data in the stream
+- ✅ If you want to get results immediately
+- ✅ If you want to get a portion of an infinite stream
 
-### Notes
-- ⚠️ Cannot use with infinite streams (doesn't complete)
+### Notes.
+- ⚠️ Cannot be used with infinite streams (because it never completes)
 - ⚠️ Large n in `takeLast(n)` consumes memory
-- ⚠️ Output is done all together after completion (not output immediately)
-- ⚠️ Often need to combine with `take(n)` to make finite stream
+- ⚠️ Output is compiled after completion (not immediately)
+- ⚠️ Often needs to be combined with `take(n)` to make a finite stream
 
+## 🚀 Next step.
 
-## 🚀 Next Steps
-
-- **[take](/en/guide/operators/filtering/take)** - Learn how to get first N values
-- **[last](/en/guide/operators/filtering/last)** - Learn how to get last 1 value
-- **[skip](/en/guide/operators/filtering/skip)** - Learn how to skip first N values
-- **[filter](/en/guide/operators/filtering/filter)** - Learn how to filter based on conditions
-- **[Filtering Operator Practical Examples](/en/guide/operators/filtering/practical-use-cases)** - Learn real use cases
+- **[take](. /take)** - learn how to get the first n values.
+- **[last](. /last)** - learn how to get the last 1 value
+- **[skip](. /skip)** - learn how to skip the first N values
+- **[filter](. /filter)** - learn how to filter based on conditions
+- **[filtering operator practical-use-cases](. /practical-use-cases)** - learn how to use real use cases
