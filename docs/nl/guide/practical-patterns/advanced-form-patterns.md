@@ -39,7 +39,7 @@ Dit artikel beschrijft een geavanceerd formulierpatroon met behulp van **JSON Pa
 // Formuliergegevens voor wijziging
 const before = {
   profile: {
-    name: "田中太郎",
+    name: "Jan Jansen",
     email: "tanaka@example.com",
     age: 30
   }
@@ -48,7 +48,7 @@ const before = {
 // Formuliergegevens na wijziging
 const after = {
   profile: {
-    name: "田中太郎",
+    name: "Jan Jansen",
     email: "tanaka.updated@example.com", // gewijzigd
     age: 31 // gewijzigd
   }
@@ -77,7 +77,7 @@ const patch = [
 const formData = {
   user: {
     profile: {
-      name: "田中太郎"
+      name: "Jan Jansen"
     },
     settings: {
       notifications: true
@@ -86,9 +86,9 @@ const formData = {
 };
 
 // JSON Pointer voorbeelden
-"/user/profile/name"           // → "田中太郎"
+"/user/profile/name"           // → "Jan Jansen"
 "/user/settings/notifications" // → true
-"/user/profile"                // → { name: "田中太郎" }
+"/user/profile"                // → { name: "Jan Jansen" }
 ```
 
 ### Verschildetectie in RxJS
@@ -125,13 +125,13 @@ const patches$ = formData$.pipe(
 
 patches$.subscribe(patches => {
   console.log('Gedetecteerde wijzigingen:', patches);
-  // Voorbeeld: [{ op: "replace", path: "/profile/name", value: "田中太郎" }]
+  // Voorbeeld: [{ op: "replace", path: "/profile/name", value: "Jan Jansen" }]
 });
 
 // Formulierupdate simuleren
 formData$.next({
   profile: {
-    name: "田中太郎",
+    name: "Jan Jansen",
     email: "tanaka@example.com",
     age: 30
   }

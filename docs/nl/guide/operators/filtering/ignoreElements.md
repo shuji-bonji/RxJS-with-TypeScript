@@ -399,10 +399,6 @@ source$.pipe(
   complete: () => console.log('Voltooid')
 });
 // Uitvoer: Voltooid
----
-description: ignoreElementsオペレーターは、すべての値を無視して完了とエラーのみを通すRxJSフィルタリングオペレーターです。処理の完了を待つ場合に便利です。
----
-
 
 ### Patroon 2: Opschoonproces
 
@@ -428,10 +424,10 @@ const source$ = of(1, 2, 3, 4, 5);
 source$.pipe(
   ignoreElements()
 ).subscribe({
-  next: value => console.log('waarde:', value), // 呼ばれない
-  complete: () => console.log('voltooidしました')
+  next: value => console.log('waarde:', value), // niet aangeroepen
+  complete: () => console.log('voltooid')
 });
-// Uitvoer: voltooidしました
+// Uitvoer: voltooid
 ```
 
 ## 📚 Gerelateerde operatoren.

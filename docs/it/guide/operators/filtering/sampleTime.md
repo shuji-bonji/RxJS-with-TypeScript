@@ -351,10 +351,6 @@ clicks$.pipe(
 ).subscribe(() => {
   console.log('2Campioni secondo per secondo');
 });
----
-description: sampleTimeオペレーターは、指定した時間間隔で定期的にストリームの最新値をサンプリングするRxJSフィルタリングオペレーターです。定期的なスナップショット取得に最適です。
----
-
 
 ```ts
 import { fromEvent } from 'rxjs';

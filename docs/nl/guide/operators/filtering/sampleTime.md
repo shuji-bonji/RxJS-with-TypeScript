@@ -341,7 +341,7 @@ const clicks$ = fromEvent(document, 'click');
 clicks$.pipe(
   sampleTime(2000)
 ).subscribe(() => {
-  console.log('2秒ごとのサンプル');
+  console.log('2Monster per seconde');
 });
 ```
 
@@ -444,10 +444,6 @@ clicks$.pipe(
 ).subscribe(() => {
   console.log('2Monsters van seconde tot seconde');
 });
----
-description: sampleTimeオペレーターは、指定した時間間隔で定期的にストリームの最新値をサンプリングするRxJSフィルタリングオペレーターです。定期的なスナップショット取得に最適です。
----
-
 
 TABEL 12
 

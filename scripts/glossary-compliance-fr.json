@@ -1,0 +1,1822 @@
+{
+  "language": "fr",
+  "totalFiles": 181,
+  "filesWithViolations": 20,
+  "totalViolations": 28,
+  "files": [
+    {
+      "file": "operators/transformation/windowToggle.md",
+      "violations": {
+        "no_translate": [
+          {
+            "term": "Observable",
+            "ja_count": 3,
+            "trans_count": 0,
+            "ratio": 0
+          },
+          {
+            "term": "timer",
+            "ja_count": 6,
+            "trans_count": 0,
+            "ratio": 0
+          },
+          {
+            "term": "map",
+            "ja_count": 5,
+            "trans_count": 0,
+            "ratio": 0
+          },
+          {
+            "term": "count",
+            "ja_count": 9,
+            "trans_count": 0,
+            "ratio": 0
+          }
+        ],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 4
+    },
+    {
+      "file": "creation-functions/index.md",
+      "violations": {
+        "no_translate": [
+          {
+            "term": "Creation Function",
+            "ja_count": 9,
+            "trans_count": 0,
+            "ratio": 0
+          },
+          {
+            "term": "Pipeable Operator",
+            "ja_count": 10,
+            "trans_count": 0,
+            "ratio": 0
+          }
+        ],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 2
+    },
+    {
+      "file": "operators/transformation/bufferToggle.md",
+      "violations": {
+        "no_translate": [
+          {
+            "term": "timer",
+            "ja_count": 5,
+            "trans_count": 0,
+            "ratio": 0
+          },
+          {
+            "term": "bufferWhen",
+            "ja_count": 5,
+            "trans_count": 0,
+            "ratio": 0
+          }
+        ],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 2
+    },
+    {
+      "file": "operators/transformation/windowCount.md",
+      "violations": {
+        "no_translate": [
+          {
+            "term": "Observable",
+            "ja_count": 3,
+            "trans_count": 0,
+            "ratio": 0
+          },
+          {
+            "term": "take",
+            "ja_count": 4,
+            "trans_count": 0,
+            "ratio": 0
+          }
+        ],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 2
+    },
+    {
+      "file": "operators/utility/dematerialize.md",
+      "violations": {
+        "no_translate": [
+          {
+            "term": "interval",
+            "ja_count": 4,
+            "trans_count": 0,
+            "ratio": 0
+          },
+          {
+            "term": "take",
+            "ja_count": 4,
+            "trans_count": 0,
+            "ratio": 0
+          }
+        ],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 2
+    },
+    {
+      "file": "practical-patterns/caching-strategies.md",
+      "violations": {
+        "no_translate": [
+          {
+            "term": "BehaviorSubject",
+            "ja_count": 4,
+            "trans_count": 0,
+            "ratio": 0
+          },
+          {
+            "term": "distinctUntilChanged",
+            "ja_count": 4,
+            "trans_count": 0,
+            "ratio": 0
+          }
+        ],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 2
+    },
+    {
+      "file": "anti-patterns/checklist.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [
+          {
+            "phrase": "メモリリーク",
+            "lineNo": 17,
+            "line": "| <input type=\"checkbox\" /> | **[Toujours se désabonner des flux infinis](./common-mistakes#3-unsubs"
+          }
+        ],
+        "code_jp_residual": []
+      },
+      "total": 1
+    },
+    {
+      "file": "anti-patterns/common-mistakes.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [
+          {
+            "phrase": "メモリリーク",
+            "lineNo": 13,
+            "line": "3. [Oubli d'unsubscribe (fuites mémoire)](#3-unsubscribe-忘れ-メモリリーク)"
+          }
+        ],
+        "code_jp_residual": []
+      },
+      "total": 1
+    },
+    {
+      "file": "anti-patterns/index.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [
+          {
+            "phrase": "メモリリーク",
+            "lineNo": 29,
+            "line": "| **[Oubli d'unsubscribe](./common-mistakes#3-unsubscribe-忘れ-メモリリーク)** | Ne pas se désabonner des fl"
+          }
+        ],
+        "code_jp_residual": []
+      },
+      "total": 1
+    },
+    {
+      "file": "creation-functions/basic/fromEvent.md",
+      "violations": {
+        "no_translate": [
+          {
+            "term": "Observer",
+            "ja_count": 6,
+            "trans_count": 0,
+            "ratio": 0
+          }
+        ],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 1
+    },
+    {
+      "file": "creation-functions/basic/interval.md",
+      "violations": {
+        "no_translate": [
+          {
+            "term": "Observer",
+            "ja_count": 12,
+            "trans_count": 0,
+            "ratio": 0
+          }
+        ],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 1
+    },
+    {
+      "file": "creation-functions/basic/timer.md",
+      "violations": {
+        "no_translate": [
+          {
+            "term": "Observer",
+            "ja_count": 8,
+            "trans_count": 0,
+            "ratio": 0
+          }
+        ],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 1
+    },
+    {
+      "file": "operators/combination/combineLatestWith.md",
+      "violations": {
+        "no_translate": [
+          {
+            "term": "range",
+            "ja_count": 3,
+            "trans_count": 0,
+            "ratio": 0
+          }
+        ],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 1
+    },
+    {
+      "file": "operators/combination/concatWith.md",
+      "violations": {
+        "no_translate": [
+          {
+            "term": "Creation Function",
+            "ja_count": 3,
+            "trans_count": 0,
+            "ratio": 0
+          }
+        ],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 1
+    },
+    {
+      "file": "operators/filtering/audit.md",
+      "violations": {
+        "no_translate": [
+          {
+            "term": "map",
+            "ja_count": 4,
+            "trans_count": 0,
+            "ratio": 0
+          }
+        ],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 1
+    },
+    {
+      "file": "operators/filtering/ignoreElements.md",
+      "violations": {
+        "no_translate": [
+          {
+            "term": "interval",
+            "ja_count": 3,
+            "trans_count": 0,
+            "ratio": 0
+          }
+        ],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 1
+    },
+    {
+      "file": "operators/filtering/takeLast.md",
+      "violations": {
+        "no_translate": [
+          {
+            "term": "error",
+            "ja_count": 3,
+            "trans_count": 0,
+            "ratio": 0
+          }
+        ],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 1
+    },
+    {
+      "file": "operators/transformation/groupBy.md",
+      "violations": {
+        "no_translate": [
+          {
+            "term": "fromEvent",
+            "ja_count": 4,
+            "trans_count": 0,
+            "ratio": 0
+          }
+        ],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 1
+    },
+    {
+      "file": "operators/transformation/windowTime.md",
+      "violations": {
+        "no_translate": [
+          {
+            "term": "Observable",
+            "ja_count": 3,
+            "trans_count": 0,
+            "ratio": 0
+          }
+        ],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 1
+    },
+    {
+      "file": "operators/transformation/windowWhen.md",
+      "violations": {
+        "no_translate": [
+          {
+            "term": "scan",
+            "ja_count": 3,
+            "trans_count": 0,
+            "ratio": 0
+          }
+        ],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 1
+    },
+    {
+      "file": "anti-patterns/flag-management.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "anti-patterns/one-liner-hell.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "anti-patterns/promise-observable-mixing.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "anti-patterns/subscribe-if-hell.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "appendix/embedded-reactive-programming.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "appendix/index.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "appendix/reactive-architecture-map.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "appendix/reactive-patterns-beyond-rxjs.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "appendix/reactive-programming-reconsidered.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "appendix/rxjs-and-reactive-streams-ecosystem.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "basics/promise-vs-rxjs.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "basics/what-is-a-stream.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "basics/what-is-rxjs.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "creation-functions/basic/from.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "creation-functions/basic/index.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "creation-functions/basic/of.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "creation-functions/combination/combineLatest.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "creation-functions/combination/concat.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "creation-functions/combination/forkJoin-vs-combineLatest.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "creation-functions/combination/forkJoin.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "creation-functions/combination/index.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "creation-functions/combination/merge.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "creation-functions/combination/zip.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "creation-functions/conditional/defer.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "creation-functions/conditional/iif.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "creation-functions/conditional/index.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "creation-functions/control/index.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "creation-functions/control/scheduled.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "creation-functions/control/using.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "creation-functions/http-communication/ajax.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "creation-functions/http-communication/fromFetch.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "creation-functions/http-communication/index.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "creation-functions/loop/generate.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "creation-functions/loop/index.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "creation-functions/loop/range.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "creation-functions/selection/index.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "creation-functions/selection/partition.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "creation-functions/selection/race.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "debugging/common-scenarios.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "debugging/custom-tools.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "debugging/index.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "debugging/performance.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "error-handling/error-handling-locations.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "error-handling/finalize.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "error-handling/retry-catch.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "error-handling/strategies.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "error-handling/try-catch-integration.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "index.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "introduction.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "observables/cold-and-hot-observables.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "observables/creation.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "observables/events-list.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "observables/events.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "observables/observable-lifecycle.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "observables/observer-vs-subscriber.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "observables/what-is-observable.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/combination/combineLatestAll.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/combination/concatAll.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/combination/exhaustAll.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/combination/index.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/combination/mergeAll.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/combination/mergeWith.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/combination/practical-use-cases.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/combination/raceWith.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/combination/switchAll.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/combination/withLatestFrom.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/combination/zipAll.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/combination/zipWith.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/conditional/defaultIfEmpty.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/conditional/every.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/conditional/index.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/conditional/isEmpty.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/conditional/practical-use-cases.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/filtering/auditTime.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/filtering/debounceTime.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/filtering/distinct.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/filtering/distinctUntilChanged.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/filtering/distinctUntilKeyChanged.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/filtering/elementAt.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/filtering/filter.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/filtering/find.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/filtering/findIndex.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/filtering/first.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/filtering/index.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/filtering/last.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/filtering/practical-use-cases.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/filtering/sampleTime.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/filtering/skip.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/filtering/skipLast.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/filtering/skipUntil.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/filtering/skipWhile.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/filtering/take.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/filtering/takeWhile.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/filtering/throttleTime.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/index.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/multicasting/index.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/multicasting/share.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/multicasting/shareReplay.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/pipeline.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/transformation/buffer.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/transformation/bufferCount.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/transformation/bufferTime.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/transformation/bufferWhen.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/transformation/concatMap.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/transformation/exhaustMap.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/transformation/expand.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/transformation/index.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/transformation/map.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/transformation/mergeMap.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/transformation/mergeScan.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/transformation/pairwise.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/transformation/practical-use-cases.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/transformation/reduce.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/transformation/scan.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/transformation/switchMap.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/transformation/window.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/utility/delay.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/utility/delayWhen.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/utility/finalize.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/utility/index.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/utility/materialize.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/utility/observeOn.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/utility/practical-use-cases.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/utility/repeat.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/utility/retry.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/utility/startWith.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/utility/subscribeOn.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/utility/takeUntil.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/utility/tap.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/utility/timeout.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/utility/timestamp.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/utility/toArray.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "overcoming-difficulties/conceptual-understanding.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "overcoming-difficulties/debugging-guide.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "overcoming-difficulties/index.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "overcoming-difficulties/lifecycle-management.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "overcoming-difficulties/operator-selection.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "overcoming-difficulties/state-and-sharing.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "overcoming-difficulties/stream-combination.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "overcoming-difficulties/timing-and-order.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "practical-patterns/advanced-form-patterns.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "practical-patterns/api-calls.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "practical-patterns/error-handling-patterns.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "practical-patterns/form-handling.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "practical-patterns/index.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "practical-patterns/real-time-data.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "practical-patterns/subscribe-branching.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "practical-patterns/ui-events.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "schedulers/async-control.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "schedulers/task-and-scheduler-basics.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "schedulers/types.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "starter-kid.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "subjects/multicasting.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "subjects/types-of-subject.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "subjects/use-cases.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "subjects/what-is-subject.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "testing/marble-testing.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "testing/test-scheduler.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "testing/unit-tests.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "typescript-advanced/_typeScript-and-rxjs-integration.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "typescript-advanced/type-safety.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    }
+  ]
+}

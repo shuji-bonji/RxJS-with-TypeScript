@@ -37,8 +37,8 @@ interface User {
 }
 
 const users$: Observable<User> = of(
-  { id: 1, name: '山田' },
-  { id: 2, name: '佐藤' }
+  { id: 1, name: 'García' },
+  { id: 2, name: 'López' }
 );
 
 // Operación donde los tipos se transforman
@@ -347,7 +347,7 @@ const products$ = apiService.get<Product[]>('/api/products');
 
 products$.subscribe(products => {
   // products se tratan como tipo Product[]
-  products.forEach(p => console.log(`${p.name}: ${p.price}円`));
+  products.forEach(p => console.log(`${p.name}: ${p.price}¥`));
 });
 
 // Al usar tipos genéricos de esta manera, los tipos de respuesta API pueden definirse en una forma reutilizable, haciendo las clases de servicio más genéricas.

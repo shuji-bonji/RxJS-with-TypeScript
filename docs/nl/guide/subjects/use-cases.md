@@ -383,7 +383,7 @@ Form waarde gewijzigd: {name: 'Yamada Taro', email: 'yamada@example.com', age: 0
 Form waarde gewijzigd: {name: 'Yamada Taro', email: 'yamada@example.com', age: 30}
 Form is ongeldig
 submit @
-（匿名） @ Analyseer deze fout
+（Anoniem） @ Analyseer deze fout
 Form geldigheid: true
 ```
 
@@ -759,7 +759,7 @@ Verbindingsstatus: Online
 Bericht parse fout: SyntaxError: Unexpected token 'R', "Request se"... is not valid JSON
   at JSON.parse (<anonymous>)
   at WebSocket.<anonymous> (:30)
-（匿名） @ Analyseer deze fout
+（Anoniem） @ Analyseer deze fout
 Ontvangen bericht: {type: 'chat-message', data: {…}}
 ```
 

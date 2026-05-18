@@ -281,10 +281,6 @@ clicks$.pipe(
 ).subscribe(() => {
   console.log('Le clic a été enregistré');
 });
----
-description: auditオペレーターは、カスタムObservableで制御される期間内の最後の値のみを発行するRxJSフィルタリングオペレーターです。動的なタイミング制御に最適です。
----
-
 
 ```ts
 import { fromEvent, interval, timer } from 'rxjs';

@@ -224,10 +224,6 @@ numbers$.pipe(
   elementAt(2)
 ).subscribe(console.log);
 // Uitvoer.: 30(Index2Waarde)
----
-description: elementAtオペレーターは、指定されたインデックス位置の値のみを取得するRxJSフィルタリングオペレーターです。配列のインデックスアクセスに似た動作をします。
----
-
 
 ## ⚠️ Opmerkingen.
 

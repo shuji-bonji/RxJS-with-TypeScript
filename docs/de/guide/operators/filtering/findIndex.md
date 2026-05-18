@@ -271,10 +271,6 @@ numbers$.pipe(
   findIndex(n => n % 2 === 0)
 ).subscribe(console.log);
 // Ausgabe.: 4(erste Gerade8Index der ersten Geraden)
----
-description: findIndexオペレーターは、条件を満たす最初の値のインデックスを返すRxJSフィルタリングオペレーターです。見つからない場合は-1を返します。
----
-
 
 ## 🔄 Vergleich mit JavaScript's Array.findIndex()
 

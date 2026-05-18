@@ -61,10 +61,6 @@ numbers$.pipe(
   takeLast(3)
 ).subscribe(console.log);
 // Sortie: 7, 8, 9
----
-description: takeLastはObservableストリームが完了した時点で、最後のN個の値のみを出力するRxJSフィルタリングオペレーターです。ログの最新件数取得、リーダーボードの上位N件表示、完了時の最終データサマリーなど、ストリーム全体から最後の値だけが必要な場面に最適です。完了するまでバッファに保持するため無限ストリームでは使用できません。
----
-
 
 ## 💡 Modèle d'utilisation typique
 

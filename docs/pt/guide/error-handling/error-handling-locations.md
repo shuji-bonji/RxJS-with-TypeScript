@@ -529,7 +529,7 @@ ajax.getJSON('/api/protected-data').pipe(
     return throwError(() => err);
   })
 ).subscribe({
-  next: data => console.log('データ:', data)
+  next: data => console.log('Dados:', data)
 });
 
 // Approach 2: Centralize with subscribe.error

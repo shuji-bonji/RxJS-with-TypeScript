@@ -106,6 +106,85 @@ def fix_leading_whitespace(text: str) -> tuple[str, int]:
     return text, (1 if text != original else 0)
 
 
+def apply_code_jp_mappings(text: str, lang: str, glossary: dict) -> tuple[str, int]:
+    """既存翻訳済みファイルのコードブロック内 JA 残存を glossary[lang].code_jp で置換
+
+    DeepL が翻訳しきれなかった JA フラグメントを後処理で置換する。
+    Glossary に新規追加した訳語を既存ファイルにも適用するためのステップ。
+
+    Returns:
+        (修正済みテキスト, 置換実行回数)
+    """
+    code_jp_map = glossary.get(lang, {}).get('code_jp', {})
+    if not code_jp_map:
+        return text, 0
+
+    # コードブロックを抽出し、各ブロック内でのみ置換
+    changes = 0
+
+    def replace_in_block(m):
+        nonlocal changes
+        block = m.group(0)
+        # 長い順にソートして適用 (部分マッチを優先)
+        for jp, tr in sorted(code_jp_map.items(), key=lambda x: -len(x[0])):
+            if jp and jp in block:
+                count = block.count(jp)
+                block = block.replace(jp, tr)
+                changes += count
+        return block
+
+    # ``` fenced code block を 1 単位として置換
+    new_text = re.sub(
+        r'```[^\n]*\n.*?\n```',
+        replace_in_block,
+        text,
+        flags=re.DOTALL
+    )
+
+    return new_text, changes
+
+
+def fix_duplicate_frontmatter(text: str) -> tuple[str, int]:
+    """中盤に残存した JA frontmatter ブロックを除去
+
+    Issue #34 翻訳時のプレースホルダー復元バグで、本来は冒頭にだけあるはずの
+    frontmatter (---\\ndescription: ...\\n---) が本文中盤に重複出現するケース。
+    JA 原本の description が翻訳されずに残っているため除去する。
+
+    冒頭の正規 frontmatter (最初の --- ... --- ペア) は保護する。
+
+    Returns:
+        (修正済みテキスト, 除去ブロック数)
+    """
+    # まず冒頭の frontmatter を取り分ける
+    fm_match = re.match(r'^(---\n.*?\n---\n)', text, re.DOTALL)
+    if not fm_match:
+        return text, 0
+
+    head = fm_match.group(1)
+    body = text[fm_match.end():]
+
+    # body 内の重複 frontmatter ブロックを検索・除去
+    # パターン: \n---\ndescription:...\n---\n (改行・空行を含む可能性)
+    pattern = re.compile(
+        r'\n+---\n+description:.*?\n+---\n+',
+        re.DOTALL
+    )
+
+    count = 0
+
+    def repl(m):
+        nonlocal count
+        count += 1
+        return '\n\n'  # ブロックを 1 個の空行に置換
+
+    new_body = pattern.sub(repl, body)
+    if count == 0:
+        return text, 0
+
+    return head + new_body, count
+
+
 def fix_orphaned_code_fences(text: str, rel_path: str, lang: str,
                               glossary: dict) -> tuple[str, int]:
     """壊れたコードフェンス ```0___ などを JA の対応ブロックで復元
@@ -214,6 +293,17 @@ def process_file(lang: str, rel_path: str, glossary: dict = None) -> tuple[bool,
         if n4:
             actions.append(f'コードフェンス復元 ({n4}箇所)')
 
+    # 5. 中盤に残存した JA frontmatter ブロックを除去
+    text, n5 = fix_duplicate_frontmatter(text)
+    if n5:
+        actions.append(f'重複frontmatter除去 ({n5}箇所)')
+
+    # 6. コードブロック内 JA 残存を glossary code_jp で置換
+    if glossary is not None:
+        text, n6 = apply_code_jp_mappings(text, lang, glossary)
+        if n6:
+            actions.append(f'code_jp 置換 ({n6}箇所)')
+
     if text != original:
         file.write_text(text, encoding='utf-8')
         return True, actions
@@ -221,6 +311,16 @@ def process_file(lang: str, rel_path: str, glossary: dict = None) -> tuple[bool,
 
 
 def main():
+    import argparse
+    parser = argparse.ArgumentParser(
+        description='翻訳済みファイルの後処理: プレースホルダー復元・重複 frontmatter 除去・code_jp 適用'
+    )
+    parser.add_argument('--all-files', action='store_true',
+                       help='TARGET_FILES だけでなく全ファイルに適用 (code_jp 残存修正用)')
+    parser.add_argument('--code-jp-only', action='store_true',
+                       help='code_jp 置換のみ実行 (他のステップはスキップ)')
+    args = parser.parse_args()
+
     TARGET_FILES = [
         "operators/filtering/audit.md",
         "operators/filtering/auditTime.md",
@@ -244,12 +344,40 @@ def main():
 
     print("=== 修正開始 ===")
     fixed_count = 0
-    for lang in LANGS:
-        for rel in TARGET_FILES:
-            fixed, actions = process_file(lang, rel, glossary)
-            if fixed:
-                print(f"  ✅ {lang}/{rel}: {', '.join(actions)}")
-                fixed_count += 1
+
+    if args.all_files:
+        # 全ファイル走査モード: code_jp 置換と重複 frontmatter 除去のみを高速適用
+        print("  (--all-files モード: 全ファイル走査)")
+        for lang in LANGS:
+            lang_dir = REPO / 'docs' / lang / 'guide'
+            if not lang_dir.exists():
+                continue
+            for md in lang_dir.rglob('*.md'):
+                rel = str(md.relative_to(lang_dir))
+                try:
+                    text = md.read_text(encoding='utf-8')
+                except UnicodeDecodeError:
+                    continue
+                original = text
+                actions = []
+                if not args.code_jp_only:
+                    text, n5 = fix_duplicate_frontmatter(text)
+                    if n5:
+                        actions.append(f'重複frontmatter除去 ({n5}箇所)')
+                text, n6 = apply_code_jp_mappings(text, lang, glossary)
+                if n6:
+                    actions.append(f'code_jp 置換 ({n6}箇所)')
+                if text != original:
+                    md.write_text(text, encoding='utf-8')
+                    print(f"  ✅ {lang}/{rel}: {', '.join(actions)}")
+                    fixed_count += 1
+    else:
+        for lang in LANGS:
+            for rel in TARGET_FILES:
+                fixed, actions = process_file(lang, rel, glossary)
+                if fixed:
+                    print(f"  ✅ {lang}/{rel}: {', '.join(actions)}")
+                    fixed_count += 1
     print(f"\n  Total: {fixed_count} ファイル修正")
 
     # 残存問題チェック

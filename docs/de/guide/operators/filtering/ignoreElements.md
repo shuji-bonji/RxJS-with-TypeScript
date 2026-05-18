@@ -486,10 +486,6 @@ source$.pipe(
   complete: () => console.log('Erledigt')
 });
 // Ausgabe: Erledigt
----
-description: ignoreElementsオペレーターは、すべての値を無視して完了とエラーのみを通すRxJSフィルタリングオペレーターです。処理の完了を待つ場合に便利です。
----
-
 
 ### Muster 2: Aufräumvorgang
 

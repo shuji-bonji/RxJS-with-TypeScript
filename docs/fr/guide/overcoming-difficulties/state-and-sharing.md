@@ -729,7 +729,7 @@ Après avoir compris la gestion d'état et le partage, apprenez ensuite **la com
 - **[Chapitre 5: Qu'est-ce qu'un Subject](/fr/guide/subjects/what-is-subject)** - Fondamentaux des Subject
 - **[Chapitre 5: Types de Subject](/fr/guide/subjects/types-of-subject)** - Détails sur BehaviorSubject et ReplaySubject
 - **[Opérateur share()](/fr/guide/operators/multicasting/share)** - Explication détaillée de share
-- **[Mauvaise utilisation de shareReplay](/fr/guide/anti-patterns/common-mistakes#4-sharereplay-の誤用)** - Erreurs courantes
+- **[Mauvaise utilisation de shareReplay](/fr/guide/anti-patterns/common-mistakes#4-sharereplay-Mauvaise utilisation de)** - Erreurs courantes
 - **[Cold vs Hot Observable](/fr/guide/observables/cold-and-hot-observables)** - Détails sur Cold/Hot
 
 ## 🎯 Exercices pratiques

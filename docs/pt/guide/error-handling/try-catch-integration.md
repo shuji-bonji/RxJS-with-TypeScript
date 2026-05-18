@@ -491,7 +491,7 @@ of('invalid-json').pipe(
     if (result.success) {
       console.log('Data:', result.data);
     } else {
-      console.error('パースError:', result.error);
+      console.error('AnáliseError:', result.error);
     }
   }
 });
@@ -525,7 +525,7 @@ of('{"value": 1}', 'invalid', '{"value": 2}').pipe(
       // JSON.parse may throw exceptions, so try-catch is needed
       return JSON.parse(json);
     } catch (error) {
-      console.error('JSON解析Error:', error);
+      console.error('JSONAnáliseError:', error);
       return { value: 0 };
     }
   })
@@ -549,7 +549,7 @@ ajax.getJSON<{ data: string }>('https://api.example.com/data').pipe(
     try {
       return JSON.parse(response.data);
     } catch (error) {
-      console.error('パースError:', error);
+      console.error('AnáliseError:', error);
       return {};
     }
   }),
@@ -563,7 +563,7 @@ ajax.getJSON<{ data: string }>('https://api.example.com/data').pipe(
     try {
       // Resource release processing
     } catch (error) {
-      console.error('クリーンアップError:', error);
+      console.error('LimpezaError:', error);
     }
   })
 ).subscribe();
@@ -638,8 +638,8 @@ of({ raw: 'some-data' }).pipe(
 ).subscribe({
   next: data => console.log('Processed:', data),
   error: (err: DataProcessingError) => {
-    console.error(`エラー (${err.step}):`, err.message);
-    console.error('入力Data:', err.data);
+    console.error(`Erro (${err.step}):`, err.message);
+    console.error('EntradaData:', err.data);
   }
 });
 

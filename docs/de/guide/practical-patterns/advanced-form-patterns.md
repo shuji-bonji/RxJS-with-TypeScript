@@ -39,7 +39,7 @@ Dieser Artikel erklärt fortgeschrittene Formularmuster unter Verwendung von **J
 // Formulardaten vor der Änderung
 const before = {
   profile: {
-    name: "田中太郎",
+    name: "Hans Müller",
     email: "tanaka@example.com",
     age: 30
   }
@@ -48,7 +48,7 @@ const before = {
 // Formulardaten nach der Änderung
 const after = {
   profile: {
-    name: "田中太郎",
+    name: "Hans Müller",
     email: "tanaka.updated@example.com", // geändert
     age: 31 // geändert
   }
@@ -77,7 +77,7 @@ const patch = [
 const formData = {
   user: {
     profile: {
-      name: "田中太郎"
+      name: "Hans Müller"
     },
     settings: {
       notifications: true
@@ -86,9 +86,9 @@ const formData = {
 };
 
 // JSON Pointer Beispiele
-"/user/profile/name"           // → "田中太郎"
+"/user/profile/name"           // → "Hans Müller"
 "/user/settings/notifications" // → true
-"/user/profile"                // → { name: "田中太郎" }
+"/user/profile"                // → { name: "Hans Müller" }
 ```
 
 ### Differenzerkennung mit RxJS
@@ -125,13 +125,13 @@ const patches$ = formData$.pipe(
 
 patches$.subscribe(patches => {
   console.log('Erkannte Änderungen:', patches);
-  // Beispiel: [{ op: "replace", path: "/profile/name", value: "田中太郎" }]
+  // Beispiel: [{ op: "replace", path: "/profile/name", value: "Hans Müller" }]
 });
 
 // Formularaktualisierung simulieren
 formData$.next({
   profile: {
-    name: "田中太郎",
+    name: "Hans Müller",
     email: "tanaka@example.com",
     age: 30
   }

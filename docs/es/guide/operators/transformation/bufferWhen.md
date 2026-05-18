@@ -64,7 +64,7 @@ source$.pipe(
 //  0     1      2      3      4      5      6      7      8      9      10     11
 //  [----------1s----------][----------1s----------][----------1s----------][-----1s-----]
 //   Buffer1(0-2)           Buffer2(3-5)           Buffer3(6-9)          Buffer4(10-11)
-//   Continuo・Sin superposición・Inicio inmediato del siguiente
+//   Continuo / Sin superposición / Inicio inmediato del siguiente
 ```
 
 ### Operación de bufferToggle

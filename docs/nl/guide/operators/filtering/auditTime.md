@@ -343,10 +343,6 @@ import { auditTime } from 'rxjs';
 fromEvent(document, 'click').pipe(
   auditTime(1000)
 ).subscribe(() => console.log('Klik.！'));
----
-description: auditTimeは値が発行されたら指定時間待機し、その期間内の最後の値を出力するRxJSフィルタリングオペレーターです。スクロール位置の追跡、ウィンドウリサイズ、マウス移動などの高頻度イベントで最新の状態を定期的にサンプリングしたい場合に最適です。throttleTimeやdebounceTimeとの違いを理解して適切に使い分けることが重要です。
----
-
 
 ts.
 import { fromEvent } from 'rxjs';
@@ -378,7 +374,7 @@ import { auditTime } from 'rxjs';
 
 fromEvent(document, 'click').pipe(
   auditTime(1000)
-).subscribe(() => console.log('クリック！'));
+).subscribe(() => console.log('Klik!'));
 ```
 
 ts.

@@ -341,7 +341,7 @@ const clicks$ = fromEvent(document, 'click');
 clicks$.pipe(
   sampleTime(2000)
 ).subscribe(() => {
-  console.log('2秒ごとのサンプル');
+  console.log('2Stichprobe pro Sekunde');
 });
 ```
 
@@ -444,10 +444,6 @@ clicks$.pipe(
 ).subscribe(() => {
   console.log('2Stichproben im Sekundentakt');
 });
----
-description: sampleTimeオペレーターは、指定した時間間隔で定期的にストリームの最新値をサンプリングするRxJSフィルタリングオペレーターです。定期的なスナップショット取得に最適です。
----
-
 
 ```ts
 import { fromEvent } from 'rxjs';
@@ -469,7 +465,7 @@ const container = document.createElement('div');
 document.body.appendChild(container);
 
 const title = document.createElement('h3');
-title.textContent = 'マウス位置サンプリング（1秒ごと）';
+title.textContent = 'Mauspositions-Abtastung（1Pro Sekunde）';
 container.appendChild(title);
 
 const area = document.createElement('div');
@@ -481,7 +477,7 @@ area.style.display = 'flex';
 area.style.alignItems = 'center';
 area.style.justifyContent = 'center';
 area.style.fontSize = '18px';
-area.textContent = 'この領域内でマウスを動かしてください';
+area.textContent = 'Bewegen Sie die Maus in diesem Bereich';
 container.appendChild(area);
 
 const output = document.createElement('div');
@@ -494,27 +490,27 @@ container.appendChild(output);
 
 let sampleCount = 0;
 
-// マウス移動イベント
+// Mausbewegungs-Ereignis
 fromEvent<MouseEvent>(area, 'mousemove').pipe(
   map(event => ({
     x: event.offsetX,
     y: event.offsetY,
     timestamp: Date.now()
   })),
-  sampleTime(1000) // 1秒ごとにサンプリング
+  sampleTime(1000) // 1Alle N Sekunden abtasten
 ).subscribe(pos => {
   sampleCount++;
   const log = document.createElement('div');
   log.style.padding = '5px';
   log.style.borderBottom = '1px solid #eee';
   log.innerHTML = `
-    <strong>サンプル #${sampleCount}</strong>
+    <strong>Stichprobe #${sampleCount}</strong>
     [${new Date(pos.timestamp).toLocaleTimeString()}]
-    位置: (${pos.x}, ${pos.y})
+    Position: (${pos.x}, ${pos.y})
   `;
   output.insertBefore(log, output.firstChild);
 
-  // Max.10件まで表示
+  // Max.10Bis zu N Einträge anzeigen
   while (output.children.length > 10) {
     output.removeChild(output.lastChild!);
   }

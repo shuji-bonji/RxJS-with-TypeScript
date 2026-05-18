@@ -37,8 +37,8 @@ interface User {
 }
 
 const users$: Observable<User> = of(
-  { id: 1, name: '山田' },
-  { id: 2, name: '佐藤' }
+  { id: 1, name: 'Silva' },
+  { id: 2, name: 'Santos' }
 );
 
 // Operação onde os tipos são transformados

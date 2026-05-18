@@ -266,9 +266,9 @@ console.log('Start');
 
 of(1, 2, 3)
   .pipe(
-    tap(value => console.log(`[Vor Scheduler・synchron] Wert: ${value}`)),
+    tap(value => console.log(`[Vor Scheduler / synchron] Wert: ${value}`)),
     observeOn(asyncScheduler),  // asyncScheduler verwenden
-    tap(value => console.log(`[Nach Scheduler・asynchron] Wert: ${value}`))
+    tap(value => console.log(`[Nach Scheduler / asynchron] Wert: ${value}`))
   )
   .subscribe();
 
@@ -276,13 +276,13 @@ console.log('Ende');
 
 // Tatsächliche Ausgabe:
 // Start
-// [Vor Scheduler・synchron] Wert: 1
-// [Vor Scheduler・synchron] Wert: 2
-// [Vor Scheduler・synchron] Wert: 3
+// [Vor Scheduler / synchron] Wert: 1
+// [Vor Scheduler / synchron] Wert: 2
+// [Vor Scheduler / synchron] Wert: 3
 // Ende
-// [Nach Scheduler・asynchron] Wert: 1
-// [Nach Scheduler・asynchron] Wert: 2
-// [Nach Scheduler・asynchron] Wert: 3
+// [Nach Scheduler / asynchron] Wert: 1
+// [Nach Scheduler / asynchron] Wert: 2
+// [Nach Scheduler / asynchron] Wert: 3
 ```
 
 Bei Verwendung von `asyncScheduler` kann das erwartete asynchrone Verhalten bestätigt werden. `queueScheduler` verwendet die Microtask-Queue, sodass es während der Ausführung synchronen Codes verarbeitet wird, während `asyncScheduler` intern setTimeout verwendet und daher vollständig asynchron ausgeführt wird.

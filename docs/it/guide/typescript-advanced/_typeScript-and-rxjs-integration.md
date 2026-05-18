@@ -37,8 +37,8 @@ interface User {
 }
 
 const users$: Observable<User> = of(
-  { id: 1, name: '山田' },
-  { id: 2, name: '佐藤' }
+  { id: 1, name: 'Rossi' },
+  { id: 2, name: 'Bianchi' }
 );
 
 // Operazione che trasforma il tipo
@@ -347,7 +347,7 @@ const products$ = apiService.get<Product[]>('/api/products');
 
 products$.subscribe(products => {
   // products viene trattato come tipo Product[]
-  products.forEach(p => console.log(`${p.name}: ${p.price}円`));
+  products.forEach(p => console.log(`${p.name}: ${p.price}¥`));
 });
 
 // Utilizzando tipi generici in questo modo, è possibile definire i tipi di risposta API in modo riutilizzabile e generalizzare le classi di servizio.
