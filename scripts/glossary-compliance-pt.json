@@ -1,8 +1,8 @@
 {
   "language": "pt",
   "totalFiles": 181,
-  "filesWithViolations": 11,
-  "totalViolations": 16,
+  "filesWithViolations": 8,
+  "totalViolations": 13,
   "files": [
     {
       "file": "error-handling/strategies.md",
@@ -137,54 +137,6 @@
           {
             "term": "timer",
             "ja_count": 4,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 1
-    },
-    {
-      "file": "operators/filtering/audit.md",
-      "violations": {
-        "no_translate": [
-          {
-            "term": "map",
-            "ja_count": 4,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 1
-    },
-    {
-      "file": "operators/filtering/ignoreElements.md",
-      "violations": {
-        "no_translate": [
-          {
-            "term": "interval",
-            "ja_count": 3,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 1
-    },
-    {
-      "file": "operators/filtering/takeLast.md",
-      "violations": {
-        "no_translate": [
-          {
-            "term": "error",
-            "ja_count": 3,
             "trans_count": 0,
             "ratio": 0
           }
@@ -895,6 +847,15 @@
       "total": 0
     },
     {
+      "file": "operators/filtering/audit.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
       "file": "operators/filtering/auditTime.md",
       "violations": {
         "no_translate": [],
@@ -985,6 +946,15 @@
       "total": 0
     },
     {
+      "file": "operators/filtering/ignoreElements.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
       "file": "operators/filtering/index.md",
       "violations": {
         "no_translate": [],
@@ -1058,6 +1028,15 @@
     },
     {
       "file": "operators/filtering/take.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/filtering/takeLast.md",
       "violations": {
         "no_translate": [],
         "callouts_ja_residual": [],

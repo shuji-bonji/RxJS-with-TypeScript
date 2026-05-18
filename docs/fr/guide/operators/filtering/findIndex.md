@@ -276,6 +276,8 @@ numbers$.pipe(
 
 RxJS `findIndex` se comporte de manière similaire à la méthode de tableau JavaScript `Array.prototype.findIndex()`.
 
+```
+
 ```ts
 // JavaScript Tableau de
 const numbers = [10, 20, 30, 40, 50];

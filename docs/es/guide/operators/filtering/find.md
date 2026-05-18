@@ -286,7 +286,7 @@ interfaz Task {
 }
 
 function findTaskById(
-  tareas$: Observable<Tarea>,.
+  tareas$: Observable\<Tarea>,.
   id: número
 ): Observable<Tarea | undefined> {
   return tareas$.pipe(
@@ -295,7 +295,7 @@ function findTaskById(
 }
 
 función findFirstIncompleteTask(
-  tareas$: Observable<Tarea>
+  tareas$: Observable\<Tarea>
 ): Observable<Tarea | undefined> {
   return tareas$.pipe(
     find(tarea => !tarea.complete)

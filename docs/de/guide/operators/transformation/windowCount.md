@@ -5,7 +5,7 @@ description: "windowCount teilt Observable-Werte in Fenster fester Anzahl. Optim
 # windowCount - Observable in bestimmte Anzahlen aufteilen
 
 Der `windowCount`-Operator teilt ausgegebene Werte in **neue Observables** nach einer bestimmten Anzahl auf.
-Während `bufferCount` ein Array zurückgibt, gibt `windowCount` **Observable\<T>** zurück, sodass auf jedes Fenster weitere Operatoren angewendet werden können.
+Während `bufferCount` ein Array zurückgibt, gibt `windowCount` **Observable\\<T>** zurück, sodass auf jedes Fenster weitere Operatoren angewendet werden können.
 
 ## 🔰 Grundlegende Syntax und Verwendung
 
@@ -51,7 +51,7 @@ source$.pipe(
 | Operator | Ausgabe | Anwendungsfall |
 |:---|:---|:---|
 | `bufferCount` | **Array (T[])** | Gesammelte Verarbeitung gruppierter Werte |
-| `windowCount` | **Observable\<T>** | Unterschiedliche Stream-Verarbeitung pro Gruppe |
+| `windowCount` | **Observable\\<T>** | Unterschiedliche Stream-Verarbeitung pro Gruppe |
 
 ```ts
 import { interval } from 'rxjs';

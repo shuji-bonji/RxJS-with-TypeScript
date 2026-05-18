@@ -1,8 +1,8 @@
 {
   "language": "nl",
   "totalFiles": 181,
-  "filesWithViolations": 14,
-  "totalViolations": 26,
+  "filesWithViolations": 11,
+  "totalViolations": 21,
   "files": [
     {
       "file": "operators/transformation/expand.md",
@@ -49,34 +49,6 @@
         "code_jp_residual": []
       },
       "total": 6
-    },
-    {
-      "file": "operators/filtering/audit.md",
-      "violations": {
-        "no_translate": [
-          {
-            "term": "timer",
-            "ja_count": 16,
-            "trans_count": 0,
-            "ratio": 0
-          },
-          {
-            "term": "map",
-            "ja_count": 4,
-            "trans_count": 0,
-            "ratio": 0
-          },
-          {
-            "term": "sample",
-            "ja_count": 5,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 3
     },
     {
       "file": "error-handling/strategies.md",
@@ -211,38 +183,6 @@
           {
             "term": "timer",
             "ja_count": 4,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 1
-    },
-    {
-      "file": "operators/filtering/sampleTime.md",
-      "violations": {
-        "no_translate": [
-          {
-            "term": "map",
-            "ja_count": 4,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 1
-    },
-    {
-      "file": "operators/filtering/skipLast.md",
-      "violations": {
-        "no_translate": [
-          {
-            "term": "error",
-            "ja_count": 5,
             "trans_count": 0,
             "ratio": 0
           }
@@ -985,6 +925,15 @@
       "total": 0
     },
     {
+      "file": "operators/filtering/audit.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
       "file": "operators/filtering/auditTime.md",
       "violations": {
         "no_translate": [],
@@ -1111,7 +1060,25 @@
       "total": 0
     },
     {
+      "file": "operators/filtering/sampleTime.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
       "file": "operators/filtering/skip.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/filtering/skipLast.md",
       "violations": {
         "no_translate": [],
         "callouts_ja_residual": [],

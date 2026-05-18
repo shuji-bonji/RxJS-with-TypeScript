@@ -231,6 +231,8 @@ numbers$.pipe(
 
 Als de opgegeven index niet is bereikt voordat de stream is voltooid, wordt er een fout gegenereerd.
 
+```
+
 ```ts
 import { from } from 'rxjs';
 import { elementAt } from 'rxjs';

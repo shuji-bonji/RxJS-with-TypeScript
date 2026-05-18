@@ -1,0 +1,664 @@
+{
+  "priority_1_critical": [],
+  "priority_2_major": [
+    {
+      "file": "operators/transformation/expand.md",
+      "lang": "it",
+      "fence_ratio": 0.69,
+      "violations": 6,
+      "terms": [
+        "defer",
+        "takeWhile",
+        "tap",
+        "count",
+        "Promise",
+        "next"
+      ],
+      "ja_chars": 14552
+    },
+    {
+      "file": "operators/transformation/expand.md",
+      "lang": "nl",
+      "fence_ratio": 0.62,
+      "violations": 6,
+      "terms": [
+        "Observable",
+        "defer",
+        "filter",
+        "reduce",
+        "count",
+        "error"
+      ],
+      "ja_chars": 14552
+    },
+    {
+      "file": "operators/filtering/skipWhile.md",
+      "lang": "de",
+      "fence_ratio": 0.58,
+      "violations": 4,
+      "terms": [
+        "fromEvent",
+        "interval",
+        "map",
+        "take"
+      ],
+      "ja_chars": 11389
+    },
+    {
+      "file": "operators/combination/raceWith.md",
+      "lang": "it",
+      "fence_ratio": 0.78,
+      "violations": 2,
+      "terms": [
+        "mergeMap",
+        "delay"
+      ],
+      "ja_chars": 8607
+    },
+    {
+      "file": "operators/combination/raceWith.md",
+      "lang": "es",
+      "fence_ratio": 0.78,
+      "violations": 2,
+      "terms": [
+        "mergeMap",
+        "delay"
+      ],
+      "ja_chars": 8607
+    },
+    {
+      "file": "operators/combination/raceWith.md",
+      "lang": "nl",
+      "fence_ratio": 0.78,
+      "violations": 2,
+      "terms": [
+        "mergeMap",
+        "delay"
+      ],
+      "ja_chars": 8607
+    },
+    {
+      "file": "operators/combination/raceWith.md",
+      "lang": "pt",
+      "fence_ratio": 0.78,
+      "violations": 2,
+      "terms": [
+        "mergeMap",
+        "delay"
+      ],
+      "ja_chars": 8607
+    },
+    {
+      "file": "operators/transformation/bufferToggle.md",
+      "lang": "fr",
+      "fence_ratio": 0.56,
+      "violations": 2,
+      "terms": [
+        "timer",
+        "bufferWhen"
+      ],
+      "ja_chars": 11530
+    },
+    {
+      "file": "operators/utility/dematerialize.md",
+      "lang": "fr",
+      "fence_ratio": 0.75,
+      "violations": 2,
+      "terms": [
+        "interval",
+        "take"
+      ],
+      "ja_chars": 7644
+    },
+    {
+      "file": "practical-patterns/ui-events.md",
+      "lang": "nl",
+      "fence_ratio": 0.71,
+      "violations": 2,
+      "terms": [
+        "timer",
+        "buffer"
+      ],
+      "ja_chars": 31229
+    },
+    {
+      "file": "practical-patterns/ui-events.md",
+      "lang": "pt",
+      "fence_ratio": 0.71,
+      "violations": 2,
+      "terms": [
+        "timer",
+        "buffer"
+      ],
+      "ja_chars": 31229
+    },
+    {
+      "file": "appendix/rxjs-and-reactive-streams-ecosystem.md",
+      "lang": "de",
+      "fence_ratio": 0.58,
+      "violations": 1,
+      "terms": [
+        "Subscriber"
+      ],
+      "ja_chars": 15171
+    },
+    {
+      "file": "creation-functions/basic/fromEvent.md",
+      "lang": "de",
+      "fence_ratio": 0.71,
+      "violations": 1,
+      "terms": [
+        "count"
+      ],
+      "ja_chars": 9678
+    },
+    {
+      "file": "operators/combination/combineLatestWith.md",
+      "lang": "fr",
+      "fence_ratio": 0.67,
+      "violations": 1,
+      "terms": [
+        "range"
+      ],
+      "ja_chars": 9100
+    },
+    {
+      "file": "operators/filtering/skipLast.md",
+      "lang": "de",
+      "fence_ratio": 0.77,
+      "violations": 1,
+      "terms": [
+        "error"
+      ],
+      "ja_chars": 10693
+    },
+    {
+      "file": "operators/transformation/bufferToggle.md",
+      "lang": "nl",
+      "fence_ratio": 0.78,
+      "violations": 1,
+      "terms": [
+        "bufferWhen"
+      ],
+      "ja_chars": 11530
+    },
+    {
+      "file": "operators/transformation/groupBy.md",
+      "lang": "fr",
+      "fence_ratio": 0.56,
+      "violations": 1,
+      "terms": [
+        "fromEvent"
+      ],
+      "ja_chars": 8269
+    },
+    {
+      "file": "operators/transformation/windowTime.md",
+      "lang": "fr",
+      "fence_ratio": 0.6,
+      "violations": 1,
+      "terms": [
+        "Observable"
+      ],
+      "ja_chars": 9720
+    }
+  ],
+  "priority_3_minor": [
+    {
+      "file": "operators/filtering/elementAt.md",
+      "lang": "it",
+      "fence_ratio": 0.89,
+      "violations": 3,
+      "terms": [
+        "take",
+        "skip",
+        "first"
+      ],
+      "ja_chars": 7161
+    },
+    {
+      "file": "creation-functions/index.md",
+      "lang": "fr",
+      "fence_ratio": 1.0,
+      "violations": 2,
+      "terms": [
+        "Creation Function",
+        "Pipeable Operator"
+      ],
+      "ja_chars": 7877
+    },
+    {
+      "file": "error-handling/strategies.md",
+      "lang": "it",
+      "fence_ratio": 1.0,
+      "violations": 2,
+      "terms": [
+        "delay",
+        "count"
+      ],
+      "ja_chars": 8535
+    },
+    {
+      "file": "error-handling/strategies.md",
+      "lang": "es",
+      "fence_ratio": 1.0,
+      "violations": 2,
+      "terms": [
+        "delay",
+        "count"
+      ],
+      "ja_chars": 8535
+    },
+    {
+      "file": "error-handling/strategies.md",
+      "lang": "nl",
+      "fence_ratio": 1.0,
+      "violations": 2,
+      "terms": [
+        "delay",
+        "count"
+      ],
+      "ja_chars": 8535
+    },
+    {
+      "file": "error-handling/strategies.md",
+      "lang": "pt",
+      "fence_ratio": 1.0,
+      "violations": 2,
+      "terms": [
+        "delay",
+        "count"
+      ],
+      "ja_chars": 8535
+    },
+    {
+      "file": "operators/combination/combineLatestWith.md",
+      "lang": "it",
+      "fence_ratio": 0.89,
+      "violations": 2,
+      "terms": [
+        "first",
+        "last"
+      ],
+      "ja_chars": 9100
+    },
+    {
+      "file": "operators/combination/combineLatestWith.md",
+      "lang": "es",
+      "fence_ratio": 0.89,
+      "violations": 2,
+      "terms": [
+        "first",
+        "last"
+      ],
+      "ja_chars": 9100
+    },
+    {
+      "file": "operators/combination/combineLatestWith.md",
+      "lang": "nl",
+      "fence_ratio": 0.89,
+      "violations": 2,
+      "terms": [
+        "first",
+        "last"
+      ],
+      "ja_chars": 9100
+    },
+    {
+      "file": "operators/combination/combineLatestWith.md",
+      "lang": "pt",
+      "fence_ratio": 0.89,
+      "violations": 2,
+      "terms": [
+        "first",
+        "last"
+      ],
+      "ja_chars": 9100
+    },
+    {
+      "file": "operators/combination/zipWith.md",
+      "lang": "it",
+      "fence_ratio": 1.0,
+      "violations": 2,
+      "terms": [
+        "concatMap",
+        "delay"
+      ],
+      "ja_chars": 7335
+    },
+    {
+      "file": "operators/combination/zipWith.md",
+      "lang": "es",
+      "fence_ratio": 1.0,
+      "violations": 2,
+      "terms": [
+        "concatMap",
+        "delay"
+      ],
+      "ja_chars": 7335
+    },
+    {
+      "file": "operators/combination/zipWith.md",
+      "lang": "nl",
+      "fence_ratio": 1.0,
+      "violations": 2,
+      "terms": [
+        "concatMap",
+        "delay"
+      ],
+      "ja_chars": 7335
+    },
+    {
+      "file": "operators/combination/zipWith.md",
+      "lang": "pt",
+      "fence_ratio": 1.0,
+      "violations": 2,
+      "terms": [
+        "concatMap",
+        "delay"
+      ],
+      "ja_chars": 7335
+    },
+    {
+      "file": "practical-patterns/caching-strategies.md",
+      "lang": "fr",
+      "fence_ratio": 1.09,
+      "violations": 2,
+      "terms": [
+        "BehaviorSubject",
+        "distinctUntilChanged"
+      ],
+      "ja_chars": 24479
+    },
+    {
+      "file": "creation-functions/basic/fromEvent.md",
+      "lang": "fr",
+      "fence_ratio": 1.0,
+      "violations": 1,
+      "terms": [
+        "Observer"
+      ],
+      "ja_chars": 9678
+    },
+    {
+      "file": "creation-functions/basic/fromEvent.md",
+      "lang": "es",
+      "fence_ratio": 1.0,
+      "violations": 1,
+      "terms": [
+        "Observer"
+      ],
+      "ja_chars": 9678
+    },
+    {
+      "file": "creation-functions/basic/interval.md",
+      "lang": "fr",
+      "fence_ratio": 1.0,
+      "violations": 1,
+      "terms": [
+        "Observer"
+      ],
+      "ja_chars": 8421
+    },
+    {
+      "file": "creation-functions/basic/interval.md",
+      "lang": "es",
+      "fence_ratio": 1.0,
+      "violations": 1,
+      "terms": [
+        "Observer"
+      ],
+      "ja_chars": 8421
+    },
+    {
+      "file": "creation-functions/basic/timer.md",
+      "lang": "fr",
+      "fence_ratio": 1.0,
+      "violations": 1,
+      "terms": [
+        "Observer"
+      ],
+      "ja_chars": 8554
+    },
+    {
+      "file": "creation-functions/basic/timer.md",
+      "lang": "es",
+      "fence_ratio": 1.0,
+      "violations": 1,
+      "terms": [
+        "Observer"
+      ],
+      "ja_chars": 8554
+    },
+    {
+      "file": "creation-functions/loop/index.md",
+      "lang": "it",
+      "fence_ratio": 1.0,
+      "violations": 1,
+      "terms": [
+        "retry"
+      ],
+      "ja_chars": 6399
+    },
+    {
+      "file": "creation-functions/loop/index.md",
+      "lang": "es",
+      "fence_ratio": 1.0,
+      "violations": 1,
+      "terms": [
+        "retry"
+      ],
+      "ja_chars": 6399
+    },
+    {
+      "file": "creation-functions/loop/index.md",
+      "lang": "nl",
+      "fence_ratio": 1.0,
+      "violations": 1,
+      "terms": [
+        "retry"
+      ],
+      "ja_chars": 6399
+    },
+    {
+      "file": "creation-functions/loop/index.md",
+      "lang": "pt",
+      "fence_ratio": 1.0,
+      "violations": 1,
+      "terms": [
+        "retry"
+      ],
+      "ja_chars": 6399
+    },
+    {
+      "file": "creation-functions/loop/range.md",
+      "lang": "it",
+      "fence_ratio": 0.89,
+      "violations": 1,
+      "terms": [
+        "error"
+      ],
+      "ja_chars": 9523
+    },
+    {
+      "file": "operators/combination/combineLatestAll.md",
+      "lang": "it",
+      "fence_ratio": 0.83,
+      "violations": 1,
+      "terms": [
+        "timer"
+      ],
+      "ja_chars": 3811
+    },
+    {
+      "file": "operators/combination/combineLatestAll.md",
+      "lang": "es",
+      "fence_ratio": 0.83,
+      "violations": 1,
+      "terms": [
+        "timer"
+      ],
+      "ja_chars": 3811
+    },
+    {
+      "file": "operators/combination/combineLatestAll.md",
+      "lang": "nl",
+      "fence_ratio": 0.83,
+      "violations": 1,
+      "terms": [
+        "timer"
+      ],
+      "ja_chars": 3811
+    },
+    {
+      "file": "operators/combination/combineLatestAll.md",
+      "lang": "pt",
+      "fence_ratio": 0.83,
+      "violations": 1,
+      "terms": [
+        "timer"
+      ],
+      "ja_chars": 3811
+    },
+    {
+      "file": "operators/combination/concatWith.md",
+      "lang": "fr",
+      "fence_ratio": 1.0,
+      "violations": 1,
+      "terms": [
+        "Creation Function"
+      ],
+      "ja_chars": 5311
+    },
+    {
+      "file": "operators/combination/concatWith.md",
+      "lang": "it",
+      "fence_ratio": 1.0,
+      "violations": 1,
+      "terms": [
+        "Creation Function"
+      ],
+      "ja_chars": 5311
+    },
+    {
+      "file": "operators/filtering/audit.md",
+      "lang": "de",
+      "fence_ratio": 1.25,
+      "violations": 1,
+      "terms": [
+        "sample"
+      ],
+      "ja_chars": 6809
+    },
+    {
+      "file": "operators/filtering/sampleTime.md",
+      "lang": "it",
+      "fence_ratio": 1.2,
+      "violations": 1,
+      "terms": [
+        "sample"
+      ],
+      "ja_chars": 8794
+    },
+    {
+      "file": "operators/filtering/skipUntil.md",
+      "lang": "es",
+      "fence_ratio": 1.44,
+      "violations": 1,
+      "terms": [
+        "Observable"
+      ],
+      "ja_chars": 8472
+    },
+    {
+      "file": "operators/filtering/skipUntil.md",
+      "lang": "nl",
+      "fence_ratio": 0.89,
+      "violations": 1,
+      "terms": [
+        "count"
+      ],
+      "ja_chars": 8472
+    },
+    {
+      "file": "operators/multicasting/share.md",
+      "lang": "es",
+      "fence_ratio": 1.0,
+      "violations": 1,
+      "terms": [
+        "Observer"
+      ],
+      "ja_chars": 6299
+    },
+    {
+      "file": "operators/multicasting/shareReplay.md",
+      "lang": "es",
+      "fence_ratio": 1.0,
+      "violations": 1,
+      "terms": [
+        "Observer"
+      ],
+      "ja_chars": 7074
+    },
+    {
+      "file": "operators/transformation/groupBy.md",
+      "lang": "it",
+      "fence_ratio": 0.89,
+      "violations": 1,
+      "terms": [
+        "fromEvent"
+      ],
+      "ja_chars": 8269
+    },
+    {
+      "file": "practical-patterns/api-calls.md",
+      "lang": "it",
+      "fence_ratio": 1.0,
+      "violations": 1,
+      "terms": [
+        "count"
+      ],
+      "ja_chars": 35045
+    },
+    {
+      "file": "practical-patterns/api-calls.md",
+      "lang": "es",
+      "fence_ratio": 1.0,
+      "violations": 1,
+      "terms": [
+        "count"
+      ],
+      "ja_chars": 35045
+    },
+    {
+      "file": "practical-patterns/api-calls.md",
+      "lang": "nl",
+      "fence_ratio": 1.0,
+      "violations": 1,
+      "terms": [
+        "count"
+      ],
+      "ja_chars": 35045
+    },
+    {
+      "file": "practical-patterns/api-calls.md",
+      "lang": "pt",
+      "fence_ratio": 1.0,
+      "violations": 1,
+      "terms": [
+        "count"
+      ],
+      "ja_chars": 35045
+    },
+    {
+      "file": "subjects/use-cases.md",
+      "lang": "it",
+      "fence_ratio": 1.21,
+      "violations": 1,
+      "terms": [
+        "takeUntil"
+      ],
+      "ja_chars": 17866
+    }
+  ]
+}

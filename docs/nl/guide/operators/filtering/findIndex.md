@@ -276,6 +276,8 @@ numbers$.pipe(
 
 RxJS `findIndex` gedraagt zich vergelijkbaar met de array-methode `Array.prototype.findIndex()` van JavaScript.
 
+```
+
 ```ts
 // JavaScript Matrix van
 const numbers = [10, 20, 30, 40, 50];

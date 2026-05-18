@@ -106,6 +106,181 @@ def fix_leading_whitespace(text: str) -> tuple[str, int]:
     return text, (1 if text != original else 0)
 
 
+def fix_residual_placeholder_fences(text: str) -> tuple[str, int]:
+    """残存した ```N___ 形式の orphan fence を除去
+
+    Issue #34 翻訳時のプレースホルダー復元バグで、
+        ```          <- 直前の閉じ
+        (空行)
+        ```N___       <- orphan: ___CODE_N___ の残骸が言語マーカー扱い
+        (空行)
+        ```           <- 閉じ (空のコードブロックを閉じる)
+        (空行)
+        ```ts         <- 次の正常な開き
+    のパターンが残ることがある。
+
+    対策: ```N___ を含む空のコードブロック (内容ほぼ空白) を 3 行とも削除。
+    """
+    lines = text.split('\n')
+    result = []
+    i = 0
+    removed = 0
+    while i < len(lines):
+        # ```N___ または ```N___. のパターン (orphan placeholder fence)
+        if re.match(r'^```\d+___\.?\s*$', lines[i]):
+            # 直後の空行をスキップ → 次の ``` 単独 (close) を探す
+            j = i + 1
+            while j < len(lines) and lines[j].strip() == '':
+                j += 1
+            if j < len(lines) and re.match(r'^```\s*$', lines[j]):
+                # i から j まで (含む) を削除
+                # 前の result 末尾の空行も整理
+                while result and result[-1].strip() == '':
+                    result.pop()
+                # 1 つだけ空行を残す
+                result.append('')
+                i = j + 1
+                removed += 1
+                continue
+        result.append(lines[i])
+        i += 1
+    return '\n'.join(result), removed
+
+
+def fix_unescaped_generics(text: str) -> tuple[str, int]:
+    """Markdown 本文 (非コード) の <T> 等のジェネリック型を \\<T> にエスケープ
+
+    Vue が HTML タグとして解釈してビルドエラーになる問題への対処。
+    JA 原本では `Observable\\<T>` のように記述されているが、DeepL 翻訳時に
+    バックスラッシュが脱落するケース。
+
+    対象: 行頭で コードブロック外の <UppercaseIdent> パターン
+    """
+    changes = 0
+
+    # 行ごとに処理: コードブロック内は変更しない
+    lines = text.split('\n')
+    in_code = False
+    for i, line in enumerate(lines):
+        # フェンス境界
+        if re.match(r'^```', line):
+            in_code = not in_code
+            continue
+        if in_code:
+            continue
+        # インラインコード (``` で囲まれた部分) を一時マスク
+        masked = re.sub(r'`[^`\n]+`', lambda m: '\x00' * len(m.group(0)), line)
+        # <UpperCase> パターンを検出
+        new_masked = re.sub(r'<([A-Z][a-zA-Z0-9]*)>', r'\\<\1>', masked)
+        if new_masked != masked:
+            # 元の行に逆適用 (マスク位置を保ちながら置換)
+            # シンプル化: 行内でインラインコード以外を直接 sub
+            def replace_outside_code(m):
+                nonlocal changes
+                changes += 1
+                return '\\<' + m.group(1) + '>'
+            # インラインコードの位置を把握
+            inline_codes = [(m.start(), m.end()) for m in re.finditer(r'`[^`\n]+`', line)]
+            def is_inside_code(pos):
+                return any(s <= pos < e for s, e in inline_codes)
+            new_line = []
+            j = 0
+            while j < len(line):
+                m = re.match(r'<([A-Z][a-zA-Z0-9]*)>', line[j:])
+                if m and not is_inside_code(j):
+                    new_line.append('\\<' + m.group(1) + '>')
+                    j += m.end()
+                    changes += 1
+                else:
+                    new_line.append(line[j])
+                    j += 1
+            lines[i] = ''.join(new_line)
+
+    return '\n'.join(lines), changes
+
+
+def fix_duplicate_code_blocks(text: str) -> tuple[str, int]:
+    """翻訳済みコードブロックの直後に JA 版コードが重複している箇所を除去
+
+    Issue #34 翻訳時に DeepL が翻訳済みコードブロックの後に JA 原文の
+    コードブロックを残してしまうバグへの対処。
+
+    パターン:
+        ```ts
+        <翻訳済みコード>
+        ```ts   <-- バグ: 本来 ``` (closing) であるべき
+        <JA 原文コード>
+        ```
+
+    修正:
+        ```ts
+        <翻訳済みコード>
+        ```      <-- closing
+        (JA 重複ブロック全体削除)
+
+    Returns:
+        (修正済みテキスト, 除去されたブロック数)
+    """
+    lines = text.split('\n')
+    result = []
+    i = 0
+    state = 'closed'  # closed | open
+    removed_count = 0
+
+    while i < len(lines):
+        line = lines[i]
+        m = re.match(r'^```(.*)$', line)
+        if m:
+            lang_marker = m.group(1).strip()
+            if state == 'closed':
+                # 新規 opening
+                state = 'open'
+                result.append(line)
+                i += 1
+            else:  # state == 'open'
+                if lang_marker:
+                    # BUG パターン: open 状態で言語付きフェンスに遭遇
+                    # 次の closing (``` 単独) を探す
+                    j = i + 1
+                    while j < len(lines):
+                        m2 = re.match(r'^```\s*$', lines[j])
+                        if m2:
+                            break
+                        j += 1
+
+                    if j < len(lines):
+                        # i+1 から j-1 までの内容を確認
+                        block_content = '\n'.join(lines[i+1:j])
+                        # 日本語文字をカウント
+                        ja_chars = len(re.findall(r'[぀-ゟ゠-ヿ一-鿿]', block_content))
+                        if ja_chars >= 10:
+                            # JA 重複ブロックとみなして除去
+                            result.append('```')  # 翻訳済みブロックの closing
+                            i = j + 1  # JA 重複ブロック (i 〜 j) を skip
+                            state = 'closed'
+                            removed_count += 1
+                            continue
+
+                    # JA 文字が少ない場合: 閉じフェンスが欠落している
+                    # → 現位置の前に閉じ ``` を挿入し、現フェンスを新規 open とする
+                    result.append('```')  # 直前ブロックの close を補う
+                    result.append('')      # 空行 (可読性)
+                    result.append(line)    # この行が新規 open
+                    state = 'open'
+                    removed_count += 1  # 「修正されたブロック」としてカウント
+                    i += 1
+                else:
+                    # 通常の closing
+                    result.append(line)
+                    state = 'closed'
+                    i += 1
+        else:
+            result.append(line)
+            i += 1
+
+    return '\n'.join(result), removed_count
+
+
 def apply_code_jp_mappings(text: str, lang: str, glossary: dict) -> tuple[str, int]:
     """既存翻訳済みファイルのコードブロック内 JA 残存を glossary[lang].code_jp で置換
 
@@ -304,6 +479,21 @@ def process_file(lang: str, rel_path: str, glossary: dict = None) -> tuple[bool,
         if n6:
             actions.append(f'code_jp 置換 ({n6}箇所)')
 
+    # 7. 翻訳済みコードブロック直後の JA 重複ブロックを除去
+    text, n7 = fix_duplicate_code_blocks(text)
+    if n7:
+        actions.append(f'コードブロック重複除去 ({n7}箇所)')
+
+    # 8. orphan placeholder fence (```N___) を除去
+    text, n8 = fix_residual_placeholder_fences(text)
+    if n8:
+        actions.append(f'orphan fence 除去 ({n8}箇所)')
+
+    # 9. 非コードの <T> 等を \\<T> にエスケープ (Vue ビルドエラー回避)
+    text, n9 = fix_unescaped_generics(text)
+    if n9:
+        actions.append(f'ジェネリック型エスケープ ({n9}箇所)')
+
     if text != original:
         file.write_text(text, encoding='utf-8')
         return True, actions
@@ -367,6 +557,16 @@ def main():
                 text, n6 = apply_code_jp_mappings(text, lang, glossary)
                 if n6:
                     actions.append(f'code_jp 置換 ({n6}箇所)')
+                if not args.code_jp_only:
+                    text, n7 = fix_duplicate_code_blocks(text)
+                    if n7:
+                        actions.append(f'コードブロック重複除去 ({n7}箇所)')
+                    text, n8 = fix_residual_placeholder_fences(text)
+                    if n8:
+                        actions.append(f'orphan fence 除去 ({n8}箇所)')
+                    text, n9 = fix_unescaped_generics(text)
+                    if n9:
+                        actions.append(f'ジェネリック型エスケープ ({n9}箇所)')
                 if text != original:
                     md.write_text(text, encoding='utf-8')
                     print(f"  ✅ {lang}/{rel}: {', '.join(actions)}")

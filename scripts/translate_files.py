@@ -584,9 +584,37 @@ def main():
     parser.add_argument('--files', help="複数ファイルをカンマ区切りで指定")
     parser.add_argument('--auto-glossary', action='store_true',
                         help="Free 版の 1-slot 制限対応: 言語ごとに glossary を作成→翻訳→削除")
+    parser.add_argument('--targets-file',
+                        help="JSON ファイルから (file × language) ペアを読み込み (e.g. scripts/no_translate_targets.json)")
+    parser.add_argument('--priority', type=int, choices=[1, 2, 3],
+                        help="targets-file 使用時、優先度を指定 (1=critical, 2=major, 3=minor)")
     args = parser.parse_args()
 
-    # ターゲット決定
+    # ターゲット決定: targets-file モードか通常モードか
+    targets_pairs = None  # (file, lang) ペアのリスト
+    if args.targets_file:
+        with open(args.targets_file) as f:
+            targets_data = json.load(f)
+        # 優先度フィルタ
+        if args.priority:
+            keys = [f'priority_{args.priority}_{["critical","major","minor"][args.priority-1]}']
+        else:
+            keys = list(targets_data.keys())
+        pairs = []
+        for k in keys:
+            for item in targets_data.get(k, []):
+                pairs.append((item['file'], item['lang']))
+        # 重複除去
+        seen = set()
+        targets_pairs = []
+        for p in pairs:
+            if p not in seen:
+                seen.add(p)
+                targets_pairs.append(p)
+        print(f"  Targets file: {args.targets_file}")
+        print(f"  Priority filter: {args.priority if args.priority else 'all'}")
+        print(f"  Pairs: {len(targets_pairs)}")
+
     target_files = [args.file] if args.file else (args.files.split(',') if args.files else DEFAULT_FILES)
     target_langs = [args.lang] if args.lang else list(LANGS.keys())
 
@@ -612,22 +640,44 @@ def main():
 
     # 言語ループ → ファイルループ の順に変更 (auto-glossary 対応)
     # 言語ごとに glossary を切り替えるため、言語を外ループに
-    for lang in target_langs:
-        # auto-glossary モード: 言語ごとに glossary を作成
-        if args.auto_glossary and not args.dry_run:
-            print(f"🔖 Glossary 作成中: {lang}...")
-            glossary_id = setup_lang_glossary(translator, lang)
-            if glossary_id:
-                translator.glossary_ids = {lang: glossary_id}
-                print(f"  ✅ Glossary ID: {glossary_id}")
-            else:
-                translator.glossary_ids = {}
-                print(f"  ⚠️  Glossary 作成失敗、glossary 無しで続行")
+    if targets_pairs:
+        # targets-file モード: ペアごとに処理
+        # 効率のため言語ごとにグループ化
+        from collections import defaultdict
+        pairs_by_lang = defaultdict(list)
+        for file, lang in targets_pairs:
+            pairs_by_lang[lang].append(file)
 
-        for rel in target_files:
-            print(f"📄 {rel} [{lang}]")
-            process_file(rel, lang, translator, glossary)
-        print()
+        for lang in sorted(pairs_by_lang.keys()):
+            if args.auto_glossary and not args.dry_run:
+                print(f"🔖 Glossary 作成中: {lang}...")
+                glossary_id = setup_lang_glossary(translator, lang)
+                if glossary_id:
+                    translator.glossary_ids = {lang: glossary_id}
+                    print(f"  ✅ Glossary ID: {glossary_id}")
+                else:
+                    translator.glossary_ids = {}
+            for rel in pairs_by_lang[lang]:
+                print(f"📄 {rel} [{lang}]")
+                process_file(rel, lang, translator, glossary)
+            print()
+    else:
+        # 通常モード
+        for lang in target_langs:
+            if args.auto_glossary and not args.dry_run:
+                print(f"🔖 Glossary 作成中: {lang}...")
+                glossary_id = setup_lang_glossary(translator, lang)
+                if glossary_id:
+                    translator.glossary_ids = {lang: glossary_id}
+                    print(f"  ✅ Glossary ID: {glossary_id}")
+                else:
+                    translator.glossary_ids = {}
+                    print(f"  ⚠️  Glossary 作成失敗、glossary 無しで続行")
+
+            for rel in target_files:
+                print(f"📄 {rel} [{lang}]")
+                process_file(rel, lang, translator, glossary)
+            print()
 
     # auto-glossary 後始末
     if args.auto_glossary and not args.dry_run:

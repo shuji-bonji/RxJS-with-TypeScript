@@ -66,6 +66,8 @@ numbers$.pipe(
 
 1. **Die letzten N Protokolleinträge abrufen**.
 
+```
+
 ```ts
    import { from } from 'rxjs';
    import { takeLast } from 'rxjs';
@@ -204,7 +206,7 @@ inputs$.pipe(
 });
 
 // Eingabe mit der Eingabetaste hinzufügen
-fromEvent<KeyboardEvent>(input, 'keydown').subscribe(event => {
+fromEvent\<KeyboardEvent>(input, 'keydown').subscribe(event => {
   if (event.key === 'Enter' && input.value.trim()) {
     inputs$.next(input.value);
     console.log(`Hinzufügen: ${input.value}`);

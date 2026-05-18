@@ -177,3 +177,92 @@ flowchart TD
    - 重複 frontmatter 除去 (中盤に JA description が残るバグ)
    - 先頭空行除去
 3. **Issue #33 (本タスク)** は Issue #32/#34 が完了してから評価を実行する
+
+---
+
+## no_translate 違反への対応 (Issue #33 派生)
+
+`validate-glossary-compliance.cjs` で検出される `no_translate` 違反は、**2 種類の根本原因**がある。
+
+### Category A: コードフェンス破損
+
+DeepL 翻訳時に**翻訳済みコードブロックの直後に JA 版コードが重複残存**したり、**閉じフェンスが欠落**するバグ。コード文脈が壊れて用語が見えなくなる。
+
+**対応**: `fix_broken_translations.py --all-files` で自動修復可能。
+
+```bash
+python3 scripts/fix_broken_translations.py --all-files
+```
+
+これは以下のステップを実行:
+1. `fix_duplicate_code_blocks()` - 翻訳済みブロック直後の JA 重複ブロックを除去
+2. 閉じフェンス欠落の検出と挿入
+3. プレースホルダー復元・code_jp 置換 (Category B 補助)
+
+### Category B: 翻訳カバレッジ不足 (DeepL 再翻訳が必要)
+
+ファイル全体が短く翻訳されており、本来あるべきコードブロックや段落が消失。
+
+**ターゲット定義**: `scripts/no_translate_targets.json` に優先度別に集計済み。
+
+```bash
+# 優先度別の文字数見積もり (dry-run)
+python3 scripts/translate_files.py --targets-file scripts/no_translate_targets.json --priority 1 --dry-run
+python3 scripts/translate_files.py --targets-file scripts/no_translate_targets.json --priority 2 --dry-run
+python3 scripts/translate_files.py --targets-file scripts/no_translate_targets.json --priority 3 --dry-run
+
+# 本番実行 (auto-glossary 必須: Free 1-slot 制約対応)
+python3 scripts/translate_files.py --targets-file scripts/no_translate_targets.json --priority 1 --auto-glossary
+```
+
+**優先度の意味**:
+
+| 優先度 | フェンス比率 | ペア数 | JA chars 合計 | DeepL 消費 (概算) |
+|--------|-------------|--------|---------------|-------------------|
+| 1 (critical) | < 50% | 11 | 96K | ~43K |
+| 2 (major) | 50-80% | 18 | 231K | ~72K |
+| 3 (minor) | ≥ 80% | 43 | 457K | ~142K |
+| **全体** | - | **72** | **784K** | **~257K** |
+
+**ワークフロー全体**:
+
+```mermaid
+flowchart TD
+    A[validate-glossary-compliance] --> B{no_translate 違反}
+    B --> C{フェンス比率}
+    C -->|< 50%| D[Priority 1: 緊急再翻訳]
+    C -->|50-80%| E[Priority 2: 中程度再翻訳]
+    C -->|>= 80% かつ フェンス破損| F[Category A: fix_broken_translations]
+    C -->|>= 80% かつ 用語消失| G[Priority 3: 軽微再翻訳]
+    D --> H[translate_files.py --targets-file --priority 1]
+    E --> I[translate_files.py --targets-file --priority 2]
+    G --> J[translate_files.py --targets-file --priority 3]
+    F --> K[fix_broken_translations.py --all-files]
+    H --> L[再検証: validate-glossary-compliance]
+    I --> L
+    J --> L
+    K --> L
+```
+
+### 段階的実行のすすめ
+
+DeepL Free の月 1M 制限を踏まえ、優先度 1 → 2 → 3 の順で段階的に実行することを推奨:
+
+```bash
+# Step 1: Category A 修復 (DeepL 不使用)
+python3 scripts/fix_broken_translations.py --all-files
+
+# Step 2: 再検証して効果確認
+node scripts/validate-glossary-compliance.cjs all
+node scripts/generate-evaluation-report.cjs all  # XCOMET 評価も更新したい場合
+
+# Step 3: Priority 1 のみ再翻訳 (~43K chars)
+python3 scripts/translate_files.py --targets-file scripts/no_translate_targets.json --priority 1 --auto-glossary
+
+# Step 4: 再検証 → 効果と残量を確認 → 必要なら Priority 2, 3 と進める
+node scripts/validate-glossary-compliance.cjs all
+```
+
+### 再翻訳後の必須後処理
+
+`translate_files.py` 実行後は **必ず** `fix_broken_translations.py --all-files` を実行する。これは DeepL のプレースホルダー破損や重複 frontmatter バグを修正するため。

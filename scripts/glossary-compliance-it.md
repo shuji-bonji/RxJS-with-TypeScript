@@ -5,14 +5,14 @@
 | 項目 | 値 |
 |------|-----|
 | 検査ファイル数 | 181 |
-| 違反のあるファイル数 | 16 |
-| 違反総数 | 29 |
+| 違反のあるファイル数 | 14 |
+| 違反総数 | 25 |
 
 ### 違反タイプ別
 
 | タイプ | 件数 |
 |--------|------|
-| 🔴 no_translate (固有名詞消失) | 29 |
+| 🔴 no_translate (固有名詞消失) | 25 |
 | 🟡 callouts JA 残存 | 0 |
 | 🟠 code_jp 残存 (コード内日本語) | 0 |
 
@@ -30,16 +30,6 @@
 | `count` | 5 | 0 | 0 |
 | `Promise` | 6 | 0 | 0 |
 | `next` | 9 | 0 | 0 |
-
-### `operators/filtering/audit.md` (違反 3 件)
-
-**no_translate 違反:**
-
-| 用語 | JA出現 | 翻訳出現 | 比率 |
-|------|--------|----------|------|
-| `timer` | 16 | 0 | 0 |
-| `map` | 4 | 0 | 0 |
-| `sample` | 5 | 0 | 0 |
 
 ### `operators/filtering/elementAt.md` (違反 3 件)
 
@@ -119,21 +109,13 @@
 |------|--------|----------|------|
 | `Creation Function` | 3 | 0 | 0 |
 
-### `operators/filtering/ignoreElements.md` (違反 1 件)
+### `operators/filtering/sampleTime.md` (違反 1 件)
 
 **no_translate 違反:**
 
 | 用語 | JA出現 | 翻訳出現 | 比率 |
 |------|--------|----------|------|
-| `interval` | 3 | 0 | 0 |
-
-### `operators/filtering/takeLast.md` (違反 1 件)
-
-**no_translate 違反:**
-
-| 用語 | JA出現 | 翻訳出現 | 比率 |
-|------|--------|----------|------|
-| `error` | 3 | 0 | 0 |
+| `sample` | 6 | 0 | 0 |
 
 ### `operators/transformation/groupBy.md` (違反 1 件)
 
@@ -162,4 +144,4 @@
 
 ---
 
-生成日時: 2026-05-18T00:23:13.237Z
+生成日時: 2026-05-18T00:49:05.119Z

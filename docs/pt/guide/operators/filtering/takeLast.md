@@ -66,6 +66,8 @@ numbers$.pipe(
 
 1. **Obter as N entradas de registro mais recentes**.
 
+```
+
 ```ts
    import { from } from 'rxjs';
    import { takeLast } from 'rxjs';
@@ -204,7 +206,7 @@ inputs$.pipe(
 });
 
 // Adicionar entrada com a tecla Enter
-fromEvent<KeyboardEvent>(input, 'keydown').subscribe(event => {
+fromEvent\<KeyboardEvent>(input, 'keydown').subscribe(event => {
   if (event.key === 'Enter' && input.value.trim()) {
     inputs$.next(input.value);
     console.log(`Adicionar: ${input.value}`);

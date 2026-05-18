@@ -5,7 +5,7 @@ description: "El operador windowTime divide un Observable en intervalos de tiemp
 # windowTime - Ventana por Tiempo
 
 El operador `windowTime` agrupa los valores del Observable fuente **en intervalos de tiempo fijos** y emite ese grupo como **un nuevo Observable**.
-Mientras que `bufferTime` devuelve un array, `windowTime` **devuelve un Observable\<T>**, lo que permite aplicar operadores adicionales a cada ventana.
+Mientras que `bufferTime` devuelve un array, `windowTime` **devuelve un Observable\\<T>**, lo que permite aplicar operadores adicionales a cada ventana.
 
 ## 🔰 Sintaxis básica y uso
 
@@ -47,7 +47,7 @@ source$.pipe(
 | Operador | Salida | Caso de uso |
 |:---|:---|:---|
 | `bufferTime` | **Array (T[])** | Procesar valores agrupados juntos |
-| `windowTime` | **Observable\<T>** | Procesamiento de stream diferente por marco temporal |
+| `windowTime` | **Observable\\<T>** | Procesamiento de stream diferente por marco temporal |
 
 ```ts
 import { interval } from 'rxjs';

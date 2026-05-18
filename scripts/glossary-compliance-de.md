@@ -5,29 +5,18 @@
 | 項目 | 値 |
 |------|-----|
 | 検査ファイル数 | 181 |
-| 違反のあるファイル数 | 9 |
-| 違反総数 | 16 |
+| 違反のあるファイル数 | 6 |
+| 違反総数 | 9 |
 
 ### 違反タイプ別
 
 | タイプ | 件数 |
 |--------|------|
-| 🔴 no_translate (固有名詞消失) | 15 |
+| 🔴 no_translate (固有名詞消失) | 8 |
 | 🟡 callouts JA 残存 | 1 |
 | 🟠 code_jp 残存 (コード内日本語) | 0 |
 
 ## 違反詳細 (Top 30)
-
-### `operators/filtering/skipUntil.md` (違反 4 件)
-
-**no_translate 違反:**
-
-| 用語 | JA出現 | 翻訳出現 | 比率 |
-|------|--------|----------|------|
-| `Observable` | 3 | 0 | 0 |
-| `fromEvent` | 4 | 0 | 0 |
-| `skip` | 3 | 0 | 0 |
-| `count` | 5 | 0 | 0 |
 
 ### `operators/filtering/skipWhile.md` (違反 4 件)
 
@@ -39,15 +28,6 @@
 | `interval` | 4 | 0 | 0 |
 | `map` | 8 | 0 | 0 |
 | `take` | 4 | 0 | 0 |
-
-### `operators/filtering/audit.md` (違反 2 件)
-
-**no_translate 違反:**
-
-| 用語 | JA出現 | 翻訳出現 | 比率 |
-|------|--------|----------|------|
-| `map` | 4 | 0 | 0 |
-| `sample` | 5 | 0 | 0 |
 
 ### `anti-patterns/checklist.md` (違反 1 件)
 
@@ -71,13 +51,13 @@
 |------|--------|----------|------|
 | `count` | 5 | 0 | 0 |
 
-### `operators/filtering/ignoreElements.md` (違反 1 件)
+### `operators/filtering/audit.md` (違反 1 件)
 
 **no_translate 違反:**
 
 | 用語 | JA出現 | 翻訳出現 | 比率 |
 |------|--------|----------|------|
-| `interval` | 3 | 0 | 0 |
+| `sample` | 5 | 0 | 0 |
 
 ### `operators/filtering/skipLast.md` (違反 1 件)
 
@@ -87,15 +67,7 @@
 |------|--------|----------|------|
 | `error` | 5 | 0 | 0 |
 
-### `operators/filtering/takeLast.md` (違反 1 件)
-
-**no_translate 違反:**
-
-| 用語 | JA出現 | 翻訳出現 | 比率 |
-|------|--------|----------|------|
-| `error` | 3 | 0 | 0 |
-
 
 ---
 
-生成日時: 2026-05-18T00:23:12.923Z
+生成日時: 2026-05-18T00:49:04.938Z

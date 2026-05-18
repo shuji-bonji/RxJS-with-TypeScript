@@ -67,23 +67,6 @@ import { auditTime } from 'rxjs';
 fromEvent(document, 'click').pipe(
   auditTime(1000)
 ).subscribe(() => console.log('Pulsar.！'));
-```ts
-import { interval } from 'rxjs';
-import { throttleTime, auditTime, take } from 'rxjs';
-
-const source$ = interval(300).pipe(take(10)); // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
-
-// throttleTime: PrimeroのvalorをSalida
-source$.pipe(
-  throttleTime(1000)
-).subscribe(console.log);
-// Salida: 0, 4, 8（各periodoのPrimeroのvalor）
-
-// auditTime: ÚltimoのvalorをSalida
-source$.pipe(
-  auditTime(1000)
-).subscribe(console.log);
-// Salida: 3, 6, 9（各periodoのÚltimoのvalor）
 ```
 
 ## 💡 Patrón típico de utilización
@@ -197,7 +180,7 @@ dot.style.display = 'none';
 container.appendChild(dot);
 
 // Evento de movimiento del ratón
-fromEvent<MouseEvent>(contenedor, 'moverratón').pipe(
+fromEvent\<MouseEvent>(contenedor, 'moverratón').pipe(
   map(evento => {
     const rect = contenedor.getBoundingClientRect();
     return {
@@ -319,7 +302,7 @@ function trackMousePosition(
   elemento: HTMLElement,.
   intervalMs: número
 ): Observable {
-  return fromEvent<MouseEvent>(element, 'mousemove').pipe(
+  return fromEvent\<MouseEvent>(element, 'mousemove').pipe(
     auditTime(intervalMs),.
     map(evento => ({
       x: evento.clienteX, evento.
@@ -385,6 +368,8 @@ fromEvent(input, 'input').pipe(
   console.log('Búsqueda ejecutada');
 });
 
+```
+
 ```ts
 import { fromEvent } from 'rxjs';
 import { auditTime } from 'rxjs';
@@ -392,6 +377,8 @@ import { auditTime } from 'rxjs';
 fromEvent(document, 'click').pipe(
   auditTime(1000)
 ).subscribe(() => console.log('Pulsar.！'));
+```
+
 ```ts
 import { fromEvent } from 'rxjs';
 import { auditTime } from 'rxjs';

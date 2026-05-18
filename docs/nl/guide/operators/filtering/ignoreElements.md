@@ -402,6 +402,8 @@ source$.pipe(
 
 ### Patroon 2: Opschoonproces
 
+```
+
 ```ts
 import { of } from 'rxjs';
 import { ignoreElements } from 'rxjs';
@@ -415,6 +417,8 @@ source$.pipe(
   complete: () => console.log('Voltooid')
 });
 // Uitvoer: Voltooid
+```
+
 ```ts
 import { of } from 'rxjs';
 import { ignoreElements } from 'rxjs';

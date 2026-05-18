@@ -43,19 +43,6 @@ clicks$.pipe(
 ).subscribe(() => {
   console.log('Klick wurde aufgezeichnet');
 });
-```ts
-import { fromEvent, interval } from 'rxjs';
-import { audit } from 'rxjs';
-
-// クリックイベント
-const clicks$ = fromEvent(document, 'click');
-
-// 1秒ごとにPeriodeを区切る
-clicks$.pipe(
-  audit(() => interval(1000))
-).subscribe(() => {
-  console.log('クリックが記録されました');
-});
 ```
 
 > Das obige Beispiel lässt der Einfachheit halber das Abbestellen von `fromEvent` weg. In echtem Code sollten Sie `takeUntil(destroy$)`, `take(N)` oder `Subscription.unsubscribe()` verwenden, um den Lebenszyklus explizit zu verwalten. Weitere Informationen: [Schwierigkeiten überwinden: Lebenszyklus-Management](/de/guide/overcoming-difficulties/lifecycle-management.md)
@@ -238,6 +225,8 @@ interval(100).pipe(
 
 An `audit` übergebene Funktionen **müssen jedes Mal ein neues Observable zurückgeben**.
 
+```
+
 ```ts
 // ❌ Schlechtes Beispiel: Wenn die gleicheObservableInstanz verwendet wird und erneut verwendet wird
 const duration$ = timer(1000);
@@ -281,6 +270,8 @@ clicks$.pipe(
 ).subscribe(() => {
   console.log('Klick wurde aufgezeichnet');
 });
+
+```
 
 ```ts
 import { fromEvent, interval, timer } from 'rxjs';

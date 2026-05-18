@@ -231,6 +231,8 @@ numbers$.pipe(
 
 Si l'index spécifié n'est pas atteint avant la fin du flux, une erreur est générée.
 
+```
+
 ```ts
 import { from } from 'rxjs';
 import { elementAt } from 'rxjs';

@@ -5,29 +5,18 @@
 | 項目 | 値 |
 |------|-----|
 | 検査ファイル数 | 181 |
-| 違反のあるファイル数 | 20 |
-| 違反総数 | 28 |
+| 違反のあるファイル数 | 14 |
+| 違反総数 | 18 |
 
 ### 違反タイプ別
 
 | タイプ | 件数 |
 |--------|------|
-| 🔴 no_translate (固有名詞消失) | 25 |
+| 🔴 no_translate (固有名詞消失) | 15 |
 | 🟡 callouts JA 残存 | 3 |
 | 🟠 code_jp 残存 (コード内日本語) | 0 |
 
 ## 違反詳細 (Top 30)
-
-### `operators/transformation/windowToggle.md` (違反 4 件)
-
-**no_translate 違反:**
-
-| 用語 | JA出現 | 翻訳出現 | 比率 |
-|------|--------|----------|------|
-| `Observable` | 3 | 0 | 0 |
-| `timer` | 6 | 0 | 0 |
-| `map` | 5 | 0 | 0 |
-| `count` | 9 | 0 | 0 |
 
 ### `creation-functions/index.md` (違反 2 件)
 
@@ -46,15 +35,6 @@
 |------|--------|----------|------|
 | `timer` | 5 | 0 | 0 |
 | `bufferWhen` | 5 | 0 | 0 |
-
-### `operators/transformation/windowCount.md` (違反 2 件)
-
-**no_translate 違反:**
-
-| 用語 | JA出現 | 翻訳出現 | 比率 |
-|------|--------|----------|------|
-| `Observable` | 3 | 0 | 0 |
-| `take` | 4 | 0 | 0 |
 
 ### `operators/utility/dematerialize.md` (違反 2 件)
 
@@ -132,30 +112,6 @@
 |------|--------|----------|------|
 | `Creation Function` | 3 | 0 | 0 |
 
-### `operators/filtering/audit.md` (違反 1 件)
-
-**no_translate 違反:**
-
-| 用語 | JA出現 | 翻訳出現 | 比率 |
-|------|--------|----------|------|
-| `map` | 4 | 0 | 0 |
-
-### `operators/filtering/ignoreElements.md` (違反 1 件)
-
-**no_translate 違反:**
-
-| 用語 | JA出現 | 翻訳出現 | 比率 |
-|------|--------|----------|------|
-| `interval` | 3 | 0 | 0 |
-
-### `operators/filtering/takeLast.md` (違反 1 件)
-
-**no_translate 違反:**
-
-| 用語 | JA出現 | 翻訳出現 | 比率 |
-|------|--------|----------|------|
-| `error` | 3 | 0 | 0 |
-
 ### `operators/transformation/groupBy.md` (違反 1 件)
 
 **no_translate 違反:**
@@ -172,15 +128,7 @@
 |------|--------|----------|------|
 | `Observable` | 3 | 0 | 0 |
 
-### `operators/transformation/windowWhen.md` (違反 1 件)
-
-**no_translate 違反:**
-
-| 用語 | JA出現 | 翻訳出現 | 比率 |
-|------|--------|----------|------|
-| `scan` | 3 | 0 | 0 |
-
 
 ---
 
-生成日時: 2026-05-18T00:23:12.610Z
+生成日時: 2026-05-18T00:49:04.760Z

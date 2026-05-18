@@ -266,80 +266,6 @@ source$.pipe(
   complete: () => console.log('Completado')
 });
 // Salida: Completado
-```ts
-import { from, forkJoin, of } from 'rxjs';
-import { ignoreElements, tap, delay, concat } from 'rxjs';
-
-// UICrear
-const container = document.createElement('div');
-document.body.appendChild(container);
-
-const title = document.createElement('h3');
-title.textContent = 'アプリケーション初期化';
-container.appendChild(title);
-
-const statusArea = document.createElement('div');
-statusArea.style.marginTop = '10px';
-container.appendChild(statusArea);
-
-const completeMessage = document.createElement('div');
-completeMessage.style.marginTop = '10px';
-completeMessage.style.padding = '10px';
-completeMessage.style.display = 'none';
-container.appendChild(completeMessage);
-
-// ステータスログを追加する関数
-function addLog(message: string, color: string = 'black') {
-  const log = document.createElement('div');
-  log.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
-  log.style.color = color;
-  statusArea.appendChild(log);
-}
-
-// 初期化処理1: データベース接続
-const initDatabase$ = from(['DB接続中...', 'テーブル確認中...', 'DB準備completado']).pipe(
-  tap(msg => addLog(msg, 'blue')),
-  delay(500),
-  ignoreElements() // valorは無視、completadoのみ通知
-);
-
-// 初期化処理2: 設定ファイル読み込み
-const loadConfig$ = from(['設定ファイル読み込み中...', '設定解析中...', '設定適用completado']).pipe(
-  tap(msg => addLog(msg, 'green')),
-  delay(700),
-  ignoreElements()
-);
-
-// 初期化処理3: ユーザー認証
-const authenticate$ = from(['認証情報確認中...', 'トークン検証中...', '認証completado']).pipe(
-  tap(msg => addLog(msg, 'purple')),
-  delay(600),
-  ignoreElements()
-);
-
-// すべての初期化処理を実行
-addLog('初期化開始...', 'orange');
-
-forkJoin([
-  initDatabase$,
-  loadConfig$,
-  authenticate$
-]).subscribe({
-  complete: () => {
-    completeMessage.style.display = 'block';
-    completeMessage.style.backgroundColor = '#e8f5e9';
-    completeMessage.style.color = 'green';
-    completeMessage.style.fontWeight = 'bold';
-    completeMessage.textContent = '✅ すべての初期化がcompletadoしました！アプリケーションを起動できます。';
-    addLog('アプリケーション起動', 'green');
-  },
-  error: err => {
-    completeMessage.style.display = 'block';
-    completeMessage.style.backgroundColor = '#ffebee';
-    completeMessage.style.color = 'red';
-    completeMessage.textContent = `❌ 初期化エラー: ${err.message}`;
-  }
-});
 ```
 
 **Recomendado**: utilice `ignoreElements()` si desea ignorar intencionadamente todos los valores. La intención del código será clara.
@@ -489,32 +415,6 @@ source$.pipe(
 
 ### Patrón 2: Proceso de limpieza
 
-```ts
-import { of } from 'rxjs';
-import { ignoreElements } from 'rxjs';
-
-const source$ = of(1, 2, 3, 4, 5);
-
-source$.pipe(
-  ignoreElements()
-).subscribe({
-  next: value => console.log('Valor:', value), // No solicitado
-  complete: () => console.log('Completado')
-});
-// Salida: Completado
-```ts
-import { of } from 'rxjs';
-import { ignoreElements } from 'rxjs';
-
-const source$ = of(1, 2, 3, 4, 5);
-
-source$.pipe(
-  ignoreElements()
-).subscribe({
-  next: value => console.log('valor:', value), // 呼ばれない
-  complete: () => console.log('completadoしました')
-});
-// Salida: completadoしました
 ```
 
 ## 📚 Operadores relacionados.

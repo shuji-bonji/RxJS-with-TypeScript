@@ -5,7 +5,7 @@ description: windowCount es un operador de transformación de RxJS que divide un
 # windowCount - Dividir Observable por cantidad especificada
 
 El operador `windowCount` divide los valores emitidos en **nuevos Observables** por cada cantidad especificada.
-Mientras que `bufferCount` devuelve un array, `windowCount` **devuelve un Observable\<T>**, lo que permite aplicar operadores adicionales a cada ventana.
+Mientras que `bufferCount` devuelve un array, `windowCount` **devuelve un Observable\\<T>**, lo que permite aplicar operadores adicionales a cada ventana.
 
 ## 🔰 Sintaxis básica y uso
 
@@ -51,7 +51,7 @@ source$.pipe(
 | Operador | Salida | Caso de uso |
 |:---|:---|:---|
 | `bufferCount` | **Array (T[])** | Procesar valores agrupados juntos |
-| `windowCount` | **Observable\<T>** | Procesamiento de stream diferente por grupo |
+| `windowCount` | **Observable\\<T>** | Procesamiento de stream diferente por grupo |
 
 ```ts
 import { interval } from 'rxjs';

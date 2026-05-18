@@ -38,88 +38,6 @@ clicks$.pipe(
 ).subscribe(() => {
   console.log('2Monsters van seconde tot seconde');
 });
-```ts
-import { interval } from 'rxjs';
-import { sampleTime, map } from 'rxjs';
-
-// UIMaken
-const container = document.createElement('div');
-document.body.appendChild(container);
-
-const title = document.createElement('h3');
-title.textContent = 'センサーモニタリングダッシュボード';
-container.appendChild(title);
-
-const dashboard = document.createElement('div');
-dashboard.style.display = 'grid';
-dashboard.style.gridTemplateColumns = '1fr 1fr';
-dashboard.style.gap = '10px';
-dashboard.style.marginTop = '10px';
-container.appendChild(dashboard);
-
-// ダッシュボードカードMaken
-function createCard(label: string, unit: string) {
-  const card = document.createElement('div');
-  card.style.padding = '20px';
-  card.style.border = '2px solid #2196F3';
-  card.style.borderRadius = '8px';
-  card.style.backgroundColor = '#E3F2FD';
-
-  const labelDiv = document.createElement('div');
-  labelDiv.textContent = label;
-  labelDiv.style.fontSize = '14px';
-  labelDiv.style.color = '#666';
-  card.appendChild(labelDiv);
-
-  const valueDiv = document.createElement('div');
-  valueDiv.style.fontSize = '32px';
-  valueDiv.style.fontWeight = 'bold';
-  valueDiv.style.marginTop = '10px';
-  valueDiv.textContent = '--';
-  card.appendChild(valueDiv);
-
-  const unitDiv = document.createElement('div');
-  unitDiv.textContent = unit;
-  unitDiv.style.fontSize = '14px';
-  unitDiv.style.color = '#666';
-  card.appendChild(unitDiv);
-
-  dashboard.appendChild(card);
-  return valueDiv;
-}
-
-const tempValue = createCard('温度', '°C');
-const humidityValue = createCard('湿度', '%');
-const pressureValue = createCard('気圧', 'hPa');
-const lightValue = createCard('照度', 'lux');
-
-// センサーデータストリーム（100msごとに更新）
-const sensorData$ = interval(100).pipe(
-  map(() => ({
-    temperature: (20 + Math.random() * 10).toFixed(1),
-    humidity: (40 + Math.random() * 40).toFixed(1),
-    pressure: (1000 + Math.random() * 30).toFixed(1),
-    light: Math.floor(Math.random() * 1000)
-  }))
-);
-
-// 2秒ごとにサンプリングしてダッシュボードを更新
-sensorData$.pipe(
-  sampleTime(2000)
-).subscribe(data => {
-  tempValue.textContent = data.temperature;
-  humidityValue.textContent = data.humidity;
-  pressureValue.textContent = data.pressure;
-  lightValue.textContent = data.light.toString();
-
-  // アニメーション効果
-  [tempValue, humidityValue, pressureValue, lightValue].forEach(elem => {
-    elem.style.color = '#2196F3';
-    setTimeout(() => {
-      elem.style.color = 'black';
-    }, 500);
-  });
-});
 ```
 
 > In het bovenstaande voorbeeld is het afmelden van `fromEvent` weggelaten voor de eenvoud van de uitleg. Gebruik in echte code `takeUntil(destroy$)`, `take(N)` of `Subscription.unsubscribe()` om de levenscyclus expliciet te beheren. Meer informatie: [Moeilijkheden overwinnen: levenscyclusbeheer](/nl/guide/overcoming-difficulties/lifecycle-management.md)
@@ -332,6 +250,8 @@ clicks$.pipe(
 ).subscribe(() => {
   console.log('2Monsters van seconde tot seconde');
 });
+```
+
 ```ts
 import { fromEvent } from 'rxjs';
 import { sampleTime } from 'rxjs';

@@ -43,19 +43,6 @@ clicks$.pipe(
 ).subscribe(() => {
   console.log('Le clic a été enregistré');
 });
-```ts
-import { fromEvent, interval } from 'rxjs';
-import { audit } from 'rxjs';
-
-// クリックイベント
-const clicks$ = fromEvent(document, 'click');
-
-// 1秒ごとにpériodeを区切る
-clicks$.pipe(
-  audit(() => interval(1000))
-).subscribe(() => {
-  console.log('クリックが記録されました');
-});
 ```
 
 > L'exemple ci-dessus omet de désabonner `fromEvent` pour simplifier l'explication. Dans le code réel, utilisez `takeUntil(destroy$)`, `take(N)` ou `Subscription.unsubscribe()` pour gérer explicitement le cycle de vie. Plus d'informations : [Surmonter les difficultés : gestion du cycle de vie](/fr/guide/overcoming-difficulties/lifecycle-management.md)
@@ -281,6 +268,8 @@ clicks$.pipe(
 ).subscribe(() => {
   console.log('Le clic a été enregistré');
 });
+
+```
 
 ```ts
 import { fromEvent, interval, timer } from 'rxjs';

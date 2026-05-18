@@ -1,43 +1,9 @@
 {
   "language": "de",
   "totalFiles": 181,
-  "filesWithViolations": 9,
-  "totalViolations": 16,
+  "filesWithViolations": 6,
+  "totalViolations": 9,
   "files": [
-    {
-      "file": "operators/filtering/skipUntil.md",
-      "violations": {
-        "no_translate": [
-          {
-            "term": "Observable",
-            "ja_count": 3,
-            "trans_count": 0,
-            "ratio": 0
-          },
-          {
-            "term": "fromEvent",
-            "ja_count": 4,
-            "trans_count": 0,
-            "ratio": 0
-          },
-          {
-            "term": "skip",
-            "ja_count": 3,
-            "trans_count": 0,
-            "ratio": 0
-          },
-          {
-            "term": "count",
-            "ja_count": 5,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 4
-    },
     {
       "file": "operators/filtering/skipWhile.md",
       "violations": {
@@ -71,28 +37,6 @@
         "code_jp_residual": []
       },
       "total": 4
-    },
-    {
-      "file": "operators/filtering/audit.md",
-      "violations": {
-        "no_translate": [
-          {
-            "term": "map",
-            "ja_count": 4,
-            "trans_count": 0,
-            "ratio": 0
-          },
-          {
-            "term": "sample",
-            "ja_count": 5,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 2
     },
     {
       "file": "anti-patterns/checklist.md",
@@ -142,12 +86,12 @@
       "total": 1
     },
     {
-      "file": "operators/filtering/ignoreElements.md",
+      "file": "operators/filtering/audit.md",
       "violations": {
         "no_translate": [
           {
-            "term": "interval",
-            "ja_count": 3,
+            "term": "sample",
+            "ja_count": 5,
             "trans_count": 0,
             "ratio": 0
           }
@@ -164,22 +108,6 @@
           {
             "term": "error",
             "ja_count": 5,
-            "trans_count": 0,
-            "ratio": 0
-          }
-        ],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 1
-    },
-    {
-      "file": "operators/filtering/takeLast.md",
-      "violations": {
-        "no_translate": [
-          {
-            "term": "error",
-            "ja_count": 3,
             "trans_count": 0,
             "ratio": 0
           }
@@ -991,6 +919,15 @@
       "total": 0
     },
     {
+      "file": "operators/filtering/ignoreElements.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
       "file": "operators/filtering/index.md",
       "violations": {
         "no_translate": [],
@@ -1036,7 +973,25 @@
       "total": 0
     },
     {
+      "file": "operators/filtering/skipUntil.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
       "file": "operators/filtering/take.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [],
+        "code_jp_residual": []
+      },
+      "total": 0
+    },
+    {
+      "file": "operators/filtering/takeLast.md",
       "violations": {
         "no_translate": [],
         "callouts_ja_residual": [],

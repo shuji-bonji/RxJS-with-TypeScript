@@ -173,7 +173,7 @@ dot.style.display = 'none';
 container.appendChild(dot);
 
 // Muisbewegingsgebeurtenis
-fromEvent<MouseEvent>(container, 'mousemove').pipe(
+fromEvent\<MouseEvent>(container, 'mousemove').pipe(
   map(event => {
     const rect = container.getBoundingClientRect();
     return {
@@ -295,7 +295,7 @@ functie trackMousePosition(
   element: HTMLElement,.
   interval: getal
 ): Observable {
-  return fromEvent<MouseEvent>(element, 'mousemove').pipe(
+  return fromEvent\<MouseEvent>(element, 'mousemove').pipe(
     auditTime(intervalMs),.
     map(event => ({
       x: event.clientX, event.
@@ -361,6 +361,8 @@ fromEvent(input, 'input').pipe(
   console.log('Zoekopdracht uitgevoerd');
 });
 
+```
+
 ```ts
 import { fromEvent } from 'rxjs';
 import { auditTime } from 'rxjs';
@@ -368,6 +370,8 @@ import { auditTime } from 'rxjs';
 fromEvent(document, 'click').pipe(
   auditTime(1000)
 ).subscribe(() => console.log('Klik.！'));
+```
+
 ```ts
 import { fromEvent } from 'rxjs';
 import { auditTime } from 'rxjs';

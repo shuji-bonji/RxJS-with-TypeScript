@@ -5,7 +5,7 @@ description: "window divise l'Observable source en Observables imbriqués au tim
 # window - Fenêtre par Événement
 
 L'opérateur `window` regroupe les valeurs de l'Observable source **jusqu'à ce qu'un autre Observable émette des valeurs** et sort ce groupe **comme un nouvel Observable**.
-Alors que `buffer` renvoie un tableau, `window` renvoie **Observable\<T>**, permettant d'appliquer d'autres opérateurs à chaque fenêtre.
+Alors que `buffer` renvoie un tableau, `window` renvoie **Observable\\<T>**, permettant d'appliquer d'autres opérateurs à chaque fenêtre.
 
 ## 🔰 Syntaxe de base et utilisation
 
@@ -46,7 +46,7 @@ source$.pipe(
 | Opérateur | Sortie | Cas d'utilisation |
 |:---|:---|:---|
 | `buffer` | **Tableau (T[])** | Traitement groupé des valeurs |
-| `window` | **Observable\<T>** | Traitement de flux différent par groupe |
+| `window` | **Observable\\<T>** | Traitement de flux différent par groupe |
 
 ```ts
 import { interval, timer } from 'rxjs';

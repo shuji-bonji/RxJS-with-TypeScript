@@ -66,6 +66,8 @@ numbers$.pipe(
 
 1. **Obtenir les N dernières entrées du journal**.
 
+```
+
 ```ts
    import { from } from 'rxjs';
    import { takeLast } from 'rxjs';
@@ -204,7 +206,7 @@ inputs$.pipe(
 }) ;
 
 // Ajout d'une entrée avec la touche Entrée
-fromEvent<KeyboardEvent>(input, 'keydown').subscribe(event => {
+fromEvent\<KeyboardEvent>(input, 'keydown').subscribe(event => {
   if (event.key === 'Enter' && input.value.trim()) {
     inputs$.next(input.value) ;
     console.log(`Add : ${input.value}`) ;

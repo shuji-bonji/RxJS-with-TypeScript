@@ -66,6 +66,8 @@ numbers$.pipe(
 
 1. **Raccogliere le ultime N voci di registro**.
 
+```
+
 ```ts
    import { from } from 'rxjs';
    import { takeLast } from 'rxjs';
@@ -204,7 +206,7 @@ inputs$.pipe(
 });
 
 // Aggiungere l'input con il tasto Invio
-fromEvent<KeyboardEvent>(input, 'keydown').subscribe(event => {
+fromEvent\<KeyboardEvent>(input, 'keydown').subscribe(event => {
   if (event.key === 'Enter' && input.value.trim()) {
     inputs$.next(input.value);
     console.log(`Aggiungi: ${input.value}`);

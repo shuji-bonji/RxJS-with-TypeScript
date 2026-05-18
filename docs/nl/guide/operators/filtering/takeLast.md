@@ -195,7 +195,7 @@ inputs$.pipe(
 });
 
 // Input toevoegen met de Enter-toets
-fromEvent<KeyboardEvent>(input, 'keydown').subscribe(event => {
+fromEvent\<KeyboardEvent>(input, 'keydown').subscribe(event => {
   if (event.key === 'Enter' && input.value.trim()) {
     inputs$.next(input.value);
     console.log(`Toevoegen: ${input.value}`);

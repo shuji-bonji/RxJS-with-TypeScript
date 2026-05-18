@@ -67,23 +67,6 @@ import { auditTime } from 'rxjs';
 fromEvent(document, 'click').pipe(
   auditTime(1000)
 ).subscribe(() => console.log('Fare clic.！'));
-```ts
-import { interval } from 'rxjs';
-import { throttleTime, auditTime, take } from 'rxjs';
-
-const source$ = interval(300).pipe(take(10)); // 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
-
-// throttleTime: PrimoのvaloreをOutput
-source$.pipe(
-  throttleTime(1000)
-).subscribe(console.log);
-// Output: 0, 4, 8（各periodoのPrimoのvalore）
-
-// auditTime: UltimoのvaloreをOutput
-source$.pipe(
-  auditTime(1000)
-).subscribe(console.log);
-// Output: 3, 6, 9（各periodoのUltimoのvalore）
 ```
 
 ## 💡 Modello di utilizzo tipico
@@ -197,7 +180,7 @@ dot.style.display = 'none';
 container.appendChild(dot);
 
 // Evento di spostamento del mouse
-fromEvent<MouseEvent>(container, 'mousemove').pipe(
+fromEvent\<MouseEvent>(container, 'mousemove').pipe(
   map(evento => {
     const rect = container.getBoundingClientRect();
     return {
@@ -319,7 +302,7 @@ function trackMousePosition(
   elemento: HTMLElement,.
   intervalli: numero
 ): Observable {
-  return fromEvent<MouseEvent>(element, 'mousemove').pipe(
+  return fromEvent\<MouseEvent>(element, 'mousemove').pipe(
     auditTime(intervalli),.
     map(event => ({ {
       x: event.clientX, event.
@@ -384,6 +367,8 @@ fromEvent(input, 'input').pipe(
   console.log('Ricerca eseguita');
 });
 
+```
+
 ```ts
 import { fromEvent } from 'rxjs';
 import { auditTime } from 'rxjs';
@@ -391,6 +376,8 @@ import { auditTime } from 'rxjs';
 fromEvent(document, 'click').pipe(
   auditTime(1000)
 ).subscribe(() => console.log('Fare clic.！'));
+```
+
 ```ts
 import { fromEvent } from 'rxjs';
 import { auditTime } from 'rxjs';

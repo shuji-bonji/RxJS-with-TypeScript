@@ -239,6 +239,8 @@ clicks$.pipe(
 ).subscribe(() => {
   console.log('2Campioni secondo per secondo');
 });
+```
+
 ```ts
 import { fromEvent } from 'rxjs';
 import { sampleTime } from 'rxjs';
@@ -248,7 +250,7 @@ const clicks$ = fromEvent(document, 'click');
 clicks$.pipe(
   sampleTime(2000)
 ).subscribe(() => {
-  console.log('2秒ごとのサンプル');
+  console.log('2Campione al secondo');
 });
 ```
 
@@ -352,76 +354,6 @@ clicks$.pipe(
   console.log('2Campioni secondo per secondo');
 });
 
-```ts
-import { fromEvent } from 'rxjs';
-import { sampleTime } from 'rxjs';
-
-const clicks$ = fromEvent(document, 'click');
-
-clicks$.pipe(
-  sampleTime(2000)
-).subscribe(() => {
-  console.log('2Campioni secondo per secondo');
-});
-```ts
-import { fromEvent } from 'rxjs';
-import { sampleTime, map } from 'rxjs';
-
-// UICreare
-const container = document.createElement('div');
-document.body.appendChild(container);
-
-const title = document.createElement('h3');
-title.textContent = 'マウス位置サンプリング（1秒ごと）';
-container.appendChild(title);
-
-const area = document.createElement('div');
-area.style.width = '100%';
-area.style.height = '300px';
-area.style.border = '2px solid #4CAF50';
-area.style.backgroundColor = '#f5f5f5';
-area.style.display = 'flex';
-area.style.alignItems = 'center';
-area.style.justifyContent = 'center';
-area.style.fontSize = '18px';
-area.textContent = 'この領域内でマウスを動かしてください';
-container.appendChild(area);
-
-const output = document.createElement('div');
-output.style.marginTop = '10px';
-output.style.maxHeight = '150px';
-output.style.overflow = 'auto';
-output.style.border = '1px solid #ccc';
-output.style.padding = '10px';
-container.appendChild(output);
-
-let sampleCount = 0;
-
-// マウス移動イベント
-fromEvent<MouseEvent>(area, 'mousemove').pipe(
-  map(event => ({
-    x: event.offsetX,
-    y: event.offsetY,
-    timestamp: Date.now()
-  })),
-  sampleTime(1000) // 1秒ごとにサンプリング
-).subscribe(pos => {
-  sampleCount++;
-  const log = document.createElement('div');
-  log.style.padding = '5px';
-  log.style.borderBottom = '1px solid #eee';
-  log.innerHTML = `
-    <strong>サンプル #${sampleCount}</strong>
-    [${new Date(pos.timestamp).toLocaleTimeString()}]
-    位置: (${pos.x}, ${pos.y})
-  `;
-  output.insertBefore(log, output.firstChild);
-
-  // Max.10件まで表示
-  while (output.children.length > 10) {
-    output.removeChild(output.lastChild!);
-  }
-});
 ```
 
 ## 📚 Operatori correlati.
