@@ -1,332 +1,303 @@
 ---
-description: zipWith is an RxJS combination operator that pairs the original Observable with other Observables in corresponding order. It is the Pipeable Operator version of Creation Function zip, and is ideal for situations where order is important, such as quiz games (questions and answers), task assignments (users and tasks), seat assignments (passengers and seat numbers), etc. It is useful when you want to transform and process the main stream while pairing it with other streams.
-titleTemplate: ':title | RxJS'
+description: "zipWith é um operador de junção RxJS que alinha e emparelha o Observable original com os valores ordenados correspondentes de outros Observables. É ideal para junções de fluxo com ordem crítica, como a combinação de resultados de processamento paralelo com garantias de ordem, mapeamento de IDs para dados, sincronização de dados relacionados publicados em momentos diferentes etc. A versão do operador pipe é conveniente para uso em pipelines."
 ---
 
-# zipWith - Pairing Based on Order (Within Pipeline)
+# zipWith - par de valores correspondentes
 
-The `zipWith` operator pairs the original Observable with the specified other Observables **in corresponding order** to form a new stream.
-This is the Pipeable Operator version of the Creation Function `zip`.
+O operador `zipWith` agrupa os **valores ordenados correspondentes** emitidos pelo Observable original e pelos outros Observables especificados.
+Ele aguarda até que os valores cheguem um a um de todos os Observable e cria pares quando eles estiverem prontos.
+Essa é a versão do Pipeable Operator do `zip` da Creation Function.
 
-## 🔰 Basic Syntax and Usage
+## Sintaxe básica e uso
 
 ```ts
 import { of, interval } from 'rxjs';
 import { zipWith, map, take } from 'rxjs';
 
-const source1$ = of('A', 'B', 'C', 'D');
-const source2$ = interval(500).pipe(take(4)); // 0, 1, 2, 3
-
-source1$
-  .pipe(
-    zipWith(source2$),
-    map(([letter, num]) => `${letter}${num}`)
-  )
-  .subscribe(console.log);
-
-// Output:
-// A0 (after 500ms)
-// B1 (after 1000ms)
-// C2 (after 1500ms)
-// D3 (after 2000ms)
-```
-
-- Pairs **values in corresponding order** from each Observable, one at a time.
-- **Waits until all Observables have emitted values in corresponding order** before outputting the pair.
-- When any Observable completes, the entire stream completes.
-
-[🌐 RxJS Official Documentation - `zipWith`](https://rxjs.dev/api/operators/zipWith)
-
-
-## 💡 Typical Usage Patterns
-
-- **Quiz game question and answer pairing**: Pairing sequential questions with user answers
-- **Task assignment**: Pairing user lists with task lists in sequence
-- **Seat assignment**: Pairing passengers with seat numbers in sequence
-- **Consolidate parallel processing results**: Combine results of multiple API calls in order
-
-
-## 🧠 Practical Code Example (with UI)
-
-Example of a quiz game where questions and user answers are paired in order and scored.
-
-```ts
-import { fromEvent, of, from } from 'rxjs';
-import { zipWith, map, take, scan } from 'rxjs';
-
-// Build the UI
-const container = document.createElement('div');
-container.innerHTML = `
-  <h3>zipWith Practical Example: Quiz Game</h3>
-  <div id="question" style="font-size: 18px; margin: 10px 0;">Loading questions...</div>
-  <div>
-    <button id="answer-a">A</button>
-    <button id="answer-b">B</button>
-    <button id="answer-c">C</button>
-  </div>
-  <div id="result" style="margin-top: 10px;"></div>
-  <div id="score" style="margin-top: 10px; font-weight: bold;"></div>
-`;
-document.body.appendChild(container);
-
-const questionDiv = document.getElementById('question')!;
-const resultDiv = document.getElementById('result')!;
-const scoreDiv = document.getElementById('score')!;
-
-const buttonA = document.getElementById('answer-a') as HTMLButtonElement;
-const buttonB = document.getElementById('answer-b') as HTMLButtonElement;
-const buttonC = document.getElementById('answer-c') as HTMLButtonElement;
-
-// Question list (with correct answers)
-interface Question {
-  id: number;
-  text: string;
-  correct: string;
-}
-
-const questions: Question[] = [
-  { id: 1, text: 'What does "Rx" in RxJS stand for?', correct: 'A' },
-  { id: 2, text: 'What does Observable represent?', correct: 'B' },
-  { id: 3, text: 'What does subscribe do?', correct: 'C' }
-];
-
-// Question stream
-const questions$ = of(...questions);
-
-let currentQuestionIndex = 0;
-questions$.subscribe(q => {
-  if (currentQuestionIndex === 0) {
-    questionDiv.textContent = `Q${q.id}: ${q.text}`;
-  }
-});
-
-// User answer stream (button clicks)
-const getAnswer = () => new Promise<string>((resolve) => {
-  const handleClick = (answer: string) => {
-    resolve(answer);
-    buttonA.removeEventListener('click', handleA);
-    buttonB.removeEventListener('click', handleB);
-    buttonC.removeEventListener('click', handleC);
-  };
-  const handleA = () => handleClick('A');
-  const handleB = () => handleClick('B');
-  const handleC = () => handleClick('C');
-  buttonA.addEventListener('click', handleA);
-  buttonB.addEventListener('click', handleB);
-  buttonC.addEventListener('click', handleC);
-});
-
-const answers$ = from(
-  Promise.all(questions.map(() => getAnswer()))
+const letters$ = of('A', 'B', 'C', 'D');
+const numbers$ = interval(1000).pipe(
+  map(val => val * 10),
+  take(3)
 );
 
-// Pair and grade questions with answers
-questions$
-  .pipe(
-    zipWith(answers$),
-    map(([question, answer]) => ({
-      question: question.text,
-      answer,
-      correct: question.correct,
-      isCorrect: answer === question.correct
-    })),
-    scan((acc, result) => ({
-      ...result,
-      totalScore: acc.totalScore + (result.isCorrect ? 1 : 0)
-    }), { totalScore: 0 } as any)
-  )
-  .subscribe((result) => {
-    const status = result.isCorrect ? '✅ Correct' : '❌ Incorrect';
-    resultDiv.innerHTML += `<div>${status}: ${result.question} - Your answer: ${result.answer}</div>`;
-    scoreDiv.textContent = `Current score: ${result.totalScore} / ${currentQuestionIndex + 1}`;
-    currentQuestionIndex++;
-
-    // Show next question
-    if (currentQuestionIndex < questions.length) {
-      questionDiv.textContent = `Q${questions[currentQuestionIndex].id}: ${questions[currentQuestionIndex].text}`;
-    } else {
-      questionDiv.textContent = 'All questions completed!';
-      buttonA.disabled = true;
-      buttonB.disabled = true;
-      buttonC.disabled = true;
-    }
+letters$
+  .pipe(zipWith(numbers$))
+  .subscribe(([letter, number]) => {
+    console.log(`${letter} - ${number}`);
   });
+
+// Saída:
+// A - 0
+// B - 10
+// C - 20
+// (Dnão é uma saída, pois não há um valor correspondente)
 ```
 
-- Each time a user answers, it is **paired with the corresponding question** and scored.
-- Order is guaranteed, so the correspondence is maintained: **Answer 1 for Question 1, Answer 2 for Question 2**, and so on.
+- Um par é gerado a partir de cada Observable **quando um dos valores é concluído**.
+- Quando um Observable é concluído, os valores restantes são descartados.
 
+[🌐 Documentação oficial do RxJS - zipWith](https://rxjs.dev/api/operators/zipWith)
 
-## 🔄 Difference from Creation Function `zip`
+## 💡 Padrão de utilização típico.
 
-### Basic Differences
+- **Combinação de resultados de processamento paralelo em ordem garantida**: emparelhamento dos resultados de várias chamadas de API.
+- **Mapeamento de IDs para dados**: combinação de IDs de usuário com dados de perfil correspondentes
+- Sincronização de fluxos**: sincronização de dados relacionados emitidos em momentos diferentes
 
-| | `zip` (Creation Function) | `zipWith` (Pipeable Operator) |
-|:---|:---|:---|
-| **Usage Location** | Used as independent function | Used within `.pipe()` chain |
-| **Syntax** | `zip(obs1$, obs2$, obs3$)` | `obs1$.pipe(zipWith(obs2$, obs3$))` |
-| **First Stream** | Treats all equally | Treats as main stream |
-| **Advantage** | Simple and readable | Easy to combine with other operators |
+## Exemplos práticos de código (com UI)
 
-### Specific Usage Examples
+Exemplo de emparelhamento de uma lista de IDs de usuário e nomes de usuário correspondentes em sequência.
 
-**Creation Function is Recommended for Simple Pairing Only**
+```ts
+import { from, of } from 'rxjs';
+import { zipWith, delay, concatMap } from 'rxjs';
+
+// Criação de área de saída
+const output = document.createElement('div');
+output.innerHTML = '<h3>zipWith Exemplos práticos de:</h3>';
+document.body.appendChild(output);
+
+// UsuárioIDStream (publicado imediatamente)
+const userIds$ = from([101, 102, 103, 104]);
+
+// Fluxo de nome de usuário (emitido a cada1(emitido a cada segundo)
+const userNames$ = from(['Alice', 'Bob', 'Carol']).pipe(
+  concatMap(name => of(name).pipe(delay(1000)))
+);
+
+// zipe exibido
+userIds$
+  .pipe(zipWith(userNames$))
+  .subscribe(([id, name]) => {
+    const item = document.createElement('div');
+    item.textContent = `👤 UsuárioID ${id}: ${name}`;
+    output.appendChild(item);
+  });
+
+// Saída:
+// 👤 UsuárioID 101: Alice
+// 👤 UsuárioID 102: Bob
+// 👤 UsuárioID 103: Carol
+// (104não é exibido porque não há um nome correspondente)
+```
+
+- As IDs e os nomes são emparelhados em uma correspondência de **um para um**.
+- Quando um é completado, os valores restantes são descartados.
+
+## Diferença da Creation Function `zip`.
+
+### Diferenças básicas.
+
+|  | `zip` (Creation Function). | `zipWith` (Pipeable Operator) |
+|---|---|---|
+| **Onde é usado** | Usado como uma função autônoma | Usada na cadeia `.pipe()`. |
+| **Como escrever**. | `zip(obs1$, obs2$, obs3$)` | `obs1$.pipe(zipWith(obs2$, obs3$))` |
+| **Primeiro fluxo**. | Tratar todos como iguais | Tratar como fluxo principal |
+| **Vantagens**. | Simples e fácil de ler | Fácil de combinar com outros operadores |
+
+### Exemplos específicos de uso
+
+**Para emparelhamento simples, recomenda-se a Creation Function**.
 
 ```ts
 import { zip, of } from 'rxjs';
 
-const names$ = of('Alice', 'Bob', 'Charlie');
-const ages$ = of(25, 30, 35);
-const cities$ = of('Tokyo', 'Osaka', 'Kyoto');
+const questions$ = of('O nome é？', 'A idade é？', 'O endereço é？');
+const answers$ = of('Taro', '30', 'Tóquio');
+const scores$ = of(10, 20, 30);
 
-// Simple and readable
-zip(names$, ages$, cities$).subscribe(([name, age, city]) => {
-  console.log(`${name} (${age} years old) - ${city}`);
+// Simples e legível
+zip(questions$, answers$, scores$).subscribe(([q, a, s]) => {
+  console.log(`Q: ${q}, A: ${a}, Pontuação: ${s}Pontuação`);
 });
-// Output:
-// Alice (25 years old) - Tokyo
-// Bob (30 years old) - Osaka
-// Charlie (35 years old) - Kyoto
+// Saída:
+// Q: O nome é？, A: Taro, Pontuação: 10Pontuação
+// Q: A idade é？, A: 30, Pontuação: 20Pontuação
+// Q: O endereço é？, A: Tóquio, Pontuação: 30Pontuação
 ```
 
-**Pipeable Operator is Recommended When Adding Transformation Processing to Main Stream**
+**Se você quiser adicionar um processo de transformação ao fluxo principal, recomenda-se o Pipeable Operator**.
+
+```ts
+import { from, interval } from 'rxjs';
+import { zipWith, map, take, filter } from 'rxjs';
+
+// Lista de tarefas
+const tasks$ = from([
+  { id: 1, name: 'Relatórios', priority: 'high' },
+  { id: 2, name: 'Resposta a e-mails', priority: 'low' },
+  { id: 3, name: 'Preparação de reuniões', priority: 'high' },
+  { id: 4, name: 'Organizar documentos', priority: 'medium' }
+]);
+
+// Lista de pessoas responsáveis (1Atribuído a cada segundo)
+const assignees$ = from(['Alice', 'Bob', 'Carol', 'Dave']).pipe(
+  zipWith(interval(1000).pipe(take(4))),
+  map(([name]) => name)
+);
+
+// ✅ Pipeable OperatorEdições - Concluídas em um único pipeline
+tasks$
+  .pipe(
+    filter(task => task.priority === 'high'),  // Somente prioridade alta
+    map(task => task.name),                     // Extrair nomes de tarefas
+    zipWith(assignees$),                        // Atribuir pessoa responsável
+    map(([taskName, assignee]) => ({
+      task: taskName,
+      assignee,
+      assignedAt: new Date().toLocaleTimeString()
+    }))
+  )
+  .subscribe(assignment => {
+    console.log(`[${assignment.assignedAt}] ${assignment.task} → Atribuído a: ${assignment.assignee}`);
+  });
+// Saída:
+// [Tempo] Relatórios → Atribuído a: Alice
+// [Tempo] Preparação de reuniões → Atribuído a: Bob
+
+// ❌ Creation FunctionEdições - Redundante
+import { zip } from 'rxjs';
+zip(
+  tasks$.pipe(
+    filter(task => task.priority === 'high'),
+    map(task => task.name)
+  ),
+  assignees$
+).pipe(
+  map(([taskName, assignee]) => ({
+    task: taskName,
+    assignee,
+    assignedAt: new Date().toLocaleTimeString()
+  }))
+).subscribe(assignment => {
+  console.log(`[${assignment.assignedAt}] ${assignment.task} → Atribuído a: ${assignment.assignee}`);
+});
+```
+
+**Sincronização de dados críticos para a ordem**.
+
+```ts
+import { from } from 'rxjs';
+import { zipWith, map, concatMap, delay } from 'rxjs';
+import { of } from 'rxjs';
+
+// UICriar
+const output = document.createElement('div');
+output.innerHTML = '<h3>Jogo de perguntas</h3>';
+document.body.appendChild(output);
+
+const questionArea = document.createElement('div');
+questionArea.style.marginTop = '10px';
+output.appendChild(questionArea);
+
+// Lista de perguntas (preparada imediatamente)
+const questions$ = from([
+  'A capital do Japão é？',
+  '1+1é？',
+  'Que planeta é a Terra?？'
+]);
+
+// Lista de respostas (simulando a entrada do usuário)：2(a cada segundo)
+const answers$ = from(['Tóquio', '2', '3']).pipe(
+  concatMap((answer, index) =>
+    of(answer).pipe(delay((index + 1) * 2000))
+  )
+);
+
+// Lista de respostas corretas
+const correctAnswers$ = from(['Tóquio', '2', '3']);
+
+// ✅ Pipeable OperatorEdições - Processar perguntas como mainstream
+questions$
+  .pipe(
+    zipWith(answers$, correctAnswers$),
+    map(([question, answer, correct], index) => ({
+      no: index + 1,
+      question,
+      answer,
+      correct,
+      isCorrect: answer === correct
+    }))
+  )
+  .subscribe(result => {
+    const div = document.createElement('div');
+    div.style.marginTop = '10px';
+    div.style.padding = '10px';
+    div.style.border = '1px solid #ccc';
+    div.style.backgroundColor = result.isCorrect ? '#e8f5e9' : '#ffebee';
+    div.innerHTML = `
+      <strong>Perguntas${result.no}:</strong> ${result.question}<br>
+      <strong>Respostas:</strong> ${result.answer}<br>
+      <strong>Resultado:</strong> ${result.isCorrect ? '✅ Resposta correta！' : '❌ Resposta incorreta'}
+    `;
+    questionArea.appendChild(div);
+  });
+```
+
+### Resumo.
+
+- zip: melhor se você quiser apenas mapear vários fluxos em ordem
+- zip: ideal se você quiser mesclar o fluxo principal com outros fluxos em ordem garantida enquanto transforma ou processa o fluxo principal
+
+## ⚠️ Notas.
+
+### Para comprimentos diferentes.
+
+Quando o Observable mais curto é concluído, os valores restantes do mais longo são descartados.
 
 ```ts
 import { of } from 'rxjs';
-import { zipWith, map, filter } from 'rxjs';
+import { zipWith } from 'rxjs';
 
-const users$ = of(
-  { id: 1, name: 'Alice', active: true },
-  { id: 2, name: 'Bob', active: false },
-  { id: 3, name: 'Charlie', active: true }
-);
+const short$ = of(1, 2, 3);
+const long$ = of('A', 'B', 'C', 'D', 'E');
 
-const tasks$ = of('Task A', 'Task B', 'Task C');
-
-// ✅ Pipeable Operator version - completed in one pipeline
-users$
-  .pipe(
-    filter(user => user.active),    // Active users only
-    map(user => user.name),         // Extract name only
-    zipWith(tasks$)                 // Pair with tasks
-  )
-  .subscribe(([user, task]) => {
-    console.log(`Assign ${task} to ${user}`);
-  });
-// Output:
-// Assign Task A to Alice
-// Assign Task B to Charlie
-
-// ❌ Creation Function version - becomes verbose
-import { zip } from 'rxjs';
-zip(
-  users$.pipe(
-    filter(user => user.active),
-    map(user => user.name)
-  ),
-  tasks$
-).subscribe(([user, task]) => {
-  console.log(`Assign ${task} to ${user}`);
-});
+short$.pipe(zipWith(long$)).subscribe(console.log);
+// Saída: [1, 'A'], [2, 'B'], [3, 'C']
+// 'D'e'E'são descartados
 ```
 
-### Summary
+### Acumulação de memória.
 
-- **`zip`**: Optimal for simply pairing multiple streams
-- **`zipWith`**: Optimal when you want to transform/process the main stream while pairing it with other streams
-
-
-## ⚠️ Important Notes
-
-### Completion Timing
-
-When any Observable completes, the entire stream completes.
+Se um Observable continuar a emitir valores, os valores se acumularão na memória até que o outro os recupere.
 
 ```ts
-import { of, interval } from 'rxjs';
+import { interval} from 'rxjs';
 import { zipWith, take } from 'rxjs';
 
-of(1, 2, 3).pipe(
-  zipWith(
-    interval(1000).pipe(take(2)),  // Emits only 2 values
-  )
-).subscribe({
-  next: console.log,
-  complete: () => console.log('✅ Complete')
-});
-// Output: [1, 0] → [2, 1] → ✅ Complete
-// * interval$ emitted only 2 values and completed, so 3 is not paired
+// Fluxos rápidos (100mspor fluxo)
+const fast$ = interval(100).pipe(take(10));
+
+// Fluxo de baixa velocidade (1(a cada segundo)
+const slow$ = interval(1000).pipe(take(3));
+
+fast$.pipe(zipWith(slow$)).subscribe(console.log);
+// Saída: [0, 0] (1segundos depois), [1, 1] (2segundos depois), [2, 2] (3segundos depois)
+// fast$Os valores são armazenados na memória e aguardados
 ```
 
-### Synchronization of Emission Timing
+### Diferença de combineLatestWith.
 
-`zipWith` waits **until all Observables have emitted values in corresponding order**.
-
-```ts
-import { interval } from 'rxjs';
-import { zipWith, take, map } from 'rxjs';
-
-const fast$ = interval(100).pipe(take(5), map(i => `Fast: ${i}`));
-const slow$ = interval(1000).pipe(take(5), map(i => `Slow: ${i}`));
-
-fast$
-  .pipe(zipWith(slow$))
-  .subscribe(console.log);
-// Output (every 1 second):
-// ['Fast: 0', 'Slow: 0']
-// ['Fast: 1', 'Slow: 1']
-// ['Fast: 2', 'Slow: 2']
-// ['Fast: 3', 'Slow: 3']
-// ['Fast: 4', 'Slow: 4']
-// * fast$ is fast, but waits for slow$ to emit, so pairs are output every second
-```
-
-### Difference from combineLatestWith
-
-`combineLatestWith` **always combines** the latest values, whereas `zipWith` **pairs based on order**.
+O `zipWith` emparelha os valores na ordem correspondente, enquanto o `combineLatestWith` combina os valores mais recentes.
 
 ```ts
 import { interval } from 'rxjs';
 import { zipWith, combineLatestWith, take } from 'rxjs';
 
-const source1$ = interval(100).pipe(take(3)); // 0, 1, 2
-const source2$ = interval(200).pipe(take(2)); // 0, 1
+const source1$ = interval(1000).pipe(take(3));
+const source2$ = interval(1500).pipe(take(2));
 
-// zipWith: Pair by order
+// zipWith: Emparelhados na ordem correspondente
 source1$.pipe(zipWith(source2$)).subscribe(console.log);
-// Output: [0, 0] → [1, 1] → Complete
-// * Since source2$ completed, source1$'s 2 is not paired
+// Saída: [0, 0], [1, 1]
 
-// combineLatestWith: Combine latest values
+// combineLatestWith: Combinar os valores mais recentes
 source1$.pipe(combineLatestWith(source2$)).subscribe(console.log);
-// Output: [0, 0] → [1, 0] → [1, 1] → [2, 1]
-// * Outputs latest value combination each time either emits
+// Saída: [0, 0], [1, 0], [2, 0], [2, 1]
 ```
 
-### Error Handling
+## 📚 Operadores relacionados.
 
-If an error occurs in any Observable, the entire stream terminates with an error.
-
-```ts
-import { throwError, of } from 'rxjs';
-import { zipWith, catchError } from 'rxjs';
-
-of(1, 2, 3).pipe(
-  zipWith(
-    throwError(() => new Error('Error occurred')).pipe(
-      catchError(err => of('Error recovered'))
-    )
-  )
-).subscribe({
-  next: console.log,
-  error: err => console.error('Error:', err.message)
-});
-// Output: [1, 'Error recovered']
-```
-
-
-## 📚 Related Operators
-
-- **[zip](/pt/guide/creation-functions/combination/zip)** - Creation Function version
-- **[combineLatestWith](/pt/guide/operators/combination/combineLatestWith)** - Always combine latest values
-- **[withLatestFrom](/pt/guide/operators/combination/withLatestFrom)** - Combine only when main stream emits
+- **[zip](/pt/guide/creation-functions/combination/zip)** - Versão da Creation Function.
+- **[combineLatestWith](/pt/guide/operators/combination/combineLatestWith)** - Combina o valor mais recente
+- **[withLatestFrom](/pt/guide/operators/combination/withLatestFrom)** - somente acionadores principais

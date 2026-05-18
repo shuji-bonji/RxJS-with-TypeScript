@@ -1,96 +1,132 @@
 ---
-description: De bufferToggle operator is een geavanceerde bufferoperator die start- en eindtriggers laat controleren door aparte Observables en meerdere bufferperiodes onafhankelijk laat beheren.
-titleTemplate: ':title'
+description: "De bufferToggle operator is een geavanceerde buffer operator waarmee begin- en eindtriggers kunnen worden geregeld door afzonderlijke Observable en waarmee meerdere bufferperioden onafhankelijk kunnen worden beheerd."
 ---
 
-# bufferToggle - Start/Einde Controle
+# bufferToggle - controlebuffer starten/eindigen
 
-De `bufferToggle` operator controleert de **starttrigger** en **eindtrigger** met aparte Observables en geeft de waarden uit in een array. Dit is een geavanceerde bufferoperator die meerdere bufferperiodes tegelijk kan beheren.
+De `bufferToggle` operator controleert de **start trigger** en **einde trigger** met aparte Observable en geeft de waarden samen uit in een array. Dit is een geavanceerde bufferoperator die meerdere bufferperioden tegelijk kan beheren.
 
-## 🔰 Basissyntax en gebruik
+## 🔰 Basis syntaxis en gebruik
 
 ```ts
 import { interval } from 'rxjs';
 import { bufferToggle } from 'rxjs';
 
-const source$ = interval(500); // Geef waarden elke 0,5 seconden uit
+const source$ = interval(500); // 0.5Waarde elke seconde uitgeven
 
-// Starttrigger: elke 2 seconden
+// Start trigger: 2Elke seconde
 const opening$ = interval(2000);
 
-// Eindtrigger: 1 seconde na start
+// Eind trigger: Vanaf begin1Seconden na
 const closing = () => interval(1000);
 
 source$.pipe(
   bufferToggle(opening$, closing)
 ).subscribe(console.log);
-// Output:
-// [3, 4, 5]     (Start op 2 sec, eindigt op 3 sec)
-// [7, 8, 9]     (Start op 4 sec, eindigt op 5 sec)
-// [11, 12, 13]  (Start op 6 sec, eindigt op 7 sec)
+// Uitgang:
+// [3, 4, 5]     (2Begin bij seconde,3(begin bij seconde, einde bij seconde)
+// [7, 8, 9]     (4Begin bij seconde,5(begin bij seconde, einde bij seconde)
+// [11, 12, 13]  (6Begin bij seconde,7(begin bij seconde, einde bij seconde)
 ```
 
-**Werkingsstroom**:
-1. `opening$` zendt een waarde uit → Buffering start
-2. Observable geretourneerd door `closing()` zendt een waarde uit → Buffering eindigt, voert array uit
-3. Meerdere bufferperiodes kunnen overlappen
+**Bewerkingsstroom**:.
+1. `opening$` geeft een waarde → buffering start
+2. de door `closing()` geretourneerde Observable geeft een waarde af → einde buffering, output array
+3. meerdere bufferperioden kunnen elkaar overlappen
 
-[🌐 RxJS Officiële Documentatie - `bufferToggle`](https://rxjs.dev/api/operators/bufferToggle)
+[🌐 Officiële RxJS documentatie - `bufferToggle`](https://rxjs.dev/api/operators/bufferToggle)
 
-## 🆚 Contrast met andere buffer operators
+## 🆚 Contrast met andere buffer-gebaseerde operatoren
 
-`bufferToggle` is uniek vergeleken met andere buffer operators doordat het **onafhankelijke controle** van start en einde toestaat.
+`bufferToggle` is uniek in vergelijking met andere buffer-gebaseerde operatoren omdat het **onafhankelijke controle van start en einde** toestaat.
 
-### Vergelijking van elke operator
+### Vergelijking van verschillende operatoren
 
-| Operator | Trigger | Kenmerk | Gebruiksscenario |
-|---|---|---|---|
-| `buffer(trigger$)` | Enkele Observable | Eenvoudig | Event-gedreven buffering |
-| `bufferTime(ms)` | Tijd | Periodiek | Data-aggregatie op regelmatige intervallen |
-| `bufferCount(n)` | Aantal | Kwantitatief | Verwerking in eenheden van N |
-| `bufferToggle(open$, close)` | Aparte start/eind controle | Flexibel | Complexe periodebeheer |
+```ts
+import { interval } from 'rxjs';
+import { bufferToggle } from 'rxjs';
 
-### Codevoorbeeld vergelijking
+const source$ = interval(500); // 0.5Waarde elke seconde uitgeven
+
+// Start trigger: 2Elke seconde
+const opening$ = interval(2000);
+
+// Eind trigger: Vanaf begin1Seconden na
+const closing = () => interval(1000);
+
+source$.pipe(
+  bufferToggle(opening$, closing)
+).subscribe(console.log);
+// Uitgang:
+// [3, 4, 5]     (2Begin bij seconde,3(begin bij seconde, einde bij seconde)
+// [7, 8, 9]     (4Begin bij seconde,5(begin bij seconde, einde bij seconde)
+// [11, 12, 13]  (6Begin bij seconde,7(begin bij seconde, einde bij seconde)
+```
+
+### Vergelijking met codevoorbeelden
+
 
 ```ts
 import { interval } from 'rxjs';
 import { bufferToggle, take } from 'rxjs';
 
-const source$ = interval(300).pipe(take(10)); // Geef 0-9 elke 300ms uit
+const source$ = interval(300).pipe(take(10)); // 0-9elke seconde.300msUitgegeven elke
 
-// bufferToggle: Onafhankelijke controle van start en einde
-const opening$ = interval(1000); // Start elke 1 seconde
-const closing = () => interval(500); // Eindig 500ms na start
+// bufferToggle: Onafhankelijke controle van begin en einde
+const opening$ = interval(1000); // 1Start elke seconde
+const closing = () => interval(500); // Vanaf begin500msEinde na
 
 source$.pipe(
   bufferToggle(opening$, closing)
 ).subscribe(console.log);
-// Output: [3, 4], [6, 7], [9]
+// Uitgang: [3, 4], [6, 7], [9]
 //
 // Tijdlijn:
 // 0ms  300ms 600ms 900ms 1200ms 1500ms 1800ms 2100ms 2400ms 2700ms
 // 0    1     2     3     4      5      6      7      8      9
-//                  [Start       Eind]   [Start       Eind]   [Start Eind]
-//                  └→ [3,4]            └→ [6,7]            └→ [9]
+//                  [Start        Einde]  [Start        Einde]  [Start  Einde]
+//                  └→ [3,4]           └→ [6,7]           └→ [9]
 ```
 
-**Gebruiksrichtlijnen**:
-- **`buffer`** → Voer buffer uit elke keer dat trigger Observable een waarde uitzendt
-- **`bufferTime`** → Voer buffer automatisch uit op regelmatige intervallen
-- **`bufferCount`** → Voer buffer uit wanneer gespecificeerd aantal is bereikt
-- **`bufferToggle`** → Aparte start/eind controle, overlappende periodes mogelijk
+**Gebruik met andere operatoren**:.
+- **`buffer`** → Voer een buffer uit telkens als de trigger Observable een waarde afgeeft.
+- **`bufferTime`** → automatisch uitvoer van een buffer elke bepaalde tijd.
+- **`bufferCount`** → voer een buffer uit wanneer het opgegeven aantal buffers is opgebouwd.
+- **`bufferToggle`** → aparte begin- en eindcontrole, overlappende perioden mogelijk.
 
-> [!TIP]
-> Voor meer details over elke operator, zie [buffer](/nl/guide/operators/transformation/buffer), [bufferTime](/nl/guide/operators/transformation/bufferTime), [bufferCount](/nl/guide/operators/transformation/bufferCount).
+```ts
+import { interval } from 'rxjs';
+import { bufferToggle } from 'rxjs';
 
-## 💡 Typische gebruikspatronen
+const source$ = interval(500); // 0.5Waarde elke seconde uitgeven
 
-1. **Dataverzameling tijdens kantooruren**
-   ```ts
+// Start trigger: 2Elke seconde
+const opening$ = interval(2000);
+
+// Eind trigger: Vanaf begin1Seconden na
+const closing = () => interval(1000);
+
+source$.pipe(
+  bufferToggle(opening$, closing)
+).subscribe(console.log);
+// Uitgang:
+// [3, 4, 5]     (2Begin bij seconde,3(begin bij seconde, einde bij seconde)
+// [7, 8, 9]     (4Begin bij seconde,5(begin bij seconde, einde bij seconde)
+// [11, 12, 13]  (6Begin bij seconde,7(begin bij seconde, einde bij seconde)
+```
+
+> Voor meer informatie over elke operator, zie [buffer](. /buffer), [bufferTime](. /bufferTime), [bufferCount](. /bufferCount).
+
+## Typische gebruikspatronen.
+
+1. **Verzameling van gegevens tijdens kantooruren**.
+
+
+```ts
    import { interval, timer } from 'rxjs';
    import { bufferToggle, map } from 'rxjs';
 
-   // Sensordata (altijd verzamelend)
+   // Sensorgegevens (altijd verworven)
    const sensorData$ = interval(100).pipe(
      map(() => ({
        timestamp: Date.now(),
@@ -98,21 +134,21 @@ source$.pipe(
      }))
    );
 
-   // Kantoor open: 9:00 (Simulatie: na 2 seconden)
-   const businessOpen$ = timer(2000, 10000); // Na 2 sec, dan elke 10 sec
+   // Begin van de bewerking: 9:00(simulatie): 2(na 1,5 seconden)
+   const businessOpen$ = timer(2000, 10000); // 2Seconden later, dan10Elke seconde
 
-   // Kantoor sluit: 5 seconden na start
+   // Einde bedrijfsuren: Vanaf begin5Seconden na
    const businessClose = () => timer(5000);
 
    sensorData$.pipe(
      bufferToggle(businessOpen$, businessClose)
    ).subscribe(data => {
-     console.log(`Data tijdens kantooruren: ${data.length} items`);
-     console.log(`Gemiddelde: ${(data.reduce((sum, d) => sum + d.value, 0) / data.length).toFixed(2)}`);
+     console.log(`Gegevens tijdens bedrijfsuren: ${data.length}Geval`);
+     console.log(`Gemiddelde waarde: ${(data.reduce((sum, d) => sum + d.value, 0) / data.length).toFixed(2)}`);
    });
    ```
 
-2. **Gebeurtenisregistratie tijdens knop indrukken**
+2. **Gebeurtenisregistratie tijdens indrukken knop**
    ```ts
    import { fromEvent, interval } from 'rxjs';
    import { bufferToggle, map, take } from 'rxjs';
@@ -125,7 +161,7 @@ source$.pipe(
    display.style.marginTop = '10px';
    document.body.appendChild(display);
 
-   // Datastroom
+   // Gegevensstroom
    const data$ = interval(100).pipe(
      map(i => ({ id: i, timestamp: Date.now() }))
    );
@@ -133,38 +169,78 @@ source$.pipe(
    // Start: Muis omlaag
    const mouseDown$ = fromEvent(button, 'mousedown');
 
-   // Einde: Muis omhoog (van mousedown naar mouseup)
+   // Einde: Muis omhoog (mousedownKomt voor vanmouseuptot)
    const mouseUp = () => fromEvent(document, 'mouseup').pipe(take(1));
 
    data$.pipe(
      bufferToggle(mouseDown$, mouseUp)
    ).subscribe(events => {
-     display.textContent = `Gebeurtenissen geregistreerd tijdens vasthouden: ${events.length} items`;
-     console.log('Geregistreerde gebeurtenissen:', events);
+     display.textContent = `Gebeurtenis opgenomen tijdens hold: ${events.length}Geval`;
+     console.log('Opgenomen gebeurtenissen:', events);
    });
    ```
 
-## 🧠 Praktisch codevoorbeeld (Downloadperiodebeheer)
+3. **Actieve gebruikersactie opgenomen**
+   ```ts
+   import { fromEvent, merge, timer } from 'rxjs';
+    mport { bufferToggle, map } from 'rxjs';
 
-Dit is een voorbeeld van het beheren van datadownloadperiodes met start- en stopknoppen.
+   // Actie gebruiker
+   const clicks$ = fromEvent(document, 'click').pipe(
+     map(() => ({ type: 'click' as const, timestamp: Date.now() }))
+   );
 
-```ts
+   const scrolls$ = fromEvent(window, 'scroll').pipe(
+     map(() => ({ type: 'scroll' as const, timestamp: Date.now() }))
+   );
+
+   const keypresses$ = fromEvent(document, 'keypress').pipe(
+     map(() => ({ type: 'keypress' as const, timestamp: Date.now() }))
+   );
+
+   const actions$ = merge(clicks$, scrolls$, keypresses$);
+
+   // Begin van actieve status: Eerste actie
+   const activeStart$ = actions$;
+
+   // Einde actieve status: 5Geen actie in seconden
+   const activeEnd = () => timer(5000);
+
+   actions$.pipe(
+     bufferToggle(activeStart$, activeEnd)
+   ).subscribe(bufferedActions => {
+     console.log(`Actieve sessie: ${bufferedActions.length}Aantal acties`);
+     const summary = bufferedActions.reduce((acc, action) => {
+       acc[action.type] = (acc[action.type] || 0) + 1;
+       return acc;
+     }, {} as Record<string, number>);
+     console.log('Indeling:', summary);
+   });
+   ```
+
+## 🧠 Praktisch codevoorbeeld (downloadperioden beheren)
+
+Dit is een voorbeeld van het beheren van gegevensdownloadperioden met start- en stopknoppen.
+
+```
+
+ts.
 import { interval, fromEvent, Subject } from 'rxjs';
 import { bufferToggle, map, take } from 'rxjs';
 
-// Maak UI-elementen
-const container = document.createElement('div');
+// UI-elementen maken
+const container = document.createElement('div');.
 document.body.appendChild(container);
 
-const title = document.createElement('h3');
-title.textContent = 'Datadownloadbeheer';
+const titel = document.createElement('h3');
+title.textContent = "Data Download Management";
 container.appendChild(title);
 
 const startButton = document.createElement('button');
-startButton.textContent = 'Start';
-container.appendChild(startButton);
+startButton.textContent = "Start";
+container.appendChild(startknop);
 
-const stopButton = document.createElement('button');
+const stopButton = document.createElement('knop');
 stopButton.textContent = 'Stop';
 stopButton.disabled = true;
 stopButton.style.marginLeft = '10px';
@@ -172,160 +248,281 @@ container.appendChild(stopButton);
 
 const status = document.createElement('div');
 status.style.marginTop = '10px';
-status.textContent = 'Wachten...';
+status.textContent = 'Wachten...'. ;
 container.appendChild(status);
 
 const result = document.createElement('div');
 result.style.marginTop = '10px';
-container.appendChild(result);
+container.appendChild(resultaat);
 
-// Datastroom (genereer downloaddata elke 1 seconde)
+// Gegevensstroom (downloadgegevens worden elke seconde gegenereerd)
 const downloadData$ = interval(1000).pipe(
   map(i => ({
     id: i,
-    size: Math.floor(Math.random() * 1000) + 100, // 100-1100KB
-    timestamp: new Date()
+    grootte: Math.floor(Math.random() * 1000) + 100, // 100-1100KB
+    tijdstempel: nieuwe Datum())
   }))
 );
 
-// Start- en stoptriggers
-const start$ = fromEvent(startButton, 'click');
-const stop$ = new Subject<void>();
+// Start en einde triggeren
+const start$ = fromEvent(startknop, 'klik');
+const stop$ = nieuw Subject();
 
-fromEvent(stopButton, 'click').subscribe(() => {
+fromEvent(stopButton, 'click').subscribe() => {
   stop$.next();
   status.textContent = 'Gestopt';
-  startButton.disabled = false;
+  startknop.disabled = false;
   stopButton.disabled = true;
 });
 
-start$.subscribe(() => {
-  status.textContent = 'Downloaden...';
-  startButton.disabled = true;
+start$.subscribe() => {
+  status.textContent = 'Downloaden...' ;
+  startknop.disabled = true;
   stopButton.disabled = false;
 });
 
-// Buffering
+// Bufferen
 downloadData$.pipe(
   bufferToggle(start$, () => stop$)
 ).subscribe(downloads => {
-  const totalSize = downloads.reduce((sum, d) => sum + d.size, 0);
-  const avgSize = downloads.length > 0 ? totalSize / downloads.length : 0;
+  const totalSize = downloads.reduce((som, d) => som + d.grootte, 0);
+  const avgSize = downloads.length > 0 ? totaleGrootte / downloads.lengte : 0;
 
-  result.innerHTML = `
-    <strong>Download voltooid</strong><br>
-    Aantal: ${downloads.length} items<br>
+  resultaat.innerHTML = `
+    <strong>Downloads voltooid</strong><br>.
+    Aantal downloads: ${downloads.length}<br>
     Totale grootte: ${(totalSize / 1024).toFixed(2)} MB<br>
     Gemiddelde grootte: ${avgSize.toFixed(0)} KB
   `;
 
-  console.log('Downloaddata:', downloads);
+  console.log('Gedownloade gegevens:', downloads);
 });
+
 ```
 
-## 🎯 Overlappende bufferperiodes
+## 🎯 Overlappende bufferperioden
 
-Een kenmerk van `bufferToggle` is dat het meerdere bufferperiodes tegelijk kan beheren.
+`bufferToggle` Meerdere bufferperioden kunnen tegelijkertijd worden beheerd als functie van het
 
-```ts
+```
+
+ts.
 import { interval } from 'rxjs';
 import { bufferToggle, take } from 'rxjs';
 
 const source$ = interval(200).pipe(take(20)); // 0-19
 
-// Start: elke 1 seconde
+// start: elke 1 seconde
 const opening$ = interval(1000);
 
-// Einde: 1,5 seconden na start
+// einde: 1,5 seconde na start
 const closing = () => interval(1500);
 
-source$.pipe(
-  bufferToggle(opening$, closing)
+bron$.pipe(
+  bufferToggle(openen$, sluiten)
 ).subscribe(console.log);
-// Output:
-// [4, 5, 6]        (Start op 1 sec → Eindigt op 2,5 sec)
-// [9, 10, 11, 12]  (Start op 2 sec → Eindigt op 3,5 sec) ※Gedeeltelijke overlap
-// [14, 15, 16, 17] (Start op 3 sec → Eindigt op 4,5 sec)
+// Uitvoer:.
+// [4, 5, 6] (begin van 1e seconde → einde van 2,5 seconden)
+// [9, 10, 11, 12] (begin 2e seconde → einde 3,5 seconde) * gedeeltelijk gedupliceerd
+// [14, 15, 16, 17] (begin 3e seconde → einde 4,5 seconde)
+
 ```
 
 **Tijdlijn**:
 ```
-Bron:      0--1--2--3--4--5--6--7--8--9--10-11-12-13-14-15-16-17-18-19
-Start:     ----1sec----2sec----3sec----4sec
-Periode 1: [------1.5sec-----]
-            └→ Uitvoer: [4,5,6]
-Periode 2:        [------1.5sec-----]
-                   └→ Uitvoer: [9,10,11,12]
-Periode 3:               [------1.5sec-----]
-                          └→ Uitvoer: [14,15,16,17]
+
+Source: 0--1--2--3--4--5--6--7--8--9--10-11-12-13-14-15-16-17-18-19
+Begint: ----1 seconden ----2 seconden ----3 seconden ----4 seconden
+Periode 1: [------1.5 seconden-----]
+            Uitvoer: [4,5,6].
+Periode 2: [------1,5 seconden-----]
+                   └→ Uitgang: [9,10,11,12].
+Periode 3: [------1,5 seconden-----]
+                          └→ Uitgang: [14,15,16,17]
+
 ```
 
-## ⚠️ Veelgemaakte fouten
+## 📋 Typeveilig gebruik
+
+TypeScript Dit is een voorbeeld van een typeveilige implementatie die gebruik maakt van generics in
+
+```
+
+ts.
+import { Observable, Subject, interval } from 'rxjs';
+import { bufferToggle, map } from 'rxjs';
+
+interface MetricData {
+  timestamp: datum;.
+  cpu: getal;
+  geheugen: getal; }
+}
+
+interface SessionControl {
+  start$: Observable;
+  stop$: Observable;
+}
+
+class MetricsCollector {
+  private startSubject = new Subject();
+  privé stopSubject = nieuw Subject();.
+
+  start(): void {
+    this.startSubject.next();
+  }
+
+  stop(): void {
+    this.stopSubject.next(); }
+  }
+
+  collectMetrics(source$: Observable): Observable<MetricData[]> {
+    return source$.pipe(
+      bufferToggle(
+        this.startSubject,.
+        () => this.stopSubject
+      )
+    );
+  }
+}
+
+// Gebruiksvoorbeeld
+const metricsStream$ = interval(500).pipe(
+  map() => ({
+    timestamp: new Date(), cpu: Math.random() * 100, cpu.
+    cpu: Math.random() * 100, memory.
+    geheugen: Math.random() * 100
+  } als MetricData))
+);
+
+const collector = nieuwe MetricsCollector();.
+
+collector.collectMetrics(metricsStream$).subscribe(metrics => {
+  if (metrics.length > 0) {
+    const avgCpu = metriek.reduce((som, m) => som + m.cpu, 0) / metriek.lengte;
+    const avgMemory = metrics.reduce((som, m) => som + m.memory, 0) / metrics.length;
+    console.log(`verzamelperiode: ${metrics.length} gevallen`);
+    console.log(`Gemiddelde CPU: ${avgCpu.toFixed(1)}%`);
+    console.log(`Gemiddeld geheugen: ${avgMemory.toFixed(1)}%`); console.log(`Gemiddeld geheugen: ${avgMemory.toFixed(1)}%`); }
+  }
+});
+
+// Start na 3 seconden.
+setTimeout() => {
+  console.log('Verzameling gestart');
+  collector.start();
+}, 3000);
+
+// Stop na 6 seconden
+setTimeout() => {
+  console.log('Verzameling gestopt');
+  collector.stop();
+}, 6000);
+
+```
+
+## 🔄 bufferWhen Verschillen tussen
+
+`bufferToggle` en `bufferWhen` zijn vergelijkbaar, maar verschillen in de manier waarop ze worden gecontroleerd.
+
+```
+
+ts.
+import { interval, timer } from 'rxjs';
+import { bufferToggle, bufferWhen } from 'rxjs';
+
+const source$ = interval(200);.
+
+// bufferToggle: begin en einde afzonderlijk regelen
+bron$.pipe(
+  bufferToggle(
+    interval(1000), // start trigger
+    () => timer(500) // eind-trigger (500 ms na start)
+  )
+).subscribe(console.log);.
+
+// bufferWhen: regelt alleen de timing van het einde (de volgende start onmiddellijk na het einde)
+bron$.pipe(
+  bufferWhen() => timer(1000)) // buffer elke seconde
+).subscribe(console.log);.
+
+```
+
+| Operator | Controle | Bufferperiode | Gebruik |
+|---|---|---|---|
+| `bufferToggle(open$, close)` | Aparte controle van begin en einde | Duplicatie mogelijk | Complex begin/Einde voorwaarden |
+| `bufferWhen(closing)` | Alleen einde gecontroleerd | Doorlopend | Eenvoudige cyclische buffer |
+
+## ⚠️ Veelvoorkomende fouten
 
 > [!WARNING]
-> `bufferToggle` kan meerdere bufferperiodes tegelijk beheren, maar als starttriggers te frequent vuren, zullen er veel buffers tegelijk bestaan, wat geheugen verbruikt.
+> `bufferToggle` kan meerdere bufferperioden tegelijk beheren, maar als de starttrigger vaak afgaat, zullen er veel buffers tegelijk bestaan en geheugen verbruiken.
 
-### Fout: Starttriggers te frequent
+### Fout.: De starttriggers zijn te frequent.
 
-```ts
+```
+
+ts.
 import { interval } from 'rxjs';
 import { bufferToggle } from 'rxjs';
 
-const source$ = interval(100);
+const source$ = interval(100);.
 
-// ❌ Slecht voorbeeld: Start elke 100ms, eindig na 5 seconden
-const opening$ = interval(100); // Te frequent
+// ❌ Slecht voorbeeld: start elke 100 ms, eindig na 5 seconden
+const opening$ = interval(100); // te vaak
 const closing = () => interval(5000);
 
-source$.pipe(
-  bufferToggle(opening$, closing)
-).subscribe(console.log);
-// Tot 50 buffers kunnen tegelijk bestaan → Geheugenrisico
+bron$.pipe(
+  bufferToggle(openen$, sluiten)
+).subscribe(console.log);.
+// Mogelijk 50 buffers tegelijk → geheugenrisico
+
 ```
 
-### Correct: Stel passend interval in
+### Corrigeer: Stel geschikte intervallen in
 
-```ts
+```
+
+ts.
 import { interval } from 'rxjs';
 import { bufferToggle } from 'rxjs';
 
-const source$ = interval(100);
+const source$ = interval(100);.
 
-// ✅ Goed voorbeeld: Stel passend interval voor start in
-const opening$ = interval(2000); // Elke 2 seconden
-const closing = () => interval(1000); // Buffer voor 1 seconde
+// ✅ Goed voorbeeld: begin met het juiste interval
+const opening$ = interval(2000); // elke 2 seconden
+const closing = () => interval(1000); // buffer voor 1 seconde
 
-source$.pipe(
-  bufferToggle(opening$, closing)
-).subscribe(console.log);
-// Maximaal 1-2 buffers bestaan tegelijk
+bron$.pipe(
+  bufferToggle(openen$, sluiten)
+).subscribe(console.log);.
+// hooguit 1-2 buffers tegelijkertijd.
 ```
 
-## 🎓 Samenvatting
+## Samenvatting
 
-### Wanneer bufferToggle gebruiken
-- ✅ Wanneer u start en einde onafhankelijk wilt controleren
-- ✅ Wanneer u data wilt verzamelen voor een beperkte periode, zoals tijdens knop indrukken
-- ✅ Wanneer u meerdere bufferperiodes tegelijk wilt beheren
-- ✅ Dataverzameling onder complexe voorwaarden, zoals alleen tijdens kantooruren
+### Wanneer moet bufferToggle worden gebruikt?
+- ✅ Als u begin en einde onafhankelijk wilt regelen
+- ✅ Als u gegevens voor een beperkte periode wilt verzamelen, bijvoorbeeld tijdens het indrukken van een knop
+- ✅ Als u meerdere bufferperioden tegelijk wilt beheren
+- ✅ Als u gegevens wilt verzamelen onder complexe omstandigheden, bijvoorbeeld alleen tijdens kantooruren
 
-### Wanneer buffer/bufferTime/bufferCount gebruiken
+### Wanneer u buffer/bufferTime/bufferCount moet gebruiken.
 - ✅ Wanneer eenvoudige periodieke buffering voldoende is
 - ✅ Wanneer een enkele trigger voldoende is voor controle
 
-### Wanneer bufferWhen gebruiken
-- ✅ Wanneer alleen de eindvoorwaarde dynamisch moet worden gecontroleerd
-- ✅ Wanneer continue bufferperiodes nodig zijn
+### Wanneer moet bufferWhen worden gebruikt?
+- ✅ Wanneer alleen de eindtoestand dynamisch moet worden geregeld.
+- ✅ Wanneer continue bufferperioden vereist zijn.
 
-### Opmerkingen
-- ⚠️ Frequente starttriggers veroorzaken dat veel buffers tegelijk bestaan, wat geheugen verbruikt
-- ⚠️ Bufferperiodes kunnen overlappen
-- ⚠️ Kan moeilijk te debuggen zijn vanwege complexe controles
+### Opmerkingen.
+- ⚠️ Frequente starttriggers resulteren in veel buffers die tegelijkertijd bestaan, waardoor geheugen wordt verbruikt.
+- ⚠️ Bufferperioden kunnen elkaar overlappen
+- ⚠️ Kan moeilijk te debuggen zijn vanwege complexe besturingselementen
 
-## 🚀 Volgende stappen
+## Volgende stappen.
 
-- [buffer](/nl/guide/operators/transformation/buffer) - Leer basis buffering
-- [bufferTime](/nl/guide/operators/transformation/bufferTime) - Leer tijd-gebaseerde buffering
-- [bufferCount](/nl/guide/operators/transformation/bufferCount) - Leer aantal-gebaseerde buffering
-- [bufferWhen](https://rxjs.dev/api/operators/bufferWhen) - Leer dynamische eindcontrole (officiële documentatie)
-- [Transformatieoperator praktische use cases](/nl/guide/operators/transformation/practical-use-cases) - Leer echte use cases
+- **[buffer](. /buffer)** - basisbuffering leren.
+- **[bufferTime](. /bufferTime)** - tijdgebaseerd bufferen leren.
+- **[bufferCount](. /bufferCount)** - leer bufferen per stuk **[bufferCount](.
+- **[bufferWhen](https://rxjs.dev/api/operators/bufferWhen)** - leer dynamische exitcontrole (officiële documentatie)
+- **[conversion-operator-practical-use-cases](. /practical-use-cases)** - leer praktijkvoorbeelden

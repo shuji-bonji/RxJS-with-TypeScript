@@ -1,59 +1,60 @@
 ---
-description: "interval() - Fonction de création qui émet continuellement des valeurs à des intervalles spécifiés : Essentielle pour le polling, les tâches périodiques, les comptes à rebours et les mises à jour en temps réel"
+description: "interval() - Creation Function qui émet continuellement des valeurs (nombres séquentiels à partir de 0) à des intervalles spécifiés, idéal pour le polling, l'exécution périodique et le contrôle d'animation ; différences avec timer(), comment limiter avec take(), implémentation type-safe en TypeScript, fuites de mémoire. Explique le modèle de désabonnement pour éviter les fuites de mémoire."
 ---
 
-# interval() - Émission continue à intervalles spécifiés
+# interval() - émission continue à des intervalles spécifiés
 
-`interval()` est une fonction de création qui émet en continu des valeurs à des intervalles de temps spécifiés.
+interval()` est une Creation Function qui émet en continu des valeurs à des intervalles de temps spécifiés.
 
-## Vue d'ensemble
+## Vue d'ensemble.
 
-`interval()` émet en continu des nombres consécutifs à partir de 0 à des intervalles spécifiés en millisecondes. Elle est fréquemment utilisée pour les processus de polling et l'exécution de tâches périodiques.
+`interval()` émet continuellement des valeurs continues à partir de 0 à des intervalles de millisecondes spécifiés. Elle est fréquemment utilisée pour les processus d'interrogation et l'exécution de tâches périodiques.
 
-**Signature** :
+**Signature** :.
+
 ```typescript
 function interval(period: number = 0, scheduler: SchedulerLike = asyncScheduler): Observable<number>
 ```
 
-**Documentation officielle** : [📘 RxJS Official : interval()](https://rxjs.dev/api/index/function/interval)
+**Documentation officielle** : [📘 RxJS formula : interval()](https://rxjs.dev/api/index/function/interval)
 
 ## Utilisation de base
 
-`interval()` émet des nombres qui s'incrémentent à un intervalle spécifié.
+`interval()` émet un nombre qui compte à rebours à un intervalle spécifié.
 
 ```typescript
 import { interval } from 'rxjs';
 
-// Émettre des valeurs toutes les 1 seconde
+// 1Valeur émise chaque seconde
 const interval$ = interval(1000);
 
 interval$.subscribe(value => {
   console.log('Valeur:', value);
 });
 
-// Sortie (toutes les 1 seconde):
+// Sortie (en1(chaque seconde):
 // Valeur: 0
 // Valeur: 1
 // Valeur: 2
 // Valeur: 3
-// ... (continue indéfiniment)
+// ...(continue indéfiniment)
 ```
 
-## Caractéristiques importantes
+## Caractéristiques importantes.
 
-### 1. Nombres consécutifs à partir de 0
+### 1. nombres consécutifs à partir de 0
 
-`interval()` émet toujours des nombres entiers qui commencent à 0 et s'incrémentent de 1.
+`interval()` émet un nombre entier qui commence toujours à 0 et s'incrémente de 1.
 
 ```typescript
 import { interval } from 'rxjs';
 import { take } from 'rxjs';
 
 interval(500).pipe(
-  take(5) // Obtenir seulement les 5 premières valeurs
+  take(5) // Première5Seules les deux premières valeurs sont extraites
 ).subscribe(value => console.log(value));
 
-// Sortie (toutes les 500ms):
+// Sortie (en500ms(par seconde):
 // 0
 // 1
 // 2
@@ -61,9 +62,9 @@ interval(500).pipe(
 // 4
 ```
 
-### 2. Ne se termine jamais (flux infini)
+### 2. non terminé (flux infini)
 
-`interval()` ne se termine pas automatiquement et **doit être désabonné**.
+`interval()` ne se termine pas automatiquement et **doit être désinscrit**.
 
 ```typescript
 import { interval } from 'rxjs';
@@ -72,19 +73,20 @@ const subscription = interval(1000).subscribe(value => {
   console.log('Valeur:', value);
 });
 
-// Désabonnement après 5 secondes
+// 5Désabonnement après 2 secondes
 setTimeout(() => {
   subscription.unsubscribe();
-  console.log('Arrêté');
+  console.log('Désabonné');
 }, 5000);
 ```
 
 > [!WARNING]
-> **Oublier de se désabonner provoque des fuites de mémoire**
->
-> Comme `interval()` continue d'émettre des valeurs indéfiniment, oublier de se désabonner peut provoquer des fuites de mémoire et des problèmes de performance. Assurez-vous d'appeler `unsubscribe()` ou d'utiliser des opérateurs tels que `take()`, `takeUntil()`, ou `takeWhile()` pour terminer automatiquement.
 
-### 3. Cold Observable
+**Fuite de mémoire si vous oubliez de vous désinscrire**
+>
+> > Puisque `interval()` continue d'émettre des valeurs indéfiniment, oublier de se désabonner peut causer des fuites de mémoire et des problèmes de performance. Assurez-vous d'appeler `unsubscribe()` ou d'utiliser des opérateurs tels que `take()`, `takeUntil()` ou `takeWhile()` pour terminer automatiquement.
+
+### 4. Observable à froid.
 
 `interval()` est un Cold Observable, qui crée un timer indépendant pour chaque abonnement.
 
@@ -93,31 +95,32 @@ import { interval } from 'rxjs';
 
 const interval$ = interval(1000);
 
-// Abonnement 1
-interval$.subscribe(value => console.log('Observateur 1:', value));
+// Abonné1
+interval$.subscribe(value => console.log('Observer 1:', value));
 
-// Ajout de l'abonnement 2 après 2 secondes
+// 2Abonné après quelques secondes2Ajouté
 setTimeout(() => {
-  interval$.subscribe(value => console.log('Observateur 2:', value));
+  interval$.subscribe(value => console.log('Observer 2:', value));
 }, 2000);
 
 // Sortie:
-// Observateur 1: 0
-// Observateur 1: 1
-// Observateur 2: 0  ← Commence à 0 avec un timer indépendant
-// Observateur 1: 2
-// Observateur 2: 1
+// Observer 1: 0
+// Observer 1: 1
+// Observer 2: 0  ← Sur minuterie indépendante0Commence à partir de
+// Observer 1: 2
+// Observer 2: 1
 ```
 
 > [!NOTE]
-> **Caractéristiques du Cold Observable** :
-> - Une exécution indépendante est lancée pour chaque abonnement
-> - Chaque abonné reçoit son propre flux de données
-> - Un timer indépendant est démarré pour chaque abonnement ; utilisez `share()` si vous avez besoin de partager les données
->
-> Voir [Cold Observable et Hot Observable](/fr/guide/observables/cold-and-hot-observables) pour plus d'informations.
 
-## Différence entre interval() et timer()
+> **Caractéristiques Observables à froid**
+> Chaque abonnement démarre une exécution indépendante
+> - Chaque abonné reçoit son propre flux de données
+> - Un timer indépendant est démarré pour chaque abonnement. Utilisez `share()` si le partage des données est nécessaire.
+>
+> > Pour plus d'informations, voir [Cold Observable et Hot Observable](/fr/guide/observables/cold-and-hot-observables).
+
+## Différence entre interval() vs timer()
 
 Bien que `interval()` et `timer()` soient similaires, il y a quelques différences importantes.
 
@@ -125,36 +128,35 @@ Bien que `interval()` et `timer()` soient similaires, il y a quelques différenc
 import { interval, timer } from 'rxjs';
 import { take } from 'rxjs';
 
-// interval() - démarre immédiatement, émission continue
+// interval() - Démarrage immédiat, publication continue
 interval(1000).pipe(take(3)).subscribe(value => {
   console.log('interval:', value);
 });
 
-// timer() - démarre après un délai
+// timer() - Démarrage après un délai
 timer(2000, 1000).pipe(take(3)).subscribe(value => {
   console.log('timer:', value);
 });
 
 // Sortie:
-// interval: 0  (après 1 seconde)
-// interval: 1  (après 2 secondes)
-// timer: 0     (après 2 secondes)
-// interval: 2  (après 3 secondes)
-// timer: 1     (après 3 secondes)
-// timer: 2     (après 4 secondes)
+// interval: 0  (1(après un délai d'une seconde)
+// interval: 1  (2(après un délai d'une seconde)
+// timer: 0     (2(après un délai d'une seconde)
+// interval: 2  (3(après un délai d'une seconde)
+// timer: 1     (3(après un délai d'une seconde)
+// timer: 2     (4(après un délai d'une seconde)
 ```
 
-| Fonction de création | Moment de démarrage | Objectif |
-|-------------------|--------------|---------|
-| `interval(1000)` | Démarre immédiatement (première valeur après 1 seconde) | Exécution périodique |
-| `timer(2000, 1000)` | Démarre après le temps spécifié | Exécution périodique avec délai |
-| `timer(2000)` | Émet une seule fois après le temps spécifié | Exécution différée |
+```typescript
+function interval(period: number = 0, scheduler: SchedulerLike = asyncScheduler): Observable<number>
+```
 
-## Cas d'utilisation pratiques
+## Cas d'utilisation pratique
 
-### 1. Polling d'API
+### 1. interrogation de l'API
 
 Appeler l'API à intervalles réguliers pour mettre à jour les données.
+
 
 ```typescript
 import { from, interval } from 'rxjs';
@@ -171,52 +173,52 @@ function fetchStatus(): Promise<Status> {
     .then(res => res.json());
 }
 
-// Interroger l'API toutes les 5 secondes
+// 5Chaque secondeAPIInterrogation
 const polling$ = interval(5000).pipe(
   switchMap(() => from(fetchStatus())),
   catchError((error: unknown) => {
-    console.error('Erreur API:', error);
+    console.error('API Error:', error);
     return of({ status: 'error', timestamp: Date.now() });
   })
 );
 
 const subscription = polling$.subscribe(data => {
-  console.log('Mise à jour du statut:', data);
+  console.log('Mise à jour de l'état:', data);
 });
 
-// Arrêter si nécessaire
+// Arrêt si nécessaire
 // subscription.unsubscribe();
 ```
 
-### 2. Compte à rebours
+### Compte à rebours
 
-Implémenter un compte à rebours pour une limite de temps.
+Mettre en place un compte à rebours jusqu'à la limite de temps.
 
 ```typescript
 import { interval } from 'rxjs';
 import { map, takeWhile } from 'rxjs';
 
 const countdown$ = interval(1000).pipe(
-  map(count => 10 - count), // Compte à rebours depuis 10 secondes
-  takeWhile(time => time >= 0) // Auto-complétion à 0
+  map(count => 10 - count), // 10Compte à rebours à partir de secondes
+  takeWhile(time => time >= 0) // 0Achèvement automatique avec
 );
 
 countdown$.subscribe({
-  next: time => console.log(`Temps restant: ${time} secondes`),
-  complete: () => console.log('Temps écoulé!')
+  next: time => console.log(`Temps restant: ${time}secondes`),
+  complete: () => console.log('Temps écoulé！')
 });
 
-// Sortie (toutes les 1 seconde):
-// Temps restant: 10 secondes
-// Temps restant: 9 secondes
+// Sortie (en1(chaque seconde):
+// Temps restant: 10secondes
+// Temps restant: 9secondes
 // ...
-// Temps restant: 0 secondes
-// Temps écoulé!
+// Temps restant: 0secondes
+// Temps écoulé！
 ```
 
-### 3. Fonction de sauvegarde automatique
+### 3. fonction de sauvegarde automatique
 
-Sauvegarder automatiquement le contenu du formulaire périodiquement.
+Le contenu du formulaire est automatiquement sauvegardé à intervalles réguliers.
 
 ```typescript
 import { fromEvent, from } from 'rxjs';
@@ -227,18 +229,18 @@ const form = document.createElement('form');
 form.id = 'myForm';
 const input = document.createElement('input');
 input.type = 'text';
-input.placeholder = 'Entrez du texte';
+input.placeholder = 'Veuillez remplir le formulaire';
 form.appendChild(input);
 document.body.appendChild(form);
 
 const input$ = fromEvent(form, 'input');
 
-// Sauvegarde automatique 3 secondes après l'arrêt de la saisie (raccourci pour la démo)
+// Après l'arrêt de la saisie3Quelques secondes plus tard, sauvegarde automatique (raccourci à des fins de démonstration)
 input$.pipe(
-  debounceTime(3000), // S'il n'y a pas de saisie pendant 3 secondes
+  debounceTime(3000), // 3S'il n'y a pas de saisie pendant quelques secondes
   switchMap(() => {
     const formData = new FormData(form);
-    // Démo: Simuler avec Promise au lieu d'une vraie API
+    // Pour la démonstration: RéelAPIau lieu dePromiseSimulé en
     return from(
       Promise.resolve({ success: true, data: formData.get('text') })
     );
@@ -248,164 +250,73 @@ input$.pipe(
 });
 ```
 
-### 4. Affichage d'horloge en temps réel
+### Affichage de l'horloge en temps réel
 
-Mettre à jour l'heure actuelle en temps réel.
-
-```typescript
-import { interval } from 'rxjs';
-import { map } from 'rxjs';
-
-// Créer un élément pour l'affichage de l'horloge
-const clockElement = document.createElement('div');
-clockElement.id = 'clock';
-clockElement.style.fontSize = '24px';
-clockElement.style.fontFamily = 'monospace';
-clockElement.style.padding = '20px';
-document.body.appendChild(clockElement);
-
-const clock$ = interval(1000).pipe(
-  map(() => new Date().toLocaleTimeString())
-);
-
-clock$.subscribe(time => {
-  clockElement.textContent = time;
-});
-
-// Sortie: L'heure actuelle se met à jour chaque seconde
-```
-
-## Utilisation dans un pipeline
-
-`interval()` est utilisé comme point de départ pour les pipelines ou comme déclencheur de contrôle temporel.
+Met à jour l'heure actuelle en temps réel.
 
 ```typescript
-import { interval } from 'rxjs';
-import { map, filter, scan } from 'rxjs';
-
-// Compter uniquement les secondes paires
-interval(1000).pipe(
-  filter(count => count % 2 === 0),
-  scan((sum, count) => sum + count, 0),
-  map(sum => `Somme des pairs: ${sum}`)
-).subscribe(console.log);
-
-// Sortie (toutes les 1 seconde):
-// Somme des pairs: 0
-// Somme des pairs: 2  (0 + 2)
-// Somme des pairs: 6  (0 + 2 + 4)
-// Somme des pairs: 12 (0 + 2 + 4 + 6)
+function interval(period: number = 0, scheduler: SchedulerLike = asyncScheduler): Observable<number>
 ```
 
-## Erreurs courantes
+## Utilisation dans le pipeline.
 
-### 1. Oublier de se désabonner
+`interval()` est utilisé comme point de départ pour les pipelines ou comme déclencheur pour le contrôle du temps.
+
 
 ```typescript
-// ❌ Incorrect - s'exécute indéfiniment sans désabonnement
-import { interval } from 'rxjs';
-
-function startPolling() {
-  interval(1000).subscribe(value => {
-    console.log('Valeur:', value); // S'exécute pour toujours
-  });
-}
-
-startPolling();
-
-// ✅ Correct - conserver l'abonnement et se désabonner si nécessaire
-import { interval, Subscription } from 'rxjs';
-
-let subscription: Subscription | null = null;
-
-function startPolling() {
-  subscription = interval(1000).subscribe(value => {
-    console.log('Valeur:', value);
-  });
-}
-
-function stopPolling() {
-  if (subscription) {
-    subscription.unsubscribe();
-    subscription = null;
-  }
-}
-
-startPolling();
-// Appeler stopPolling() si nécessaire
+function interval(period: number = 0, scheduler: SchedulerLike = asyncScheduler): Observable<number>
 ```
 
-### 2. Les abonnements multiples créent des timers indépendants
+## Erreurs courantes.
+
+### 1. oublier de se désinscrire
+
 
 ```typescript
-// ❌ Non intentionnel - deux timers indépendants sont créés
-import { interval } from 'rxjs';
-
-const interval$ = interval(1000);
-
-interval$.subscribe(value => console.log('Observateur 1:', value));
-interval$.subscribe(value => console.log('Observateur 2:', value));
-// Deux timers s'exécutent en parallèle
-
-// ✅ Correct - partager un seul timer
-import { interval } from 'rxjs';
-import { share } from 'rxjs';
-
-const interval$ = interval(1000).pipe(share());
-
-interval$.subscribe(value => console.log('Observateur 1:', value));
-interval$.subscribe(value => console.log('Observateur 2:', value));
-// Un seul timer est partagé
+function interval(period: number = 0, scheduler: SchedulerLike = asyncScheduler): Observable<number>
 ```
 
-## Considérations sur les performances
+### 2. les abonnements multiples créent des minuteries indépendantes
 
-Bien que `interval()` soit léger, les performances doivent être prises en compte lors d'exécutions à intervalles courts.
+
+```typescript
+function interval(period: number = 0, scheduler: SchedulerLike = asyncScheduler): Observable<number>
+```
+
+## Considérations relatives aux performances.
+
+`interval()` est léger, mais des considérations de performance doivent être prises en compte lors de l'exécution à intervalles courts.
 
 > [!TIP]
-> **Conseils d'optimisation** :
-> - Ne pas effectuer de traitement inutile (affiner avec `filter()`)
-> - Utiliser les intervalles courts (moins de 100ms) avec prudence
-> - S'assurer que les abonnements sont désabonnés
-> - Si plusieurs Observateurs sont nécessaires, les partager avec `share()`
+
+> **Conseils d'optimisation** :.
+> - Ne lancez pas de processus inutiles (filtrez-les avec `filter()`)
+> - Utilisez des intervalles courts (moins de 100 ms) avec précaution
+> - Assurer la désinscription.
+> - Partagez avec `share()` si plus d'un Observer est nécessaire
+
 
 ```typescript
-import { interval } from 'rxjs';
-import { filter, share } from 'rxjs';
-
-// ❌ Problème de performance - traitement lourd toutes les 100ms
-interval(100).subscribe(() => {
-  // Traitement lourd
-  heavyCalculation();
-});
-
-// ✅ Optimisation - traiter uniquement lorsque nécessaire
-interval(100).pipe(
-  filter(count => count % 10 === 0), // Une fois par seconde (une fois toutes les 10 fois)
-  share() // Partager entre plusieurs Observateurs
-).subscribe(() => {
-  heavyCalculation();
-});
+function interval(period: number = 0, scheduler: SchedulerLike = asyncScheduler): Observable<number>
 ```
 
-## Fonctions de création associées
+## Fonctions de Creation Function liées.
 
-| Fonction | Différence | Utilisation |
-|----------|------|----------|
-| **[timer()](/fr/guide/creation-functions/basic/timer)** | Démarre après un délai, ou n'émet qu'une seule fois | Exécution différée ou traitement unique |
-| **[fromEvent()](/fr/guide/creation-functions/basic/fromEvent)** | Piloté par événement | Traitement selon les opérations utilisateur |
-| **range()** | Émet immédiatement les nombres dans la plage spécifiée | Lorsque le contrôle temporel n'est pas nécessaire |
+
+```typescript
+function interval(period: number = 0, scheduler: SchedulerLike = asyncScheduler): Observable<number>
+```
 
 ## Résumé
 
-- `interval()` émet continuellement des valeurs à des intervalles spécifiés
-- Émet des entiers consécutifs à partir de 0
-- Ne s'auto-complète pas, doit être désabonné
-- Fonctionne comme un Cold Observable (timer indépendant pour chaque abonnement)
+- `interval()` émet des valeurs continues à des intervalles spécifiés
+- Délivre des entiers continus à partir de 0
+- Pas d'achèvement automatique, doit être désabonné
+- Fonctionne comme un Observable froid (timer indépendant par abonnement)
 - Idéal pour le polling, l'exécution périodique, le compte à rebours, etc.
 
-## Prochaines étapes
+## Prochaines étapes.
 
-- [timer() - Commencer à émettre après un délai](/fr/guide/creation-functions/basic/timer)
-- [fromEvent() - Convertir les événements en Observable](/fr/guide/creation-functions/basic/fromEvent)
-- [Retour aux fonctions de création de base](/fr/guide/creation-functions/basic/)
+- [timer() - commence à publier après un délai](/fr/guide/creation-functions/basic/timer)
+- [fromEvent() - convertit un événement en Observable](/fr/guide/creation-functions/basic/fromEvent)
+- [retour à l'aperçu du système de création de base](/fr/guide/creation-functions/basic/)

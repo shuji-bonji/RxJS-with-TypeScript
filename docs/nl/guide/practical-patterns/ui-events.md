@@ -1,138 +1,160 @@
 ---
-description: Legt praktische patronen uit voor UI-gebeurtenisafhandeling met RxJS, waaronder klikgebeurteniscontrole (throttle, debounce, distinct), scroll-gebeurtenisafhandeling, drag & drop, toetsenbordinvoer (autocomplete), multi-touch ondersteuning en andere specifieke implementatievoorbeelden met TypeScript-code voor het implementeren van interactieve UI's. Leer efficiënte verwerkingspatronen voor hoogfrequente gebeurtenissen.
+description: "Praktische patronen voor UI event processing met RxJS worden uitgelegd. Specifieke implementatievoorbeelden voor het implementeren van interactieve UI zoals controle over klikgebeurtenissen (throttle, debounce, distinct), verwerking van scrollgebeurtenissen, slepen en neerzetten, toetsenbordinvoer (autocomplete) en ondersteuning voor multi-touch worden samen met TypeScript geïntroduceerd. code. U leert efficiënte patronen voor het afhandelen van hoogfrequente gebeurtenissen."
 ---
 
-# UI-gebeurtenisafhandelingspatronen
+# UI gebeurtenis verwerkingspatroon
 
-UI-gebeurtenisafhandeling is een van de meest voorkomende uitdagingen in frontend-ontwikkeling. Door RxJS te gebruiken kunt u complexe gebeurtenisafhandeling declaratief en intuïtief implementeren.
+UI event handling is een van de meest voorkomende uitdagingen in front-end ontwikkeling, en met RxJS kun je complexe event handling declaratief en intuïtief implementeren.
 
-Dit artikel legt specifieke patronen uit voor UI-gebeurtenisafhandeling die nodig zijn in praktisch werk, zoals klikken, scrollen, drag & drop en toetsenbordinvoer.
+Dit artikel beschrijft specifieke patronen van UI event handling die in de praktijk nodig zijn, zoals klikken, scrollen, slepen en neerzetten en toetsenbordinvoer.
 
-## Wat u leert in dit artikel
+## Wat je in dit artikel leert.
 
-- Klikgebeurteniscontrole (throttle, debounce, distinct)
-- Efficiënte scroll-gebeurtenisafhandeling
-- Drag & drop implementatie
-- Toetsenbordinvoer en autocomplete
+- Klikgebeurtenissen beheren (throttle, debounce, distinct)
+- Efficiënte afhandeling van scroll-events
+- Slepen en neerzetten implementeren
+- Toetsenbordinvoer en autoaanvullen
 - Multi-touch ondersteuning
-- Combineren van samengestelde gebeurtenissen
+- Samengestelde events combineren
 
-> [!TIP] Vereisten
-> Dit artikel veronderstelt kennis van [Hoofdstuk 4: Operators](../operators/index.md). Begrip van `debounceTime`, `throttleTime` en `distinctUntilChanged` is vooral belangrijk.
+```
+Gebruiker klikt: ●    ●●●        ●  ●●
+                    |    |          |  |
+throttleTime(1000): ●              ●
+                    |              |
+                   Verwerking uitvoeren      Verwerking uitvoeren
+```
 
-## Klikgebeurtenisafhandeling
+> Dit artikel gaat uit van kennis van [Hoofdstuk 4: Operatoren](. /operators/index.md) en veronderstelt kennis van het volgende. In het bijzonder is een begrip van `debounceTime`, `throttleTime` en `distinctUntilChanged` belangrijk.
 
-### Probleem: Overmatige verwerking door snel klikken
+## Afhandeling van klikgebeurtenissen.
 
-Wanneer een knop herhaaldelijk wordt geklikt, wordt verwerking meerdere keren uitgevoerd, wat prestatieproblemen en bugs veroorzaakt.
+### Probleem: overmatige verwerking door een reeks klikken.
+
+Opeenvolgende klikken op een knop kunnen resulteren in herhaalde verwerking, wat prestatieproblemen en bugs veroorzaakt.
 
 ### Oplossing 1: Controle met throttleTime
 
 Verwerk alleen de eerste klik binnen een bepaalde periode.
 
+
 ```typescript
 import { fromEvent, throttleTime } from 'rxjs';
 const button = document.createElement('button');
 button.id = 'submit-button';
-button.innerText = 'verzenden';
+button.innerText = 'submit';
 document.body.appendChild(button);
 
 if (button) {
   fromEvent(button, 'click').pipe(
-    throttleTime(1000) // Verwerk slechts eenmaal per seconde
+    throttleTime(1000) // 1In een seconde.1Slechts eenmaal verwerkt
   ).subscribe(() => {
-    console.log('Voer verzendingsproces uit');
+    console.log('Uitvoering van verzendproces');
     submitForm();
   });
 }
 
 function submitForm(): void {
-  console.log('Formulier verzenden...');
-  // API-aanroep, etc.
+  console.log('Tijdens formulierverzending...');
+  // APIGesprekken, enz.
 }
 ```
 
 #### Uitvoeringsstroom
 
 ```
-Gebruiker klikt:     ●    ●●●        ●  ●●
-                     |    |          |  |
-throttleTime(1000):  ●              ●
-                     |              |
-                 Verwerk        Verwerk
+Gebruiker klikt: ●    ●●●        ●  ●●
+                    |    |          |  |
+throttleTime(1000): ●              ●
+                    |              |
+                   Verwerking uitvoeren      Verwerking uitvoeren
 ```
 
-> [!NOTE] throttleTime kenmerken
-> - Verwerkt de **eerste gebeurtenis** en negeert volgende gebeurtenissen voor een bepaalde periode
-> - Geschikt wanneer realtime responsiviteit belangrijk is (scroll, resize, etc.)
+```
+Gebruiker klikt: ●    ●●●        ●  ●●
+                    |    |          |  |
+throttleTime(1000): ●              ●
+                    |              |
+                   Verwerking uitvoeren      Verwerking uitvoeren
+```
+
+> - Verwerkt **eerste gebeurtenis** en negeert volgende gebeurtenissen gedurende een bepaalde tijd
+> - geschikt wanneer real-time belangrijk is (scrollen, formaat wijzigen, enz.)
 
 ### Oplossing 2: Controle met debounceTime
 
-Verwerk een bepaalde tijd nadat de gebeurtenis stopt.
+Verwerk gebeurtenissen na een bepaalde periode nadat ze zijn gestopt.
+
 
 ```typescript
 import { fromEvent, debounceTime } from 'rxjs';
-// Traditionele aanpak (gecommenteerd voor referentie)
+// Traditional approach (commented for reference)
 // const searchInput = document.querySelector<HTMLInputElement>('#search');
 
-// Zelfstandig: maakt invoer dynamisch aan
+// Self-contained: creates input dynamically
 const searchInput = document.createElement('input');
 searchInput.id = 'search';
 searchInput.type = 'text';
-searchInput.placeholder = 'Voer zoekwoorden in...';
+searchInput.placeholder = 'Zoekwoorden invoeren...';
 searchInput.style.padding = '8px';
 searchInput.style.margin = '10px';
 searchInput.style.width = '300px';
 document.body.appendChild(searchInput);
 
 fromEvent(searchInput, 'input').pipe(
-  debounceTime(300) // Wacht 300ms nadat invoer stopt
+  debounceTime(300) // Na invoer stopt300msWacht
 ).subscribe((event) => {
   const value = (event.target as HTMLInputElement).value;
-  console.log('Voer zoekopdracht uit:', value);
+  console.log('Zoekopdracht uitvoeren:', value);
   performSearch(value);
 });
 
 function performSearch(query: string): void {
-  console.log('Zoeken...', query);
-  // Zoek API-aanroep
+  console.log('Zoeken in uitvoering...', query);
+  // ZoekenAPIOpvragen
 }
 ```
 
 #### Uitvoeringsstroom
 
 ```
-Gebruikersinvoer:     ●●●●●     ●●        ●●●●
-                          |            |      |
-debounceTime(300):       300ms       300ms  300ms wachten
-                          |            |      |
-                       Verwerk      Verwerk  Verwerk
+Invoer gebruiker:  ●●●●●     ●●        ●●●●
+                      |            |      |
+debounceTime(300):   300ms       300ms  300msWachten
+                      |            |      |
+                     Verwerking         Verwerking   Verwerking uitvoeren
 ```
 
-> [!NOTE] debounceTime kenmerken
-> - Wacht een bepaalde tijd vanaf de **laatste gebeurtenis** voordat wordt verwerkt
-> - Geschikt voor zoeken, autocomplete, realtime validatie
+```
+Gebruiker klikt: ●    ●●●        ●  ●●
+                    |    |          |  |
+throttleTime(1000): ●              ●
+                    |              |
+                   Verwerking uitvoeren      Verwerking uitvoeren
+```
 
-### throttleTime vs debounceTime gebruik
+> - Wacht een bepaalde tijd na **laatste gebeurtenis** voor verwerking
+> - geschikt voor zoeken, autocomplete en real-time validatie
 
-| Gebruikssituatie | Te gebruiken operator | Reden |
-|-----|-------------------|------|
-| **Zoekinvoer** | `debounceTime` | Wil zoeken nadat invoer stopt |
-| **Autocomplete** | `debounceTime` | Toon kandidaten nadat invoer stopt |
-| **Scroll-gebeurtenissen** | `throttleTime` | Wil periodieke verwerking tijdens scrollen |
-| **Window resize** | `throttleTime` of `debounceTime` | Hangt af van vereisten |
-| **Voorkom knopspam** | `throttleTime` of `exhaustMap` | Verwerk eerste klik onmiddellijk |
+### Hoe throttleTime vs. debounceTime gebruiken
 
-### Oplossing 3: Elimineer duplicaten met distinctUntilChanged
+Gebruiker klikt: ●    ●●●        ●  ●●
+                    |    |          |  |
+throttleTime(1000): ●              ●
+                    |              |
+                   Verwerking uitvoeren      Verwerking uitvoeren
 
-Vergelijk met de vorige waarde en sla verwerking over als dezelfde waarde doorgaat.
+### Oplossing 3: ontdubbeling met distinctUntilChanged
+
+Vergelijk met de vorige waarde en sla verwerking over als dezelfde waarde opeenvolgend is.
+
 
 ```typescript
 import { fromEvent, map, debounceTime, distinctUntilChanged } from 'rxjs';
 const searchInput = document.createElement('input');
 searchInput.id = 'search';
 searchInput.type = 'text';
-searchInput.placeholder = 'Voer zoekwoorden in...';
+searchInput.placeholder = 'Zoekwoorden invoeren...';
 searchInput.style.padding = '8px';
 searchInput.style.margin = '10px';
 searchInput.style.width = '300px';
@@ -141,9 +163,9 @@ document.body.appendChild(searchInput);
 fromEvent(searchInput, 'input').pipe(
   map(event => (event.target as HTMLInputElement).value.trim()),
   debounceTime(300),
-  distinctUntilChanged() // Negeer als dezelfde als vorige waarde
+  distinctUntilChanged() // Genegeerd als de waarde hetzelfde is als de vorige keer
 ).subscribe(query => {
-  console.log('Voer zoekopdracht uit:', query);
+  console.log('Zoekopdracht uitvoeren:', query);
   performSearch(query);
 });
 ```
@@ -151,24 +173,32 @@ fromEvent(searchInput, 'input').pipe(
 #### Uitvoeringsvoorbeeld
 
 ```typescript
-// Gebruikersinvoer: "RxJS" → Backspace → "RxJS"
-// Zonder distinctUntilChanged: Zoekopdracht wordt 2 keer uitgevoerd
-// Met distinctUntilChanged: Zoekopdracht wordt slechts 1 keer uitgevoerd (2e wordt overgeslagen als dezelfde waarde)
+// Invoer gebruiker: "RxJS" → Backspace → "RxJS"
+// distinctUntilChangedGeen: 2Eén keer zoeken
+// distinctUntilChangedJa, als de waarde hetzelfde is als de vorige keer.: 1Zoekactie slechts één keer uitvoeren (dezelfde waarde, tweede zoekactie overslaan)2De tweede zoekopdracht wordt overgeslagen)
 ```
 
-> [!TIP] Best practice
-> Voor het implementeren van zoeken en autocomplete wordt aanbevolen om deze drie samen te gebruiken:
-> 1. `debounceTime()` - Wacht tot invoer stopt
-> 2. `distinctUntilChanged()` - Elimineer duplicaten
-> 3. `switchMap()` - Annuleer oude verzoeken
+```
+Gebruiker klikt: ●    ●●●        ●  ●●
+                    |    |          |  |
+throttleTime(1000): ●              ●
+                    |              |
+                   Verwerking uitvoeren      Verwerking uitvoeren
+```
 
-## Scroll-gebeurtenisafhandeling
+> In zoek- en autocomplete-implementaties wordt het aanbevolen om de volgende drie sets te gebruiken.
+> 1. `debounceTime()` - wachten op invoerstop.
+> 2. `distinctUntilChanged()` - ontdubbeling
+> 3. `switchMap()` - annuleer oude verzoeken
 
-### Probleem: Overmatige scroll-gebeurtenis firing
+## Afhandeling van scroll-evenementen
 
-Scroll-gebeurtenissen worden zeer vaak afgevuurd, dus het verwerken ervan zoals ze zijn veroorzaakt prestatieproblemen.
+### Probleem: overmatig afgaan van scroll-events
 
-### Oplossing: Throttle met throttleTime
+Scroll-events worden zeer vaak geactiveerd en kunnen prestatieproblemen veroorzaken als ze op deze manier worden afgehandeld.
+
+### Oplossing: Verdun met throttleTime.
+
 
 ```typescript
 import { fromEvent, throttleTime, map } from 'rxjs';
@@ -181,7 +211,7 @@ scrollContainer.style.border = '1px solid #ccc';
 scrollContainer.style.margin = '10px';
 scrollContainer.style.padding = '10px';
 
-// Voeg inhoud toe om scrollbaar te maken
+// Add content to make it scrollable
 scrollContainer.innerHTML = Array.from({ length: 100 }, (_, i) =>
   `<p>Item ${i + 1}</p>`
 ).join('');
@@ -189,18 +219,18 @@ scrollContainer.innerHTML = Array.from({ length: 100 }, (_, i) =>
 document.body.appendChild(scrollContainer);
 
 fromEvent(scrollContainer, 'scroll').pipe(
-  throttleTime(100), // Verwerk slechts eenmaal per 100ms
+  throttleTime(100), // 100msnaar1Slechts eenmaal verwerkt
   map(() => ({
     scrollTop: scrollContainer.scrollTop,
     scrollHeight: scrollContainer.scrollHeight,
     clientHeight: scrollContainer.clientHeight
   }))
 ).subscribe(({ scrollTop, scrollHeight, clientHeight }) => {
-  // Bereken scrollpositie
+  // Berekening van scrollpositie
   const scrollPercentage = (scrollTop / (scrollHeight - clientHeight)) * 100;
   console.log(`Scrollpositie: ${scrollPercentage.toFixed(1)}%`);
 
-  // Oneindige scroll: Laad volgende pagina wanneer 90% of meer gescrolld
+  // Oneindig scrollen: 90%Volgende pagina laden na meer dan scrollen
   if (scrollPercentage > 90) {
     console.log('Volgende pagina laden...');
     loadMoreItems();
@@ -208,22 +238,22 @@ fromEvent(scrollContainer, 'scroll').pipe(
 });
 
 function loadMoreItems(): void {
-  console.log('Extra gegevens ophalen');
+  console.log('Extra gegevensverzameling');
 }
 ```
 
-### Praktijkvoorbeeld: Scrollrichting detecteren
+### Praktijkvoorbeeld: scrollrichting detecteren
 
 ```typescript
 import { fromEvent, BehaviorSubject, throttleTime, map, pairwise, distinctUntilChanged } from 'rxjs';
-type ScrollDirection = 'omhoog' | 'omlaag' | 'geen';
+type ScrollDirection = 'up' | 'down' | 'none';
 
-const scrollDirection$ = new BehaviorSubject<ScrollDirection>('geen');
+const scrollDirection$ = new BehaviorSubject<ScrollDirection>('none');
 
-// Maak header element dynamisch aan
+// Create header element dynamically
 const header = document.createElement('div');
 header.id = 'header';
-header.innerText = 'Header (tonen/verbergen bij scrollen)';
+header.innerText = 'Koptekst (scrollen om te tonen/(verborgen)';
 header.style.position = 'fixed';
 header.style.top = '0';
 header.style.left = '0';
@@ -234,7 +264,7 @@ header.style.color = '#fff';
 header.style.transition = 'transform 0.3s';
 document.body.appendChild(header);
 
-// Voeg scroll-inhoud toe
+// Add scroll content
 const scrollContent = document.createElement('div');
 scrollContent.style.marginTop = '80px';
 scrollContent.innerHTML = Array.from({ length: 100 }, (_, i) =>
@@ -245,36 +275,65 @@ document.body.appendChild(scrollContent);
 fromEvent(window, 'scroll').pipe(
   throttleTime(100),
   map(() => window.scrollY),
-  pairwise(), // Verkrijg vorige en huidige waarden als paren
+  pairwise(), // Vorige en huidige waarden paarsgewijs ophalen
   map(([prev, curr]) => {
-    if (curr > prev) return 'omlaag';
-    if (curr < prev) return 'omhoog';
-    return 'geen';
+    if (curr > prev) return 'down';
+    if (curr < prev) return 'up';
+    return 'none';
   }),
-  distinctUntilChanged() // Meld alleen wanneer richting verandert
+  distinctUntilChanged() // Melding alleen wanneer de richting verandert
 ).subscribe(direction => {
   scrollDirection$.next(direction);
   console.log('Scrollrichting:', direction);
 
-  // Schakel header zichtbaarheid
-  if (direction === 'omlaag') {
+  // Toont de koptekst/Schakelen tussen verborgen en zichtbaar
+  if (direction === 'down') {
     header.style.transform = 'translateY(-100%)';
-  } else if (direction === 'omhoog') {
+  } else if (direction === 'up') {
     header.style.transform = 'translateY(0)';
   }
 });
 ```
 
-> [!TIP] pairwise gebruiken
-> `pairwise()` is een nuttige operator die vorige en huidige waarden als paren kan krijgen. Het kan worden gebruikt voor scrollrichting, toename/afname bepaling, verschilberekening, etc.
+```typescript
+import { fromEvent, debounceTime } from 'rxjs';
+// Traditional approach (commented for reference)
+// const searchInput = document.querySelector<HTMLInputElement>('#search');
 
-## Drag & Drop implementatie
+// Self-contained: creates input dynamically
+const searchInput = document.createElement('input');
+searchInput.id = 'search';
+searchInput.type = 'text';
+searchInput.placeholder = 'Zoekwoorden invoeren...';
+searchInput.style.padding = '8px';
+searchInput.style.margin = '10px';
+searchInput.style.width = '300px';
+document.body.appendChild(searchInput);
 
-### Probleem: Complexe combinatie van muisgebeurtenissen
+fromEvent(searchInput, 'input').pipe(
+  debounceTime(300) // Na invoer stopt300msWacht
+).subscribe((event) => {
+  const value = (event.target as HTMLInputElement).value;
+  console.log('Zoekopdracht uitvoeren:', value);
+  performSearch(value);
+});
 
-Drag & drop is een complexe combinatie van mousedown → mousemove → mouseup gebeurtenissen.
+function performSearch(query: string): void {
+  console.log('Zoeken in uitvoering...', query);
+  // ZoekenAPIOpvragen
+}
+```
 
-### Oplossing: Combineer meerdere Observables
+> `pairwise()` is een handige operator waarmee je de vorige en huidige waarden in paren kunt verkrijgen. Het kan worden gebruikt om de scrollrichting te bepalen, waarden te verhogen/verlagen en verschillen te berekenen.
+
+## Slepen en neerzetten implementeren
+
+### Probleem: complexe combinaties van muisgebeurtenissen
+
+Slepen en neerzetten is een complexe combinatie van mousedown → mousemove → mouseup events.
+
+### Oplossing: combineer verschillende Observable.
+
 
 ```typescript
 import { fromEvent, merge, map, switchMap, takeUntil, tap } from 'rxjs';
@@ -285,7 +344,7 @@ interface Position {
 
 const draggableElement = document.createElement('div');
 draggableElement.id = 'draggable';
-draggableElement.innerText = 'Sleep mij';
+draggableElement.innerText = 'Slepen.';
 draggableElement.style.position = 'absolute';
 draggableElement.style.left = '100px';
 draggableElement.style.top = '100px';
@@ -305,32 +364,32 @@ const mouseDown$ = fromEvent<MouseEvent>(draggableElement, 'mousedown');
 const mouseMove$ = fromEvent<MouseEvent>(document, 'mousemove');
 const mouseUp$ = fromEvent<MouseEvent>(document, 'mouseup');
 
-// Verkrijg elementpositie bij sleepstart
+// Geeft de positie van het element bij het begin van het slepen
 let initialX = 0;
 let initialY = 0;
 
 mouseDown$.pipe(
   tap((event: MouseEvent) => {
     event.preventDefault();
-    // Registreer huidige elementpositie
+    // Legt de huidige positie van het element vast
     const rect = draggableElement.getBoundingClientRect();
     initialX = rect.left;
     initialY = rect.top;
 
-    // Verschil van muispositie bij sleepstart
+    // Verschil met de muispositie bij het begin van het slepen
     initialX = rect.left - event.clientX;
     initialY = rect.top - event.clientY;
 
     draggableElement.style.opacity = '0.7';
   }),
   switchMap(() =>
-    // Wanneer mousedown optreedt, start mousemove monitoring
+    // mousedownWanneer,mousemoveBegin met het controleren van de
     mouseMove$.pipe(
       map((event: MouseEvent): Position => ({
         x: event.clientX + initialX,
         y: event.clientY + initialY
       })),
-      // Beëindig monitoring bij mouseup of mouseleave
+      // mouseupofmouseleaveom de controle te beëindigen
       takeUntil(
         merge(
           mouseUp$,
@@ -344,7 +403,7 @@ mouseDown$.pipe(
     )
   )
 ).subscribe((position: Position) => {
-  // Verplaats element
+  // Element verplaatsen
   draggableElement.style.left = `${position.x}px`;
   draggableElement.style.top = `${position.y}px`;
 });
@@ -352,594 +411,661 @@ mouseDown$.pipe(
 
 #### Gebeurtenisstroom
 
-```mermaid
-sequenceDiagram
-    actor Gebruiker
-    participant MouseDown
-    participant MouseMove
-    participant MouseUp
-    participant Element
-
-    Gebruiker->>MouseDown: mousedown
-    Note over MouseDown: Start slepen
-    MouseDown->>MouseMove: Start mousemove monitoring met switchMap
-
-    loop Tijdens slepen
-        Gebruiker->>MouseMove: mousemove
-        MouseMove->>Element: Positie bijwerken
-    end
-
-    Gebruiker->>MouseUp: mouseup
-    Note over MouseUp: Beëindig mousemove monitoring met takeUntil
-    MouseUp->>Element: Beëindig slepen
-```
-
-> [!IMPORTANT] Belangrijke punten voor Drag & Drop
-> - Start mousemove monitoring bij mousedown → met `switchMap`
-> - Beëindig monitoring bij mouseup met `takeUntil`
-> - Schakel standaard sleepgedrag uit met `preventDefault()`
-> - Visuele feedback met `classList.add/remove`
-
-### Touch-apparaat ondersteuning
-
 ```typescript
-import { fromEvent, merge, map, switchMap, takeUntil, tap } from 'rxjs';
-const draggableElement = document.createElement('div');
-draggableElement.id = 'draggable';
-draggableElement.innerText = 'Sleep mij\n(Muis/Touch ondersteund)';
-draggableElement.style.position = 'absolute';
-draggableElement.style.left = '100px';
-draggableElement.style.top = '100px';
-draggableElement.style.width = '150px';
-draggableElement.style.height = '150px';
-draggableElement.style.padding = '20px';
-draggableElement.style.background = '#2196F3';
-draggableElement.style.color = '#fff';
-draggableElement.style.cursor = 'move';
-draggableElement.style.userSelect = 'none';
-draggableElement.style.display = 'flex';
-draggableElement.style.alignItems = 'center';
-draggableElement.style.justifyContent = 'center';
-draggableElement.style.textAlign = 'center';
-draggableElement.style.whiteSpace = 'pre-line';
-document.body.appendChild(draggableElement);
+import { fromEvent, throttleTime } from 'rxjs';
+const button = document.createElement('button');
+button.id = 'submit-button';
+button.innerText = 'submit';
+document.body.appendChild(button);
 
-// Integreer muis- en touch-gebeurtenissen
-const start$ = merge(
-  fromEvent<MouseEvent>(draggableElement, 'mousedown').pipe(
-    map(e => ({ x: e.clientX, y: e.clientY, event: e }))
-  ),
-  fromEvent<TouchEvent>(draggableElement, 'touchstart').pipe(
-    map(e => ({
-      x: e.touches[0].clientX,
-      y: e.touches[0].clientY,
-      event: e
-    }))
-  )
-);
-
-const move$ = merge(
-  fromEvent<MouseEvent>(document, 'mousemove').pipe(
-    map(e => ({ x: e.clientX, y: e.clientY }))
-  ),
-  fromEvent<TouchEvent>(document, 'touchmove').pipe(
-    map(e => ({
-      x: e.touches[0].clientX,
-      y: e.touches[0].clientY
-    }))
-  )
-);
-
-const end$ = merge(
-  fromEvent(document, 'mouseup'),
-  fromEvent(document, 'touchend')
-);
-
-let initialOffsetX = 0;
-let initialOffsetY = 0;
-
-start$.pipe(
-  tap(({ x, y, event }) => {
-    event.preventDefault();
-    const rect = draggableElement.getBoundingClientRect();
-    initialOffsetX = rect.left - x;
-    initialOffsetY = rect.top - y;
-    draggableElement.style.opacity = '0.7';
-  }),
-  switchMap(() =>
-    move$.pipe(
-      map(({ x, y }) => ({
-        x: x + initialOffsetX,
-        y: y + initialOffsetY
-      })),
-      takeUntil(
-        end$.pipe(
-          tap(() => {
-            draggableElement.style.opacity = '1';
-          })
-        )
-      )
-    )
-  )
-).subscribe(({ x, y }) => {
-  draggableElement.style.left = `${x}px`;
-  draggableElement.style.top = `${y}px`;
-});
-```
-
-> [!TIP] Multi-apparaat ondersteuning
-> Door `merge` te gebruiken om muis- en touch-gebeurtenissen te integreren, kunt u drag & drop implementeren die werkt op PC/tablet/smartphone.
-
-## Toetsenbordinvoer en autocomplete
-
-### Probleem: Overmatige API-aanroepen tijdens invoer
-
-Wanneer API-aanroepen worden gedaan in reactie op toetsenbordinvoer zoals zoekvakken, veroorzaakt het aanroepen bij elke toetsaanslag prestatieproblemen.
-
-Bijvoorbeeld, wanneer een gebruiker "RxJS" typt:
-- `R` → API-aanroep
-- `Rx` → API-aanroep
-- `RxJ` → API-aanroep
-- `RxJS` → API-aanroep
-
-4 API-aanroepen voor 4 tekens invoer. Dit is verspillend en belast de server.
-
-### Oplossing: debounceTime + switchMap
-
-Om autocomplete efficiënt te implementeren, combineer deze drie operators:
-
-1. **debounceTime(300)** - Wacht 300ms nadat gebruiker stopt met typen
-2. **distinctUntilChanged()** - Negeer als dezelfde als vorige waarde (voorkom verspillende verzoeken)
-3. **switchMap()** - Annuleer oude verzoeken wanneer nieuwe invoer arriveert
-
-Met deze combinatie, zelfs als de gebruiker "RxJS" snel typt, wordt de API slechts eenmaal aangeroepen nadat invoer stopt.
-
-```typescript
-import { fromEvent, of, map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs';
-interface SearchResult {
-  id: number;
-  title: string;
-  description: string;
+if (button) {
+  fromEvent(button, 'click').pipe(
+    throttleTime(1000) // 1In een seconde.1Slechts eenmaal verwerkt
+  ).subscribe(() => {
+    console.log('Uitvoering van verzendproces');
+    submitForm();
+  });
 }
 
+function submitForm(): void {
+  console.log('Tijdens formulierverzending...');
+  // APIGesprekken, enz.
+}
+```
+
+
+```typescript
+import { fromEvent, debounceTime } from 'rxjs';
+// Traditional approach (commented for reference)
+// const searchInput = document.querySelector<HTMLInputElement>('#search');
+
+// Self-contained: creates input dynamically
 const searchInput = document.createElement('input');
 searchInput.id = 'search';
 searchInput.type = 'text';
-searchInput.placeholder = 'Autocomplete zoeken...';
-searchInput.style.padding = '10px';
+searchInput.placeholder = 'Zoekwoorden invoeren...';
+searchInput.style.padding = '8px';
 searchInput.style.margin = '10px';
-searchInput.style.width = '400px';
-searchInput.style.fontSize = '16px';
+searchInput.style.width = '300px';
 document.body.appendChild(searchInput);
 
-const resultsContainer = document.createElement('div');
-resultsContainer.id = 'results';
-resultsContainer.style.margin = '10px';
-resultsContainer.style.padding = '10px';
-resultsContainer.style.border = '1px solid #ddd';
-resultsContainer.style.width = '400px';
-resultsContainer.style.minHeight = '100px';
-document.body.appendChild(resultsContainer);
-
 fromEvent(searchInput, 'input').pipe(
-  map(event => (event.target as HTMLInputElement).value.trim()),
-  debounceTime(300),           // Wacht 300ms nadat invoer stopt
-  distinctUntilChanged(),      // Negeer als dezelfde als vorige waarde
-  switchMap(query => {
-    if (query.length < 2) {
-      return of([]); // Lege array als minder dan 2 tekens
-    }
-
-    console.log('Voer zoekopdracht uit:', query);
-    return searchAPI(query).pipe(
-      catchError(err => {
-        console.error('Zoekfout:', err);
-        return of([]);
-      })
-    );
-  })
-).subscribe(results => {
-  displayResults(results);
+  debounceTime(300) // Na invoer stopt300msWacht
+).subscribe((event) => {
+  const value = (event.target as HTMLInputElement).value;
+  console.log('Zoekopdracht uitvoeren:', value);
+  performSearch(value);
 });
 
-// Zoek API (mock)
-function searchAPI(query: string) {
-  return of([
-    { id: 1, title: `Resultaat 1: ${query}`, description: 'Beschrijving 1' },
-    { id: 2, title: `Resultaat 2: ${query}`, description: 'Beschrijving 2' },
-    { id: 3, title: `Resultaat 3: ${query}`, description: 'Beschrijving 3' }
-  ]);
-}
-
-function displayResults(results: SearchResult[]): void {
-  if (results.length === 0) {
-    resultsContainer.innerHTML = '<p>Geen resultaten gevonden</p>';
-    return;
-  }
-
-  resultsContainer.innerHTML = results
-    .map(
-      r => `
-      <div class="result-item" style="padding: 10px; border-bottom: 1px solid #eee;">
-        <h3 style="margin: 0 0 5px 0;">${r.title}</h3>
-        <p style="margin: 0; color: #666;">${r.description}</p>
-      </div>
-    `
-    )
-    .join('');
+function performSearch(query: string): void {
+  console.log('Zoeken in uitvoering...', query);
+  // ZoekenAPIOpvragen
 }
 ```
 
-> [!IMPORTANT] Belang van switchMap
-> Zonder `switchMap` te gebruiken en `mergeMap` in plaats daarvan te gebruiken, blijven oude verzoeken uitvoeren. Als resultaat worden langzame verzoekresultaten later weergegeven, wat onnatuurlijke UI-problemen veroorzaakt.
->
-> - ❌ **mergeMap**: "Rx" (langzaam) → "RxJS" (snel) → "RxJS" resultaat → "Rx" resultaat (overschreven met oud resultaat)
-> - ✅ **switchMap**: "Rx" (geannuleerd) → "RxJS" (uitgevoerd) → Alleen "RxJS" resultaat weergegeven
+> - Start de bewaking van mousedown → mousemove met `switchMap`.
+> - Beëindig de monitoring bij mouseup met `takeUntil`.
+> - Standaard sleepgedrag uitschakelen met `preventDefault()`.
+> - Visuele feedback met `classList.add/remove`.
 
-### Praktijkvoorbeeld: Sneltoetsen
+### Ondersteuning voor aanraakapparaten.
+
 
 ```typescript
-import { fromEvent, filter, map } from 'rxjs';
-// Ctrl+S om op te slaan
-fromEvent<KeyboardEvent>(document, 'keydown').pipe(
-  filter(event => event.ctrlKey && event.key === 's'),
-  map(event => {
-    event.preventDefault();
-    return event;
-  })
-).subscribe(() => {
-  console.log('Voer opslagproces uit');
-  saveDocument();
-});
+import { fromEvent, throttleTime } from 'rxjs';
+const button = document.createElement('button');
+button.id = 'submit-button';
+button.innerText = 'submit';
+document.body.appendChild(button);
 
-// Ctrl+K om opdrachtpalet te tonen
-fromEvent<KeyboardEvent>(document, 'keydown').pipe(
-  filter(event => event.ctrlKey && event.key === 'k'),
-  map(event => {
-    event.preventDefault();
-    return event;
-  })
-).subscribe(() => {
-  console.log('Toon opdrachtpalet');
-  showCommandPalette();
-});
-
-function saveDocument(): void {
-  console.log('Document opslaan...');
+if (button) {
+  fromEvent(button, 'click').pipe(
+    throttleTime(1000) // 1In een seconde.1Slechts eenmaal verwerkt
+  ).subscribe(() => {
+    console.log('Uitvoering van verzendproces');
+    submitForm();
+  });
 }
 
-function showCommandPalette(): void {
-  console.log('Toon opdrachtpalet');
+function submitForm(): void {
+  console.log('Tijdens formulierverzending...');
+  // APIGesprekken, enz.
 }
 ```
+
+
+```typescript
+import { fromEvent, debounceTime } from 'rxjs';
+// Traditional approach (commented for reference)
+// const searchInput = document.querySelector<HTMLInputElement>('#search');
+
+// Self-contained: creates input dynamically
+const searchInput = document.createElement('input');
+searchInput.id = 'search';
+searchInput.type = 'text';
+searchInput.placeholder = 'Zoekwoorden invoeren...';
+searchInput.style.padding = '8px';
+searchInput.style.margin = '10px';
+searchInput.style.width = '300px';
+document.body.appendChild(searchInput);
+
+fromEvent(searchInput, 'input').pipe(
+  debounceTime(300) // Na invoer stopt300msWacht
+).subscribe((event) => {
+  const value = (event.target as HTMLInputElement).value;
+  console.log('Zoekopdracht uitvoeren:', value);
+  performSearch(value);
+});
+
+function performSearch(query: string): void {
+  console.log('Zoeken in uitvoering...', query);
+  // ZoekenAPIOpvragen
+}
+```
+
+> Door `merge` te gebruiken om muis- en aanraakgebeurtenissen te integreren, kun je slepen en neerzetten implementeren dat werkt op alle pc's/tablets/smartphones.
+
+#### Vergelijking van gebeurtenissenstromen
+
+
+```typescript
+import { fromEvent, throttleTime } from 'rxjs';
+const button = document.createElement('button');
+button.id = 'submit-button';
+button.innerText = 'submit';
+document.body.appendChild(button);
+
+if (button) {
+  fromEvent(button, 'click').pipe(
+    throttleTime(1000) // 1In een seconde.1Slechts eenmaal verwerkt
+  ).subscribe(() => {
+    console.log('Uitvoering van verzendproces');
+    submitForm();
+  });
+}
+
+function submitForm(): void {
+  console.log('Tijdens formulierverzending...');
+  // APIGesprekken, enz.
+}
+```
+
+Dit sequentiediagram laat zien dat muis- en aanraakgebeurtenissen in dezelfde pijplijn zijn geïntegreerd en zich op beide apparaten op dezelfde manier gedragen.
+
+## Toetsenbordinvoer en autoaanvullen
+
+### Probleem: overmatige API-aanroepen tijdens invoer
+
+Wanneer API-aanroepen worden gedaan als reactie op toetsenbordinvoer, zoals in het zoekvak, kan het telkens aanroepen van deze aanroepen een prestatieprobleem zijn.
+
+Als een gebruiker bijvoorbeeld `RxJS,
+- `R` → API-oproep
+- `Rx` → API-aanroep
+- `RxJ` → API-oproep
+- `RxJS` → API-oproep
+
+Een invoer van vier letters leidt ertoe dat de API vier keer wordt aangeroepen. Dit is verspilling en belast ook de server.
+
+### Oplossing: debounceTime + switchMap
+
+Om autocompletion efficiënt te implementeren, combineer je de volgende drie operatoren.
+
+1. **debounceTime(300)** - wacht 300 ms nadat de gebruiker de invoer heeft gestopt
+2. **distinctUntilChanged()** - negeer of de waarde hetzelfde is als de vorige keer (voorkomt verspilde verzoeken)
+3.**switchMap()** - annuleer oud verzoek als nieuwe invoer wordt ontvangen
+
+Met deze combinatie wordt de API slechts eenmaal aangeroepen nadat de invoer is gestopt, zelfs als de gebruiker snel "RxJS" invoert.
+
+
+```typescript
+import { fromEvent, throttleTime } from 'rxjs';
+const button = document.createElement('button');
+button.id = 'submit-button';
+button.innerText = 'submit';
+document.body.appendChild(button);
+
+if (button) {
+  fromEvent(button, 'click').pipe(
+    throttleTime(1000) // 1In een seconde.1Slechts eenmaal verwerkt
+  ).subscribe(() => {
+    console.log('Uitvoering van verzendproces');
+    submitForm();
+  });
+}
+
+function submitForm(): void {
+  console.log('Tijdens formulierverzending...');
+  // APIGesprekken, enz.
+}
+```
+
+#### Gedetailleerde beschrijving van de werking
+
+De volgende concrete voorbeelden illustreren hoe elke stap van deze code werkt.
+
+**Tijdlijn van een gebruiker die snel 'RxJS' typt:***.
+
+
+```typescript
+import { fromEvent, throttleTime } from 'rxjs';
+const button = document.createElement('button');
+button.id = 'submit-button';
+button.innerText = 'submit';
+document.body.appendChild(button);
+
+if (button) {
+  fromEvent(button, 'click').pipe(
+    throttleTime(1000) // 1In een seconde.1Slechts eenmaal verwerkt
+  ).subscribe(() => {
+    console.log('Uitvoering van verzendproces');
+    submitForm();
+  });
+}
+
+function submitForm(): void {
+  console.log('Tijdens formulierverzending...');
+  // APIGesprekken, enz.
+}
+```
+
+#### Rol van elke operator
+
+1. DebounceTime(300)**
+   - Blijft wachten tijdens een reeks invoergebeurtenissen.
+   - Spoelt de waarde door nadat 300 ms zijn verstreken sinds de invoer is gestopt.
+   - Resultaat: er vinden geen API-oproepen plaats tijdens snel typen.
+
+2.**distinctUntilChanged()**
+   - Vergelijk met de laatste waarde en negeer als de waarde hetzelfde is.
+   - Voorbeeld: Als "abc" -> (delete) -> "abc" wordt getypt, wordt de tweede "abc" niet verwerkt.
+   - Resultaat: voorkomt onnodige API-aanroepen.
+
+3. **switchMap()**
+   - Als er een nieuwe zoekopdracht binnenkomt, wordt de oude aanvraag die wordt uitgevoerd geannuleerd.
+   - Voorbeeld: Als een zoekopdracht voor "Rx" wordt uitgevoerd terwijl een zoekopdracht voor "RxJS" wordt uitgevoerd, wordt het verzoek voor "Rx" afgebroken.
+   - Resultaat: alleen de laatste zoekresultaten worden altijd weergegeven.
+
+
+```typescript
+import { fromEvent, debounceTime } from 'rxjs';
+// Traditional approach (commented for reference)
+// const searchInput = document.querySelector<HTMLInputElement>('#search');
+
+// Self-contained: creates input dynamically
+const searchInput = document.createElement('input');
+searchInput.id = 'search';
+searchInput.type = 'text';
+searchInput.placeholder = 'Zoekwoorden invoeren...';
+searchInput.style.padding = '8px';
+searchInput.style.margin = '10px';
+searchInput.style.width = '300px';
+document.body.appendChild(searchInput);
+
+fromEvent(searchInput, 'input').pipe(
+  debounceTime(300) // Na invoer stopt300msWacht
+).subscribe((event) => {
+  const value = (event.target as HTMLInputElement).value;
+  console.log('Zoekopdracht uitvoeren:', value);
+  performSearch(value);
+});
+
+function performSearch(query: string): void {
+  console.log('Zoeken in uitvoering...', query);
+  // ZoekenAPIOpvragen
+}
+```
+
+> Als u `mergeMap` gebruikt in plaats van `switchMap`, worden de oudere verzoeken verder uitgevoerd. Hierdoor worden de resultaten van langzamere verzoeken later weergegeven, wat problemen met de UI veroorzaakt.
+>
+> - ❌ mergeMap**: 'Rx' (langzaam) → 'RxJS' (snel) → 'RxJS' resultaten → 'Rx' resultaten (overschreven door oude resultaten).
+> - ✅ **switchMap**: 'Rx' (annuleren) → 'RxJS' (uitvoeren) → alleen 'RxJS'-resultaten worden weergegeven.
+
+#### Uitvoeringsvoorbeeld
+
+
+```typescript
+import { fromEvent, throttleTime } from 'rxjs';
+const button = document.createElement('button');
+button.id = 'submit-button';
+button.innerText = 'submit';
+document.body.appendChild(button);
+
+if (button) {
+  fromEvent(button, 'click').pipe(
+    throttleTime(1000) // 1In een seconde.1Slechts eenmaal verwerkt
+  ).subscribe(() => {
+    console.log('Uitvoering van verzendproces');
+    submitForm();
+  });
+}
+
+function submitForm(): void {
+  console.log('Tijdens formulierverzending...');
+  // APIGesprekken, enz.
+}
+```
+
+### Praktisch voorbeeld: sneltoets
+
+
+```typescript
+import { fromEvent, throttleTime } from 'rxjs';
+const button = document.createElement('button');
+button.id = 'submit-button';
+button.innerText = 'submit';
+document.body.appendChild(button);
+
+if (button) {
+  fromEvent(button, 'click').pipe(
+    throttleTime(1000) // 1In een seconde.1Slechts eenmaal verwerkt
+  ).subscribe(() => {
+    console.log('Uitvoering van verzendproces');
+    submitForm();
+  });
+}
+
+function submitForm(): void {
+  console.log('Tijdens formulierverzending...');
+  // APIGesprekken, enz.
+}
+```
+
+### Meerdere toetscombinaties
+
+
+```typescript
+import { fromEvent, throttleTime } from 'rxjs';
+const button = document.createElement('button');
+button.id = 'submit-button';
+button.innerText = 'submit';
+document.body.appendChild(button);
+
+if (button) {
+  fromEvent(button, 'click').pipe(
+    throttleTime(1000) // 1In een seconde.1Slechts eenmaal verwerkt
+  ).subscribe(() => {
+    console.log('Uitvoering van verzendproces');
+    submitForm();
+  });
+}
+
+function submitForm(): void {
+  console.log('Tijdens formulierverzending...');
+  // APIGesprekken, enz.
+}
+```
+
+
+```typescript
+import { fromEvent, debounceTime } from 'rxjs';
+// Traditional approach (commented for reference)
+// const searchInput = document.querySelector<HTMLInputElement>('#search');
+
+// Self-contained: creates input dynamically
+const searchInput = document.createElement('input');
+searchInput.id = 'search';
+searchInput.type = 'text';
+searchInput.placeholder = 'Zoekwoorden invoeren...';
+searchInput.style.padding = '8px';
+searchInput.style.margin = '10px';
+searchInput.style.width = '300px';
+document.body.appendChild(searchInput);
+
+fromEvent(searchInput, 'input').pipe(
+  debounceTime(300) // Na invoer stopt300msWacht
+).subscribe((event) => {
+  const value = (event.target as HTMLInputElement).value;
+  console.log('Zoekopdracht uitvoeren:', value);
+  performSearch(value);
+});
+
+function performSearch(query: string): void {
+  console.log('Zoeken in uitvoering...', query);
+  // ZoekenAPIOpvragen
+}
+```
+
+> - Voorkom standaard gedrag met `preventDefault()`.
+> Bepaal modificatietoetsen met `event.ctrlKey`, `event.shiftKey`, `event.altKey`.
+> - Verwerk alleen bepaalde toetsen met `filter`.
+> - Prioriteit wordt gegeven aan gebruiksvriendelijke sneltoetsen (bijv. Ctrl+S)
 
 ## Multi-touch ondersteuning
 
-### Probleem: Pinch zoom en multi-touch gebaren
+### Probleem: knijp-zoom en multi-touch gebaren
 
-Wil pinch zoom en multi-touch gebaren implementeren op tablets en smartphones.
+We willen pinch-zoom en multi-touch gebaren implementeren op tablets en smartphones.
 
-### Oplossing: Monitor touch-gebeurtenissen
+### Oplossing: aanraakgebeurtenissen monitoren.
+
 
 ```typescript
-import { fromEvent, map, pairwise } from 'rxjs';
-const imageElement = document.createElement('img');
-imageElement.id = 'zoomable-image';
-imageElement.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="300"%3E%3Crect width="300" height="300" fill="%234CAF50"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="white" font-size="20"%3EPinch Zoom%3C/text%3E%3C/svg%3E';
-imageElement.style.width = '300px';
-imageElement.style.height = '300px';
-imageElement.style.margin = '20px';
-imageElement.style.touchAction = 'none';
-imageElement.style.userSelect = 'none';
-imageElement.style.transition = 'transform 0.1s';
-document.body.appendChild(imageElement);
+import { fromEvent, throttleTime } from 'rxjs';
+const button = document.createElement('button');
+button.id = 'submit-button';
+button.innerText = 'submit';
+document.body.appendChild(button);
 
-let initialDistance = 0;
-let currentScale = 1;
+if (button) {
+  fromEvent(button, 'click').pipe(
+    throttleTime(1000) // 1In een seconde.1Slechts eenmaal verwerkt
+  ).subscribe(() => {
+    console.log('Uitvoering van verzendproces');
+    submitForm();
+  });
+}
 
-fromEvent<TouchEvent>(imageElement, 'touchstart').pipe(
-  map(event => {
-    if (event.touches.length === 2) {
-      // Bereken afstand tussen twee punten
-      const touch1 = event.touches[0];
-      const touch2 = event.touches[1];
-      return getDistance(touch1, touch2);
-    }
-    return 0;
-  })
-).subscribe(distance => {
-  initialDistance = distance;
-});
-
-fromEvent<TouchEvent>(imageElement, 'touchmove').pipe(
-  map(event => {
-    event.preventDefault();
-    if (event.touches.length === 2) {
-      const touch1 = event.touches[0];
-      const touch2 = event.touches[1];
-      return getDistance(touch1, touch2);
-    }
-    return 0;
-  }),
-  pairwise()
-).subscribe(([prev, curr]) => {
-  if (initialDistance > 0 && curr > 0) {
-    // Wijzig schaal volgens pinch-hoeveelheid
-    const scaleDelta = curr / initialDistance;
-    const newScale = currentScale * scaleDelta;
-
-    // Beperk schaalbereik (0,5x tot 3x)
-    const clampedScale = Math.max(0.5, Math.min(3, newScale));
-
-    imageElement.style.transform = `scale(${clampedScale})`;
-  }
-});
-
-fromEvent<TouchEvent>(imageElement, 'touchend').subscribe(() => {
-  // Registreer huidige schaal
-  const transform = imageElement.style.transform;
-  const match = transform.match(/scale\(([^)]+)\)/);
-  if (match) {
-    currentScale = parseFloat(match[1]);
-  }
-});
-
-// Bereken afstand tussen twee punten
-function getDistance(touch1: Touch, touch2: Touch): number {
-  const dx = touch2.clientX - touch1.clientX;
-  const dy = touch2.clientY - touch1.clientY;
-  return Math.sqrt(dx * dx + dy * dy);
+function submitForm(): void {
+  console.log('Tijdens formulierverzending...');
+  // APIGesprekken, enz.
 }
 ```
 
-## Gebeurtenisopruiming
+__oproep_35___
 
-### Probleem: Voorkom geheugenlekken
+> - Bepaal aanraking met twee vingers met `touches.length === 2`.
+> - Sla de eerste afstand op met `touchstart`.
+> - `touchmove` om huidige afstand te berekenen en schaal bij te werken
+> - Bereken het verschil met de vorige keer met `pairwise()`.
+> - Beperk het bereik van de schaal om de bruikbaarheid te verbeteren
 
-Niet correct uitschrijven van gebeurtenislisteners veroorzaakt geheugenlekken.
+## Samengesteld gebeurtenissenpatroon
 
-### Oplossing: Opruimen met takeUntil
+### Praktisch voorbeeld: lange druk detectie
 
-```typescript
-import { fromEvent, Subject, throttleTime, takeUntil } from 'rxjs';
-class ScrollTracker {
-  private destroy$ = new Subject<void>();
-
-  init(): void {
-    fromEvent(window, 'scroll').pipe(
-      throttleTime(100),
-      takeUntil(this.destroy$) // Auto-vrijgave bij componentvernietiging
-    ).subscribe(() => {
-      console.log('Scrollpositie:', window.scrollY);
-    });
-
-    fromEvent(window, 'resize').pipe(
-      throttleTime(100),
-      takeUntil(this.destroy$)
-    ).subscribe(() => {
-      console.log('Venstergrootte:', window.innerWidth, window.innerHeight);
-    });
-  }
-
-  destroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-    console.log('Alle gebeurtenislisteners uitgeschreven');
-  }
-}
-
-// Gebruiksvoorbeeld
-const tracker = new ScrollTracker();
-tracker.init();
-
-// Bij paginatransitie of componentvernietiging
-// tracker.destroy();
-```
-
-> [!IMPORTANT] Geheugenlekpreventie
-> - **Pas `takeUntil` toe op alle gebeurtenisabonnementen**
-> - **Activeer `destroy$` bij componentvernietiging**
-> - **Let vooral op globale gebeurtenissen (window, document)**
-> - **Vergeet niet `unsubscribe()` wanneer Subscription expliciet wordt beheerd**
-
-## Praktisch UI-componentvoorbeeld
-
-### Oneindige scroll implementatie
 
 ```typescript
-import { fromEvent, of, throttleTime, map, filter, exhaustMap, catchError } from 'rxjs';
-interface Item {
-  id: number;
-  title: string;
-  content: string;
+import { fromEvent, throttleTime } from 'rxjs';
+const button = document.createElement('button');
+button.id = 'submit-button';
+button.innerText = 'submit';
+document.body.appendChild(button);
+
+if (button) {
+  fromEvent(button, 'click').pipe(
+    throttleTime(1000) // 1In een seconde.1Slechts eenmaal verwerkt
+  ).subscribe(() => {
+    console.log('Uitvoering van verzendproces');
+    submitForm();
+  });
 }
 
-class InfiniteScroll {
-  private page = 1;
-  private loading = false;
-  private hasMore = true;
-
-  init(container: HTMLElement, itemsContainer: HTMLElement): void {
-    fromEvent(container, 'scroll').pipe(
-      throttleTime(200),
-      map(() => {
-        const scrollTop = container.scrollTop;
-        const scrollHeight = container.scrollHeight;
-        const clientHeight = container.clientHeight;
-        return (scrollTop + clientHeight) / scrollHeight;
-      }),
-      filter(ratio => ratio > 0.9 && !this.loading && this.hasMore),
-      exhaustMap(() => {
-        this.loading = true;
-        console.log(`Pagina ${this.page} laden...`);
-
-        return this.loadMoreItems(this.page).pipe(
-          catchError(err => {
-            console.error('Laadfout:', err);
-            return of([]);
-          })
-        );
-      })
-    ).subscribe(items => {
-      this.loading = false;
-
-      if (items.length === 0) {
-        this.hasMore = false;
-        console.log('Alle items geladen');
-        return;
-      }
-
-      this.page++;
-      this.appendItems(itemsContainer, items);
-    });
-  }
-
-  private loadMoreItems(page: number) {
-    // Simuleer API-aanroep
-    return of(
-      Array.from({ length: 10 }, (_, i) => ({
-        id: (page - 1) * 10 + i + 1,
-        title: `Item ${(page - 1) * 10 + i + 1}`,
-        content: `Dit is de inhoud van item ${(page - 1) * 10 + i + 1}`
-      }))
-    );
-  }
-
-  private appendItems(container: HTMLElement, items: Item[]): void {
-    const html = items
-      .map(
-        item => `
-        <div class="item">
-          <h3>${item.title}</h3>
-          <p>${item.content}</p>
-        </div>
-      `
-      )
-      .join('');
-
-    container.insertAdjacentHTML('beforeend', html);
-  }
+function submitForm(): void {
+  console.log('Tijdens formulierverzending...');
+  // APIGesprekken, enz.
 }
-
-// Gebruiksvoorbeeld
-const scrollContainer = document.createElement('div');
-scrollContainer.id = 'scroll-container';
-scrollContainer.style.width = '500px';
-scrollContainer.style.height = '400px';
-scrollContainer.style.overflow = 'auto';
-scrollContainer.style.border = '2px solid #333';
-scrollContainer.style.margin = '10px';
-scrollContainer.style.padding = '10px';
-document.body.appendChild(scrollContainer);
-
-const itemsContainer = document.createElement('div');
-itemsContainer.id = 'items';
-scrollContainer.appendChild(itemsContainer);
-
-// Voeg initiële items toe
-itemsContainer.innerHTML = Array.from({ length: 10 }, (_, i) => `
-  <div class="item" style="padding: 15px; border-bottom: 1px solid #eee;">
-    <h3 style="margin: 0 0 5px 0;">Item ${i + 1}</h3>
-    <p style="margin: 0; color: #666;">Dit is de inhoud van item ${i + 1}</p>
-  </div>
-`).join('');
-
-const infiniteScroll = new InfiniteScroll();
-infiniteScroll.init(scrollContainer, itemsContainer);
 ```
 
-> [!TIP] exhaustMap gebruiken
-> Door `exhaustMap` te gebruiken kunt u nieuwe verzoeken negeren totdat het vorige verzoek is voltooid. Dit voorkomt dubbele verzoeken door snel scrollen.
+### Praktisch voorbeeld: detectie van dubbelklikken
 
-## Testcode
+Gebruiker klikt: ●    ●●●        ●  ●●
+                    |    |          |  |
+throttleTime(1000): ●              ●
+                    |              |
+                   Verwerking uitvoeren      Verwerking uitvoeren
+
+### Praktisch voorbeeld: hoververtraging weergeven
+
+Gebruiker klikt: ●    ●●●        ●  ●●
+                    |    |          |  |
+throttleTime(1000): ●              ●
+                    |              |
+                   Verwerking uitvoeren      Verwerking uitvoeren
+
+## Gebeurtenis opruimen
+
+### Probleem: geheugenlekken voorkomen
+
+Het niet correct afmelden van event listeners kan geheugenlekken veroorzaken.
+
+### Oplossing: opruimen met takeUntil.
+
+Gebruiker klikt: ●    ●●●        ●  ●●
+                    |    |          |  |
+throttleTime(1000): ●              ●
+                    |              |
+                   Verwerking uitvoeren      Verwerking uitvoeren
+
+
+```typescript
+import { fromEvent, debounceTime } from 'rxjs';
+// Traditional approach (commented for reference)
+// const searchInput = document.querySelector<HTMLInputElement>('#search');
+
+// Self-contained: creates input dynamically
+const searchInput = document.createElement('input');
+searchInput.id = 'search';
+searchInput.type = 'text';
+searchInput.placeholder = 'Zoekwoorden invoeren...';
+searchInput.style.padding = '8px';
+searchInput.style.margin = '10px';
+searchInput.style.width = '300px';
+document.body.appendChild(searchInput);
+
+fromEvent(searchInput, 'input').pipe(
+  debounceTime(300) // Na invoer stopt300msWacht
+).subscribe((event) => {
+  const value = (event.target as HTMLInputElement).value;
+  console.log('Zoekopdracht uitvoeren:', value);
+  performSearch(value);
+});
+
+function performSearch(query: string): void {
+  console.log('Zoeken in uitvoering...', query);
+  // ZoekenAPIOpvragen
+}
+```
+
+> - **Pas `takeUntil` toe op alle event-abonnementen**
+> - **Vuur `destroy$` af bij componentvernietiging**
+> - **Globale events (window, document) vereisen speciale aandacht**
+> - **Vergeet `unsubscribe()` niet bij het expliciet beheren van abonnementen**
+
+## Praktische UI component voorbeelden
+
+### Oneindig scrollen implementatie
+
+Gebruiker klikt: ●    ●●●        ●  ●●
+                    |    |          |  |
+throttleTime(1000): ●              ●
+                    |              |
+                   Verwerking uitvoeren      Verwerking uitvoeren
+
+
+```typescript
+import { fromEvent, debounceTime } from 'rxjs';
+// Traditional approach (commented for reference)
+// const searchInput = document.querySelector<HTMLInputElement>('#search');
+
+// Self-contained: creates input dynamically
+const searchInput = document.createElement('input');
+searchInput.id = 'search';
+searchInput.type = 'text';
+searchInput.placeholder = 'Zoekwoorden invoeren...';
+searchInput.style.padding = '8px';
+searchInput.style.margin = '10px';
+searchInput.style.width = '300px';
+document.body.appendChild(searchInput);
+
+fromEvent(searchInput, 'input').pipe(
+  debounceTime(300) // Na invoer stopt300msWacht
+).subscribe((event) => {
+  const value = (event.target as HTMLInputElement).value;
+  console.log('Zoekopdracht uitvoeren:', value);
+  performSearch(value);
+});
+
+function performSearch(query: string): void {
+  console.log('Zoeken in uitvoering...', query);
+  // ZoekenAPIOpvragen
+}
+```
+
+> ` exhaustMap` kan worden gebruikt om nieuwe verzoeken te negeren totdat het vorige verzoek is voltooid. Dit voorkomt dubbele verzoeken als gevolg van een scrollende reeks.
+
+## Testcode.
 
 Voorbeeldtest voor UI-gebeurtenisafhandeling.
 
+Gebruiker klikt: ●    ●●●        ●  ●●
+                    |    |          |  |
+throttleTime(1000): ●              ●
+                    |              |
+                   Verwerking uitvoeren      Verwerking uitvoeren
+
+## Samenvatting.
+
+Het beheersen van patronen voor het afhandelen van UI-gebeurtenissen kan zorgen voor een interactieve en prettige gebruikerservaring.
+
+
 ```typescript
-import { debounceTime, map } from 'rxjs';
-import { TestScheduler } from 'rxjs/testing';
+import { fromEvent, debounceTime } from 'rxjs';
+// Traditional approach (commented for reference)
+// const searchInput = document.querySelector<HTMLInputElement>('#search');
 
-describe('UI-gebeurtenisafhandeling', () => {
-  let testScheduler: TestScheduler;
+// Self-contained: creates input dynamically
+const searchInput = document.createElement('input');
+searchInput.id = 'search';
+searchInput.type = 'text';
+searchInput.placeholder = 'Zoekwoorden invoeren...';
+searchInput.style.padding = '8px';
+searchInput.style.margin = '10px';
+searchInput.style.width = '300px';
+document.body.appendChild(searchInput);
 
-  beforeEach(() => {
-    testScheduler = new TestScheduler((actual, expected) => {
-      expect(actual).toEqual(expected);
-    });
-  });
-
-  it('debounceTime moet gebeurtenissen vertragen', () => {
-    testScheduler.run(({ cold, expectObservable }) => {
-      const input$ = cold('a-b-c----|', {
-        a: 'A',
-        b: 'B',
-        c: 'C'
-      });
-
-      const result$ = input$.pipe(debounceTime(20, testScheduler));
-
-      expectObservable(result$).toBe('-----c----|', { c: 'C' });
-    });
-  });
-
-  it('moet zoekinvoer met debounce afhandelen', () => {
-    testScheduler.run(({ cold, expectObservable }) => {
-      const input$ = cold('a-bc---d--|', {
-        a: 'R',
-        b: 'Rx',
-        c: 'RxJ',
-        d: 'RxJS'
-      });
-
-      const result$ = input$.pipe(
-        debounceTime(20, testScheduler),
-        map(query => `Zoeken: ${query}`)
-      );
-
-      expectObservable(result$).toBe('------c---(d|)', {
-        c: 'Zoeken: RxJ',
-        d: 'Zoeken: RxJS'
-      });
-    });
-  });
+fromEvent(searchInput, 'input').pipe(
+  debounceTime(300) // Na invoer stopt300msWacht
+).subscribe((event) => {
+  const value = (event.target as HTMLInputElement).value;
+  console.log('Zoekopdracht uitvoeren:', value);
+  performSearch(value);
 });
+
+function performSearch(query: string): void {
+  console.log('Zoeken in uitvoering...', query);
+  // ZoekenAPIOpvragen
+}
 ```
 
-## Samenvatting
+> - throttleTime**: slechts eenmaal in een bepaalde periode verwerken (scrollen, formaat wijzigen)
+> - **debounceTime**: verwerkt nadat de gebeurtenis is gestopt (zoeken, autoaanvullen)
+> - **distinctUntilChanged**: ontdubbeling (identieke waarden negeren)
+> - **switchMap**: complexe gebeurtenisketen (slepen en neerzetten)
+> - **takeUntil**: betrouwbaar opruimen (geheugenlekken voorkomen)
 
-Het beheersen van UI-gebeurtenisafhandelingspatronen stelt u in staat om interactieve en comfortabele gebruikerservaringen te bieden.
 
-> [!IMPORTANT] Belangrijkste punten
-> - **throttleTime**: Verwerk slechts eenmaal per periode (scroll, resize)
-> - **debounceTime**: Verwerk nadat gebeurtenis stopt (zoeken, autocomplete)
-> - **distinctUntilChanged**: Elimineer duplicaten (negeer dezelfde waarden)
-> - **switchMap**: Complexe gebeurtenisketens (drag & drop)
-> - **takeUntil**: Betrouwbaar opruimen (voorkom geheugenlekken)
+```typescript
+import { fromEvent, debounceTime } from 'rxjs';
+// Traditional approach (commented for reference)
+// const searchInput = document.querySelector<HTMLInputElement>('#search');
 
-> [!TIP] Best practices
-> - **Prestatie**: Voorkom overmatige verwerking met throttle/debounce
-> - **Bruikbaarheid**: Stel geschikte vertragingstijden in (300ms, etc.)
-> - **Toegankelijkheid**: Ondersteun ook toetsenbordoperaties
-> - **Multi-apparaat**: Ondersteun zowel touch als muis
-> - **Opruimen**: Geef geheugen betrouwbaar vrij met `takeUntil`
+// Self-contained: creates input dynamically
+const searchInput = document.createElement('input');
+searchInput.id = 'search';
+searchInput.type = 'text';
+searchInput.placeholder = 'Zoekwoorden invoeren...';
+searchInput.style.padding = '8px';
+searchInput.style.margin = '10px';
+searchInput.style.width = '300px';
+document.body.appendChild(searchInput);
 
-## Volgende stappen
+fromEvent(searchInput, 'input').pipe(
+  debounceTime(300) // Na invoer stopt300msWacht
+).subscribe((event) => {
+  const value = (event.target as HTMLInputElement).value;
+  console.log('Zoekopdracht uitvoeren:', value);
+  performSearch(value);
+});
 
-Na het beheersen van UI-gebeurtenisafhandelingspatronen, ga verder met de volgende patronen:
+function performSearch(query: string): void {
+  console.log('Zoeken in uitvoering...', query);
+  // ZoekenAPIOpvragen
+}
+```
 
-- [Formulierafhandeling](./form-handling.md) - Realtime validatie, meerdere veldcoördinatie
-- [API-aanroepen](./api-calls.md) - Integratie van UI-gebeurtenissen en API-aanroepen
-- [Realtime gegevensverwerking](./real-time-data.md) - WebSocket, SSE
-- [Cachingstrategieën](./caching-strategies.md) - Caching van gebeurtenisgegevens
+> - **Performance**: throttle/debounce om overprocessing te voorkomen
+> - **Gebruikbaarheid**: stel geschikte vertragingstijden in (bijv. 300 ms)
+> - **Toegankelijkheid**: toetsenbordbediening ondersteunen
+> - **Multi-apparaat**: ondersteuning voor zowel aanraken als muis
+> - **Schoonmaak**: `takeUntil` zorgt voor geheugenvrijgave
 
-## Gerelateerde secties
+## Volgende stappen.
 
-- [Hoofdstuk 4: Filteroperators](../operators/filtering/) - Details over debounceTime, throttleTime
-- [Hoofdstuk 4: Transformatieoperators](../operators/transformation/) - Details over switchMap, exhaustMap
-- [Hoofdstuk 2: Observable](../observables/what-is-observable.md) - Basis van fromEvent
+Als je het UI event handling patroon onder de knie hebt, kun je verder met de volgende patronen.
 
-## Referentiebronnen
+- form-handling](. /form-handling.md) - real-time validatie, integratie van meerdere velden.
+- API-oproepen](. /api-calls.md) - integratie van UI-gebeurtenissen en API-oproepen.
+- real-time gegevensverwerking](. /real-time-data.md) - WebSocket, SSE.
+- caching-strategieën](. /caching-strategies.md) - event data caching
 
-- [RxJS Officieel: fromEvent](https://rxjs.dev/api/index/function/fromEvent) - Details over fromEvent()
-- [MDN: Touch-gebeurtenissen](https://developer.mozilla.org/en-US/docs/Web/API/Touch_events) - Hoe touch-gebeurtenissen te gebruiken
-- [Learn RxJS: debounceTime](https://www.learnrxjs.io/learn-rxjs/operators/filtering/debouncetime) - Praktische voorbeelden van debounceTime
+## Gerelateerde secties.
+
+- Hoofdstuk 4: Operatoren filteren](. /operators/filtering/) - debounceTime, throttleTime details.
+- Hoofdstuk 4: Transformatie operatoren](. /operators/transformation/) - meer over switchMap, exhaustMap.
+- Hoofdstuk 2: Observable](. /observables/what-is-observable.md)) - basis van fromEvent
+
+## Verwijzingsbronnen
+
+- RxJS officieel: fromEvent](https://rxjs.dev/api/index/function/fromEvent) - meer over fromEvent()
+- MDN: Aanraakgebeurtenissen](https://developer.mozilla.org/ja/docs/Web/API/Touch_events) - Hoe aanrakingsgebeurtenissen te gebruiken.
+- [Learn RxJS: debounceTime](https://www.learnrxjs.io/learn-rxjs/operators/filtering/debouncetime) - Praktische voorbeelden van debounceTime.

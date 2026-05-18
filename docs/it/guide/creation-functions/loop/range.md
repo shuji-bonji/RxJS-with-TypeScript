@@ -1,16 +1,17 @@
 ---
-description: "range() - Funzione di Creazione che genera numeri interi consecutivi dichiarativamente: Alternativa efficiente in memoria ai cicli for per elaborazione batch e paginazione"
+description: "range() - Creation Function che emette numeri interi consecutivi in sequenza a partire da un valore di partenza specificato; un metodo dichiarativo di generazione di numeri sequenziali come alternativa all'istruzione for; come viene utilizzato con generate(), la sua implementazione utilizzando l'inferenza di tipo in TypeScript e il suo schema di combinazione con map(). Spiegato con esempi pratici di codice."
 ---
 
-# range() - Genera un range di numeri
+# range() - Genera un range numerico
 
-`range()` è una Funzione di Creazione simile a for che emette un numero specificato di interi consecutivi da un valore iniziale specificato.
+range()` è una Creation Function simile a un for statement che genera un numero specifico di numeri interi consecutivi a partire da un valore iniziale specificato.
 
-## Panoramica
+## Panoramica.
 
-`range()` emette una sequenza di interi consecutivi come Observable specificando un valore iniziale e il numero di interi. È usata per generazione numeri sequenziali ed elaborazione batch come modo dichiarativo per sostituire l'istruzione `for` tradizionale.
+range()` emette una sequenza di numeri interi consecutivi come Observable, specificando un valore iniziale e il numero di numeri interi. Viene utilizzata per la generazione di numeri sequenziali e per l'elaborazione in batch, come alternativa dichiarativa alla tradizionale istruzione `for`.
 
-**Firma**:
+**Firma**:.
+
 ```typescript
 function range(
   start: number,
@@ -19,150 +20,150 @@ function range(
 ): Observable<number>
 ```
 
-**Parametri**:
-- `start`: Il valore iniziale (da cui iniziare a emettere)
-- `count`: il numero di valori da pubblicare (se omesso, da 0 a meno di `start`)
-- `scheduler`: lo scheduler per emettere i valori (se omesso: emette sincronamente)
+**Parametri**:.
+- `start`: il valore iniziale (l'emissione inizia da questo valore).
+- `count`: numero di valori da pubblicare (omesso, da 0 a meno di `start`).
+- `scheduler`: Scheduler per emettere i valori (omesso, emessi in modo sincrono).
 
-**Documentazione Ufficiale**: [📘 RxJS Ufficiale: range()](https://rxjs.dev/api/index/function/range)
+**Documentazione ufficiale**: [📘 Formula RxJS: range()](https://rxjs.dev/api/index/function/range)
 
-## Uso Base
+## Utilizzo di base.
 
-### Pattern 1: Specifica valore iniziale e conteggio
+### Schema 1: Specificare il valore iniziale e il numero di pezzi
 
-Questo è l'utilizzo più comune.
+Uso più comune.
 
 ```typescript
 import { range } from 'rxjs';
 
-// Genera 5 numeri sequenziali da 1 (1, 2, 3, 4, 5)
+// 1da5Vengono generati numeri sequenziali (1, 2, 3, 4, 5)
 range(1, 5).subscribe({
   next: value => console.log('Valore:', value),
-  complete: () => console.log('Completo')
+  complete: () => console.log('Completato')
 });
 
-// Output:
+// Uscita:
 // Valore: 1
 // Valore: 2
 // Valore: 3
 // Valore: 4
 // Valore: 5
-// Completo
+// Completato
 ```
 
-### Pattern 2: Numeri sequenziali da 0
+### Schema 2: Numeri sequenziali a partire da 0
 
-Impostando il valore iniziale a 0, può essere generato un numero sequenziale come indice array.
+Impostando il valore iniziale a 0, è possibile generare un numero sequenziale come indice di un array.
 
 ```typescript
 import { range } from 'rxjs';
 
-// Da 0 a 10 numeri sequenziali (0, 1, 2, ..., 9)
+// 0da10Generazione di numeri sequenziali (0, 1, 2, ..., 9)
 range(0, 10).subscribe(console.log);
-// Output: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+// Uscita: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 ```
 
-### Pattern 3: Inizia con numero negativo
+### Schema 3: Iniziare con un numero negativo
 
-Possono essere generati anche numeri negativi.
+Può essere generato anche da numeri negativi.
 
 ```typescript
 import { range } from 'rxjs';
 
-// 5 numeri sequenziali da -3 (-3, -2, -1, 0, 1)
+// -3da5Generazione di numeri sequenziali (-3, -2, -1, 0, 1)
 range(-3, 5).subscribe(console.log);
-// Output: -3, -2, -1, 0, 1
+// Uscita: -3, -2, -1, 0, 1
 ```
 
-## Caratteristiche Importanti
+## Caratteristiche principali.
 
-### 1. Emissione Sincrona
+### 1. emesso in modo sincrono
 
-Per default, `range()` emette tutti i valori **sincronamente** alla subscription.
+range()` emette tutti i valori in modo **sincrono** con sottoscrizione per impostazione predefinita.
 
 ```typescript
 import { range } from 'rxjs';
 
-console.log('Prima della subscription');
+console.log('Prima della sottoscrizione');
 
 range(1, 3).subscribe(value => console.log('Valore:', value));
 
-console.log('Dopo la subscription');
+console.log('Dopo la sottoscrizione');
 
-// Output:
-// Prima della subscription
+// Uscita:
+// Prima della sottoscrizione
 // Valore: 1
 // Valore: 2
 // Valore: 3
-// Dopo la subscription
+// Dopo la sottoscrizione
 ```
 
-### 2. Completa Immediatamente
+### 2. completamento immediato.
 
-Notifica `complete` immediatamente dopo aver pubblicato tutti i valori.
+Notifica il completamento immediatamente dopo che tutti i valori sono stati emessi.
 
 ```typescript
 import { range } from 'rxjs';
 
 range(1, 3).subscribe({
   next: val => console.log(val),
-  complete: () => console.log('Completo!')
+  complete: () => console.log('Completato！')
 });
 
-// Output: 1, 2, 3, Completo!
+// Uscita: 1, 2, 3, Completato！
 ```
 
-### 3. Equivalenza con istruzione for
+### 3. equivalenza con l'istruzione for
 
-`range(start, count)` è equivalente alla seguente istruzione for.
+range(start, count)` è equivalente alla seguente istruzione for.
 
 ```typescript
-// Istruzione for imperativa
+// ImperativoforFrase
 for (let i = start; i < start + count; i++) {
   console.log(i);
 }
 
-// range() dichiarativo
+// Dichiarativorange()
 range(start, count).subscribe(console.log);
 ```
 
-## Casi d'Uso Pratici
+## Caso d'uso pratico.
 
-### 1. Elaborazione Batch
+### 1. elaborazione in batch
 
-Usato per eseguire task multipli sequenzialmente.
+Utilizzata per l'esecuzione sequenziale di più attività.
 
 ```typescript
 import { range, of, Observable, concatMap, delay, map } from 'rxjs';
-// Funzione per simulare elaborazione dati
+// Funzioni che simulano l'elaborazione dei dati
 function processItem(index: number): Observable<string> {
   return of(index).pipe(
-    delay(100), // Simula 100ms tempo elaborazione
-    map(i => `Risultato elaborazione elemento ${i}`)
+    delay(100), // 100msSimulare i tempi di elaborazione per
+    map(i => `elemento${i}Risultati dell'elaborazione di`)
   );
 }
 
-// Elabora sequenzialmente 10 elementi dati (1 secondo delay tra ogni processo)
+// 10Elaborazione sequenziale dei dati per un elemento (con un ritardo di1secondi di ritardo tra un'elaborazione e l'altra)
 range(1, 10).pipe(
   concatMap(index =>
     processItem(index).pipe(delay(1000))
   )
 ).subscribe({
-  next: result => console.log(`Elaborazione completa: ${result}`),
-  complete: () => console.log('Tutta l\'elaborazione completata')
+  next: result => console.log(`Elaborazione completata: ${result}`),
+  complete: () => console.log('Tutte le elaborazioni sono state completate')
 });
 
-// Output:
-// Elaborazione completa: Risultato elaborazione elemento 1 (dopo circa 1.1 secondi)
-// Elaborazione completa: Risultato elaborazione elemento 2 (dopo circa 2.1 secondi)
+// Uscita:
+// Elaborazione completata: elemento1Risultati dell'elaborazione di (Dopo circa1.1secondi dopo)
+// Elaborazione completata: elemento2Risultati dell'elaborazione di (Dopo circa2.1secondi dopo)
 // ...
-// Elaborazione completa: Risultato elaborazione elemento 10 (dopo circa 10.1 sec.)
-// Tutta l'elaborazione completata
+// Elaborazione completata: elemento10Risultati dell'elaborazione di (Dopo circa10.1secondi dopo)
+// Tutte le elaborazioni sono state completate
 ```
 
-### 2. Paginazione
+### 2. paginazione
 
-Recupera pagine multiple di dati sequenzialmente.
+Recupera i dati di più pagine in modo sequenziale.
 
 ```typescript
 import { range, of, Observable, concatMap, delay } from 'rxjs';
@@ -171,13 +172,13 @@ interface PageData {
   items: string[];
 }
 
-// Funzione per simulare recupero dati pagina
+// Funzione per simulare l'acquisizione dei dati della pagina
 function fetchPage(page: number): Observable<PageData> {
   return of({
     page,
-    items: [`Elemento${page}-1`, `Elemento${page}-2`, `Elemento${page}-3`]
+    items: [`elemento${page}-1`, `elemento${page}-2`, `elemento${page}-3`]
   }).pipe(
-    delay(500) // Simula chiamata API
+    delay(500) // APISimulare la chiamata
   );
 }
 
@@ -189,234 +190,218 @@ function fetchAllPages(totalPages: number) {
 
 fetchAllPages(5).subscribe({
   next: (data: PageData) => console.log(`Pagina ${data.page}:`, data.items),
-  complete: () => console.log('Tutte le pagine recuperate')
+  complete: () => console.log('Completamento di tutte le acquisizioni di pagine')
 });
 
-// Output:
-// Pagina 1: ['Elemento1-1', 'Elemento1-2', 'Elemento1-3']
-// Pagina 2: ['Elemento2-1', 'Elemento2-2', 'Elemento2-3']
-// Pagina 3: ['Elemento3-1', 'Elemento3-2', 'Elemento3-3']
-// Pagina 4: ['Elemento4-1', 'Elemento4-2', 'Elemento4-3']
-// Pagina 5: ['Elemento5-1', 'Elemento5-2', 'Elemento5-3']
-// Tutte le pagine recuperate
+// Uscita:
+// Pagina 1: ['elemento1-1', 'elemento1-2', 'elemento1-3']
+// Pagina 2: ['elemento2-1', 'elemento2-2', 'elemento2-3']
+// Pagina 3: ['elemento3-1', 'elemento3-2', 'elemento3-3']
+// Pagina 4: ['elemento4-1', 'elemento4-2', 'elemento4-3']
+// Pagina 5: ['elemento5-1', 'elemento5-2', 'elemento5-3']
+// Completamento di tutte le acquisizioni di pagine
 ```
 
-### 3. Elaborazione Indici Array
+### 3. Elaborare gli indici degli array
 
-Usa come loop basato su indici quando elabori ogni elemento di un array.
+Utilizzato come ciclo basato sull'indice per l'elaborazione di ciascun elemento di un array.
 
 ```typescript
-import { range, map } from 'rxjs';
-const items = ['Mela', 'Banana', 'Ciliegia', 'Dattero', 'Sambuco'];
-
-range(0, items.length).pipe(
-  map(index => ({ index, item: items[index] }))
-).subscribe(({ index, item }) => {
-  console.log(`[${index}] ${item}`);
-});
-
-// Output:
-// [0] Mela
-// [1] Banana
-// [2] Ciliegia
-// [3] Dattero
-// [4] Sambuco
+function range(
+  start: number,
+  count?: number,
+  scheduler?: SchedulerLike
+): Observable<number>
 ```
 
-### 4. Generazione Dati Test
+### 4. Generare i dati di prova
 
-Utile per generare dati mock per unit test.
+È utile per generare dati finti nei test unitari.
+
 
 ```typescript
-import { range, map, toArray } from 'rxjs';
-// Genera dati utente mock
-range(1, 100).pipe(
-  map(id => ({
-    id,
-    name: `Utente${id}`,
-    email: `utente${id}@example.com`
-  })),
-  toArray()
-).subscribe(users => {
-  console.log(`${users.length} utenti generati`);
-  // Usa nei test
-});
+function range(
+  start: number,
+  count?: number,
+  scheduler?: SchedulerLike
+): Observable<number>
 ```
 
-## Asincronizzazione con Scheduler
+### 5. Contatore del processo di ripetizione
 
-Quando elabori grandi quantità di dati, l'esecuzione asincrona è possibile specificando uno scheduler.
+Controlla il numero di tentativi in caso di errori.
+
 
 ```typescript
-import { range, asyncScheduler, observeOn } from 'rxjs';
-console.log('Inizio');
+function range(
+  start: number,
+  count?: number,
+  scheduler?: SchedulerLike
+): Observable<number>
+```
 
-// Emetti 1.000.000 numeri asincronamente
-range(1, 1000000).pipe(
-  observeOn(asyncScheduler)
-).subscribe({
-  next: val => {
-    if (val % 100000 === 0) {
-      console.log(`Progresso: ${val}`);
-    }
-  },
-  complete: () => console.log('Completo')
-});
+## Asincronizzazione tramite scheduler
 
-console.log('Dopo subscription (asincrono, quindi eseguito immediatamente)');
+Quando si elaborano grandi quantità di dati, è possibile specificare uno scheduler per l'esecuzione asincrona.
 
-// Output:
-// Inizio
-// Dopo subscription (asincrono, quindi eseguito immediatamente)
-// Progresso: 100000
-// Progresso: 200000
-// ...
-// Completo
+
+```typescript
+function range(
+  start: number,
+  count?: number,
+  scheduler?: SchedulerLike
+): Observable<number>
 ```
 
 > [!TIP]
-> **Uso dello Scheduler**:
-> - Non bloccare la UI quando elabori grandi quantità di dati
-> - Controllo tempo nei test (TestScheduler)
-> - Controllo event loop in ambiente Node.js
 
-Per maggiori informazioni, consulta [Tipi di Scheduler e Come Usarli](/it/guide/schedulers/types).
+> **Utilizzo dello scheduler**:.
+> - Non bloccare l'interfaccia utente con l'elaborazione di dati di massa.
+> - Controllo del tempo nei test (Scheduler)
+> Controllo dei cicli di eventi in ambienti Node.js
 
-## Confronto con Altre Funzioni di Creazione
+Per ulteriori informazioni, vedere [Tipi di scheduler e loro utilizzo] (/it/guide/scheduler/tipi).
+
+## Confronto con altre Creation Function
 
 ### range() vs of()
 
-```typescript
-import { range, of } from 'rxjs';
-
-// range() - interi consecutivi
-range(1, 3).subscribe(console.log);
-// Output: 1, 2, 3
-
-// of() - enumera valori arbitrari
-of(1, 2, 3).subscribe(console.log);
-// Output: 1, 2, 3
-
-// Differenza: range() accetta solo numeri sequenziali, of() accetta valori arbitrari
-of(1, 10, 100).subscribe(console.log);
-// Output: 1, 10, 100 (non possibile con range())
-```
-
-### range() vs from()
 
 ```typescript
-import { range, from } from 'rxjs';
-
-// range() - genera numeri sequenziali
-range(1, 5).subscribe(console.log);
-// Output: 1, 2, 3, 4, 5
-
-// from() - genera da un array (deve creare array in anticipo)
-from([1, 2, 3, 4, 5]).subscribe(console.log);
-// Output: 1, 2, 3, 4, 5
-
-// Vantaggio di range(): nessuna pre-allocazione di array in memoria
-range(1, 1000000); // Efficiente in memoria
-from(Array.from({ length: 1000000 }, (_, i) => i + 1)); // Array va in memoria
+function range(
+  start: number,
+  count?: number,
+  scheduler?: SchedulerLike
+): Observable<number>
 ```
 
-### range() vs generate()
+## range() vs from()
+
 
 ```typescript
-import { range, generate } from 'rxjs';
-
-// range() - semplice numerazione sequenziale
-range(1, 5).subscribe(console.log);
-// Output: 1, 2, 3, 4, 5
-
-// generate() - esempio complesso della stessa cosa
-generate(
-  1,                    // Valore iniziale
-  x => x <= 5,          // Condizione continuazione
-  x => x + 1            // Iterazione
-).subscribe(console.log);
-// Output: 1, 2, 3, 4, 5
-
-// Vantaggi di generate(): condizione complessa e gestione stato
-generate(
-  1,
-  x => x <= 100,
-  x => x * 2  // Incrementa per fattore 2
-).subscribe(console.log);
-// Output: 1, 2, 4, 8, 16, 32, 64
-// (non possibile con range())
+function range(
+  start: number,
+  count?: number,
+  scheduler?: SchedulerLike
+): Observable<number>
 ```
 
-> [!TIP]
-> **Criteri di Selezione**:
-> - **Servono numeri sequenziali** → `range()`
-> - **Enumera valori arbitrari** → `of()`
-> - **Array/Promise esistente** → `from()`
-> - **Condizione/step complesso** → `generate()`
+## range() vs generate()
 
-## Considerazioni sulle Performance
 
-Poiché `range()` emette valori sincronamente, le performance dovrebbero essere considerate quando si generano grandi numeri di valori.
+```typescript
+function range(
+  start: number,
+  count?: number,
+  scheduler?: SchedulerLike
+): Observable<number>
+```
+
+
+```typescript
+import { range } from 'rxjs';
+
+// 1da5Vengono generati numeri sequenziali (1, 2, 3, 4, 5)
+range(1, 5).subscribe({
+  next: value => console.log('Valore:', value),
+  complete: () => console.log('Completato')
+});
+
+// Uscita:
+// Valore: 1
+// Valore: 2
+// Valore: 3
+// Valore: 4
+// Valore: 5
+// Completato
+```
+
+> **Criteri di selezione**:.
+> - **Richiede un numero sequenziale** → `range()`
+> - **Enumera un valore qualsiasi** → `of()`
+> - **Promise esistente** → `from()`
+> - **Condizione complessa/passo** → `generare()`
+
+## Note sulle prestazioni
+
+range()` emette i valori in modo sincrono, quindi è necessario prendere nota delle prestazioni quando si generano un gran numero di valori.
 
 > [!WARNING]
-> **Gestione Grandi Quantità di Dati**:
-> ```typescript
-> // ❌ Cattivo esempio: emette 1 milione di valori sincronamente (UI si blocca)
-> range(1, 1000000).subscribe(console.log);
->
-> // ✅ Buon esempio 1: asincrono con scheduler
-> range(1, 1000000).pipe(
->   observeOn(asyncScheduler)
-> ).subscribe(console.log);
->
-> // ✅ Buon Esempio 2: Dividi con buffering
-> range(1, 1000000).pipe(
->   bufferCount(1000)
-> ).subscribe(batch => console.log(`${batch.length} casi elaborati`));
-> ```
 
-## Gestione Errori
+> **Gestione di grandi quantità di dati**:.
+>
 
-Sebbene `range()` stesso non emetta errori, errori possono verificarsi nella pipeline.
 
 ```typescript
+function range(
+  start: number,
+  count?: number,
+  scheduler?: SchedulerLike
+): Observable<number>
+```
+
+dattiloscritto
+importare { range, from } da 'rxjs';.
+
+// se sono richiesti numeri sequenziali → range() è conciso
+range(0, 10).subscribe(console.log);
+
+// Non è necessario creare un array e poi convertirlo (inefficiente)
+from(Array.from({ length: 10 }, (_, i) => i)).subscribe(console.log);
+
+// Se esiste un array esistente → usare from()
+const existingArray = [5, 10, 15, 20];
+from(existingArray).subscribe(console.log);
+
+
+```typescript
+function range(
+  start: number,
+  count?: number,
+  scheduler?: SchedulerLike
+): Observable<number>
+```
+
+dattiloscritto.
 import { range, of, map, catchError } from 'rxjs';
 range(1, 10).pipe(
   map(n => {
-    if (n === 5) {
-      throw new Error('Errore a 5');
+    se (n === 5) {
+      lancia un nuovo errore('Errore a 5');
     }
     return n * 2;
-  }),
+  }),.
   catchError((error: unknown) => {
-    console.error('Si è verificato un errore:', (error instanceof Error ? error.message : String(error)));
-    return of(-1); // Ritorna valore default
+    const message = error of Error? error.message : String(error);
+    console.error('Error occurred:', message);
+    return of(-1); // restituisce il valore predefinito
   })
-).subscribe(console.log);
+).subscribe(console.log);.
 
 // Output: 2, 4, 6, 8, -1
-```
+
 
 ## Riepilogo
 
-`range()` è una Funzione di Creazione semplice ma potente che produce una sequenza di interi consecutivi.
+range()` è una semplice e potente Creation Function che produce una sequenza di numeri interi consecutivi.
 
 > [!IMPORTANT]
-> **Caratteristiche di range()**:
-> - ✅ Ideale per generare numeri consecutivi (alternativa a istruzione for)
-> - ✅ Utile per elaborazione batch, paginazione, generazione dati test
-> - ✅ Efficiente in memoria (nessuna pre-creazione di array)
-> - ⚠️ Considera asincrono per grandi quantità di dati
-> - ⚠️ Usa `generate()` per condizioni complesse
 
-## Argomenti Correlati
+> **Caratteristiche di range()`**:.
+> ✅ Ideale per generare numeri consecutivi (alternativa all'istruzione for).
+> - ✅ Utile per l'elaborazione in batch, l'impaginazione e la generazione di dati di prova.
+> - ✅ Efficiente dal punto di vista della memoria (nessuna creazione preliminare di array).
+> - ⚠️ Considerare l'asincronia per grandi quantità di dati
+> - ⚠️ Usare `generate()` per condizioni complesse
 
-- [generate()](/it/guide/creation-functions/loop/generate) - Generazione loop generica
-- [of()](/it/guide/creation-functions/basic/of) - Enumera valori arbitrari
-- [from()](/it/guide/creation-functions/basic/from) - Converti da array o Promise
+## Vedere anche.
+
+- [generate()](/it/guide/creation-functions/loop/generate) - Generica generazione di loop.
+- [of()](/it/guide/creation-functions/basic/of) - enumera valori arbitrari.
+- [from()](/it/guide/creation-functions/basic/from) - Converte da un array o da Promise
 - [interval()](/it/guide/creation-functions/basic/interval) - Pubblica valori periodicamente
 
-## Riferimenti
+## Risorsa di riferimento.
 
-- [RxJS Ufficiale: range()](https://rxjs.dev/api/index/function/range)
-- [Learn RxJS: range](https://www.learnrxjs.io/learn-rxjs/operators/creation/range)
+- [RxJS official: range()](https://rxjs.dev/api/index/function/range)
+- [Imparare RxJS: range](https://www.learnrxjs.io/learn-rxjs/operators/creation/range)

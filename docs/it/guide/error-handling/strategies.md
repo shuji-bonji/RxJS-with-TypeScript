@@ -1,70 +1,72 @@
 ---
-description: "Descrive una strategia completa di gestione degli errori per RxJS, includendo come combinare gli operatori catchError, retry, retryWhen e finalize, retry con backoff esponenziale, classificazione degli errori e gestione appropriata, gestori di errori globali e come implementare una solida gestione degli errori in TypeScript."
+description: "Descrive una strategia completa di gestione degli errori per RxJS, includendo come combinare gli operatori catchError, retry, retryWhen e finalize, retry con backoff esponenziale, classificazione degli errori e gestione appropriata, gestori di errori globali e altre robuste strategie di gestione degli errori in TypeScript. Come implementare una gestione robusta degli errori in TypeScript."
 ---
 
-# Strategie di gestione degli errori in RxJS
+# Strategia di gestione degli errori di RxJS
 
 La gestione degli errori in RxJS è un aspetto importante della programmazione reattiva. L'implementazione di una corretta gestione degli errori migliora la robustezza e l'affidabilità dell'applicazione. Questo documento descrive le diverse strategie di gestione degli errori disponibili in RxJS.
 
-## Pattern di base
+## Modelli di base
 
-RxJS gestisce gli errori come parte del ciclo di vita degli Observable. La gestione degli errori di base comprende i seguenti metodi.
+RxJS gestisce gli errori come parte del ciclo di vita di Observable. La gestione degli errori di base comprende i seguenti metodi.
 
 ```ts
 import { of, throwError } from 'rxjs';
 import { catchError } from 'rxjs';
 
-// Observable che lancia un errore
-const error$ = throwError(() => new Error('Si è verificato un errore')); // RxJS 7 o successivo, formato funzione consigliato
+// Errore.Observable
+const error$ = throwError(() => new Error('Si è verificato un errore.')); // RxJS 7Formato della funzione consigliato d'ora in poi
 
 // Gestione degli errori di base
 error$
   .pipe(
     catchError((error: unknown) => {
-      console.error('Errore rilevato:', (error instanceof Error ? error.message : String(error)));
-      return of('Valore di fallback dopo l\'errore');
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('Cattura dell'errore:', message);
+      return of('Valore di fallback dopo l'errore');
     })
   )
   .subscribe({
     next: (value) => console.log('Valore:', value),
-    error: (err) => console.error('Errore non gestito:', err),
+    error: (err) => console.error('Errori non gestiti:', err),
     complete: () => console.log('Completato'),
   });
 
-// Output:
-// Errore rilevato: Si è verificato un errore
+// Uscita:
+// Cattura dell'errore: Si è verificato un errore.
 // Valore: Valore di fallback dopo l'errore
 // Completato
 ```
 
-## Diverse strategie di gestione degli errori
+## Varie strategie di gestione degli errori
 
-### 1. Catturare gli errori e fornire valori alternativi
+### 1. catturare gli errori e fornire valori alternativi
 
-Utilizzare l'operatore `catchError` per catturare gli errori e fornire valori alternativi o stream alternativi.
+Usare l'operatore catchError per catturare gli errori e fornire valori alternativi o flussi alternativi.
 
 ```ts
 import { of, throwError } from 'rxjs';
 import { catchError } from 'rxjs';
 
-const source$ = throwError(() => new Error('Errore nel recupero dei dati'));
+const source$ = throwError(() => new Error('Errore nell'acquisizione dei dati'));
 
 source$.pipe(
   catchError((error: unknown) => {
-    console.error('Si è verificato un errore:', (error instanceof Error ? error.message : String(error)));
-    // Restituisce dati alternativi
+    const message = error instanceof Error ? error.message : String(error);
+    console.error('Si è verificato un errore:', message);
+    // Restituzione di dati alternativi
     return of({ isError: true, data: [], message: 'Visualizzazione dei dati predefiniti' });
   })
 ).subscribe(data => console.log('Risultato:', data));
 
-// Output:
-// Si è verificato un errore: Errore nel recupero dei dati
+// Uscita:
+// Si è verificato un errore: Errore nell'acquisizione dei dati
 // Risultato: {isError: true, data: Array(0), message: 'Visualizzazione dei dati predefiniti'}
 ```
 
 ### 2. Riprovare se si verifica un errore
 
-Usare l'operatore `retry` o `retryWhen` per riprovare lo stream se si verifica un errore.
+Utilizzare l'operatore `retry` per riprovare il flusso in caso di errore (a partire dalla versione 7.3, si raccomanda il formato `retry({ count, delay })` che sostituisce il vecchio `retryWhen`).
 
 ```ts
 import { interval, throwError, of } from 'rxjs';
@@ -77,58 +79,50 @@ interval(1000).pipe(
     if (++attemptCount <= 2) {
       return throwError(() => new Error(`Errore #${attemptCount}`));
     }
-    return of('Successo!');
+    return of('Successo！');
   }),
   tap(() => console.log('Esecuzione:', attemptCount)),
-  retry(2), // Riprova fino a 2 volte
+  retry(2), // Max.2Tentativi
 ).subscribe({
   next: value => console.log('Valore:', value),
   error: err => console.error('Errore finale:', err.message),
 });
 
-// Output:
+// Uscita:
 // Esecuzione: 3
-// Valore: Successo!
+// Valore: Successo！
 // Esecuzione: 4
-// Valore: Successo!
+// Valore: Successo！
 // Esecuzione: 5
 // ...
 ```
 
-### 3. Riprovare con backoff esponenziale
+### 3. Riprova con backoff esponenziale
 
-Il backoff esponenziale, che aumenta gradualmente l'intervallo di riprova, è efficace ad esempio per le richieste di rete.
+Il backoff esponenziale, che aumenta gradualmente l'intervallo di riprova, è efficace, ad esempio per le richieste di rete.
 
 ```ts
 import { throwError, timer, of } from 'rxjs';
-import { retryWhen, tap, concatMap, catchError } from 'rxjs';
+import { retry, tap, catchError } from 'rxjs';
 
 function fetchWithRetry() {
-  let retryCount = 0;
-
   return throwError(() => new Error('Errore di rete')).pipe(
-    retryWhen((errors) =>
-      errors.pipe(
-        // Conta il numero di errori
-        tap((error) => console.log('Si è verificato un errore:', error.message)),
-        // Ritardo con backoff esponenziale
-        concatMap(() => {
-          retryCount++;
-          const delayMs = Math.min(1000 * Math.pow(2, retryCount), 10000);
-          console.log(`${retryCount}° tentativo dopo ${delayMs}ms`);
-          return timer(delayMs);
-        }),
-        // Riprova fino a 5 volte
-        tap(() => {
-          if (retryCount >= 5) {
-            throw new Error('È stato superato il numero massimo di tentativi');
-          }
-        })
-      )
-    ),
-    // Fallback finale
+    // RxJS 7.3+ Consigliato: retry({ count, delay }) Formato
+    retry({
+      count: 5, // Max.5Fino a tre tentativi
+      delay: (error: unknown, retryCount) => {
+        const message = error instanceof Error ? error.message : String(error);
+        console.log('Si è verificato un errore:', message);
+        // Arretramento esponenziale (max.10secondi)
+        const delayMs = Math.min(1000 * Math.pow(2, retryCount), 10000);
+        console.log(`${retryCount}Riprova una seconda volta${delayMs}msEseguito dopo`);
+        return timer(delayMs);
+      }
+    }),
+    // Ricaduta finale
     catchError((error: unknown) => {
-      console.error('Tutti i tentativi sono falliti:', (error instanceof Error ? error.message : String(error)));
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('Tutti i tentativi sono falliti:', message);
       return of({
         error: true,
         message: 'Connessione fallita. Riprovare più tardi.',
@@ -139,27 +133,27 @@ function fetchWithRetry() {
 
 fetchWithRetry().subscribe({
   next: (result) => console.log('Risultato:', result),
-  error: (err) => console.error('Errore non gestito:', err),
+  error: (err) => console.error('Errori non gestiti:', err),
 });
 
-// Output:
+// Uscita:
 // Si è verificato un errore: Errore di rete
-// 1° tentativo dopo 2000ms
+// 1Riprova una seconda volta2000msEseguito dopo
 // Si è verificato un errore: Errore di rete
-// 2° tentativo dopo 4000ms
+// 2Riprova una seconda volta4000msEseguito dopo
 // Si è verificato un errore: Errore di rete
-// 3° tentativo dopo 8000ms
+// 3Riprova una seconda volta8000msEseguito dopo
 // Si è verificato un errore: Errore di rete
-// 4° tentativo dopo 10000ms
+// 4Riprova una seconda volta10000msEseguito dopo
 // Si è verificato un errore: Errore di rete
-// 5° tentativo dopo 10000ms
-// Tutti i tentativi sono falliti: È stato superato il numero massimo di tentativi
+// 5Riprova una seconda volta10000msEseguito dopo
+// Tutti i tentativi sono falliti: Numero massimo di tentativi superato
 // Risultato: {error: true, message: 'Connessione fallita. Riprovare più tardi.'}
 ```
 
-### 4. Rilascio delle risorse in caso di errore
+### 4. Rilascio di risorse su errore
 
-Usare l'operatore `finalize` per rilasciare le risorse quando uno stream termina **completato o per errore**.
+Usare l'operatore finalize per rilasciare le risorse quando un flusso termina **completo o per errore**.
 Finalize è utile quando si vuole garantire che il processo di pulizia venga eseguito non solo in caso di errore, ma anche al completamento normale.
 
 ```ts
@@ -171,12 +165,13 @@ let isLoading = true;
 throwError(() => new Error('Errore di elaborazione'))
   .pipe(
     catchError((error: unknown) => {
-      console.error('Gestione errore:', (error instanceof Error ? error.message : String(error)));
-      return throwError(() => error); // Rilancia l'errore
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('Errore di elaborazione:', message);
+      return throwError(() => error); // Rilasciare l'errore
     }),
     finalize(() => {
       isLoading = false;
-      console.log('Ripristino dello stato di caricamento:', isLoading);
+      console.log('Ripristinare lo stato di caricamento:', isLoading);
     })
   )
   .subscribe({
@@ -185,114 +180,118 @@ throwError(() => new Error('Errore di elaborazione'))
     complete: () => console.log('Completato'),
   });
 
-// Output:
-// Gestione errore: Errore di elaborazione
+// Uscita:
+// Errore di elaborazione: Errore di elaborazione
 // Errore finale: Errore di elaborazione
-// Ripristino dello stato di caricamento: false
+// Ripristinare lo stato di caricamento: false
 ```
 
-## Pattern di gestione degli errori
+## Modello di gestione degli errori
 
-### Gestione degli errori con controllo della visualizzazione degli elementi UI
+### Gestione degli errori che include il controllo della visualizzazione degli elementi dell'IU
 
 ```ts
 import { of, throwError } from 'rxjs';
 import { catchError, finalize, tap } from 'rxjs';
 
 function fetchData(shouldFail = false) {
-  // Mostra l'indicatore di caricamento
+  // Visualizzazione del caricamento
   showLoadingIndicator();
 
-  // Recupera i dati (successo o errore)
+  // Acquisizione dei dati (successo o errore)
   return (
     shouldFail
-      ? throwError(() => new Error('Errore API'))
-      : of({ name: 'dati', value: 42 })
+      ? throwError(() => new Error('APIErrore'))
+      : of({ name: 'Dati', value: 42 })
   ).pipe(
     tap((data) => {
-      // Elaborazione in caso di successo
+      // In caso di successo
       updateUI(data);
     }),
     catchError((error: unknown) => {
-      // Aggiornamento dell'interfaccia utente in caso di errore
-      showErrorMessage((error instanceof Error ? error.message : String(error)));
-      // Restituisce dati vuoti o un valore predefinito
-      return of({ name: 'default', value: 0 });
+      const message = error instanceof Error ? error.message : String(error);
+      // In caso di erroreUIAggiornamento
+      showErrorMessage(message);
+      // Restituzione di dati vuoti o di un valore predefinito
+      return of({ name: 'Predefinito', value: 0 });
     }),
     finalize(() => {
-      // Nasconde l'indicatore di caricamento indipendentemente dal successo o dall'errore
+      // Disattiva la visualizzazione del caricamento indipendentemente dal successo o dall'errore
       hideLoadingIndicator();
     })
   );
 }
 
-// Funzioni di supporto per le operazioni dell'interfaccia utente
+// UIFunzioni di aiuto per le operazioni
 function showLoadingIndicator() {
-  console.log('Visualizzazione caricamento');
+  console.log('Visualizzazione del caricamento');
 }
 function hideLoadingIndicator() {
-  console.log('Nasconde caricamento');
+  console.log('Nascondere il caricamento');
 }
 function updateUI(data: { name: string; value: number }) {
-  console.log('Aggiornamento UI:', data);
+  console.log('UIAggiornamento:', data);
 }
 function showErrorMessage(message: any) {
-  console.log('Visualizzazione errore:', message);
+  console.log('Visualizzazione degli errori:', message);
 }
 
 // Esempio di utilizzo
 fetchData(true).subscribe();
 
-// Output:
-// Visualizzazione caricamento
-// Visualizzazione errore: Errore API
-// Nasconde caricamento
+// Uscita:
+// Visualizzazione del caricamento
+// Visualizzazione degli errori: APIErrore
+// Nascondere il caricamento
 ```
 
 ### Gestione di più fonti di errore
 
-```ts
+{```ts
 import { forkJoin, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs';
 
-// Simulare più richieste API
+// Simulazione multiplaAPISimulazione di richieste
 function getUser() {
-  return of({ id: 1, name: 'Mario Rossi' });
+  return of({ id: 1, name: 'Taro Yamada' });
 }
 
 function getPosts() {
-  return throwError(() => new Error('Errore nel recupero dei post'));
+  return throwError(() => new Error('Errore di post acquisizione'));
 }
 
 function getComments() {
-  return throwError(() => new Error('Errore nel recupero dei commenti'));
+  return throwError(() => new Error('Commento dell'errore di acquisizione'));
 }
 
-// Ottenere tutti i dati, consentire errori parziali
+// Recuperare tutti i dati e consentire errori parziali
 forkJoin({
   user: getUser().pipe(
     catchError((error: unknown) => {
-      console.error('Errore nel recupero utente:', (error instanceof Error ? error.message : String(error)));
-      return of(null); // Restituisce null in caso di errore
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('Errore di acquisizione dell'utente:', message);
+      return of(null); // In caso di errorenullRestituisce un array vuoto
     })
   ),
   posts: getPosts().pipe(
     catchError((error: unknown) => {
-      console.error('Errore nel recupero dei post:', (error instanceof Error ? error.message : String(error)));
-      return of([]); // Restituisce un array vuoto in caso di errore
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('Errore di post acquisizione:', message);
+      return of([]); // In caso di errore viene restituito un array vuoto
     })
   ),
   comments: getComments().pipe(
     catchError((error: unknown) => {
-      console.error('Errore nel recupero dei commenti:', (error instanceof Error ? error.message : String(error)));
-      return of([]); // Restituisce un array vuoto in caso di errore
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('Commento dell'errore di acquisizione:', message);
+      return of([]); // In caso di errore viene restituito un array vuoto
     })
   ),
 })
   .pipe(
     map((result) => ({
       ...result,
-      // Aggiunge un flag per indicare se c'è stato un errore parziale
+      // Aggiungere un flag per indicare se c'è stato un errore parziale
       hasErrors:
         !result.user ||
         result.posts.length === 0 ||
@@ -304,49 +303,51 @@ forkJoin({
 
     if (data.hasErrors) {
       console.log(
-        'Il recupero di alcuni dati è fallito, ma i dati disponibili saranno visualizzati'
+        'Errore nel recupero di alcuni dati, ma mostra i dati disponibili'
       );
     }
   });
 
-// Output:
-// Errore nel recupero dei post: Errore nel recupero dei post
-// Errore nel recupero dei commenti: Errore nel recupero dei commenti
-// Risultato finale: {user: {...}, posts: Array(0), comments: Array(0), hasErrors: true}
-// Il recupero di alcuni dati è fallito, ma i dati disponibili saranno visualizzati
+// Uscita:
+// Errore di post acquisizione: Errore di post acquisizione
+// Commento dell'errore di acquisizione: Commento dell'errore di acquisizione
+// Risultato finale: {user: {…}, posts: Array(0), comments: Array(0), hasErrors: true}
+// Errore nel recupero di alcuni dati, ma mostra i dati disponibili
 ```
 
-## Best practice per la gestione degli errori
+## Migliori pratiche per la gestione degli errori
 
-1. **Catturare sempre gli errori**: aggiungere sempre la gestione degli errori nella catena degli Observable. Questo è particolarmente importante per gli stream di lunga durata.
+1. **Cogliere sempre gli errori**: aggiungere sempre la gestione degli errori nella catena di Observable. Questo è particolarmente importante per i flussi di lunga durata.
 
-2. **Fornire messaggi di errore significativi**: includere informazioni nell'oggetto errore per aiutare a determinare dove si è verificato e cosa lo ha causato.
+2.**Fornire messaggi di errore significativi**: includere informazioni nell'oggetto errore per aiutare a determinare dove si è verificato e cosa lo ha causato.
 
-3. **Rilasciare correttamente le risorse**: usare `finalize` per assicurarsi che le risorse siano rilasciate indipendentemente dal successo o dal fallimento.
+3, **rilasciare correttamente le risorse**: usare finalize per assicurarsi che le risorse siano rilasciate indipendentemente dal successo o dal fallimento.
 
-4. **Considerare le strategie di retry**: specialmente per le operazioni di rete, l'implementazione di una corretta strategia di retry migliora l'affidabilità.
+4.**Considerare le strategie di retry**: specialmente per le operazioni di rete, l'implementazione di una corretta strategia di retry migliora l'affidabilità.
 
-5. **Gestione degli errori user-friendly**: nell'interfaccia utente, fornire informazioni comprensibili agli utenti, piuttosto che visualizzare messaggi di errore tecnici così come sono.
+5. **Gestione degli errori user-friendly**: nell'interfaccia utente, fornire informazioni comprensibili agli utenti, piuttosto che visualizzare messaggi di errore tecnici come sono.
+
+```
 
 ```ts
-// Esempio: conversione in messaggi di errore user-friendly
+// Esempio.：Conversione in messaggi di errore di facile comprensione
 function getErrorMessage(error: any): string {
   if (error.status === 401) {
-    return 'La sessione è scaduta. Si prega di effettuare nuovamente il login.';
+    return 'La sessione è scaduta. Effettuare nuovamente il login.';
   } else if (error.status === 404) {
     return 'La risorsa richiesta non è stata trovata.';
   } else if (error.status >= 500) {
     return 'Si è verificato un errore del server. Riprovare più tardi.';
   }
-  return 'Si è verificato un errore inatteso.';
+  return 'Si è verificato un errore imprevisto.';
 }
 ```
 
-## Riepilogo
+## Riepilogo.
 
-La gestione degli errori in RxJS è una parte importante per garantire la robustezza dell'applicazione. Utilizzando la giusta combinazione di operatori come `catchError`, `retry` e `finalize`, si possono gestire diversi scenari di errore. Progettare una strategia completa di gestione degli errori per migliorare l'esperienza dell'utente, piuttosto che limitarsi a catturare gli errori.
+La gestione degli errori in RxJS è una parte importante per garantire la robustezza dell'applicazione. Utilizzando la giusta combinazione di operatori come catchError, retry e finalize, si possono gestire diversi scenari di errore. Progettare una strategia completa di gestione degli errori per migliorare l'esperienza dell'utente, piuttosto che limitarsi a catturare gli errori.
 
-## 🔗 Sezioni correlate
+## 🔗 Sezioni correlate.
 
-- **[Errori comuni e come affrontarli](/it/guide/anti-patterns/common-mistakes#9-soppressione-degli-errori)** - Rivedere gli anti-pattern sulla gestione degli errori
+- **[Errori comuni e come affrontarli](/it/guide/anti-patterns/common-mistakes#9-error-grasping)** - Rivedere gli anti-patterns sulla gestione degli errori.
 - **[retry e catchError](/it/guide/error-handling/retry-catch)** - Spiega un utilizzo più dettagliato

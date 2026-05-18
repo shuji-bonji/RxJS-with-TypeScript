@@ -60,6 +60,7 @@ clicks$.pipe(
 | auditTime". | Feste Zeit (Millisekunden) | Einfache zeitbasierte Kontrolle |
 | audit". | **Benutzerdefiniertes Observable. | **Dynamische Zeitsteuerung**. |
 
+
 ```ts
 import { fromEvent, timer } from 'rxjs';
 import { audit, auditTime } from 'rxjs';
@@ -234,7 +235,7 @@ source$.pipe(
   audit(() => duration$) // 2Funktioniert nach dem zweiten Mal nicht mehr
 ).subscribe();
 
-// ✅ Gutes Beispiel: Eine neueObservableErzeugen eines
+// ✅ Gutes Beispiel: Jedes Mal wird eine neue Instanz erstelltObservableErzeugen Sie einen
 source$.pipe(
   audit(() => timer(1000))
 ).subscribe();
@@ -270,8 +271,8 @@ clicks$.pipe(
 ).subscribe(() => {
   console.log('Klick wurde aufgezeichnet');
 });
-
 ```
+
 
 ```ts
 import { fromEvent, interval, timer } from 'rxjs';

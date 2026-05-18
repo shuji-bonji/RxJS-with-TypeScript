@@ -1,42 +1,42 @@
 ---
-description: "Une explication complète des fonctions de création RxJS (fonctions de création d'Observable), incluant les différences avec les opérateurs pipables, l'utilisation de base, et sept catégories (création de base, génération de boucles, communication HTTP, combinaison, sélection/partition, branchement conditionnel et systèmes de contrôle)."
+description: "Explique systématiquement les fonctions de Creation Function de RxJS (fonctions de création d'Observable), leurs différences avec Pipeable Operator, l'utilisation de base et les sept catégories (Basic Creation, Loop Generation, HTTP Communication, Joining, Selection and Splitting, Conditional Splitting and Control). Les caractéristiques de chaque fonction et un guide de sélection pour différentes utilisations sont fournis."
 ---
 
-# Fonctions de création
+# Creation Function
 
-Dans RxJS, il existe deux formes différentes : **Fonctions de création** pour créer des Observables et **Opérateurs pipables** pour convertir des Observables existants.
+Dans RxJS, il existe deux formes différentes de **Fonctions de Création** pour créer des Observable et de **Pipeable Operators** pour convertir des Observable existants.
 
-Cette page décrit les concepts de base des fonctions de création et les sept catégories principales.
+Cette page décrit les concepts de base des Creation Function et les sept catégories principales.
 
-## Qu'est-ce qu'une fonction de création ?
+## Qu'est-ce que les Creation Function ?
 
-**Les fonctions de création** sont des fonctions permettant de créer de nouveaux Observables.
+**Les fonctions de création sont des fonctions permettant de créer de nouveaux Observable.
 
 ```typescript
 import { of, from, interval } from 'rxjs';
 
-// Utilisation comme fonctions de création
+// Creation FunctionUtilisé comme
 const obs1$ = of(1, 2, 3);
 const obs2$ = from([4, 5, 6]);
 const obs3$ = interval(1000);
 ```
 
-Elles sont importées directement du package `rxjs` et appelées en tant que fonctions pour créer des Observables.
+Elles sont importées directement du paquetage `rxjs` et appelées en tant que fonctions pour créer un Observable.
 
-## Différence avec l'opérateur pipable
+## Différences avec Pipeable Operator
 
-Les fonctions de création et les opérateurs pipables ont des utilisations et des applications différentes. Voir le tableau ci-dessous pour comprendre les différences.
+Les Creation Function et les Pipeable Operator ont des utilisations et des usages différents. Voir le tableau ci-dessous pour voir les différences entre eux.
 
-| Caractéristique | Fonction de création | Opérateur pipable |
-|------|-------------------|-------------------|
-| **Objectif** | Créer un nouvel Observable | Transformer un Observable existant |
-| **Importation depuis** | `rxjs` | `rxjs/operators` |
-| **Utilisation** | Appeler directement comme fonction | Utiliser à l'intérieur de `.pipe()` |
-| **Exemple** | `concat(obs1$, obs2$)` | `obs1$.pipe(concatWith(obs2$))` |
+| Caractéristiques | Creation Function | Pipeable Operator |
+|---|---|---|
+| **Utilisation**. | Création d'un nouvel Observable | Conversion d'un Observable existant |
+| **Importer**. | `rxjs`. | `rxjs/operators`. |
+| **Comment l'utiliser ? | Appeler directement en tant que fonction | Utilisation dans `.pipe()`. |
+| **Exemple**. | `concat(obs1$, obs2$)` | `obs1$.pipe(concatWith(obs2$))` |
 
-### Exemple de fonction de création
+### Exemple de Creation Function
 
-Les fonctions de création sont utilisées pour combiner directement plusieurs Observables.
+La Creation Function est utilisée pour combiner directement plusieurs Observable.
 
 ```typescript
 import { concat, of } from 'rxjs';
@@ -44,14 +44,14 @@ import { concat, of } from 'rxjs';
 const obs1$ = of(1, 2, 3);
 const obs2$ = of(4, 5, 6);
 
-// Utilisation comme fonction de création
+// Creation Function Utilisé comme
 concat(obs1$, obs2$).subscribe(console.log);
-// Sortie: 1, 2, 3, 4, 5, 6
+// Sortie de l'usine: 1, 2, 3, 4, 5, 6
 ```
 
-### Exemple d'opérateur pipable
+### Exemple de Pipeable Operator.
 
-L'opérateur pipable est utilisé pour ajouter un processus de conversion à un Observable existant.
+Le Pipeable Operator est utilisé pour ajouter un processus de conversion à un Observable existant.
 
 ```typescript
 import { of } from 'rxjs';
@@ -60,39 +60,40 @@ import { concatWith } from 'rxjs';
 const obs1$ = of(1, 2, 3);
 const obs2$ = of(4, 5, 6);
 
-// Utilisation comme opérateur pipable
+// Pipeable Operator Utilisé comme
 obs1$.pipe(
   concatWith(obs2$)
 ).subscribe(console.log);
-// Sortie: 1, 2, 3, 4, 5, 6
+// Sortie de l'usine: 1, 2, 3, 4, 5, 6
 ```
 
-## Critères d'utilisation
+## Critères d'utilisation.
 
-Le choix entre fonction de création et opérateur pipable est déterminé par les critères suivants.
+Le choix entre Creation Function et Pipeable Operator est déterminé par les critères suivants
 
-### Quand utiliser une fonction de création
+### Quand la Creation Function doit être utilisée.
 
-La fonction de création convient lorsque plusieurs Observables doivent être opérés au même niveau ou lorsqu'un Observable doit être créé à partir de zéro.
+La Creation Function convient lorsque vous souhaitez exploiter plusieurs Observable au même niveau ou lorsque vous souhaitez créer un Observable à partir de zéro.
 
-- **Lors de la combinaison de plusieurs Observables au même niveau**
-  ```typescript
+- Lorsque vous combinez plusieurs Observable au même niveau**.
+
+```typescript
   concat(obs1$, obs2$, obs3$)
   merge(click$, hover$, scroll$)
   ```
 
-- **Lors de la création d'un Observable à partir de zéro**
+- **Depuis le débutObservableQuand créer**
   ```typescript
   of(1, 2, 3)
   from([1, 2, 3])
   interval(1000)
   ```
 
-### Quand utiliser un opérateur pipable
+### Pipeable Operator Si vous devez utiliser
 
-L'opérateur pipable convient pour ajouter un traitement à un Observable existant ou pour enchaîner plusieurs opérations.
+Pipeable Operatorest approprié lorsque vous souhaitez ajouter un processus à un processus existant ou lorsque vous souhaitez enchaîner plusieurs opérations.Observableexistant ou lorsque vous souhaitez enchaîner plusieurs opérations.
 
-- **Lors de l'ajout d'opérations à un Observable existant**
+- **Si vous souhaitez ajouter un processus à un processus existantObservableLorsque vous souhaitez ajouter un processus à un processus existant**
   ```typescript
   obs1$.pipe(
     map(x => x * 2),
@@ -101,40 +102,40 @@ L'opérateur pipable convient pour ajouter un traitement à un Observable exista
   )
   ```
 
-- **Lors de l'enchaînement de plusieurs opérations comme pipeline**
+- **Lorsque vous enchaînez plusieurs opérations en tant que pipeline**
 
-## Catégories de fonctions de création
+## Creation Functions Catégories de
 
-Dans ce chapitre, les fonctions de création sont divisées en sept catégories.
+Dans ce chapitre,Creation Functionsaux7Vous apprendrez à les diviser en trois catégories.
 
 ### Liste de toutes les catégories
 
 Le tableau ci-dessous présente toutes les catégories et les fonctions qu'elles contiennent. Cliquez sur le nom de chaque fonction pour accéder à la page détaillée.
 
-| Catégorie | Description | Fonctions principales | Cas d'utilisation typiques |
+| Catégorie | Description de la fonction | Fonctions principales | Cas d'utilisation typiques |
 |---------|------|-----------|-------------------|
-| **[Création de base](/fr/guide/creation-functions/basic/)** | Fonctions les plus basiques et les plus utilisées. Création d'Observables basés sur données, tableaux, événements et temps | [of](/fr/guide/creation-functions/basic/of), [from](/fr/guide/creation-functions/basic/from), [fromEvent](/fr/guide/creation-functions/basic/fromEvent), [interval](/fr/guide/creation-functions/basic/interval), [timer](/fr/guide/creation-functions/basic/timer) | Tests avec valeurs fixes, streaming de données existantes, gestion d'événements DOM, polling, exécution différée |
-| **[Génération de boucles](/fr/guide/creation-functions/loop/)** | Exprimer le traitement de boucles comme for/while dans Observable | [range](/fr/guide/creation-functions/loop/range), [generate](/fr/guide/creation-functions/loop/generate) | Génération de nombres séquentiels, traitement par lots, transitions d'état complexes, calculs mathématiques |
-| **[Communication HTTP](/fr/guide/creation-functions/http-communication/)** | Gérer la communication HTTP comme Observable | [ajax](/fr/guide/creation-functions/http-communication/ajax), [fromFetch](/fr/guide/creation-functions/http-communication/fromFetch) | Communication HTTP basée sur XMLHttpRequest, communication HTTP basée sur Fetch API, appels REST API |
-| **[Combinaison](/fr/guide/creation-functions/combination/)** | Combiner plusieurs Observables en un seul. Le moment et l'ordre d'émission diffèrent selon la méthode | [concat](/fr/guide/creation-functions/combination/concat), [merge](/fr/guide/creation-functions/combination/merge), [combineLatest](/fr/guide/creation-functions/combination/combineLatest), [zip](/fr/guide/creation-functions/combination/zip), [forkJoin](/fr/guide/creation-functions/combination/forkJoin) | Traitement étape par étape, intégration d'événements multiples, synchronisation d'entrées de formulaire, attente d'achèvement d'appels API parallèles |
-| **[Sélection/Partition](/fr/guide/creation-functions/selection/)** | Sélectionner un parmi plusieurs Observables ou partitionner un Observable en plusieurs | [race](/fr/guide/creation-functions/selection/race), [partition](/fr/guide/creation-functions/selection/partition) | Compétition entre sources de données, branchement succès/échec |
-| **[Conditionnel](/fr/guide/creation-functions/conditional/)** | Sélectionner un Observable selon des conditions ou générer dynamiquement à l'abonnement | [iif](/fr/guide/creation-functions/conditional/iif), [defer](/fr/guide/creation-functions/conditional/defer) | Branchement selon statut de connexion, création dynamique d'Observable, évaluation paresseuse |
-| **[Contrôle](/fr/guide/creation-functions/control/)** | Contrôler le timing d'exécution de l'Observable et la gestion des ressources | [scheduled](/fr/guide/creation-functions/control/scheduled), [using](/fr/guide/creation-functions/control/using) | Contrôle du timing avec planificateur, gestion du cycle de vie des ressources, prévention des fuites de mémoire |
+| **[Système de création de base](/fr/guide/creation-functions/basic/)** | Fonctions les plus élémentaires et les plus fréquemment utilisées. Données, tableaux, événements et tempsObservableCréation de | [of](/fr/guide/creation-functions/basic/of), [from](/fr/guide/creation-functions/basic/from), [fromEvent](/fr/guide/creation-functions/basic/fromEvent), [interval](/fr/guide/creation-functions/basic/interval), [timer](/fr/guide/creation-functions/basic/timer) | Test de valeur fixe, flux de données existantes,DOMle traitement des événements, l'interrogation et l'exécution différée. |
+| **[Systèmes de génération de boucles](/fr/guide/creation-functions/loop/)** | forSystèmes de génération de boucles tels que les instructions et le traitement des boucles.whileTraitement de boucle tel queObservableExpression sous la forme d'un | [range](/fr/guide/creation-functions/loop/range), [generate](/fr/guide/creation-functions/loop/generate) | Génération de nombres séquentiels, traitement par lots, transitions d'état complexes, calculs mathématiques |
+| **[HTTPSystèmes de communication](/fr/guide/creation-functions/http-communication/)** | HTTPLa communication est traitée commeObservableTraitée comme | [ajax](/fr/guide/creation-functions/http-communication/ajax), [fromFetch](/fr/guide/creation-functions/http-communication/fromFetch) | XMLHttpRequestbasée surHTTPla communication,Fetch APIbasée surHTTPla communication,REST APIAppel |
+| **[Système couplé](/fr/guide/creation-functions/combination/)** | Un système dans lequel plusieursObservableaux1sont liés à un seul. Le moment et l'ordre de publication dépendent de la méthode de couplage. | [concat](/fr/guide/creation-functions/combination/concat), [merge](/fr/guide/creation-functions/combination/merge), [combineLatest](/fr/guide/creation-functions/combination/combineLatest), [zip](/fr/guide/creation-functions/combination/zip), [forkJoin](/fr/guide/creation-functions/combination/forkJoin) | Traitement étape par étape, intégration d'événements multiples, synchronisation des entrées de formulaires, traitement parallèle, etc.APIAttente de l'achèvement d'un appel |
+| **[Systèmes de sélection et de division](/fr/guide/creation-functions/selection/)** | Un système dans lequel plusieursObservableA partir de.1Sélectionner un ou1unObservableSéparer en plusieurs systèmes | [race](/fr/guide/creation-functions/selection/race), [partition](/fr/guide/creation-functions/selection/partition) | Concurrence de sources de données multiples, succès/Processus de ramification en cas d'échec |
+| **[Système de branchement conditionnel](/fr/guide/creation-functions/conditional/)** | basé sur des conditionsObservablesélectionnées ou générées dynamiquement lors de l'inscription | [iif](/fr/guide/creation-functions/conditional/iif), [defer](/fr/guide/creation-functions/conditional/defer) | Processus de ramification basé sur l'état de connexion, la création dynamique, l'évaluation différéeObservablecréation dynamique, évaluation différée |
+| **[Système de contrôle](/fr/guide/creation-functions/control/)** | ObservableContrôle de la synchronisation de l'exécution et de la gestion des ressources | [scheduled](/fr/guide/creation-functions/control/scheduled), [using](/fr/guide/creation-functions/control/using) | Contrôle de la synchronisation de l'exécution par le planificateur, gestion du cycle de vie des ressources, prévention des fuites de mémoire |
 
 > [!TIP]
-> **Ordre d'apprentissage**
+> **Séquence d'apprentissage**
 >
-> Nous recommandons aux débutants d'apprendre dans l'ordre suivant :
-> 1. **Création de base** - Fonctions fondamentales de RxJS
-> 2. **Combinaison** - Bases de la gestion de flux multiples
-> 3. **Communication HTTP** - Intégration pratique de l'API
-> 4. Autres catégories - Apprendre selon les besoins
+> Il est recommandé aux nouveaux apprenants d'étudier dans l'ordre suivant
+> 1. **Système de création de base** - RxJSLes fonctions de base de
+> 2. **Système couplé** - Les bases de la gestion de flux multiples
+> 3. **HTTPSystèmes de communication** - PratiqueAPITravailler avec des flux multiples en conjonction les uns avec les autres
+> 4. Autres catégories - Apprentissage selon les besoins
 
-## Correspondance avec les opérateurs pipables
+## Pipeable Operator Correspondance avec
 
-De nombreuses fonctions de création ont un opérateur pipable correspondant. Lorsqu'elles sont utilisées dans un pipeline, utilisez un opérateur de la famille `~With`.
+Nombreux sont ceux quiCreation Functionsont un correspondantPipeable Operatorcorrespondant. Lorsqu'il est utilisé dans un pipeline,`~With`les opérateurs de système sont utilisés.
 
-| Fonction de création | Opérateur pipable | Notes |
+| Creation Function | Pipeable Operator | Remarque. |
 |-------------------|-------------------|------|
 | `concat(a$, b$)` | `a$.pipe(`**[concatWith](/fr/guide/operators/combination/concatWith)**`(b$))` | RxJS 7+ |
 | `merge(a$, b$)` | `a$.pipe(`**[mergeWith](/fr/guide/operators/combination/mergeWith)**`(b$))` | RxJS 7+ |
@@ -143,68 +144,73 @@ De nombreuses fonctions de création ont un opérateur pipable correspondant. Lo
 | `race(a$, b$)` | `a$.pipe(`**[raceWith](/fr/guide/operators/combination/raceWith)**`(b$))` | RxJS 7+ |
 
 > [!NOTE]
-> Depuis RxJS 7, **[concatWith](/fr/guide/operators/combination/concatWith)**, **[mergeWith](/fr/guide/operators/combination/mergeWith)**, **[zipWith](/fr/guide/operators/combination/zipWith)**, **[combineLatestWith](/fr/guide/operators/combination/combineLatestWith)**, **[raceWith](/fr/guide/operators/combination/raceWith)** et d'autres opérateurs de type `~With` ont été ajoutés, facilitant leur utilisation comme opérateurs pipables.
+> RxJS 7Après,**[concatWith](/fr/guide/operators/combination/concatWith)**, **[mergeWith](/fr/guide/operators/combination/mergeWith)**, **[zipWith](/fr/guide/operators/combination/zipWith)**, **[combineLatestWith](/fr/guide/operators/combination/combineLatestWith)**, **[raceWith](/fr/guide/operators/combination/raceWith)** tels que`~With`ont été ajoutés,Pipeable OperatorIl est maintenant plus facile de les utiliser comme
 
-## Lequel utiliser ?
+## Ce qui devrait être utilisé？
 
-Le choix entre fonction de création et opérateur pipable dépend du contexte.
+Creation FunctionetPipeable Operatordépend du contexte.
 
-### La fonction de création est recommandée
+### Creation Function Il est recommandé d'utiliser
 
-Si plusieurs Observables doivent être opérés au même niveau, la fonction de création simplifiera le code.
+Un système dans lequel plusieursObservablelorsqu'on opère au même niveau,Creation Functionafin de préserver la concision du code.
 
-```typescript
-// ✅ Combiner plusieurs Observables au même niveau
+```
+
+typescript.
+// ✅ Fusionner plusieurs Observable au même niveau
 const combined$ = merge(
-  fromEvent(button1, 'click'),
-  fromEvent(button2, 'click'),
+  
+  fromEvent(button2, 'click'), fromEvent(button3, 'click'), fromEvent(button4, 'click')
   fromEvent(button3, 'click')
-);
+) ;
+
 ```
 
-### L'opérateur pipable est recommandé
+### Pipeable Operator Il est recommandé d'utiliser
 
-Lors de l'ajout d'opérations dans un pipeline, utilisez l'opérateur pipable pour clarifier le flux de traitement.
+Si vous ajoutez des opérations dans le cadre d'un pipeline,Pipeable Operatorpour clarifier le flux du processus.
 
-```typescript
-// ✅ Combiner dans le cadre d'un pipeline
+```
+
+typescript.
+// ✅ Joindre en tant que partie d'un pipeline
 const result$ = source$.pipe(
-  map(x => x * 2),
-  mergeWith(other$),
+  map(x => x * 2),.
+  mergeWith(other$),.
   filter(x => x > 10)
-);
+) ;
 ```
 
-## Résumé
+## Résumé.
 
-- **Fonctions de création** : Fonctions pour créer et combiner des Observables
-- **Opérateurs pipables** : Fonctions pour convertir des Observables existants
-- Les fonctions de création se répartissent en 7 catégories :
-  1. **Création de base** : Créer des Observables basés sur données, tableaux, événements et temps
-  2. **Génération de boucles** : Exprimer un traitement itératif dans Observable
-  3. **Communication HTTP** : Gérer la communication HTTP comme Observable
-  4. **Combinaison** : Combiner plusieurs en un seul
-  5. **Sélection/Partition** : Sélectionner ou partitionner
-  6. **Conditionnel** : Générer dynamiquement selon des conditions
-  7. **Contrôle** : Contrôler le timing d'exécution et la gestion des ressources
-- Utiliser les opérateurs pipables de la famille `~With` dans les pipelines
-- Chaque catégorie contient plusieurs fonctions et peut être utilisée de différentes manières selon l'application
+- **Creation Functions** : fonctions pour créer et combiner des Observable.
+- **Pipeable Operators** : fonctions pour convertir des Observable existants.
+- Les Creation Function se répartissent en sept catégories
+  1.**Systèmes de création de base** : création d'Observable basés sur les données, les tableaux, les événements et le temps.
+  2.**Générateurs de boucles** : représentent des processus itératifs sous forme d'Observable.
+  3.**Système de communication HTTP** : traiter la communication HTTP en tant qu'Observable.
+  4.**Système de combinaison** : combinez plusieurs éléments en un seul.
+  5.**Systèmes de sélection et de division** : sélectionner ou diviser.
+  6.**Systèmes de branchement conditionnel** : générer dynamiquement en fonction des conditions.
+  7. **Systèmes de contrôle** : contrôle du temps d'exécution et de la gestion des ressources.
+- Pipeable Operator dans la famille `~With` des pipelines.
+- Chaque catégorie contient plusieurs fonctions qui peuvent être utilisées en fonction de l'application.
 
-## Prochaines étapes
+## Prochaines étapes.
 
-Pour en savoir plus sur chaque catégorie, veuillez suivre les liens ci-dessous :
+Pour en savoir plus sur chaque catégorie, suivez les liens ci-dessous.
 
-1. **[Fonctions de création de base](/fr/guide/creation-functions/basic/)** - of, from, fromEvent, interval, timer
-2. **[Fonctions de génération de boucles](/fr/guide/creation-functions/loop/)** - range, generate
-3. **[Fonctions de communication HTTP](/fr/guide/creation-functions/http-communication/)** - ajax, fromFetch
-4. **[Fonctions de combinaison](/fr/guide/creation-functions/combination/)** - concat, merge, combineLatest, zip, forkJoin
-5. **[Fonctions de sélection/partition](/fr/guide/creation-functions/selection/)** - race, partition
-6. **[Fonctions conditionnelles](/fr/guide/creation-functions/conditional/)** - iif, defer
-7. **[Fonctions de contrôle](/fr/guide/creation-functions/control/)** - scheduled, using
+1.**[Fonctions de création de base Fonctions de création](/fr/guide/creation-functions/basic/)** - of, from, fromEvent, interval, timer
+2.**[Génération de boucles Fonctions de Création](/fr/guide/creation-functions/loop/)** - range, generate
+3. **[Fonctions de création de communication HTTP](/fr/guide/creation-functions/http-communication/)** - ajax, fromFetch
+4.**[Fonctions Creation Function](/fr/guide/creation-functions/combination/)** - concat, merge, combineLatest, zip, forkJoin
+5.**[Fonctions de création de sélection et de partition](/fr/guide/creation-functions/selection/)** - race, partition
+6.**[Fonctions de Création de Branchements Conditionnels](/fr/guide/creation-functions/conditional/)** - iif, defer
+7.**[Fonctions de contrôle Fonctions de création](/fr/guide/creation-functions/control/)** - scheduled, using
 
-Sur chaque page, vous apprendrez plus sur le fonctionnement des fonctions de création et découvrirez des exemples pratiques.
+Sur chaque page, vous pouvez en apprendre davantage sur le fonctionnement détaillé des Creation Function et sur des exemples pratiques.
 
-## Ressources de référence
+## Ressources de référence.
 
-- [Documentation officielle RxJS - Fonctions de création](https://rxjs.dev/guide/operators#creation-operators-list)
-- [Learn RxJS - Opérateurs de création](https://www.learnrxjs.io/learn-rxjs/operators/creation)
+- [Documentation officielle RxJS - Creation Function](https://rxjs.dev/guide/operators#creation-operators-list)
+- [Apprendre RxJS - Opérateurs de création](https://www.learnrxjs.io/learn-rxjs/operators/creation)

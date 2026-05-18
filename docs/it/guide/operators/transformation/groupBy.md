@@ -1,374 +1,370 @@
 ---
-description: L'operatore groupBy è un operatore di conversione che divide uno stream in più stream raggruppati in base a una chiave specificata. Ogni gruppo viene emesso come un GroupedObservable, permettendo di elaborare stream in parallelo per ciascun gruppo.
-titleTemplate: ':title | RxJS'
+description: "L'operatore groupBy raggruppa i valori del flusso in base a una chiave specificata e crea un Observable separato per ogni gruppo. Implementazione sicura e casi d'uso pratici in TypeScript, come l'aggregazione per categoria, l'elaborazione per utente e la categorizzazione dei dati."
 ---
 
-# groupBy - Dividi Stream in Gruppi per Chiave
+# groupBy - raggruppa i valori in base alla chiave
 
-L'operatore `groupBy` **divide uno stream in più stream (GroupedObservable) in base a una chiave specificata**. Questo permette di elaborare dati in parallelo per ciascun gruppo, abilitando un'efficiente elaborazione di classificazione e aggregazione.
+L'operatore groupBy raggruppa i valori emessi da un flusso in base a una chiave specificata e restituisce ogni gruppo come un Observable separato.
+È utile se si desidera categorizzare i dati o applicare un'elaborazione diversa a ciascun gruppo.
 
-## 🔰 Sintassi e Utilizzo Base
-
-```ts
-import { of } from 'rxjs';
-import { groupBy, mergeMap, toArray } from 'rxjs';
-
-interface Product {
-  category: string;
-  name: string;
-  price: number;
-}
-
-const products: Product[] = [
-  { category: 'Alimentari', name: 'Mela', price: 100 },
-  { category: 'Bevande', name: 'Acqua', price: 150 },
-  { category: 'Alimentari', name: 'Pane', price: 200 },
-  { category: 'Bevande', name: 'Caffè', price: 300 },
-  { category: 'Alimentari', name: 'Latte', price: 180 },
-];
-
-of(...products)
-  .pipe(
-    groupBy(product => product.category),
-    mergeMap(group$ =>
-      group$.pipe(
-        toArray(),
-        // group$.key contiene il valore della chiave di raggruppamento
-        mergeMap(items => [{ category: group$.key, items }])
-      )
-    )
-  )
-  .subscribe(console.log);
-
-// Output:
-// { category: 'Alimentari', items: [{...}, {...}, {...}] }
-// { category: 'Bevande', items: [{...}, {...}] }
-```
-
-- La funzione `keySelector` restituisce la chiave per ogni elemento.
-- Lo stream viene diviso per chiave, e viene emesso un `GroupedObservable` per ogni gruppo.
-- L'elaborazione viene applicata a ogni gruppo usando `mergeMap`, `switchMap`, ecc.
-
-[🌐 Documentazione Ufficiale RxJS - `groupBy`](https://rxjs.dev/api/operators/groupBy)
-
-## 💡 Pattern di Utilizzo Tipici
-
-- Classificare e elaborare dati per categoria o tipo
-- Calcolare statistiche per gruppo
-- Eseguire elaborazioni parallele per utente/dispositivo/regione
-- Aggregare log in tempo reale per livello (errore, avviso, informazione)
-
-## 🧠 Esempio di Codice Pratico (con UI)
-
-Questo esempio raggruppa dati di vendita per categoria e visualizza il prezzo totale.
-
-```ts
-import { from } from 'rxjs';
-import { groupBy, mergeMap, reduce } from 'rxjs';
-
-interface Sale {
-  category: string;
-  product: string;
-  price: number;
-}
-
-// Crea area di output
-const output = document.createElement('div');
-output.style.fontFamily = 'monospace';
-document.body.appendChild(output);
-
-// Dati di vendita
-const sales: Sale[] = [
-  { category: 'Elettronica', product: 'Smartphone', price: 80000 },
-  { category: 'Alimentari', product: 'Mela', price: 300 },
-  { category: 'Elettronica', product: 'Cuffie', price: 15000 },
-  { category: 'Abbigliamento', product: 'T-shirt', price: 2500 },
-  { category: 'Alimentari', product: 'Latte', price: 200 },
-  { category: 'Abbigliamento', product: 'Jeans', price: 8000 },
-  { category: 'Elettronica', product: 'Mouse', price: 3000 },
-];
-
-from(sales)
-  .pipe(
-    groupBy(sale => sale.category),
-    mergeMap(group$ =>
-      group$.pipe(
-        reduce(
-          (acc, sale) => ({
-            category: group$.key,
-            total: acc.total + sale.price,
-            count: acc.count + 1,
-          }),
-          { category: '', total: 0, count: 0 }
-        )
-      )
-    )
-  )
-  .subscribe(result => {
-    const div = document.createElement('div');
-    div.innerHTML = `
-      <strong>${result.category}</strong>:
-      ${result.count} articoli,
-      Totale ¥${result.total.toLocaleString()}
-    `;
-    output.appendChild(div);
-  });
-```
-
-## 🎯 Esempio di Classificazione Log per Livello
-
-Questo è un esempio pratico di raggruppamento log per livello.
-
-```ts
-import { from, interval } from 'rxjs';
-import { groupBy, mergeMap, map, take, toArray } from 'rxjs';
-
-interface LogEntry {
-  level: 'info' | 'warn' | 'error';
-  message: string;
-  timestamp: number;
-}
-
-// Genera dati log fittizi
-const logs$ = interval(100).pipe(
-  take(20),
-  map(i => {
-    const levels: LogEntry['level'][] = ['info', 'warn', 'error'];
-    const level = levels[Math.floor(Math.random() * 3)];
-    return {
-      level,
-      message: `Messaggio ${i}`,
-      timestamp: Date.now(),
-    } as LogEntry;
-  })
-);
-
-logs$
-  .pipe(
-    groupBy(log => log.level),
-    mergeMap(group$ =>
-      group$.pipe(
-        toArray(),
-        map(logs => ({
-          level: group$.key,
-          logs,
-          count: logs.length,
-        }))
-      )
-    )
-  )
-  .subscribe(result => {
-    const icon =
-      result.level === 'error' ? '🔴' : result.level === 'warn' ? '🟡' : '🟢';
-    console.log(`${icon} ${result.level.toUpperCase()}: ${result.count} voci`);
-    result.logs.forEach(log => console.log(`   - ${log.message}`));
-  });
-```
-
-## 🎯 Utilizzo di groupBy Type-Safe
-
-Questo è un esempio di utilizzo dell'inferenza dei tipi di TypeScript.
+## 🔰 Sintassi e uso di base
 
 ```ts
 import { from } from 'rxjs';
 import { groupBy, mergeMap, toArray, map } from 'rxjs';
 
-interface User {
-  id: number;
+interface Person {
   name: string;
-  department: 'Vendite' | 'Sviluppo' | 'Risorse Umane';
-  salary: number;
+  age: number;
 }
 
-const users: User[] = [
-  { id: 1, name: 'Mario', department: 'Vendite', salary: 400000 },
-  { id: 2, name: 'Luigi', department: 'Sviluppo', salary: 500000 },
-  { id: 3, name: 'Chiara', department: 'Vendite', salary: 450000 },
-  { id: 4, name: 'Giuseppe', department: 'Sviluppo', salary: 550000 },
-  { id: 5, name: 'Elena', department: 'Risorse Umane', salary: 350000 },
+const people: Person[] = [
+  { name: 'Taro', age: 25 },
+  { name: 'Hanako', age: 30 },
+  { name: 'Jiro', age: 25 },
+  { name: 'Misaki', age: 30 },
+  { name: 'Kenta', age: 35 },
 ];
 
-from(users)
-  .pipe(
-    // Raggruppa per dipartimento
-    groupBy<User, User['department']>(user => user.department),
-    mergeMap(group$ =>
-      group$.pipe(
-        toArray(),
-        map(members => ({
-          department: group$.key,
-          members,
-          averageSalary:
-            members.reduce((sum, u) => sum + u.salary, 0) / members.length,
-        }))
-      )
+from(people).pipe(
+  groupBy(person => person.age), // Raggruppati per età
+  mergeMap(group =>
+    group.pipe(
+      toArray(),
+      map(arr => ({ age: group.key, people: arr }))
     )
   )
-  .subscribe(result => {
-    console.log(`=== ${result.department} ===`);
-    console.log(`Membri: ${result.members.map(u => u.name).join(', ')}`);
-    console.log(`Stipendio medio: ¥${result.averageSalary.toLocaleString()}`);
-    console.log('');
-  });
+).subscribe(result => {
+  console.log(`Età ${result.age}:`, result.people);
+});
+
+// Uscita:
+// Età 25: [{name: 'Taro', age: 25}, {name: 'Jiro', age: 25}]
+// Età 30: [{name: 'Hanako', age: 30}, {name: 'Misaki', age: 30}]
+// Età 35: [{name: 'Kenta', age: 35}]
 ```
 
-## 🔍 Funzione elementSelector (Opzionale)
+- groupBy(person => person.age)` per raggruppare l'età come chiave.
+- Ogni gruppo è trattato come un `Observable raggruppato` e la chiave del gruppo è accessibile tramite la proprietà `key`.
+- Elaborare ogni Observable raggruppato con `mergeMap`.
 
-Puoi specificare un secondo argomento `elementSelector` per trasformare gli elementi all'interno di ogni gruppo.
+[🌐 Documentazione ufficiale di RxJS - `groupBy`](https://rxjs.dev/api/operators/groupBy)
+
+## 💡 Tipici modelli di utilizzo
+
+- Categorizzazione dei dati per categoria
+- Elaborazione aggregata per gruppo
+- Elaborazione di log ed eventi per tipo
+- Raggruppamento e trasformazione dei dati
+
+## 🧠 Esempi pratici di codice (con UI)
+
+Questo esempio mostra il numero di pezzi raggruppati per colore quando si fa clic su un pulsante.
 
 ```ts
-import { of } from 'rxjs';
-import { groupBy, mergeMap, toArray } from 'rxjs';
+import { fromEvent, from } from 'rxjs';
+import { groupBy, mergeMap, toArray, switchMap, map } from 'rxjs';
+
+// Pulsante di creazione
+const colors = ['Rosso', 'Blu', 'Verde', 'Giallo'];
+colors.forEach(color => {
+  const button = document.createElement('button');
+  button.textContent = color;
+  button.style.margin = '5px';
+  button.style.padding = '10px';
+  button.dataset.color = color;
+  document.body.appendChild(button);
+});
+
+const calculateButton = document.createElement('button');
+calculateButton.textContent = 'Aggregato.';
+calculateButton.style.margin = '5px';
+calculateButton.style.padding = '10px';
+document.body.appendChild(calculateButton);
+
+// Creare un'area di output
+const output = document.createElement('div');
+output.style.marginTop = '10px';
+output.style.fontFamily = 'monospace';
+document.body.appendChild(output);
+
+// Registra i colori cliccati
+const clicks: string[] = [];
+
+// Eventi di clic dei pulsanti a colori
+fromEvent(document, 'click').subscribe((event: Event) => {
+  const target = event.target as HTMLElement;
+  const color = target.dataset.color;
+  if (color) {
+    clicks.push(color);
+    output.innerHTML = `Colore selezionato: ${clicks.join(', ')}`;
+  }
+});
+
+// Raggruppati al clic del pulsante di aggregazione
+fromEvent(calculateButton, 'click').pipe(
+  switchMap(() =>
+    from(clicks).pipe(
+      groupBy(color => color),
+      mergeMap(group =>
+        group.pipe(
+          toArray(),
+          map(items => ({ color: group.key, count: items.length }))
+        )
+      ),
+      toArray()
+    )
+  )
+).subscribe(results => {
+  if (results.length === 0) {
+    output.innerHTML = '<p>Nessun colore ancora selezionato</p>';
+    return;
+  }
+  const resultText = results
+    .map(r => `${r.color}: ${r.count}Tempi`)
+    .join('<br>');
+  output.innerHTML = `<h3>Risultato dell'aggregazione</h3>${resultText}`;
+});
+```
+
+- Fare clic sul pulsante Colore per selezionare un colore
+- Raggruppare per colore con il pulsante `totalizza` e visualizzare il numero di pezzi.
+- Raggruppare per colore con il pulsante `groupBy` e contare il numero di elementi in ogni gruppo.
+
+## 🎯 Esempio di conteggio per categoria
+
+Questo è un esempio di raggruppamento dei prodotti per categoria e di calcolo del totale per ogni categoria.
+
+```ts
+import { from } from 'rxjs';
+import { groupBy, mergeMap, reduce, map } from 'rxjs';
 
 interface Product {
-  category: string;
   name: string;
+  category: string;
   price: number;
 }
 
 const products: Product[] = [
-  { category: 'Frutta', name: 'Mela', price: 100 },
-  { category: 'Frutta', name: 'Banana', price: 150 },
-  { category: 'Verdura', name: 'Carota', price: 80 },
+  { name: 'Mele', category: 'Frutta', price: 150 },
+  { name: 'Arance mandarino', category: 'Frutta', price: 100 },
+  { name: 'Carote', category: 'Verdura', price: 80 },
+  { name: 'Pomodori', category: 'Verdura', price: 120 },
+  { name: 'Latte', category: 'Prodotti caseari', price: 200 },
+  { name: 'Formaggio', category: 'Prodotti caseari', price: 300 },
 ];
 
-of(...products)
-  .pipe(
-    groupBy(
-      p => p.category,
-      p => p.name // Estrai solo il nome
-    ),
-    mergeMap(group$ =>
-      group$.pipe(
-        toArray(),
-        mergeMap(names => [{ category: group$.key, names }])
-      )
+from(products).pipe(
+  groupBy(product => product.category),
+  mergeMap(group =>
+    group.pipe(
+      reduce((total, product) => total + product.price, 0),
+      map(total => ({ category: group.key, total }))
     )
   )
-  .subscribe(console.log);
+).subscribe(result => {
+  console.log(`${result.category}: ${result.total}Cerchio`);
+});
 
-// Output:
-// { category: 'Frutta', names: ['Mela', 'Banana'] }
-// { category: 'Verdura', names: ['Carota'] }
+// Uscita:
+// Frutta: 250Cerchio
+// Verdura: 200Cerchio
+// Prodotti caseari: 500Cerchio
 ```
 
-## 🎯 Esempio di Aggregazione Dati in Tempo Reale
+## 🎯 Esempio di utilizzo del selettore di elementi.
 
-Questo è un esempio di aggregazione di dati di transazione in tempo reale per tipo.
+Quando si raggruppa, i valori possono anche essere convertiti.
 
 ```ts
-import { interval } from 'rxjs';
-import { groupBy, mergeMap, scan, map, take } from 'rxjs';
+import { from } from 'rxjs';
+import { groupBy, map, mergeMap, toArray } from 'rxjs';
 
-interface Transaction {
-  type: 'acquisto' | 'vendita' | 'trasferimento';
-  amount: number;
+interface Student {
+  name: string;
+  grade: number;
+  score: number;
+}
+
+const students: Student[] = [
+  { name: 'Taro', grade: 1, score: 85 },
+  { name: 'Hanako', grade: 2, score: 92 },
+  { name: 'Jiro', grade: 1, score: 78 },
+  { name: 'Misaki', grade: 2, score: 88 },
+];
+
+from(students).pipe(
+  groupBy(
+    student => student.grade,           // Selettore di chiavi
+    student => student.name             // Selettore di elementi (contiene solo nomi)
+  ),
+  mergeMap(group =>
+    group.pipe(
+      toArray(),
+      map(names => ({ grade: group.key, students: names }))
+    )
+  )
+).subscribe(result => {
+  console.log(`${result.grade}Anno studente:`, result.students.join(', '));
+});
+
+// Uscita:
+// 1Anno studente: Taro, Jiro
+// 2Anno studente: Hanako, Misaki
+```
+
+- 1° argomento: selettore di chiavi (criteri per il raggruppamento)
+- Secondo argomento: selettore di elementi (valori da memorizzare nel gruppo).
+
+## 🎯 Uso di groupBy sicuro per il tipo
+
+Questo è un esempio di utilizzo dell'inferenza di tipo di TypeScript.
+
+```ts
+import { from } from 'rxjs';
+import { groupBy, mergeMap, toArray, map } from 'rxjs';
+
+type LogLevel = 'info' | 'warning' | 'error';
+
+interface LogEntry {
+  level: LogLevel;
+  message: string;
   timestamp: number;
 }
 
-// Genera transazioni fittizie
-const transactions$ = interval(200).pipe(
-  take(30),
-  map(i => {
-    const types: Transaction['type'][] = ['acquisto', 'vendita', 'trasferimento'];
-    return {
-      type: types[Math.floor(Math.random() * 3)],
-      amount: Math.floor(Math.random() * 10000) + 1000,
-      timestamp: Date.now(),
-    } as Transaction;
-  })
-);
+const logs: LogEntry[] = [
+  { level: 'info', message: 'Avvio dell'app', timestamp: 1000 },
+  { level: 'warning', message: 'Messaggio di avviso', timestamp: 2000 },
+  { level: 'error', message: 'Si è verificato un errore', timestamp: 3000 },
+  { level: 'info', message: 'Elaborazione completata', timestamp: 4000 },
+  { level: 'error', message: 'Errore di connessione', timestamp: 5000 },
+];
 
-transactions$
-  .pipe(
-    groupBy(tx => tx.type),
-    mergeMap(group$ =>
-      group$.pipe(
-        scan(
-          (acc, tx) => ({
-            type: tx.type,
-            count: acc.count + 1,
-            total: acc.total + tx.amount,
-            average: (acc.total + tx.amount) / (acc.count + 1),
-          }),
-          { type: group$.key, count: 0, total: 0, average: 0 }
-        )
-      )
+from(logs).pipe(
+  groupBy(log => log.level),
+  mergeMap(group =>
+    group.pipe(
+      toArray(),
+      map(entries => ({
+        level: group.key,
+        count: entries.length,
+        messages: entries.map(e => e.message)
+      }))
     )
   )
-  .subscribe(stats => {
-    console.log(
-      `[${stats.type}] Conteggio: ${stats.count}, ` +
-        `Totale: ¥${stats.total.toLocaleString()}, ` +
-        `Media: ¥${Math.round(stats.average).toLocaleString()}`
-    );
-  });
-```
-
-## ⚠️ Note
-
-### 1. Gestione Subscription dei Gruppi
-
-Ogni `GroupedObservable` è uno stream indipendente, quindi deve essere sottoscritto. Se non ti iscrivi, i dati di quel gruppo vengono scartati.
-
-```ts
-// ❌ Esempio sbagliato: Non ti sottoscrivi a ogni gruppo
-source$.pipe(groupBy(keySelector)).subscribe(group$ => {
-  console.log('Chiave gruppo:', group$.key);
-  // I dati dentro il gruppo vengono ignorati
+).subscribe(result => {
+  console.log(`[${result.level.toUpperCase()}] ${result.count}Caso`);
+  result.messages.forEach(msg => console.log(`  - ${msg}`));
 });
 
-// ✅ Esempio corretto: Elabora ogni gruppo
-source$
-  .pipe(
-    groupBy(keySelector),
-    mergeMap(group$ => group$.pipe(toArray()))
-  )
-  .subscribe(result => {
-    console.log(result);
-  });
+// Uscita:
+// [INFO] 2Caso
+//   - Avvio dell'app
+//   - Elaborazione completata
+// [WARNING] 1Caso
+//   - Messaggio di avviso
+// [ERROR] 2Caso
+//   - Si è verificato un errore
+//   - Errore di connessione
 ```
 
-### 2. Attenzione ai Memory Leak
+## 🎯 Applicare processi diversi a gruppi diversi
 
-Se lo stream continua indefinitamente e vengono create nuove chiavi, il numero di gruppi cresce illimitatamente, rischiando perdite di memoria.
+Questo è un esempio di applicazione di trattamenti diversi a ciascun gruppo.
 
 ```ts
-// ⚠️ Richiede attenzione: Le nuove chiavi aumentano indefinitamente
-userActions$.pipe(
-  groupBy(action => action.sessionId) // Nuova chiave per ogni sessione
-);
+import { from, of } from 'rxjs';
+import { groupBy, mergeMap, delay, map } from 'rxjs';
 
-// ✅ Contromisura: Rilascia i gruppi quando necessario
-userActions$.pipe(
-  groupBy(
-    action => action.sessionId,
-    undefined,
-    group$ => group$.pipe(timeout(30000)) // Rilascia il gruppo dopo il timeout
-  )
-);
+interface Task {
+  id: number;
+  priority: 'high' | 'medium' | 'low';
+  name: string;
+}
+
+const tasks: Task[] = [
+  { id: 1, priority: 'high', name: 'Attività urgente' },
+  { id: 2, priority: 'low', name: 'Attività rimandata' },
+  { id: 3, priority: 'high', name: 'Attività importanti' },
+  { id: 4, priority: 'medium', name: 'Attività normali' },
+];
+
+from(tasks).pipe(
+  groupBy(task => task.priority),
+  mergeMap(group => {
+    // I tempi di ritardo sono impostati in base alla priorità
+    const delayTime =
+      group.key === 'high' ? 0 :
+      group.key === 'medium' ? 1000 :
+      2000;
+
+    return group.pipe(
+      delay(delayTime),
+      map(task => ({ ...task, processedAt: Date.now() }))
+    );
+  })
+).subscribe(task => {
+  console.log(`[${task.priority}] ${task.name} Elaborazione`);
+});
+
+// Uscita (in ordine di priorità):
+// [high] Attività urgente Elaborazione
+// [high] Attività importanti Elaborazione
+// (1(dopo 1,5 secondi)
+// [medium] Attività normali Elaborazione
+// (ulteriore)1(dopo 1,5 secondi)
+// [low] Attività rimandata Elaborazione
 ```
 
-### 3. Utilizzo Memoria
+## ⚠️ Note.
 
-Poiché `groupBy` mantiene più gruppi simultaneamente, bisogna considerare l'utilizzo di memoria quando ci sono molti tipi di chiave.
+### Gestione delle sottoscrizioni per il gruppo Observable.
 
-## 🆚 Confronto con altri Operatori di Raggruppamento
+groupBy crea un Observable per ogni gruppo. Questi Observable possono causare perdite di memoria se non sono correttamente sottoscritti (subscribe).
 
-| Operatore | Metodo di Output | Timing di Output | Caso d'Uso |
-|:---|:---|:---|:---|
-| `groupBy` | `GroupedObservable` per ogni gruppo | Durante lo stream | Elaborazione streaming per gruppo |
-| `reduce` | Un valore singolo | Al completamento | Aggregazione finale |
-| `scan` | Aggiorna ogni volta | Per ogni valore | Aggiornamento stato cumulativo |
-| `toArray` | Array singolo | Al completamento | Raccolta in array |
+```ts
+// ❌ Esempio negativo: Il gruppoObservablenon si iscrive a
+from([1, 2, 3, 4, 5]).pipe(
+  groupBy(n => n % 2 === 0 ? 'even' : 'odd')
+).subscribe(group => {
+  // Il gruppoObservableNon sottoscritto
+  console.log('Il gruppo:', group.key);
+});
+```
 
-## 📚 Operatori Correlati
+**Misure**: elaborare sempre ogni gruppo con `mergeMap`, `concatMap`, `switchMap`, ecc.
 
-- [`mergeMap`](/it/guide/operators/transformation/mergeMap) - Elabora stream interni in parallelo
-- [`reduce`](/it/guide/operators/transformation/reduce) - Riduci stream a un singolo valore
-- [`scan`](/it/guide/operators/transformation/scan) - Accumula stato mantenendo risultati intermedi
-- [`partition`](/it/guide/creation-functions/selection-partition/partition) - Dividi stream in due con condizioni booleane
+```ts
+import { from } from 'rxjs';
+import { groupBy, mergeMap, toArray } from 'rxjs';
 
-## Riepilogo
+// ✅ Buon esempio: Ogni gruppo viene gestito in modo appropriato
+from([1, 2, 3, 4, 5]).pipe(
+  groupBy(n => n % 2 === 0 ? 'even' : 'odd'),
+  mergeMap(group =>
+    group.pipe(toArray())
+  )
+).subscribe(console.log);
+```
 
-L'operatore `groupBy` **divide uno stream in più gruppi in base a una chiave specificata**. Ogni gruppo viene emesso come un `GroupedObservable`, permettendo diverse elaborazioni per gruppo. È adatto per casi d'uso come classificazione dati, aggregazione per gruppo e elaborazione parallela. Tuttavia, con stream infiniti e molti tipi di chiave, c'è rischio di perdite di memoria, quindi l'impostazione di condizioni di rilascio appropriati è importante.
+### Generazione dinamica di gruppi
+
+Ogni volta che compare una nuova chiave viene creato un nuovo Observable di gruppo. Occorre prestare attenzione se ci sono molti tipi di chiave.
+
+```ts
+// Esempio di un numero potenzialmente infinito di tipi di chiavi
+fromEvent(document, 'click').pipe(
+  groupBy(() => Math.random()) // Chiavi diverse ogni volta
+).subscribe(); // Pericolo di perdite di memoria
+```
+
+## 📚 Operatori correlati.
+
+- [`partition`](https://rxjs.dev/api/index/function/partition) - divide in due Observable per condizione.
+- [`reduce`](. /reduce) - Ottiene il risultato finale aggregato.
+- [`scan`](. /scan) - Aggregazione cumulativa.
+- [`toArray`](. /utility/toArray) - Combina tutti i valori in un array.
+
+## Riepilogo.
+
+L'operatore groupBy può raggruppare i valori in un flusso in base a chiavi e **trattare ogni gruppo come un Observable separato**. Ciò è molto utile per l'elaborazione di dati complessi, come la categorizzazione dei dati, l'aggregazione per categoria e l'elaborazione di ciascun gruppo in modo diverso. Tuttavia, ogni Observable di gruppo deve essere sottoscritto in modo appropriato e di solito viene usato insieme a una mergeMap o simili.

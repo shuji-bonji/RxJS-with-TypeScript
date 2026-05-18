@@ -1,1344 +1,1086 @@
 ---
-description: "Stratégies de mise en cache pratiques utilisant RxJS. Mise en cache avec shareReplay, TTL (Time To Live), invalidation de cache, cache multi-niveaux, stratégies offline-first, persistance avec localStorage, gestion des erreurs et stratégies de mise à jour sont expliquées avec des exemples d'implémentation concrets en TypeScript pour une utilisation professionnelle immédiate."
+description: "Des modèles pratiques pour les stratégies de mise en cache à l'aide de RxJS, notamment la mise en cache des données avec shareReplay, la mise en cache avec TTL (time-to-live), l'invalidation du cache, l'intégration du stockage local, la conception offline-first, etc. pour mettre en œuvre une gestion efficace des données avec TypeScript."
 ---
 
-# Stratégies de mise en cache
+# Modèle de stratégie de trésorerie.
 
-La mise en cache est un élément clé pour améliorer les performances et l'expérience utilisateur des applications web modernes. En utilisant RxJS, vous pouvez mettre en œuvre efficacement des stratégies de mise en cache sophistiquées.
+La mise en cache est l'une des techniques les plus importantes en matière d'optimisation des performances, et avec RxJS, vous pouvez mettre en œuvre des stratégies de mise en cache déclaratives et flexibles.
 
-Cet article explique les modèles concrets de mise en cache nécessaires dans des situations réelles, de la mise en cache simple avec `shareReplay` aux stratégies avancées avec TTL et invalidation.
+Cet article décrit des modèles spécifiques de stratégies de cache nécessaires dans la pratique, de la mise en cache de base avec shareReplay à la mise en cache avec TTL, l'invalidation du cache et la coopération du stockage local.
 
-## Ce que vous apprendrez dans cet article
+## Ce que vous apprendrez dans cet article.
 
 - Mise en cache de base avec shareReplay
-- Mise en cache avec TTL (Time To Live)
-- Invalidation et actualisation du cache
-- Mise en cache multi-niveaux (mémoire + localStorage)
-- Stratégies offline-first
-- Gestion des erreurs de cache
-- Stratégies de mise à jour (revalidation, prefetch)
+- Mise en œuvre de la mise en cache avec TTL (time-to-live)
+- Rafraîchissement manuel et invalidation du cache
+- Interfaçage avec le stockage local
+- Prise en charge hors ligne et repli du cache
+- Surveillance et débogage de la mise en cache
 
-> [!TIP] Prérequis
-> Cet article suppose une connaissance de [Chapitre 2: Cold/Hot Observable](../observables/cold-and-hot-observables.md) et [Chapitre 4: Opérateurs](../operators/index.md). La compréhension de `shareReplay`, `share`, `switchMap` est particulièrement importante.
+APPEL_12___.
 
-## Mise en cache de base avec shareReplay
+> Cet article fait partie du [Chapitre 2 : Observables froids/chauds](. /observables/cold-and-hot-observables.md) et [Chapitre 4 : Opérateurs](. /operators/index.md). Une compréhension de `shareReplay` et de `share` est particulièrement importante.
 
-### Problème : Éviter les appels API redondants
+## Cache de base (shareReplay)
 
-Lors de plusieurs abonnements au même Observable, des requêtes API redondantes sont envoyées à chaque fois. Nous voulons mettre en cache le résultat et le réutiliser.
+### Problème : éviter d'appeler la même API plusieurs fois.
 
-### Solution : Utiliser shareReplay
+Si plusieurs composants ont besoin des mêmes données de l'API, nous voulons éviter les demandes en double.
 
-`shareReplay` convertit un Cold Observable en Hot Observable et met en cache le résultat. Les abonnés ultérieurs reçoivent les valeurs mises en cache.
-
-**Flux d'exécution :**
-
-```
-Sans shareReplay (Cold Observable) :
-Abonné 1 → API appel 1
-Abonné 2 → API appel 2
-Abonné 3 → API appel 3
-※ 3 appels API
-
-Avec shareReplay (Hot Observable) :
-Abonné 1 → API appel (mise en cache)
-Abonné 2 → Depuis le cache
-Abonné 3 → Depuis le cache
-※ 1 seul appel API
-```
+### Solution : cache avec shareReplay.
 
 ```typescript
-import { from, Observable, shareReplay } from 'rxjs';
-
-// API JSONPlaceholder - Type User
-// https://jsonplaceholder.typicode.com/users
+import { Observable, of, shareReplay, catchError, tap } from 'rxjs';
 interface User {
   id: number;
   name: string;
-  username: string;
   email: string;
-  address: {
-    street: string;
-    suite: string;
-    city: string;
-    zipcode: string;
-    geo: {
-      lat: string;
-      lng: string;
-    };
-  };
-  phone: string;
-  website: string;
-  company: {
-    name: string;
-    catchPhrase: string;
-    bs: string;
-  };
 }
 
-// ❌ Sans mise en cache : Appel API à chaque abonnement
-function getUsersWithoutCache(): Observable<User[]> {
-  console.log('Appel API');
-  return from(
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
+class UserService {
+  private users$: Observable<User[]> | null = null;
+
+  getUsers(): Observable<User[]> {
+    // Retour de la cache si disponible
+    if (this.users$) {
+      console.log('Retour du cache');
+      return this.users$;
+    }
+
+    // Créer une nouvelle demande et la mettre en cache
+    console.log('Exécuter la nouvelle demande');
+    this.users$ = this.fetchUsersFromAPI().pipe(
+      tap(() => console.log('APIAppel terminé')),
+      shareReplay({ bufferSize: 1, refCount: true }), // Si la dernière valeur1Mettre en cache les deux dernières valeurs (libéré lorsque tous les abonnements sont désabonnés àrefCountet libérée lorsque tous les abonnements sont désabonnés)
+      catchError((err: unknown) => {
+        // Effacer le cache en cas d'erreur
+        this.users$ = null;
+        throw err;
       })
-  );
+    );
+
+    return this.users$;
+  }
+
+  clearCache(): void {
+    this.users$ = null;
+    console.log('Effacer le cache');
+  }
+
+  private fetchUsersFromAPI(): Observable<User[]> {
+    return of([
+      { id: 1, name: 'Taro Yamada', email: 'yamada@example.com' },
+      { id: 2, name: 'Hanako Sato', email: 'sato@example.com' }
+    ]);
+  }
 }
 
-// ✅ Avec mise en cache : Mise en cache du résultat de l'appel API
-function getUsersWithCache(): Observable<User[]> {
-  console.log('Configuration du cache');
-  return from(
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-  ).pipe(
-    shareReplay({
-      bufferSize: 1,      // Nombre de valeurs à mettre en cache
-      refCount: false      // Maintenir le cache même après désabonnement
-    })
-  );
-}
+// Exemple d'utilisation
+const userService = new UserService();
 
-// Exemple sans mise en cache
-const withoutCache$ = getUsersWithoutCache();
+// 1Le deuxième appel (APIExécution)
+userService.getUsers().subscribe(users => {
+  console.log('Composant1:', users);
+});
 
-withoutCache$.subscribe(users => console.log('Abonné 1:', users.length)); // Appel API 1
-withoutCache$.subscribe(users => console.log('Abonné 2:', users.length)); // Appel API 2
-withoutCache$.subscribe(users => console.log('Abonné 3:', users.length)); // Appel API 3
+// 2Deuxième appel (à partir du cache)
+userService.getUsers().subscribe(users => {
+  console.log('Composant2:', users);
+});
 
-// Exemple avec mise en cache
-const withCache$ = getUsersWithCache();
-
-withCache$.subscribe(users => console.log('Abonné 1 (cache):', users.length)); // Appel API
-withCache$.subscribe(users => console.log('Abonné 2 (cache):', users.length)); // Depuis le cache
-withCache$.subscribe(users => console.log('Abonné 3 (cache):', users.length)); // Depuis le cache
+// Sortie:
+// Exécuter la nouvelle demande
+// APIAppel terminé
+// Composant1: [...]
+// Retour du cache
+// Composant2: [...]
 ```
 
-> [!NOTE] Options de shareReplay
-> - **bufferSize**: Nombre de valeurs à mettre en cache (généralement 1)
-> - **refCount**:
->   - `true` - Libérer le cache quand il n'y a plus d'abonnés (par défaut)
->   - `false` - Maintenir le cache en permanence
+```typescript
+import { Observable, of, shareReplay, catchError, tap } from 'rxjs';
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
 
-### refCount true vs false
+class UserService {
+  private users$: Observable<User[]> | null = null;
+
+  getUsers(): Observable<User[]> {
+    // Retour de la cache si disponible
+    if (this.users$) {
+      console.log('Retour du cache');
+      return this.users$;
+    }
+
+    // Créer une nouvelle demande et la mettre en cache
+    console.log('Exécuter la nouvelle demande');
+    this.users$ = this.fetchUsersFromAPI().pipe(
+      tap(() => console.log('APIAppel terminé')),
+      shareReplay({ bufferSize: 1, refCount: true }), // Si la dernière valeur1Mettre en cache les deux dernières valeurs (libéré lorsque tous les abonnements sont désabonnés àrefCountet libérée lorsque tous les abonnements sont désabonnés)
+      catchError((err: unknown) => {
+        // Effacer le cache en cas d'erreur
+        this.users$ = null;
+        throw err;
+      })
+    );
+
+    return this.users$;
+  }
+
+  clearCache(): void {
+    this.users$ = null;
+    console.log('Effacer le cache');
+  }
+
+  private fetchUsersFromAPI(): Observable<User[]> {
+    return of([
+      { id: 1, name: 'Taro Yamada', email: 'yamada@example.com' },
+      { id: 2, name: 'Hanako Sato', email: 'sato@example.com' }
+    ]);
+  }
+}
+
+// Exemple d'utilisation
+const userService = new UserService();
+
+// 1Le deuxième appel (APIExécution)
+userService.getUsers().subscribe(users => {
+  console.log('Composant1:', users);
+});
+
+// 2Deuxième appel (à partir du cache)
+userService.getUsers().subscribe(users => {
+  console.log('Composant2:', users);
+});
+
+// Sortie:
+// Exécuter la nouvelle demande
+// APIAppel terminé
+// Composant1: [...]
+// Retour du cache
+// Composant2: [...]
+```
+
+> - **FUITE DE MÉMOIRE** : maintient le cache en vie même lorsque les abonnements tombent à 0
+> - **Partage de type de référence** : les objets sont partagés par référence, de sorte que les changements affectent tous les abonnés
+> - **Gestion des erreurs** : il est recommandé de vider le cache en cas d'erreur
+
+### Options de configuration de shareReplay
+
 
 ```typescript
 import { shareReplay } from 'rxjs';
-// refCount: true - Libération automatique du cache
-const autoRelease$ = getUsersAPI().pipe(
-  shareReplay({ bufferSize: 1, refCount: true })
+// Utilisation de base (format recommandé): (Libérer le cache en désabonnant tout le monde)
+source$.pipe(
+  shareReplay({ bufferSize: 1, refCount: true }) // Si la dernière valeur1Cache one
 );
 
-// Abonnement 1
-const sub1 = autoRelease$.subscribe(/*...*/);
-sub1.unsubscribe(); // Le cache est libéré après le désabonnement
-
-// L'abonnement suivant refait l'appel API
-autoRelease$.subscribe(/*...*/); // Nouvel appel API
-
-// refCount: false - Maintien permanent du cache
-const permanent$ = getUsersAPI().pipe(
-  shareReplay({ bufferSize: 1, refCount: false })
+// Paramètres détaillés
+source$.pipe(
+  shareReplay({
+    bufferSize: 1,        // Nombre de valeurs à mettre en cache
+    refCount: true,       // Lorsque le nombre d'abonnés0(facultatif) Rejeter le cache lorsque le nombre d'abonnés est atteint
+    windowTime: 5000      // 5Rejeter le cache après (facultatif) secondes
+  })
 );
-
-// Abonnement 1
-const sub2 = permanent$.subscribe(/*...*/);
-sub2.unsubscribe(); // Le cache reste
-
-// L'abonnement suivant utilise le cache
-permanent$.subscribe(/*...*/); // Depuis le cache
 ```
 
-> [!TIP] Critères de sélection de refCount
-> - **refCount: true** - Données qui changent fréquemment, libération de mémoire
-> - **refCount: false** - Données statiques, cache de longue durée
-
-## Mise en cache avec TTL (Time To Live)
-
-### Problème : Les données mises en cache deviennent obsolètes
-
-Avec `shareReplay`, le cache est permanent, et les anciennes données peuvent être retournées même si elles changent côté serveur. Nous voulons définir une durée de vie du cache (TTL) et rafraîchir périodiquement les données.
-
-### Solution : Mise en œuvre du cache TTL
-
-**Fonctionnement du TTL :**
-1. Lors de la première requête, les données sont récupérées depuis l'API
-2. Les requêtes suivantes retournent les données mises en cache (si dans la période de validité)
-3. Après expiration du TTL, un nouvel appel API est effectué
-
-**Exemple concret de TTL :**
-- Données de profil utilisateur : 5 minutes
-- Données de produit : 10 minutes
-- Flux d'actualités : 30 secondes
-- Données statiques : 1 heure ou plus
-
 ```typescript
-import { defer, of, tap, shareReplay, Observable, timer, switchMap } from 'rxjs';
-
-interface CachedData<T> {
-  data: T;
-  timestamp: number;
-  expiresAt: number;
-}
-
-class TTLCache<T> {
-  private cache = new Map<string, CachedData<T>>();
-
-  /**
-   * Obtenir des données avec TTL
-   * @param key Clé de cache
-   * @param fetchFn Fonction de récupération des données
-   * @param ttl Durée de vie (ms)
-   */
-  get(
-    key: string,
-    fetchFn: () => Observable<T>,
-    ttl: number = 5 * 60 * 1000 // Défaut 5 minutes
-  ): Observable<T> {
-    return defer(() => {
-      const cached = this.cache.get(key);
-      const now = Date.now();
-
-      // Retourner le cache s'il est valide
-      if (cached && cached.expiresAt > now) {
-        console.log(`Hit du cache: ${key} (reste ${Math.floor((cached.expiresAt - now) / 1000)}s)`);
-        return of(cached.data);
-      }
-
-      // Rafraîchir le cache s'il est expiré
-      console.log(`Miss du cache: ${key} - Récupération de nouvelles données`);
-      return fetchFn().pipe(
-        tap(data => {
-          this.cache.set(key, {
-            data,
-            timestamp: now,
-            expiresAt: now + ttl
-          });
-          console.log(`Cache mis à jour: ${key} (TTL: ${ttl / 1000}s)`);
-        }),
-        shareReplay({ bufferSize: 1, refCount: false })
-      );
-    });
-  }
-
-  /**
-   * Invalider le cache
-   */
-  invalidate(key: string): void {
-    this.cache.delete(key);
-    console.log(`Cache invalidé: ${key}`);
-  }
-
-  /**
-   * Effacer tout le cache
-   */
-  clear(): void {
-    this.cache.clear();
-    console.log('Tout le cache a été effacé');
-  }
-
-  /**
-   * Vérifier si le cache existe et est valide
-   */
-  has(key: string): boolean {
-    const cached = this.cache.get(key);
-    if (!cached) return false;
-
-    const now = Date.now();
-    return cached.expiresAt > now;
-  }
-}
-
-// Type User de l'API JSONPlaceholder
+import { Observable, of, shareReplay, catchError, tap } from 'rxjs';
 interface User {
   id: number;
   name: string;
-  username: string;
   email: string;
 }
 
-// Exemple d'utilisation
-const cache = new TTLCache<User[]>();
+class UserService {
+  private users$: Observable<User[]> | null = null;
 
-function fetchUsers(): Observable<User[]> {
-  return from(
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then(response => response.json())
-  );
-}
-
-// Première requête - Appel API
-cache.get('users', fetchUsers, 10000).subscribe(users => {
-  console.log('Utilisateurs:', users.length); // Appel API
-});
-
-// Requête immédiate suivante - Depuis le cache
-setTimeout(() => {
-  cache.get('users', fetchUsers, 10000).subscribe(users => {
-    console.log('Utilisateurs (cache):', users.length); // Depuis le cache
-  });
-}, 1000);
-
-// Après 11 secondes - Nouvel appel API (TTL expiré)
-setTimeout(() => {
-  cache.get('users', fetchUsers, 10000).subscribe(users => {
-    console.log('Utilisateurs (rafraîchi):', users.length); // Appel API
-  });
-}, 11000);
-```
-
-> [!IMPORTANT] Conception du TTL
-> - **Trop court** : Charge serveur accrue, diminution des performances
-> - **Trop long** : Les utilisateurs voient des données obsolètes
-> - **Approprié** : Équilibre entre la fraîcheur des données et la charge serveur
-
-### Rafraîchissement automatique du cache (Revalidation)
-
-**Revalidation :**
-- Les données mises en cache sont d'abord retournées immédiatement (réponse rapide)
-- Les dernières données sont récupérées en arrière-plan
-- Le cache est mis à jour une fois les données fraîches obtenues
-
-**Avantages :**
-- Expérience utilisateur rapide (pas d'attente pour les données mises en cache)
-- Toujours récupérer les dernières données en arrière-plan
-- Utilisé par SWR (stale-while-revalidate)
-
-```typescript
-import { merge, of, tap, shareReplay } from 'rxjs';
-/**
- * Stratégie SWR (Stale-While-Revalidate)
- * Retourner d'abord les données mises en cache, puis actualiser en arrière-plan
- */
-function getWithRevalidation<T>(
-  key: string,
-  fetchFn: () => Observable<T>,
-  ttl: number = 60000
-): Observable<T> {
-  const cached = cache.get(key);
-  const now = Date.now();
-
-  // Retourner d'abord le cache s'il existe
-  if (cached && cached.expiresAt > now) {
-    console.log('Retour des données mises en cache et revalidation');
-
-    return merge(
-      of(cached.data), // Retourner immédiatement les données mises en cache
-      fetchFn().pipe(   // Récupérer de nouvelles données en arrière-plan
-        tap(data => {
-          cache.set(key, {
-            data,
-            timestamp: now,
-            expiresAt: now + ttl
-          });
-          console.log('Cache revalidé avec de nouvelles données');
-        })
-      )
-    );
-  }
-
-  // Si pas de cache ou expiré, récupération normale
-  return fetchFn().pipe(
-    tap(data => {
-      cache.set(key, {
-        data,
-        timestamp: now,
-        expiresAt: now + ttl
-      });
-    }),
-    shareReplay({ bufferSize: 1, refCount: false })
-  );
-}
-
-// Exemple d'utilisation
-getWithRevalidation('users', fetchUsers).subscribe(users => {
-  console.log('Utilisateurs:', users.length); // Données mises en cache → Nouvelles données
-});
-```
-
-> [!TIP] Cas d'utilisation de la Revalidation
-> - Flux d'actualités, chronologie des réseaux sociaux
-> - Catalogues de produits, listes d'articles
-> - Profils utilisateur
-> - → Scénarios où afficher d'abord le cache puis mettre à jour est préféré
-
-## Invalidation et actualisation du cache
-
-### Problème : Maintenir la cohérence des données lors de mutations
-
-Lors de la création ou de la mise à jour de données (POST/PUT/PATCH), le cache existant devient obsolète. Il est nécessaire d'invalider le cache et de le rafraîchir.
-
-### Solution : Implémentation d'une stratégie d'invalidation
-
-**Modèles d'invalidation de cache :**
-1. **Invalidation complète** - Invalider tout le cache
-2. **Invalidation par clé** - Invalider uniquement les clés spécifiques
-3. **Invalidation par motif** - Invalider les clés correspondant à un motif
-
-**Méthodes d'actualisation après invalidation :**
-- **Rafraîchissement immédiat** - Récupérer immédiatement de nouvelles données
-- **Rafraîchissement paresseux** - Rafraîchir lors de la prochaine requête
-
-```typescript
-import { tap, catchError, switchMap, from } from 'rxjs';
-
-interface Post {
-  userId: number;
-  id: number;
-  title: string;
-  body: string;
-}
-
-class CacheInvalidationService {
-  private cache = new TTLCache<any>();
-
-  /**
-   * Créer une nouvelle publication (POST)
-   * Invalider le cache des publications après création
-   */
-  createPost(post: Omit<Post, 'id'>): Observable<Post> {
-    return from(
-      fetch('https://jsonplaceholder.typicode.com/posts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(post)
-      }).then(r => r.json())
-    ).pipe(
-      tap(() => {
-        // Invalider le cache des listes de publications
-        this.cache.invalidate('posts');
-        console.log('Cache des publications invalidé après création');
-      }),
-      // Récupérer immédiatement de nouvelles données (rafraîchissement immédiat)
-      switchMap(newPost => {
-        return this.cache.get('posts', () => this.fetchPosts());
-      })
-    );
-  }
-
-  /**
-   * Mettre à jour une publication (PUT)
-   * Invalider le cache de la publication spécifique
-   */
-  updatePost(id: number, post: Partial<Post>): Observable<Post> {
-    return from(
-      fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(post)
-      }).then(r => r.json())
-    ).pipe(
-      tap(() => {
-        // Invalider à la fois la publication individuelle et la liste
-        this.cache.invalidate(`post-${id}`);
-        this.cache.invalidate('posts');
-        console.log(`Cache de la publication ${id} invalidé`);
-      })
-    );
-  }
-
-  /**
-   * Supprimer une publication (DELETE)
-   */
-  deletePost(id: number): Observable<void> {
-    return from(
-      fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
-        method: 'DELETE'
-      }).then(() => {})
-    ).pipe(
-      tap(() => {
-        this.cache.invalidate(`post-${id}`);
-        this.cache.invalidate('posts');
-        console.log(`Cache de la publication ${id} supprimé`);
-      })
-    );
-  }
-
-  /**
-   * Obtenir la liste des publications
-   */
-  private fetchPosts(): Observable<Post[]> {
-    return from(
-      fetch('https://jsonplaceholder.typicode.com/posts')
-        .then(r => r.json())
-    );
-  }
-
-  /**
-   * Obtenir une publication individuelle
-   */
-  getPost(id: number): Observable<Post> {
-    return this.cache.get(
-      `post-${id}`,
-      () => from(
-        fetch(`https://jsonplaceholder.typicode.com/posts/${id}`)
-          .then(r => r.json())
-      ),
-      300000 // TTL 5 minutes
-    );
-  }
-}
-
-// Exemple d'utilisation
-const service = new CacheInvalidationService();
-
-// Créer une nouvelle publication
-service.createPost({
-  userId: 1,
-  title: 'Nouvelle publication',
-  body: 'Contenu de la nouvelle publication'
-}).subscribe(post => {
-  console.log('Publication créée:', post);
-  // Le cache des publications est automatiquement invalidé et rafraîchi
-});
-```
-
-> [!WARNING] Points d'attention pour l'invalidation du cache
-> - **Éviter les invalidations excessives** : Une invalidation trop fréquente diminue l'efficacité du cache
-> - **Considération de la granularité** : Équilibre entre invalidation complète et par clé
-> - **Cohérence des données** : S'assurer d'invalider tous les caches associés
-
-### Invalidation automatique par tags
-
-**Système de tags de cache :**
-- Associer plusieurs tags à une clé de cache
-- Invalider tous les caches avec un tag spécifique
-- Gestion fine de l'invalidation
-
-**Exemples de tags :**
-- `user:123` - Données de l'utilisateur avec ID 123
-- `posts:user:123` - Publications de l'utilisateur 123
-- `comments:post:456` - Commentaires de la publication 456
-
-**Avantages :**
-- Invalidation groupée facile des caches associés
-- Relations de données claires
-- Invalidation fine
-
-```typescript
-import { Observable } from 'rxjs';
-interface TaggedCache<T> {
-  data: T;
-  timestamp: number;
-  expiresAt: number;
-  tags: Set<string>;
-}
-
-class TaggedCacheService {
-  private cache = new Map<string, TaggedCache<any>>();
-  private tagIndex = new Map<string, Set<string>>(); // tag → keys
-
-  /**
-   * Obtenir des données avec tags
-   */
-  get<T>(
-    key: string,
-    fetchFn: () => Observable<T>,
-    tags: string[],
-    ttl: number = 300000
-  ): Observable<T> {
-    const cached = this.cache.get(key);
-    const now = Date.now();
-
-    if (cached && cached.expiresAt > now) {
-      console.log(`Hit du cache (tags: ${Array.from(cached.tags).join(', ')})`);
-      return of(cached.data);
+  getUsers(): Observable<User[]> {
+    // Retour de la cache si disponible
+    if (this.users$) {
+      console.log('Retour du cache');
+      return this.users$;
     }
 
-    return fetchFn().pipe(
-      tap(data => {
-        const tagSet = new Set(tags);
-
-        this.cache.set(key, {
-          data,
-          timestamp: now,
-          expiresAt: now + ttl,
-          tags: tagSet
-        });
-
-        // Mise à jour de l'index des tags
-        tags.forEach(tag => {
-          if (!this.tagIndex.has(tag)) {
-            this.tagIndex.set(tag, new Set());
-          }
-          this.tagIndex.get(tag)!.add(key);
-        });
-
-        console.log(`Cache défini avec tags: ${tags.join(', ')}`);
+    // Créer une nouvelle demande et la mettre en cache
+    console.log('Exécuter la nouvelle demande');
+    this.users$ = this.fetchUsersFromAPI().pipe(
+      tap(() => console.log('APIAppel terminé')),
+      shareReplay({ bufferSize: 1, refCount: true }), // Si la dernière valeur1Mettre en cache les deux dernières valeurs (libéré lorsque tous les abonnements sont désabonnés àrefCountet libérée lorsque tous les abonnements sont désabonnés)
+      catchError((err: unknown) => {
+        // Effacer le cache en cas d'erreur
+        this.users$ = null;
+        throw err;
       })
     );
+
+    return this.users$;
   }
 
-  /**
-   * Invalider par tag
-   */
-  invalidateByTag(tag: string): void {
-    const keys = this.tagIndex.get(tag);
-    if (!keys) return;
-
-    keys.forEach(key => {
-      this.cache.delete(key);
-    });
-
-    this.tagIndex.delete(tag);
-    console.log(`Cache invalidé par tag: ${tag} (${keys.size} entrées)`);
+  clearCache(): void {
+    this.users$ = null;
+    console.log('Effacer le cache');
   }
 
-  /**
-   * Invalider par plusieurs tags (AND)
-   */
-  invalidateByTags(tags: string[]): void {
-    tags.forEach(tag => this.invalidateByTag(tag));
+  private fetchUsersFromAPI(): Observable<User[]> {
+    return of([
+      { id: 1, name: 'Taro Yamada', email: 'yamada@example.com' },
+      { id: 2, name: 'Hanako Sato', email: 'sato@example.com' }
+    ]);
   }
 }
 
 // Exemple d'utilisation
-const taggedCache = new TaggedCacheService();
+const userService = new UserService();
 
-// Mettre en cache avec tags
-taggedCache.get(
-  'user-123-posts',
-  fetchUserPosts,
-  ['user:123', 'posts'], // Associer plusieurs tags
-  600000
-);
+// 1Le deuxième appel (APIExécution)
+userService.getUsers().subscribe(users => {
+  console.log('Composant1:', users);
+});
 
-// Invalider tous les caches liés à l'utilisateur 123
-taggedCache.invalidateByTag('user:123');
+// 2Deuxième appel (à partir du cache)
+userService.getUsers().subscribe(users => {
+  console.log('Composant2:', users);
+});
 
-// Invalider tous les caches de publications
-taggedCache.invalidateByTag('posts');
+// Sortie:
+// Exécuter la nouvelle demande
+// APIAppel terminé
+// Composant1: [...]
+// Retour du cache
+// Composant2: [...]
 ```
 
-## Mise en cache multi-niveaux (Mémoire + localStorage)
+> - `refCount : true` - cache jeté lorsque le nombre d'abonnés atteint 0 (efficacité mémoire ◎)
+> - `refCount : false` (default) - cache persistant (bonnes performances).
+>
+> - `refCount : true` - choisissez en fonction de votre application.
 
-### Problème : Fournir un cache rapide et persistant
+## Cache avec TTL (time to live)
 
-**Limitations du cache en mémoire :**
-- Perdu au rechargement de la page
-- Ne fonctionne pas entre onglets
-- Perdu à la fermeture du navigateur
+### Problème : Je veux invalider automatiquement les anciens caches.
 
-**Solution :**
-Combiner cache en mémoire (rapide) et localStorage (persistant) pour une stratégie de cache multi-niveaux.
+Je veux détruire automatiquement les caches après une certaine période de temps et récupérer de nouvelles données.
 
-**Hiérarchie du cache :**
-1. **Cache L1 (Mémoire)** - Très rapide, volatil
-2. **Cache L2 (localStorage)** - Rapide, persistant
-3. **Cache L3 (IndexedDB)** - Grand, persistant (optionnel)
-4. **Origine (API)** - Le plus lent, toujours à jour
+### Solution : combiner les horodatages et les filtres
+
 
 ```typescript
-import { defer, of, tap, Observable, from } from 'rxjs';
+import { Observable, of, shareReplay, map, switchMap } from 'rxjs';
+interface CachedData<T> {
+  data: T;
+  timestamp: number;
+}
+
+class TTLCacheService<T> {
+  private cache$: Observable<CachedData<T>> | null = null;
+  private ttl: number; // Time To Live (millisecondes)
+
+  constructor(ttl: number = 60000) {
+    this.ttl = ttl; // Par défaut: 60secondes (facultatif)
+  }
+
+  getData(fetchFn: () => Observable<T>): Observable<T> {
+    if (this.cache$) {
+      // Vérifier si le cache est valide
+      return this.cache$.pipe(
+        switchMap(cached => {
+          const age = Date.now() - cached.timestamp;
+          if (age < this.ttl) {
+            console.log(`Retour du cache (Jusqu'à la date d'expiration ${(this.ttl - age) / 1000}secondes (facultatif))`);
+            return of(cached.data);
+          } else {
+            console.log('Cache expiré - Nouvelle acquisition');
+            this.cache$ = null;
+            return this.getData(fetchFn);
+          }
+        })
+      );
+    }
+
+    // Acquérir et mettre en cache de nouvelles données
+    console.log('Exécuter la nouvelle demande');
+    this.cache$ = fetchFn().pipe(
+      map(data => ({
+        data,
+        timestamp: Date.now()
+      })),
+      shareReplay({ bufferSize: 1, refCount: true })
+    );
+
+    return this.cache$.pipe(map(cached => cached.data));
+  }
+
+  clearCache(): void {
+    this.cache$ = null;
+    console.log('Effacer le cache');
+  }
+
+  getCacheAge(): number | null {
+    // Obtenir le temps écoulé du cache (pour le débogage)
+    if (!this.cache$) return null;
+
+    let timestamp = 0;
+    this.cache$.subscribe(cached => {
+      timestamp = cached.timestamp;
+    });
+
+    return Date.now() - timestamp;
+  }
+}
+
+// Exemple d'utilisation
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+}
+
+const productCache = new TTLCacheService<Product[]>(30000); // 30secondes (facultatif)TTL
+
+function fetchProducts(): Observable<Product[]> {
+  console.log('APIRappel');
+  return of([
+    { id: 1, name: 'ÉlémentA', price: 1000 },
+    { id: 2, name: 'ÉlémentB', price: 2000 }
+  ]);
+}
+
+// 1Temps (nouvelle acquisition)
+productCache.getData(() => fetchProducts()).subscribe(products => {
+  console.log('Acquisition:', products);
+});
+
+// 10Quelques secondes plus tard (à partir du cache)
+setTimeout(() => {
+  productCache.getData(() => fetchProducts()).subscribe(products => {
+    console.log('10Quelques secondes plus tard (à partir du cache):', products);
+    console.log('Temps écoulé dans le cache:', productCache.getCacheAge(), 'ms');
+  });
+}, 10000);
+
+// 35Après 2,5 secondes (réacquisition après expiration)
+setTimeout(() => {
+  productCache.getData(() => fetchProducts()).subscribe(products => {
+    console.log('35Après quelques secondes (expiration):', products);
+  });
+}, 35000);
+```
+
+**Comportement du cache TTL:***
+
+```mermaid
+sequenceDiagram
+    participant Component
+    participant Cache
+    participant API
+
+    Component->>Cache: getData()
+    Note over Cache: Pas de cache
+    Cache->>API: fetch()
+    API-->>Cache: data
+    Cache-->>Component: data (timestampEnregistré)
+
+    Note over Component,Cache: 10Quelques secondes plus tard (à partir du cache)
+    Component->>Cache: getData()
+    Note over Cache: TTLDans les (30secondes (dans les secondes)
+    Cache-->>Component: cached data
+
+    Note over Component,Cache: 35Quelques secondes plus tard (à partir du cache)
+    Component->>Cache: getData()
+    Note over Cache: TTLExpiré
+    Cache->>API: fetch()
+    API-->>Cache: new data
+    Cache-->>Component: new data
+```
+
+## Rafraîchissement manuel et invalidation du cache
+
+### Problème : l'utilisateur veut rafraîchir les données de façon arbitraire
+
+Lorsque l'utilisateur clique sur le bouton "Rafraîchir", je souhaite supprimer le cache et obtenir les données les plus récentes.
+
+### Solution : contrôle avec Subject et switch.
+
+```typescript
+import { Observable, Subject, merge, of, switchMap, shareReplay, tap } from 'rxjs';
+class RefreshableCacheService<T> {
+  private refreshTrigger$ = new Subject<void>();
+  private cache$: Observable<T>;
+
+  constructor(fetchFn: () => Observable<T>) {
+    this.cache$ = merge(
+      this.refreshTrigger$.pipe(
+        tap(() => console.log('Rafraîchissement manuel'))
+      ),
+      // Pour l'exécution initiale
+      of(undefined).pipe(tap(() => console.log('Lecture initiale')))
+    ).pipe(
+      switchMap(() => fetchFn()),
+      tap(data => console.log('Acquisition de données terminée:', data)),
+      shareReplay({ bufferSize: 1, refCount: true })
+    );
+  }
+
+  getData(): Observable<T> {
+    return this.cache$;
+  }
+
+  refresh(): void {
+    this.refreshTrigger$.next();
+  }
+}
+
+const refreshButton = document.createElement('button');
+refreshButton.id = 'refresh-button';
+refreshButton.textContent = 'Nouvelles mises à jour';
+refreshButton.style.padding = '10px 20px';
+refreshButton.style.margin = '10px';
+refreshButton.style.fontSize = '16px';
+refreshButton.style.fontWeight = 'bold';
+refreshButton.style.color = '#fff';
+refreshButton.style.backgroundColor = '#2196F3';
+refreshButton.style.border = 'none';
+refreshButton.style.borderRadius = '4px';
+refreshButton.style.cursor = 'pointer';
+document.body.appendChild(refreshButton);
+
+const newsContainer = document.createElement('div');
+newsContainer.id = 'news-container';
+newsContainer.style.padding = '15px';
+newsContainer.style.margin = '10px';
+newsContainer.style.border = '2px solid #ccc';
+newsContainer.style.borderRadius = '8px';
+newsContainer.style.minHeight = '200px';
+newsContainer.style.backgroundColor = '#f9f9f9';
+document.body.appendChild(newsContainer);
+
+const newsCache = new RefreshableCacheService<string[]>(() =>
+  of(['Nouvelles1', 'Nouvelles2', 'Nouvelles3'])
+);
+
+// S'abonner aux données
+newsCache.getData().subscribe(news => {
+  console.log('Liste de nouvelles:', news);
+  displayNews(news, newsContainer);
+});
+
+// L'utilisateur clique sur le bouton de mise à jour
+refreshButton.addEventListener('click', () => {
+  console.log('L'utilisateur clique sur le bouton de mise à jour');
+  refreshButton.textContent = 'Mise à jour...';
+  refreshButton.disabled = true;
+  refreshButton.style.backgroundColor = '#999';
+  newsCache.refresh();
+  setTimeout(() => {
+    refreshButton.textContent = 'Nouvelles mises à jour';
+    refreshButton.disabled = false;
+    refreshButton.style.backgroundColor = '#2196F3';
+  }, 1000);
+});
+
+function displayNews(news: string[], container: HTMLElement): void {
+  container.innerHTML = news
+    .map(item => `<div style="padding: 10px; margin: 5px 0; border-bottom: 1px solid #ddd; font-size: 14px;">${item}</div>`)
+    .join('');
+
+  if (news.length === 0) {
+    container.innerHTML = '<div style="padding: 20px; text-align: center; color: #999;">Il n'y a pas de nouvelles</div>';
+  }
+}
+```
+
+### Invalidation conditionnelle du cache
+
+```typescript
+import { BehaviorSubject, Observable, switchMap, shareReplay, distinctUntilChanged, of } from 'rxjs';
+interface CacheOptions {
+  forceRefresh: boolean;
+  userId?: number;
+}
+
+class ConditionalCacheService {
+  private options$ = new BehaviorSubject<CacheOptions>({
+    forceRefresh: false
+  });
+
+  data$ = this.options$.pipe(
+    distinctUntilChanged((prev, curr) => {
+      // forceRefreshouuserIdRécupérer lorsque les
+      return !curr.forceRefresh && prev.userId === curr.userId;
+    }),
+    switchMap(options => {
+      console.log('Données récupérées:', options);
+      return this.fetchData(options.userId);
+    }),
+    shareReplay({ bufferSize: 1, refCount: true })
+  );
+
+  getData(userId?: number): Observable<any> {
+    this.options$.next({
+      forceRefresh: false,
+      userId
+    });
+    return this.data$;
+  }
+
+  refresh(userId?: number): void {
+    this.options$.next({
+      forceRefresh: true,
+      userId
+    });
+  }
+
+  private fetchData(userId?: number): Observable<any> {
+    console.log('APIRappel - userId:', userId);
+    return of({ userId, data: 'sample data' });
+  }
+}
+
+// Exemple d'utilisation
+const conditionalCache = new ConditionalCacheService();
+
+// L'utilisateur1Acquisition de données
+conditionalCache.getData(1).subscribe(data => {
+  console.log('L'utilisateur1Données de:', data);
+});
+
+// du cache car il s'agit du même utilisateur
+conditionalCache.getData(1).subscribe(data => {
+  console.log('L'utilisateur1Données de (cache):', data);
+});
+
+// Re-acquisition car il s'agit d'un autre utilisateur
+conditionalCache.getData(2).subscribe(data => {
+  console.log('L'utilisateur2Données de:', data);
+});
+
+// Rafraîchissement manuel
+conditionalCache.refresh(1);
+```
+
+## Interfaçage avec le stockage local
+
+### Problème : Je veux conserver le cache après le rechargement d'une page.
+
+Je souhaite mettre en place un cache persistant utilisant le stockage local du navigateur.
+
+### Solution : combiner avec le stockage local
+
+```typescript
+import { Observable, of, defer, tap, catchError } from 'rxjs';
+interface StorageCacheOptions {
+  key: string;
+  ttl?: number; // millisecondes
+}
+
 interface CachedItem<T> {
   data: T;
   timestamp: number;
-  expiresAt: number;
 }
 
-class MultiLevelCache<T> {
-  private memoryCache = new Map<string, CachedItem<T>>();
-
-  /**
-   * Obtenir des données (vérifier Mémoire → localStorage → API)
-   */
-  get(
-    key: string,
-    fetchFn: () => Observable<T>,
-    ttl: number = 300000
+class LocalStorageCacheService {
+  getOrFetch<T>(
+    options: StorageCacheOptions,
+    fetchFn: () => Observable<T>
   ): Observable<T> {
     return defer(() => {
-      const now = Date.now();
+      // Tentative de récupération à partir de la mémoire locale
+      const cached = this.getFromStorage<T>(options.key, options.ttl);
 
-      // L1: Vérifier le cache mémoire
-      const memCached = this.memoryCache.get(key);
-      if (memCached && memCached.expiresAt > now) {
-        console.log('Hit du cache L1 (mémoire)');
-        return of(memCached.data);
+      if (cached) {
+        console.log('Acquisition à partir de la mémoire locale:', options.key);
+        return of(cached);
       }
 
-      // L2: Vérifier localStorage
-      const localCached = this.getFromLocalStorage(key);
-      if (localCached && localCached.expiresAt > now) {
-        console.log('Hit du cache L2 (localStorage)');
-        // Promouvoir vers le cache mémoire
-        this.memoryCache.set(key, localCached);
-        return of(localCached.data);
-      }
-
-      // L3: Récupérer depuis l'API
-      console.log('Miss du cache - Récupération depuis l\'API');
+      // Nouvelle acquisition car il n'y a pas de cache
+      console.log('Nouvelle acquisition:', options.key);
       return fetchFn().pipe(
         tap(data => {
-          const cacheItem: CachedItem<T> = {
-            data,
-            timestamp: now,
-            expiresAt: now + ttl
-          };
-
-          // Définir à la fois en mémoire et localStorage
-          this.memoryCache.set(key, cacheItem);
-          this.setToLocalStorage(key, cacheItem);
-        })
-      );
-    });
-  }
-
-  /**
-   * Obtenir depuis localStorage
-   */
-  private getFromLocalStorage(key: string): CachedItem<T> | null {
-    try {
-      const item = localStorage.getItem(`cache:${key}`);
-      if (!item) return null;
-
-      return JSON.parse(item) as CachedItem<T>;
-    } catch (error) {
-      console.error('Erreur de lecture du localStorage:', error);
-      return null;
-    }
-  }
-
-  /**
-   * Définir dans localStorage
-   */
-  private setToLocalStorage(key: string, item: CachedItem<T>): void {
-    try {
-      localStorage.setItem(`cache:${key}`, JSON.stringify(item));
-    } catch (error) {
-      console.error('Erreur d\'écriture du localStorage:', error);
-      // Ignorer les erreurs de quota
-    }
-  }
-
-  /**
-   * Invalider le cache
-   */
-  invalidate(key: string): void {
-    this.memoryCache.delete(key);
-    localStorage.removeItem(`cache:${key}`);
-    console.log(`Cache invalidé (tous les niveaux): ${key}`);
-  }
-
-  /**
-   * Effacer tout le cache
-   */
-  clear(): void {
-    this.memoryCache.clear();
-
-    // Supprimer toutes les clés commençant par "cache:"
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key?.startsWith('cache:')) {
-        localStorage.removeItem(key);
-      }
-    }
-
-    console.log('Tout le cache a été effacé (tous les niveaux)');
-  }
-}
-
-// Exemple d'utilisation
-const multiCache = new MultiLevelCache<User[]>();
-
-// Première requête - Depuis l'API
-multiCache.get('users', fetchUsers, 600000).subscribe(users => {
-  console.log('Utilisateurs:', users.length); // Depuis l'API
-});
-
-// Requête immédiate suivante - Depuis le cache mémoire
-multiCache.get('users', fetchUsers, 600000).subscribe(users => {
-  console.log('Utilisateurs:', users.length); // Depuis le cache L1
-});
-
-// Après rechargement de la page - Depuis localStorage
-// (Le cache mémoire est vide mais localStorage existe)
-multiCache.get('users', fetchUsers, 600000).subscribe(users => {
-  console.log('Utilisateurs:', users.length); // Depuis le cache L2
-});
-```
-
-> [!TIP] Stratégie de cache multi-niveaux
-> **Avantages :**
-> - Cache rapide avec la mémoire
-> - Persistance avec localStorage
-> - Expérience utilisateur cohérente même après rechargement de la page
->
-> **Points d'attention :**
-> - Limite de quota de localStorage (généralement 5-10MB)
-> - Gestion des erreurs lors de l'écriture
-> - Nettoyage du cache expiré
-
-## Stratégie offline-first
-
-### Problème : Fournir un cache même hors ligne
-
-Les applications web progressives (PWA) doivent fonctionner même lorsque le réseau est indisponible. Une stratégie offline-first est nécessaire.
-
-**Modèle offline-first :**
-1. **Retourner d'abord le cache** (réponse instantanée)
-2. **Récupérer depuis le réseau en arrière-plan** (mise à jour)
-3. **Stocker les nouvelles données dans le cache**
-
-**Avantages :**
-- Fonctionne même hors ligne
-- Réponse rapide
-- Mise à jour automatique quand le réseau est disponible
-
-```typescript
-import { merge, of, from, catchError, tap, shareReplay } from 'rxjs';
-class OfflineFirstCache<T> {
-  private memoryCache = new Map<string, CachedItem<T>>();
-
-  /**
-   * Stratégie offline-first
-   * Retourner d'abord le cache, puis actualiser depuis le réseau
-   */
-  get(
-    key: string,
-    fetchFn: () => Observable<T>,
-    ttl: number = 600000
-  ): Observable<T> {
-    const now = Date.now();
-
-    // Obtenir le cache existant
-    const cached = this.getCached(key);
-
-    // Créer l'Observable réseau
-    const network$ = from(fetchFn()).pipe(
-      tap(data => {
-        const cacheItem: CachedItem<T> = {
-          data,
-          timestamp: now,
-          expiresAt: now + ttl
-        };
-
-        this.memoryCache.set(key, cacheItem);
-        this.setToLocalStorage(key, cacheItem);
-        console.log('Données réseau obtenues et mises en cache');
-      }),
-      catchError((err: unknown) => {
-        console.error('Erreur réseau:', err);
-        // Retourner le cache en cas d'erreur réseau
-        return cached ? of(cached.data) : throwError(() => err);
-      }),
-      shareReplay({ bufferSize: 1, refCount: false })
-    );
-
-    // Retourner d'abord le cache s'il existe
-    if (cached) {
-      console.log('Retour du cache puis mise à jour réseau');
-      return merge(
-        of(cached.data),  // Retourner immédiatement le cache
-        network$          // Actualiser depuis le réseau
-      );
-    }
-
-    // S'il n'y a pas de cache, récupérer uniquement depuis le réseau
-    console.log('Pas de cache - Récupération réseau uniquement');
-    return network$;
-  }
-
-  /**
-   * Obtenir le cache (mémoire → localStorage)
-   */
-  private getCached(key: string): CachedItem<T> | null {
-    // Vérifier le cache mémoire
-    const memCached = this.memoryCache.get(key);
-    if (memCached) return memCached;
-
-    // Vérifier localStorage
-    return this.getFromLocalStorage(key);
-  }
-
-  private getFromLocalStorage(key: string): CachedItem<T> | null {
-    try {
-      const item = localStorage.getItem(`offline:${key}`);
-      if (!item) return null;
-      return JSON.parse(item) as CachedItem<T>;
-    } catch {
-      return null;
-    }
-  }
-
-  private setToLocalStorage(key: string, item: CachedItem<T>): void {
-    try {
-      localStorage.setItem(`offline:${key}`, JSON.stringify(item));
-    } catch (error) {
-      console.error('Erreur d\'écriture du localStorage:', error);
-    }
-  }
-}
-
-// Exemple d'utilisation
-const offlineCache = new OfflineFirstCache<User[]>();
-
-// Première visite - Récupération réseau
-offlineCache.get('users', fetchUsers).subscribe({
-  next: users => console.log('Utilisateurs:', users.length),
-  error: err => console.error('Erreur:', err)
-});
-
-// Deuxième visite - Retourner d'abord le cache puis actualiser
-// (Fonctionne même hors ligne car le cache existe)
-offlineCache.get('users', fetchUsers).subscribe({
-  next: users => console.log('Utilisateurs (offline-first):', users.length)
-  // Sortie: "Retour du cache puis mise à jour réseau"
-  // → Cache d'abord, puis mise à jour réseau si disponible
-});
-```
-
-> [!IMPORTANT] Conception offline-first
-> **Avantages :**
-> - ✅ Fonctionne même hors ligne
-> - ✅ Réponse instantanée (expérience rapide)
-> - ✅ Mise à jour automatique quand le réseau est disponible
->
-> **Points d'attention :**
-> - ⚠️ Les utilisateurs peuvent voir des données obsolètes
-> - ⚠️ Nécessité de visualiser l'état du réseau
-> - ⚠️ Considération de la stratégie de synchronisation
-
-## Gestion des erreurs de cache
-
-### Problème : Gestion appropriée des erreurs de récupération du cache
-
-Lors de la récupération du cache, des erreurs peuvent survenir (quota localStorage plein, corruption de données, erreur réseau, etc.). Une gestion appropriée des erreurs est nécessaire.
-
-### Solution : Stratégie de récupération gracieuse
-
-**Modèles de gestion des erreurs :**
-1. **Erreur de lecture du cache** → Ignorer et récupérer depuis le réseau
-2. **Erreur réseau** → Retourner le cache ancien si disponible
-3. **Erreur d'écriture du cache** → Enregistrer et continuer (sans bloquer l'utilisateur)
-
-```typescript
-import { of, catchError, tap, retry, throwError } from 'rxjs';
-class ResilientCache<T> {
-  private memoryCache = new Map<string, CachedItem<T>>();
-  private errorLog: Array<{ timestamp: Date; error: Error }> = [];
-
-  /**
-   * Obtenir des données avec gestion des erreurs
-   */
-  get(
-    key: string,
-    fetchFn: () => Observable<T>,
-    ttl: number = 300000
-  ): Observable<T> {
-    return defer(() => {
-      const now = Date.now();
-
-      // Lire le cache en toute sécurité
-      const cached = this.safeGetCache(key);
-      if (cached && cached.expiresAt > now) {
-        console.log('Hit du cache');
-        return of(cached.data);
-      }
-
-      // Récupération réseau avec gestion des erreurs
-      return fetchFn().pipe(
-        retry({
-          count: 3,
-          delay: 1000
-        }),
-        tap(data => {
-          // Écrire dans le cache en toute sécurité
-          this.safeSetCache(key, {
-            data,
-            timestamp: now,
-            expiresAt: now + ttl
-          });
+          this.saveToStorage(options.key, data);
         }),
         catchError((err: unknown) => {
-          console.error('Erreur réseau:', err);
-
-          // Retourner le cache ancien en cas d'erreur
-          if (cached) {
-            console.log('Utilisation du cache ancien en raison d\'une erreur réseau');
-            return of(cached.data);
-          }
-
-          // Lancer une erreur s'il n'y a pas de cache
-          return throwError(() => err);
+          console.error('Erreur d'acquisition:', err);
+          throw err;
         })
       );
     });
   }
 
-  /**
-   * Lire le cache en toute sécurité
-   */
-  private safeGetCache(key: string): CachedItem<T> | null {
+  private getFromStorage<T>(key: string, ttl?: number): T | null {
     try {
-      // Vérifier le cache mémoire
-      const memCached = this.memoryCache.get(key);
-      if (memCached) return memCached;
-
-      // Vérifier localStorage
-      const item = localStorage.getItem(`cache:${key}`);
+      const item = localStorage.getItem(key);
       if (!item) return null;
 
-      const parsed = JSON.parse(item) as CachedItem<T>;
+      const cached: CachedItem<T> = JSON.parse(item);
 
-      // Promouvoir vers le cache mémoire
-      this.memoryCache.set(key, parsed);
-
-      return parsed;
-    } catch (error) {
-      console.error('Erreur de lecture du cache:', error);
-      this.logError(error as Error);
-      return null; // Ignorer l'erreur et retourner null
-    }
-  }
-
-  /**
-   * Écrire dans le cache en toute sécurité
-   */
-  private safeSetCache(key: string, item: CachedItem<T>): void {
-    try {
-      // Écrire dans le cache mémoire
-      this.memoryCache.set(key, item);
-
-      // Écrire dans localStorage
-      localStorage.setItem(`cache:${key}`, JSON.stringify(item));
-    } catch (error) {
-      console.error('Erreur d\'écriture du cache:', error);
-      this.logError(error as Error);
-
-      // Nettoyer le cache ancien si le quota est dépassé
-      if (this.isQuotaExceeded(error as Error)) {
-        console.log('Quota localStorage dépassé - Nettoyage du cache ancien');
-        this.cleanOldCache();
-      }
-    }
-  }
-
-  /**
-   * Vérifier si c'est une erreur de quota
-   */
-  private isQuotaExceeded(error: Error): boolean {
-    return error.name === 'QuotaExceededError' ||
-           error.message.includes('quota');
-  }
-
-  /**
-   * Nettoyer le cache ancien
-   */
-  private cleanOldCache(): void {
-    try {
-      const keys: string[] = [];
-
-      // Obtenir toutes les clés de cache
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key?.startsWith('cache:')) {
-          keys.push(key);
+      // TTLVérifier.
+      if (ttl) {
+        const age = Date.now() - cached.timestamp;
+        if (age > ttl) {
+          console.log('Cache expiré:', key);
+          localStorage.removeItem(key);
+          return null;
         }
       }
 
-      // Trier par date (plus ancien en premier)
-      const items = keys
-        .map(key => {
-          try {
-            const item = JSON.parse(localStorage.getItem(key)!);
-            return { key, timestamp: item.timestamp };
-          } catch {
-            return { key, timestamp: 0 };
-          }
-        })
-        .sort((a, b) => a.timestamp - b.timestamp);
-
-      // Supprimer les 20% les plus anciens
-      const removeCount = Math.ceil(items.length * 0.2);
-      for (let i = 0; i < removeCount; i++) {
-        localStorage.removeItem(items[i].key);
-      }
-
-      console.log(`Nettoyé ${removeCount} entrées de cache anciennes`);
+      return cached.data;
     } catch (error) {
-      console.error('Erreur de nettoyage du cache:', error);
+      console.error('Erreur de chargement de la mémoire locale:', error);
+      return null;
     }
   }
 
-  /**
-   * Enregistrer les erreurs
-   */
-  private logError(error: Error): void {
-    this.errorLog.push({
-      timestamp: new Date(),
-      error
-    });
-
-    // Garder seulement les 50 erreurs les plus récentes
-    if (this.errorLog.length > 50) {
-      this.errorLog = this.errorLog.slice(-50);
+  private saveToStorage<T>(key: string, data: T): void {
+    try {
+      const item: CachedItem<T> = {
+        data,
+        timestamp: Date.now()
+      };
+      localStorage.setItem(key, JSON.stringify(item));
+      console.log('Enregistrer dans la mémoire locale:', key);
+    } catch (error) {
+      console.error('Erreur d'enregistrement dans la mémoire locale:', error);
     }
   }
 
-  /**
-   * Obtenir le journal des erreurs
-   */
-  getErrorLog(): Array<{ timestamp: Date; error: Error }> {
-    return [...this.errorLog];
+  clearCache(key?: string): void {
+    if (key) {
+      localStorage.removeItem(key);
+      console.log('Effacer le cache:', key);
+    } else {
+      localStorage.clear();
+      console.log('Effacer tous les caches');
+    }
+  }
+
+  getCacheSize(): number {
+    let size = 0;
+    for (const key in localStorage) {
+      if (localStorage.hasOwnProperty(key)) {
+        size += localStorage[key].length;
+      }
+    }
+    return size;
+  }
+}
+
+// Exemple d'utilisation
+interface Settings {
+  theme: string;
+  language: string;
+  notifications: boolean;
+}
+
+const storageCache = new LocalStorageCacheService();
+
+function fetchSettings(): Observable<Settings> {
+  console.log('Paramètres.APIRécupérer de');
+  return of({
+    theme: 'dark',
+    language: 'ja',
+    notifications: true
+  });
+}
+
+// Récupérer les paramètres (stockage local ouAPI)
+storageCache.getOrFetch(
+  { key: 'user-settings', ttl: 3600000 }, // 1HeureTTL
+  fetchSettings
+).subscribe(settings => {
+  console.log('Paramètres:', settings);
+  applySettings(settings);
+});
+
+// Les mêmes données sont récupérées après le rechargement de la page (TTL(si dans)
+// storageCache.getOrFetch(...) // A partir de la mémoire locale
+
+function applySettings(settings: Settings): void {
+  document.body.className = `theme-${settings.theme}`;
+  console.log('Appliquer les paramètres:', settings);
+}
+```
+
+### Gestion de la taille du stockage
+
+```typescript
+class ManagedStorageCacheService extends LocalStorageCacheService {
+  private maxSize = 5 * 1024 * 1024; // 5MB
+
+  saveWithLimit<T>(key: string, data: T): boolean {
+    const item: CachedItem<T> = {
+      data,
+      timestamp: Date.now()
+    };
+
+    const itemString = JSON.stringify(item);
+    const itemSize = new Blob([itemString]).size;
+
+    // Taille actuelle + Si la taille du nouvel élément dépasse la limite
+    if (this.getCacheSize() + itemSize > this.maxSize) {
+      console.log('Limite de capacité de stockage - Supprimer l'ancien élément');
+      this.removeOldestItem();
+    }
+
+    try {
+      localStorage.setItem(key, itemString);
+      return true;
+    } catch (error) {
+      console.error('Défaut de stockage:', error);
+      return false;
+    }
+  }
+
+  private removeOldestItem(): void {
+    let oldestKey: string | null = null;
+    let oldestTimestamp = Date.now();
+
+    for (const key in localStorage) {
+      if (localStorage.hasOwnProperty(key)) {
+        try {
+          const item = JSON.parse(localStorage[key]);
+          if (item.timestamp < oldestTimestamp) {
+            oldestTimestamp = item.timestamp;
+            oldestKey = key;
+          }
+        } catch (error) {
+          // Ignorer l'erreur d'analyse
+        }
+      }
+    }
+
+    if (oldestKey) {
+      localStorage.removeItem(oldestKey);
+      console.log('Supprimer l'élément le plus ancien:', oldestKey);
+    }
   }
 }
 ```
 
-> [!WARNING] Gestion des erreurs de cache
-> **Erreurs courantes :**
-> - **QuotaExceededError** - Quota localStorage dépassé (généralement 5-10MB)
-> - **Corruption de données** - JSON invalide, données corrompues
-> - **Erreur réseau** - Timeout, erreur HTTP, pas de connexion
->
-> **Stratégies de récupération :**
-> - Ignorer les erreurs de lecture du cache et récupérer depuis le réseau
-> - Retourner le cache ancien en cas d'erreur réseau
-> - Nettoyer automatiquement le cache ancien quand le quota est dépassé
-> - Enregistrer les erreurs pour l'analyse
+## Support hors ligne
 
-## Stratégies de mise à jour
+### Problème : Je souhaite afficher les données mises en cache lorsque je suis hors ligne.
 
-### Prefetch (préchargement)
+Je veux afficher les données mises en cache pour améliorer l'interface utilisateur même en l'absence de connexion réseau.
 
-**Prefetch :**
-- Précharger les données susceptibles d'être nécessaires avant que l'utilisateur ne les demande
-- Amélioration de l'expérience utilisateur (affichage instantané)
-- Utilisation efficace du temps d'inactivité
-
-**Scénarios de prefetch :**
-- Précharger la page suivante lors du défilement
-- Précharger les détails lors du survol d'un élément de liste
-- Précharger les écrans suivants probables
+### Solution : stratégie cache-first
 
 ```typescript
-import { fromEvent, debounceTime, switchMap, tap } from 'rxjs';
-class PrefetchCache<T> {
-  private cache = new Map<string, CachedItem<T>>();
+import { Observable, of, throwError, fromEvent, merge, map, startWith, distinctUntilChanged, switchMap, catchError, tap } from 'rxjs';
+class OfflineFirstCacheService {
+  private onlineStatus$ = merge(
+    fromEvent(window, 'online').pipe(map(() => true)),
+    fromEvent(window, 'offline').pipe(map(() => false))
+  ).pipe(
+    startWith(navigator.onLine),
+    distinctUntilChanged(),
+    tap(online => console.log('Statut en ligne:', online))
+  );
 
-  /**
-   * Prefetch - Précharger les données dans le cache
-   */
-  prefetch(key: string, fetchFn: () => Observable<T>, ttl: number = 300000): void {
-    const now = Date.now();
-
-    // Ne rien faire si déjà en cache
-    if (this.cache.has(key)) {
-      console.log(`Prefetch ignoré - Déjà en cache: ${key}`);
-      return;
-    }
-
-    console.log(`Prefetch démarré: ${key}`);
-
-    fetchFn().pipe(
-      tap(data => {
-        this.cache.set(key, {
-          data,
-          timestamp: now,
-          expiresAt: now + ttl
-        });
-        console.log(`Prefetch terminé: ${key}`);
-      }),
-      catchError((err: unknown) => {
-        console.error(`Erreur de prefetch: ${key}`, err);
-        return of(null); // Ignorer l'erreur
-      })
-    ).subscribe();
-  }
-
-  /**
-   * Obtenir depuis le cache (généralement instantané grâce au prefetch)
-   */
-  get(key: string, fetchFn: () => Observable<T>, ttl: number = 300000): Observable<T> {
-    const cached = this.cache.get(key);
-    const now = Date.now();
-
-    if (cached && cached.expiresAt > now) {
-      console.log(`Hit du cache (prefetch): ${key}`);
-      return of(cached.data);
-    }
-
-    console.log(`Miss du cache - Récupération: ${key}`);
-    return fetchFn().pipe(
-      tap(data => {
-        this.cache.set(key, {
-          data,
-          timestamp: now,
-          expiresAt: now + ttl
-        });
+  getData<T>(
+    cacheKey: string,
+    fetchFn: () => Observable<T>
+  ): Observable<T> {
+    return this.onlineStatus$.pipe(
+      switchMap(online => {
+        if (online) {
+          // En ligne: APIRécupéré et mis en cache
+          console.log('En ligne - APIRécupérer de');
+          return fetchFn().pipe(
+            tap(data => {
+              this.saveToCache(cacheKey, data);
+            }),
+            catchError((err: unknown) => {
+              console.error('APIErreur d'acquisition - Revenir au cache');
+              return this.getFromCache<T>(cacheKey);
+            })
+          );
+        } else {
+          // Hors ligne: Récupération du cache
+          console.log('Hors ligne - Récupération du cache');
+          return this.getFromCache<T>(cacheKey);
+        }
       })
     );
   }
+
+  private saveToCache<T>(key: string, data: T): void {
+    try {
+      localStorage.setItem(key, JSON.stringify(data));
+      console.log('Sauvegarde du cache:', key);
+    } catch (error) {
+      console.error('Échec de l'enregistrement du cache:', error);
+    }
+  }
+
+  private getFromCache<T>(key: string): Observable<T> {
+    try {
+      const cached = localStorage.getItem(key);
+      if (cached) {
+        const data = JSON.parse(cached);
+        console.log('Récupération du cache:', key);
+        return of(data);
+      }
+    } catch (error) {
+      console.error('Erreur de chargement du cache:', error);
+    }
+
+    return throwError(() => new Error('Cache introuvable'));
+  }
 }
 
-// Exemple d'utilisation : Prefetch lors du survol d'un élément de liste
-const prefetchCache = new PrefetchCache<Post>();
+// Traditional approach (commented for reference)
+// const container = document.querySelector('#articles');
+// const message = document.querySelector('#offline-message');
 
-// Créer un élément de liste dynamiquement
-const listItem = document.createElement('div');
-listItem.id = 'post-item-1';
-listItem.textContent = 'Publication 1 (survolez pour prefetch)';
-listItem.style.padding = '10px';
-listItem.style.margin = '10px';
-listItem.style.border = '1px solid #ccc';
-listItem.style.cursor = 'pointer';
-document.body.appendChild(listItem);
+// Self-contained: creates articles display dynamically
+const articlesContainer = document.createElement('div');
+articlesContainer.id = 'articles';
+articlesContainer.style.padding = '15px';
+articlesContainer.style.margin = '10px';
+articlesContainer.style.border = '2px solid #ccc';
+articlesContainer.style.borderRadius = '8px';
+articlesContainer.style.backgroundColor = '#f9f9f9';
+document.body.appendChild(articlesContainer);
 
-const postId = 1;
+const offlineMessage = document.createElement('div');
+offlineMessage.id = 'offline-message';
+offlineMessage.style.padding = '15px';
+offlineMessage.style.margin = '10px';
+offlineMessage.style.backgroundColor = '#f8d7da';
+offlineMessage.style.color = '#721c24';
+offlineMessage.style.border = '1px solid #f5c6cb';
+offlineMessage.style.borderRadius = '4px';
+offlineMessage.style.display = 'none';
+offlineMessage.style.textAlign = 'center';
+offlineMessage.style.fontWeight = 'bold';
+document.body.appendChild(offlineMessage);
 
-fromEvent(listItem, 'mouseenter').pipe(
-  debounceTime(300) // Prefetch 300ms après le survol
-).subscribe(() => {
-  console.log('Survol détecté - Démarrage du prefetch');
-  prefetchCache.prefetch(
-    `post-${postId}`,
-    () => from(
-      fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`)
-        .then(r => r.json())
-    )
-  );
+// Exemple d'utilisation
+const offlineCache = new OfflineFirstCacheService();
+
+function fetchArticles(): Observable<any[]> {
+  return of([
+    { id: 1, title: 'Article (en anglais)1', content: 'Contenu1' },
+    { id: 2, title: 'Article (en anglais)2', content: 'Contenu2' }
+  ]);
+}
+
+offlineCache.getData('articles', fetchArticles).subscribe({
+  next: articles => {
+    console.log('Article (en anglais):', articles);
+    displayArticles(articles, articlesContainer);
+    offlineMessage.style.display = 'none';
+  },
+  error: err => {
+    console.error('Échec de l'acquisition de données:', err);
+    showOfflineMessage(offlineMessage);
+  }
 });
 
-// Lors du clic, le cache est déjà prêt
-fromEvent(listItem, 'click').subscribe(() => {
-  console.log('Clic - Récupération de la publication');
-  prefetchCache.get(
-    `post-${postId}`,
-    () => from(
-      fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`)
-        .then(r => r.json())
-    )
-  ).subscribe(post => {
-    console.log('Publication:', post.title); // Affichage instantané grâce au prefetch
-  });
-});
+function displayArticles(articles: any[], container: HTMLElement): void {
+  container.innerHTML = articles
+    .map(a => `
+      <article style="padding: 15px; margin: 10px 0; border-bottom: 2px solid #ddd;">
+        <h2 style="margin: 0 0 10px 0; font-size: 18px; color: #333;">${a.title}</h2>
+        <p style="margin: 0; font-size: 14px; color: #666;">${a.content}</p>
+      </article>
+    `)
+    .join('');
+
+  if (articles.length === 0) {
+    container.innerHTML = '<div style="padding: 20px; text-align: center; color: #999;">Aucun article trouvé</div>';
+  }
+}
+
+function showOfflineMessage(message: HTMLElement): void {
+  message.textContent = 'Hors ligne. Pas de données en cache.';
+  message.style.display = 'block';
+}
 ```
 
-> [!TIP] Cas d'utilisation du prefetch
-> **Scénarios efficaces :**
-> - Défilement infini (précharger la page suivante)
-> - Survol d'éléments de liste (précharger les détails)
-> - Pagination (précharger la page suivante)
-> - Navigation prédictive (précharger les écrans probables)
->
-> **Points d'attention :**
-> - ⚠️ Consommation de bande passante (éviter le prefetch excessif)
-> - ⚠️ Utilisation de la mémoire (limiter le nombre de prefetch)
-> - ⚠️ Prefetch uniquement des ressources nécessaires
-
-## Code de test
-
-Exemples de tests pour les stratégies de mise en cache.
+**Stratégie pour le support hors ligne:**
 
 ```typescript
-import { TestScheduler } from 'rxjs/testing';
+import { Observable, of, shareReplay, catchError, tap } from 'rxjs';
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
 
-describe('Stratégies de mise en cache', () => {
-  let testScheduler: TestScheduler;
+class UserService {
+  private users$: Observable<User[]> | null = null;
 
-  beforeEach(() => {
-    testScheduler = new TestScheduler((actual, expected) => {
-      expect(actual).toEqual(expected);
-    });
-  });
+  getUsers(): Observable<User[]> {
+    // Retour de la cache si disponible
+    if (this.users$) {
+      console.log('Retour du cache');
+      return this.users$;
+    }
 
-  it('should cache data with shareReplay', () => {
-    testScheduler.run(({ cold, expectObservable }) => {
-      const source$ = cold('--a-b-c-|', {
-        a: { id: 1, name: 'Test' },
-        b: { id: 2, name: 'Test2' },
-        c: { id: 3, name: 'Test3' }
-      });
+    // Créer une nouvelle demande et la mettre en cache
+    console.log('Exécuter la nouvelle demande');
+    this.users$ = this.fetchUsersFromAPI().pipe(
+      tap(() => console.log('APIAppel terminé')),
+      shareReplay({ bufferSize: 1, refCount: true }), // Si la dernière valeur1Mettre en cache les deux dernières valeurs (libéré lorsque tous les abonnements sont désabonnés àrefCountet libérée lorsque tous les abonnements sont désabonnés)
+      catchError((err: unknown) => {
+        // Effacer le cache en cas d'erreur
+        this.users$ = null;
+        throw err;
+      })
+    );
 
-      const cached$ = source$.pipe(
-        shareReplay({ bufferSize: 1, refCount: false })
-      );
+    return this.users$;
+  }
 
-      // Premier abonnement
-      expectObservable(cached$).toBe('--a-b-c-|', {
-        a: { id: 1, name: 'Test' },
-        b: { id: 2, name: 'Test2' },
-        c: { id: 3, name: 'Test3' }
-      });
+  clearCache(): void {
+    this.users$ = null;
+    console.log('Effacer le cache');
+  }
 
-      // Deuxième abonnement (depuis le cache)
-      expectObservable(cached$, '^-!').toBe('-c', {
-        c: { id: 3, name: 'Test3' }
-      });
-    });
-  });
+  private fetchUsersFromAPI(): Observable<User[]> {
+    return of([
+      { id: 1, name: 'Taro Yamada', email: 'yamada@example.com' },
+      { id: 2, name: 'Hanako Sato', email: 'sato@example.com' }
+    ]);
+  }
+}
 
-  it('should invalidate cache after TTL', () => {
-    testScheduler.run(({ cold, hot, expectObservable }) => {
-      const cache = new TTLCache<any>();
-      const ttl = 30; // 30 frames de temps virtuel
+// Exemple d'utilisation
+const userService = new UserService();
 
-      const fetch$ = cold('a|', { a: { data: 'test' } });
-
-      const result$ = cache.get('test-key', () => fetch$, ttl);
-
-      // Première requête
-      expectObservable(result$).toBe('a|', { a: { data: 'test' } });
-
-      // Requête immédiate suivante (depuis le cache)
-      expectObservable(result$, '---^').toBe('a|', { a: { data: 'test' } });
-
-      // Après expiration du TTL (nouveau fetch)
-      expectObservable(result$, '--------------------------------^').toBe('a|', {
-        a: { data: 'test' }
-      });
-    });
-  });
+// 1Le deuxième appel (APIExécution)
+userService.getUsers().subscribe(users => {
+  console.log('Composant1:', users);
 });
+
+// 2Deuxième appel (à partir du cache)
+userService.getUsers().subscribe(users => {
+  console.log('Composant2:', users);
+});
+
+// Sortie:
+// Exécuter la nouvelle demande
+// APIAppel terminé
+// Composant1: [...]
+// Retour du cache
+// Composant2: [...]
 ```
 
-## Résumé
+## Surveillance et débogage du cache
 
-En maîtrisant les stratégies de mise en cache, vous pouvez améliorer considérablement les performances et l'expérience utilisateur de vos applications.
+### Visualisation de l'état du cache
 
-> [!IMPORTANT] Points importants
-> - **shareReplay** : Mise en cache de base, éviter les appels API redondants
-> - **TTL** : Définir la durée de vie du cache, empêcher les données obsolètes
-> - **Invalidation** : Maintenir la cohérence des données lors de mutations
-> - **Multi-niveaux** : Combiner mémoire et localStorage pour rapidité et persistance
-> - **Offline-first** : Fournir un cache même hors ligne, améliorer l'expérience utilisateur
-> - **Gestion des erreurs** : Récupération gracieuse, nettoyage automatique du cache
 
-> [!TIP] Meilleures pratiques
-> - **Conception TTL appropriée** : Équilibre entre fraîcheur des données et charge serveur
-> - **Invalidation fine** : Invalidation ciblée avec système de tags
-> - **Gestion de la mémoire** : Nettoyage automatique du cache ancien
-> - **Visualisation de l'état** : Indiquer clairement le statut du cache à l'utilisateur
-> - **Tests** : Tester les stratégies de cache avec TestScheduler
+```typescript
+import { Observable, of, shareReplay, catchError, tap } from 'rxjs';
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
 
-## Prochaines étapes
+class UserService {
+  private users$: Observable<User[]> | null = null;
 
-Après avoir maîtrisé les stratégies de mise en cache, passez aux modèles suivants :
+  getUsers(): Observable<User[]> {
+    // Retour de la cache si disponible
+    if (this.users$) {
+      console.log('Retour du cache');
+      return this.users$;
+    }
 
-- [Appels API](./api-calls.md) - Combiner appels API et stratégies de cache
-- [Traitement de données temps réel](./real-time-data.md) - Mise en cache de données temps réel
-- [Traitement de formulaires](./form-handling.md) - Mise en cache de données de formulaires
-- [Traitement d'événements UI](./ui-events.md) - Mise en cache d'événements UI
+    // Créer une nouvelle demande et la mettre en cache
+    console.log('Exécuter la nouvelle demande');
+    this.users$ = this.fetchUsersFromAPI().pipe(
+      tap(() => console.log('APIAppel terminé')),
+      shareReplay({ bufferSize: 1, refCount: true }), // Si la dernière valeur1Mettre en cache les deux dernières valeurs (libéré lorsque tous les abonnements sont désabonnés àrefCountet libérée lorsque tous les abonnements sont désabonnés)
+      catchError((err: unknown) => {
+        // Effacer le cache en cas d'erreur
+        this.users$ = null;
+        throw err;
+      })
+    );
 
-## Sections connexes
+    return this.users$;
+  }
 
-- [Chapitre 2: Cold/Hot Observable](../observables/cold-and-hot-observables.md) - Fondements de shareReplay
-- [Chapitre 4: Opérateurs](../operators/index.md) - Détails sur shareReplay, share, etc.
-- [Chapitre 6: Gestion des erreurs](../error-handling/strategies.md) - Gestion des erreurs de cache
+  clearCache(): void {
+    this.users$ = null;
+    console.log('Effacer le cache');
+  }
 
-## Ressources de référence
+  private fetchUsersFromAPI(): Observable<User[]> {
+    return of([
+      { id: 1, name: 'Taro Yamada', email: 'yamada@example.com' },
+      { id: 2, name: 'Hanako Sato', email: 'sato@example.com' }
+    ]);
+  }
+}
 
-- [RxJS officiel: shareReplay](https://rxjs.dev/api/operators/shareReplay) - Détails de shareReplay
-- [RxJS officiel: share](https://rxjs.dev/api/operators/share) - Détails de share
-- [MDN: localStorage](https://developer.mozilla.org/fr/docs/Web/API/Window/localStorage) - Utilisation de localStorage
-- [MDN: IndexedDB](https://developer.mozilla.org/fr/docs/Web/API/IndexedDB_API) - Utilisation d'IndexedDB
+// Exemple d'utilisation
+const userService = new UserService();
+
+// 1Le deuxième appel (APIExécution)
+userService.getUsers().subscribe(users => {
+  console.log('Composant1:', users);
+});
+
+// 2Deuxième appel (à partir du cache)
+userService.getUsers().subscribe(users => {
+  console.log('Composant2:', users);
+});
+
+// Sortie:
+// Exécuter la nouvelle demande
+// APIAppel terminé
+// Composant1: [...]
+// Retour du cache
+// Composant2: [...]
+```
+
+## Résumé.
+
+La maîtrise du modèle de stratégie de mise en cache peut améliorer de manière significative les performances et l'expérience de l'utilisateur.
+
+> [!IMPORTANT] Points clés
+
+> - **shareReplay** : idéal pour la mise en cache de la mémoire de base
+> - **TTL** : invalidation automatique des anciennes données
+> - **rafraîchissement manuel** : mise à jour à l'initiative de l'utilisateur
+> - **stockage local** : cache persistant
+> - **Support hors ligne** : stratégie "cache-first" > - **Surveillance** : stratégie "cache-first
+> - **Surveillance** : visibilité des taux de réussite et des tailles
+
+> [!TIP] ベストプラクティス
+
+> - **TTLD approprié** : délai d'expiration en fonction de la nature des données
+> - **Effacer en cas d'erreur** : détruire le cache en cas d'erreur
+> - **Gestion de la taille** : fixer des limites à la capacité de stockage
+> - **Utilisation de refCount** : prévenir les fuites de mémoire
+> - **Clé du cache** : utiliser une clé unique et facile à comprendre
+
+## Prochaines étapes.
+
+Une fois que vous aurez maîtrisé le modèle de stratégie de cache, vous pourrez passer aux modèles suivants.
+
+- [traitement des données en temps réel](. /real-time-data.md) - Mettre en cache les données en temps réel.
+- [appels API](. /api-calls.md) - mettre en cache les réponses de l'API
+- [Traitement des événements de l'interface utilisateur](. /ui-events.md) - mise en cache des données d'événements
+- Pratique de gestion des erreurs (en préparation) - Gestion des erreurs de cache
+
+## Sections connexes.
+
+- [Chapitre 2 : Observable froid/chaud](. /observables/cold-and-hot-observables.md) - détails de shareReplay.
+- [Chapitre 4 : Opérateurs](. /operators/multicasting/shareReplay.md) - Comment utiliser shareReplay.
+- Chapitre 10 : Anti-patterns](. /anti-patterns/common-mistakes.md)) - Mauvaise utilisation de shareReplay
+
+## Ressource de référence.
+
+- [RxJS official : shareReplay](https://rxjs.dev/api/operators/shareReplay) - Plus d'informations sur shareReplay.
+- MDN : Web Storage API](https://developer.mozilla.org/ja/docs/Web/API/Web_Storage_API) - Comment utiliser le stockage local.
+- [Learn RxJS : Caching](https://www.learnrxjs.io/) - Exemples pratiques de modèles de mise en cache.

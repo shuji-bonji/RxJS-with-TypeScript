@@ -1,40 +1,52 @@
 ---
-description: De expand operator is een RxJS operator die een nieuwe Observable maakt van elke waarde en het resultaat recursief uitbreidt. Het kan worden gebruikt voor boomstructuur-traversal, API-paginering, recursieve berekening, en meer.
+description: "De expand operator is een RxJS operator die van elke waarde een nieuwe Observable maakt en het resultaat recursief uitbreidt. Implementeer recursieve gegevensverwervingspatronen zoals boomstructuur traversal, API pagination, infinite scrolling, dependency resolution, etc. in TypeScript op een type-veilige manier."
 ---
 
-# expand - Recursieve uitbreiding
+# uitbreiden - recursief uitbreiden
 
-De `expand` operator voert een recursieve transformatie uit die **een nieuwe Observable genereert van elke waarde en het resultaat ook uitbreidt**. Het is het beste geschikt voor operaties die waarden één voor één uitbreiden, zoals het doorlopen van een boomstructuur, API-paginering, of recursieve berekening.
+De `expand` operator voert een recursieve transformatie uit die **van elke waarde een nieuwe Observable genereert en het resultaat ook uitbreidt**. Het is ideaal voor bewerkingen die waarden één voor één uitbreiden, zoals het doorlopen van boomstructuren, API-paginatie en recursieve berekeningen.
 
-## 🔰 Basissyntax en gebruik
+## 🔰 Basis syntaxis en gebruik
 
 ```ts
 import { of } from 'rxjs';
 import { expand, take } from 'rxjs';
 
-// Recursieve verwerking die verdubbelt
+// 2Recursief proces van verdubbelen
 of(1).pipe(
   expand(x => of(x * 2)),
-  take(5) // Voorkom oneindige lus
+  take(5) // Preventie van oneindige lus
 ).subscribe(console.log);
-// Output: 1, 2, 4, 8, 16
+// Uitvoer: 1, 2, 4, 8, 16
 ```
 
-**Werkingsstroom**:
-1. Initiële waarde `1` wordt uitgegeven
-2. Functie `expand` ontvangt `1` en retourneert `of(2)`
-3. `2` wordt uitgegeven en de functie `expand` wordt opnieuw aangeroepen
-4. Functie `expand` ontvangt `2` en retourneert `of(4)`
-5. Deze iteratie gaat door...
+**Stroom van de bewerking**: 1.
+1. een initiële waarde van `1` wordt uitgegeven
+2. De functie `expand` ontvangt `1` en geeft `of(2)` terug 3. De functie `expand` wordt aangeroepen.
+3. `2` wordt uitgegeven en de functie `expand` wordt opnieuw aangeroepen 4. De functie `expand` ontvangt `1` en geeft `of(2)` terug
+4. De functie `expand` ontvangt `2` en geeft `of(4)` terug 5. De functie `expand` wordt opnieuw aangeroepen.
+5. deze iteratie...
 
-> [!WARNING]
-> `expand` zal **ONEINDIG LUSSEN** als u geen exitvoorwaarde specificeert. Zorg ervoor dat u een exitvoorwaarde instelt zoals `take` of conditioneel `EMPTY` retourneert.
+```ts
+import { of } from 'rxjs';
+import { expand, take } from 'rxjs';
 
-[🌐 RxJS Officiële Documentatie - `expand`](https://rxjs.dev/api/operators/expand)
+// 2Recursief proces van verdubbelen
+of(1).pipe(
+  expand(x => of(x * 2)),
+  take(5) // Preventie van oneindige lus
+).subscribe(console.log);
+// Uitvoer: 1, 2, 4, 8, 16
+```
 
-## 🔄 Verschil met mergeMap
+> `uitbreiden` resulteert in een **oneindige lus** als er geen afsluitvoorwaarde is opgegeven. Zorg ervoor dat je een afsluitvoorwaarde instelt, zoals `take` of voorwaardelijk `EMPTY` retourneren.
 
-`expand` lijkt op `mergeMap`, behalve dat het ook **recursief de resultaten verwerkt** van de gegenereerde Observable.
+[🌐 Officiële RxJS documentatie - `uitbreiden`](https://rxjs.dev/api/operators/expand)
+
+## Verschillen met mergeMap
+
+`expand` is vergelijkbaar met `mergeMap`, behalve dat **de resultaten van de gegenereerde Observable ook recursief worden verwerkt**.
+
 
 ```ts
 import { of } from 'rxjs';
@@ -42,48 +54,45 @@ import { mergeMap, expand, take } from 'rxjs';
 
 const double = (x: number) => of(x * 2);
 
-// mergeMap: Transformeer slechts één keer
+// mergeMap: 1Slechts eenmaal converteren
 of(1).pipe(
   mergeMap(double),
   take(5)
 ).subscribe(console.log);
-// Output: 2
-// (Slechts één waarde, 2 wordt niet opnieuw getransformeerd)
+// Uitvoer: 2
+// (1Slechts één waarde,2wordt niet opnieuw geconverteerd)
 
-// expand: Recursieve transformatie
+// expand: Recursief converteren
 of(1).pipe(
   expand(double),
   take(5)
 ).subscribe(console.log);
-// Output: 1, 2, 4, 8, 16
-// (Elk resultaat wordt opnieuw getransformeerd)
+// Uitvoer: 1, 2, 4, 8, 16
+// (Elk resultaat wordt opnieuw omgezet)
 ```
 
-| Operator | Verwerking | Recursief | Gebruiksscenario |
-|---|---|---|---|
-| `mergeMap` | Transformeer elke waarde slechts één keer | ❌ | Normale asynchrone transformatie |
-| `expand` | Transformeer het resultaat recursief | ✅ | Boomtraversal, paginering, recursieve berekening |
+TABEL 14
 
-## 💡 Typische gebruikspatronen
+## 💡 Typisch gebruikspatroon
 
-### 1. Recursieve verwerking met beëindigingsvoorwaarden
+### 1. recursie met beëindigingsvoorwaarden
 
 ```ts
 import { of, EMPTY } from 'rxjs';
 import { expand } from 'rxjs';
 
-// Verdubbel tot minder dan 10
+// 10naar minder dan2verdubbeld
 of(1).pipe(
   expand(x => {
     const next = x * 2;
     return next < 10 ? of(next) : EMPTY;
   })
 ).subscribe(console.log);
-// Output: 1, 2, 4, 8
-// (16 is >= 10, dus EMPTY wordt geretourneerd en het eindigt)
+// Uitvoer: 1, 2, 4, 8
+// (16wordt geconverteerd naar10Aangezien het groter is dan of gelijk aanEMPTYwordt teruggegeven en het einde)
 ```
 
-### 2. Boomstructuur traversal
+### 2. doorlopen van boomstructuren
 
 ```ts
 import { of, from, EMPTY } from 'rxjs';
@@ -101,23 +110,23 @@ const tree: TreeNode = {
   children: [
     {
       id: 2,
-      name: 'Kind 1',
+      name: 'Child 1',
       children: [
-        { id: 4, name: 'Kleinkind 1' },
-        { id: 5, name: 'Kleinkind 2' }
+        { id: 4, name: 'Grandchild 1' },
+        { id: 5, name: 'Grandchild 2' }
       ]
     },
     {
       id: 3,
-      name: 'Kind 2',
+      name: 'Child 2',
       children: [
-        { id: 6, name: 'Kleinkind 3' }
+        { id: 6, name: 'Grandchild 3' }
       ]
     }
   ]
 };
 
-// Doorloop de hele boom
+// De hele boom doorlopen
 of(tree).pipe(
   expand(node =>
     node.children && node.children.length > 0
@@ -125,18 +134,18 @@ of(tree).pipe(
       : EMPTY
   )
 ).subscribe(node => {
-  console.log(`ID: ${node.id}, Naam: ${node.name}`);
+  console.log(`ID: ${node.id}, Name: ${node.name}`);
 });
-// Output:
-// ID: 1, Naam: Root
-// ID: 2, Naam: Kind 1
-// ID: 3, Naam: Kind 2
-// ID: 4, Naam: Kleinkind 1
-// ID: 5, Naam: Kleinkind 2
-// ID: 6, Naam: Kleinkind 3
+// Uitvoer:
+// ID: 1, Name: Root
+// ID: 2, Name: Child 1
+// ID: 3, Name: Child 2
+// ID: 4, Name: Grandchild 1
+// ID: 5, Name: Grandchild 2
+// ID: 6, Name: Grandchild 3
 ```
 
-### 3. API-paginering
+### 3. paginering van de API
 
 ```ts
 import { of, EMPTY } from 'rxjs';
@@ -148,7 +157,7 @@ interface PageResponse {
 }
 
 function fetchPage(page: number): Promise<PageResponse> {
-  // Simuleer API-verzoek
+  // APIVerzoek simuleren
   return new Promise(resolve => {
     setTimeout(() => {
       if (page > 3) {
@@ -163,7 +172,7 @@ function fetchPage(page: number): Promise<PageResponse> {
   });
 }
 
-// Haal alle pagina's sequentieel op
+// Alle pagina's opeenvolgend ophalen
 of(1).pipe(
   expand(page => {
     return page > 0 ? of(page) : EMPTY;
@@ -177,13 +186,120 @@ of(1).pipe(
       : EMPTY
   )
 ).subscribe(response => {
-  console.log(`Paginadata:`, response.data);
+  console.log(`Gegevens van de pagina:`, response.data);
 });
 ```
 
-## 🧠 Praktisch codevoorbeeld (Toon directoryhiërarchie)
+#### Meer praktische uitvoering van paginering
 
-Dit is een voorbeeld van het recursief doorlopen van de directorystructuur van een bestandssysteem.
+```ts
+import { defer, EMPTY, lastValueFrom } from 'rxjs';
+import { expand, map, reduce, tap } from 'rxjs';
+
+interface PaginatedResponse<T> {
+  items: T[];
+  nextCursor: string | null;
+}
+
+function fetchPagedData<T>(
+  fetchFn: (cursor: string | null) => Promise<PaginatedResponse<T>>
+): Promise<T[]> {
+  return lastValueFrom(
+    defer(() => fetchFn(null)).pipe(
+      expand(response =>
+        response.nextCursor
+          ? defer(() => fetchFn(response.nextCursor))
+          : EMPTY
+      ),
+      map(response => response.items),
+      reduce((acc, items) => [...acc, ...items], [] as T[])
+    )
+  );
+}
+
+// UIAanmaken van elementen
+const container = document.createElement('div');
+document.body.appendChild(container);
+
+const title = document.createElement('h3');
+title.textContent = 'Voorbeeld implementatie paginering';
+container.appendChild(title);
+
+const button = document.createElement('button');
+button.textContent = 'Alle gegevens ophalen';
+container.appendChild(button);
+
+const status = document.createElement('div');
+status.style.marginTop = '10px';
+status.style.padding = '10px';
+status.style.backgroundColor = '#f0f0f0';
+container.appendChild(status);
+
+const output = document.createElement('pre');
+output.style.marginTop = '10px';
+output.style.padding = '10px';
+output.style.backgroundColor = '#f9f9f9';
+output.style.maxHeight = '300px';
+output.style.overflow = 'auto';
+container.appendChild(output);
+
+// Gebruiksvoorbeeld：VoorbeeldAPIGebruikersgegevens ophalen met
+interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
+// VoorbeeldAPISimuleer een
+async function fetchUsers(cursor: string | null): Promise<PaginatedResponse<User>> {
+  // APISimuleer verzoeken (met100msVertraagd)
+  await new Promise(resolve => setTimeout(resolve, 100));
+
+  const page = cursor ? parseInt(cursor) : 1;
+  const pageSize = 5;
+  const totalPages = 4;
+
+  if (page > totalPages) {
+    return { items: [], nextCursor: null };
+  }
+
+  const items: User[] = Array.from({ length: pageSize }, (_, i) => ({
+    id: (page - 1) * pageSize + i + 1,
+    name: `User ${(page - 1) * pageSize + i + 1}`,
+    email: `user${(page - 1) * pageSize + i + 1}@example.com`
+  }));
+
+  return {
+    items,
+    nextCursor: page < totalPages ? String(page + 1) : null
+  };
+}
+
+// Alle gegevens ophalen met één klik op een knop
+button.addEventListener('click', async () => {
+  button.disabled = true;
+  status.textContent = 'Gegevensverwerving bezig...';
+  output.textContent = '';
+
+  try {
+    const allUsers = await fetchPagedData(fetchUsers);
+
+    status.textContent = `Acquisitie voltooid: ${allUsers.length}Gebruikersgegevens voor`;
+    output.textContent = JSON.stringify(allUsers, null, 2);
+
+    console.log(`Aantal gebruikers: ${allUsers.length}`);
+    console.log('Gebruikersgegevens:', allUsers);
+  } catch (error) {
+    status.textContent = `Fout: ${error}`;
+  } finally {
+    button.disabled = false;
+  }
+});
+```
+
+## 🧠 Praktisch codevoorbeeld (weergave van directoryhiërarchie)
+
+Dit is een voorbeeld van het recursief doorlopen van de mappenstructuur van een bestandssysteem.
 
 ```ts
 import { of, from, EMPTY } from 'rxjs';
@@ -197,7 +313,7 @@ interface FileSystemItem {
   level: number;
 }
 
-// Voorbeeld bestandssysteemstructuur
+// Structuur voorbeeldbestandssysteem
 const fileSystem: FileSystemItem = {
   name: 'root',
   type: 'directory',
@@ -237,12 +353,12 @@ const fileSystem: FileSystemItem = {
   ]
 };
 
-// Maak UI-elementen
+// UIAanmaken van elementen
 const container = document.createElement('div');
 document.body.appendChild(container);
 
 const title = document.createElement('h3');
-title.textContent = 'Directoryhiërarchie weergave';
+title.textContent = 'Weergave mappenhiërarchie';
 container.appendChild(title);
 
 const output = document.createElement('pre');
@@ -261,7 +377,7 @@ container.appendChild(stats);
 let fileCount = 0;
 let dirCount = 0;
 
-// Breid directorystructuur recursief uit
+// Recursief uitgebreide mappenstructuur
 of(fileSystem).pipe(
   expand(item => {
     if (item.type === 'directory' && item.children && item.children.length > 0) {
@@ -288,79 +404,283 @@ of(fileSystem).pipe(
     output.textContent += `${indent}${icon} ${item.name}\n`;
   },
   complete: () => {
-    stats.textContent = `Directories: ${dirCount}, Bestanden: ${fileCount}`;
+    stats.textContent = `Aantal mappen: ${dirCount}, Aantal bestanden: ${fileCount}`;
   }
 });
 ```
 
-## ⚠️ Veelgemaakte fouten
+## 📋 Type veilig gebruik.
 
-> [!WARNING]
-> De meest voorkomende fout met `expand` is **het vergeten een exitvoorwaarde in te stellen, wat resulteert in een oneindige lus**.
+Dit is een voorbeeld van een typeveilige implementatie in TypeScript die gebruik maakt van generics.
 
-### Fout: Geen exitvoorwaarde
+```ts
+import { Observable, of, from, EMPTY } from 'rxjs';
+import { expand, filter, take, defaultIfEmpty, reduce } from 'rxjs';
+
+interface Node<T> {
+  value: T;
+  children?: Node<T>[];
+}
+
+class TreeTraversal<T> {
+  /**
+   * Doorloopt de boomstructuur met zoeken eerst in de breedte
+   */
+  traverseBFS(root: Node<T>): Observable<Node<T>> {
+    return of(root).pipe(
+      expand(node =>
+        node.children && node.children.length > 0
+          ? from(node.children)
+          : EMPTY
+      )
+    );
+  }
+
+  /**
+   * Zoek naar het eerste knooppunt dat aan de criteria voldoet
+   */
+  findNode(
+    root: Node<T>,
+    predicate: (value: T) => boolean
+  ): Observable<Node<T> | undefined> {
+    return this.traverseBFS(root).pipe(
+      filter(node => predicate(node.value)),
+      take(1),
+      defaultIfEmpty(undefined as Node<T> | undefined)
+    );
+  }
+
+  /**
+   * Telt het aantal knooppunten in de boomstructuur
+   */
+  countNodes(root: Node<T>): Observable<number> {
+    return this.traverseBFS(root).pipe(
+      reduce((count) => count + 1, 0)
+    );
+  }
+
+  /**
+   * Zoekt alle knooppunten met een specifieke waarde
+   */
+  findAllNodes(
+    root: Node<T>,
+    predicate: (value: T) => boolean
+  ): Observable<Node<T>[]> {
+    return this.traverseBFS(root).pipe(
+      filter(node => predicate(node.value)),
+      reduce((acc, node) => [...acc, node], [] as Node<T>[])
+    );
+  }
+}
+
+// Gebruiksvoorbeeld
+const tree: Node<string> = {
+  value: 'A',
+  children: [
+    {
+      value: 'B',
+      children: [
+        { value: 'D' },
+        { value: 'E' }
+      ]
+    },
+    {
+      value: 'C',
+      children: [
+        { value: 'F' }
+      ]
+    }
+  ]
+};
+
+const traversal = new TreeTraversal<string>();
+
+// De hele boom doorlopen
+traversal.traverseBFS(tree).subscribe(node => {
+  console.log(`Bezoekt: ${node.value}`);
+});
+// Uitvoer: Bezoekt: A, Bezoekt: B, Bezoekt: C, Bezoekt: D, Bezoekt: E, Bezoekt: F
+
+// Zoekt naar een specifiek knooppunt
+traversal.findNode(tree, value => value === 'D').subscribe(node => {
+  console.log(`Gevonden knooppunten: ${node?.value}`);
+});
+// Uitvoer: Gevonden knooppunten: D
+
+// Aantal knooppunten tellen
+traversal.countNodes(tree).subscribe(count => {
+  console.log(`Aantal knooppunten in de boom: ${count}`);
+});
+// Uitvoer: Aantal knooppunten in de boom: 6
+
+// Krijg alle knooppunten die aan de criteria voldoen
+traversal.findAllNodes(tree, value => value.length === 1).subscribe(nodes => {
+  console.log(`Knooppunt met één teken: ${nodes.map(n => n.value).join(', ')}`);
+});
+// Uitvoer: Knooppunt met één teken: A, B, C, D, E, F
+```
+
+## 🎯 Gecombineerd met scheduler
+
+`expand` werkt standaard synchroon, maar kan asynchroon worden bestuurd met een scheduler.
+
+```ts
+import { of, asyncScheduler } from 'rxjs';
+import { expand, take } from 'rxjs';
+
+// Synchroon (standaard)
+console.log('Synchroon (standaard)expandBegint met');
+of(1).pipe(
+  expand(x => of(x * 2)),
+  take(5)
+).subscribe(x => console.log('Synchroon:', x));
+console.log('Synchroon (standaard)expandEinde');
+// Uitvoer:
+// Synchroon (standaard)expandBegint met
+// Synchroon: 1
+// Synchroon: 2
+// Synchroon: 4
+// Synchroon: 8
+// Synchroon: 16
+// Synchroon (standaard)expandEinde
+
+// Asynchroon (asyncSchedulerGebruiken)
+console.log('AsynchroonexpandBegint met');
+of(1, asyncScheduler).pipe(
+  expand(x => of(x * 2, asyncScheduler)),
+  take(5)
+).subscribe(x => console.log('Asynchroon:', x));
+console.log('AsynchroonexpandEinde');
+// Uitvoer:
+// AsynchroonexpandBegint met
+// AsynchroonexpandEinde
+// Asynchroon: 1
+// Asynchroon: 2
+// Asynchroon: 4
+// Asynchroon: 8
+// Asynchroon: 16
+```
+
+uitklappen_16___
+
+> Bij het verwerken van grote hoeveelheden gegevens kan de `asyncScheduler` gebruikt worden om de UI responsief te houden zonder de hoofd thread te blokkeren. Voor meer informatie, zie [Scheduler types en hun gebruik](/nl/guide/schedulers/types).
+
+## Voorbeeld van recursieve berekening
+
+### Fibonacci-reeks.
 
 ```ts
 import { of } from 'rxjs';
-import { expand } from 'rxjs';
+import { expand, take } from 'rxjs';
 
-// ❌ Slecht voorbeeld: Oneindige lus
+// 2Recursief proces van verdubbelen
 of(1).pipe(
-  expand(x => of(x + 1))
+  expand(x => of(x * 2)),
+  take(5) // Preventie van oneindige lus
 ).subscribe(console.log);
-// Veroorzaakt geheugenlek en browser bevriest
+// Uitvoer: 1, 2, 4, 8, 16
 ```
 
-### Correct: Met exitvoorwaarde
+### Factoriale berekeningen
+
 
 ```ts
-import { of, EMPTY } from 'rxjs';
-import { expand, take, takeWhile } from 'rxjs';
+import { of } from 'rxjs';
+import { expand, take } from 'rxjs';
 
-// ✅ Goed voorbeeld 1: Beperk aantal met take
+// 2Recursief proces van verdubbelen
 of(1).pipe(
-  expand(x => of(x + 1)),
-  take(10)
+  expand(x => of(x * 2)),
+  take(5) // Preventie van oneindige lus
 ).subscribe(console.log);
-
-// ✅ Goed voorbeeld 2: Retourneer EMPTY conditioneel
-of(1).pipe(
-  expand(x => x < 10 ? of(x + 1) : EMPTY)
-).subscribe(console.log);
-
-// ✅ Goed voorbeeld 3: Voorwaarde limiet met takeWhile
-of(1).pipe(
-  expand(x => of(x + 1)),
-  takeWhile(x => x <= 10)
-).subscribe(console.log);
+// Uitvoer: 1, 2, 4, 8, 16
 ```
 
-> [!IMPORTANT]
-> Maak bij recursieve verwerking altijd de exitvoorwaarde expliciet en voorkom oneindige lussen door `take`, `takeWhile`, of `EMPTY` te retourneren afhankelijk van de voorwaarde.
+## ⚠️ Veelgemaakte fouten
 
-## 🎓 Samenvatting
 
-### Wanneer zou expand moeten worden gebruikt?
-- ✅ Als u een boomstructuur of graaf recursief wilt doorlopen
-- ✅ Wanneer u alle data in API-paginering wilt ophalen
-- ✅ Als u recursieve berekeningen wilt uitvoeren (Fibonacci, faculteit, etc.)
-- ✅ Als u een directorystructuur of bestandssysteem wilt doorlopen
-- ✅ Om organisatieschema's en hiërarchische data te verkennen
+```ts
+import { of } from 'rxjs';
+import { expand, take } from 'rxjs';
 
-### Wanneer zou u mergeMap moeten gebruiken?
-- ✅ Wanneer het voldoende is om elke waarde slechts één keer te converteren
-- ✅ Normale asynchrone conversies die geen recursieve verwerking vereisen
+// 2Recursief proces van verdubbelen
+of(1).pipe(
+  expand(x => of(x * 2)),
+  take(5) // Preventie van oneindige lus
+).subscribe(console.log);
+// Uitvoer: 1, 2, 4, 8, 16
+```
 
-### Let op
-- ⚠️ **Stel altijd een exitvoorwaarde in** (om oneindige lussen te voorkomen)
-- ⚠️ Wees voorzichtig met geheugenverbruik (bij het extraheren van grote hoeveelheden data)
-- ⚠️ Omdat het synchroon werkt, overweeg `asyncScheduler` te gebruiken voor grote hoeveelheden data
-- ⚠️ Omdat debuggen moeilijk is, is het goed om `tap` te gebruiken om tussenstatussen te loggen
+> De meest voorkomende fout met `uitbreiden` is om te vergeten een **exitvoorwaarde** in te stellen en in een oneindige lus** terecht te komen.
 
-## 🚀 Volgende stappen
+### Fout: geen afsluitvoorwaarde.
 
-- **[mergeMap](/nl/guide/operators/transformation/mergeMap)** - Leer normale asynchrone conversie
-- **[switchMap](/nl/guide/operators/transformation/switchMap)** - Leer de conversie om naar het nieuwste proces te schakelen
-- **[concatMap](/nl/guide/operators/transformation/concatMap)** - Leer conversies die sequentieel worden uitgevoerd
-- **[Scheduler types en gebruik](/nl/guide/schedulers/types)** - Leer expand en schedulers combineren
-- **[Transformatieoperator praktische voorbeelden](/nl/guide/operators/transformation/practical-use-cases)** - Leer echte use cases
+
+```ts
+import { of } from 'rxjs';
+import { expand, take } from 'rxjs';
+
+// 2Recursief proces van verdubbelen
+of(1).pipe(
+  expand(x => of(x * 2)),
+  take(5) // Preventie van oneindige lus
+).subscribe(console.log);
+// Uitvoer: 1, 2, 4, 8, 16
+```
+
+### Positief: met afsluitvoorwaarde
+
+
+```ts
+import { of } from 'rxjs';
+import { expand, take } from 'rxjs';
+
+// 2Recursief proces van verdubbelen
+of(1).pipe(
+  expand(x => of(x * 2)),
+  take(5) // Preventie van oneindige lus
+).subscribe(console.log);
+// Uitvoer: 1, 2, 4, 8, 16
+```
+
+
+```ts
+import { of } from 'rxjs';
+import { expand, take } from 'rxjs';
+
+// 2Recursief proces van verdubbelen
+of(1).pipe(
+  expand(x => of(x * 2)),
+  take(5) // Preventie van oneindige lus
+).subscribe(console.log);
+// Uitvoer: 1, 2, 4, 8, 16
+```
+
+> Recursieve processen moeten altijd de exitconditie expliciet maken en oneindige lussen voorkomen door `take`, `takeWhile` of `EMPTY` terug te geven, afhankelijk van de conditie.
+
+## Samenvatting
+
+### Wanneer expand moet worden gebruikt.
+- ✅ Wanneer je een boomstructuur of grafiek recursief wilt doorlopen.
+- ✅ Als u alle gegevens met API-paginering wilt ophalen
+- ✅ Als je recursieve berekeningen wilt uitvoeren (Fibonacci, factorial, etc.)
+- ✅ Als je directorystructuren of bestandssystemen wilt doorkruisen
+- ✅ Als je organigrammen of hiërarchische gegevens wilt onderzoeken
+
+### Wanneer je mergeMap moet gebruiken.
+- ✅ Als het voldoende is om elke waarde slechts één keer te converteren
+- ✅ Normale asynchrone transformaties die geen recursieve verwerking vereisen
+
+### Opmerkingen.
+- ⚠️ **Stel altijd een afsluitvoorwaarde** (om oneindige lussen te voorkomen)
+- ⚠️ Wees voorzichtig met geheugengebruik (bij het extraheren van grote hoeveelheden gegevens)
+- ⚠️ Omdat het synchroon werkt, overweeg het gebruik van `asyncScheduler` voor grote hoeveelheden gegevens.
+- ⚠️ Omdat debuggen moeilijk is, is het een goed idee om tussentijdse toestanden uit te loggen met `tap`.
+
+## Volgende stappen.
+
+- **[mergeMap](. /mergeMap)** - leer de gebruikelijke asynchrone transformaties.
+- **[switchMap](. /switchMap)** - leer de conversie om over te schakelen naar het nieuwste proces.
+- **[concatMap](. /concatMap)** - leer transformaties die sequentieel worden uitgevoerd.
+- **[Scheduler-types en hun gebruik](/nl/guide/schedulers/types)** - leer hoe u expand en schedulers kunt combineren.
+- **[Praktische voorbeelden van conversie operatoren](/nl/guide/schedulers/types)** - leer hoe je expand en schedulers kunt combineren /praktische-gebruiksgevallen)** - leer over echte gebruiksgevallen

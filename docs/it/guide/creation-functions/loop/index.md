@@ -1,91 +1,91 @@
 ---
-description: Questa sezione descrive le Funzioni di Creazione che generano valori in modo simile a un loop, usando range e generate per imparare come implementare elaborazione iterativa come istruzioni for e while come stream Observable. Dalla generazione di numeri sequenziali a transizioni di stato complesse basate su condizioni personalizzate, puoi realizzare elaborazione di loop dichiarativa sfruttando l'inferenza di tipo di TypeScript.
+description: "Verranno spiegate le Creation Function che generano valori in modo simile a un ciclo: imparate a usare range e generate per implementare processi iterativi come le istruzioni for e while come flussi Observable. Dalla generazione di numeri sequenziali a complesse transizioni di stato basate su condizioni personalizzate, è possibile realizzare un'elaborazione dichiarativa dei cicli che fa uso dell'inferenza di tipo di TypeScript."
 ---
 
-# Funzioni di Creazione Generazione Loop
+# Sistema di generazione di loop Creation Function
 
-Funzioni di Creazione per esprimere elaborazione di loop come istruzioni for e while come Observable.
+Creation Function per rappresentare l'elaborazione di loop, come le istruzioni for e while, come Observable.
 
-## Cosa Sono le Funzioni di Creazione Generazione Loop?
+## Sistema di generazione di loop Cos'è la Creation Function?
 
-Le Funzioni di Creazione Generazione Loop realizzano reattivamente elaborazione ripetitiva. Sostituendo i loop imperativi convenzionali (istruzioni `for` e `while`) con stream Observable dichiarativi, è possibile un'elaborazione flessibile in combinazione con la catena di operatori RxJS.
+Le Creation Function per i sistemi di generazione di loop realizzano in modo reattivo i processi ripetitivi. Sostituendo i tradizionali loop imperativi (istruzioni `for` e `while`) con flussi dichiarativi Observable, consentono un'elaborazione flessibile in combinazione con la catena di operatori di RxJS.
 
-Controlla la tabella sotto per vedere le caratteristiche e l'utilizzo di ogni Funzione di Creazione.
+La tabella seguente illustra le caratteristiche e l'uso di ogni Creation Function.
 
-## Principali Funzioni di Creazione Generazione Loop
+## Sistemi di generazione di loop principali Creation Function
 
-| Funzione | Descrizione | Casi d'Uso |
-|----------|------|-------------|
-| **[range](/it/guide/creation-functions/loop/range)** | Genera un range di numeri (come istruzione for) | Generazione numeri sequenziali, elaborazione batch |
-| **[generate](/it/guide/creation-functions/loop/generate)** | Generazione loop generica (come istruzione while) | Ripetizione condizionale, transizioni stato complesse |
+| Funzione | Descrizione | Caso d'uso. |
+|---|---|---|
+| **[range](/it/guide/creation-functions/loop/range)** | Genera un intervallo di numeri (per le dichiarazioni). | Generazione di numeri sequenziali, elaborazione batch. |
+| **[generate](/it/guide/creation-functions/loop/generate)** | Genera loop generici (tipo while statement) | Ripetizione condizionale, transizioni di stato complesse |
 
-## Criteri di Utilizzo
+## Criteri di utilizzo
 
-La selezione delle Funzioni di Creazione Generazione Loop è determinata dalle seguenti prospettive.
+La scelta delle Creation Function per la generazione di loop è determinata dai seguenti aspetti.
 
-### 1. Pattern di Generazione
+### 1. modello di generazione
 
-- **Sequenza numerica**: `range()` - Semplice generazione numeri sequenziali con valori inizio e fine
-- **Condizioni complesse**: `generate()` - Controllo libero su valori iniziali, condizioni, iterazione e selezione risultato
+- **Sequenza di numeri**: `range()` - semplice generazione di numeri sequenziali con valori iniziali e finali.
+- **Condizioni complesse**: `generate()` - controllo libero su valori iniziali, condizioni, iterazioni e selezione dei risultati.
 
-### 2. Tipi di Loop
+### 2. Tipi di loop
 
-- **Loop simile a istruzione for**: `range()` - `for (let i = start; i <= end; i++)`
-- **Loop simile a istruzione while**: `generate()` - `while (condition) { ... }`
+- **ciclo simile a un'istruzione for**: `range()` - `for (let i = start; i <= end; i++)`
+- **ciclo di tipowhile**: `generate()` - `while (condizione) { ... }`
 
-### 3. Flessibilità
+### 3. flessibilità
 
-- **Semplice è sufficiente**: `range()` - Quando serve una sequenza di numeri
-- **Serve controllo avanzato**: `generate()` - Gestione stato personalizzata, ramificazione condizionale, controllo step
+- **Bastanza semplice**: `range()` - se è richiesta una sequenza di numeri
+- **Necessità di un controllo avanzato**: `generate()` - gestione personalizzata degli stati, ramificazione condizionale, controllo dei passi
 
-## Esempi di Utilizzo Pratico
+## Casi d'uso pratici
 
-### range() - Generazione Numeri Sequenziali
+### range() - generazione di numeri sequenziali
 
-Per semplice generazione numeri sequenziali, `range()` è la scelta migliore.
+Per la semplice generazione di numeri sequenziali, range()` è la scelta migliore.
 
 ```typescript
 import { range, map } from 'rxjs';
-// Genera numeri sequenziali da 1 a 5
+// 1a5Generare numeri sequenziali da
 range(1, 5).subscribe(console.log);
-// Output: 1, 2, 3, 4, 5
+// Uscita: 1, 2, 3, 4, 5
 
-// Usa in elaborazione batch
+// Utilizzo nell'elaborazione batch
 range(0, 10).pipe(
-  map(i => `Processo ${i + 1}`)
+  map(i => `Elaborazione${i + 1}`)
 ).subscribe(console.log);
-// Output: Processo 1, Processo 2, ..., Processo 10
+// Uscita: Elaborazione1, Elaborazione2, ..., Elaborazione10
 ```
 
-### generate() - Loop Condizionale
+### generate() - ciclo condizionale
 
-Usa `generate()` per condizioni complesse o gestione stato personalizzata.
+Usare generate()` quando sono necessarie condizioni complesse o una gestione personalizzata dello stato.
 
 ```typescript
 import { generate } from 'rxjs';
 
-// Genera sequenza Fibonacci (primi 10 termini)
+// Generare la sequenza di Fibonacci (primo10termine)
 generate(
-  { current: 0, next: 1, count: 0 },  // Stato iniziale
-  state => state.count < 10,           // Condizione continuazione
-  state => ({                          // Aggiornamento stato
+  { current: 0, next: 1, count: 0 },  // Condizione iniziale
+  state => state.count < 10,           // Condizione di continuazione
+  state => ({                          // Aggiornamento dello stato
     current: state.next,
     next: state.current + state.next,
     count: state.count + 1
   }),
-  state => state.current               // Selettore risultato
+  state => state.current               // Selezione del risultato
 ).subscribe(console.log);
-// Output: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34
+// Uscita: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34
 ```
 
-## Confronto con Loop Imperativo
+## Rispetto al ciclo imperativo
 
-Questo è un confronto tra il loop imperativo convenzionale e le Funzioni di Creazione Generazione Loop di RxJS.
+Questo è un confronto tra i loop imperativi convenzionali e il sistema di generazione di loop di RxJS Creation Function.
 
-### Istruzione for Imperativa
+### Dichiarazione imperativa for
 
 ```typescript
-// Istruzione for convenzionale
+// ConvenzionaleforFrase
 const results: number[] = [];
 for (let i = 1; i <= 5; i++) {
   results.push(i * 2);
@@ -93,73 +93,99 @@ for (let i = 1; i <= 5; i++) {
 console.log(results); // [2, 4, 6, 8, 10]
 ```
 
-### range() Dichiarativo
+### Dichiarativo range()
 
 ```typescript
 import { range, map, toArray } from 'rxjs';
-// RxJS range()
+// RxJSdirange()
 range(1, 5).pipe(
   map(i => i * 2),
   toArray()
 ).subscribe(console.log); // [2, 4, 6, 8, 10]
 ```
 
-> [!TIP]
-> **Vantaggi dell'approccio dichiarativo**:
-> - Leggibilità migliorata con elaborazione pipeline
-> - Gestione errori uniforme
-> - Facile da combinare con elaborazione asincrona
-> - Facile da annullare e interrompere (es., `takeUntil()`)
+```typescript
+import { range, map } from 'rxjs';
+// 1a5Generare numeri sequenziali da
+range(1, 5).subscribe(console.log);
+// Uscita: 1, 2, 3, 4, 5
 
-## Conversione da Cold a Hot
+// Utilizzo nell'elaborazione batch
+range(0, 10).pipe(
+  map(i => `Elaborazione${i + 1}`)
+).subscribe(console.log);
+// Uscita: Elaborazione1, Elaborazione2, ..., Elaborazione10
+```
 
-Come mostrato nella tabella sopra, **tutte le Funzioni di Creazione Generazione Loop generano Cold Observable**. Ogni subscription avvia un'esecuzione indipendente.
+> **Benefici dell'approccio dichiarativo**:.
+> - Migliore leggibilità grazie all'elaborazione in pipeline
+> Gestione uniforme degli errori
+> - Facilità di combinazione con l'elaborazione asincrona
+> Facilità di annullamento e interruzione (es. takeUntil()`)
 
-Tuttavia, usando operatori multicast (`share()`, `shareReplay()`, ecc.), puoi **convertire un Cold Observable in Hot Observable**.
+## Conversione da freddo a caldo
 
-### Esempio Pratico: Condivisione Risultati Calcolo
+Come mostrato nella tabella precedente, **tutte le Creation Function che generano loop generano un Observable freddo**. Ogni sottoscrizione avvia un'esecuzione indipendente.
+
+Tuttavia, gli **Osservable freddi possono essere convertiti** in Observable caldi utilizzando gli operatori multicast (`share()`, `shareReplay()`, ecc.).
+
+### Esempio pratico: condivisione dei risultati di un calcolo.
+
 
 ```typescript
 import { range, map, share } from 'rxjs';
-// ❄️ Cold - Calcolo indipendente per ogni subscription
+// ❄️ Cold - Calcolo indipendente per abbonamento
 const cold$ = range(1, 1000).pipe(
   map(n => {
-    console.log('Calcolando:', n);
+    console.log('Calcolo in corso:', n);
     return n * n;
   })
 );
 
-cold$.subscribe(val => console.log('Subscriber 1:', val));
-cold$.subscribe(val => console.log('Subscriber 2:', val));
-// → Calcolo eseguito due volte (2000 calcoli)
+cold$.subscribe(val => console.log('Abbonato1:', val));
+cold$.subscribe(val => console.log('Abbonato2:', val));
+// → Un calcolo viene2eseguito una volta (in2000Calcolo eseguito una volta)
 
-// 🔥 Hot - Condividi risultati calcolo tra subscriber
+// 🔥 Hot - I risultati del calcolo sono condivisi tra gli abbonati
 const hot$ = range(1, 1000).pipe(
   map(n => {
-    console.log('Calcolando:', n);
+    console.log('Calcolo in corso:', n);
     return n * n;
   }),
   share()
 );
 
-hot$.subscribe(val => console.log('Subscriber 1:', val));
-hot$.subscribe(val => console.log('Subscriber 2:', val));
-// → Calcolo eseguito solo una volta (1000 calcoli)
+hot$.subscribe(val => console.log('Abbonato1:', val));
+hot$.subscribe(val => console.log('Abbonato2:', val));
+// → Il calcolo viene1eseguito una sola volta (1000Calcolo eseguito una volta)
 ```
 
-> [!TIP]
-> **Casi in cui serve conversione Hot**:
-> - Usare calcoli costosi in più posizioni
-> - Condividere risultati elaborazione batch con più componenti
-> - Visualizzare risultati paginazione in più componenti UI
+```typescript
+import { range, map } from 'rxjs';
+// 1a5Generare numeri sequenziali da
+range(1, 5).subscribe(console.log);
+// Uscita: 1, 2, 3, 4, 5
+
+// Utilizzo nell'elaborazione batch
+range(0, 10).pipe(
+  map(i => `Elaborazione${i + 1}`)
+).subscribe(console.log);
+// Uscita: Elaborazione1, Elaborazione2, ..., Elaborazione10
+```
+
+> **Casi in cui è richiesto il riscaldamento**:.
+> - I calcoli ad alto costo sono utilizzati in più postazioni
+> I risultati dell'elaborazione batch sono condivisi da più componenti.
+> - I risultati del processo di paginazione vengono visualizzati in più componenti dell'interfaccia utente.
 >
-> Per maggiori informazioni, vedi [Creazione Base - Conversione da Cold a Hot](/it/guide/creation-functions/basic/#conversione-da-cold-a-hot).
+> Per ulteriori informazioni, vedere [Sistemi di creazione di base - Conversione da freddo a caldo] (/it/guide/creation-functions/basic/#cold- to -hot-).
 
-## Combinato con Elaborazione Asincrona
+## Combinato con l'elaborazione asincrona
 
-Le Funzioni di Creazione Generazione Loop dimostrano funzionalità potenti quando combinate con elaborazione asincrona.
+Il sistema di generazione di cicli Creation Function può essere combinato con l'elaborazione asincrona per fornire potenti funzionalità.
 
-### Esecuzione Sequenziale di Chiamate API
+### Esecuzione sequenziale di chiamate API
+
 
 ```typescript
 import { range, of, Observable, concatMap, delay } from 'rxjs';
@@ -168,60 +194,56 @@ interface PageData {
   items: string[];
 }
 
-// Funzione per simulare recupero dati pagina
+// Funzione per simulare l'acquisizione dei dati della pagina
 function fetchPage(page: number): Observable<PageData> {
   return of({
     page,
-    items: [`Data${page}-1`, `Data${page}-2`, `Data${page}-3`]
+    items: [`Dati${page}-1`, `Dati${page}-2`, `Dati${page}-3`]
   }).pipe(
-    delay(300) // Simula chiamata API
+    delay(300) // APISimula una chiamata a
   );
 }
 
-// Recupera sequenzialmente pagine da 1 a 10 (con delay 1 secondo tra ogni richiesta)
+// Pagina1a10Recupera in sequenza fino a (con un ritardo di1secondi di ritardo tra ogni richiesta)
 range(1, 10).pipe(
   concatMap(page =>
     fetchPage(page).pipe(delay(1000))
   )
-).subscribe(
-  data => console.log(`Pagina ${data.page} recuperata:`, data.items),
-  err => console.error('Errore:', err)
-);
+).subscribe({
+  next: data => console.log(`Pagina ${data.page} Recupero:`, data.items),
+  error: err => console.error('Errore:', err)
+});
 ```
 
-### Uso in Elaborazione Retry
+### Utilizzo nell'elaborazione dei tentativi
 
 ```typescript
-import { range, throwError, of, Observable, mergeMap, retryWhen, delay } from 'rxjs';
-// Funzione per simulare recupero dati (fallisce casualmente)
+import { range, throwError, of, Observable, mergeMap, retry, delay } from 'rxjs';
+// Funzione per simulare l'acquisizione dei dati (fallisce in modo casuale)
 function fetchData(): Observable<string> {
-  const shouldFail = Math.random() > 0.6; // 40% tasso successo
+  const shouldFail = Math.random() > 0.6; // 40%Successo con una probabilità di
 
   return of(shouldFail).pipe(
     delay(200),
     mergeMap(fail =>
       fail
-        ? throwError(() => new Error('Recupero dati fallito'))
-        : of('Recupero dati riuscito')
+        ? throwError(() => new Error('Fallimento dell'acquisizione dei dati'))
+        : of('Acquisizione dei dati riuscita')
     )
   );
 }
 
 function fetchWithRetry() {
   return fetchData().pipe(
-    retryWhen(errors =>
-      errors.pipe(
-        mergeMap((error, index) => {
-          // Riprova fino a 3 volte
-          if (index >= 3) {
-            return throwError(() => error);
-          }
-          console.log(`Retry ${index + 1}/3`);
-          // Backoff esponenziale: 1s, 2s, 4s
-          return range(0, 1).pipe(delay(Math.pow(2, index) * 1000));
-        })
-      )
-    )
+    // RxJS 7.3+ Raccomandazione: retry({ count, delay }) Formato
+    retry({
+      count: 3, // Max.3Ripetizioni
+      delay: (error, retryCount) => {
+        console.log(`Ripetizioni ${retryCount}/3`);
+        // Arretramento esponenziale: 1Secondi,2Secondi,4sec.
+        return range(0, 1).pipe(delay(Math.pow(2, retryCount - 1) * 1000));
+      }
+    })
   );
 }
 
@@ -230,46 +252,53 @@ fetchWithRetry().subscribe({
   error: err => console.error('Errore:', err.message)
 });
 
-// Esempio output:
-// Retry 1/3
-// Retry 2/3
-// Risultato: Recupero dati riuscito
+// Esempio di uscita:
+// Ripetizioni 1/3
+// Ripetizioni 2/3
+// Risultato: Acquisizione dei dati riuscita
 ```
 
 ## Relazione con Pipeable Operator
 
-Le Funzioni di Creazione Generazione Loop non hanno un corrispettivo Pipeable Operator diretto. Vengono sempre usate come Funzioni di Creazione.
+Le Creation Function che generano loop non hanno una controparte diretta Pipeable Operator. Vengono sempre utilizzate come Creation Function.
 
-Tuttavia, è possibile un'elaborazione più avanzata combinandole con i seguenti operatori:
+Tuttavia, possono essere combinate con i seguenti operatori per un'elaborazione più avanzata.
 
-| Operatori da Combinare | Scopo |
-|-------------------|------|
-| `map()` | Trasforma ogni valore |
-| `filter()` | Passa solo valori che corrispondono alla condizione |
-| `take()`, `skip()` | Controlla il numero di valori |
-| `concatMap()`, `mergeMap()` | Esegui elaborazione asincrona per ogni valore |
-| `toArray()` | Raccogli tutti i valori in un array |
+```typescript
+import { range, map } from 'rxjs';
+// 1a5Generare numeri sequenziali da
+range(1, 5).subscribe(console.log);
+// Uscita: 1, 2, 3, 4, 5
 
-## Note sulle Performance
+// Utilizzo nell'elaborazione batch
+range(0, 10).pipe(
+  map(i => `Elaborazione${i + 1}`)
+).subscribe(console.log);
+// Uscita: Elaborazione1, Elaborazione2, ..., Elaborazione10
+```
 
-Le Funzioni di Creazione Generazione Loop emettono valori sincronamente, quindi fai attenzione alle performance quando generi un gran numero di valori.
+## Note sulle prestazioni.
+
+Le Creation Function che generano loop emettono valori in modo sincrono, quindi è necessario prendere nota delle prestazioni quando si generano un gran numero di valori.
 
 > [!WARNING]
-> **Gestione grandi quantità di dati**:
-> - Grandi quantità di dati, come `range(1, 1000000)`, vengono tutte emesse sincronamente e consumano memoria
-> - Usa buffer con `bufferCount()` o `windowCount()` se necessario
-> - Oppure cambia a esecuzione asincrona specificando uno scheduler con `scheduled()`
+
+> **Gestione di grandi quantità di dati**:.
+> - Grandi quantità di dati, come `range(1, 1000000)`, vengono emesse in modo sincrono e consumano memoria.
+> - bufferizzare con `bufferCount()` o `windowCount()` come richiesto
+> oppure passare all'esecuzione asincrona specificando uno scheduler con `scheduled()`.
+
 
 ```typescript
 import { range, asyncScheduler, observeOn } from 'rxjs';
-// Esegui con scheduler asincrono
+// Eseguito da uno scheduler asincrono
 range(1, 1000000).pipe(
   observeOn(asyncScheduler)
 ).subscribe(console.log);
 ```
 
-## Prossimi Passi
+## Prossimi passi.
 
-Per apprendere il comportamento dettagliato e gli esempi pratici di ogni Funzione di Creazione, clicca sui link dalla tabella sopra.
+Per saperne di più sul funzionamento di Creation Function e sugli esempi pratici, fate clic sui link della tabella precedente.
 
-Puoi anche comprendere il quadro completo delle Funzioni di Creazione imparando le [Funzioni di Creazione Base](/it/guide/creation-functions/basic/), le [Funzioni di Creazione Combinazione](/it/guide/creation-functions/combination/), le [Funzioni di Creazione Selezione/Partizione](/it/guide/creation-functions/selection/) e le [Funzioni di Creazione Condizionali](/it/guide/creation-functions/conditional/).
+È inoltre possibile conoscere [Funzioni di creazione di base](/it/guide/creation-functions/basic/), [Funzioni di creazione combinate](/it/guide/creation-functions/combination/), [selezione e Creation Function](/it/guide/creation-functions/selezione/) e [Creation Function](/it/guide/creation-functions/conditional/). Questo vi aiuterà a capire l'intero quadro delle Creation Function.

@@ -1,11 +1,11 @@
 ---
-description: "concatWith est un opérateur de combinaison RxJS qui combine séquentiellement d'autres Observables après la complétion de l'Observable original. Idéal pour le traitement séquentiel dans un pipeline, le traitement de suivi après complétion, le chargement progressif de données. Version pipeable operator pratique à utiliser dans les pipelines."
+description: "ConcatWith est un opérateur de jointure RxJS qui joint d'autres Observables en séquence après l'achèvement de l'Observable d'origine. Il est idéal pour les situations où vous souhaitez ajouter un traitement ultérieur en tant qu'extension du flux principal, comme le traitement séquentiel dans un pipeline, le traitement de suivi après l'achèvement, le chargement de données par étapes, etc. La version de l'opérateur pipe est pratique pour une utilisation au sein d'un pipeline."
 ---
 
-# concatWith - Concaténer en Séquence
+# concatWith - concaténer des flux en séquence
 
-L'opérateur `concatWith` **combine séquentiellement** les autres Observables spécifiés après que l'Observable original soit `complete`.
-C'est la version Pipeable Operator de la Creation Function `concat`.
+L'opérateur `concatWith` concatène **séquentiellement** les autres Observables spécifiés après que l'Observable original soit `complet`.
+C'est la version Pipeable Operator de Creation Function's `concat`.
 
 ## 🔰 Syntaxe de base et utilisation
 
@@ -24,48 +24,46 @@ obs1$
 // Sortie: A → B → C → D → E → F
 ```
 
-- `obs2$` commence après la complétion de `obs1$`, et `obs3$` commence après la complétion de `obs2$`.
-- Peut être utilisé dans une chaîne `.pipe()`, facilitant la combinaison avec d'autres opérateurs.
+- `obs1$` se termine avant que `obs2$` ne commence, `obs2$` se termine avant que `obs3$` ne commence.
+- Peut être utilisé dans une chaîne `.pipe()`, ce qui le rend plus facile à combiner avec d'autres opérateurs.
 
-[🌐 Documentation officielle RxJS - `concatWith`](https://rxjs.dev/api/operators/concatWith)
+[🌐 Official RxJS documentation - `concatWith`](https://rxjs.dev/api/operators/concatWith)
 
+## 💡 Modèle d'utilisation typique.
 
-## 💡 Patterns d'utilisation typiques
+- **Traitement séquentiel dans le pipeline** : les données supplémentaires sont concaténées dans le flux converti en séquence.
+- Traitement de suivi après l'achèvement** : ajout de nettoyage et de notifications après l'achèvement du traitement principal.
+- Chargement échelonné des données** : acquisition séquentielle de données supplémentaires après l'acquisition initiale des données.
 
-- **Traitement séquentiel dans un pipeline** : Combiner séquentiellement des données supplémentaires à un flux transformé
-- **Traitement de suivi après complétion** : Ajouter un nettoyage ou une notification après le traitement principal
-- **Chargement progressif de données** : Récupérer séquentiellement des données supplémentaires après l'obtention des données initiales
+## 🧠 Exemples de codes pratiques (avec interface utilisateur)
 
-
-## 🧠 Exemple de code pratique (avec UI)
-
-Un exemple qui affiche les résultats de recherche principaux, puis affiche séquentiellement les articles recommandés.
+Exemple d'affichage des principaux résultats de recherche, suivis d'une séquence d'éléments recommandés connexes.
 
 ```ts
 import { of, delay } from 'rxjs';
 import { concatWith, map } from 'rxjs';
 
-// Création de la zone de sortie
+// Création d'une zone de sortie
 const output = document.createElement('div');
-output.innerHTML = '<h3>Exemple pratique de concatWith :</h3>';
+output.innerHTML = '<h3>concatWith Exemples pratiques de:</h3>';
 document.body.appendChild(output);
 
-// Résultats de recherche principaux
-const searchResults$ = of('🔍 Résultat 1', '🔍 Résultat 2', '🔍 Résultat 3').pipe(
+// Résultats de la recherche principale
+const searchResults$ = of('🔍 Résultats de la recherche1', '🔍 Résultats de la recherche2', '🔍 Résultats de la recherche3').pipe(
   delay(500)
 );
 
-// Recommandations 1
-const recommendations1$ = of('💡 Produit recommandé A', '💡 Produit recommandé B').pipe(
+// Éléments recommandés1
+const recommendations1$ = of('💡 Éléments recommandésA', '💡 Éléments recommandésB').pipe(
   delay(300)
 );
 
-// Recommandations 2
-const recommendations2$ = of('⭐ Produit populaire X', '⭐ Produit populaire Y').pipe(
+// Éléments recommandés2
+const recommendations2$ = of('⭐ Articles populairesX', '⭐ Articles populairesY').pipe(
   delay(300)
 );
 
-// Combiner séquentiellement et afficher
+// Combinés et affichés dans l'ordre
 searchResults$
   .pipe(
     concatWith(recommendations1$, recommendations2$),
@@ -78,25 +76,24 @@ searchResults$
   });
 ```
 
-- Les résultats de recherche s'affichent d'abord,
-- Puis les produits recommandés s'affichent séquentiellement.
-- Peut être combiné avec d'autres opérateurs comme `map` dans le pipeline.
+- Les résultats de la recherche sont affichés en premier,
+- les éléments recommandés sont ensuite affichés dans l'ordre.
+- Peut être utilisé en combinaison avec d'autres opérateurs tels que `map` dans le pipeline.
 
+## 🔄 Différences avec la Creation Function `concat`.
 
-## 🔄 Différence avec la Creation Function `concat`
+### Différences de base.
 
-### Différences de base
+|  | `concat` (Creation Function) | `concatWith` (Pipeable Operator) |
+|---|---|---|
+| **Où utilisé** | Utilisée comme fonction autonome | Utilisée dans la chaîne `.pipe()`. |
+| **Comment écrire | `concat(obs1$, obs2$, obs3$)` | `obs1$.pipe(concatWith(obs2$, obs3$))` |
+| **Premier flux**. | Traiter tous les flux comme égaux | Traiter comme le flux principal |
+| **Avantages**. | Simple et facile à lire | Facile à combiner avec d'autres opérateurs |
 
-| | `concat` (Creation Function) | `concatWith` (Pipeable Operator) |
-|:---|:---|:---|
-| **Lieu d'utilisation** | Utilisé comme fonction indépendante | Utilisé dans la chaîne `.pipe()` |
-| **Syntaxe** | `concat(obs1$, obs2$, obs3$)` | `obs1$.pipe(concatWith(obs2$, obs3$))` |
-| **Premier flux** | Traité également | Traité comme flux principal |
-| **Avantage** | Simple et lisible | Facile à combiner avec d'autres opérateurs |
+### Exemples spécifiques d'utilisation
 
-### Exemples concrets de choix
-
-**Pour une simple combinaison, la Creation Function est recommandée**
+**Si vous souhaitez effectuer une simple jointure, la Creation Function est la meilleure solution**.
 
 ```ts
 import { concat, of } from 'rxjs';
@@ -105,12 +102,12 @@ const part1$ = of('A', 'B');
 const part2$ = of('C', 'D');
 const part3$ = of('E', 'F');
 
-// Simple et lisible
+// Simple et facile à lire
 concat(part1$, part2$, part3$).subscribe(console.log);
 // Sortie: A → B → C → D → E → F
 ```
 
-**Quand une transformation est nécessaire en cours de route, le Pipeable Operator est recommandé**
+**Si vous avez besoin de convertir au milieu, Pipeable Operator est recommandé**.
 
 ```ts
 import { of } from 'rxjs';
@@ -119,11 +116,21 @@ import { concatWith, map, filter } from 'rxjs';
 const userData$ = of({ name: 'Alice', age: 30 }, { name: 'Bob', age: 25 });
 const additionalData$ = of({ name: 'Charlie', age: 35 });
 
-// ✅ Version Pipeable Operator - complète en un seul pipeline
+// ❌ Creation FunctionÉdition - Redondante
+import { concat } from 'rxjs';
+concat(
+  userData$.pipe(
+    filter(user => user.age >= 30),
+    map(user => user.name)
+  ),
+  additionalData$.pipe(map(user => user.name))
+).subscribe(console.log);
+
+// ✅ Pipeable OperatorÉdition - Complète en une seule fois
 userData$
   .pipe(
-    filter(user => user.age >= 30),  // 30 ans et plus seulement
-    map(user => user.name),          // Extraire le nom uniquement
+    filter(user => user.age >= 30),  // 30Uniquement pour les personnes âgées de 18 ans et plus
+    map(user => user.name),          // Extraire uniquement les noms
     concatWith(
       additionalData$.pipe(map(user => user.name))
     )
@@ -132,15 +139,15 @@ userData$
 // Sortie: Alice → Charlie
 ```
 
-**Pour ajouter un traitement de suivi au flux principal**
+**Si vous souhaitez ajouter un traitement ultérieur au flux principal**.
 
 ```ts
 import { fromEvent, of } from 'rxjs';
 import { concatWith, take, map } from 'rxjs';
 
-// Création du bouton et de la zone de sortie
+// Créer un bouton et une zone de sortie
 const button = document.createElement('button');
-button.textContent = 'Cliquez 3 fois';
+button.textContent = '3Cliquer une seule fois';
 document.body.appendChild(button);
 
 const output = document.createElement('div');
@@ -149,63 +156,72 @@ document.body.appendChild(output);
 
 const clicks$ = fromEvent(button, 'click');
 
-// ✅ Version Pipeable Operator - naturel comme extension du flux principal
+// ✅ Pipeable OperatorÉdition - Naturel en tant qu'extension du flux principal
 clicks$
   .pipe(
-    take(3),                          // Obtenir les 3 premiers clics
-    map(() => 'Cliqué'),
-    concatWith(of('Terminé'))    // Message supplémentaire après complétion
+    take(3),                          // Premiers3Obtenir des clics
+    map(() => 'Clics'),
+    concatWith(of('Terminé'))    // Message supplémentaire après l'achèvement
   )
   .subscribe(message => {
     const div = document.createElement('div');
     div.textContent = message;
     output.appendChild(div);
   });
+
+// Le même comportement peut êtreCreation FunctionS'il est écrit dans une édition...
+// ❌ Creation FunctionÉdition - Le courant principal doit être écrit séparément
+import { concat } from 'rxjs';
+concat(
+  clicks$.pipe(
+    take(3),
+    map(() => 'Clics')
+  ),
+  of('Terminé')
+).subscribe(console.log);
 ```
 
-### Résumé
+### Résumé.
 
-- **`concat`** : Optimal pour simplement combiner plusieurs flux
-- **`concatWith`** : Optimal quand vous voulez ajouter des transformations au flux principal et ajouter des suites
+- **`concat`** : idéal pour la fusion simple de plusieurs flux.
+- **`concatWith`** : idéal si vous voulez ajouter des flux ultérieurs tout en transformant ou en traitant le flux principal.
 
+## ⚠️ Notes.
 
-## ⚠️ Points d'attention
+### Retards causés par l'attente de l'achèvement de l'opération
 
-### Délai dû à l'attente de complétion
-
-L'Observable suivant ne démarre pas tant que l'original n'est pas terminé.
+L'Observable suivant ne démarrera pas tant que l'Observable initial ne sera pas terminé.
 
 ```ts
 import { interval, of } from 'rxjs';
 import { concatWith, take } from 'rxjs';
 
 interval(1000).pipe(
-  take(3),              // Terminer après 3
-  concatWith(of('Terminé'))
+  take(3),              // 3Complété en une seule fois
+  concatWith(of('Complété'))
 ).subscribe(console.log);
-// Sortie: 0 → 1 → 2 → Terminé
+// Sortie: 0 → 1 → 2 → Complété
 ```
 
-### Gestion des erreurs
+### Gestion des erreurs.
 
-Si une erreur se produit dans l'Observable précédent, les Observables suivants ne sont pas exécutés.
+Si une erreur survient dans l'Observable précédent, l'Observable suivant ne sera pas exécuté.
 
 ```ts
 import { throwError, of } from 'rxjs';
 import { concatWith, catchError } from 'rxjs';
 
-throwError(() => new Error('Erreur survenue'))
+throwError(() => new Error('Une erreur s'est produite'))
   .pipe(
-    catchError((err: unknown) => of('Erreur récupérée')),
-    concatWith(of('Traitement suivant'))
+    catchError((err: unknown) => of('Récupération de l'erreur')),
+    concatWith(of('Processus suivant'))
   )
   .subscribe(console.log);
-// Sortie: Erreur récupérée → Traitement suivant
+// Sortie: Récupération de l'erreur → Processus suivant
 ```
 
+## 📚 Opérateurs apparentés.
 
-## 📚 Opérateurs associés
-
-- **[concat](/fr/guide/creation-functions/combination/concat)** - Version Creation Function
-- **[mergeWith](/fr/guide/operators/combination/mergeWith)** - Version Pipeable pour combinaison parallèle
-- **[concatMap](/fr/guide/operators/transformation/concatMap)** - Mapping séquentiel de chaque valeur
+- **[concat](/fr/guide/creation-functions/combination/concat)** - Version de Creation Function
+- **[mergeWith](/fr/guide/operators/combination/mergeWith)** - Version canalisable pour fusionner en parallèle
+- **[concatMap](/fr/guide/operators/transformation/concatMap)** - mappage séquentiel de valeurs individuelles

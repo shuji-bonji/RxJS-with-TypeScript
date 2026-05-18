@@ -6,7 +6,7 @@ description: "L'operatore elementAt è un operatore di filtraggio di RxJS che re
 
 L'operatore `elementAt' recupera **solo il valore nella posizione di indice specificata** dall'Observable e completa immediatamente il flusso. Funziona in modo simile a `array[index]` di un array.
 
-## 🔰 Sintassi e utilizzo di base
+## 🔰 Sintassi e uso di base
 
 ```ts
 import { from } from 'rxjs';
@@ -206,6 +206,7 @@ numbers$.pipe(
 ### 1. se l'indice è fuori dall'intervallo
 
 Se l'indice specificato non viene raggiunto prima del completamento dello stream, viene generato un errore.
+
 
 ```ts
 import { from } from 'rxjs';

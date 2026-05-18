@@ -1,16 +1,17 @@
 ---
-description: "fromEvent() - Erstellungsfunktion zur Konvertierung von DOM-Ereignissen und EventEmittern in Observables, die Grundlage der ereignisgesteuerten Programmierung, für verschiedene Ereignisverarbeitungen wie Klick, Tastendruck, Mausbewegung, Scrollen usw."
+description: "fromEvent() - Creation Function zur Konvertierung von DOM-Ereignissen und EventEmittern in Observable, die Grundlage der ereignisgesteuerten Programmierung, mit der verschiedene Ereignisse wie Klicks, Tastendrucke, Mausbewegungen und Scrollen verarbeitet werden können. Erläutert TypeScript-Typdefinitionen und die Angabe von Ereigniszielen."
 ---
 
-# fromEvent() - Konvertiert ein Ereignis in Observable
+# fromEvent() - Ereignis in Observable umwandeln
 
-`fromEvent()` ist eine Erstellungsfunktion, die Ereignisquellen wie DOM-Ereignisse und Node.js EventEmitter in Observable-Streams umwandelt.
+fromEvent()` ist eine Creation Function, die Ereignisquellen wie DOM-Ereignisse und Node.js EventEmitter in Observable-Streams umwandelt.
 
-## Überblick
+## Überblick.
 
-`fromEvent()` ermöglicht eine ereignisbasierte asynchrone Verarbeitung in der RxJS-Pipeline. Es registriert automatisch Event-Listener, wenn sie abonniert werden, und entfernt automatisch Listener, wenn sie abbestellt werden, wodurch das Risiko von Speicherlecks erheblich reduziert wird.
+fromEvent()` ermöglicht eine ereignisbasierte asynchrone Verarbeitung in der RxJS Pipeline. Es registriert automatisch Event-Listener, wenn sie abonniert werden, und entfernt automatisch Listener, wenn sie abbestellt werden, wodurch das Risiko von Speicherlecks deutlich reduziert wird.
 
-**Signatur**:
+**Signatur**:.
+
 ```typescript
 function fromEvent<T>(
   target: any,
@@ -19,9 +20,9 @@ function fromEvent<T>(
 ): Observable<T>
 ```
 
-**Offizielle Dokumentation**: [📘 RxJS Official: fromEvent()](https://rxjs.dev/api/index/function/fromEvent)
+**Offizielle Dokumentation**: [📘 RxJS formula: fromEvent()](https://rxjs.dev/api/index/function/fromEvent)
 
-## Grundlegende Verwendung
+## Grundlegende Verwendung.
 
 Dies ist das einfachste Beispiel für die Behandlung von DOM-Ereignissen als Observable.
 
@@ -31,17 +32,17 @@ import { fromEvent } from 'rxjs';
 const clicks$ = fromEvent(document, 'click');
 
 clicks$.subscribe(event => {
-  console.log('Button wurde geklickt:', event);
+  console.log('Schaltfläche angeklickt.:', event);
 });
 
-// Jedes Mal, wenn geklickt wird, wird ein Ereignis ausgegeben
+// Jedes Mal, wenn sie angeklickt wird, wird ein Ereignis ausgelöst.
 ```
 
-## Wichtige Merkmale
+## Wichtige Merkmale.
 
-### 1. Automatische Registrierung und Deregistrierung von Listenern
+### 1. Automatische Registrierung und Deregistrierung von Hörern
 
-Die Funktion `fromEvent()` registriert einen Ereignis-Listener beim Abonnieren und entfernt ihn automatisch beim Abbestellen.
+Die Funktion `fromEvent()` registriert Ereignis-Listener, wenn sie abonniert sind, und entfernt automatisch Listener, wenn sie abgemeldet sind.
 
 ```typescript
 import { fromEvent } from 'rxjs';
@@ -49,52 +50,70 @@ import { fromEvent } from 'rxjs';
 const clicks$ = fromEvent<MouseEvent>(document, 'click');
 
 const subscription = clicks$.subscribe(event => {
-  console.log('Klickposition:', event.clientX, event.clientY);
+  console.log('Klick-Position:', event.clientX, event.clientY);
 });
 
-// Nach 5 Sekunden abbestellen (Event-Listener wird automatisch entfernt)
+// 5Abbestellt nach Sekunden (Ereignis-Listener wird auch automatisch gelöscht)
 setTimeout(() => {
   subscription.unsubscribe();
   console.log('Abbestellt');
 }, 5000);
 ```
 
-> [!IMPORTANT]
-> **Vermeidung von Speicherlecks**
+```typescript
+function fromEvent<T>(
+  target: any,
+  eventName: string,
+  options?: EventListenerOptions | ((...args: any[]) => T)
+): Observable<T>
+```
+
+> **Verhinderung von Speicherlecks**
 >
-> Beim Aufruf von `unsubscribe()` wird intern automatisch `removeEventListener()` ausgeführt. Dadurch entfällt die Notwendigkeit, Listener manuell zu entfernen, und das Risiko von Speicherlecks wird erheblich reduziert.
+> Wenn Sie `unsubscribe()` aufrufen, wird automatisch ein internes `removeEventListener()` ausgeführt. Dadurch entfällt die Notwendigkeit, Hörer manuell zu entfernen, und das Risiko von Speicherlecks wird erheblich reduziert.
 
-### 2. Cold Observable (jedes Abonnement registriert einen unabhängigen Listener)
+### 2) Cold Observable (jedes Abonnement registriert einen unabhängigen Listener).
 
-Die durch `fromEvent()` erstellte Observable ist eine **Cold Observable**. Jedes Abonnement registriert einen unabhängigen Ereignis-Listener.
+Das durch fromEvent() erzeugte Observable ist ein **Cold Observable. Jedes Abonnement registriert einen unabhängigen Ereignis-Listener.
+
 
 ```typescript
 import { fromEvent } from 'rxjs';
 
 const clicks$ = fromEvent(document, 'click');
 
-// Abonnement 1 - Listener A wird registriert
-clicks$.subscribe(() => console.log('Observer 1: Klick'));
+// Aboniert an1 - ListenerAAbonnieren bei
+clicks$.subscribe(() => console.log('Observer 1: Klicken Sie auf'));
 
-// 1 Sekunde später Abonnement 2 hinzufügen - Listener B wird unabhängig registriert
+// 1Abonnieren in Sekunden2hinzufügen - ListenerBRegistrieren unabhängig von
 setTimeout(() => {
-  clicks$.subscribe(() => console.log('Observer 2: Klick'));
+  clicks$.subscribe(() => console.log('Observer 2: Klicken Sie auf'));
 }, 1000);
 
-// Bei einem Klick werden beide Listener ausgelöst
+// 1Beide Listener werden mit einem Klick ausgelöst
+// Dies ist ein Beweis dafür, dass jedes Abonnement unabhängige Hörer hat
 ```
 
-> [!NOTE]
-> **Cold Observable Merkmale**
-> - Jedes Abonnement startet eine unabhängige Ausführung
-> - Jeder Abonnent erhält seinen eigenen Datenstrom
-> - Bei jedem Abonnement wird ein unabhängiger Event-Listener registriert. Bei unsubscribe wird der Listener automatisch entfernt.
->
-> Weitere Informationen finden Sie unter [Cold Observable und Hot Observable](/de/guide/observables/cold-and-hot-observables).
+```typescript
+import { fromEvent } from 'rxjs';
 
-### 3. TypeScript Typ-Unterstützung
+const clicks$ = fromEvent(document, 'click');
+
+clicks$.subscribe(event => {
+  console.log('Schaltfläche angeklickt.:', event);
+});
+
+// Jedes Mal, wenn sie angeklickt wird, wird ein Ereignis ausgelöst.
+```
+
+> **Proof of Cold Observable
+>
+> Ein neuer Ereignis-Listener wird jedes Mal registriert, wenn ein Abonnement erstellt wird, und entfernt, wenn das Abonnement abbestellt wird. Dies ist eine Eigenschaft von Cold Observable. Es hat jedoch auch die Hot-Eigenschaft, dass "Ereignisse nicht vor der Subskription empfangen werden können", da die Ereignisquelle (z. B. DOM-Elemente) extern und gemeinsam genutzt wird.
+
+### 3) TypeScript-Typ-Unterstützung
 
 Ereignistypen können explizit angegeben werden.
+
 
 ```typescript
 import { fromEvent } from 'rxjs';
@@ -105,17 +124,64 @@ document.body.appendChild(input);
 const input$ = fromEvent<InputEvent>(input, 'input');
 
 input$.subscribe(event => {
-  // Der Typ von event ist InputEvent
+  // eventDer Typ desInputEvent
   const target = event.target as HTMLInputElement;
-  console.log('Eingabewert:', target.value);
+  console.log('Eingabewertes:', target.value);
 });
 ```
 
-## Praktische Anwendungsfälle
+### 4. Cold Observable.
 
-### 1. Klickereignis-Verarbeitung
+fromEvent()` ist ein **Cold Observable. Jedes Abonnement initiiert eine unabhängige Ausführung.
 
-Steuert Button-Klicks und verhindert aufeinanderfolgende Klicks.
+{```typescript
+import { fromEvent } from 'rxjs';
+
+const button = document.createElement('button');
+button.innerText = "Aboniert an";
+document.body.appendChild(button);
+
+const clicks$ = fromEvent(document, 'click');
+
+// 1Das zweite Abonnement - Ereignis-Listener werden hinzugefügt
+clicks$.subscribe(() => console.log('AbonnementA'));
+
+// 2Das zweite Abonnement - Ein weiterer Ereignis-Listener wird hinzugefügt
+clicks$.subscribe(() => console.log('AbonnementB'));
+
+// 1Ein Klick löst beide Listener aus
+// Ausgabe:
+// AbonnementA
+// AbonnementB
+```
+
+```
+
+```typescript
+import { fromEvent } from 'rxjs';
+
+const clicks$ = fromEvent(document, 'click');
+
+clicks$.subscribe(event => {
+  console.log('Schaltfläche angeklickt.:', event);
+});
+
+// Jedes Mal, wenn sie angeklickt wird, wird ein Ereignis ausgelöst.
+```
+
+> **Cold Observable Features**
+> - Jedes Abonnement startet eine unabhängige Ausführung
+> - Jeder Abonnent erhält seinen eigenen Datenstrom
+
+>
+> Weitere Informationen finden Sie unter [Cold Observable und Hot Observable](/de/guide/observables/cold-and-hot-observables).
+
+## Praktische Anwendungsfälle.
+
+### 1. Behandlung von Klick-Ereignissen
+
+Kontrollieren Sie Schaltflächenklicks und verhindern Sie aufeinanderfolgende Klicks.
+
 
 ```typescript
 import { fromEvent } from 'rxjs';
@@ -128,17 +194,17 @@ document.body.appendChild(button);
 const clicks$ = fromEvent(button, 'click');
 
 clicks$.pipe(
-  debounceTime(300), // Aufeinanderfolgende Klicks innerhalb von 300ms ignorieren
-  map(() => 'Wird gesendet...')
+  debounceTime(300), // 300msIgnoriere aufeinanderfolgende Klicks innerhalb von
+  map(() => 'während der Übertragung...')
 ).subscribe(message => {
   console.log(message);
-  // API-Aufruf usw.
+  // APIAnrufe und andere Prozesse
 });
 ```
 
-### 2. Echtzeit-Formularvalidierung
+### 2. Echtzeit-Validierung von Formulareingaben
 
-Streamt Eingabeereignisse und führt Echtzeit-Validierung durch.
+Streamen Sie Eingabeereignisse und führen Sie die Validierung in Echtzeit durch.
 
 ```typescript
 import { fromEvent } from 'rxjs';
@@ -153,10 +219,11 @@ const email$ = fromEvent<InputEvent>(emailInput, 'input');
 
 email$.pipe(
   map(event => (event.target as HTMLInputElement).value),
-  debounceTime(500), // 500ms nach dem Ende der Eingabe verarbeiten
+  debounceTime(500), // nachdem die Eingabe gestoppt wurde.500msWird später verarbeitet
   distinctUntilChanged() // Nur wenn sich der Wert ändert
 ).subscribe(email => {
-  console.log('Zu validieren:', email);
+  console.log('Unterliegt der Validierung:', email);
+  // Validierungsprozess für E-Mail-Adressen
   validateEmail(email);
 });
 
@@ -166,23 +233,23 @@ function validateEmail(email: string): void {
 }
 ```
 
-### 3. Drag & Drop Implementierung
+### 3. die Drag-and-Drop-Implementierung
 
-Kombiniert Mausereignisse zur Implementierung von Drag & Drop.
+Kombinieren Sie Mausereignisse, um Drag & Drop zu implementieren.
 
 ```typescript
 import { fromEvent } from 'rxjs';
 import { switchMap, takeUntil, map } from 'rxjs';
 
-// Ziehbares Element erstellen
+// Ziehbare Elemente erstellen
 const element = document.createElement('div');
 element.style.width = '100px';
 element.style.height = '100px';
 element.style.backgroundColor = '#333';
-element.style.position = 'absolute';
-element.style.left = '50px';
+element.style.position = 'absolute'; // Auf absolute Positionierung setzen
+element.style.left = '50px'; // Ausgangsposition
 element.style.top = '50px';
-element.style.cursor = 'move';
+element.style.cursor = 'move'; // Ziehbarer Cursor
 document.body.appendChild(element);
 
 const mousedown$ = fromEvent<MouseEvent>(element, 'mousedown');
@@ -191,6 +258,7 @@ const mouseup$ = fromEvent<MouseEvent>(document, 'mouseup');
 
 mousedown$.pipe(
   switchMap(startEvent => {
+    // Klickposition im Element erfassen
     const startX = startEvent.clientX - element.offsetLeft;
     const startY = startEvent.clientY - element.offsetTop;
 
@@ -199,150 +267,137 @@ mousedown$.pipe(
         left: moveEvent.clientX - startX,
         top: moveEvent.clientY - startY
       })),
-      takeUntil(mouseup$)
+      takeUntil(mouseup$) // Endet mit Maus hoch
     );
   })
 ).subscribe(({ left, top }) => {
+  // Elementposition aktualisieren
   element.style.left = `${left}px`;
   element.style.top = `${top}px`;
 });
 ```
 
-### 4. Scroll-Ereignis-Überwachung
+### 4. Überwachung von Bildlaufereignissen
 
-Wird für unendliches Scrollen oder Scroll-Position-Tracking verwendet.
+Dient zur Überwachung des unendlichen Scrollens und der Scrollposition.
 
 ```typescript
-import { fromEvent } from 'rxjs';
-import { throttleTime, map } from 'rxjs';
-
-const scroll$ = fromEvent(window, 'scroll');
-
-scroll$.pipe(
-  throttleTime(200), // Nur einmal alle 200ms verarbeiten
-  map(() => window.scrollY)
-).subscribe(scrollPosition => {
-  console.log('Scroll-Position:', scrollPosition);
-
-  // Zusätzlichen Inhalt laden, wenn das Ende der Seite erreicht ist
-  if (scrollPosition + window.innerHeight >= document.body.scrollHeight - 100) {
-    console.log('Zusätzlichen Inhalt laden');
-  }
-});
+function fromEvent<T>(
+  target: any,
+  eventName: string,
+  options?: EventListenerOptions | ((...args: any[]) => T)
+): Observable<T>
 ```
 
-## Häufige Fehler
+## Verwendung in der Pipeline.
 
-### 1. Vergessen abzubestellen
+fromEvent()` ist ideal für die Pipeline-Verarbeitung ausgehend von einem Ereignisstrom.
+
 
 ```typescript
-// ❌ Falsch - Vergessen abzubestellen führt zu Speicherleck
-import { fromEvent } from 'rxjs';
+function fromEvent<T>(
+  target: any,
+  eventName: string,
+  options?: EventListenerOptions | ((...args: any[]) => T)
+): Observable<T>
+```
 
-function setupEventListener() {
-  const clicks$ = fromEvent(document, 'click');
-  clicks$.subscribe(console.log); // Wird nie abbestellt!
-}
+## Häufige Fehler.
 
-setupEventListener();
+### 1. Vergessen, sich abzumelden
 
-// ✅ Richtig - Immer abbestellen
-import { fromEvent, Subscription } from 'rxjs';
+#### ❌ Fehler - Vergessen der Abmeldung verursacht Speicherlecks
 
-let subscription: Subscription;
+{\CODE_12___
 
-function setupEventListener() {
-  const clicks$ = fromEvent(document, 'click');
-  subscription = clicks$.subscribe(console.log);
-}
+#### ✅ Richtig - immer abmelden
 
-function cleanup() {
-  if (subscription) {
-    subscription.unsubscribe();
-  }
-}
 
-setupEventListener();
-// cleanup() bei Komponenten-Zerstörung aufrufen
+```typescript
+function fromEvent<T>(
+  target: any,
+  eventName: string,
+  options?: EventListenerOptions | ((...args: any[]) => T)
+): Observable<T>
 ```
 
 > [!WARNING]
-> **Vorsicht vor Speicherlecks**
->
-> Bei SPAs und komponentenbasierten Frameworks immer abbestellen, wenn die Komponente zerstört wird. Das Vergessen des Abbestellens führt zu verbleibenden Event-Listenern und Speicherlecks.
 
-### 2. Mehrfache Event-Listener registrieren
+> **Achtung Speicherlecks**
+>
+> In SPA und komponentenbasierten Frameworks sollten Sie sich immer abmelden, wenn Sie eine Komponente zerstören. Wenn Sie die Abmeldung vergessen, bleiben die Ereignis-Listener bestehen und verursachen Speicherlecks.
+
+### 2. doppelte Registrierung von mehreren Ereignis-Listenern
+
+#### ❌ Fehler - das mehrfache Abonnieren desselben Ereignisses führt zur Registrierung mehrerer Listener.
+
+{\CODE_14___
+
+#### ✅ Richtig - Multicast mit share() falls erforderlich
+
 
 ```typescript
-// ❌ Falsch - Mehrfaches Abonnieren desselben Events erstellt mehrere Listener
-import { fromEvent } from 'rxjs';
-
-const clicks$ = fromEvent(document, 'click');
-
-clicks$.subscribe(() => console.log('Observer 1'));
-clicks$.subscribe(() => console.log('Observer 2'));
-// Beim Klicken werden beide Logs angezeigt (2 Listener sind registriert)
-
-// ✅ Richtig - Bei Bedarf mit share() multicasten
-import { fromEvent } from 'rxjs';
-import { share } from 'rxjs';
-
-const clicks$ = fromEvent(document, 'click').pipe(share());
-
-clicks$.subscribe(() => console.log('Observer 1'));
-clicks$.subscribe(() => console.log('Observer 2'));
-// Ein Listener wird geteilt
+function fromEvent<T>(
+  target: any,
+  eventName: string,
+  options?: EventListenerOptions | ((...args: any[]) => T)
+): Observable<T>
 ```
 
-## Leistungsüberlegungen
+## Leistungsüberlegungen.
 
-Bei hochfrequenten Ereignissen (scroll, mousemove, resize usw.) ist Vorsicht bei der Leistung geboten.
+Leistungserwägungen sollten berücksichtigt werden, wenn es um hochfrequente Auslöseereignisse geht (Scrollen, Mausbewegung, Größenänderung usw.).
 
 > [!TIP]
-> **Optimierung hochfrequenter Ereignisse**:
-> - `throttleTime()` - Nur einmal pro Zeitintervall verarbeiten
-> - `debounceTime()` - Nach Ende der Eingabe verarbeiten
-> - `distinctUntilChanged()` - Nur verarbeiten wenn sich der Wert ändert
+
+> **Optimierung von hochfrequenten Ereignissen**:.
+> - `throttleTime()` - nur einmal in einer bestimmten Zeitspanne behandeln.
+> - `debounceTime()` - Verarbeitung nachdem die Eingabe gestoppt wurde.
+> - `distinctUntilChanged()` - Nur verarbeiten, wenn sich der Wert ändert.
+
+#### ❌ Leistungsprobleme - bei jeder Größenänderung verarbeiten
+
 
 ```typescript
-// ❌ Leistungsproblem - Bei jeder Größenänderung verarbeiten
-import { fromEvent } from 'rxjs';
-
-const resize$ = fromEvent(window, 'resize');
-resize$.subscribe(() => {
-  console.log('Größenänderungsverarbeitung'); // Hohe Last
-});
-
-// ✅ Optimierung - Nur einmal alle 200ms verarbeiten
-import { fromEvent } from 'rxjs';
-import { throttleTime } from 'rxjs';
-
-const resize$ = fromEvent(window, 'resize');
-resize$.pipe(
-  throttleTime(200)
-).subscribe(() => {
-  console.log('Größenänderungsverarbeitung'); // Reduzierte Last
-});
+function fromEvent<T>(
+  target: any,
+  eventName: string,
+  options?: EventListenerOptions | ((...args: any[]) => T)
+): Observable<T>
 ```
 
-## Verwandte Erstellungsfunktionen
+#### ✅ Optimierung - nur einmal alle 200ms verarbeitet
 
-| Funktion | Unterschiede | Verwendung |
-|----------|------|----------|
-| **[from()](/de/guide/creation-functions/basic/from)** | Konvertiert von Array/Promise | Streamt nicht-Event-Daten |
-| **[interval()](/de/guide/creation-functions/basic/interval)** | Ausgabe in regelmäßigen Abständen | Wenn regelmäßige Verarbeitung benötigt wird |
-| **fromEventPattern()** | Benutzerdefinierte Event-Registrierung | Eigene Event-Systeme außer EventEmitter |
+
+```typescript
+function fromEvent<T>(
+  target: any,
+  eventName: string,
+  options?: EventListenerOptions | ((...args: any[]) => T)
+): Observable<T>
+```
+
+## Relevante Creation Function.
+
+
+```typescript
+function fromEvent<T>(
+  target: any,
+  eventName: string,
+  options?: EventListenerOptions | ((...args: any[]) => T)
+): Observable<T>
+```
 
 ## Zusammenfassung
 
-- `fromEvent()` konvertiert DOM-Ereignisse und EventEmitter in Observable
-- Listener werden beim Abonnieren registriert und beim Abbestellen automatisch entfernt (verhindert Speicherlecks)
-- Funktioniert als Hot Observable
-- Immer abbestellen um Speicherlecks zu verhindern
-- Hochfrequente Ereignisse mit `throttleTime()` oder `debounceTime()` optimieren
+- fromEvent()` konvertiert DOM Events und EventEmitter in Observable
+- Listener wird registriert, wenn er abonniert wird, und automatisch gelöscht, wenn er abbestellt wird (verhindert Speicherlecks)
+- Funktioniert wie ein Hot Observable
+- Abmeldung immer durchführen, um Speicherlecks zu verhindern
+- Optimieren Sie hochfrequente Ereignisse mit `throttleTime()` und `debounceTime()`.
 
-## Nächste Schritte
+## Nächste Schritte.
 
 - [interval() - Werte in regelmäßigen Abständen ausgeben](/de/guide/creation-functions/basic/interval)
-- [timer() - Start nach Verzögerung](/de/guide/creation-functions/basic/timer)
-- [Zurück zu Grundlegende Erstellungsfunktionen](/de/guide/creation-functions/basic/)
+- timer() - Start der Veröffentlichung nach einer Verzögerung](/de/guide/creation-functions/basic/timer)
+- [zurück zur Übersicht der grundlegenden Erstellungsfunktionen](/de/guide/creation-functions/basic/)

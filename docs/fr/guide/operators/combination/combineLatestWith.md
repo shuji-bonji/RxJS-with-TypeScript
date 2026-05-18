@@ -1,12 +1,12 @@
 ---
-description: "combineLatestWith est un opérateur de combinaison RxJS qui combine et émet les dernières valeurs de l'Observable original et d'autres Observables. Idéal pour la validation de formulaire en temps réel, la synchronisation d'états multiples, la mise à jour de calculs en temps réel. Version pipeable operator pratique à utiliser dans les pipelines."
+description: "combineLatestWith est un opérateur de combinaison RxJS qui combine l'Observable original avec les dernières valeurs d'autres Observables. Il est idéal pour les situations où vous souhaitez surveiller en permanence les dernières valeurs de plusieurs flux dépendants, comme la validation en temps réel des entrées de formulaire, la synchronisation de plusieurs états, les mises à jour en temps réel des résultats de calcul, etc. La version de l'opérateur pipeable est pratique pour une utilisation au sein de pipelines."
 ---
 
-# combineLatestWith - Dernières valeurs combinées
+# combineLatestWith - combine les valeurs les plus récentes
 
-L'opérateur `combineLatestWith` **émet ensemble les dernières valeurs** de l'Observable original et des autres Observables spécifiés.
-Chaque fois qu'un Observable émet une nouvelle valeur, le résultat combiné de toutes les dernières valeurs est émis.
-C'est la version Pipeable Operator de la Creation Function `combineLatest`.
+L'opérateur `combineLatestWith` combine toutes les **dernières valeurs** de l'Observable original et de tout autre Observable spécifié.
+Chaque fois qu'une nouvelle valeur est émise par l'un des Observable, un résultat est émis qui combine toutes les dernières valeurs.
+C'est la version Pipeable Operator de la fonction Creation Function `combineLatest`.
 
 ## 🔰 Syntaxe de base et utilisation
 
@@ -30,40 +30,38 @@ source1$
     console.log(`${val1} + ${val2}`);
   });
 
-// Exemple de sortie:
+// Exemples de sorties:
 // A0 + B0
 // A1 + B0
 // A2 + B0
 // A2 + B1
 ```
 
-- Les valeurs combinées sont émises **après que chaque Observable a émis au moins une valeur**.
-- Chaque fois qu'une nouvelle valeur arrive de l'un des côtés, la dernière paire est ré-émise.
+- Après que chaque Observable a émis **au moins une valeur**, la valeur combinée est émise.
+- Chaque fois qu'une nouvelle valeur arrive d'un côté ou de l'autre, la dernière paire est réémise.
 
-[🌐 Documentation officielle RxJS - `combineLatestWith`](https://rxjs.dev/api/operators/combineLatestWith)
+[🌐 Documentation officielle de RxJS - `combineLatestWith`](https://rxjs.dev/api/operators/combineLatestWith)
 
+## 💡 Modèle d'utilisation typique.
 
-## 💡 Patterns d'utilisation typiques
+- **Validation en temps réel des entrées de formulaire** : surveillance constante de l'état le plus récent de plusieurs champs.
+- Synchronisation de plusieurs états dépendants** : combinaison de valeurs de configuration et d'entrées utilisateur.
+- Mise à jour en temps réel des résultats de calcul** : calcul immédiat des résultats à partir de plusieurs valeurs d'entrée.
 
-- **Validation de formulaire en temps réel** : Surveiller constamment le dernier état de plusieurs champs
-- **Synchronisation d'états dépendants multiples** : Combinaison de valeurs de configuration et d'entrées utilisateur
-- **Mise à jour de résultats de calcul en temps réel** : Calcul immédiat à partir de plusieurs valeurs d'entrée
+## 🧠 Exemples de codes pratiques (avec interface utilisateur)
 
-
-## 🧠 Exemple de code pratique (avec UI)
-
-Un exemple qui calcule le montant total en temps réel à partir des entrées de prix et de quantité.
+Exemple de calcul du montant total en temps réel à partir des entrées de prix et de quantité.
 
 ```ts
 import { fromEvent } from 'rxjs';
 import { combineLatestWith, map, startWith } from 'rxjs';
 
-// Création de la zone de sortie
+// Création de zones de sortie
 const output = document.createElement('div');
-output.innerHTML = '<h3>Exemple pratique de combineLatestWith :</h3>';
+output.innerHTML = '<h3>combineLatestWith Exemples pratiques de:</h3>';
 document.body.appendChild(output);
 
-// Création des champs de saisie
+// Création de champs d'entrée
 const priceInput = document.createElement('input');
 priceInput.type = 'number';
 priceInput.placeholder = 'Prix unitaire';
@@ -82,7 +80,7 @@ result.style.fontSize = '20px';
 result.style.marginTop = '10px';
 document.body.appendChild(result);
 
-// Observable pour chaque entrée
+// de chaque entréeObservable
 const price$ = fromEvent(priceInput, 'input').pipe(
   map(e => Number((e.target as HTMLInputElement).value) || 0),
   startWith(100)
@@ -93,7 +91,7 @@ const quantity$ = fromEvent(quantityInput, 'input').pipe(
   startWith(1)
 );
 
-// Combiner les dernières valeurs et calculer
+// Calculé en combinant les dernières valeurs
 price$
   .pipe(
     combineLatestWith(quantity$),
@@ -104,75 +102,94 @@ price$
   });
 ```
 
-- Saisir dans l'un ou l'autre champ **recalcule immédiatement le total à partir des 2 dernières valeurs**.
-- En utilisant `startWith()`, nous pouvons obtenir un résultat combiné dès le départ.
+- Lorsque vous entrez dans l'un ou l'autre champ, le total est **immédiatement recalculé** à partir des deux valeurs les plus récentes.
+- La fonction `startWith()` est utilisée pour obtenir le résultat combiné depuis le début.
 
+## 🔄 Différences avec la Creation Function `combineLatest`.
 
-## 🔄 Différence avec la Creation Function `combineLatest`
+### Différences de base.
 
-### Différences de base
+```ts
+import { interval } from 'rxjs';
+import { combineLatestWith, map, take } from 'rxjs';
 
-| | `combineLatest` (Creation Function) | `combineLatestWith` (Pipeable Operator) |
-|:---|:---|:---|
-| **Lieu d'utilisation** | Utilisé comme fonction indépendante | Utilisé dans la chaîne `.pipe()` |
-| **Syntaxe** | `combineLatest([obs1$, obs2$])` | `obs1$.pipe(combineLatestWith(obs2$))` |
-| **Premier flux** | Traité également | Traité comme flux principal |
-| **Valeur de retour** | Tableau `[val1, val2]` | Tuple `[val1, val2]` |
-| **Avantage** | Simple et lisible | Facile à combiner avec d'autres opérateurs |
+const source1$ = interval(1000).pipe(
+  map(val => `A${val}`),
+  take(3)
+);
 
-### Exemples concrets de choix
+const source2$ = interval(1500).pipe(
+  map(val => `B${val}`),
+  take(2)
+);
 
-**Pour une simple combinaison, la Creation Function est recommandée**
+source1$
+  .pipe(combineLatestWith(source2$))
+  .subscribe(([val1, val2]) => {
+    console.log(`${val1} + ${val2}`);
+  });
+
+// Exemples de sorties:
+// A0 + B0
+// A1 + B0
+// A2 + B0
+// A2 + B1
+```
+
+### Exemples spécifiques d'utilisation
+
+**Si vous souhaitez uniquement des combinaisons simples, la Creation Function est la meilleure solution**.
+
 
 ```ts
 import { combineLatest, of } from 'rxjs';
 
-const firstName$ = of('Jean');
-const lastName$ = of('Dupont');
+const firstName$ = of('Taro');
+const lastName$ = of('Yamada');
 const age$ = of(30);
 
-// Simple et lisible
+// Simple et facile à lire
 combineLatest([firstName$, lastName$, age$]).subscribe(([first, last, age]) => {
-  console.log(`${first} ${last} (${age} ans)`);
+  console.log(`${last} ${first}3 (${age}Âge)`);
 });
-// Sortie: Jean Dupont (30 ans)
+// Sortie: Yamada Taro (30Âge)
 ```
 
-**Pour ajouter des transformations au flux principal, le Pipeable Operator est recommandé**
+**Si vous souhaitez ajouter un processus de conversion au flux principal, le Pipeable Operator est recommandé**.
 
 ```ts
 import { fromEvent, interval } from 'rxjs';
 import { combineLatestWith, map, startWith, debounceTime } from 'rxjs';
 
 const searchInput = document.createElement('input');
-searchInput.placeholder = 'Recherche...';
+searchInput.placeholder = 'Recherche de...';
 document.body.appendChild(searchInput);
 
 const categorySelect = document.createElement('select');
-categorySelect.innerHTML = '<option>Tous</option><option>Livres</option><option>DVD</option>';
+categorySelect.innerHTML = '<option>Tous les livres</option><option>Livres</option><option>DVD</option>';
 document.body.appendChild(categorySelect);
 
 const output = document.createElement('div');
 output.style.marginTop = '10px';
 document.body.appendChild(output);
 
-// Flux principal: terme de recherche
+// Mainstream: Recherche de mots-clés
 const searchTerm$ = fromEvent(searchInput, 'input').pipe(
   map(e => (e.target as HTMLInputElement).value),
-  debounceTime(300),  // Attendre 300ms après saisie
+  debounceTime(300),  // Après l'entrée300msAttendre
   startWith('')
 );
 
-// Flux secondaire: sélection de catégorie
+// Sous-système: Sélection de la catégorie
 const category$ = fromEvent(categorySelect, 'change').pipe(
   map(e => (e.target as HTMLSelectElement).value),
-  startWith('Tous')
+  startWith('Tous les livres')
 );
 
-// ✅ Version Pipeable Operator - complète en un seul pipeline
+// ✅ Pipeable OperatorÉdition - Complété en une seule fois
 searchTerm$
   .pipe(
-    map(term => term.toLowerCase()),  // Convertir en minuscules
+    map(term => term.toLowerCase()),  // Converti en minuscules
     combineLatestWith(category$),
     map(([term, category]) => ({
       term,
@@ -181,21 +198,107 @@ searchTerm$
     }))
   )
   .subscribe(result => {
-    output.textContent = `Recherche: "${result.term}" Catégorie: ${result.category} [${result.timestamp}]`;
+    output.textContent = `Recherche de: "${result.term}" Catégorie: ${result.category} [${result.timestamp}]`;
+  });
+
+// ❌ Creation FunctionÉdition - Devenir redondant
+import { combineLatest } from 'rxjs';
+combineLatest([
+  searchTerm$.pipe(map(term => term.toLowerCase())),
+  category$
+]).pipe(
+  map(([term, category]) => ({
+    term,
+    category,
+    timestamp: new Date().toLocaleTimeString()
+  }))
+).subscribe(result => {
+  output.textContent = `Recherche de: "${result.term}" Catégorie: ${result.category} [${result.timestamp}]`;
+});
+```
+
+**Lorsque vous combinez plusieurs valeurs de configuration**.
+
+```ts
+import { fromEvent } from 'rxjs';
+import { combineLatestWith, map, startWith } from 'rxjs';
+
+// Création d'un curseur
+const redSlider = document.createElement('input');
+redSlider.type = 'range';
+redSlider.min = '0';
+redSlider.max = '255';
+redSlider.value = '255';
+document.body.appendChild(document.createTextNode('Red: '));
+document.body.appendChild(redSlider);
+document.body.appendChild(document.createElement('br'));
+
+const greenSlider = document.createElement('input');
+greenSlider.type = 'range';
+greenSlider.min = '0';
+greenSlider.max = '255';
+greenSlider.value = '0';
+document.body.appendChild(document.createTextNode('Green: '));
+document.body.appendChild(greenSlider);
+document.body.appendChild(document.createElement('br'));
+
+const blueSlider = document.createElement('input');
+blueSlider.type = 'range';
+blueSlider.min = '0';
+blueSlider.max = '255';
+blueSlider.value = '0';
+document.body.appendChild(document.createTextNode('Blue: '));
+document.body.appendChild(blueSlider);
+
+const colorBox = document.createElement('div');
+colorBox.style.width = '200px';
+colorBox.style.height = '100px';
+colorBox.style.marginTop = '10px';
+colorBox.style.border = '1px solid #ccc';
+document.body.appendChild(colorBox);
+
+// Mainstream: Red
+const red$ = fromEvent(redSlider, 'input').pipe(
+  map(e => Number((e.target as HTMLInputElement).value)),
+  startWith(255)
+);
+
+// ✅ Pipeable OperatorÉdition - RedCombiner d'autres couleurs comme couleurs principales
+red$
+  .pipe(
+    combineLatestWith(
+      fromEvent(greenSlider, 'input').pipe(
+        map(e => Number((e.target as HTMLInputElement).value)),
+        startWith(0)
+      ),
+      fromEvent(blueSlider, 'input').pipe(
+        map(e => Number((e.target as HTMLInputElement).value)),
+        startWith(0)
+      )
+    ),
+    map(([r, g, b]) => `rgb(${r}, ${g}, ${b})`)
+  )
+  .subscribe(color => {
+    colorBox.style.backgroundColor = color;
+    colorBox.textContent = color;
+    colorBox.style.display = 'flex';
+    colorBox.style.alignItems = 'center';
+    colorBox.style.justifyContent = 'center';
+    colorBox.style.color = '#fff';
+    colorBox.style.textShadow = '1px 1px 2px #000';
   });
 ```
 
-### Résumé
+### Résumé.
 
-- **`combineLatest`** : Optimal pour simplement combiner plusieurs flux
-- **`combineLatestWith`** : Optimal quand vous voulez ajouter des transformations au flux principal tout en combinant les dernières valeurs d'autres flux
+- **`combineLatest`** : idéal si vous voulez simplement combiner plusieurs flux.
+- **combineLatestWith** : idéal si vous voulez combiner les dernières valeurs d'autres flux tout en transformant ou en traitant le flux principal.
 
+## ⚠️ Notes.
 
-## ⚠️ Points d'attention
+### Pas de publication tant que les valeurs initiales ne sont pas disponibles.
 
-### Pas d'émission tant que les valeurs initiales ne sont pas alignées
-
-Aucun résultat n'est émis tant que tous les Observables n'ont pas émis au moins une valeur.
+Aucun résultat n'est émis tant que tous les Observable n'ont pas émis au moins une valeur.
 
 ```ts
 import { interval, NEVER } from 'rxjs';
@@ -203,12 +306,12 @@ import { combineLatestWith, take } from 'rxjs';
 
 interval(1000).pipe(
   take(3),
-  combineLatestWith(NEVER)  // Observable qui n'émet jamais
+  combineLatestWith(NEVER)  // Aucune valeur émiseObservable
 ).subscribe(console.log);
-// Pas de sortie (car NEVER n'émet pas de valeur)
+// Pas de sortie (parce que)NEVERPas de sortie (parce que)
 ```
 
-Cela peut être résolu en donnant une valeur initiale avec `startWith()`.
+Ce problème peut être résolu en fournissant une valeur initiale avec `startWith()`.
 
 ```ts
 import { interval, NEVER } from 'rxjs';
@@ -221,17 +324,50 @@ interval(1000).pipe(
 // Sortie: [0, null] → [1, null] → [2, null]
 ```
 
-### Attention aux ré-émissions fréquentes
+### Attention aux rééditions fréquentes.
 
-Si l'un des flux émet fréquemment, le résultat sera également ré-émis fréquemment.
+Si un flux émet fréquemment des valeurs, le résultat sera également réémis fréquemment.
 
-### Gestion des erreurs
+```ts
+import { interval } from 'rxjs';
+import { combineLatestWith } from 'rxjs';
 
-Si une erreur se produit dans l'un des Observables, l'ensemble se termine en erreur.
+// 100msFlux émis chaque
+const fast$ = interval(100);
+const slow$ = interval(1000);
 
+fast$.pipe(
+  combineLatestWith(slow$)
+).subscribe(console.log);
+// slow$chaque fois qu'une valeur est émise,fast$est émise, elle est combinée avec la dernière valeur de
+// → Les performances nécessitent une attention particulière
+```
 
-## 📚 Opérateurs associés
+### Gestion des erreurs.
 
-- **[combineLatest](/fr/guide/creation-functions/combination/combineLatest)** - Version Creation Function
-- **[withLatestFrom](/fr/guide/operators/combination/withLatestFrom)** - Seul le flux principal déclenche
-- **[zipWith](/fr/guide/operators/combination/zipWith)** - Apparie les valeurs correspondantes
+Si une erreur survient dans un Observable, tout le processus se termine par une erreur.
+
+```ts
+import { throwError, interval } from 'rxjs';
+import { combineLatestWith, take, catchError } from 'rxjs';
+import { of } from 'rxjs';
+
+interval(1000).pipe(
+  take(2),
+  combineLatestWith(
+    throwError(() => new Error('Des erreurs se produisent')).pipe(
+      catchError((err: unknown) => of('Récupération'))
+    )
+  )
+).subscribe({
+  next: console.log,
+  error: err => console.error(err.message)
+});
+// Sortie: [0, 'Récupération'] → [1, 'Récupération']
+```
+
+## 📚 Opérateurs apparentés.
+
+- **[combineLatest](/fr/guide/creation-functions/combination/combineLatest)** - version de la Creation Function.
+- **[withLatestFrom](/fr/guide/operators/combination/withLatestFrom)** - déclenché uniquement par le courant principal.
+- **[zipWith](/fr/guide/operators/combination/zipWith)** - Associe des valeurs correspondantes.

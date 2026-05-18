@@ -1,91 +1,91 @@
 ---
-description: Esta sección describe las Funciones de Creación que generan valores de manera similar a bucles, usando range y generate para aprender cómo implementar procesamiento iterativo como sentencias for y while como flujos Observable. Desde generación de números secuenciales hasta transiciones de estado complejas basadas en condiciones personalizadas, puedes realizar procesamiento de bucles declarativo utilizando la inferencia de tipos de TypeScript.
+description: "Se explicarán las Creation Function que generan valores en forma de bucle: aprende a usar range y generate para implementar procesos iterativos como las sentencias for y while como flujos Observable. Desde la generación de números secuenciales hasta complejas transiciones de estado basadas en condiciones personalizadas, puedes realizar un procesamiento de bucle declarativo que haga uso de la inferencia de tipos de TypeScript."
 ---
 
-# Funciones de Creación de Generación de Bucles
+# Sistema de generación de bucles Creation Function
 
-Funciones de Creación para expresar procesamiento de bucles como sentencias for y while como Observable.
+Creation Function para representar el procesamiento de bucles como las sentencias for y while como Observable.
 
-## ¿Qué son las Funciones de Creación de Generación de Bucles?
+## Sistema de generación de bucles ¿Qué es Creation Function?
 
-Las Funciones de Creación de Generación de Bucles realizan procesamiento repetitivo de manera reactiva. Al reemplazar los bucles imperativos convencionales (sentencias `for` y `while`) con flujos Observable declarativos, es posible un procesamiento flexible en combinación con la cadena de operadores de RxJS.
+Creation Function para sistemas de generación de bucles realiza de forma reactiva procesos repetitivos. Al sustituir los bucles imperativos tradicionales (sentencias `for` y `while`) por flujos Observable declarativos, permiten un procesamiento flexible en combinación con la cadena de operadores de RxJS.
 
-Revisa la tabla a continuación para ver las características y uso de cada Función de Creación.
+Consulte la siguiente tabla para ver las características y el uso de cada Creation Function.
 
-## Principales Funciones de Creación de Generación de Bucles
+## Principales sistemas de generación de bucles Creation Function
 
-| Función | Descripción | Casos de Uso |
-|----------|------|-------------|
-| **[range](/es/guide/creation-functions/loop/range)** | Generar un rango de números (como sentencia for) | Generación de números secuenciales, procesamiento por lotes |
-| **[generate](/es/guide/creation-functions/loop/generate)** | Generación de bucles de propósito general (como sentencia while) | Repetición condicional, transiciones de estado complejas |
+| Función | Descripción | Caso de uso. |
+|---|---|---|
+| **[range](/es/guide/funciones-creación/loop/range)** | Generar un rango de números (para sentencias) | Generación de números secuenciales, procesamiento por lotes. |
+| **[generate](/es/guide/función de creación/lazo/generate)** | Generación de bucles genéricos (tipo while) | Repetición condicional, transiciones de estado complejas |
 
-## Criterios de Uso
+## Criterios de utilización
 
-La selección de Funciones de Creación de Generación de Bucles se determina desde las siguientes perspectivas.
+La elección de las Creation Function generadoras de bucles viene determinada por los siguientes aspectos.
 
-### 1. Patrón de Generación
+### 1. patrón de generación
 
-- **Secuencia numérica**: `range()` - Generación simple de números secuenciales con valores de inicio y fin
-- **Condiciones complejas**: `generate()` - Control libre sobre valores iniciales, condiciones, iteración y selección de resultados
+- **Secuencia numérica**: `range()` - generación secuencial simple de números con valores inicial y final.
+- **Condiciones complejas**: `generate()` - control libre sobre valores iniciales, condiciones, iteraciones y selección de resultados.
 
-### 2. Tipos de Bucle
+### 2. Tipos de bucles
 
-- **Bucle tipo sentencia for**: `range()` - `for (let i = start; i <= end; i++)`
-- **Bucle tipo sentencia while**: `generate()` - `while (condition) { ... }`
+- Bucle tipo instrucción for**: `range()` - `for (let i = start; i <= end; i++)`
+- bucles tipo while**: `generate()` - `while (condition) { ... }`
 
-### 3. Flexibilidad
+### 3. flexibilidad
 
-- **Simple es suficiente**: `range()` - Cuando necesitas una secuencia de números
-- **Necesita control avanzado**: `generate()` - Gestión de estado personalizada, ramificación condicional, control de pasos
+- **Suficientemente simple**: `range()` - si se requiere una secuencia de números
+- **Necesita control avanzado**: `generate()` - gestión personalizada de estados, bifurcación condicional, control de pasos
 
-## Ejemplos de Uso Práctico
+## Casos prácticos
 
-### range() - Generación de Números Secuenciales
+### range() - generación secuencial de números
 
-Para generación simple de números secuenciales, `range()` es la mejor opción.
+Para la generación de números secuenciales simples, `range()` es la mejor opción.
 
 ```typescript
 import { range, map } from 'rxjs';
-// Generar números secuenciales del 1 al 5
+// 1a5Generar números secuenciales a partir de
 range(1, 5).subscribe(console.log);
 // Salida: 1, 2, 3, 4, 5
 
-// Usar en procesamiento por lotes
+// Utilizar en procesamiento por lotes
 range(0, 10).pipe(
-  map(i => `Proceso ${i + 1}`)
+  map(i => `Procesamiento${i + 1}`)
 ).subscribe(console.log);
-// Salida: Proceso 1, Proceso 2, ..., Proceso 10
+// Salida: Procesamiento1, Procesamiento2, ..., Procesamiento10
 ```
 
-### generate() - Bucle Condicional
+### generate() - bucle condicional
 
-Usa `generate()` para condiciones complejas o gestión de estado personalizada.
+Utilice `generate()` cuando se requieran condiciones complejas o una gestión de estados personalizada.
 
 ```typescript
 import { generate } from 'rxjs';
 
-// Generar secuencia de Fibonacci (primeros 10 términos)
+// Generar secuencia Fibonacci (primer10término)
 generate(
-  { current: 0, next: 1, count: 0 },  // Estado inicial
+  { current: 0, next: 1, count: 0 },  // Condición inicial
   state => state.count < 10,           // Condición de continuación
-  state => ({                          // Actualización de estado
+  state => ({                          // Actualización del estado
     current: state.next,
     next: state.current + state.next,
     count: state.count + 1
   }),
-  state => state.current               // Selector de resultado
+  state => state.current               // Selección del resultado
 ).subscribe(console.log);
 // Salida: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34
 ```
 
-## Comparación con Bucle Imperativo
+## Comparado con el bucle imperativo
 
-Esta es una comparación entre el bucle imperativo convencional y las Funciones de Creación de Generación de Bucles de RxJS.
+Esta es una comparación entre los bucles imperativos convencionales y el sistema de generación de bucles RxJS Creation Function.
 
-### Sentencia for Imperativa
+### Sentencia imperativa for
 
 ```typescript
-// Sentencia for convencional
+// ConvencionalforSentencia
 const results: number[] = [];
 for (let i = 1; i <= 5; i++) {
   results.push(i * 2);
@@ -93,73 +93,99 @@ for (let i = 1; i <= 5; i++) {
 console.log(results); // [2, 4, 6, 8, 10]
 ```
 
-### range() Declarativo
+### Declarativo range()
 
 ```typescript
 import { range, map, toArray } from 'rxjs';
-// RxJS range()
+// RxJSderange()
 range(1, 5).pipe(
   map(i => i * 2),
   toArray()
 ).subscribe(console.log); // [2, 4, 6, 8, 10]
 ```
 
-> [!TIP]
-> **Ventajas del enfoque declarativo**:
-> - Mejor legibilidad con procesamiento de pipeline
-> - Manejo de errores uniforme
-> - Fácil de combinar con procesamiento asíncrono
-> - Fácil de cancelar y abortar (ej., `takeUntil()`)
+```typescript
+import { range, map } from 'rxjs';
+// 1a5Generar números secuenciales a partir de
+range(1, 5).subscribe(console.log);
+// Salida: 1, 2, 3, 4, 5
 
-## Conversión de Cold a Hot
+// Utilizar en procesamiento por lotes
+range(0, 10).pipe(
+  map(i => `Procesamiento${i + 1}`)
+).subscribe(console.log);
+// Salida: Procesamiento1, Procesamiento2, ..., Procesamiento10
+```
 
-Como se muestra en la tabla anterior, **todas las Funciones de Creación de Generación de Bucles generan Cold Observables**. Cada suscripción inicia una ejecución independiente.
+> **Beneficios del enfoque declarativo**:.
+> - Mejora de la legibilidad gracias al procesamiento en cadena.
+> - Manejo uniforme de errores
+> - Fácil de combinar con el procesamiento asíncrono
+> - Facilidad para cancelar y abortar (por ejemplo, `takeUntil()`)
 
-Sin embargo, usando operadores de multicast (`share()`, `shareReplay()`, etc.), puedes **convertir un Cold Observable a un Hot Observable**.
+## Conversión de frío a caliente
 
-### Ejemplo Práctico: Compartir Resultados de Cálculo
+Como se muestra en la tabla anterior, **todas las Creation Function que generan bucles generan un Cold Observable. Cada suscripción inicia una ejecución independiente.
+
+Sin embargo, **los Observable Fríos pueden convertirse** en Observable Calientes utilizando operadores de multidifusión (`share()`, `shareReplay()`, etc.).
+
+### Ejemplo práctico: compartir los resultados de un cálculo.
+
 
 ```typescript
 import { range, map, share } from 'rxjs';
-// ❄️ Cold - Cálculo independiente para cada suscripción
+// ❄️ Cold - Cálculo independiente por abono
 const cold$ = range(1, 1000).pipe(
   map(n => {
-    console.log('Calculando:', n);
+    console.log('Cálculo en curso:', n);
     return n * n;
   })
 );
 
-cold$.subscribe(val => console.log('Suscriptor 1:', val));
-cold$.subscribe(val => console.log('Suscriptor 2:', val));
-// → Cálculo ejecutado dos veces (2000 cálculos)
+cold$.subscribe(val => console.log('Abonado1:', val));
+cold$.subscribe(val => console.log('Abonado2:', val));
+// → Un cálculo se2realiza una vez (en2000Cálculo realizado una vez)
 
-// 🔥 Hot - Compartir resultados de cálculo entre suscriptores
+// 🔥 Hot - Los resultados del cálculo se comparten entre abonados
 const hot$ = range(1, 1000).pipe(
   map(n => {
-    console.log('Calculando:', n);
+    console.log('Cálculo en curso:', n);
     return n * n;
   }),
   share()
 );
 
-hot$.subscribe(val => console.log('Suscriptor 1:', val));
-hot$.subscribe(val => console.log('Suscriptor 2:', val));
-// → Cálculo ejecutado solo una vez (1000 cálculos)
+hot$.subscribe(val => console.log('Abonado1:', val));
+hot$.subscribe(val => console.log('Abonado2:', val));
+// → Un cálculo se1Sólo se ejecuta una vez (1000Cálculo realizado una vez)
 ```
 
-> [!TIP]
-> **Casos donde se requiere conversión a Hot**:
-> - Usar cálculos de alto costo en múltiples ubicaciones
-> - Compartir resultados de procesamiento por lotes con múltiples componentes
-> - Mostrar resultados de paginación en múltiples componentes de UI
+```typescript
+import { range, map } from 'rxjs';
+// 1a5Generar números secuenciales a partir de
+range(1, 5).subscribe(console.log);
+// Salida: 1, 2, 3, 4, 5
+
+// Utilizar en procesamiento por lotes
+range(0, 10).pipe(
+  map(i => `Procesamiento${i + 1}`)
+).subscribe(console.log);
+// Salida: Procesamiento1, Procesamiento2, ..., Procesamiento10
+```
+
+> **Casos en los que se requiere Hotting**:.
+> - Los cálculos de alto coste se utilizan en múltiples ubicaciones
+> - Resultados del procesamiento por lotes compartidos por múltiples componentes
+> - Resultados del proceso de paginación mostrados en múltiples componentes de la UI.
 >
-> Para más información, ver [Creación Básica - Conversión de Cold a Hot](/es/guide/creation-functions/basic/#conversion-de-cold-a-hot).
+> Para obtener más información, consulte [Sistemas básicos de creación - Conversión de frío a caliente](/es/guide/creation-functions/basic/#cold- to -hot-).
 
-## Combinación con Procesamiento Asíncrono
+## Combinado con procesamiento asíncrono
 
-Las Funciones de Creación de Generación de Bucles demuestran funcionalidad poderosa cuando se combinan con procesamiento asíncrono.
+El sistema de generación de bucles Creation Function puede combinarse con el procesamiento asíncrono para proporcionar una potente funcionalidad.
 
-### Ejecución Secuencial de Llamadas API
+### Ejecución secuencial de llamadas a la API
+
 
 ```typescript
 import { range, of, Observable, concatMap, delay } from 'rxjs';
@@ -168,60 +194,56 @@ interface PageData {
   items: string[];
 }
 
-// Función para simular obtención de datos de página
+// Función para simular la adquisición de datos de la página
 function fetchPage(page: number): Observable<PageData> {
   return of({
     page,
-    items: [`Data${page}-1`, `Data${page}-2`, `Data${page}-3`]
+    items: [`Datos${page}-1`, `Datos${page}-2`, `Datos${page}-3`]
   }).pipe(
-    delay(300) // Simular llamada API
+    delay(300) // APISimular una llamada a
   );
 }
 
-// Obtener páginas 1 a 10 secuencialmente (con 1 segundo de retraso entre cada solicitud)
+// Página1a10Recuperar secuencialmente hasta (con un retardo de1segundos de retraso entre cada solicitud)
 range(1, 10).pipe(
   concatMap(page =>
     fetchPage(page).pipe(delay(1000))
   )
-).subscribe(
-  data => console.log(`Página ${data.page} obtenida:`, data.items),
-  err => console.error('Error:', err)
-);
+).subscribe({
+  next: data => console.log(`Página ${data.page} Obtención:`, data.items),
+  error: err => console.error('Error:', err)
+});
 ```
 
-### Uso en Procesamiento de Reintentos
+### Uso en el procesamiento de reintentos
 
 ```typescript
-import { range, throwError, of, Observable, mergeMap, retryWhen, delay } from 'rxjs';
-// Función para simular obtención de datos (falla aleatoriamente)
+import { range, throwError, of, Observable, mergeMap, retry, delay } from 'rxjs';
+// Función para simular la obtención de datos (falla aleatoriamente)
 function fetchData(): Observable<string> {
-  const shouldFail = Math.random() > 0.6; // 40% tasa de éxito
+  const shouldFail = Math.random() > 0.6; // 40%Éxito con una probabilidad de
 
   return of(shouldFail).pipe(
     delay(200),
     mergeMap(fail =>
       fail
-        ? throwError(() => new Error('Obtención de datos fallida'))
-        : of('Obtención de datos exitosa')
+        ? throwError(() => new Error('Fallo en la adquisición de datos'))
+        : of('Adquisición de datos con éxito')
     )
   );
 }
 
 function fetchWithRetry() {
   return fetchData().pipe(
-    retryWhen(errors =>
-      errors.pipe(
-        mergeMap((error, index) => {
-          // Reintentar hasta 3 veces
-          if (index >= 3) {
-            return throwError(() => error);
-          }
-          console.log(`Reintento ${index + 1}/3`);
-          // Backoff exponencial: 1s, 2s, 4s
-          return range(0, 1).pipe(delay(Math.pow(2, index) * 1000));
-        })
-      )
-    )
+    // RxJS 7.3+ Recomendación: retry({ count, delay }) Formato
+    retry({
+      count: 3, // Máx.3Reintentos
+      delay: (error, retryCount) => {
+        console.log(`Reintentos ${retryCount}/3`);
+        // Retroceso exponencial: 1Segundos2Segundos4Segundos
+        return range(0, 1).pipe(delay(Math.pow(2, retryCount - 1) * 1000));
+      }
+    })
   );
 }
 
@@ -231,45 +253,52 @@ fetchWithRetry().subscribe({
 });
 
 // Ejemplo de salida:
-// Reintento 1/3
-// Reintento 2/3
-// Resultado: Obtención de datos exitosa
+// Reintentos 1/3
+// Reintentos 2/3
+// Resultado: Adquisición de datos con éxito
 ```
 
 ## Relación con Pipeable Operator
 
-Las Funciones de Creación de Generación de Bucles no tienen un Pipeable Operator correspondiente directo. Siempre se usan como Funciones de Creación.
+Las Creation Function que generan bucles no tienen un Pipeable Operator homólogo directo. Siempre se utilizan como Creation Function.
 
-Sin embargo, es posible un procesamiento más avanzado combinándolas con los siguientes operadores:
+Sin embargo, pueden combinarse con los siguientes operadores para un procesamiento más avanzado.
 
-| Operadores a Combinar | Propósito |
-|-------------------|------|
-| `map()` | Transformar cada valor |
-| `filter()` | Pasar solo valores que coincidan con la condición |
-| `take()`, `skip()` | Controlar el número de valores |
-| `concatMap()`, `mergeMap()` | Ejecutar procesamiento asíncrono para cada valor |
-| `toArray()` | Recopilar todos los valores en un array |
+```typescript
+import { range, map } from 'rxjs';
+// 1a5Generar números secuenciales a partir de
+range(1, 5).subscribe(console.log);
+// Salida: 1, 2, 3, 4, 5
 
-## Notas de Rendimiento
+// Utilizar en procesamiento por lotes
+range(0, 10).pipe(
+  map(i => `Procesamiento${i + 1}`)
+).subscribe(console.log);
+// Salida: Procesamiento1, Procesamiento2, ..., Procesamiento10
+```
 
-Las Funciones de Creación de Generación de Bucles emiten valores síncronamente, así que ten cuidado con el rendimiento al generar un gran número de valores.
+## Notas de rendimiento.
+
+Las Creation Function que generan bucles emiten valores de forma sincrónica, por lo que hay que tener en cuenta el rendimiento cuando se generan grandes cantidades de valores.
 
 > [!WARNING]
-> **Manejo de grandes cantidades de datos**:
-> - Grandes cantidades de datos, como `range(1, 1000000)`, se emiten todas síncronamente y consumen memoria
-> - Usar buffer con `bufferCount()` o `windowCount()` según sea necesario
-> - O cambiar a ejecución asíncrona especificando un scheduler con `scheduled()`
+
+> **Manejo de grandes cantidades de datos**:.
+> - Grandes cantidades de datos, como `range(1, 1000000)`, se emiten todos de forma sincrónica y consumen memoria
+> - Buffer con `bufferCount()` o `windowCount()` según sea necesario
+> - o cambiar a ejecución asíncrona especificando un planificador con `scheduled()`.
+
 
 ```typescript
 import { range, asyncScheduler, observeOn } from 'rxjs';
-// Ejecutar con scheduler asíncrono
+// Ejecutado por el programador asíncrono
 range(1, 1000000).pipe(
   observeOn(asyncScheduler)
 ).subscribe(console.log);
 ```
 
-## Próximos Pasos
+## Próximos pasos.
 
-Para aprender más sobre el comportamiento detallado y ejemplos prácticos de cada Función de Creación, haz clic en los enlaces de la tabla anterior.
+Para obtener más información sobre el funcionamiento de cada Creation Function y ejemplos prácticos, haga clic en los enlaces de la tabla anterior.
 
-También puedes entender el panorama completo de las Funciones de Creación aprendiendo [Funciones de Creación Básicas](/es/guide/creation-functions/basic/), [Funciones de Creación de Combinación](/es/guide/creation-functions/combination/), [Funciones de Creación de Selección/Partición](/es/guide/creation-functions/selection/) y [Funciones de Creación Condicionales](/es/guide/creation-functions/conditional/).
+También puede obtener más información sobre [Funciones de creación básicas](/es/guide/creation-functions/basic/), [Funciones de creación combinadas](/es/guide/creation-functions/combination/), [Selección y Creation Function](/es/guide/creation-functions/selection/) y [Creation Function](/es/guide/creation-functions/conditional/). Esto le ayudará a comprender el conjunto de las Creation Function.

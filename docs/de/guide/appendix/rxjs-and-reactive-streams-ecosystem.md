@@ -1,22 +1,22 @@
 ---
-description: "Wie positioniert sich RxJS im Reactive Streams-Ökosystem? Technologie-Stack von UI bis Datenschicht, Unterschiede zu Reactor und Kafka Streams, und Backpressure-Behandlung."
+description: "Wie ist RxJS im Ökosystem der Reactive Streams positioniert, von der UI-Schicht bis zur Datenschicht, wobei der gesamte Technologie-Stack und die Rollen von RxJS, Reactor, Kafka Streams und anderen erläutert werden. Auch die Unterschiede bei der Unterstützung von Gegendruck und der Skalierbarkeit werden im Detail erläutert."
 ---
 
-# RxJS und Reactive Streams
+# RxJS und das React Streams Ökosystem
 
-Beim Erlernen von RxJS fragen sich viele Entwickler: "Wie positioniert sich RxJS im Gesamtbild der reaktiven Programmierung?"
+Wenn sie etwas über RxJS lernen, fragen sich viele Entwickler: "Wie passt RxJS in das Gesamtbild der Reaktiven Programmierung?" Die Frage lautet: "Wie fügt sich RxJS in das Gesamtbild der reaktiven Programmierung ein?".
 
-Diese Seite erklärt die **Unterschiede zwischen RxJS und dem Reactive Streams-Standard**, den **Technologie-Stack von UI bis Datenschicht** und **Verbindungsmethoden zwischen verschiedenen Technologien**.
+Diese Seite erklärt **die Unterschiede zwischen RxJS und dem React Streams Standard**, **den gesamten Technologie-Stack von der UI-Schicht bis zur Datenschicht** und **wie die verschiedenen Technologien zusammenarbeiten**.
 
 ## Positionierung von RxJS
 
-### Was ist RxJS
+### Was ist RxJS?
 
-**RxJS** (Reactive Extensions for JavaScript) ist die Hauptimplementierung der reaktiven Programmierung für **Browser und Node.js-Umgebungen**.
+**RxJS** (Reactive Extensions for JavaScript) ist die wichtigste Implementierung der reaktiven Programmierung in der **Browser- und Node.js-Umgebung**.
 
 ```mermaid
 graph TB
-    reactiveX["ReactiveX<br/>(Gemeinsame Designphilosophie)"]
+    reactiveX["ReactiveX<br/>(Gemeinsames Designkonzept)"]
     rxjs["RxJS<br/>(JavaScript/TypeScript)"]
     rxjava["RxJava<br/>(Java)"]
     reactor["Reactor<br/>(Java)"]
@@ -36,92 +36,141 @@ graph TB
     class rxjs,rxjava,reactor,rxcpp,rxswift impl
 ```
 
-::: info Merkmale von RxJS
-- Läuft in Browser und Node.js
-- UI-Reaktionsfähigkeit hat Priorität
+::: info RxJS Eigenschaften.
+- Funktioniert im Browser und Node.js
+- Die Reaktionsfähigkeit der Benutzeroberfläche hat höchste Priorität
 - Leichtgewichtig und schnell
-- Implizites Backpressure
-:::
+- Backpressure ist implizit.
+:::: info
 
-## RxJS vs Reactive Streams-Standard
+## RxJS vs. React Streams Standard
 
-Es gibt zwei große Strömungen in der reaktiven Programmierung: **RxJS** und den **Reactive Streams-Standard**.
+In der reaktiven Programmierung gibt es zwei Hauptströmungen: **RxJS** und den **React Streams Standard**.
 
-### Was ist Reactive Streams-Standard
+### Was ist der React Streams Standard?
 
-[Reactive Streams](https://www.reactive-streams.org/) ist eine Standardspezifikation für Stream-Verarbeitung auf der JVM.
+[React Streams] (https://www.reactive-streams.org/) ist eine Standardspezifikation für die Stream-Verarbeitung in der JVM.
 
 **Hauptimplementierungen:**
-- **Project Reactor** (Spring WebFlux)
+- **Projekt React** (Spring WebFlux).
 - **RxJava 3**
 - **Akka Streams**
 - **Mutiny** (Quarkus)
 
-### Hauptunterschied: Backpressure-Steuerung
+**Vier standardisierte Schnittstellen:**
 
-| Aspekt | RxJS | Reactive Streams-Standard |
-|------|------|---------------------|
-| **Plattform** | JavaScript/TypeScript (Browser, Node.js) | JVM (Java, Scala, Kotlin) |
-| **Backpressure** | Implizit (Operator-Ebene) | Explizit (`request(n)`-Methode) |
-| **Priorität** | UI-Reaktionsfähigkeit | Server-Durchsatz |
-| **Standardisierung** | ReactiveX gemeinsame API | Reactive Streams-Spezifikation |
+```java
+public interface Publisher<T> {
+    void subscribe(Subscriber<? super T> s);
+}
 
-#### RxJS Backpressure (implizit)
+public interface Subscriber<T> {
+    void onSubscribe(Subscription s);
+    void onNext(T t);
+    void onError(Throwable t);
+    void onComplete();
+}
+
+public interface Subscription {
+    void request(long n);  // Steuerung des Gegendrucks
+    void cancel();
+}
+
+public interface Processor<T, R> extends Subscriber<T>, Publisher<R> {}
+```
+
+### Hauptunterschiede: Gegendruckkontrolle
+
+```java
+public interface Publisher<T> {
+    void subscribe(Subscriber<? super T> s);
+}
+
+public interface Subscriber<T> {
+    void onSubscribe(Subscription s);
+    void onNext(T t);
+    void onError(Throwable t);
+    void onComplete();
+}
+
+public interface Subscription {
+    void request(long n);  // Steuerung des Gegendrucks
+    void cancel();
+}
+
+public interface Processor<T, R> extends Subscriber<T>, Publisher<R> {}
+```
+
+#### RxJS Gegendruck (implizit)
+
 
 ```typescript
 import { interval } from 'rxjs';
 import { bufferTime, take } from 'rxjs';
 
-// Backpressure wird durch Operatoren gesteuert
-interval(10)  // Alle 10ms ein Wert
+// Gegendruckkontrolle durch den Bediener
+interval(10)  // 10msWerte werden jede Sekunde ausgegeben
   .pipe(
-    bufferTime(1000),  // Jede Sekunde puffern (implizite Steuerung)
+    bufferTime(1000),  // 1Pufferung im Sekundentakt (implizite Steuerung)
     take(5)
   )
-  .subscribe(batch => console.log('Batch:', batch.length));
+  .subscribe(batch => console.log('Stapel:', batch.length));
 ```
 
-#### Reactive Streams Backpressure (explizit)
+#### React Streams Rückstau (explizit)
 
 ```java
-// Project Reactor (Java)
+// Project Reactor(JavaStapel ( )
 Flux.range(1, 1000)
     .subscribe(new BaseSubscriber<Integer>() {
         @Override
         protected void hookOnSubscribe(Subscription subscription) {
-            request(10);  // Zuerst 10 anfordern (explizit)
+            request(10);  // Erste10Anforderung der ersten (explizit)
         }
 
         @Override
         protected void hookOnNext(Integer value) {
-            System.out.println("Verarbeitung: " + value);
-            request(1);  // Nach Verarbeitung nächsten anfordern (explizit)
+            System.out.println("Verarbeitet: " + value);
+            request(1);  // Nach der Verarbeitung die nächste1Anforderung der ersten (explizit)
         }
     });
 ```
 
-> [!IMPORTANT]
-> **Unterschied im Backpressure**
+```typescript
+import { interval } from 'rxjs';
+import { bufferTime, take } from 'rxjs';
+
+// Gegendruckkontrolle durch den Bediener
+interval(10)  // 10msWerte werden jede Sekunde ausgegeben
+  .pipe(
+    bufferTime(1000),  // 1Pufferung im Sekundentakt (implizite Steuerung)
+    take(5)
+  )
+  .subscribe(batch => console.log('Stapel:', batch.length));
+```
+
+> **Unterschiede im Gegendruck**
 >
-> - **RxJS**: Implizite Steuerung durch Operatoren (`bufferTime`, `throttleTime`, `debounceTime`)
-> - **Reactive Streams**: Explizite Steuerung durch `request(n)`-Methode
+> - **RxJS**: implizit gesteuert durch Operatoren (`bufferTime`, `throttleTime`, `debounceTime`)
+> - **Reactive Streams**: explizit gesteuert durch die Methode `request(n)`
 >
-> Dieser Unterschied spiegelt die unterschiedlichen Anforderungen von UI (RxJS) und Server (Reactive Streams) wider.
+> Dieser Unterschied spiegelt den Unterschied zwischen den Anforderungen der Benutzeroberfläche (RxJS) und des Servers (React Streams) wider.
 
-## Technologie-Stack nach Schichten
+## Schichtspezifischer Technologie-Stack
 
-Reaktive Programmierung bildet einen Technologie-Stack über mehrere Schichten von UI bis Datenschicht.
+React Programming bildet einen mehrschichtigen Technologiestapel, von der UI-Schicht bis zur Datenschicht.
 
-### Gesamtarchitektur
+### Gesamtarchitektur.
+
 
 ```mermaid
 flowchart TB
-    subgraph ui["UI-Schicht (Frontend)"]
+    subgraph ui["UISchicht (Frontend)"]
         rxjs["RxJS<br/>Angular, React, Vue"]
         signals["Signals<br/>Angular, Solid.js"]
     end
 
-    subgraph server["Server-Schicht (Backend)"]
+    subgraph server["Server-Schicht (Back-End)"]
         reactor["Reactor<br/>Spring WebFlux"]
         vertx["Vert.x<br/>Reactive Toolkit"]
         akka["Akka Streams<br/>Actor Model"]
@@ -147,10 +196,10 @@ flowchart TB
 
 ### 1. UI-Schicht (Frontend)
 
-**Haupttechnologien: RxJS, Signals**
+**Schlüsseltechnologien: RxJS, Signals.
 
 ```typescript
-// RxJS (UI-Schicht-Standard)
+// RxJS(UI(Schicht Standard)
 import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 
@@ -164,31 +213,71 @@ const searchInput$ = fromEvent(input, 'input').pipe(
 searchInput$.subscribe(results => updateUI(results));
 ```
 
-### 2. Server-Schicht (Backend)
+::: info Merkmale:
+- Läuft in Browser-Umgebung
+- Die Reaktionsfähigkeit der Benutzeroberfläche hat höchste Priorität
+- Einheitliche Handhabung von Benutzereingaben, DOM-Ereignissen und HTTP-Kommunikation
+::::: info
 
-**Haupttechnologien: Project Reactor, Vert.x, Akka Streams**
+### 2. Server-Schicht (Back-End)
+
+**Haupttechnologien: Project React, Vert.x, Akka Streams***.
+
+#### Project React WebFlux)
 
 ```java
-// Project Reactor (Server-Schicht-Standard)
+// Project Reactor(Server-Schicht-Standard)
 @RestController
 public class UserController {
 
     @GetMapping("/users")
     public Flux<User> getUsers() {
-        return userRepository.findAll()
+        return userRepository.findAll()  // Reactive Repository
             .filter(user -> user.isActive())
             .map(user -> enrichUserData(user))
             .onErrorResume(error -> Flux.empty());
     }
+
+    @GetMapping("/users/{id}")
+    public Mono<User> getUser(@PathVariable String id) {
+        return userRepository.findById(id)
+            .switchIfEmpty(Mono.error(new UserNotFoundException(id)));
+    }
 }
 ```
 
-### 3. Datenschicht (Stream-Verarbeitung)
+::: info Merkmale:
+- Entspricht dem React Streams Standard
+- Nicht-blockierende E/A
+- Hoher Durchsatz
+- Explizite Rückstaukontrolle
+::::: info
 
-**Haupttechnologien: Kafka, Flink, Apache Beam**
+#### Akka Streams (Akteursmodell)
+
+```scala
+// Akka Streams(für verteilte Systeme)
+val source = Source(1 to 100)
+val flow = Flow[Int].map(_ * 2)
+val sink = Sink.foreach[Int](println)
+
+source.via(flow).to(sink).run()
+```
+
+::: info Merkmale:
+- Actor Model basiert
+- Ideal für verteilte Systeme
+- Fehlereingrenzung und Wiederherstellung
+::::.
+
+### 3. die Datenschicht (Stromverarbeitung)
+
+** Schlüsseltechnologien: Kafka, Flink, Apache Beam***.
+
+#### Apache Kafka (Ereignis-Streaming)
 
 ```java
-// Kafka Streams (Datenpipeline)
+// Kafka Streams(Daten-Pipeline)
 StreamsBuilder builder = new StreamsBuilder();
 
 KStream<String, String> source = builder.stream("input-topic");
@@ -197,183 +286,612 @@ source
     .filter((key, value) -> value.length() > 10)
     .mapValues(value -> value.toUpperCase())
     .to("output-topic");
+
+KafkaStreams streams = new KafkaStreams(builder.build(), config);
+streams.start();
 ```
 
-## Bridging-Technologien: Verbindung verschiedener Schichten
+::: info Merkmale:
+- Verteilte Ereignis-Streaming-Plattform
+- Hoher Durchsatz, niedrige Latenz
+- Ereignisbeschaffung, Grundlage für CQRS-Muster
+::::.
+
+#### Apache Flink (Stromverarbeitung)
+
+```mermaid
+graph TB
+    reactiveX["ReactiveX<br/>(Gemeinsames Designkonzept)"]
+    rxjs["RxJS<br/>(JavaScript/TypeScript)"]
+    rxjava["RxJava<br/>(Java)"]
+    reactor["Reactor<br/>(Java)"]
+    rxcpp["RxCpp<br/>(C++)"]
+    rxswift["RxSwift<br/>(Swift)"]
+
+    reactiveX --> rxjs
+    reactiveX --> rxjava
+    reactiveX --> reactor
+    reactiveX --> rxcpp
+    reactiveX --> rxswift
+
+    classDef core fill:#fff9c4,stroke:#f57f17,stroke-width:3px,color:#333
+    classDef impl fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#333
+
+    class reactiveX core
+    class rxjs,rxjava,reactor,rxcpp,rxswift impl
+```
+
+:::: info Merkmale:
+- Echtzeit Stream Processing Engine
+- Exakt-einmal (Exactly-once) Garantie
+- Ereigniszeitverarbeitung und Wasserzeichen
+::::.
+
+## Brückentechnologie: Koordinierung verschiedener Schichten
+
+Wie lassen sich verschiedene Technologiestapel miteinander verbinden?
 
 ### 1. UI-Schicht ⇄ Server-Schicht: WebSocket / SSE
 
-#### WebSocket (bidirektionale Kommunikation)
+#### WebSocket (bi-direktionale Kommunikation)
 
-**Frontend (RxJS):**
-```typescript
-import { webSocket } from 'rxjs/webSocket';
+** Frontend (RxJS): ***
 
-const socket$ = webSocket<Message>('wss://example.com/ws');
 
-// Empfangen
-socket$.subscribe(message => console.log('Empfangen:', message));
+```mermaid
+graph TB
+    reactiveX["ReactiveX<br/>(Gemeinsames Designkonzept)"]
+    rxjs["RxJS<br/>(JavaScript/TypeScript)"]
+    rxjava["RxJava<br/>(Java)"]
+    reactor["Reactor<br/>(Java)"]
+    rxcpp["RxCpp<br/>(C++)"]
+    rxswift["RxSwift<br/>(Swift)"]
 
-// Senden
-socket$.next({ type: 'subscribe', channel: 'notifications' });
+    reactiveX --> rxjs
+    reactiveX --> rxjava
+    reactiveX --> reactor
+    reactiveX --> rxcpp
+    reactiveX --> rxswift
+
+    classDef core fill:#fff9c4,stroke:#f57f17,stroke-width:3px,color:#333
+    classDef impl fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#333
+
+    class reactiveX core
+    class rxjs,rxjava,reactor,rxcpp,rxswift impl
 ```
 
-#### Server-Sent Events (Server → Client)
+**Back-End (Spring WebFlux):**
 
-**Frontend (RxJS):**
-```typescript
-import { Observable } from 'rxjs';
 
-function fromSSE<T>(url: string): Observable<T> {
-  return new Observable(subscriber => {
-    const eventSource = new EventSource(url);
+```mermaid
+graph TB
+    reactiveX["ReactiveX<br/>(Gemeinsames Designkonzept)"]
+    rxjs["RxJS<br/>(JavaScript/TypeScript)"]
+    rxjava["RxJava<br/>(Java)"]
+    reactor["Reactor<br/>(Java)"]
+    rxcpp["RxCpp<br/>(C++)"]
+    rxswift["RxSwift<br/>(Swift)"]
 
-    eventSource.onmessage = event => {
-      subscriber.next(JSON.parse(event.data));
-    };
+    reactiveX --> rxjs
+    reactiveX --> rxjava
+    reactiveX --> reactor
+    reactiveX --> rxcpp
+    reactiveX --> rxswift
 
-    eventSource.onerror = error => {
-      subscriber.error(error);
-    };
+    classDef core fill:#fff9c4,stroke:#f57f17,stroke-width:3px,color:#333
+    classDef impl fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#333
 
-    return () => eventSource.close();
-  });
-}
+    class reactiveX core
+    class rxjs,rxjava,reactor,rxcpp,rxswift impl
+```
 
-const notifications$ = fromSSE<Notification>('/api/notifications/stream');
+#### Server-gesendete Ereignisse (Server → Client)
+
+**Front-End (RxJS):***
+
+
+```mermaid
+graph TB
+    reactiveX["ReactiveX<br/>(Gemeinsames Designkonzept)"]
+    rxjs["RxJS<br/>(JavaScript/TypeScript)"]
+    rxjava["RxJava<br/>(Java)"]
+    reactor["Reactor<br/>(Java)"]
+    rxcpp["RxCpp<br/>(C++)"]
+    rxswift["RxSwift<br/>(Swift)"]
+
+    reactiveX --> rxjs
+    reactiveX --> rxjava
+    reactiveX --> reactor
+    reactiveX --> rxcpp
+    reactiveX --> rxswift
+
+    classDef core fill:#fff9c4,stroke:#f57f17,stroke-width:3px,color:#333
+    classDef impl fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#333
+
+    class reactiveX core
+    class rxjs,rxjava,reactor,rxcpp,rxswift impl
+```
+
+**Back-End (Spring WebFlux):**
+
+
+```mermaid
+graph TB
+    reactiveX["ReactiveX<br/>(Gemeinsames Designkonzept)"]
+    rxjs["RxJS<br/>(JavaScript/TypeScript)"]
+    rxjava["RxJava<br/>(Java)"]
+    reactor["Reactor<br/>(Java)"]
+    rxcpp["RxCpp<br/>(C++)"]
+    rxswift["RxSwift<br/>(Swift)"]
+
+    reactiveX --> rxjs
+    reactiveX --> rxjava
+    reactiveX --> reactor
+    reactiveX --> rxcpp
+    reactiveX --> rxswift
+
+    classDef core fill:#fff9c4,stroke:#f57f17,stroke-width:3px,color:#333
+    classDef impl fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#333
+
+    class reactiveX core
+    class rxjs,rxjava,reactor,rxcpp,rxswift impl
 ```
 
 ### 2. Server-Schicht ⇄ Datenschicht: Kafka Connect
 
-```java
-// Spring WebFlux + Kafka
-@Service
-public class EventPublisher {
+**Server-Schicht (React) zu Kafka: **
 
-    private final KafkaTemplate<String, Event> kafkaTemplate;
 
-    public Mono<Void> publishEvent(Event event) {
-        return Mono.fromFuture(
-            kafkaTemplate.send("events-topic", event.getId(), event)
-                .completable()
-        ).then();
-    }
-}
+```mermaid
+graph TB
+    reactiveX["ReactiveX<br/>(Gemeinsames Designkonzept)"]
+    rxjs["RxJS<br/>(JavaScript/TypeScript)"]
+    rxjava["RxJava<br/>(Java)"]
+    reactor["Reactor<br/>(Java)"]
+    rxcpp["RxCpp<br/>(C++)"]
+    rxswift["RxSwift<br/>(Swift)"]
+
+    reactiveX --> rxjs
+    reactiveX --> rxjava
+    reactiveX --> reactor
+    reactiveX --> rxcpp
+    reactiveX --> rxswift
+
+    classDef core fill:#fff9c4,stroke:#f57f17,stroke-width:3px,color:#333
+    classDef impl fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#333
+
+    class reactiveX core
+    class rxjs,rxjava,reactor,rxcpp,rxswift impl
 ```
 
-## Operator-Syntax-Gemeinsamkeiten und Unterschiede
+**Kafka zur Server-Schicht (React):**
 
-RxJS, Reactor und Kafka Streams haben **ähnliche Syntax**, aber **unterschiedliche Semantik**.
 
-### Gemeinsamkeit: Deklarative Pipelines
+```mermaid
+graph TB
+    reactiveX["ReactiveX<br/>(Gemeinsames Designkonzept)"]
+    rxjs["RxJS<br/>(JavaScript/TypeScript)"]
+    rxjava["RxJava<br/>(Java)"]
+    reactor["Reactor<br/>(Java)"]
+    rxcpp["RxCpp<br/>(C++)"]
+    rxswift["RxSwift<br/>(Swift)"]
+
+    reactiveX --> rxjs
+    reactiveX --> rxjava
+    reactiveX --> reactor
+    reactiveX --> rxcpp
+    reactiveX --> rxswift
+
+    classDef core fill:#fff9c4,stroke:#f57f17,stroke-width:3px,color:#333
+    classDef impl fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#333
+
+    class reactiveX core
+    class rxjs,rxjava,reactor,rxcpp,rxswift impl
+```
+
+### 3. End-to-End reaktive Pipeline
+
+
+```mermaid
+graph TB
+    reactiveX["ReactiveX<br/>(Gemeinsames Designkonzept)"]
+    rxjs["RxJS<br/>(JavaScript/TypeScript)"]
+    rxjava["RxJava<br/>(Java)"]
+    reactor["Reactor<br/>(Java)"]
+    rxcpp["RxCpp<br/>(C++)"]
+    rxswift["RxSwift<br/>(Swift)"]
+
+    reactiveX --> rxjs
+    reactiveX --> rxjava
+    reactiveX --> reactor
+    reactiveX --> rxcpp
+    reactiveX --> rxswift
+
+    classDef core fill:#fff9c4,stroke:#f57f17,stroke-width:3px,color:#333
+    classDef impl fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#333
+
+    class reactiveX core
+    class rxjs,rxjava,reactor,rxcpp,rxswift impl
+```
+
+## Leitlinien für die Technologieauswahl
+
+Welche Technologie sollte auf welcher Ebene eingesetzt werden?
+
+## Auswahl der UI-Schicht (Frontend)
+
+
+```java
+public interface Publisher<T> {
+    void subscribe(Subscriber<? super T> s);
+}
+
+public interface Subscriber<T> {
+    void onSubscribe(Subscription s);
+    void onNext(T t);
+    void onError(Throwable t);
+    void onComplete();
+}
+
+public interface Subscription {
+    void request(long n);  // Steuerung des Gegendrucks
+    void cancel();
+}
+
+public interface Processor<T, R> extends Subscriber<T>, Publisher<R> {}
+```
+
+
+```mermaid
+graph TB
+    reactiveX["ReactiveX<br/>(Gemeinsames Designkonzept)"]
+    rxjs["RxJS<br/>(JavaScript/TypeScript)"]
+    rxjava["RxJava<br/>(Java)"]
+    reactor["Reactor<br/>(Java)"]
+    rxcpp["RxCpp<br/>(C++)"]
+    rxswift["RxSwift<br/>(Swift)"]
+
+    reactiveX --> rxjs
+    reactiveX --> rxjava
+    reactiveX --> reactor
+    reactiveX --> rxcpp
+    reactiveX --> rxswift
+
+    classDef core fill:#fff9c4,stroke:#f57f17,stroke-width:3px,color:#333
+    classDef impl fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#333
+
+    class reactiveX core
+    class rxjs,rxjava,reactor,rxcpp,rxswift impl
+```
+
+### Auswahl der Serverschicht (Backend)
+
+
+```java
+public interface Publisher<T> {
+    void subscribe(Subscriber<? super T> s);
+}
+
+public interface Subscriber<T> {
+    void onSubscribe(Subscription s);
+    void onNext(T t);
+    void onError(Throwable t);
+    void onComplete();
+}
+
+public interface Subscription {
+    void request(long n);  // Steuerung des Gegendrucks
+    void cancel();
+}
+
+public interface Processor<T, R> extends Subscriber<T>, Publisher<R> {}
+```
+
+
+```mermaid
+graph TB
+    reactiveX["ReactiveX<br/>(Gemeinsames Designkonzept)"]
+    rxjs["RxJS<br/>(JavaScript/TypeScript)"]
+    rxjava["RxJava<br/>(Java)"]
+    reactor["Reactor<br/>(Java)"]
+    rxcpp["RxCpp<br/>(C++)"]
+    rxswift["RxSwift<br/>(Swift)"]
+
+    reactiveX --> rxjs
+    reactiveX --> rxjava
+    reactiveX --> reactor
+    reactiveX --> rxcpp
+    reactiveX --> rxswift
+
+    classDef core fill:#fff9c4,stroke:#f57f17,stroke-width:3px,color:#333
+    classDef impl fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#333
+
+    class reactiveX core
+    class rxjs,rxjava,reactor,rxcpp,rxswift impl
+```
+
+### Auswahl der Datenschicht (Stream Processing)
+
+
+```java
+public interface Publisher<T> {
+    void subscribe(Subscriber<? super T> s);
+}
+
+public interface Subscriber<T> {
+    void onSubscribe(Subscription s);
+    void onNext(T t);
+    void onError(Throwable t);
+    void onComplete();
+}
+
+public interface Subscription {
+    void request(long n);  // Steuerung des Gegendrucks
+    void cancel();
+}
+
+public interface Processor<T, R> extends Subscriber<T>, Publisher<R> {}
+```
+
+
+```java
+public interface Publisher<T> {
+    void subscribe(Subscriber<? super T> s);
+}
+
+public interface Subscriber<T> {
+    void onSubscribe(Subscription s);
+    void onNext(T t);
+    void onError(Throwable t);
+    void onComplete();
+}
+
+public interface Subscription {
+    void request(long n);  // Steuerung des Gegendrucks
+    void cancel();
+}
+
+public interface Processor<T, R> extends Subscriber<T>, Publisher<R> {}
+```
+
+## Gemeinsamkeiten und Unterschiede in der Operator-Syntax
+
+RxJS, React und Kafka Streams haben eine **ähnliche Syntax** aber unterschiedliche **Semantik**.
+
+### Gemeinsamkeiten: deklarative Pipeline
 
 **RxJS (UI-Schicht):**
-```typescript
-source$
-  .pipe(
-    filter(x => x > 10),
-    map(x => x * 2),
-    take(5)
-  )
-  .subscribe(console.log);
+
+
+```java
+public interface Publisher<T> {
+    void subscribe(Subscriber<? super T> s);
+}
+
+public interface Subscriber<T> {
+    void onSubscribe(Subscription s);
+    void onNext(T t);
+    void onError(Throwable t);
+    void onComplete();
+}
+
+public interface Subscription {
+    void request(long n);  // Steuerung des Gegendrucks
+    void cancel();
+}
+
+public interface Processor<T, R> extends Subscriber<T>, Publisher<R> {}
 ```
 
-**Reactor (Server-Schicht):**
+**React (Server-Schicht):**
+
+
 ```java
-source
-    .filter(x -> x > 10)
-    .map(x -> x * 2)
-    .take(5)
-    .subscribe(System.out::println);
+public interface Publisher<T> {
+    void subscribe(Subscriber<? super T> s);
+}
+
+public interface Subscriber<T> {
+    void onSubscribe(Subscription s);
+    void onNext(T t);
+    void onError(Throwable t);
+    void onComplete();
+}
+
+public interface Subscription {
+    void request(long n);  // Steuerung des Gegendrucks
+    void cancel();
+}
+
+public interface Processor<T, R> extends Subscriber<T>, Publisher<R> {}
 ```
 
 **Kafka Streams (Datenschicht):**
+
+
 ```java
-stream
-    .filter((key, value) -> value > 10)
-    .mapValues(value -> value * 2)
-    .to("output-topic");
+public interface Publisher<T> {
+    void subscribe(Subscriber<? super T> s);
+}
+
+public interface Subscriber<T> {
+    void onSubscribe(Subscription s);
+    void onNext(T t);
+    void onError(Throwable t);
+    void onComplete();
+}
+
+public interface Subscription {
+    void request(long n);  // Steuerung des Gegendrucks
+    void cancel();
+}
+
+public interface Processor<T, R> extends Subscriber<T>, Publisher<R> {}
 ```
 
 ### Unterschiede: Ausführungsmodell und Semantik
 
-| Aspekt | RxJS | Reactor | Kafka Streams |
-|------|------|---------|---------------|
-| **Ausführungsumgebung** | Single-Thread (Event Loop) | Multi-Thread möglich | Verteilte Verarbeitung |
-| **Scheduling** | Implizit (Standard synchron) | Explizit (Schedulers) | Automatisch verteilt |
-| **Fehlerbehandlung** | `catchError` | `onErrorResume` | Exactly-once-Garantie |
-| **Backpressure** | Operator-Ebene | `request(n)` | Automatische Steuerung |
+
+```java
+public interface Publisher<T> {
+    void subscribe(Subscriber<? super T> s);
+}
+
+public interface Subscriber<T> {
+    void onSubscribe(Subscription s);
+    void onNext(T t);
+    void onError(Throwable t);
+    void onComplete();
+}
+
+public interface Subscription {
+    void request(long n);  // Steuerung des Gegendrucks
+    void cancel();
+}
+
+public interface Processor<T, R> extends Subscriber<T>, Publisher<R> {}
+```
+
+
+```typescript
+import { interval } from 'rxjs';
+import { bufferTime, take } from 'rxjs';
+
+// Gegendruckkontrolle durch den Bediener
+interval(10)  // 10msWerte werden jede Sekunde ausgegeben
+  .pipe(
+    bufferTime(1000),  // 1Pufferung im Sekundentakt (implizite Steuerung)
+    take(5)
+  )
+  .subscribe(batch => console.log('Stapel:', batch.length));
+```
+
+> ** Nur weil die Syntax der Operatoren ähnlich ist, bedeutet das nicht, dass sie auf dieselbe Weise funktionieren. ** Es ist wichtig, das Ausführungsmodell und die Semantik der einzelnen Technologien zu verstehen.
 
 ## Stärken und Anwendungsbereiche von RxJS
 
-### Stärkste Bereiche von RxJS
+### Bereiche, in denen RxJS am stärksten ist.
 
-1. **Browser-UI-Verarbeitung**
-   - Einheitliche Verarbeitung von Benutzereingaben, DOM-Events, HTTP-Kommunikation
+1.**Browser UI-Verarbeitung**
+   - Einheitliche Verarbeitung von Benutzereingaben, DOM-Ereignissen und HTTP-Kommunikation
 
-2. **Node.js asynchrone I/O**
-   - Stream-Verarbeitung von Dateioperationen, Netzwerkkommunikation
+2. **Node.js asynchrone E/A**
+   - Dateioperationen, Streaming von Netzwerkkommunikation
 
-3. **Integration mehrerer asynchroner Prozesse**
-   - Komplexe Flows mit `combineLatest`, `merge`, `switchMap` etc.
+3. **Integration von mehreren asynchronen Prozessen**
+   - Komplexe Abläufe in `combineLatest`, `merge`, `switchMap` etc.
 
-### Grenzen von RxJS
+### Einschränkungen von RxJS.
 
-1. **Hochdurchsatz-Server-Verarbeitung**
-   - JVM-basierte Reactor, Akka Streams sind vorteilhafter
+1. **Server-Verarbeitung mit hohem Durchsatz**
+   - JVM-basierter React, Akka Streams sind vorteilhafter
 
-2. **Verteilte Stream-Verarbeitung**
-   - Kafka, Flink sind geeigneter
+2.**Verteilte Stream-Verarbeitung**
+   - Kafka, Flink sind besser geeignet
 
-3. **Strikte Backpressure-Steuerung**
-   - Explizites `request(n)` des Reactive Streams-Standards erforderlich
+3. **Strenge Rückstaukontrolle**
+   - Erfordert explizite "Anfrage(n)" im React Streams Standard
 
-> [!TIP]
-> **RxJS ist am stärksten in der UI-Schicht, aber für Server- und Datenschichten können andere Technologien geeigneter sein.** Es ist nicht notwendig, RxJS für alle Schichten zu verwenden.
 
-## Zusammenfassung
+```typescript
+import { interval } from 'rxjs';
+import { bufferTime, take } from 'rxjs';
 
-### Positionierung von RxJS
-
-> [!IMPORTANT]
-> RxJS ist die Hauptimplementierung der reaktiven Programmierung für **Browser und Node.js-Umgebungen**. Es priorisiert UI-Reaktionsfähigkeit und verwendet implizite Backpressure-Steuerung.
-
-### Gesamtbild des Reactive Streams-Ökosystems
-
-```
-UI-Schicht      : RxJS, Signals
-Kommunikation   : WebSocket, SSE
-Server-Schicht  : Reactor, Vert.x, Akka Streams
-Datenschicht    : Kafka, Flink, Apache Beam
+// Gegendruckkontrolle durch den Bediener
+interval(10)  // 10msWerte werden jede Sekunde ausgegeben
+  .pipe(
+    bufferTime(1000),  // 1Pufferung im Sekundentakt (implizite Steuerung)
+    take(5)
+  )
+  .subscribe(batch => console.log('Stapel:', batch.length));
 ```
 
-### Technologieauswahl-Richtlinien
+> **RxJS ist am stärksten auf der UI-Schicht, aber andere Technologien können auf der Server- und Datenschicht besser geeignet sein. ** Es ist nicht notwendig, RxJS in allen Schichten zu verwenden.
 
-| Schicht | Empfohlene Technologie | Grund |
-|----|---------|------|
-| **UI-Schicht** | RxJS, Signals | UI-Reaktionsfähigkeit, reichhaltige Operatoren |
-| **Server-Schicht** | Reactor, Vert.x | Hoher Durchsatz, Reactive Streams-Standard |
-| **Datenschicht** | Kafka, Flink | Verteilte Verarbeitung, Skalierbarkeit |
+## Zusammenfassung.
 
-### Bridging-Technologien
+### Positionierung von RxJS.
+
+
+```typescript
+import { interval } from 'rxjs';
+import { bufferTime, take } from 'rxjs';
+
+// Gegendruckkontrolle durch den Bediener
+interval(10)  // 10msWerte werden jede Sekunde ausgegeben
+  .pipe(
+    bufferTime(1000),  // 1Pufferung im Sekundentakt (implizite Steuerung)
+    take(5)
+  )
+  .subscribe(batch => console.log('Stapel:', batch.length));
+```
+
+> RxJS ist die primäre Implementierung von **Reactive Programming in der **Browser- und Node.js-Umgebung**, die die Reaktionsfähigkeit der Benutzeroberfläche priorisiert und implizite Backpressure-Kontrolle einsetzt.
+
+### React Streams Ecosystem Gesamtüberblick.
+
+
+```java
+public interface Publisher<T> {
+    void subscribe(Subscriber<? super T> s);
+}
+
+public interface Subscriber<T> {
+    void onSubscribe(Subscription s);
+    void onNext(T t);
+    void onError(Throwable t);
+    void onComplete();
+}
+
+public interface Subscription {
+    void request(long n);  // Steuerung des Gegendrucks
+    void cancel();
+}
+
+public interface Processor<T, R> extends Subscriber<T>, Publisher<R> {}
+```
+
+### Leitprinzipien für die Technologieauswahl
+
+
+```typescript
+import { interval } from 'rxjs';
+import { bufferTime, take } from 'rxjs';
+
+// Gegendruckkontrolle durch den Bediener
+interval(10)  // 10msWerte werden jede Sekunde ausgegeben
+  .pipe(
+    bufferTime(1000),  // 1Pufferung im Sekundentakt (implizite Steuerung)
+    take(5)
+  )
+  .subscribe(batch => console.log('Stapel:', batch.length));
+```
+
+### Brückentechnologien
 
 - **UI ⇄ Server**: WebSocket, SSE
-- **Server ⇄ Daten**: Kafka Connect, Reactive Kafka
+- **Server ⇄ Daten**: Kafka Connect, React Kafka
 
-> [!TIP]
-> **Es ist nicht notwendig, alle Schichten mit RxJS zu vereinheitlichen.** Wählen Sie die optimale Technologie für jede Schicht und verbinden Sie sie mit Bridging-Technologien, um End-to-End-reaktive Systeme zu erstellen.
+### Gemeinsamkeiten der Operator-Syntax
 
-## Verwandte Seiten
+RxJS, React und Kafka Streams haben eine ähnliche Syntax, aber **unterschiedliche Ausführungsmodelle und Semantiken**. Es ist wichtig, die Merkmale der einzelnen Technologien zu verstehen und sie unterschiedlich zu nutzen.
 
-- [Gesamtkarte der reaktiven Architektur](/de/guide/appendix/reactive-architecture-map)
-- [Reaktive Programmierung überdacht](/de/guide/appendix/reactive-programming-reconsidered)
-- [Kombinationsoperatoren](/de/guide/operators/combination/)
-- [Fehlerbehandlung](/de/guide/error-handling/strategies)
+{__Ausruf_35___
 
-## Referenzen
+> **Es ist nicht notwendig, alle Schichten mit RxJS zu vereinheitlichen. ** Durch die Auswahl der am besten geeigneten Technologie für jede Schicht und deren Verknüpfung mit Brückentechnologien kann ein reaktives End-to-End-System aufgebaut werden.
 
-- [Reactive Streams Offizielle Website](https://www.reactive-streams.org/)
-- [Project Reactor Offizielle Dokumentation](https://projectreactor.io/docs)
-- [Apache Kafka Offizielle Dokumentation](https://kafka.apache.org/documentation/)
-- [Apache Flink Offizielle Dokumentation](https://flink.apache.org/docs/)
-- [RxJS Offizielle Dokumentation](https://rxjs.dev/)
+## Verwandte Seiten.
+
+- [Reactive architecture overall map](/de/guide/appendix/reactive-architecture-map) - Details zu den sieben Schichten.
+- [React Programming Reconsidered](/de/guide/appendix/reactive-programming-reconsidered) - Stärken und Grenzen von RP
+- [Kombinationsoperatoren](/de/guide/operators/combination/) - Integration mehrerer Streams.
+- [Fehlerbehandlung](/de/guide/error-handling/strategies) - RxJS-Fehlerbehandlung
+
+## Referenzen.
+
+- [GitHub Diskussion #16 - React Streams Ecosystem und RxJS Positionierung](https://github.com/shuji-bonji/RxJS-with-TypeScript/discussions/ 16)
+- [React Streams offizielle Website](https://www.reactive-streams.org/)
+- [Projekt React offizielle Dokumentation](https://projectreactor.io/docs)
+- Offizielle Dokumentation zu Apache Kafka](https://kafka.apache.org/documentation/)
+- [Apache Flink offizielle Dokumentation](https://flink.apache.org/docs/)
+- [Offizielle RxJS-Dokumentation](https://rxjs.dev/)

@@ -108,9 +108,9 @@ fromEvent<MouseEvent>(area, 'mousemove').pipe(
 - Se il mouse viene spostato continuamente, ogni secondo viene campionata solo l'ultima posizione corrente.
 - Se il mouse non viene spostato per un secondo, non viene emesso nulla per quel periodo.
 
-## 🎯 Esempio pratico di codice 2: cruscotto di dati in tempo reale
+## 🎯 Esempio pratico di codice 2: Cruscotto di dati in tempo reale
 
-Questo esempio mostra come i dati del sensore possano essere campionati periodicamente e visualizzati su un cruscotto.
+Questo esempio mostra come i dati dei sensori possano essere campionati periodicamente e visualizzati su un cruscotto.
 
 ```ts
 import { interval } from 'rxjs';
@@ -241,22 +241,8 @@ clicks$.pipe(
 });
 ```
 
-```ts
-import { fromEvent } from 'rxjs';
-import { sampleTime } from 'rxjs';
-
-const clicks$ = fromEvent(document, 'click');
-
-clicks$.pipe(
-  sampleTime(2000)
-).subscribe(() => {
-  console.log('2Campione al secondo');
-});
-```
-
 **differenze visive**:.
 
-```
 Ingresso: --|1|2|3|---|4|5|6|---|7|8|9|
       0s  1s      2s      3s
 
@@ -276,6 +262,8 @@ auditTime(1s):    -------|3|-------|6|-------|9|
 
 Se non ci sono nuovi valori durante il periodo di campionamento, non viene prodotta alcuna uscita.
 
+```
+
 ```ts
 import { fromEvent } from 'rxjs';
 import { sampleTime } from 'rxjs';
@@ -290,7 +278,7 @@ clicks$.pipe(
 // 2Durante i secondi1Nessuna uscita se non vengono effettuati clic
 ```
 
-### 2. Attendere il primo tempo di campionamento
+### 2. Attendere fino al primo tempo di campionamento
 
 Il parametro sampleTime non emetterà nulla finché non sarà trascorso il tempo specificato.
 
@@ -353,7 +341,20 @@ clicks$.pipe(
 ).subscribe(() => {
   console.log('2Campioni secondo per secondo');
 });
+```
 
+
+```ts
+import { fromEvent } from 'rxjs';
+import { sampleTime } from 'rxjs';
+
+const clicks$ = fromEvent(document, 'click');
+
+clicks$.pipe(
+  sampleTime(2000)
+).subscribe(() => {
+  console.log('2Campioni secondo per secondo');
+});
 ```
 
 ## 📚 Operatori correlati.

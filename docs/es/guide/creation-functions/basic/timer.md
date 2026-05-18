@@ -1,16 +1,17 @@
 ---
-description: "timer() - Función de Creación que comienza a emitir después de un retraso especificado: Perfecta para ejecución retrasada, polling con retraso e implementaciones de timeout"
+description: "timer() - Creation Function que emite un valor después de un tiempo especificado, usando timer(delay) para una ejecución única retardada y timer(delay, period) para una ejecución periódica retardada; cómo usarlo con interval(); inferencia de tipos en TypeScript, Explicación de su uso como alternativa a setTimeout."
 ---
 
-# timer() - Comenzar a Emitir Después de un Retraso
+# timer() - comienza a publicar después de un retardo
 
-`timer()` es una Función de Creación que comienza a emitir valores después de un tiempo de retraso especificado, soportando tanto emisión única como periódica.
+`timer()` es una Creation Function que comienza a publicar valores después de un retardo especificado, tanto una sola vez como periódicamente.
 
-## Resumen
+## Visión general.
 
-`timer()` es una Función de Creación flexible que te permite controlar el momento de la primera emisión. Su comportamiento cambia dependiendo del número de argumentos, y puede usarse tanto para emisión única como para emisión periódica como `interval()`.
+timer()` es una flexible Creation Function que permite controlar el tiempo de la primera emisión. Su comportamiento depende del número de argumentos y puede ser una emisión única o una emisión periódica como `interval()`.
 
-**Firma**:
+**Firma**:.
+
 ```typescript
 function timer(
   dueTime: number | Date,
@@ -19,20 +20,20 @@ function timer(
 ): Observable<number>
 ```
 
-**Documentación Oficial**: [📘 RxJS Oficial: timer()](https://rxjs.dev/api/index/function/timer)
+**Documentación oficial**: [📘 Fórmula RxJS: timer()](https://rxjs.dev/api/index/function/timer)
 
-## Uso Básico
+## Uso básico
 
 El comportamiento de `timer()` depende del número de argumentos.
 
-### Emisión Única
+### Problema puntual.
 
-Si solo se especifica el primer argumento, emite 0 después del tiempo especificado y se completa.
+Si sólo se especifica el primer argumento, 0 se emite después de que el tiempo especificado para completar.
 
 ```typescript
 import { timer } from 'rxjs';
 
-// Emitir 0 después de 3 segundos y completar
+// 3segundos después de0Emitir y completar el
 const timer$ = timer(3000);
 
 timer$.subscribe({
@@ -40,61 +41,61 @@ timer$.subscribe({
   complete: () => console.log('Completado')
 });
 
-// Salida después de 3 segundos:
+// 3Salida después de segundos:
 // Valor: 0
 // Completado
 ```
 
-### Emisión Periódica
+### Emisión periódica.
 
-Si se especifica un intervalo para el segundo argumento, continuará emitiendo periódicamente después del retraso inicial.
+Si se especifica un intervalo en el segundo argumento, continuará emitiendo periódicamente después del retardo inicial.
 
 ```typescript
 import { timer } from 'rxjs';
 
-// Comenzar después de 3 segundos, luego emitir valores cada 1 segundo
+// 3Emite después de segundos y1Emite valor cada segundo
 const timer$ = timer(3000, 1000);
 
 timer$.subscribe(value => console.log('Valor:', value));
 
 // Salida:
-// Valor: 0  (después de 3 segundos)
-// Valor: 1  (después de 4 segundos)
-// Valor: 2  (después de 5 segundos)
-// ... (continúa infinitamente)
+// Valor: 0  (3(después de segundos)
+// Valor: 1  (4(después de segundos)
+// Valor: 2  (5(después de segundos)
+// ...(continúa indefinidamente)
 ```
 
-## Características Importantes
+## Características importantes.
 
-### 1. Especificación Flexible de Retrasos
+### 1. Especificación flexible de los retrasos.
 
 El retraso puede especificarse como un número en milisegundos o como un objeto `Date`.
 
 ```typescript
 import { timer } from 'rxjs';
 
-// Especificar en milisegundos
-timer(5000).subscribe(() => console.log('Después de 5 segundos'));
+// Especificado en milisegundos
+timer(5000).subscribe(() => console.log('5Después de segundos'));
 
-// Especificar con objeto Date (ejecutar en tiempo específico)
-const targetTime = new Date(Date.now() + 10000); // 10 segundos después
-timer(targetTime).subscribe(() => console.log('Ejecutar en tiempo especificado'));
+// Date Especificado por objeto (se ejecuta a una hora determinada)
+const targetTime = new Date(Date.now() + 10000); // 10Después de segundos
+timer(targetTime).subscribe(() => console.log('Ejecutado a la hora especificada'));
 ```
 
-### 2. El Comportamiento Cambia Dependiendo del Segundo Argumento
+### 2. El comportamiento cambia con o sin el segundo argumento.
 
-Si se especifica o no el segundo argumento determina si se completa.
+El hecho de especificar o no el segundo argumento determina si se alcanza o no la finalización.
 
 ```typescript
 import { timer } from 'rxjs';
 
-// Sin segundo argumento - emitir una vez y completar
+// Número de segundos2Sin argumento - 1Emitido una vez y completado
 timer(1000).subscribe({
-  next: value => console.log('Una vez:', value),
+  next: value => console.log('12ª:', value),
   complete: () => console.log('Completado')
 });
 
-// Con segundo argumento - emitir infinitamente
+// Número de segundos2Con argumento - Seguir emitiendo indefinidamente
 timer(1000, 1000).subscribe({
   next: value => console.log('Repetir:', value),
   complete: () => console.log('Completado (no se muestra)')
@@ -102,81 +103,85 @@ timer(1000, 1000).subscribe({
 ```
 
 > [!IMPORTANT]
-> **Con Segundo Argumento, No se Completa**
+
+> **No se completa con el segundo argumento**
 >
-> Si especificas el segundo argumento como `timer(1000, 1000)`, seguirá emitiendo indefinidamente, igual que `interval()`. La desuscripción siempre es requerida.
+> >Si se especifica un segundo argumento, como `timer(1000, 1000)`, continuará emitiendo indefinidamente, como con `interval()`. Siempre debe darse de baja.
 
-### 3. Cold Observable
+### 5. Cold Observable.
 
-`timer()` es un Cold Observable, lo que significa que se crea un temporizador independiente para cada suscripción.
+timer()` es un Cold Observable, que crea un timer independiente para cada suscripción.
 
 ```typescript
 import { timer } from 'rxjs';
 
 const timer$ = timer(1000);
 
-console.log('Inicio');
+console.log('Iniciar');
 
-// Suscripción 1
-timer$.subscribe(() => console.log('Observador 1'));
+// Suscribir1
+timer$.subscribe(() => console.log('Observer 1'));
 
-// Añadir suscripción 2 después de 500ms
+// 500msSuscribir después de2Añadir
 setTimeout(() => {
-  timer$.subscribe(() => console.log('Observador 2'));
+  timer$.subscribe(() => console.log('Observer 2'));
 }, 500);
 
 // Salida:
-// Inicio
-// Observador 1  (después de 1 segundo)
-// Observador 2  (después de 1.5 segundos - temporizador independiente)
+// Iniciar
+// Observer 1  (1(después de segundos)
+// Observer 2  (1.5Después de segundos - (Temporizador independiente)
 ```
 
 > [!NOTE]
-> **Características de Cold Observable**:
-> - Se inicia una ejecución independiente para cada suscripción
+
+> **Características de Cold Observable**.
+> - Cada suscripción inicia una ejecución independiente
 > - Cada suscriptor recibe su propio flujo de datos
-> - Se inicia un temporizador independiente para cada suscripción; como con `interval()`, usa `share()` si se requiere compartir
+> - Se inicia un temporizador independiente para cada suscripción; al igual que con interval()`, utilice `share()` si es necesario compartir.
 >
-> Ver [Cold Observable y Hot Observable](/es/guide/observables/cold-and-hot-observables) para más información.
+> Para más información, véase [Cold Observable and Hot Observable](/es/guide/observables/cold-and-hot-observables).
 
-## Diferencia Entre timer() e interval()
+## Diferencia entre timer() vs interval()
 
-La principal diferencia entre los dos es el momento de la primera emisión.
+La principal diferencia entre las dos es la temporización de la primera emisión.
 
 ```typescript
 import { timer, interval } from 'rxjs';
 import { take } from 'rxjs';
 
-console.log('Inicio');
+console.log('Iniciar');
 
-// interval() - comienza inmediatamente (primer valor después de 1 segundo)
+// interval() - Comienza inmediatamente (después de1(primer valor en segundos)
 interval(1000).pipe(take(3)).subscribe(value => {
   console.log('interval:', value);
 });
 
-// timer() - sin retraso (primer valor inmediatamente)
+// timer() - Sin retardo (primer valor inmediatamente)
 timer(0, 1000).pipe(take(3)).subscribe(value => {
   console.log('timer:', value);
 });
 
-// timer() - comienza después de retraso de 2 segundos
+// timer() - 2Se inicia tras un retardo de segundos
 timer(2000, 1000).pipe(take(3)).subscribe(value => {
-  console.log('timer(delay):', value);
+  console.log('timer(Con retardo (primer valor inmediatamente)):', value);
 });
 ```
 
-| Función de Creación | Momento de Primera Emisión | Propósito |
-|-------------------|----------------------|---------|
-| `interval(1000)` | Después de 1 segundo | Iniciar ejecución periódica inmediatamente |
-| `timer(0, 1000)` | Inmediatamente | Quiere primera ejecución inmediatamente |
-| `timer(2000, 1000)` | Después de 2 segundos | Ejecución periódica después de retraso |
-| `timer(2000)` | Después de 2 segundos (solo una vez) | Ejecución retrasada (única) |
+```typescript
+function timer(
+  dueTime: number | Date,
+  intervalOrScheduler?: number | SchedulerLike,
+  scheduler?: SchedulerLike
+): Observable<number>
+```
 
-## Casos de Uso Prácticos
+## Casos prácticos
 
-### 1. Ejecución Retrasada
+### 1. ejecución perezosa
 
-Ejecutar un proceso solo una vez después de cierto período de tiempo.
+Ejecutar el proceso sólo una vez después de un cierto período de tiempo.
+
 
 ```typescript
 import { from, timer } from 'rxjs';
@@ -192,13 +197,13 @@ function delayedApiCall() {
 }
 
 delayedApiCall().subscribe(data => {
-  console.log('Obtener datos después de 2 segundos:', data);
+  console.log('2Adquisición de datos después de segundos:', data);
 });
 ```
 
-### 2. Polling con Retraso
+### 2. Sondeo con retardo
 
-Iniciar polling después de cierto período de tiempo en lugar de ejecutar inmediatamente la primera vez.
+La primera vez el sondeo no se realiza inmediatamente, sino que se inicia después de un cierto período de tiempo.
 
 ```typescript
 import { from, timer } from 'rxjs';
@@ -209,218 +214,127 @@ interface Status {
   timestamp: number;
 }
 
-// Iniciar polling después de 5 segundos, luego cada 10 segundos
+// 5Comienza el sondeo después de segundos, luego10cada segundo
 const polling$ = timer(5000, 10000).pipe(
   switchMap(() => from(
     fetch('https://jsonplaceholder.typicode.com/users/1')
       .then(res => res.json() as Promise<Status>)
   )),
-  retry(3) // Reintentar hasta 3 veces en caso de error
+  retry(3) // En caso de error3Reintentos hasta tres veces
 );
 
 const subscription = polling$.subscribe(data => {
-  console.log('Actualización de estado:', data);
+  console.log('Actualización del estado:', data);
 });
 
-// Detener según sea necesario
+// Se detiene si es necesario
 // subscription.unsubscribe();
 ```
 
-### 3. Procesamiento de Timeout
+### 3. Proceso de Time-out
 
-Timeout ocurre cuando el procesamiento no se completa dentro de cierto período de tiempo.
-
-```typescript
-import { timer, race, from } from 'rxjs';
-import { map } from 'rxjs';
-
-function fetchWithTimeout(url: string, timeoutMs: number) {
-  const request$ = from(fetch(url).then(res => res.json()));
-  const timeout$ = timer(timeoutMs).pipe(
-    map(() => {
-      throw new Error('Timeout');
-    })
-  );
-
-  // Usar el que llegue primero
-  return race(request$, timeout$);
-}
-
-fetchWithTimeout('https://jsonplaceholder.typicode.com/posts/1', 3000).subscribe({
-  next: data => console.log('Obtener datos:', data),
-  error: err => console.error('Error:', err.message)
-});
-```
-
-### 4. Notificaciones que se Ocultan Automáticamente
-
-Ocultar notificaciones automáticamente después de cierto período de tiempo después de mostrarse.
+Tiempo de espera si el proceso no se completa en un periodo de tiempo determinado.
 
 ```typescript
-import { timer, Subject, map } from 'rxjs';
-import { switchMap, takeUntil } from 'rxjs';
-
-interface Notification {
-  id: number;
-  message: string;
-}
-
-const notifications$ = new Subject<Notification>();
-const dismiss$ = new Subject<number>();
-
-notifications$.pipe(
-  switchMap(notification => {
-    console.log('Mostrar notificación:', notification.message);
-
-    // Auto-ocultar después de 5 segundos
-    return timer(5000).pipe(
-      takeUntil(dismiss$), // Cancelar si se descarta manualmente
-      map(() => notification.id)
-    );
-  })
-).subscribe(id => {
-  console.log('Ocultar notificación:', id);
-});
-
-// Mostrar notificación
-notifications$.next({ id: 1, message: 'Nuevo mensaje recibido' });
-
-// Para descartar manualmente
-// dismiss$.next(1);
+function timer(
+  dueTime: number | Date,
+  intervalOrScheduler?: number | SchedulerLike,
+  scheduler?: SchedulerLike
+): Observable<number>
 ```
 
-## Uso en Pipeline
+### 4. auto-ocultamiento de notificaciones
 
-`timer()` se usa como punto de partida para procesamiento retrasado o ejecución periódica.
+Oculta automáticamente las notificaciones después de un cierto período de tiempo después de que se muestran.
+
 
 ```typescript
-import { timer } from 'rxjs';
-import { map, take, scan } from 'rxjs';
-
-// Temporizador de cuenta regresiva (de 10 segundos a 0 segundos)
-timer(0, 1000).pipe(
-  map(count => 10 - count),
-  take(11), // De 0 a 10 (11 valores)
-  scan((acc, curr) => curr, 0)
-).subscribe({
-  next: time => console.log(`Restante: ${time} segundos`),
-  complete: () => console.log('Temporizador terminado')
-});
-
-// Salida:
-// Restante: 10 segundos
-// Restante: 9 segundos
-// ...
-// Restante: 0 segundos
-// Temporizador terminado
+function timer(
+  dueTime: number | Date,
+  intervalOrScheduler?: number | SchedulerLike,
+  scheduler?: SchedulerLike
+): Observable<number>
 ```
 
-## Errores Comunes
+## Usar en pipeline.
 
-### 1. Olvidar Desuscribirse con Segundo Argumento
+El `timer()` se utiliza como punto de partida para el procesamiento retardado y la ejecución periódica.
+
 
 ```typescript
-// ❌ Incorrecto - se ejecuta infinitamente con segundo argumento
-import { timer } from 'rxjs';
-
-function startTimer() {
-  timer(1000, 1000).subscribe(value => {
-    console.log('Valor:', value); // Se ejecuta para siempre
-  });
-}
-
-startTimer();
-
-// ✅ Correcto - mantener suscripción y desuscribirse según sea necesario
-import { timer, Subscription } from 'rxjs';
-import { take } from 'rxjs';
-
-let subscription: Subscription | null = null;
-
-function startTimer() {
-  subscription = timer(1000, 1000).pipe(
-    take(10) // Auto-completar después de 10 veces
-  ).subscribe(value => {
-    console.log('Valor:', value);
-  });
-}
-
-function stopTimer() {
-  if (subscription) {
-    subscription.unsubscribe();
-    subscription = null;
-  }
-}
-
-startTimer();
+function timer(
+  dueTime: number | Date,
+  intervalOrScheduler?: number | SchedulerLike,
+  scheduler?: SchedulerLike
+): Observable<number>
 ```
 
-### 2. No Entender la Diferencia con interval()
+## Errores comunes.
+
+### 1. olvidar darse de baja con un segundo argumento
+
 
 ```typescript
-// ❌ Confusión - interval() comienza inmediatamente (primer valor después de 1 segundo)
-import { interval } from 'rxjs';
-
-interval(1000).subscribe(value => {
-  console.log('interval:', value); // 0 emitido después de 1 segundo
-});
-
-// ✅ timer() - cuando quieres emitir el primer valor inmediatamente sin retraso
-import { timer } from 'rxjs';
-
-timer(0, 1000).subscribe(value => {
-  console.log('timer:', value); // 0 emitido inmediatamente
-});
+function timer(
+  dueTime: number | Date,
+  intervalOrScheduler?: number | SchedulerLike,
+  scheduler?: SchedulerLike
+): Observable<number>
 ```
 
-## Consideraciones de Rendimiento
+### 2. no entender la diferencia entre interval() y
 
-Aunque `timer()` es ligero, su uso puede afectar el rendimiento.
-
-> [!TIP]
-> **Consejos de Optimización**:
-> - No especificar segundo argumento para ejecución única
-> - Siempre desuscribirse cuando ya no se necesita
-> - Si se necesitan múltiples Observers, compartirlos con `share()`
-> - Usar intervalos cortos (menos de 100ms) con precaución
 
 ```typescript
-import { timer } from 'rxjs';
-import { share } from 'rxjs';
-
-// ❌ Problema de rendimiento - múltiples temporizadores independientes
-const timer$ = timer(0, 1000);
-
-timer$.subscribe(value => console.log('Observador 1:', value));
-timer$.subscribe(value => console.log('Observador 2:', value));
-// Dos temporizadores se ejecutan en paralelo
-
-// ✅ Optimización - compartir un temporizador
-const sharedTimer$ = timer(0, 1000).pipe(share());
-
-sharedTimer$.subscribe(value => console.log('Observador 1:', value));
-sharedTimer$.subscribe(value => console.log('Observador 2:', value));
-// Se comparte un temporizador
+function timer(
+  dueTime: number | Date,
+  intervalOrScheduler?: number | SchedulerLike,
+  scheduler?: SchedulerLike
+): Observable<number>
 ```
 
-## Funciones de Creación Relacionadas
+## Consideraciones de rendimiento.
 
-| Función | Diferencia | Uso |
-|----------|------|----------|
-| **[interval()](/es/guide/creation-functions/basic/interval)** | Comienza inmediatamente (sin retraso) | Ejecución periódica sin retraso |
-| **[of()](/es/guide/creation-functions/basic/of)** | Emitir síncronamente e inmediatamente | Cuando no se necesita asíncrono |
-| **defer()** | Diferir procesamiento hasta suscripción | Generación dinámica de valores |
+Aunque `timer()` es ligero, su uso puede afectar al rendimiento.
+
+## consideraciones de rendimiento
+
+> **Consejos de optimización**:.
+> - Nunca especifiques un segundo argumento para una ejecución única.
+> - Anular siempre la suscripción cuando ya no se necesite.
+> - Compartir con `share()` si se necesitan varios Observer
+> - Utilice intervalos cortos (menos de 100 ms) con precaución
+
+
+```typescript
+function timer(
+  dueTime: number | Date,
+  intervalOrScheduler?: number | SchedulerLike,
+  scheduler?: SchedulerLike
+): Observable<number>
+```
+
+## Related Creation Function.
+
+
+```typescript
+function timer(
+  dueTime: number | Date,
+  intervalOrScheduler?: number | SchedulerLike,
+  scheduler?: SchedulerLike
+): Observable<number>
+```
 
 ## Resumen
 
-- `timer()` es una Función de Creación que comienza a emitir después de un retraso
-- Sin segundo argumento: emisión única (se completa)
-- Con segundo argumento: emisión periódica (no se completa)
-- El tiempo de retraso puede especificarse en milisegundos o como objeto `Date`
-- Ideal para ejecución retrasada, polling con retraso, procesamiento de timeout
+- timer()` es una Creation Function que comienza a emitir después de un retardo
+- Sin segundo argumento: emisión única (completa)
+- Con segundo argumento: emisión periódica (nunca se completa)
+- Tiempo de retardo especificado en milisegundos u objeto `Date
+- Adecuado para ejecución retardada, sondeo con retardo, procesamiento de tiempo de espera
 
-## Próximos Pasos
+## Siguiente paso.
 
-- [interval() - Emisión Continua a Intervalos Especificados](/es/guide/creation-functions/basic/interval)
-- [defer() - Diferir Generación Hasta Suscripción](/es/guide/creation-functions/conditional/defer)
-- [Volver a Funciones de Creación Básicas](/es/guide/creation-functions/basic/)
+- interval() - publicar continuamente a intervalos especificados](/es/guide/creation-functions/basic/interval)
+- defer() - retrasa la generación en la suscripción](/es/guide/creation-functions/conditional/defer)
+- volver al resumen de funciones básicas de creación](/es/guide/creation-functions/basic/)

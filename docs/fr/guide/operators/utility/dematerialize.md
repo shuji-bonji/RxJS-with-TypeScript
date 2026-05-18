@@ -1,10 +1,10 @@
 ---
-description: "dematerialize est un opérateur utilitaire RxJS qui convertit les objets Notification en notifications normales (next, error, complete), en effectuant la transformation inverse de materialize. Idéal pour la restauration après le traitement des notifications, le filtrage ou la transformation des erreurs, la réorganisation ou la mise en mémoire tampon des notifications."
+description: "dematerialize est un opérateur utilitaire RxJS qui restaure les objets Notification en notifications normales (next, error, complete) et effectue la transformation inverse de materialize. Il est idéal pour restaurer les notifications après traitement, filtrer et convertir les erreurs, réordonner et mettre en mémoire tampon les notifications, et dans d'autres situations où les notifications sont traitées comme des données puis ramenées à leur format d'origine."
 ---
 
-# dematerialize - Objets en notifications
+# dematerialize - restaurer les objets de la notification
 
-L'opérateur `dematerialize` **convertit les objets Notification en notifications normales (next, error, complete)**. Il effectue la transformation inverse de `materialize`, en restaurant les notifications converties en données dans leur format d'origine.
+L'opérateur `dematerialize` **convertit un objet Notification en une notification normale (next, error, complete)**. Il effectue la transformation inverse de `materialize` et restaure la notification datatisée dans sa forme originale.
 
 ## 🔰 Syntaxe et comportement de base
 
@@ -16,43 +16,65 @@ import { materialize, dematerialize } from 'rxjs';
 
 of(1, 2, 3)
   .pipe(
-    materialize(),     // Conversion en objets Notification
-    dematerialize()    // Restauration à l'original
+    materialize(),     // NotificationConvertir en objet
+    dematerialize()    // Retour à l'original
   )
   .subscribe({
-    next: v => console.log('Valeur :', v),
-    complete: () => console.log('Complet')
+    next: v => console.log('Valeur:', v),
+    complete: () => console.log('Terminé')
   });
-// Sortie :
-// Valeur : 1
-// Valeur : 2
-// Valeur : 3
-// Complet
+// Sortie:
+// Valeur: 1
+// Valeur: 2
+// Valeur: 3
+// Terminé
 ```
 
-[🌐 Documentation officielle RxJS - dematerialize](https://rxjs.dev/api/index/function/dematerialize)
+[🌐 Documentation officielle de RxJS - dematerialize](https://rxjs.dev/api/index/function/dematerialize)
 
-## 💡 Cas d'utilisation typiques
+## 💡 Cas d'utilisation typique.
 
-- **Restauration après le traitement des notifications** : Restaurer le format d'origine après le traitement avec materialize
-- **Filtrage des erreurs** : Exclure uniquement des erreurs spécifiques
-- **Réorganisation des notifications** : Restauration après le tri des notifications en tant que données
-- **Restauration après débogage** : Retour au fonctionnement normal après le traitement d'une sortie de journal
+- **Restaurer les notifications après traitement** : après traitement avec materialize, les restaurer dans leur format d'origine.
+- **Filtrer les erreurs** : exclure seulement certaines erreurs.
+- Rétablir l'ordre des notifications** : restaurer après avoir trié les notifications comme des données.
+- Restaurer après débogage** : revenir au fonctionnement normal après traitement, par exemple la sortie du journal.
 
-## 🧪 Exemple de code pratique : Filtrage sélectif des erreurs
+## 🧪 Exemple de code pratique 1 : filtrage sélectif des erreurs
 
-Exemple où seules certaines erreurs sont exclues et le reste est traité normalement.
+Il s'agit d'un exemple dans lequel seules certaines erreurs sont exclues et les autres sont traitées normalement.
 
 ```ts
 import { of, throwError, concat } from 'rxjs';
 import { materialize, dematerialize, filter } from 'rxjs';
 
-// Flux avec erreurs
+// UICréer
+const container = document.createElement('div');
+document.body.appendChild(container);
+
+const title = document.createElement('h3');
+title.textContent = 'dematerialize - Filtrage des erreurs';
+container.appendChild(title);
+
+const output = document.createElement('div');
+output.style.border = '1px solid #ccc';
+output.style.padding = '10px';
+container.appendChild(output);
+
+function addLog(message: string, color: string) {
+  const logItem = document.createElement('div');
+  logItem.style.padding = '5px';
+  logItem.style.marginBottom = '3px';
+  logItem.style.backgroundColor = color;
+  logItem.textContent = message;
+  output.appendChild(logItem);
+}
+
+// Flux contenant des erreurs
 const source$ = concat(
   of(1, 2),
-  throwError(() => new Error('Erreur à ignorer')),
+  throwError(() => new Error('Erreurs à ignorer')),
   of(3, 4),
-  throwError(() => new Error('Erreur critique')),
+  throwError(() => new Error('Erreurs graves')),
   of(5)
 );
 
@@ -60,31 +82,87 @@ source$
   .pipe(
     materialize(),
     filter(notification => {
-      // Filtrer uniquement "Erreur à ignorer"
+      // "Erreurs à ignorer"Filtrage uniquement
       if (notification.kind === 'E') {
         const errorMessage = notification.error?.message || '';
-        if (errorMessage.includes('à ignorer')) {
-          console.log(`🔇 Ignoré : ${errorMessage}`);
+        if (errorMessage.includes('Doivent être ignorées')) {
+          addLog(`🔇 Ignorer: ${errorMessage}`, '#fff9c4');
           return false;  // Exclure cette erreur
         }
       }
       return true;
     }),
-    dematerialize()  // Restaurer au format original
+    dematerialize()  // Revenir au format d'origine
   )
   .subscribe({
-    next: v => console.log(`✅ Valeur : ${v}`),
-    error: err => console.log(`❌ Erreur : ${err.message}`),
-    complete: () => console.log('Complet')
+    next: v => addLog(`✅ Valeur: ${v}`, '#c8e6c9'),
+    error: err => addLog(`❌ Erreur: ${err.message}`, '#ffcdd2'),
+    complete: () => addLog('Terminé', '#e3f2fd')
   });
-// Sortie :
-// ✅ Valeur : 1
-// ✅ Valeur : 2
-// 🔇 Ignoré : Erreur à ignorer
-// ✅ Valeur : 3
-// ✅ Valeur : 4
-// ❌ Erreur : Erreur critique
 ```
+
+- Les "erreurs ignorées" sont exclues et le flux continue.
+- Les "erreurs critiques" sont transmises au gestionnaire d'erreurs comme d'habitude.
+- Traitement sélectif des erreurs possible
+
+## 🧪 Exemple de code pratique 2 : Notification différée
+
+Il s'agit d'un exemple de mise en mémoire tampon temporaire d'une notification avant de la restaurer.
+
+```ts
+import { from, interval, take, delay } from 'rxjs';
+import { materialize, dematerialize, bufferTime, concatMap } from 'rxjs';
+
+// UICréer
+const container2 = document.createElement('div');
+container2.style.marginTop = '20px';
+document.body.appendChild(container2);
+
+const title2 = document.createElement('h3');
+title2.textContent = 'dematerialize - Mise en mémoire tampon et délai';
+container2.appendChild(title2);
+
+const output2 = document.createElement('div');
+output2.style.border = '1px solid #ccc';
+output2.style.padding = '10px';
+output2.style.maxHeight = '200px';
+output2.style.overflow = 'auto';
+container2.appendChild(output2);
+
+function addLog2(message: string) {
+  const now = new Date();
+  const timestamp = now.toLocaleTimeString('ja-JP', { hour12: false }) +
+    '.' + now.getMilliseconds().toString().padStart(3, '0');
+
+  const logItem = document.createElement('div');
+  logItem.textContent = `[${timestamp}] ${message}`;
+  output2.appendChild(logItem);
+}
+
+addLog2('Commence - 1Valeur émise toutes les secondes,2Traitement collectif toutes les secondes');
+
+interval(1000)
+  .pipe(
+    take(6),
+    materialize(),
+    bufferTime(2000),      // 2Mise en mémoire tampon toutes les secondes
+    concatMap(notifications => {
+      addLog2(`--- ${notifications.length}Traitement d'un avis à partir de la mémoire tampon ---`);
+      return from(notifications).pipe(
+        delay(500),        // Traitement de chaque avis avec un délai de0.5seconde
+        dematerialize()    // Revenir au format d'origine
+      );
+    })
+  )
+  .subscribe({
+    next: v => addLog2(`Valeur: ${v}`),
+    complete: () => addLog2('Terminé')
+  });
+```
+
+- Mise en mémoire tampon des notifications toutes les 2 secondes.
+- Récupération dans la mémoire tampon et traitement différé
+- Restauré en tant que flux original avec `dematerialize`.
 
 ## 🆚 Relation avec materialize
 
@@ -94,111 +172,165 @@ import { materialize, dematerialize, map } from 'rxjs';
 
 of(1, 2, 3)
   .pipe(
-    materialize(),           // Conversion en Notification
+    materialize(),           // NotificationConverti en
     map(notification => {
-      // Traitement en tant qu'objet Notification
-      console.log('kind :', notification.kind);
+      // NotificationTraité comme un objet
+      console.log('kind:', notification.kind);
       return notification;
     }),
-    dematerialize()          // Restauration
+    dematerialize()          // Retour à l'original
   )
-  .subscribe(v => console.log('Valeur :', v));
-// Sortie :
-// kind : N
-// Valeur : 1
-// kind : N
-// Valeur : 2
-// kind : N
-// Valeur : 3
-// kind : C
+  .subscribe(v => console.log('Valeur:', v));
+// Sortie:
+// kind: N
+// Valeur: 1
+// kind: N
+// Valeur: 2
+// kind: N
+// Valeur: 3
+// kind: C
 ```
 
-| Flux de traitement | Description |
-|:---|:---|
-| Flux original | Valeurs normales (next), erreurs (error), achèvement (complete) |
-| ↓ `materialize()` | Flux d'objets Notification |
-| Traitement intermédiaire | Manipulation, filtrage en tant que Notification |
-| ↓ `dematerialize()` | Restauration en flux normal |
-| Flux final | Valeurs, erreurs, achèvement normaux |
+| Flux de processus | Description. |
+|---|---|
+| Flux original | Valeur normale (next), erreur (error), complete (complete) |
+| ↓ `materialize()` | Flux de l'objet Notification |
+| Traitement intermédiaire | Traitement et filtrage en tant que notification |
+| ↓ `dematerialize()` | Rétablissement du flux normal |
+| Flux final | Valeurs normales, erreurs, achèvement |
 
-## ⚠️ Notes importantes
+## ⚠️ Notes.
 
-### 1. Les notifications d'erreur deviennent de vraies erreurs
+### 1. les notifications d'erreurs sont converties en erreurs réelles
 
 ```ts
 import { of, throwError, concat } from 'rxjs';
 import { materialize, dematerialize } from 'rxjs';
 
-// Chaque Observable converti avec materialize()
+// Traite chaqueObservableest converti en objet de notificationmaterialize()Converti en objet de notification avec
 concat(
   of(1).pipe(materialize()),
   throwError(() => new Error('Erreur')).pipe(materialize()),
-  of(2).pipe(materialize())  // Non exécuté après l'erreur
+  of(2).pipe(materialize())  // Non exécuté parce qu'il fait suite à une erreur
 )
-  .pipe(dematerialize())
+  .pipe(
+    dematerialize()
+  )
   .subscribe({
-    next: v => console.log('Valeur :', v),
-    error: err => console.log('Erreur :', err.message)
+    next: v => console.log('Valeur:', v),
+    error: err => console.log('Erreur:', err.message)
   });
-// Sortie :
-// Valeur : 1
-// Erreur : Erreur
+// Sortie:
+// Valeur: 1
+// Erreur: Erreur
 ```
 
-### 2. La notification de completion termine le flux
+Lorsqu'une notification d'erreur est atteinte, le flux est interrompu par une erreur.
+
+### La notification d'achèvement termine le flux.
 
 ```ts
 import { of, EMPTY, concat } from 'rxjs';
 import { materialize, dematerialize } from 'rxjs';
 
+// Traite chaqueObservableest converti en objet de notificationmaterialize()Converti en objet de notification avec
 concat(
   of(1).pipe(materialize()),
   of(2).pipe(materialize()),
-  EMPTY.pipe(materialize()),  // Notification de completion
-  of(3).pipe(materialize())   // Non exécuté après completion
+  EMPTY.pipe(materialize()),  // Avis d'achèvement
+  of(3).pipe(materialize())   // Non exécuté parce qu'il est après l'achèvement
 )
-  .pipe(dematerialize())
+  .pipe(
+    dematerialize()
+  )
   .subscribe({
-    next: v => console.log('Valeur :', v),
-    complete: () => console.log('Complet')
+    next: v => console.log('Valeur:', v),
+    complete: () => console.log('Terminé')
   });
-// Sortie :
-// Valeur : 1
-// Valeur : 2
-// Complet
+// Sortie:
+// Valeur: 1
+// Valeur: 2
+// Terminé
 ```
 
-### 3. Objets Notification invalides
+Aucune valeur n'est émise après la notification d'achèvement.
 
-`dematerialize` attend des objets Notification corrects.
+### Objet de notification illégal.
+
+Le `dematerialize` attend un objet Notification correct.
 
 ```ts
 import { of } from 'rxjs';
 import { dematerialize } from 'rxjs';
 
-// ❌ Passer des valeurs normales à dematerialize cause une erreur
+// ❌ Si une valeur normale est transmise àdematerializeErreur si une valeur normale est transmise à
 of(1, 2, 3)
-  .pipe(dematerialize())  // Ce ne sont pas des objets Notification
+  .pipe(
+    dematerialize()  // NotificationPas un objet
+  )
   .subscribe({
     next: console.log,
-    error: err => console.error('Erreur :', err.message)
+    error: err => console.error('Erreur:', err.message)
   });
-// Une erreur se produit
+// L'erreur se produit si un
 ```
 
-## 📚 Opérateurs associés
+## Exemples de combinaisons pratiques
 
-- **[materialize](./materialize)** - Convertir les notifications en objets Notification
-- **[catchError](/fr/guide/error-handling/retry-catch)** - Gestion des erreurs
-- **[retry](./retry)** - Réessai en cas d'erreur
+```ts
+import { interval, throwError, of, concat } from 'rxjs';
+import { materialize, dematerialize, take, mergeMap, map } from 'rxjs';
 
-## ✅ Résumé
+// Exemple de conversion d'une erreur enwarningExemple de conversion en
+interval(500)
+  .pipe(
+    take(10),
+    mergeMap(value => {
+      // 5L'erreur ne se produit que si
+      if (value === 5) {
+        return throwError(() => new Error(`Valeur${value}Erreur en`));
+      }
+      return of(value);
+    }),
+    materialize(),
+    map(notification => {
+      // Exemple de conversion d'une erreur enwarningConvertie en message
+      if (notification.kind === 'E') {
+        console.warn('Warning:', notification.error?.message);
+        // Des valeurs spéciales sont émises à la place des erreurs (générées parmaterialize()Générées par)
+        return { kind: 'N' as const, value: -1 };
+      }
+      return notification;
+    }),
+    dematerialize()
+  )
+  .subscribe({
+    next: v => console.log('Valeur:', v),
+    error: err => console.error('Erreur:', err),  // N'est pas appelée
+    complete: () => console.log('Terminé')
+  });
+// Sortie:
+// Valeur: 0, 1, 2, 3, 4
+// Warning: Valeur5Erreur en
+// Valeur: -1  (Au lieu d'une erreur)
+// Valeur: 6, 7, 8, 9
+// Terminé
+```
 
-- `dematerialize` convertit les objets Notification en notifications normales
-- ✅ Transformation inverse de `materialize`
-- ✅ Restauration au format original après traitement des notifications
-- ✅ Permet le filtrage ou la transformation des erreurs
-- ✅ Utile pour la réorganisation ou la mise en mémoire tampon des notifications
-- ⚠️ Les notifications d'erreur fonctionnent comme de vraies erreurs
-- ⚠️ La notification de completion termine le flux
-- ⚠️ Des objets Notification corrects sont requis
+## 📚 Opérateurs apparentés
+
+- **[materialize](. /materialize)** - Convertit une notification en un objet Notification.
+- **[catchError](. /... /error-handling/retry-catch)** - Gestion des erreurs.
+- **[retry](. /retry)** - Réessai en cas d'erreur.
+
+## ✅ Résumé.
+
+L'opérateur `dematerialize` ramène l'objet Notification à une notification normale.
+
+- ✅ Conversion inverse de `materialize`.
+- ✅ Restaure la notification dans son format d'origine après traitement.
+- ✅ Permet le filtrage et la conversion des erreurs.
+- ✅ Peut être utilisé pour changer l'ordre des notifications et les mettre en mémoire tampon.
+- ⚠️ Les notifications d'erreur se comportent comme des erreurs réelles
+- ⚠️ La notification d'achèvement termine le flux
+- ⚠️ Nécessite un objet de notification correct

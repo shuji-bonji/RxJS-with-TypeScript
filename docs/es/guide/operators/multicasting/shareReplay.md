@@ -1,92 +1,109 @@
 ---
-description: shareReplay es un operador multicast de RxJS que almacena en búfer valores pasados además de multicasting y los proporciona a suscriptores retrasados. Es ideal para situaciones donde deseas recordar valores pasados y distribuirlos a múltiples suscriptores, como almacenamiento en caché de respuestas API, compartir información de configuración y gestión de estado. Es posible prevenir fugas de memoria con las opciones refCount y windowTime, y la inferencia de tipos TypeScript permite el procesamiento de caché con seguridad de tipos.
+description: "shareReplay es un operador de multidifusión de RxJS que, además de multidifundir, almacena en búfer valores pasados y los proporciona a suscriptores retrasados, ideal para situaciones en las que se desea recordar valores pasados y entregarlos a varios suscriptores, como almacenar en caché respuestas de API, compartir información de configuración o gestionar estados. La prevención de fugas de memoria también es posible con las opciones refCount y windowTime, y la inferencia de tipos de TypeScript garantiza un almacenamiento en caché seguro."
 ---
 
-# shareReplay - Cache y compartir
+# shareReplay - compartir caché
 
-El operador `shareReplay()` logra multicasting como `share()`, pero también **recuerda un número especificado de valores pasados** y los proporciona a suscriptores que se unen más tarde.
+El operador `shareReplay()` proporciona multidifusión del mismo modo que `share()`, pero además **recuerda** un número especificado de valores anteriores y los pone a disposición de los suscriptores que se unan más tarde.
 
-Esto permite casos de uso más avanzados como almacenamiento en caché de respuestas API y compartición de estado.
+Esto permite casos de uso más avanzados, como almacenar en caché las respuestas de la API y compartir el estado.
 
-[📘 RxJS Official Documentation - `shareReplay()`](https://rxjs.dev/api/index/function/shareReplay)
+[Documentación oficial de RxJS - `shareReplay()`](https://rxjs.dev/api/index/function/shareReplay)
 
-## 🔰 Uso Básico
+## 🔰 Uso básico
 
 ```typescript
 import { interval } from 'rxjs';
 import { take, shareReplay, tap } from 'rxjs';
 
-// Usando shareReplay (tamaño de búfer 2)
+// shareReplay(tamaño del búfer2)
 const source$ = interval(1000).pipe(
   take(5),
-  tap(value => console.log(`Source: ${value}`)),
-  shareReplay({ bufferSize: 2, refCount: true }) // Almacenar en búfer los últimos 2 valores
+  tap(value => console.log(`Fuente: ${value}`)),
+  shareReplay(2) // Más cercano2Almacenamiento en búfer de dos valores
 );
 
-// Primer suscriptor
-console.log('Suscripción del Observador 1 iniciada');
-source$.subscribe(value => console.log(`Observador 1: ${value}`));
+// Primer abonado
+console.log('Observer 1 Inicio de la suscripción');
+source$.subscribe(value => console.log(`Observer 1: ${value}`));
 
-// Añadir segundo suscriptor después de 3.5 segundos
+// 3.5Segundos después2Añadir segundo abonado
 setTimeout(() => {
-  console.log('Suscripción del Observador 2 iniciada - recibe los últimos 2 valores');
-  source$.subscribe(value => console.log(`Observador 2: ${value}`));
+  console.log('Observer 2 Inicio de la suscripción - Último2Recibir dos valores');
+  source$.subscribe(value => console.log(`Observer 2: ${value}`));
 }, 3500);
 ```
 
-### Resultado de Ejecución
+### Resultados de la ejecución
 
 ```
-Suscripción del Observador 1 iniciada
-Source: 0
-Observador 1: 0
-Source: 1
-Observador 1: 1
-Source: 2
-Observador 1: 2
-Source: 3
-Observador 1: 3
-Suscripción del Observador 2 iniciada - recibe los últimos 2 valores
-Observador 2: 2  // ← Valor pasado almacenado en búfer
-Observador 2: 3  // ← Valor pasado almacenado en búfer
-Source: 4
-Observador 1: 4
-Observador 2: 4
+Observer 1 Inicio de la suscripción
+Fuente: 0
+Observer 1: 0
+Fuente: 1
+Observer 1: 1
+Fuente: 2
+Observer 1: 2
+Fuente: 3
+Observer 1: 3
+Observer 2 Inicio de la suscripción - Último2Recibir dos valores
+Observer 2: 2  // ← Valores históricos almacenados en buffer
+Observer 2: 3  // ← Valores históricos almacenados en buffer
+Fuente: 4
+Observer 1: 4
+Observer 2: 4
 ```
 
-**Puntos Importantes**:
-- Los suscriptores retrasados pueden recibir inmediatamente valores pasados almacenados en búfer
-- Se recuerdan valores hasta el tamaño del búfer (2 en este ejemplo)
+**PUNTO IMPORTANTE**:.
+- Los suscriptores perezosos también reciben inmediatamente los valores pasados almacenados en buffer
+- Los valores se almacenan para el tamaño del búfer (dos en este ejemplo)
 
-## 💡 Sintaxis de shareReplay()
+## 💡 sintaxis de shareReplay()
 
 ```typescript
 shareReplay(bufferSize?: number, windowTime?: number, scheduler?: SchedulerLike)
 shareReplay(config: ShareReplayConfig)
 ```
 
-### Parámetros
+### Parámetros.
 
-| Parámetro | Tipo | Descripción | Predeterminado |
-|-----------|---|------|----------|
-| `bufferSize` | `number` | Número de valores a almacenar en búfer | `Infinity` |
-| `windowTime` | `number` | Período de validez del búfer (milisegundos) | `Infinity` |
-| `scheduler` | `SchedulerLike` | Scheduler para control de timing | - |
+```typescript
+import { interval } from 'rxjs';
+import { take, shareReplay, tap } from 'rxjs';
 
-### Objeto de Configuración (RxJS 7+)
+// shareReplay(tamaño del búfer2)
+const source$ = interval(1000).pipe(
+  take(5),
+  tap(value => console.log(`Fuente: ${value}`)),
+  shareReplay(2) // Más cercano2Almacenamiento en búfer de dos valores
+);
+
+// Primer abonado
+console.log('Observer 1 Inicio de la suscripción');
+source$.subscribe(value => console.log(`Observer 1: ${value}`));
+
+// 3.5Segundos después2Añadir segundo abonado
+setTimeout(() => {
+  console.log('Observer 2 Inicio de la suscripción - Último2Recibir dos valores');
+  source$.subscribe(value => console.log(`Observer 2: ${value}`));
+}, 3500);
+```
+
+### Objeto de configuración (RxJS 7+)
+
 
 ```typescript
 interface ShareReplayConfig {
   bufferSize?: number;
   windowTime?: number;
-  refCount?: boolean;  // Desuscribirse cuando el conteo de suscriptores llega a cero
+  refCount?: boolean;  // Si un abonado es0Darse de baja cuando se conviertan
   scheduler?: SchedulerLike;
 }
 ```
 
-## 📊 Diferencia Entre share y shareReplay
+## 📊 Diferencia entre share y shareReplay
 
-### Comportamiento de share()
+### comportamiento de share()
 
 ```typescript
 import { interval } from 'rxjs';
@@ -94,31 +111,32 @@ import { take, share, tap } from 'rxjs';
 
 const source$ = interval(1000).pipe(
   take(3),
-  tap(value => console.log(`Source: ${value}`)),
+  tap(value => console.log(`Fuente: ${value}`)),
   share()
 );
 
-source$.subscribe(value => console.log(`Observador 1: ${value}`));
+source$.subscribe(value => console.log(`Observer 1: ${value}`));
 
 setTimeout(() => {
-  console.log('Suscripción del Observador 2 iniciada');
-  source$.subscribe(value => console.log(`Observador 2: ${value}`));
+  console.log('Observer 2 Inicio de la suscripción');
+  source$.subscribe(value => console.log(`Observer 2: ${value}`));
 }, 1500);
 ```
 
-**Resultado de Ejecución**:
+**Resultados**:.
+
 ```
-Source: 0
-Observador 1: 0
-Source: 1
-Observador 1: 1
-Suscripción del Observador 2 iniciada
-Source: 2
-Observador 1: 2
-Observador 2: 2  // ← No puede recibir valores pasados (0, 1)
+Fuente: 0
+Observer 1: 0
+Fuente: 1
+Observer 1: 1
+Observer 2 Inicio de la suscripción
+Fuente: 2
+Observer 1: 2
+Observer 2: 2  // ← Los valores pasados (0, 1) no se reciben
 ```
 
-### Comportamiento de shareReplay()
+### comportamiento de shareReplay()
 
 ```typescript
 import { interval } from 'rxjs';
@@ -126,35 +144,36 @@ import { take, shareReplay, tap } from 'rxjs';
 
 const source$ = interval(1000).pipe(
   take(3),
-  tap(value => console.log(`Source: ${value}`)),
-  shareReplay({ bufferSize: 2, refCount: true }) // Almacenar en búfer los últimos 2 valores
+  tap(value => console.log(`Fuente: ${value}`)),
+  shareReplay(2) // Más cercano2Buffer un valor
 );
 
-source$.subscribe(value => console.log(`Observador 1: ${value}`));
+source$.subscribe(value => console.log(`Observer 1: ${value}`));
 
 setTimeout(() => {
-  console.log('Suscripción del Observador 2 iniciada');
-  source$.subscribe(value => console.log(`Observador 2: ${value}`));
+  console.log('Observer 2 Inicio de la suscripción');
+  source$.subscribe(value => console.log(`Observer 2: ${value}`));
 }, 1500);
 ```
 
-**Resultado de Ejecución**:
+**Resultados**:.
+
 ```
-Source: 0
-Observador 1: 0
-Source: 1
-Observador 1: 1
-Suscripción del Observador 2 iniciada
-Observador 2: 0  // ← Valor pasado almacenado en búfer
-Observador 2: 1  // ← Valor pasado almacenado en búfer
-Source: 2
-Observador 1: 2
-Observador 2: 2
+Fuente: 0
+Observer 1: 0
+Fuente: 1
+Observer 1: 1
+Observer 2 Inicio de la suscripción
+Observer 2: 0  // ← Valores históricos almacenados en buffer
+Observer 2: 1  // ← Valores históricos almacenados en buffer
+Fuente: 2
+Observer 1: 2
+Observer 2: 2
 ```
 
-## 💼 Casos de Uso Prácticos
+## 💼 Caso práctico.
 
-### 1. Almacenamiento en Caché de Respuestas API
+### 1. Cachear las respuestas de la API.
 
 ```typescript
 import { Observable } from 'rxjs';
@@ -169,10 +188,10 @@ interface User {
 }
 
 class UserService {
-  // Cachear información de usuario
+  // Almacenar en caché la información del usuario
   private userCache$ = ajax.getJSON<User>('https://jsonplaceholder.typicode.com/users/1').pipe(
-    tap(() => console.log('Solicitud API ejecutada')),
-    shareReplay({ bufferSize: 1, refCount: true }) // Cachear permanentemente el último 1 valor
+    tap(() => console.log('APIEjecutar solicitud')),
+    shareReplay({ bufferSize: 1, refCount: true }) // Último1Almacenar un valor (refCounty se libera cuando se cancelan todas las suscripciones)
   );
 
   getUser(): Observable<User> {
@@ -184,151 +203,213 @@ const userService = new UserService();
 
 // Primer componente
 userService.getUser().subscribe(user => {
-  console.log('Componente 1:', user);
+  console.log('Componente1:', user);
 });
 
-// Otro componente después de 2 segundos
+// 2Segundos después otro componente
 setTimeout(() => {
   userService.getUser().subscribe(user => {
-    console.log('Componente 2:', user); // ← Recuperado del caché, sin solicitud API
+    console.log('Componente2:', user); // ← Recuperado de la cachéAPISin solicitud
   });
 }, 2000);
 ```
 
-**Resultado de Ejecución**:
-```
-Solicitud API ejecutada
-Componente 1: { id: 1, name: "John" }
-Componente 2: { id: 1, name: "John" }  // ← Sin solicitud API
-```
-
-### 2. Compartir Información de Configuración
+**Resultados de la ejecución**:.
 
 ```typescript
-import { of } from 'rxjs';
-import { delay, shareReplay, tap } from 'rxjs';
+import { interval } from 'rxjs';
+import { take, shareReplay, tap } from 'rxjs';
 
-// Obtener configuración de la aplicación (ejecutado solo una vez)
-const appConfig$ = of({
-  apiUrl: 'https://api.example.com',
-  theme: 'dark',
-  language: 'es'
-}).pipe(
-  delay(1000), // Simular carga
-  tap(() => console.log('Configuración cargada')),
-  shareReplay({ bufferSize: 1, refCount: true })
+// shareReplay(tamaño del búfer2)
+const source$ = interval(1000).pipe(
+  take(5),
+  tap(value => console.log(`Fuente: ${value}`)),
+  shareReplay(2) // Más cercano2Almacenamiento en búfer de dos valores
 );
 
-// Usar configuración en múltiples servicios
-appConfig$.subscribe(config => console.log('Servicio A:', config.apiUrl));
-appConfig$.subscribe(config => console.log('Servicio B:', config.theme));
-appConfig$.subscribe(config => console.log('Servicio C:', config.language));
-```
+// Primer abonado
+console.log('Observer 1 Inicio de la suscripción');
+source$.subscribe(value => console.log(`Observer 1: ${value}`));
 
-**Resultado de Ejecución**:
-```
-Configuración cargada
-Servicio A: https://api.example.com
-Servicio B: dark
-Servicio C: es
-```
-
-### 3. Caché Limitado por Tiempo
-
-```typescript
-import { ajax } from 'rxjs/ajax';
-import { shareReplay, tap } from 'rxjs';
-
-// Cachear solo por 5 segundos (usando datos TODO como ejemplo)
-const todoData$ = ajax.getJSON('https://jsonplaceholder.typicode.com/todos/1').pipe(
-  tap(() => console.log('Datos TODO recuperados')),
-  shareReplay({
-    bufferSize: 1,
-    windowTime: 5000, // Válido por 5 segundos
-    refCount: true    // Desuscribirse cuando el conteo de suscriptores llega a cero
-  })
-);
-
-// Primera suscripción
-todoData$.subscribe(data => console.log('Obtener 1:', data));
-
-// Después de 3 segundos (caché válido)
+// 3.5Segundos después2Añadir segundo abonado
 setTimeout(() => {
-  todoData$.subscribe(data => console.log('Obtener 2:', data)); // Del caché
-}, 3000);
+  console.log('Observer 2 Inicio de la suscripción - Último2Recibir dos valores');
+  source$.subscribe(value => console.log(`Observer 2: ${value}`));
+}, 3500);
+```
 
-// Después de 6 segundos (caché expirado)
+### 2. compartir información de configuración
+
+
+```typescript
+import { interval } from 'rxjs';
+import { take, shareReplay, tap } from 'rxjs';
+
+// shareReplay(tamaño del búfer2)
+const source$ = interval(1000).pipe(
+  take(5),
+  tap(value => console.log(`Fuente: ${value}`)),
+  shareReplay(2) // Más cercano2Almacenamiento en búfer de dos valores
+);
+
+// Primer abonado
+console.log('Observer 1 Inicio de la suscripción');
+source$.subscribe(value => console.log(`Observer 1: ${value}`));
+
+// 3.5Segundos después2Añadir segundo abonado
 setTimeout(() => {
-  todoData$.subscribe(data => console.log('Obtener 3:', data)); // Nueva solicitud
-}, 6000);
+  console.log('Observer 2 Inicio de la suscripción - Último2Recibir dos valores');
+  source$.subscribe(value => console.log(`Observer 2: ${value}`));
+}, 3500);
 ```
 
-## ⚠️ Cuidado con las Fugas de Memoria
+**Resultados de la ejecución**:.
 
-`shareReplay()` mantiene valores en un búfer, lo que puede causar fugas de memoria si no se gestiona adecuadamente.
-
-### Código Problemático
 
 ```typescript
-// ❌ Riesgo de fuga de memoria
-const infiniteStream$ = interval(1000).pipe(
-  shareReplay() // bufferSize no especificado = Infinity
+import { interval } from 'rxjs';
+import { take, shareReplay, tap } from 'rxjs';
+
+// shareReplay(tamaño del búfer2)
+const source$ = interval(1000).pipe(
+  take(5),
+  tap(value => console.log(`Fuente: ${value}`)),
+  shareReplay(2) // Más cercano2Almacenamiento en búfer de dos valores
 );
 
-// Este flujo continúa acumulando valores para siempre
+// Primer abonado
+console.log('Observer 1 Inicio de la suscripción');
+source$.subscribe(value => console.log(`Observer 1: ${value}`));
+
+// 3.5Segundos después2Añadir segundo abonado
+setTimeout(() => {
+  console.log('Observer 2 Inicio de la suscripción - Último2Recibir dos valores');
+  source$.subscribe(value => console.log(`Observer 2: ${value}`));
+}, 3500);
 ```
 
-### Contramedidas Recomendadas
+### 3. caché de tiempo limitado
+
 
 ```typescript
-// ✅ Limitar tamaño del búfer
-const safeStream$ = interval(1000).pipe(
-  shareReplay({ bufferSize: 1, refCount: true }) // Mantener solo el último 1
+import { interval } from 'rxjs';
+import { take, shareReplay, tap } from 'rxjs';
+
+// shareReplay(tamaño del búfer2)
+const source$ = interval(1000).pipe(
+  take(5),
+  tap(value => console.log(`Fuente: ${value}`)),
+  shareReplay(2) // Más cercano2Almacenamiento en búfer de dos valores
 );
 
-// ✅ Usar refCount
-const safeStream$ = interval(1000).pipe(
-  shareReplay({
-    bufferSize: 1,
-    refCount: true // Limpiar búfer cuando el conteo de suscriptores llega a cero
-  })
-);
+// Primer abonado
+console.log('Observer 1 Inicio de la suscripción');
+source$.subscribe(value => console.log(`Observer 1: ${value}`));
 
-// ✅ Establecer límite de tiempo
-const safeStream$ = interval(1000).pipe(
-  shareReplay({
-    bufferSize: 1,
-    windowTime: 10000 // Expira en 10 segundos
-  })
-);
+// 3.5Segundos después2Añadir segundo abonado
+setTimeout(() => {
+  console.log('Observer 2 Inicio de la suscripción - Último2Recibir dos valores');
+  source$.subscribe(value => console.log(`Observer 2: ${value}`));
+}, 3500);
 ```
 
-## 🎯 Elegir Tamaño de Búfer
+## ⚠️ Cuidado con las fugas de memoria
 
-| Tamaño de Búfer | Caso de Uso | Ejemplo |
-|--------------|-----------|---|
-| `1` | Solo se necesita el último estado | Info de usuario actual, configuración |
-| `3-5` | Se necesita historial reciente | Historial de chat, historial de notificaciones |
-| `Infinity` | Se necesita todo el historial | Logs, pistas de auditoría (usar con precaución) |
+shareReplay()` mantiene el valor en un buffer y puede causar fugas de memoria si no se gestiona correctamente.
 
-## 🔄 Operadores Relacionados
+### Código problemático.
 
-- **[share()](/es/guide/operators/multicasting/share)** - Multicast simple (sin almacenamiento en búfer)
-- **[publish()](/es/guide/subjects/multicasting)** - Control de multicast de bajo nivel
-- **[ReplaySubject](/es/guide/subjects/types-of-subject)** - Subject que forma la base de shareReplay
 
-## Resumen
+```typescript
+import { interval } from 'rxjs';
+import { take, shareReplay, tap } from 'rxjs';
 
-El operador `shareReplay()`:
-- Almacena en búfer valores pasados y los proporciona a suscriptores retrasados
-- Ideal para almacenamiento en caché de respuestas API
-- Requiere atención a las fugas de memoria
-- Se puede usar de manera segura con `refCount` y `windowTime`
+// shareReplay(tamaño del búfer2)
+const source$ = interval(1000).pipe(
+  take(5),
+  tap(value => console.log(`Fuente: ${value}`)),
+  shareReplay(2) // Más cercano2Almacenamiento en búfer de dos valores
+);
 
-Cuando se necesita compartición de estado o almacenamiento en caché, `shareReplay()` es una herramienta muy poderosa, pero es importante establecer configuraciones apropiadas de tamaño de búfer y expiración.
+// Primer abonado
+console.log('Observer 1 Inicio de la suscripción');
+source$.subscribe(value => console.log(`Observer 1: ${value}`));
 
-## 🔗 Secciones Relacionadas
+// 3.5Segundos después2Añadir segundo abonado
+setTimeout(() => {
+  console.log('Observer 2 Inicio de la suscripción - Último2Recibir dos valores');
+  source$.subscribe(value => console.log(`Observer 2: ${value}`));
+}, 3500);
+```
 
-- **[Errores Comunes y Soluciones](/es/guide/anti-patterns/common-mistakes#4-misuse-of-sharereplay)** - Uso apropiado de shareReplay y contramedidas contra fugas de memoria
-- **[share()](/es/guide/operators/multicasting/share)** - Multicast simple
-- **[ReplaySubject](/es/guide/subjects/types-of-subject)** - Subject que forma la base de shareReplay
+### Contramedidas recomendadas
+
+
+```typescript
+import { interval } from 'rxjs';
+import { take, shareReplay, tap } from 'rxjs';
+
+// shareReplay(tamaño del búfer2)
+const source$ = interval(1000).pipe(
+  take(5),
+  tap(value => console.log(`Fuente: ${value}`)),
+  shareReplay(2) // Más cercano2Almacenamiento en búfer de dos valores
+);
+
+// Primer abonado
+console.log('Observer 1 Inicio de la suscripción');
+source$.subscribe(value => console.log(`Observer 1: ${value}`));
+
+// 3.5Segundos después2Añadir segundo abonado
+setTimeout(() => {
+  console.log('Observer 2 Inicio de la suscripción - Último2Recibir dos valores');
+  source$.subscribe(value => console.log(`Observer 2: ${value}`));
+}, 3500);
+```
+
+## 🎯 Cómo elegir el tamaño del búfer
+
+
+```typescript
+import { interval } from 'rxjs';
+import { take, shareReplay, tap } from 'rxjs';
+
+// shareReplay(tamaño del búfer2)
+const source$ = interval(1000).pipe(
+  take(5),
+  tap(value => console.log(`Fuente: ${value}`)),
+  shareReplay(2) // Más cercano2Almacenamiento en búfer de dos valores
+);
+
+// Primer abonado
+console.log('Observer 1 Inicio de la suscripción');
+source$.subscribe(value => console.log(`Observer 1: ${value}`));
+
+// 3.5Segundos después2Añadir segundo abonado
+setTimeout(() => {
+  console.log('Observer 2 Inicio de la suscripción - Último2Recibir dos valores');
+  source$.subscribe(value => console.log(`Observer 2: ${value}`));
+}, 3500);
+```
+
+## 🔄 Operadores relacionados
+
+- **[share()](/es/guide/operators/multicast/share)** - multicast simple (sin buffer)
+- **[publish()](/es/guide/sujetos/multicast)** - control multicast de bajo nivel
+- ReplaySubject](/es/guide/subjects/types-of-subjects)** - Subject subyacente de shareReplay
+
+## Resumen.
+
+El operador `shareReplay()` es,
+- Almacenar en caché los valores anteriores y proporcionarlos también a los suscriptores perezosos
+- Ideal para almacenar en caché las respuestas de la API
+- Hay que tener cuidado con las fugas de memoria
+- Seguro de usar con `refCount` y `windowTime
+
+Si necesita compartir o almacenar en caché el estado, shareReplay()` es una herramienta muy potente, pero es importante establecer tamaños de búfer y límites de tiempo apropiados.
+
+## 🔗 Secciones relacionadas.
+
+- **[Errores comunes y soluciones](mal uso de /guide/anti-patterns/common-mistakes#4-sharereplay-)** - Uso adecuado de shareReplay y prevención de fugas de memoria.
+- **[share()](/es/guide/operators/multicasting/share)** - multicast simple
+- ReplaySubject](/es/guide/subjects/types-of-subjects)** - el Subject subyacente de shareReplay

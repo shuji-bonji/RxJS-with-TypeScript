@@ -1,103 +1,27 @@
 ---
-description: This article explains practical patterns for API calls using RxJS. Concrete implementation examples that can be used immediately in practice, from basic GET/POST, parallel and serial requests, requests with dependencies, request cancellation using switchMap, error handling, retry strategies, and timeout processing, will be presented along with TypeScript code. You can learn type-safe HTTP communication patterns utilizing ajax() and fromFetch().
+description: "São explicados padrões práticos para chamadas de API usando o RxJS. Exemplos concretos de implementação que podem ser usados imediatamente na prática, desde GET/POST básico, solicitações paralelas e seriais, solicitações com dependências, cancelamento de solicitações com switchMap, tratamento de erros, estratégias de repetição e tratamento de tempo limite, serão apresentados juntamente com o código TypeScript. Você aprenderá padrões de comunicação HTTP seguros para o tipo, utilizando ajax() e fromFetch()."
 ---
 
-# API Call Patterns
+# Padrão de chamada de API.
 
-API calls are one of the most frequently implemented processes in web development. RxJS allows you to implement complex asynchronous API calls declaratively and robustly.
+As chamadas de API são um dos processos mais frequentemente implementados no desenvolvimento da Web, e o RxJS permite implementar chamadas de API assíncronas complexas de forma declarativa e robusta.
 
-This article describes concrete implementation patterns for various API call scenarios encountered in practice, including error handling and cancellation processes.
+Este artigo descreve padrões de implementação concretos para vários cenários de chamadas de API encontrados na prática, incluindo tratamento de erros e tratamento de cancelamentos.
 
-## What You Will Learn in This Article
+## O que você aprenderá neste artigo.
 
-- Basic GET/POST request implementation
-- Parallel invocation of multiple APIs (forkJoin)
-- Serial requests requiring sequential execution (concatMap)
-- Chaining of requests with dependencies (switchMap)
-- Retry and error handling
-- Timeout handling
-- Request cancellation
-
-> [!TIP] Prerequisites
-> This article assumes knowledge of [Chapter 4: Operators](../operators/index.md) and [Chapter 6: Error Handling](../error-handling/strategies.md).
-
-## Basic API Calls
-
-### Problem: Simple GET Request
-
-The most basic case implements a single GET request.
-
-### Implementation Example
-
-```typescript
-import { from, Observable, map, catchError, timeout } from 'rxjs';
-
-// JSONPlaceholder API User type
-// https://jsonplaceholder.typicode.com/users
-interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  address: {
-    street: string;
-    suite: string;
-    city: string;
-    zipcode: string;
-    geo: {
-      lat: string;
-      lng: string;
-    };
-  };
-  phone: string;
-  website: string;
-  company: {
-    name: string;
-    catchPhrase: string;
-    bs: string;
-  };
-}
-
-// Fetch a list of users
-function fetchUsers(): Observable<User[]> {
-  return from(
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-  ).pipe(
-    timeout(5000), // Timeout in 5 seconds
-    catchError((err: unknown) => {
-      console.error('User fetch error:', err);
-      throw err;
-    })
-  );
-}
-
-// Usage example
-fetchUsers().subscribe({
-  next: users => {
-    console.log('User list:', users);
-    console.log('First user:', users[0].name); // Example: "Leanne Graham"
-  },
-  error: err => console.error('Error:', err)
-});
-```
-
-> [!NOTE] from() vs ajax()
-> This example wraps the standard `fetch` with `from()`, but you can also use the official RxJS `ajax()`. `ajax()` is more sophisticated and supports request cancellation and progress monitoring.
-
-### POST Request
-
-This pattern is for creating new data.
+- Implementação básica de solicitação GET/POST
+- Invocação paralela de várias APIs (forkJoin)
+- Solicitações em série que exigem execução sequencial (concatMap)
+- Encadeamento de solicitações com dependências (switchMap)
+- Repetição e tratamento de erros
+- Tratamento de tempo limite
+- Cancelamento de solicitações
 
 ```typescript
 import { from, Observable, catchError } from 'rxjs';
 
-// JSONPlaceholder API Post type
+// JSONPlaceholder API(depois de um substantivo) que depende de ...Posttipo
 // https://jsonplaceholder.typicode.com/posts
 interface Post {
   id: number;
@@ -128,45 +52,230 @@ function createPost(postData: CreatePostRequest): Observable<Post> {
     })
   ).pipe(
     catchError((err: unknown) => {
-      console.error('Post creation error:', err);
+      console.error('Erro ao criar uma postagem:', err);
       throw err;
     })
   );
 }
 
-// Usage example
+// Exemplo de uso
 createPost({
   userId: 1,
-  title: 'Learning RxJS',
-  body: 'Learning API call patterns using RxJS.'
+  title: 'RxJSAprendizado de',
+  body: 'RxJSusando oAPIAprendendo o padrão de chamadas para'
 }).subscribe({
   next: post => {
-    console.log('Post created:', post);
-    console.log('Post ID:', post.id); // JSONPlaceholder automatically assigns an ID (e.g., 101)
+    console.log('Postagens criadas:', post);
+    console.log('Uma postagemID:', post.id); // JSONPlaceholdersão automaticamenteIDé atribuído (por exemplo: 101)
   },
-  error: err => console.error('Error:', err)
+  error: err => console.error('Erro:', err)
 });
 ```
 
-> [!TIP] Practical Tips
-> - **Type Safety**: Clearly define response types
-> - **Error Handling**: Check HTTP status codes properly
-> - **Timeouts**: Avoid long waits
+> Este artigo faz parte do [Capítulo 4: Operadores](. /operators/index.md) e [Capítulo 6: Tratamento de erros](. /error-handling/strategies.md).
 
-## Parallel Requests (forkJoin)
+## Chamadas básicas de API.
 
-### Problem: I Want to Call Multiple APIs Simultaneously
+### Problema: solicitação GET simples.
 
-You may want to call multiple independent APIs in parallel and proceed with processing after all responses have been received.
+O caso mais básico implementa uma única solicitação GET.
 
-### Solution: Use forkJoin
+### Exemplo de implementação.
 
-`forkJoin` waits for multiple Observables to all complete and returns all results in an array (equivalent to Promise.all).
+
+```typescript
+import { from, Observable, map, catchError, timeout } from 'rxjs';
+
+// JSONPlaceholder API(depois de um substantivo) que depende de ...Usertipo
+// https://jsonplaceholder.typicode.com/users
+interface User {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  address: {
+    street: string;
+    suite: string;
+    city: string;
+    zipcode: string;
+    geo: {
+      lat: string;
+      lng: string;
+    };
+  };
+  phone: string;
+  website: string;
+  company: {
+    name: string;
+    catchPhrase: string;
+    bs: string;
+  };
+}
+
+// Recuperar lista de usuários
+function fetchUsers(): Observable<User[]> {
+  return from(
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+  ).pipe(
+    timeout(5000), // 5Tempo limite em segundos
+    catchError((err: unknown) => {
+      console.error('Erro de aquisição de usuário:', err);
+      throw err;
+    })
+  );
+}
+
+// Exemplo de uso
+fetchUsers().subscribe({
+  next: users => {
+    console.log('Lista de usuários:', users);
+    console.log('Primeiro usuário:', users[0].name); // Exemplo de usuário: "Leanne Graham"
+  },
+  error: err => console.error('Erro:', err)
+});
+```
+
+```typescript
+import { from, Observable, catchError } from 'rxjs';
+
+// JSONPlaceholder API(depois de um substantivo) que depende de ...Posttipo
+// https://jsonplaceholder.typicode.com/posts
+interface Post {
+  id: number;
+  userId: number;
+  title: string;
+  body: string;
+}
+
+interface CreatePostRequest {
+  userId: number;
+  title: string;
+  body: string;
+}
+
+function createPost(postData: CreatePostRequest): Observable<Post> {
+  return from(
+    fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(postData)
+    }).then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+  ).pipe(
+    catchError((err: unknown) => {
+      console.error('Erro ao criar uma postagem:', err);
+      throw err;
+    })
+  );
+}
+
+// Exemplo de uso
+createPost({
+  userId: 1,
+  title: 'RxJSAprendizado de',
+  body: 'RxJSusando oAPIAprendendo o padrão de chamadas para'
+}).subscribe({
+  next: post => {
+    console.log('Postagens criadas:', post);
+    console.log('Uma postagemID:', post.id); // JSONPlaceholdersão automaticamenteIDé atribuído (por exemplo: 101)
+  },
+  error: err => console.error('Erro:', err)
+});
+```
+
+> Esse exemplo envolve o `fetch` padrão com `from()`, mas você também pode usar o `ajax()` oficial do RxJS. O `ajax()` é mais sofisticado e oferece suporte ao cancelamento de solicitações e ao monitoramento do progresso.
+
+### Solicitação POST.
+
+Padrão para criar novos dados.
+
+
+```typescript
+import { from, Observable, catchError } from 'rxjs';
+
+// JSONPlaceholder API(depois de um substantivo) que depende de ...Posttipo
+// https://jsonplaceholder.typicode.com/posts
+interface Post {
+  id: number;
+  userId: number;
+  title: string;
+  body: string;
+}
+
+interface CreatePostRequest {
+  userId: number;
+  title: string;
+  body: string;
+}
+
+function createPost(postData: CreatePostRequest): Observable<Post> {
+  return from(
+    fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(postData)
+    }).then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+  ).pipe(
+    catchError((err: unknown) => {
+      console.error('Erro ao criar uma postagem:', err);
+      throw err;
+    })
+  );
+}
+
+// Exemplo de uso
+createPost({
+  userId: 1,
+  title: 'RxJSAprendizado de',
+  body: 'RxJSusando oAPIAprendendo o padrão de chamadas para'
+}).subscribe({
+  next: post => {
+    console.log('Postagens criadas:', post);
+    console.log('Uma postagemID:', post.id); // JSONPlaceholdersão automaticamenteIDé atribuído (por exemplo: 101)
+  },
+  error: err => console.error('Erro:', err)
+});
+```
+
+> [!TIP] Dicas práticas
+
+> - **Segurança do tipo**: definir claramente o tipo de resposta
+> - **Tratamento de erros**: verifique adequadamente os códigos de status HTTP
+> - **Timeouts**: evite longas esperas
+
+## Solicitações paralelas (forkJoin)
+
+### Problema: quero chamar várias APIs ao mesmo tempo.
+
+Talvez você queira chamar várias APIs independentes em paralelo e prosseguir somente depois que todas as respostas tiverem sido recebidas.
+
+### Solução: use forkJoin.
+
+O forkJoin aguarda a conclusão de vários Observable e retorna todos os resultados em uma matriz (equivalente a Promise.all).
 
 ```typescript
 import { forkJoin, from, Observable, map } from 'rxjs';
 
-// JSONPlaceholder API Comment type
+// JSONPlaceholder API(depois de um substantivo) que depende de ...Commenttipo
 // https://jsonplaceholder.typicode.com/comments
 interface Comment {
   postId: number;
@@ -228,12 +337,12 @@ function fetchCommentsByPostId(postId: number): Observable<Comment[]> {
   );
 }
 
-// Fetch dashboard data in parallel
+// Recuperação paralela de dados do painel
 function fetchDashboard(userId: number): Observable<Dashboard> {
   return forkJoin({
     user: fetchUserById(userId),
     posts: fetchPostsByUserId(userId),
-    comments: fetchCommentsByPostId(1) // Get comments for post ID=1
+    comments: fetchCommentsByPostId(1) // Uma postagemID=1Recuperar comentários de
   }).pipe(
     map(({ user, posts, comments }) => ({
       user,
@@ -243,18 +352,18 @@ function fetchDashboard(userId: number): Observable<Dashboard> {
   );
 }
 
-// Usage example
+// Exemplo de uso
 fetchDashboard(1).subscribe({
   next: dashboard => {
-    console.log('User:', dashboard.user.name); // Example: "Leanne Graham"
-    console.log('Number of posts:', dashboard.posts.length); // Example: 10
-    console.log('Number of comments:', dashboard.comments.length); // Example: 5
+    console.log('Usuário:', dashboard.user.name); // Exemplo de usuário: "Leanne Graham"
+    console.log('Número de postagens:', dashboard.posts.length); // Exemplo de usuário: 10Número de postagens
+    console.log('Número de comentários:', dashboard.comments.length); // Exemplo de usuário: 5Número de postagens
   },
-  error: err => console.error('Dashboard fetch error:', err)
+  error: err => console.error('Erro de aquisição do painel:', err)
 });
 ```
 
-#### Execution Flow
+#### Fluxo de execução
 
 ```mermaid
 sequenceDiagram
@@ -269,76 +378,21 @@ sequenceDiagram
     RxJS->>API2: GET /api/posts?userId=1
     RxJS->>API3: GET /api/comments?userId=1
 
-    Note over API1,API3: Parallel execution
+    Note over API1,API3: Execução paralela
 
     API1-->>RxJS: User data
     API2-->>RxJS: Posts data
     API3-->>RxJS: Comments data
 
-    Note over RxJS: Wait for all to complete
+    Note over RxJS: Aguardar a conclusão de tudo
 
     RxJS-->>App: Dashboard data
 ```
 
-> [!IMPORTANT] Characteristics of forkJoin
-> - Waits for all Observables to complete
-> - **If any one fails, the entire operation fails**
-> - All Observables must emit at least one value
-
-### Enhanced Error Handling
-
-In parallel requests, you may want to retrieve other results even if some of them fail.
-
 ```typescript
-import { forkJoin, of, catchError } from 'rxjs';
+import { from, Observable, catchError } from 'rxjs';
 
-function fetchDashboardWithFallback(userId: number): Observable<Dashboard> {
-  return forkJoin({
-    user: fetchUserById(userId).pipe(
-      catchError((err: unknown) => {
-        console.error('User fetch error:', err);
-        return of(null); // Return null on error
-      })
-    ),
-    posts: fetchPostsByUserId(userId).pipe(
-      catchError((err: unknown) => {
-        console.error('Error fetching posts:', err);
-        return of([]); // Return empty array on error
-      })
-    ),
-    comments: fetchCommentsByUserId(userId).pipe(
-      catchError((err: unknown) => {
-        console.error('Error fetching comments:', err);
-        return of([]); // Return empty array on error
-      })
-    )
-  }).pipe(
-    map(({ user, posts, comments }) => ({
-      user: user || { id: userId, name: 'Unknown', email: '' },
-      posts,
-      comments
-    }))
-  );
-}
-```
-
-> [!TIP] Partial Error Handling
-> By applying `catchError` to each Observable, the whole process can continue even if a part of it fails.
-
-## Serial Requests (concatMap)
-
-### Problem: I Want to Execute APIs in Order
-
-You want to execute the next request after the previous request completes (e.g., multiple file uploads in sequence).
-
-### Solution: Use concatMap
-
-`concatMap` executes the next Observable after the previous one completes.
-
-```typescript
-import { from, Observable, concatMap, tap, delay, catchError } from 'rxjs';
-
-// JSONPlaceholder API Post type
+// JSONPlaceholder API(depois de um substantivo) que depende de ...Posttipo
 // https://jsonplaceholder.typicode.com/posts
 interface Post {
   id: number;
@@ -369,40 +423,150 @@ function createPost(postData: CreatePostRequest): Observable<Post> {
     })
   ).pipe(
     catchError((err: unknown) => {
-      console.error('Post creation error:', err);
+      console.error('Erro ao criar uma postagem:', err);
       throw err;
     })
   );
 }
 
-// Create multiple posts sequentially (considering API rate limits)
+// Exemplo de uso
+createPost({
+  userId: 1,
+  title: 'RxJSAprendizado de',
+  body: 'RxJSusando oAPIAprendendo o padrão de chamadas para'
+}).subscribe({
+  next: post => {
+    console.log('Postagens criadas:', post);
+    console.log('Uma postagemID:', post.id); // JSONPlaceholdersão automaticamenteIDé atribuído (por exemplo: 101)
+  },
+  error: err => console.error('Erro:', err)
+});
+```
+
+> - Aguarde até que todos os Observable tenham sido concluídos.
+> - **Se qualquer um deles falhar, o todo falhará**
+> - Todos os Observable devem emitir pelo menos um valor
+
+### Tratamento de erros aprimorado
+
+Em solicitações paralelas, você pode querer recuperar outros resultados mesmo que alguns deles falhem.
+
+
+```typescript
+import { forkJoin, of, catchError } from 'rxjs';
+
+function fetchDashboardWithFallback(userId: number): Observable<Dashboard> {
+  return forkJoin({
+    user: fetchUserById(userId).pipe(
+      catchError((err: unknown) => {
+        console.error('Erro de aquisição de usuário:', err);
+        return of(null); // Em caso de erro, retornanullRetorna
+      })
+    ),
+    posts: fetchPostsByUserId(userId).pipe(
+      catchError((err: unknown) => {
+        console.error('Erro de pós-aquisição:', err);
+        return of([]); // Retorna uma matriz vazia em caso de erro
+      })
+    ),
+    comments: fetchCommentsByUserId(userId).pipe(
+      catchError((err: unknown) => {
+        console.error('Erro ao recuperar comentário:', err);
+        return of([]); // Retorna uma matriz vazia em caso de erro
+      })
+    )
+  }).pipe(
+    map(({ user, posts, comments }) => ({
+      user: user || { id: userId, name: 'Unknown', email: '' },
+      posts,
+      comments
+    }))
+  );
+}
+```
+
+> [!TIP] 部分的なエラーハンドリング
+
+> Ao aplicar o catchError a cada Observable, todo o processo pode continuar mesmo que alguns deles falhem.
+
+## Solicitação de série (concatMap)
+
+### Problema: quero executar as APIs em ordem.
+
+Você deseja executar a próxima solicitação após a conclusão da anterior (por exemplo, vários uploads de arquivos em sequência).
+
+### Solução: use concatMap.
+
+O concatMap executa o próximo Observable após a conclusão do anterior.
+
+```typescript
+import { from, Observable, concatMap, tap, delay, catchError } from 'rxjs';
+
+// JSONPlaceholder API(depois de um substantivo) que depende de ...Posttipo
+// https://jsonplaceholder.typicode.com/posts
+interface Post {
+  id: number;
+  userId: number;
+  title: string;
+  body: string;
+}
+
+interface CreatePostRequest {
+  userId: number;
+  title: string;
+  body: string;
+}
+
+function createPost(postData: CreatePostRequest): Observable<Post> {
+  return from(
+    fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(postData)
+    }).then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+  ).pipe(
+    catchError((err: unknown) => {
+      console.error('Erro ao criar uma postagem:', err);
+      throw err;
+    })
+  );
+}
+
+// Criar vários posts em sequência (emAPILimitação de taxa levada em conta)
 function createPostsSequentially(posts: CreatePostRequest[]): Observable<Post> {
   return from(posts).pipe(
     concatMap((postData, index) =>
       createPost(postData).pipe(
-        tap(result => console.log(`Post ${index + 1} creation complete:`, result.title)),
-        delay(100) // Wait 100ms considering API rate limit
+        tap(result => console.log(`Uma postagem${index + 1}Criação concluída:`, result.title)),
+        delay(100) // APIConsiderando a limitação de taxa100msAguardando
       )
     )
   );
 }
 
-// Usage example
+// Exemplo de uso
 const postsToCreate: CreatePostRequest[] = [
   {
     userId: 1,
-    title: 'First post',
-    body: 'This is the first post.'
+    title: '1Segunda postagem',
+    body: 'Esta é a1A segunda postagem.'
   },
   {
     userId: 1,
-    title: 'Second post',
-    body: 'This is the second post.'
+    title: '2Segunda postagem',
+    body: 'Esta é a2A segunda postagem.'
   },
   {
     userId: 1,
-    title: 'Third post',
-    body: 'This is the third post.'
+    title: '3Segunda postagem',
+    body: 'Esta é a3A segunda postagem.'
   }
 ];
 
@@ -411,16 +575,16 @@ const results: Post[] = [];
 createPostsSequentially(postsToCreate).subscribe({
   next: post => {
     results.push(post);
-    console.log(`Progress: ${results.length}/${postsToCreate.length}`);
+    console.log(`Progresso: ${results.length}/${postsToCreate.length}`);
   },
   complete: () => {
-    console.log('All post creation completed:', results.length, 'posts');
+    console.log('Todas as postagens criadas Concluídas:', results.length, 'Número de postagens');
   },
-  error: err => console.error('Post creation error:', err)
+  error: err => console.error('Erro ao criar uma postagem:', err)
 });
 ```
 
-#### Execution Flow
+#### Fluxo de execução
 
 ```mermaid
 sequenceDiagram
@@ -432,11 +596,11 @@ sequenceDiagram
 
     RxJS->>API: POST /posts (post1)
     API-->>RxJS: {id: 101, ...}
-    Note over RxJS: Wait 100ms after post1 completion, then start post2
+    Note over RxJS: post1Após a conclusão100msEm espera.post2Início.
 
     RxJS->>API: POST /posts (post2)
     API-->>RxJS: {id: 102, ...}
-    Note over RxJS: Wait 100ms after post2 completion, then start post3
+    Note over RxJS: post2Após a conclusão100msEm espera.post3Início.
 
     RxJS->>API: POST /posts (post3)
     API-->>RxJS: {id: 103, ...}
@@ -444,21 +608,75 @@ sequenceDiagram
     RxJS-->>App: complete
 ```
 
-> [!NOTE] concatMap vs mergeMap
-> - **concatMap**: Execute in order (previous completes, then next)
-> - **mergeMap**: Execute in parallel (multiple simultaneous executions possible)
+```typescript
+import { from, Observable, catchError } from 'rxjs';
+
+// JSONPlaceholder API(depois de um substantivo) que depende de ...Posttipo
+// https://jsonplaceholder.typicode.com/posts
+interface Post {
+  id: number;
+  userId: number;
+  title: string;
+  body: string;
+}
+
+interface CreatePostRequest {
+  userId: number;
+  title: string;
+  body: string;
+}
+
+function createPost(postData: CreatePostRequest): Observable<Post> {
+  return from(
+    fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(postData)
+    }).then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+  ).pipe(
+    catchError((err: unknown) => {
+      console.error('Erro ao criar uma postagem:', err);
+      throw err;
+    })
+  );
+}
+
+// Exemplo de uso
+createPost({
+  userId: 1,
+  title: 'RxJSAprendizado de',
+  body: 'RxJSusando oAPIAprendendo o padrão de chamadas para'
+}).subscribe({
+  next: post => {
+    console.log('Postagens criadas:', post);
+    console.log('Uma postagemID:', post.id); // JSONPlaceholdersão automaticamenteIDé atribuído (por exemplo: 101)
+  },
+  error: err => console.error('Erro:', err)
+});
+```
+
+> - **concatMap**: execução sequencial (a anterior é concluída, depois a próxima)
+> - mergeMap**: execução paralela (várias execuções simultâneas possíveis).
 >
-> Use `concatMap` when order is important, `mergeMap` when order doesn't matter and speed is priority.
+> - `concatMap` se a ordem for importante, `mergeMap` se a ordem não for necessária e a velocidade for uma prioridade.
 
-## Requests with Dependencies (switchMap)
+## Solicitações de dependência (switchMap)
 
-### Problem: Calling the Next API Using the Previous API Response
+### Problema: chamar a próxima API usando a resposta da API anterior.
 
-One of the most common patterns, using the result of the first API response to call the next API.
+Um dos padrões mais comuns, usando o resultado da primeira resposta da API para chamar a próxima API.
 
-### Solution: Use switchMap
+### Solução: use switchMap.
 
-`switchMap` takes the value of the previous Observable and converts it to a new Observable.
+O switchMap pega o valor do Observable anterior e o converte em um novo Observable.
+
 
 ```typescript
 import { from, Observable, switchMap, map } from 'rxjs';
@@ -509,11 +727,11 @@ function fetchPostsByUserId(userId: number): Observable<Post[]> {
   );
 }
 
-// Get user details and their posts
+// Recuperar detalhes do usuário e suas postagens
 function fetchUserProfile(userId: number): Observable<UserProfile> {
   return fetchUserById(userId).pipe(
     switchMap(user =>
-      // After getting user info, get their posts
+      // Depois de recuperar os detalhes do usuário e suas postagens
       fetchPostsByUserId(user.id).pipe(
         map(posts => ({
           user,
@@ -524,24 +742,24 @@ function fetchUserProfile(userId: number): Observable<UserProfile> {
   );
 }
 
-// Usage example
+// Exemplo de uso
 fetchUserProfile(1).subscribe({
   next: profile => {
-    console.log('User:', profile.user.name);
-    console.log('Posts:', profile.posts);
+    console.log('Usuário:', profile.user.name);
+    console.log('Uma postagem:', profile.posts);
   },
-  error: err => console.error('Error:', err)
+  error: err => console.error('Erro:', err)
 });
 ```
 
-### Practical Example: Search Functionality Implementation
+### Exemplo prático: implementação de uma função de pesquisa
 
-A frequently encountered pattern in practice: calling APIs based on user search input.
+Esse é um padrão usado com frequência na prática, em que a API é chamada em resposta à entrada de pesquisa do usuário.
 
 ```typescript
 import { from, fromEvent, Observable, of, map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs';
 
-// Use JSONPlaceholder Post as search result
+// JSONPlaceholder (depois de um substantivo) que depende de ... Post como resultados de pesquisa.
 interface SearchResult {
   id: number;
   userId: number;
@@ -559,7 +777,7 @@ function searchAPI(query: string): Observable<SearchResult[]> {
         return response.json();
       })
   ).pipe(
-    // Client-side filtering by title
+    // Filtragem no lado do cliente por título
     map((posts: SearchResult[]) =>
       posts.filter(post =>
         post.title.toLowerCase().includes(query.toLowerCase())
@@ -575,7 +793,7 @@ function searchAPI(query: string): Observable<SearchResult[]> {
 const searchInput = document.createElement('input');
 searchInput.id = 'search';
 searchInput.type = 'text';
-searchInput.placeholder = 'Enter search keywords (at least 2 characters)';
+searchInput.placeholder = 'Digite as palavras-chave da pesquisa (pelo menos2caracteres ou mais)';
 searchInput.style.padding = '10px';
 searchInput.style.margin = '10px';
 searchInput.style.width = '400px';
@@ -597,126 +815,54 @@ document.body.appendChild(resultsContainer);
 
 const search$ = fromEvent(searchInput, 'input').pipe(
   map(event => (event.target as HTMLInputElement).value),
-  debounceTime(300),           // Wait 300ms after input
-  distinctUntilChanged(),      // Ignore if the value is the same as last time
+  debounceTime(300),           // Após a inserção300msAguardar
+  distinctUntilChanged(),      // Ignorado se o valor for o mesmo da última vez
   switchMap(query => {
     if (query.length < 2) {
-      return of([]); // Empty array if less than 2 characters
+      return of([]); // 2Se tiver menos de 1 caractere, matriz vazia
     }
     return searchAPI(query).pipe(
       catchError((err: unknown) => {
-        console.error('Search error:', err);
-        return of([]); // Empty array in case of error
+        console.error('Erro de pesquisa:', err);
+        return of([]); // Matriz vazia em caso de erro
       })
     );
   })
 );
 
 search$.subscribe(results => {
-  console.log('Search results:', results);
-  // Display results in UI
+  console.log('Resultados da pesquisa:', results);
+  // UIExibir resultados em
   displayResults(results, resultsContainer);
 });
 
 function displayResults(results: SearchResult[], container: HTMLElement): void {
-  // Display results in the DOM
+  // Exibe os resultados emDOMProcesso de exibição de resultados em
   container.innerHTML = results
     .map(r => `<div style="padding: 8px; margin: 4px; border-bottom: 1px solid #eee;">${r.title}</div>`)
     .join('');
 
   if (results.length === 0) {
-    container.innerHTML = '<div style="padding: 8px; color: #999;">No search results</div>';
+    container.innerHTML = '<div style="padding: 8px; color: #999;">Nenhum resultado de pesquisa</div>';
   }
 }
 ```
 
-> [!TIP] Client-side Filtering
-> Since the JSONPlaceholder API does not have a search endpoint, all posts are retrieved and filtered on the client side. In practice, this pattern is used when the backend does not have a search function or when the amount of data is small.
+> [!TIP] クライアントサイドフィルタリング
+
+> A API JSONPlaceholder não tem um ponto de extremidade de pesquisa, portanto, todas as publicações são recuperadas e filtradas no lado do cliente. Na prática, esse padrão é usado quando o back-end não tem uma função de pesquisa ou quando a quantidade de dados é pequena.
 >
-> **Example searches**:
-> - Search for "sunt" → Multiple posts hit
-> - Search with "qui est esse" → Hits on titles containing "qui est esse"
-> - Search with "zzz" → No results found (N/A)
+> **Exemplo de pesquisa**:
+> - Pesquisar por "sunt" → várias postagens encontradas.
+> - Pesquisa com "qui est esse" → resultados com títulos contendo "qui est esse"
+> - Pesquisar com "zzz" → Nenhum resultado (não aplicável)
 
-#### Execution Flow
-
-```mermaid
-sequenceDiagram
-    participant User
-    participant Input
-    participant RxJS
-    participant API as JSONPlaceholder
-
-    User->>Input: "R"
-    User->>Input: "Rx"
-    User->>Input: "RxJ"
-    Note over RxJS: debounceTime(300ms)
-    User->>Input: "RxJS"
-
-    Note over RxJS: After waiting 300ms
-    RxJS->>API: GET /posts (get all posts)
-    Note over RxJS: Filter by "RxJS" on client side
-
-    User->>Input: "RxJS t"
-    Note over RxJS: Cancel previous request
-    Note over RxJS: Wait 300ms
-
-    RxJS->>API: GET /posts (get all posts)
-    Note over RxJS: Filter by "RxJS t" on client side
-    API-->>RxJS: Filtered results
-    RxJS-->>Input: Display results
-```
-
-> [!IMPORTANT] Important Properties of switchMap
-> **Automatically cancels the previous Observable when a new value arrives.**
-> This causes responses to older API requests to be ignored even if they arrive later (avoiding Race Condition).
-
-### switchMap vs mergeMap vs concatMap
-
-This is the use of higher-order mapping operators.
-
-| Operator | Behavior | Use Case |
-|----------|----------|----------|
-| `switchMap` | Cancel previous when new value arrives | **Search, autocomplete** (only the latest result is needed) |
-| `mergeMap` | Execute all in parallel | **Parallel processing** (any order, need all results) |
-| `concatMap` | Execute in order (previous one completes, then next) | **Processes where order is important** (e.g., file uploads) |
-| `exhaustMap` | Ignore new values until the previous one completes | **Prevent double submission** (countermeasure against consecutive button presses) |
+#### Fluxo de execução
 
 ```typescript
-// switchMap: Display only the latest search results
-searchInput$.pipe(
-  switchMap(query => searchAPI(query))
-);
+import { from, Observable, map, catchError, timeout } from 'rxjs';
 
-// mergeMap: Upload all files in parallel
-from(files).pipe(
-  mergeMap(file => uploadFile(file))
-);
-
-// concatMap: Upload files in sequence
-from(files).pipe(
-  concatMap(file => uploadFile(file))
-);
-
-// exhaustMap: Prevent double submission of form submissions
-submitButton$.pipe(
-  exhaustMap(() => submitForm())
-);
-```
-
-## Retry and Error Handling
-
-### Problem: I Want to Handle Temporary Network Errors
-
-When a network error or timeout occurs, you may want to automatically retry.
-
-### Solution: Use retry and retryWhen
-
-```typescript
-import { from, Observable, timer } from 'rxjs';
-import { retry, retryWhen, mergeMap, catchError, of, timeout } from 'rxjs';
-
-// JSONPlaceholder API User type
+// JSONPlaceholder API(depois de um substantivo) que depende de ...Usertipo
 // https://jsonplaceholder.typicode.com/users
 interface User {
   id: number;
@@ -742,6 +888,7 @@ interface User {
   };
 }
 
+// Recuperar lista de usuários
 function fetchUsers(): Observable<User[]> {
   return from(
     fetch('https://jsonplaceholder.typicode.com/users')
@@ -752,445 +899,30 @@ function fetchUsers(): Observable<User[]> {
         return response.json();
       })
   ).pipe(
-    timeout(5000), // Timeout in 5 seconds
+    timeout(5000), // 5Tempo limite em segundos
     catchError((err: unknown) => {
-      console.error('User fetch error:', err);
+      console.error('Erro de aquisição de usuário:', err);
       throw err;
     })
   );
 }
 
-// Simple retry (up to 3 immediately)
-function fetchWithSimpleRetry(): Observable<User[]> {
-  return fetchUsers().pipe(
-    retry(3), // Retry up to 3 times on error
-    catchError((err: unknown) => {
-      console.error('Error after retry:', err);
-      return of([]); // Return empty array if final error
-    })
-  );
-}
-
-// Retry with exponential backoff
-function fetchWithExponentialBackoff(): Observable<User[]> {
-  return fetchUsers().pipe(
-    retryWhen(errors =>
-      errors.pipe(
-        mergeMap((error, index) => {
-          const retryAttempt = index + 1;
-
-          // Retry up to 3 times
-          if (retryAttempt > 3) {
-            throw error;
-          }
-
-          // Exponential backoff: 1, 2, 4 seconds
-          const delayMs = Math.pow(2, index) * 1000;
-          console.log(`Retry ${retryAttempt}/3 (after ${delayMs}ms)`);
-
-          return timer(delayMs);
-        })
-      )
-    ),
-    catchError((err: unknown) => {
-      console.error('Error even after retry:', err);
-      return of([]);
-    })
-  );
-}
-
-// Usage example
-fetchWithExponentialBackoff().subscribe({
-  next: users => console.log('User fetched successfully:', users),
-  error: err => console.error('Final error:', err)
-});
-```
-
-**Example of exponential backoff in action:**
-
-```
-1st attempt: Execute immediately
-↓ Error
-2nd attempt: Execute after 1 second wait
-↓ Error
-3rd attempt: Execute after 2 seconds wait
-↓ Error
-4th attempt: Execute after 4 seconds wait
-↓ Success or Final error
-```
-
-> [!TIP] Select Retry Strategy
-> - **Immediate retry**: `retry(3)` - Simple, useful for network breakdowns
-> - **Fixed interval**: `retryWhen` + `delay(1000)` - Server load considered
-> - **Exponential backoff**: `retryWhen` + `timer` - Best practice for AWS, etc.
-
-### Retry Only on Specific Errors
-
-Not all errors should be retried (e.g., 401 Unauthorized does not require a retry).
-
-```typescript
-import { throwError } from 'rxjs';
-
-interface HttpError {
-  status: number;
-  message: string;
-}
-
-function shouldRetry(error: HttpError): boolean {
-  // Status codes that should be retried
-  const retryableStatuses = [408, 429, 500, 502, 503, 504];
-  return retryableStatuses.includes(error.status);
-}
-
-function fetchWithConditionalRetry(): Observable<User[]> {
-  return fetchUsers().pipe(
-    retryWhen(errors =>
-      errors.pipe(
-        mergeMap((error: HttpError, index) => {
-          const retryAttempt = index + 1;
-
-          // Non-retryable error
-          if (!shouldRetry(error)) {
-            console.error('Non-retryable error:', error);
-            return throwError(() => error);
-          }
-
-          // Up to 3 times
-          if (retryAttempt > 3) {
-            return throwError(() => error);
-          }
-
-          const delayMs = Math.pow(2, index) * 1000;
-          console.log(`Retry ${retryAttempt}/3 (status: ${error.status})`);
-
-          return timer(delayMs);
-        })
-      )
-    ),
-    catchError((err: unknown) => {
-      console.error('Final error:', err);
-      return of([]);
-    })
-  );
-}
-```
-
-> [!WARNING] Retry Notes
-> - **POST request**: Risk of creating duplicates on retry if there is no idempotency
-> - **Authentication Errors**: 401/403 do not retry, prompt for re-login
-> - **Validation Error**: 400 no retry, prompt user to correct
-
-## Timeout Handling
-
-### Problem: I Want to Deal with Slow API Response
-
-If the network is slow or the server is not responding, I want to time out after a certain amount of time.
-
-### Solution: Use timeout Operator
-
-```typescript
-import { timeout, catchError, of, from, Observable, throwError } from 'rxjs';
-
-// JSONPlaceholder API User type
-// https://jsonplaceholder.typicode.com/users
-interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  address: {
-    street: string;
-    suite: string;
-    city: string;
-    zipcode: string;
-    geo: {
-      lat: string;
-      lng: string;
-    };
-  };
-  phone: string;
-  website: string;
-  company: {
-    name: string;
-    catchPhrase: string;
-    bs: string;
-  };
-}
-
-function fetchUsers(): Observable<User[]> {
-  return from(
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-  ).pipe(
-    timeout(5000), // Timeout in 5 seconds
-    catchError((err: unknown) => {
-      console.error('User fetch error:', err);
-      throw err;
-    })
-  );
-}
-
-// Timeout in 5 seconds
-function fetchWithTimeout(): Observable<User[]> {
-  return fetchUsers().pipe(
-    timeout(5000), // Error if no response in 5 seconds
-    catchError((err: unknown) => {
-      if (err.name === 'TimeoutError') {
-        console.error('Request timed out');
-        // Fallback processing on timeout
-        return of([]); // Return empty array
-      }
-      throw err; // Other errors are re-thrown
-    })
-  );
-}
-
-// Custom timeout message
-function fetchWithCustomTimeout(): Observable<User[]> {
-  return fetchUsers().pipe(
-    timeout({
-      each: 5000,
-      with: () => throwError(() => new Error('Custom timeout error'))
-    }),
-    catchError((err: unknown) => {
-      console.error('Error:', (err instanceof Error ? err.message : String(err)));
-      return of([]);
-    })
-  );
-}
-```
-
-### Retries and Timeouts
-
-In practice, timeouts and retries are used in combination.
-
-```typescript
-function fetchWithTimeoutAndRetry(): Observable<User[]> {
-  return fetchUsers().pipe(
-    timeout(5000),           // 5 second timeout on each retry
-    retry(3),                // Retry 3 times after timeout
-    catchError((err: unknown) => {
-      console.error('Error after timeout and retry:', err);
-      return of([]);
-    })
-  );
-}
-```
-
-> [!TIP] Set Timeout Value
-> - **Normal API**: 5 - 10 seconds
-> - **Fast API**: 2 - 3 seconds
-> - **File Upload**: 30 - 60 seconds
-> - **Background processing**: More than 60 seconds
->
-> Set to balance user experience and server load.
-
-## Request Cancellation
-
-### Problem: I Want to Cancel an API Request That Is No Longer Needed
-
-I want to cancel a running API request when a page transition or component is destroyed.
-
-### Solution: Use takeUntil
-
-```typescript
-import { Subject, takeUntil, from, timeout, catchError } from 'rxjs';
-
-// JSONPlaceholder API User type
-// https://jsonplaceholder.typicode.com/users
-interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  address: {
-    street: string;
-    suite: string;
-    city: string;
-    zipcode: string;
-    geo: {
-      lat: string;
-      lng: string;
-    };
-  };
-  phone: string;
-  website: string;
-  company: {
-    name: string;
-    catchPhrase: string;
-    bs: string;
-  };
-}
-
-class UserListManager {
-  private destroy$ = new Subject<void>();
-  private users: User[] = [];
-
-
-   fetchUsers(): Observable<User[]> {
-    return from(
-      fetch('https://jsonplaceholder.typicode.com/users')
-        .then(response => {
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-          return response.json();
-        })
-    ).pipe(
-      timeout(5000), // Timeout in 5 seconds
-      catchError((err: unknown) => {
-        console.error('User fetch error:', err);
-        throw err;
-      })
-    );
-  }
-
-  init(): void {
-    // Fetch a list of users at initialization
-    this.fetchUsers().pipe(
-      takeUntil(this.destroy$) // Auto-cancel on instance destruction
-    ).subscribe({
-      next: (users: User[]) => {
-        this.users = users;
-        console.log('User acquisition complete:', users);
-      },
-      error: (err: any) => console.error('Error:', err)
-    });
-  }
-
-  destroy(): void {
-    // Fired when instance is destroyed
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-}
-
-// Usage example
-const userList = new UserListManager();
-userList.init();
-
-// When cleanup is required
-// userList.destroy();
-```
-
-### Cancel by User Action
-
-Here is an example of implementing an explicit cancel button.
-
-```typescript
-// Traditional approach (commented for reference)
-// const cancelButton = document.querySelector<HTMLButtonElement>('#cancel');
-// const loadButton = document.querySelector<HTMLButtonElement>('#load');
-
-// Self-contained: creates load and cancel buttons dynamically
-const loadButton = document.createElement('button');
-loadButton.id = 'load';
-loadButton.textContent = 'Load Users';
-loadButton.style.padding = '10px 20px';
-loadButton.style.margin = '10px';
-loadButton.style.fontSize = '16px';
-loadButton.style.fontWeight = 'bold';
-loadButton.style.color = '#fff';
-loadButton.style.backgroundColor = '#4CAF50';
-loadButton.style.border = 'none';
-loadButton.style.borderRadius = '4px';
-loadButton.style.cursor = 'pointer';
-document.body.appendChild(loadButton);
-
-const cancelButton = document.createElement('button');
-cancelButton.id = 'cancel';
-cancelButton.textContent = 'Cancel';
-cancelButton.style.padding = '10px 20px';
-cancelButton.style.margin = '10px';
-cancelButton.style.fontSize = '16px';
-cancelButton.style.fontWeight = 'bold';
-cancelButton.style.color = '#fff';
-cancelButton.style.backgroundColor = '#f44336';
-cancelButton.style.border = 'none';
-cancelButton.style.borderRadius = '4px';
-cancelButton.style.cursor = 'pointer';
-document.body.appendChild(cancelButton);
-
-const statusDisplay = document.createElement('div');
-statusDisplay.id = 'status';
-statusDisplay.style.padding = '10px';
-statusDisplay.style.margin = '10px';
-statusDisplay.style.fontSize = '14px';
-statusDisplay.style.minHeight = '20px';
-document.body.appendChild(statusDisplay);
-
-const cancel$ = fromEvent(cancelButton, 'click');
-
-fromEvent(loadButton, 'click').pipe(
-  switchMap(() => {
-    statusDisplay.textContent = 'Loading...';
-    statusDisplay.style.color = '#FF9800';
-    return fetchUsers().pipe(
-      takeUntil(cancel$) // Abort on cancel button click
-    );
-  })
-).subscribe({
+// Exemplo de uso
+fetchUsers().subscribe({
   next: users => {
-    console.log('User acquisition complete:', users);
-    statusDisplay.textContent = `Users loaded: ${users.length} items`;
-    statusDisplay.style.color = '#4CAF50';
+    console.log('Lista de usuários:', users);
+    console.log('Primeiro usuário:', users[0].name); // Exemplo de usuário: "Leanne Graham"
   },
-  error: err => {
-    if (err.name === 'AbortError') {
-      console.log('Request canceled');
-      statusDisplay.textContent = 'Request canceled';
-      statusDisplay.style.color = '#999';
-    } else {
-      console.error('Error:', err);
-      statusDisplay.textContent = `Error: ${err.message}`;
-      statusDisplay.style.color = '#f44336';
-    }
-  }
+  error: err => console.error('Erro:', err)
 });
 ```
 
-> [!IMPORTANT] Cancellation Best Practices
-> - **Always implement a cancel process** - Prevents memory leaks and network waste
-> - **Use takeUntil** - More declarative and less forgettable than unsubscribe()
-> - **When destroying components** - Fire destroy$ to unsubscribe all
-
-## Practical Service Class Example
-
-Here is an example of a complete service class that summarizes the previous patterns and can be used in practice.
 
 ```typescript
-import { Observable, Subject, throwError, timer, catchError, retryWhen, mergeMap, timeout, shareReplay, takeUntil, from } from 'rxjs';
+import { from, Observable, catchError } from 'rxjs';
 
-// JSONPlaceholder API User type
-// https://jsonplaceholder.typicode.com/users
-interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  address: {
-    street: string;
-    suite: string;
-    city: string;
-    zipcode: string;
-    geo: {
-      lat: string;
-      lng: string;
-    };
-  };
-  phone: string;
-  website: string;
-  company: {
-    name: string;
-    catchPhrase: string;
-    bs: string;
-  };
-}
+// JSONPlaceholder API(depois de um substantivo) que depende de ...Posttipo
+// https://jsonplaceholder.typicode.com/posts
 interface Post {
   id: number;
   userId: number;
@@ -1198,328 +930,1085 @@ interface Post {
   body: string;
 }
 
-export class ApiService {
-  private destroy$ = new Subject<void>();
-  private cache = new Map<string, Observable<any>>();
+interface CreatePostRequest {
+  userId: number;
+  title: string;
+  body: string;
+}
 
-  /**
-   * Basic GET request
-   */
-  get<T>(url: string, options?: RequestOptions): Observable<T> {
-    return this.request<T>('GET', url, options);
-  }
-
-  /**
-   * POST request
-   */
-  post<T>(url: string, body: any, options?: RequestOptions): Observable<T> {
-    return this.request<T>('POST', url, { ...options, body });
-  }
-
-  /**
-   * Cached GET request
-   */
-  getWithCache<T>(url: string, options?: RequestOptions): Observable<T> {
-    const cacheKey = url;
-
-    if (this.cache.has(cacheKey)) {
-      return this.cache.get(cacheKey) as Observable<T>;
-    }
-
-    const request$ = this.get<T>(url, options).pipe(
-      shareReplay({ bufferSize: 1, refCount: true }) // Cache the results
-    );
-
-    this.cache.set(cacheKey, request$);
-    return request$;
-  }
-
-  /**
-   * Clear cache
-   */
-  clearCache(url?: string): void {
-    if (url) {
-      this.cache.delete(url);
-    } else {
-      this.cache.clear();
-    }
-  }
-
-  /**
-   * Basic request processing
-   */
-  private request<T>(
-    method: string,
-    url: string,
-    options?: RequestOptions
-  ): Observable<T> {
-    const config: RequestInit = {
-      method,
+function createPost(postData: CreatePostRequest): Observable<Post> {
+  return from(
+    fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        ...options?.headers
       },
-      body: options?.body ? JSON.stringify(options.body) : undefined
-    };
+      body: JSON.stringify(postData)
+    }).then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+  ).pipe(
+    catchError((err: unknown) => {
+      console.error('Erro ao criar uma postagem:', err);
+      throw err;
+    })
+  );
+}
 
-    return from(
-      fetch(url, config).then(response => {
+// Exemplo de uso
+createPost({
+  userId: 1,
+  title: 'RxJSAprendizado de',
+  body: 'RxJSusando oAPIAprendendo o padrão de chamadas para'
+}).subscribe({
+  next: post => {
+    console.log('Postagens criadas:', post);
+    console.log('Uma postagemID:', post.id); // JSONPlaceholdersão automaticamenteIDé atribuído (por exemplo: 101)
+  },
+  error: err => console.error('Erro:', err)
+});
+```
+
+> ** Cancela automaticamente o Observable anterior quando chega um novo valor. **
+> Isso garante que as respostas a solicitações de API mais antigas sejam ignoradas, mesmo que cheguem mais tarde (prevenção de condição de corrida).
+
+### switchMap vs mergeMap vs concatMap
+
+O uso de operadores de mapeamento de ordem superior.
+
+
+```typescript
+import { from, Observable, catchError } from 'rxjs';
+
+// JSONPlaceholder API(depois de um substantivo) que depende de ...Posttipo
+// https://jsonplaceholder.typicode.com/posts
+interface Post {
+  id: number;
+  userId: number;
+  title: string;
+  body: string;
+}
+
+interface CreatePostRequest {
+  userId: number;
+  title: string;
+  body: string;
+}
+
+function createPost(postData: CreatePostRequest): Observable<Post> {
+  return from(
+    fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(postData)
+    }).then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+  ).pipe(
+    catchError((err: unknown) => {
+      console.error('Erro ao criar uma postagem:', err);
+      throw err;
+    })
+  );
+}
+
+// Exemplo de uso
+createPost({
+  userId: 1,
+  title: 'RxJSAprendizado de',
+  body: 'RxJSusando oAPIAprendendo o padrão de chamadas para'
+}).subscribe({
+  next: post => {
+    console.log('Postagens criadas:', post);
+    console.log('Uma postagemID:', post.id); // JSONPlaceholdersão automaticamenteIDé atribuído (por exemplo: 101)
+  },
+  error: err => console.error('Erro:', err)
+});
+```
+
+
+```typescript
+import { from, Observable, map, catchError, timeout } from 'rxjs';
+
+// JSONPlaceholder API(depois de um substantivo) que depende de ...Usertipo
+// https://jsonplaceholder.typicode.com/users
+interface User {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  address: {
+    street: string;
+    suite: string;
+    city: string;
+    zipcode: string;
+    geo: {
+      lat: string;
+      lng: string;
+    };
+  };
+  phone: string;
+  website: string;
+  company: {
+    name: string;
+    catchPhrase: string;
+    bs: string;
+  };
+}
+
+// Recuperar lista de usuários
+function fetchUsers(): Observable<User[]> {
+  return from(
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(response => {
         if (!response.ok) {
-          throw {
-            status: response.status,
-            message: response.statusText
-          };
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
         return response.json();
       })
-    ).pipe(
-      timeout(options?.timeout || 10000), // Default 10 seconds
-      this.retryStrategy(options?.retry),
-      // Because public APIs such as JSONPlaceholder return data directly,
-      // no need to unwrap response.data
-      catchError((err: unknown) => this.handleError(err)),
-      takeUntil(this.destroy$) // Auto cancel when service is destroyed
-    );
-  }
-
-  /**
-   * Retry strategy
-   */
-  private retryStrategy(retryConfig?: RetryConfig) {
-    return retryWhen<any>(errors =>
-      errors.pipe(
-        mergeMap((error, index) => {
-          const retryAttempt = index + 1;
-          const maxRetries = retryConfig?.maxRetries || 3;
-
-          // Check if retries are possible
-          if (!this.shouldRetry(error) || retryAttempt > maxRetries) {
-            return throwError(() => error);
-          }
-
-          // Exponential backoff
-          const delayMs = retryConfig?.useExponentialBackoff
-            ? Math.pow(2, index) * 1000
-            : (retryConfig?.delayMs || 1000);
-
-          console.log(`Retry ${retryAttempt}/${maxRetries} (after ${delayMs}ms)`);
-          return timer(delayMs);
-        })
-      )
-    );
-  }
-
-  /**
-   * Determine if there is an error that should be retried
-   */
-  private shouldRetry(error: any): boolean {
-    if (error.name === 'TimeoutError') {
-      return true; // Retry for timeout
-    }
-
-    // Retryable HTTP status codes
-    const retryableStatuses = [408, 429, 500, 502, 503, 504];
-    return retryableStatuses.includes(error.status);
-  }
-
-  /**
-   * Error handling
-   */
-  private handleError(error: any): Observable<never> {
-    let errorMessage = 'API error occurred';
-
-    if (error.name === 'TimeoutError') {
-      errorMessage = 'Request timed out';
-    } else if (error.status) {
-      errorMessage = `HTTP ${error.status}: ${error.message}`;
-    }
-
-    console.error(errorMessage, error);
-    return throwError(() => new Error(errorMessage));
-  }
-
-  /**
-   * Processing when service is destroyed
-   */
-  destroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-    this.cache.clear();
-  }
+  ).pipe(
+    timeout(5000), // 5Tempo limite em segundos
+    catchError((err: unknown) => {
+      console.error('Erro de aquisição de usuário:', err);
+      throw err;
+    })
+  );
 }
 
-// Type definition
-interface RequestOptions {
-  headers?: Record<string, string>;
-  body?: any;
-  timeout?: number;
-  retry?: RetryConfig;
-}
-
-interface RetryConfig {
-  maxRetries?: number;
-  delayMs?: number;
-  useExponentialBackoff?: boolean;
-}
-
-// Note: ApiResponse type is used when the API response is wrapped
-// Public APIs such as JSONPlaceholder return data directly, so this type is unnecessary
-// Use this type when your own API uses the { data: T, status: number } format
-interface ApiResponse<T> {
-  data: T;
-  status: number;
-}
-
-// Usage example
-const apiService = new ApiService();
-
-// Simple GET (using JSONPlaceholder API)
-apiService.get<User[]>('https://jsonplaceholder.typicode.com/users').subscribe({
-  next: users => console.log('Users:', users),
-  error: err => console.error('Error:', err)
+// Exemplo de uso
+fetchUsers().subscribe({
+  next: users => {
+    console.log('Lista de usuários:', users);
+    console.log('Primeiro usuário:', users[0].name); // Exemplo de usuário: "Leanne Graham"
+  },
+  error: err => console.error('Erro:', err)
 });
-
-// POST with custom settings (using JSONPlaceholder API)
-apiService.post<Post>(
-  'https://jsonplaceholder.typicode.com/posts',
-  { userId: 1, title: 'Test Post', body: 'This is a test post.' },
-  {
-    timeout: 5000,
-    retry: {
-      maxRetries: 3,
-      useExponentialBackoff: true
-    }
-  }
-).subscribe({
-  next: post => console.log('Post created:', post),
-  error: err => console.error('Error:', err)
-});
-
-// GET with cache
-apiService.getWithCache<User[]>('https://jsonplaceholder.typicode.com/users').subscribe({
-  next: users => console.log('Users (cache):', users)
-});
-
-// When service is destroyed
-// apiService.destroy();
 ```
 
-> [!TIP] Practical Service Design
-> - **Configurable**: Flexible configuration of timeouts, retries, etc.
-> - **Cache functionality**: Prevent duplicate requests
-> - **Error Handling**: Uniform error handling
-> - **Automatic cleanup**: destroy() ensures resource release
+## Tentativas e tratamento de erros
 
-## Test Code
+### Problema: quero lidar com erros temporários de rede
 
-This is an example test of an API call pattern.
+No caso de um erro de rede ou tempo limite, talvez você queira tentar novamente de forma automática.
+
+### Solução: use retry e retryWhen.
+
 
 ```typescript
-import { TestScheduler } from 'rxjs/testing';
-import { of, throwError } from 'rxjs';
+import { from, Observable, map, catchError, timeout } from 'rxjs';
 
-describe('ApiService', () => {
-  let testScheduler: TestScheduler;
-  let apiService: ApiService;
+// JSONPlaceholder API(depois de um substantivo) que depende de ...Usertipo
+// https://jsonplaceholder.typicode.com/users
+interface User {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  address: {
+    street: string;
+    suite: string;
+    city: string;
+    zipcode: string;
+    geo: {
+      lat: string;
+      lng: string;
+    };
+  };
+  phone: string;
+  website: string;
+  company: {
+    name: string;
+    catchPhrase: string;
+    bs: string;
+  };
+}
 
-  beforeEach(() => {
-    testScheduler = new TestScheduler((actual, expected) => {
-      expect(actual).toEqual(expected);
-    });
-    apiService = new ApiService();
-  });
-
-  afterEach(() => {
-    apiService.destroy();
-  });
-
-  it('should fetch users successfully', () => {
-    testScheduler.run(({ expectObservable, cold }) => {
-      const mockResponse = { data: [{ id: 1, name: 'Test User', email: 'test@example.com' }] };
-
-      // Mock fetch
-      spyOn(window, 'fetch').and.returnValue(
-        Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve(mockResponse)
-        } as Response)
-      );
-
-      const result$ = apiService.get<User[]>('/api/users');
-
-      expectObservable(result$).toBe('(a|)', {
-        a: mockResponse.data
-      });
-    });
-  });
-
-  it('should retry on timeout', () => {
-    testScheduler.run(({ expectObservable, cold, flush }) => {
-      let callCount = 0;
-
-      spyOn(window, 'fetch').and.callFake(() => {
-        callCount++;
-        if (callCount < 3) {
-          // First 2 calls time out
-          return new Promise(() => {}); // Unresolved Promise
+// Recuperar lista de usuários
+function fetchUsers(): Observable<User[]> {
+  return from(
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-        // Third time succeeds
-        return Promise.resolve({
-          ok: true,
-          json: () => Promise.resolve({ data: [] })
-        } as Response);
-      });
+        return response.json();
+      })
+  ).pipe(
+    timeout(5000), // 5Tempo limite em segundos
+    catchError((err: unknown) => {
+      console.error('Erro de aquisição de usuário:', err);
+      throw err;
+    })
+  );
+}
 
-      const result$ = apiService.get<User[]>('/api/users', {
-        timeout: 100,
-        retry: { maxRetries: 3, delayMs: 100 }
-      });
-
-      // Make sure retries are executed
-      flush();
-      expect(callCount).toBeGreaterThan(1);
-    });
-  });
+// Exemplo de uso
+fetchUsers().subscribe({
+  next: users => {
+    console.log('Lista de usuários:', users);
+    console.log('Primeiro usuário:', users[0].name); // Exemplo de usuário: "Leanne Graham"
+  },
+  error: err => console.error('Erro:', err)
 });
 ```
 
-## Summary
+**Exemplo de backoff exponencial em ação:***
 
-By mastering the API invocation pattern using RxJS, you can build robust and maintainable applications.
 
-> [!IMPORTANT] Key Points
-> - **forkJoin**: Execute multiple APIs in parallel, all waiting for completion
-> - **concatMap**: Execute APIs in order (previous one completes, then next)
-> - **switchMap**: Ideal for requests with dependencies, search functionality
-> - **retry/retryWhen**: Automatic retry on error, exponential backoff recommended
-> - **timeout**: Always set a timeout
-> - **takeUntil**: Auto cancel when component is destroyed
+```typescript
+import { from, Observable, map, catchError, timeout } from 'rxjs';
 
-> [!TIP] Best Practices
-> - **Type Safety**: Define types for all API responses
-> - **Error Handling**: Implement `catchError` for all requests
-> - **Cancel Handling**: Ensure cleanup with `takeUntil`
-> - **Retry strategy**: Retry appropriately depending on status code
-> - **Caching**: Prevent duplicate requests with `shareReplay`
+// JSONPlaceholder API(depois de um substantivo) que depende de ...Usertipo
+// https://jsonplaceholder.typicode.com/users
+interface User {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  address: {
+    street: string;
+    suite: string;
+    city: string;
+    zipcode: string;
+    geo: {
+      lat: string;
+      lng: string;
+    };
+  };
+  phone: string;
+  website: string;
+  company: {
+    name: string;
+    catchPhrase: string;
+    bs: string;
+  };
+}
 
-## Next Steps
+// Recuperar lista de usuários
+function fetchUsers(): Observable<User[]> {
+  return from(
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+  ).pipe(
+    timeout(5000), // 5Tempo limite em segundos
+    catchError((err: unknown) => {
+      console.error('Erro de aquisição de usuário:', err);
+      throw err;
+    })
+  );
+}
 
-Once you have mastered the API call pattern, move on to the following patterns:
+// Exemplo de uso
+fetchUsers().subscribe({
+  next: users => {
+    console.log('Lista de usuários:', users);
+    console.log('Primeiro usuário:', users[0].name); // Exemplo de usuário: "Leanne Graham"
+  },
+  error: err => console.error('Erro:', err)
+});
+```
 
-- [Form Handling](./form-handling.md) - Real-time validation, autosave
-- [UI Event Handling](./ui-events.md) - Integration of UI events and API calls
-- [Real-time Data Processing](./real-time-data.md) - WebSocket, SSE
-- [Caching Strategies](./caching-strategies.md) - Caching of API responses
-- Error Handling Practices (in preparation) - More advanced error handling strategies
+> [!TIP] リトライ戦略の選択
 
-## Related Sections
+> - **Immediate retry**: `retry(3)` - simples, útil para falhas na rede
+> - **Intervalo fixo**: `retryWhen` + `delay(1000)` - leva em conta a carga do servidor
+> - **Exponential backoff**: `retryWhen` + `timer` - melhor prática para AWS etc.
 
-- [Chapter 4: Operators](../operators/index.md) - switchMap, mergeMap, concatMap details
-- [Chapter 6: Error Handling](../error-handling/strategies.md) - Basics of catchError, retry
-- [Chapter 2: Cold/Hot Observable](../observables/cold-and-hot-observables.md) - Understanding shareReplay
+### Repetir somente em erros específicos
 
-## Reference Resources
+Nem todos os erros devem ser tentados novamente (por exemplo, 401 Unauthorised não requer uma nova tentativa).
 
-- [RxJS Official: ajax](https://rxjs.dev/api/ajax/ajax) - ajax() details
-- [MDN: Fetch API](https://developer.mozilla.org/ja/docs/Web/API/Fetch_API) - How to use fetch()
-- [Learn RxJS: Higher-order Observables](https://www.learnrxjs.io/learn-rxjs/operators) - Comparison of switchMap etc.
+
+```typescript
+import { from, Observable, map, catchError, timeout } from 'rxjs';
+
+// JSONPlaceholder API(depois de um substantivo) que depende de ...Usertipo
+// https://jsonplaceholder.typicode.com/users
+interface User {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  address: {
+    street: string;
+    suite: string;
+    city: string;
+    zipcode: string;
+    geo: {
+      lat: string;
+      lng: string;
+    };
+  };
+  phone: string;
+  website: string;
+  company: {
+    name: string;
+    catchPhrase: string;
+    bs: string;
+  };
+}
+
+// Recuperar lista de usuários
+function fetchUsers(): Observable<User[]> {
+  return from(
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+  ).pipe(
+    timeout(5000), // 5Tempo limite em segundos
+    catchError((err: unknown) => {
+      console.error('Erro de aquisição de usuário:', err);
+      throw err;
+    })
+  );
+}
+
+// Exemplo de uso
+fetchUsers().subscribe({
+  next: users => {
+    console.log('Lista de usuários:', users);
+    console.log('Primeiro usuário:', users[0].name); // Exemplo de usuário: "Leanne Graham"
+  },
+  error: err => console.error('Erro:', err)
+});
+```
+
+
+```typescript
+import { forkJoin, from, Observable, map } from 'rxjs';
+
+// JSONPlaceholder API(depois de um substantivo) que depende de ...Commenttipo
+// https://jsonplaceholder.typicode.com/comments
+interface Comment {
+  postId: number;
+  id: number;
+  name: string;
+  email: string;
+  body: string;
+}
+interface Post {
+  id: number;
+  userId: number;
+  title: string;
+  body: string;
+}
+interface User {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  address: {
+    street: string;
+    suite: string;
+    city: string;
+    zipcode: string;
+    geo: {
+      lat: string;
+      lng: string;
+    };
+  };
+  phone: string;
+  website: string;
+  company: {
+    name: string;
+    catchPhrase: string;
+    bs: string;
+  };
+}
+interface Dashboard {
+  user: User;
+  posts: Post[];
+  comments: Comment[];
+}
+
+function fetchUserById(id: number): Observable<User> {
+  return from(
+    fetch(`https://jsonplaceholder.typicode.com/users/${id}`).then(r => r.json())
+  );
+}
+
+function fetchPostsByUserId(userId: number): Observable<Post[]> {
+  return from(
+    fetch(`https://jsonplaceholder.typicode.com/posts?userId=${userId}`).then(r => r.json())
+  );
+}
+
+function fetchCommentsByPostId(postId: number): Observable<Comment[]> {
+  return from(
+    fetch(`https://jsonplaceholder.typicode.com/comments?postId=${postId}`).then(r => r.json())
+  );
+}
+
+// Recuperação paralela de dados do painel
+function fetchDashboard(userId: number): Observable<Dashboard> {
+  return forkJoin({
+    user: fetchUserById(userId),
+    posts: fetchPostsByUserId(userId),
+    comments: fetchCommentsByPostId(1) // Uma postagemID=1Recuperar comentários de
+  }).pipe(
+    map(({ user, posts, comments }) => ({
+      user,
+      posts,
+      comments
+    }))
+  );
+}
+
+// Exemplo de uso
+fetchDashboard(1).subscribe({
+  next: dashboard => {
+    console.log('Usuário:', dashboard.user.name); // Exemplo de usuário: "Leanne Graham"
+    console.log('Número de postagens:', dashboard.posts.length); // Exemplo de usuário: 10Número de postagens
+    console.log('Número de comentários:', dashboard.comments.length); // Exemplo de usuário: 5Número de postagens
+  },
+  error: err => console.error('Erro de aquisição do painel:', err)
+});
+```
+
+> - **Solicitação POST**: risco de criação de duplicatas em uma nova tentativa se não houver igualdade
+> - **Erros de autenticação**: 401/403 não repetir, solicitar novo login
+> - **ERRO DE AVALIAÇÃO**: 400 não tentar novamente, solicitar que o usuário corrija
+
+## Tratamento de tempo limite
+
+### Problema: quero lidar com uma resposta lenta da API
+
+Se a rede estiver lenta ou se o servidor não estiver respondendo, você deseja atingir o tempo limite após um determinado período de tempo.
+
+### Solução: use o operador timeout.
+
+
+```typescript
+import { from, Observable, map, catchError, timeout } from 'rxjs';
+
+// JSONPlaceholder API(depois de um substantivo) que depende de ...Usertipo
+// https://jsonplaceholder.typicode.com/users
+interface User {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  address: {
+    street: string;
+    suite: string;
+    city: string;
+    zipcode: string;
+    geo: {
+      lat: string;
+      lng: string;
+    };
+  };
+  phone: string;
+  website: string;
+  company: {
+    name: string;
+    catchPhrase: string;
+    bs: string;
+  };
+}
+
+// Recuperar lista de usuários
+function fetchUsers(): Observable<User[]> {
+  return from(
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+  ).pipe(
+    timeout(5000), // 5Tempo limite em segundos
+    catchError((err: unknown) => {
+      console.error('Erro de aquisição de usuário:', err);
+      throw err;
+    })
+  );
+}
+
+// Exemplo de uso
+fetchUsers().subscribe({
+  next: users => {
+    console.log('Lista de usuários:', users);
+    console.log('Primeiro usuário:', users[0].name); // Exemplo de usuário: "Leanne Graham"
+  },
+  error: err => console.error('Erro:', err)
+});
+```
+
+### Combinação de retry e timeout
+
+Na prática, os tempos limite e as novas tentativas são usados em combinação.
+
+
+```typescript
+import { from, Observable, map, catchError, timeout } from 'rxjs';
+
+// JSONPlaceholder API(depois de um substantivo) que depende de ...Usertipo
+// https://jsonplaceholder.typicode.com/users
+interface User {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  address: {
+    street: string;
+    suite: string;
+    city: string;
+    zipcode: string;
+    geo: {
+      lat: string;
+      lng: string;
+    };
+  };
+  phone: string;
+  website: string;
+  company: {
+    name: string;
+    catchPhrase: string;
+    bs: string;
+  };
+}
+
+// Recuperar lista de usuários
+function fetchUsers(): Observable<User[]> {
+  return from(
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+  ).pipe(
+    timeout(5000), // 5Tempo limite em segundos
+    catchError((err: unknown) => {
+      console.error('Erro de aquisição de usuário:', err);
+      throw err;
+    })
+  );
+}
+
+// Exemplo de uso
+fetchUsers().subscribe({
+  next: users => {
+    console.log('Lista de usuários:', users);
+    console.log('Primeiro usuário:', users[0].name); // Exemplo de usuário: "Leanne Graham"
+  },
+  error: err => console.error('Erro:', err)
+});
+```
+
+> [!TIP] タイムアウト値の設定
+
+> - **API normal**: 5 a 10 segundos
+> - ** API rápida**: 2 - 3 segundos
+> - **Upload de arquivo**: 30 a 60 segundos
+> - **Processamento em segundo plano**: mais de 60 segundos.
+>
+> Defina para equilibrar a experiência do usuário e a carga do servidor.
+
+## Processo de cancelamento de solicitação.
+
+### Problema: quero cancelar as solicitações de API que não são mais necessárias.
+
+Quero cancelar uma solicitação de API em execução quando uma transição de página ou um componente for destruído.
+
+### Solução: use takeUntil.
+
+
+```typescript
+import { from, Observable, map, catchError, timeout } from 'rxjs';
+
+// JSONPlaceholder API(depois de um substantivo) que depende de ...Usertipo
+// https://jsonplaceholder.typicode.com/users
+interface User {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  address: {
+    street: string;
+    suite: string;
+    city: string;
+    zipcode: string;
+    geo: {
+      lat: string;
+      lng: string;
+    };
+  };
+  phone: string;
+  website: string;
+  company: {
+    name: string;
+    catchPhrase: string;
+    bs: string;
+  };
+}
+
+// Recuperar lista de usuários
+function fetchUsers(): Observable<User[]> {
+  return from(
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+  ).pipe(
+    timeout(5000), // 5Tempo limite em segundos
+    catchError((err: unknown) => {
+      console.error('Erro de aquisição de usuário:', err);
+      throw err;
+    })
+  );
+}
+
+// Exemplo de uso
+fetchUsers().subscribe({
+  next: users => {
+    console.log('Lista de usuários:', users);
+    console.log('Primeiro usuário:', users[0].name); // Exemplo de usuário: "Leanne Graham"
+  },
+  error: err => console.error('Erro:', err)
+});
+```
+
+### Cancelamento controlado pelo usuário
+
+Este é um exemplo de implementação de um botão de cancelamento explícito.
+
+
+```typescript
+import { from, Observable, map, catchError, timeout } from 'rxjs';
+
+// JSONPlaceholder API(depois de um substantivo) que depende de ...Usertipo
+// https://jsonplaceholder.typicode.com/users
+interface User {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  address: {
+    street: string;
+    suite: string;
+    city: string;
+    zipcode: string;
+    geo: {
+      lat: string;
+      lng: string;
+    };
+  };
+  phone: string;
+  website: string;
+  company: {
+    name: string;
+    catchPhrase: string;
+    bs: string;
+  };
+}
+
+// Recuperar lista de usuários
+function fetchUsers(): Observable<User[]> {
+  return from(
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+  ).pipe(
+    timeout(5000), // 5Tempo limite em segundos
+    catchError((err: unknown) => {
+      console.error('Erro de aquisição de usuário:', err);
+      throw err;
+    })
+  );
+}
+
+// Exemplo de uso
+fetchUsers().subscribe({
+  next: users => {
+    console.log('Lista de usuários:', users);
+    console.log('Primeiro usuário:', users[0].name); // Exemplo de usuário: "Leanne Graham"
+  },
+  error: err => console.error('Erro:', err)
+});
+```
+
+> [!IMPORTANT] キャンセルのベストプラクティス
+
+> - **Sempre implemente um processo de cancelamento** - evita vazamentos de memória e desperdício de rede
+> - **Use takeUntil** - mais declarativo e menos esquecível do que unsubscribe()
+> - **Ao destruir componentes** - acione destroy$ para cancelar a assinatura de todos
+
+## Exemplos práticos de classes de serviço
+
+Este é um exemplo de uma classe de serviço completa que resume os padrões anteriores e pode ser usada na prática.
+
+
+```typescript
+import { from, Observable, map, catchError, timeout } from 'rxjs';
+
+// JSONPlaceholder API(depois de um substantivo) que depende de ...Usertipo
+// https://jsonplaceholder.typicode.com/users
+interface User {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  address: {
+    street: string;
+    suite: string;
+    city: string;
+    zipcode: string;
+    geo: {
+      lat: string;
+      lng: string;
+    };
+  };
+  phone: string;
+  website: string;
+  company: {
+    name: string;
+    catchPhrase: string;
+    bs: string;
+  };
+}
+
+// Recuperar lista de usuários
+function fetchUsers(): Observable<User[]> {
+  return from(
+    fetch('https://jsonplaceholder.typicode.com/users')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+  ).pipe(
+    timeout(5000), // 5Tempo limite em segundos
+    catchError((err: unknown) => {
+      console.error('Erro de aquisição de usuário:', err);
+      throw err;
+    })
+  );
+}
+
+// Exemplo de uso
+fetchUsers().subscribe({
+  next: users => {
+    console.log('Lista de usuários:', users);
+    console.log('Primeiro usuário:', users[0].name); // Exemplo de usuário: "Leanne Graham"
+  },
+  error: err => console.error('Erro:', err)
+});
+```
+
+> [!TIP] 実践的なサービス設計
+
+> - **Configurável**: configuração flexível de tempos limite, contagens de tentativas, etc.
+> - **Funcionalidade de cache**: evita solicitações duplicadas
+> - **Tratamento de erros**: tratamento uniforme de erros
+> - **Limpeza automática**: destroy() garante a liberação de recursos
+
+## Código de teste
+
+Exemplo de teste para padrão de invocação de API.
+
+
+```typescript
+import { from, Observable, catchError } from 'rxjs';
+
+// JSONPlaceholder API(depois de um substantivo) que depende de ...Posttipo
+// https://jsonplaceholder.typicode.com/posts
+interface Post {
+  id: number;
+  userId: number;
+  title: string;
+  body: string;
+}
+
+interface CreatePostRequest {
+  userId: number;
+  title: string;
+  body: string;
+}
+
+function createPost(postData: CreatePostRequest): Observable<Post> {
+  return from(
+    fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(postData)
+    }).then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+  ).pipe(
+    catchError((err: unknown) => {
+      console.error('Erro ao criar uma postagem:', err);
+      throw err;
+    })
+  );
+}
+
+// Exemplo de uso
+createPost({
+  userId: 1,
+  title: 'RxJSAprendizado de',
+  body: 'RxJSusando oAPIAprendendo o padrão de chamadas para'
+}).subscribe({
+  next: post => {
+    console.log('Postagens criadas:', post);
+    console.log('Uma postagemID:', post.id); // JSONPlaceholdersão automaticamenteIDé atribuído (por exemplo: 101)
+  },
+  error: err => console.error('Erro:', err)
+});
+```
+
+## Resumo.
+
+Ao dominar o padrão de invocação de API usando o RxJS, é possível criar aplicativos robustos e passíveis de manutenção.
+
+
+```typescript
+import { forkJoin, from, Observable, map } from 'rxjs';
+
+// JSONPlaceholder API(depois de um substantivo) que depende de ...Commenttipo
+// https://jsonplaceholder.typicode.com/comments
+interface Comment {
+  postId: number;
+  id: number;
+  name: string;
+  email: string;
+  body: string;
+}
+interface Post {
+  id: number;
+  userId: number;
+  title: string;
+  body: string;
+}
+interface User {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  address: {
+    street: string;
+    suite: string;
+    city: string;
+    zipcode: string;
+    geo: {
+      lat: string;
+      lng: string;
+    };
+  };
+  phone: string;
+  website: string;
+  company: {
+    name: string;
+    catchPhrase: string;
+    bs: string;
+  };
+}
+interface Dashboard {
+  user: User;
+  posts: Post[];
+  comments: Comment[];
+}
+
+function fetchUserById(id: number): Observable<User> {
+  return from(
+    fetch(`https://jsonplaceholder.typicode.com/users/${id}`).then(r => r.json())
+  );
+}
+
+function fetchPostsByUserId(userId: number): Observable<Post[]> {
+  return from(
+    fetch(`https://jsonplaceholder.typicode.com/posts?userId=${userId}`).then(r => r.json())
+  );
+}
+
+function fetchCommentsByPostId(postId: number): Observable<Comment[]> {
+  return from(
+    fetch(`https://jsonplaceholder.typicode.com/comments?postId=${postId}`).then(r => r.json())
+  );
+}
+
+// Recuperação paralela de dados do painel
+function fetchDashboard(userId: number): Observable<Dashboard> {
+  return forkJoin({
+    user: fetchUserById(userId),
+    posts: fetchPostsByUserId(userId),
+    comments: fetchCommentsByPostId(1) // Uma postagemID=1Recuperar comentários de
+  }).pipe(
+    map(({ user, posts, comments }) => ({
+      user,
+      posts,
+      comments
+    }))
+  );
+}
+
+// Exemplo de uso
+fetchDashboard(1).subscribe({
+  next: dashboard => {
+    console.log('Usuário:', dashboard.user.name); // Exemplo de usuário: "Leanne Graham"
+    console.log('Número de postagens:', dashboard.posts.length); // Exemplo de usuário: 10Número de postagens
+    console.log('Número de comentários:', dashboard.comments.length); // Exemplo de usuário: 5Número de postagens
+  },
+  error: err => console.error('Erro de aquisição do painel:', err)
+});
+```
+
+> - **forkJoin**: executa várias APIs em paralelo, todas aguardando a conclusão
+> - **concatMap**: executa APIs em ordem (a anterior concluída, depois a próxima)
+> - **switchMap**: ideal para solicitações dependentes, funções de pesquisa
+> - **retry/retryWhen**: nova tentativa automática em caso de erro, backoff exponencial recomendado
+> - **timeout**: sempre define um tempo limite
+> - **takeUntil**: cancelamento automático na destruição do componente
+
+
+```typescript
+import { forkJoin, from, Observable, map } from 'rxjs';
+
+// JSONPlaceholder API(depois de um substantivo) que depende de ...Commenttipo
+// https://jsonplaceholder.typicode.com/comments
+interface Comment {
+  postId: number;
+  id: number;
+  name: string;
+  email: string;
+  body: string;
+}
+interface Post {
+  id: number;
+  userId: number;
+  title: string;
+  body: string;
+}
+interface User {
+  id: number;
+  name: string;
+  username: string;
+  email: string;
+  address: {
+    street: string;
+    suite: string;
+    city: string;
+    zipcode: string;
+    geo: {
+      lat: string;
+      lng: string;
+    };
+  };
+  phone: string;
+  website: string;
+  company: {
+    name: string;
+    catchPhrase: string;
+    bs: string;
+  };
+}
+interface Dashboard {
+  user: User;
+  posts: Post[];
+  comments: Comment[];
+}
+
+function fetchUserById(id: number): Observable<User> {
+  return from(
+    fetch(`https://jsonplaceholder.typicode.com/users/${id}`).then(r => r.json())
+  );
+}
+
+function fetchPostsByUserId(userId: number): Observable<Post[]> {
+  return from(
+    fetch(`https://jsonplaceholder.typicode.com/posts?userId=${userId}`).then(r => r.json())
+  );
+}
+
+function fetchCommentsByPostId(postId: number): Observable<Comment[]> {
+  return from(
+    fetch(`https://jsonplaceholder.typicode.com/comments?postId=${postId}`).then(r => r.json())
+  );
+}
+
+// Recuperação paralela de dados do painel
+function fetchDashboard(userId: number): Observable<Dashboard> {
+  return forkJoin({
+    user: fetchUserById(userId),
+    posts: fetchPostsByUserId(userId),
+    comments: fetchCommentsByPostId(1) // Uma postagemID=1Recuperar comentários de
+  }).pipe(
+    map(({ user, posts, comments }) => ({
+      user,
+      posts,
+      comments
+    }))
+  );
+}
+
+// Exemplo de uso
+fetchDashboard(1).subscribe({
+  next: dashboard => {
+    console.log('Usuário:', dashboard.user.name); // Exemplo de usuário: "Leanne Graham"
+    console.log('Número de postagens:', dashboard.posts.length); // Exemplo de usuário: 10Número de postagens
+    console.log('Número de comentários:', dashboard.comments.length); // Exemplo de usuário: 5Número de postagens
+  },
+  error: err => console.error('Erro de aquisição do painel:', err)
+});
+```
+
+> - **Segurança de tipo**: definir tipos para todas as respostas da API
+> - **Tratamento de erros**: implemente o catchError para todas as solicitações
+> - **Tratamento de cancelamento**: garantir a limpeza com o `takeUntil`.
+> - **Estratégia de repetição**: repetir adequadamente de acordo com o código de status
+> - **Caching**: evite solicitações duplicadas com o `shareReplay`.
+
+## Próximas etapas.
+
+Depois de dominar o padrão de chamada de API, você poderá passar para os padrões a seguir.
+
+- [form-handling](. /form-handling.md) - validação em tempo real, salvamento automático.
+- [UI event handling](. /ui-events.md) - integração de eventos de UI e chamadas de API.
+- [processamento de dados em tempo real](. /real-time-data.md)) - WebSocket, SSE.
+- [estratégias de cache] (. /caching-strategies.md) - Cache de respostas de API
+- Práticas de tratamento de erros (em preparação) - Estratégias mais avançadas de tratamento de erros
+
+## Seções relacionadas.
+
+- Capítulo 4: Operadores](. /operators/index.md) - mais sobre switchMap, mergeMap e concatMap.
+- Capítulo 6: Tratamento de erros](. /error-handling/strategies.md)) - noções básicas de catchError, retry
+- Capítulo 2: Observable frio/quente](. /observables/cold-and-hot-observables.md)) - Entendendo o shareReplay
+
+## Recursos de referência
+
+- [RxJS Official: ajax](https://rxjs.dev/api/ajax/ajax) - Mais informações sobre ajax().
+- [MDN: Fetch API](https://developer.mozilla.org/ja/docs/Web/API/Fetch_API) - Como usar fetch()
+- [Learn RxJS: Higher-order Observable](https://www.learnrxjs.io/learn-rxjs/operators) - Comparação de switchMap etc.

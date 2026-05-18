@@ -228,7 +228,7 @@ source$.pipe(
 
 | Operador | Saltar condiciones | Caso de uso |
 |---|---|---|
-| `skip(n)` | PrimeronOmitir un número de piezas | Omitir un número fijo |
+| `skip(n)` | Primero ...nOmitir un número de piezas | Omitir un número fijo |
 | `skipWhile(predicate)` | Omitir mientras se cumplen las condiciones | Salto basado en condiciones |
 | `skipUntil(notifier$)` | Saltar hasta otroObservableSaltar hasta un | Evento/Omisión basada en el tiempo |
 
@@ -398,7 +398,7 @@ setTimeout(() => {
 - ✅ Si desea iniciar el procesamiento después de que se produzca un evento específico.
 - ✅ Si desea habilitar las operaciones de usuario después de la inicialización se ha completado
 - ✅ Si necesita un inicio diferido en función del tiempo
-- ✅ Si desea iniciar el procesamiento de datos una vez finalizada la autenticación
+- ✅ Si desea iniciar el procesamiento de datos una vez completada la autenticación
 
 ### En combinación con takeUntil.
 - ✅ Si desea obtener valores sólo durante un período de tiempo específico (skipUntil + takeUntil).

@@ -1,69 +1,72 @@
 ---
-description: "Uitgebreide RxJS error handling strategieën uitgelegd. Combinatie van catchError, retry, retryWhen, finalize operators, exponential backoff retry, error classificatie en geschikte verwerking, globale error handlers en meer, leer hoe je robuuste error handling implementeert in TypeScript."
+description: "Beschrijft een uitgebreide foutafhandelingsstrategie voor RxJS, inclusief het combineren van catchError, retry, retryWhen en finalize operatoren, retry met exponentiële backoff, foutclassificatie en gepaste afhandeling, globale foutafhandelingsstrategieën en andere robuuste foutafhandelingsstrategieën in TypeScript. Hoe robuuste foutafhandeling implementeren in TypeScript."
 ---
-# RxJS Error handling strategieën
 
-Error handling in RxJS is een belangrijk aspect van reactief programmeren. Door geschikte error handling te implementeren verbeter je de robuustheid en betrouwbaarheid van applicaties. Dit document legt verschillende error handling strategieën uit die beschikbaar zijn in RxJS.
+# RxJS strategie voor foutafhandeling
+
+Foutafhandeling in RxJS is een belangrijk aspect van reactief programmeren. Het implementeren van een goede foutafhandeling verbetert de robuustheid en betrouwbaarheid van je applicatie. Dit document beschrijft de verschillende foutafhandelingsstrategieën die beschikbaar zijn in RxJS.
 
 ## Basispatronen
 
-In RxJS verwerk je errors als deel van de Observable levenscyclus. Basis error handling methoden zijn als volgt.
+RxJS handelt fouten af als onderdeel van de Observable levenscyclus. Basis foutafhandeling omvat de volgende methoden.
 
 ```ts
 import { of, throwError } from 'rxjs';
 import { catchError } from 'rxjs';
 
-// Observable die error genereert
-const error$ = throwError(() => new Error('Error opgetreden')); // RxJS 7 en later, functie vorm aanbevolen
+// Fout.Observable
+const error$ = throwError(() => new Error('Er is een fout opgetreden.')); // RxJS 7Functieformaat vanaf nu aanbevolen
 
-// Basis error handling
+// Basis foutafhandeling
 error$
   .pipe(
     catchError((error: unknown) => {
-      console.error('Error opgevangen:', (error instanceof Error ? error.message : String(error)));
-      return of('Fallback waarde na error');
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('Fout opvangen:', message);
+      return of('Terugvalwaarde na fout');
     })
   )
   .subscribe({
     next: (value) => console.log('Waarde:', value),
-    error: (err) => console.error('Niet-afgehandelde error:', err),
+    error: (err) => console.error('Fouten niet afgehandeld:', err),
     complete: () => console.log('Voltooid'),
   });
 
-// Output:
-// Error opgevangen: Error opgetreden
-// Waarde: Fallback waarde na error
+// Uitvoer:
+// Fout opvangen: Er is een fout opgetreden.
+// Waarde: Terugvalwaarde na fout
 // Voltooid
 ```
 
-## Verschillende error handling strategieën
+## Diverse foutafhandelingsstrategieën
 
-### 1. Error opvangen en alternatieve waarde bieden
+### 1. fouten opvangen en alternatieve waarden geven
 
-Gebruik de `catchError` operator om errors op te vangen en een alternatieve waarde of alternatieve stream te bieden.
+Gebruik de `catchError` operator om fouten op te vangen en alternatieve waarden of alternatieve stromen te geven.
 
 ```ts
 import { of, throwError } from 'rxjs';
 import { catchError } from 'rxjs';
 
-const source$ = throwError(() => new Error('Data ophalen error'));
+const source$ = throwError(() => new Error('Fout bij gegevensverwerving'));
 
 source$.pipe(
   catchError((error: unknown) => {
-    console.error('Error opgetreden:', (error instanceof Error ? error.message : String(error)));
-    // Alternatieve data retourneren
-    return of({ isError: true, data: [], message: 'Standaarddata wordt weergegeven' });
+    const message = error instanceof Error ? error.message : String(error);
+    console.error('Fout opgetreden:', message);
+    // Alternatieve gegevens retourneren
+    return of({ isError: true, data: [], message: 'Standaardgegevens weergeven' });
   })
 ).subscribe(data => console.log('Resultaat:', data));
 
-// Output:
-// Error opgetreden: Data ophalen error
-// Resultaat: {isError: true, data: Array(0), message: 'Standaarddata wordt weergegeven'}
+// Uitvoer:
+// Fout opgetreden: Fout bij gegevensverwerving
+// Resultaat: {isError: true, data: Array(0), message: 'Standaardgegevens weergeven'}
 ```
 
-### 2. Opnieuw proberen bij error
+### 2. Opnieuw proberen als er een fout optreedt
 
-Gebruik `retry` of `retryWhen` operators om de stream opnieuw te proberen wanneer een error optreedt.
+Gebruik de `retry` operator om de stream opnieuw te proberen als er een fout optreedt (vanaf v7.3 wordt het `retry({ count, delay })` formaat aanbevolen en vervangt het oude `retryWhen`).
 
 ```ts
 import { interval, throwError, of } from 'rxjs';
@@ -74,60 +77,52 @@ let attemptCount = 0;
 interval(1000).pipe(
   mergeMap(val => {
     if (++attemptCount <= 2) {
-      return throwError(() => new Error(`Error #${attemptCount}`));
+      return throwError(() => new Error(`Fout #${attemptCount}`));
     }
-    return of('Succes!');
+    return of('Succes！');
   }),
-  tap(() => console.log('Uitvoeren:', attemptCount)),
-  retry(2), // Maximaal 2 keer opnieuw proberen
+  tap(() => console.log('Uitvoering:', attemptCount)),
+  retry(2), // Max.2Herhalingen
 ).subscribe({
   next: value => console.log('Waarde:', value),
-  error: err => console.error('Finale error:', err.message),
+  error: err => console.error('Laatste fout:', err.message),
 });
 
-// Output:
-// Uitvoeren: 3
-// Waarde: Succes!
-// Uitvoeren: 4
-// Waarde: Succes!
-// Uitvoeren: 5
+// Uitvoer:
+// Uitvoering: 3
+// Waarde: Succes！
+// Uitvoering: 4
+// Waarde: Succes！
+// Uitvoering: 5
 // ...
 ```
 
-### 3. Retry met exponential backoff
+### 3. opnieuw proberen met exponentiële backoff
 
-Voor netwerkverzoeken is "exponential backoff" (retry interval geleidelijk verlengen) effectief.
+Exponentiële backoff, waarbij het retry-interval geleidelijk wordt verhoogd, is bijvoorbeeld effectief voor netwerkverzoeken.
 
 ```ts
 import { throwError, timer, of } from 'rxjs';
-import { retryWhen, tap, concatMap, catchError } from 'rxjs';
+import { retry, tap, catchError } from 'rxjs';
 
 function fetchWithRetry() {
-  let retryCount = 0;
-
   return throwError(() => new Error('Netwerkfout')).pipe(
-    retryWhen((errors) =>
-      errors.pipe(
-        // Error aantal tellen
-        tap((error) => console.log('Error opgetreden:', error.message)),
-        // Vertraging met exponential backoff
-        concatMap(() => {
-          retryCount++;
-          const delayMs = Math.min(1000 * Math.pow(2, retryCount), 10000);
-          console.log(`${retryCount}e retry na ${delayMs}ms uitvoeren`);
-          return timer(delayMs);
-        }),
-        // Maximaal 5 keer opnieuw proberen
-        tap(() => {
-          if (retryCount >= 5) {
-            throw new Error('Maximum retry aantal overschreden');
-          }
-        })
-      )
-    ),
-    // Definitieve fallback
+    // RxJS 7.3+ Aanbevolen: retry({ count, delay }) Formaat
+    retry({
+      count: 5, // Max.5Maximaal drie pogingen
+      delay: (error: unknown, retryCount) => {
+        const message = error instanceof Error ? error.message : String(error);
+        console.log('Fout opgetreden:', message);
+        // Exponentiële back-off (max.10seconden)
+        const delayMs = Math.min(1000 * Math.pow(2, retryCount), 10000);
+        console.log(`${retryCount}Een tweede keer opnieuw proberen${delayMs}msUitgevoerd na`);
+        return timer(delayMs);
+      }
+    }),
+    // Laatste terugval
     catchError((error: unknown) => {
-      console.error('Alle retry pogingen mislukt:', (error instanceof Error ? error.message : String(error)));
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('Alle pogingen mislukt:', message);
       return of({
         error: true,
         message: 'Verbinding mislukt. Probeer later opnieuw.',
@@ -138,28 +133,28 @@ function fetchWithRetry() {
 
 fetchWithRetry().subscribe({
   next: (result) => console.log('Resultaat:', result),
-  error: (err) => console.error('Niet-afgehandelde error:', err),
+  error: (err) => console.error('Fouten niet afgehandeld:', err),
 });
 
-// Output:
-// Error opgetreden: Netwerkfout
-// 1e retry na 2000ms uitvoeren
-// Error opgetreden: Netwerkfout
-// 2e retry na 4000ms uitvoeren
-// Error opgetreden: Netwerkfout
-// 3e retry na 8000ms uitvoeren
-// Error opgetreden: Netwerkfout
-// 4e retry na 10000ms uitvoeren
-// Error opgetreden: Netwerkfout
-// 5e retry na 10000ms uitvoeren
-// Alle retry pogingen mislukt: Maximum retry aantal overschreden
+// Uitvoer:
+// Fout opgetreden: Netwerkfout
+// 1Een tweede keer opnieuw proberen2000msUitgevoerd na
+// Fout opgetreden: Netwerkfout
+// 2Een tweede keer opnieuw proberen4000msUitgevoerd na
+// Fout opgetreden: Netwerkfout
+// 3Een tweede keer opnieuw proberen8000msUitgevoerd na
+// Fout opgetreden: Netwerkfout
+// 4Een tweede keer opnieuw proberen10000msUitgevoerd na
+// Fout opgetreden: Netwerkfout
+// 5Een tweede keer opnieuw proberen10000msUitgevoerd na
+// Alle pogingen mislukt: Maximum aantal pogingen overschreden
 // Resultaat: {error: true, message: 'Verbinding mislukt. Probeer later opnieuw.'}
 ```
 
-### 4. Resource vrijgave bij error
+### 4. Vrijgeven van middelen bij fout
 
-Gebruik de `finalize` operator om resources vrij te geven wanneer de stream eindigt met **completion of error**.
-finalize is effectief wanneer je cleanup zeker wilt uitvoeren niet alleen bij error maar ook bij normale completion.
+Gebruik de ` finalize` operator om bronnen vrij te geven als een stream **voltooid of fout** eindigt.
+Finalize is nuttig als je ervoor wilt zorgen dat het opschoonproces niet alleen bij fouten wordt uitgevoerd, maar ook bij normale voltooiing.
 
 ```ts
 import { throwError } from 'rxjs';
@@ -170,128 +165,133 @@ let isLoading = true;
 throwError(() => new Error('Verwerkingsfout'))
   .pipe(
     catchError((error: unknown) => {
-      console.error('Error verwerking:', (error instanceof Error ? error.message : String(error)));
-      return throwError(() => error); // Error opnieuw gooien
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('Fout Verwerking:', message);
+      return throwError(() => error); // Fout opnieuw gooien
     }),
     finalize(() => {
       isLoading = false;
-      console.log('Loading status resetten:', isLoading);
+      console.log('Laadstatus resetten:', isLoading);
     })
   )
   .subscribe({
     next: (value) => console.log('Waarde:', value),
-    error: (err) => console.error('Finale error:', err.message),
+    error: (err) => console.error('Laatste fout:', err.message),
     complete: () => console.log('Voltooid'),
   });
 
-// Output:
-// Error verwerking: Verwerkingsfout
-// Finale error: Verwerkingsfout
-// Loading status resetten: false
+// Uitvoer:
+// Fout Verwerking: Verwerkingsfout
+// Laatste fout: Verwerkingsfout
+// Laadstatus resetten: false
 ```
 
-## Error handling patronen
+## Foutbehandelingspatroon
 
-### UI element weergave control inclusief error handling
+### Foutafhandeling inclusief weergavecontrole van UI-elementen
 
 ```ts
 import { of, throwError } from 'rxjs';
 import { catchError, finalize, tap } from 'rxjs';
 
 function fetchData(shouldFail = false) {
-  // Loading weergeven
+  // Weergave laadstatus
   showLoadingIndicator();
 
-  // Data ophalen (succes of error)
+  // Gegevensverwerving (succes of fout)
   return (
     shouldFail
-      ? throwError(() => new Error('API error'))
-      : of({ name: 'Data', value: 42 })
+      ? throwError(() => new Error('APIFout'))
+      : of({ name: 'Gegevens', value: 42 })
   ).pipe(
     tap((data) => {
-      // Verwerking bij succes
+      // Bij succes
       updateUI(data);
     }),
     catchError((error: unknown) => {
-      // UI update bij error
-      showErrorMessage((error instanceof Error ? error.message : String(error)));
-      // Lege data of standaardwaarde retourneren
+      const message = error instanceof Error ? error.message : String(error);
+      // Bij foutUIbijwerken
+      showErrorMessage(message);
+      // Lege gegevens of standaardwaarde retourneren
       return of({ name: 'Standaard', value: 0 });
     }),
     finalize(() => {
-      // Loading verbergen ongeacht succes of error
+      // Schakel het laaddisplay uit, ongeacht succes of fout
       hideLoadingIndicator();
     })
   );
 }
 
-// UI operatie helper functies
+// UIHelperfuncties voor bewerkingen
 function showLoadingIndicator() {
-  console.log('Loading weergeven');
+  console.log('Weergave laadstatus');
 }
 function hideLoadingIndicator() {
-  console.log('Loading verbergen');
+  console.log('Verberg laden');
 }
 function updateUI(data: { name: string; value: number }) {
-  console.log('UI update:', data);
+  console.log('UIbijwerken:', data);
 }
 function showErrorMessage(message: any) {
-  console.log('Error weergeven:', message);
+  console.log('Foutweergave:', message);
 }
 
 // Gebruiksvoorbeeld
 fetchData(true).subscribe();
 
-// Output:
-// Loading weergeven
-// Error weergeven: API error
-// Loading verbergen
+// Uitvoer:
+// Weergave laadstatus
+// Foutweergave: APIFout
+// Verberg laden
 ```
 
-### Verwerking van meerdere error bronnen
+### Afhandeling van meerdere foutbronnen
 
 ```ts
 import { forkJoin, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs';
 
-// Simuleer meerdere API verzoeken
+// Meerdere simulerenAPIVerzoeken simuleren
 function getUser() {
-  return of({ id: 1, name: 'Yamada Taro' });
+  return of({ id: 1, name: 'Taro Yamada' });
 }
 
 function getPosts() {
-  return throwError(() => new Error('Posts ophalen error'));
+  return throwError(() => new Error('Fout na overname'));
 }
 
 function getComments() {
-  return throwError(() => new Error('Comments ophalen error'));
+  return throwError(() => new Error('Fout bij overname becommentariëren'));
 }
 
-// Alle data ophalen en gedeeltelijke errors toestaan
+// Alle gegevens ophalen en gedeeltelijke fouten toestaan
 forkJoin({
   user: getUser().pipe(
     catchError((error: unknown) => {
-      console.error('Gebruiker ophalen error:', (error instanceof Error ? error.message : String(error)));
-      return of(null); // Retourneer null bij error
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('Gebruiker overnamefout:', message);
+      return of(null); // Bij een foutnullGeeft een lege matrix terug
     })
   ),
   posts: getPosts().pipe(
     catchError((error: unknown) => {
-      console.error('Posts ophalen error:', (error instanceof Error ? error.message : String(error)));
-      return of([]); // Retourneer lege array bij error
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('Fout na overname:', message);
+      return of([]); // Lege matrix wordt teruggegeven bij fout
     })
   ),
   comments: getComments().pipe(
     catchError((error: unknown) => {
-      console.error('Comments ophalen error:', (error instanceof Error ? error.message : String(error)));
-      return of([]); // Retourneer lege array bij error
+      const message = error instanceof Error ? error.message : String(error);
+      console.error('Fout bij overname becommentariëren:', message);
+      return of([]); // Lege matrix wordt teruggegeven bij fout
     })
   ),
 })
   .pipe(
     map((result) => ({
       ...result,
-      // Voeg vlag toe die aangeeft of er gedeeltelijke errors waren
+      // Vlag toevoegen om aan te geven of er een gedeeltelijke fout was
       hasErrors:
         !result.user ||
         result.posts.length === 0 ||
@@ -303,49 +303,49 @@ forkJoin({
 
     if (data.hasErrors) {
       console.log(
-        'Sommige data ophalen mislukt, maar beschikbare data wordt weergegeven'
+        'Het is niet gelukt om sommige gegevens op te halen, maar toont wel beschikbare gegevens'
       );
     }
   });
 
-// Output:
-// Posts ophalen error: Posts ophalen error
-// Comments ophalen error: Comments ophalen error
+// Uitvoer:
+// Fout na overname: Fout na overname
+// Fout bij overname becommentariëren: Fout bij overname becommentariëren
 // Eindresultaat: {user: {…}, posts: Array(0), comments: Array(0), hasErrors: true}
-// Sommige data ophalen mislukt, maar beschikbare data wordt weergegeven
+// Het is niet gelukt om sommige gegevens op te halen, maar toont wel beschikbare gegevens
 ```
 
-## Error handling best practices
+## Beste praktijk voor foutafhandeling
 
-1. **Vang errors altijd op**: Voeg altijd error handling toe in Observable chains. Vooral belangrijk voor langlopende streams.
+1. **Vang altijd fouten op**: voeg altijd foutafhandeling toe in de Observable keten. Dit is vooral belangrijk voor langlopende streams.
 
-2. **Geef zinvolle error berichten**: Neem informatie op in error objecten die helpt bij het identificeren van de locatie en oorzaak.
+2.**Geef betekenisvolle foutmeldingen**: neem informatie op in het foutobject om te helpen bepalen waar de fout optrad en wat de oorzaak was.
 
-3. **Geef resources correct vrij**: Gebruik `finalize` om te zorgen dat resources worden vrijgegeven ongeacht succes of fout.
+3, **Bronnen op de juiste manier vrijgeven**: gebruik ` finalize` om ervoor te zorgen dat bronnen worden vrijgegeven, ongeacht succes of mislukking.
 
-4. **Overweeg retry strategieën**: Voor netwerk operaties verbetert het implementeren van geschikte retry strategieën de betrouwbaarheid.
+4, **overweeg retry-strategieën**: vooral voor netwerkoperaties verbetert het implementeren van een goede retry-strategie de betrouwbaarheid.
 
-5. **Gebruiksvriendelijke error handling**: Geef in UI geen technische error berichten direct weer, maar informatie die gebruikers kunnen begrijpen.
+5. **Gebruikersvriendelijke foutafhandeling**: geef in de UI informatie die gebruikers kunnen begrijpen, in plaats van technische foutmeldingen weer te geven zoals ze zijn.
 
 ```ts
-// Voorbeeld: Conversie naar gebruiksvriendelijke error berichten
+// Voorbeeld.：Conversie naar gebruiksvriendelijke foutmeldingen
 function getErrorMessage(error: any): string {
   if (error.status === 401) {
     return 'Sessie is verlopen. Log opnieuw in.';
   } else if (error.status === 404) {
-    return 'Gevraagde resource niet gevonden.';
+    return 'De gevraagde bron kon niet worden gevonden.';
   } else if (error.status >= 500) {
-    return 'Serverfout opgetreden. Probeer later opnieuw.';
+    return 'Er is een serverfout opgetreden. Probeer het later opnieuw.';
   }
-  return 'Onverwachte fout opgetreden.';
+  return 'Er is een onverwachte fout opgetreden.';
 }
 ```
 
-## Samenvatting
+## Samenvatting.
 
-Error handling in RxJS is een belangrijk onderdeel voor het waarborgen van applicatie robuustheid. Door operators zoals `catchError`, `retry`, `finalize` correct te combineren kun je verschillende error scenario's aanpakken. Ontwerp niet alleen om errors op te vangen, maar ook een uitgebreide error handling strategie om de gebruikerservaring te verbeteren.
+Foutafhandeling in RxJS is een belangrijk onderdeel van het waarborgen van de robuustheid van de applicatie. Door de juiste combinatie van operatoren zoals `catchError`, `retry` en ` finalize` te gebruiken, kunnen verschillende foutscenario's worden afgehandeld. Ontwerp een uitgebreide strategie voor foutafhandeling om de gebruikerservaring te verbeteren, in plaats van alleen maar fouten op te vangen.
 
-## 🔗 Gerelateerde secties
+## Gerelateerde secties.
 
-- **[Veelvoorkomende fouten en oplossingen](/nl/guide/anti-patterns/common-mistakes#9-error-onderdrukking)** - Bevestig anti-patronen gerelateerd aan error handling
-- **[retry en catchError](/nl/guide/error-handling/retry-catch)** - Meer gedetailleerde gebruiksmethoden uitgelegd
+- **[Veelvoorkomende fouten en hoe ermee om te gaan](/nl/guide/anti-patterns/common-mistakes#9-error-grasping)** - Bekijk antipatterns voor foutafhandeling.
+- **[Retry en catchError](/nl/guide/error-handling/retry-catch)** - Legt meer gedetailleerd gebruik uit.
