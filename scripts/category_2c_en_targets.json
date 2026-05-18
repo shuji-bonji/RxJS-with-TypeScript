@@ -1,0 +1,36 @@
+{
+  "category_2c_en_coverage": [
+    {
+      "file": "operators/filtering/auditTime.md",
+      "lang": "en"
+    },
+    {
+      "file": "operators/filtering/ignoreElements.md",
+      "lang": "en"
+    },
+    {
+      "file": "operators/filtering/sampleTime.md",
+      "lang": "en"
+    },
+    {
+      "file": "schedulers/types.md",
+      "lang": "en"
+    },
+    {
+      "file": "operators/combination/combineLatestWith.md",
+      "lang": "en"
+    },
+    {
+      "file": "operators/combination/zipWith.md",
+      "lang": "en"
+    },
+    {
+      "file": "operators/combination/combineLatestAll.md",
+      "lang": "en"
+    },
+    {
+      "file": "creation-functions/selection/index.md",
+      "lang": "en"
+    }
+  ]
+}
