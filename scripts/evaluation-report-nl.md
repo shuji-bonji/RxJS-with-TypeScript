@@ -5,7 +5,7 @@
 | 項目 | 値 |
 |------|-----|
 | ファイル数 | 181 |
-| 平均スコア | 0.788 |
+| 平均スコア | 0.787 |
 | 最小スコア | 0.334 |
 | 最大スコア | 0.984 |
 
@@ -14,9 +14,9 @@
 | 品質 | 件数 | 割合 |
 |------|------|------|
 | 🟢 優秀 (≥0.95) | 1 | 0.6% |
-| 🔵 良好 (0.85-0.94) | 29 | 16.0% |
+| 🔵 良好 (0.85-0.94) | 28 | 15.5% |
 | 🟡 要改善 (0.70-0.84) | 136 | 75.1% |
-| 🔴 要修正 (<0.70) | 15 | 8.3% |
+| 🔴 要修正 (<0.70) | 16 | 8.8% |
 
 ## 🔴 要修正ファイル (スコア < 0.70)
 
@@ -36,6 +36,7 @@
 | 🔴 0.688 | `overcoming-difficulties/lifecycle-management.md` | 19 |
 | 🔴 0.692 | `operators/utility/startWith.md` | 4 |
 | 🔴 0.695 | `overcoming-difficulties/debugging-guide.md` | 23 |
+| 🔴 0.698 | `practical-patterns/ui-events.md` | 28 |
 | 🔴 0.699 | `operators/conditional/every.md` | 2 |
 
 ## ファイル別一覧
@@ -179,7 +180,7 @@
 | 🔵 0.858 | operators/filtering/distinctUntilChanged.md | 5 |
 | 🟡 0.825 | operators/filtering/distinctUntilKeyChanged.md | 5 |
 | 🔴 0.637 | operators/filtering/elementAt.md | 15 |
-| 🔵 0.870 | operators/filtering/filter.md | 5 |
+| 🟡 0.744 | operators/filtering/filter.md | 10 |
 | 🟡 0.779 | operators/filtering/find.md | 10 |
 | 🟡 0.786 | operators/filtering/findIndex.md | 16 |
 | 🟡 0.839 | operators/filtering/first.md | 5 |
@@ -267,7 +268,7 @@
 | 🟡 0.806 | practical-patterns/index.md | 25 |
 | 🟡 0.703 | practical-patterns/real-time-data.md | 45 |
 | 🔵 0.869 | practical-patterns/subscribe-branching.md | 23 |
-| 🟡 0.717 | practical-patterns/ui-events.md | 28 |
+| 🔴 0.698 | practical-patterns/ui-events.md | 28 |
 
 ### schedulers
 
@@ -310,4 +311,4 @@
 
 ---
 
-最終更新: 2026-05-18T04:25:10Z
+最終更新: 2026-05-19T06:06:55Z

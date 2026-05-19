@@ -392,40 +392,576 @@ mouseDown$.pipe(
 
 #### Fluxo de eventos
 
-```typescript
-import { fromEvent, throttleTime } from 'rxjs';
-const button = document.createElement('button');
-button.id = 'submit-button';
-button.innerText = 'submit';
-document.body.appendChild(button);
+```mermaid
+sequenceDiagram
+    actor User
+    participant MouseDown
+    participant MouseMove
+    participant MouseUp
+    participant Element
 
-if (button) {
-  fromEvent(button, 'click').pipe(
-    throttleTime(1000) // 1Em um segundo.1Processado apenas uma vez
-  ).subscribe(() => {
-    console.log('Execução do processo de transmissão');
-    submitForm();
-  });
+    User->>MouseDown: mousedown
+    Note over MouseDown: Começar a arrastar
+    MouseDown->>MouseMove: Começar a monitorizar mousemove com switchMap
+
+    loop Arrastamento em curso
+        User->>MouseMove: mousemove
+        MouseMove->>Element: Atualização da posição
+    end
+
+    User->>MouseUp: mouseup
+    Note over MouseUp: Fim da monitorização do mousemove com takeUntil
+    MouseUp->>Element: Fim do arrastamento
+```
+
+> [!IMPORTANT] Pontos importantes para arrastar e largar
+> - Iniciar a monitorização de mousedown → mousemove com `switchMap`
+> - Terminar a monitorização ao mouseup com `takeUntil`
+> - Desativar o comportamento de arrastamento predefinido com `preventDefault()`
+> - Feedback visual com `classList.add/remove`
+
+### Suporte para dispositivos tácteis
+
+```typescript
+import { fromEvent, merge, map, switchMap, takeUntil, tap } from 'rxjs';
+const draggableElement = document.createElement('div');
+draggableElement.id = 'draggable';
+draggableElement.innerText = 'Arrastar.\n(Suporte para rato e toque)';
+draggableElement.style.position = 'absolute';
+draggableElement.style.left = '100px';
+draggableElement.style.top = '100px';
+draggableElement.style.width = '150px';
+draggableElement.style.height = '150px';
+draggableElement.style.padding = '20px';
+draggableElement.style.background = '#2196F3';
+draggableElement.style.color = '#fff';
+draggableElement.style.cursor = 'move';
+draggableElement.style.userSelect = 'none';
+draggableElement.style.display = 'flex';
+draggableElement.style.alignItems = 'center';
+draggableElement.style.justifyContent = 'center';
+draggableElement.style.textAlign = 'center';
+draggableElement.style.whiteSpace = 'pre-line';
+document.body.appendChild(draggableElement);
+
+// Integração de eventos de rato e de toque
+const start$ = merge(
+  fromEvent<MouseEvent>(draggableElement, 'mousedown').pipe(
+    map(e => ({ x: e.clientX, y: e.clientY, event: e }))
+  ),
+  fromEvent<TouchEvent>(draggableElement, 'touchstart').pipe(
+    map(e => ({
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY,
+      event: e
+    }))
+  )
+);
+
+const move$ = merge(
+  fromEvent<MouseEvent>(document, 'mousemove').pipe(
+    map(e => ({ x: e.clientX, y: e.clientY }))
+  ),
+  fromEvent<TouchEvent>(document, 'touchmove').pipe(
+    map(e => ({
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY
+    }))
+  )
+);
+
+const end$ = merge(
+  fromEvent(document, 'mouseup'),
+  fromEvent(document, 'touchend')
+);
+
+let initialOffsetX = 0;
+let initialOffsetY = 0;
+
+start$.pipe(
+  tap(({ x, y, event }) => {
+    event.preventDefault();
+    const rect = draggableElement.getBoundingClientRect();
+    initialOffsetX = rect.left - x;
+    initialOffsetY = rect.top - y;
+    draggableElement.style.opacity = '0.7';
+  }),
+  switchMap(() =>
+    move$.pipe(
+      map(({ x, y }) => ({
+        x: x + initialOffsetX,
+        y: y + initialOffsetY
+      })),
+      takeUntil(
+        end$.pipe(
+          tap(() => {
+            draggableElement.style.opacity = '1';
+          })
+        )
+      )
+    )
+  )
+).subscribe(({ x, y }) => {
+  draggableElement.style.left = `${x}px`;
+  draggableElement.style.top = `${y}px`;
+});
+```
+
+> [!TIP] Suporte para vários dispositivos
+> Ao utilizar `merge` para integrar eventos de rato e toque, pode implementar arrastar e largar que funciona em todos os PCs/tablets/smartphones.
+
+#### Comparação de fluxos de eventos
+
+```mermaid
+sequenceDiagram
+    actor User as Utilizador
+    participant Mouse as Eventos do rato
+    participant Touch as Eventos de toque
+    participant Merge as merge(start$)
+    participant Pipeline as Pipeline
+
+    Note over User,Pipeline: Padrão 1: operação do rato
+    User->>Mouse: mousedown
+    Mouse->>Merge: {x, y, event}
+    Merge->>Pipeline: switchMap → mousemove
+    Pipeline-->>User: Mover elemento
+
+    Note over User,Pipeline: Padrão 2: operações de toque
+    User->>Touch: touchstart
+    Touch->>Merge: {x, y, event}
+    Merge->>Pipeline: switchMap → touchmove
+    Pipeline-->>User: Mover elemento
+```
+
+Este diagrama de sequência mostra como os eventos de rato e de toque são integrados no mesmo pipeline e funcionam da mesma forma em ambos os dispositivos.
+
+## Entrada de teclado e preenchimento automático
+
+### Problema: chamadas excessivas à API durante a escrita
+
+Quando as chamadas à API são efectuadas em resposta à introdução do teclado, por exemplo, caixas de pesquisa, chamá-las sempre pode ser um problema de desempenho.
+
+Por exemplo, se um utilizador escrever "RxJS":
+- `R` → chamada API
+- `Rx` → chamada API
+- `RxJ` → chamada API
+- `RxJS` → chamada API
+
+4 caracteres, a API será chamada quatro vezes. Isto é um desperdício e sobrecarrega o servidor.
+
+### Solução: debounceTime + switchMap
+
+Para implementar o preenchimento automático de forma eficiente, combine os três operadores seguintes:
+
+1. **debounceTime(300)** - espera 300ms depois de o utilizador parar de introduzir dados
+2. **distinctUntilChanged()** - ignora se o valor é o mesmo da última vez (evita pedidos desnecessários)
+3. **switchMap()** - cancela o pedido antigo se for recebida uma nova entrada
+
+Com esta combinação, a API é chamada apenas uma vez depois de o utilizador parar de introduzir dados, mesmo que o utilizador introduza rapidamente "RxJS".
+
+```typescript
+import { fromEvent, of, map, debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs';
+interface SearchResult {
+  id: number;
+  title: string;
+  description: string;
 }
 
-function submitForm(): void {
-  console.log('Durante a transmissão do formulário...');
-  // APIChamadas, etc.
+const searchInput = document.createElement('input');
+searchInput.id = 'search';
+searchInput.type = 'text';
+searchInput.placeholder = 'Pesquisa de preenchimento automático...';
+searchInput.style.padding = '10px';
+searchInput.style.margin = '10px';
+searchInput.style.width = '400px';
+searchInput.style.fontSize = '16px';
+document.body.appendChild(searchInput);
+
+const resultsContainer = document.createElement('div');
+resultsContainer.id = 'results';
+resultsContainer.style.margin = '10px';
+resultsContainer.style.padding = '10px';
+resultsContainer.style.border = '1px solid #ddd';
+resultsContainer.style.width = '400px';
+resultsContainer.style.minHeight = '100px';
+document.body.appendChild(resultsContainer);
+
+fromEvent(searchInput, 'input').pipe(
+  map(event => (event.target as HTMLInputElement).value.trim()),
+  debounceTime(300),           // Espera 300 ms após a paragem da introdução
+  distinctUntilChanged(),      // Ignorado se o valor for o mesmo da última vez
+  switchMap(query => {
+    if (query.length < 2) {
+      return of([]); // Matriz vazia se tiver menos de 2 caracteres
+    }
+
+    console.log('Execução da pesquisa:', query);
+    return searchAPI(query).pipe(
+      catchError(err => {
+        console.error('Erro de pesquisa:', err);
+        return of([]);
+      })
+    );
+  })
+).subscribe(results => {
+  displayResults(results);
+});
+
+// API de pesquisa (simulação)
+function searchAPI(query: string) {
+  return of([
+    { id: 1, title: `Resultado 1: ${query}`, description: 'Descrição 1' },
+    { id: 2, title: `Resultado 2: ${query}`, description: 'Descrição 2' },
+    { id: 3, title: `Resultado 3: ${query}`, description: 'Descrição 3' }
+  ]);
+}
+
+function displayResults(results: SearchResult[]): void {
+  if (results.length === 0) {
+    resultsContainer.innerHTML = '<p>Nenhum resultado encontrado</p>';
+    return;
+  }
+
+  resultsContainer.innerHTML = results
+    .map(
+      r => `
+      <div class="result-item" style="padding: 10px; border-bottom: 1px solid #eee;">
+        <h3 style="margin: 0 0 5px 0;">${r.title}</h3>
+        <p style="margin: 0; color: #666;">${r.description}</p>
+      </div>
+    `
+    )
+    .join('');
 }
 ```
-Cliques do usuário: ●    ●●●        ●  ●●
-                    |    |          |  |
-throttleTime(1000): ●              ●
-                    |              |
-                   Execução do processamento      Execução do processamento
 
-### Exemplo prático: exibição de atraso ao passar o mouse
+#### Explicação pormenorizada do funcionamento
 
-Cliques do usuário: ●    ●●●        ●  ●●
-                    |    |          |  |
-throttleTime(1000): ●              ●
-                    |              |
-                   Execução do processamento      Execução do processamento
+Este é um exemplo concreto para ilustrar o funcionamento de cada passo deste código.
+
+**Cronologia de um utilizador que escreve rapidamente "RxJS":**
+
+```
+Tempo | Evento                | Processamento do pipeline
+------|------------------------|---------------------------
+0ms   | Entrada 'R'            | debounceTime início da espera
+50ms  | Entrada 'Rx'           | Espera anterior cancelada, nova espera iniciada
+100ms | Entrada 'RxJ'          | Espera anterior cancelada, nova espera iniciada
+150ms | Entrada 'RxJS'         | Espera anterior cancelada, nova espera iniciada
+450ms | (300 ms decorridos)    | distinctUntilChanged → switchMap → chamada API
+```
+
+#### Papel de cada operador
+
+1. **debounceTime(300)**
+   - Continua a aguardar enquanto os eventos de entrada continuam
+   - Descarrega os valores após terem decorrido 300 ms desde que a entrada foi interrompida
+   - Resultado: não ocorre nenhuma chamada API durante a digitação rápida
+
+2. **distinctUntilChanged()**
+   - Compara o valor com o valor imediatamente anterior e ignora-o se o valor for o mesmo
+   - Exemplo: Se for introduzido "abc" → (apagar) → "abc", o segundo "abc" não é processado
+   - Resultado: evita chamadas desnecessárias à API
+
+3. **switchMap()**
+   - Quando chega uma nova consulta de pesquisa, o pedido antigo que está a ser executado é cancelado
+   - Exemplo: se chegar uma pesquisa por "RxJS" enquanto se pesquisa por "Rx", o pedido de "Rx" é cancelado
+   - Resultado: apenas os resultados mais recentes da pesquisa são sempre apresentados
+
+> [!IMPORTANT] Importância do switchMap
+> Se utilizar `mergeMap` em vez de `switchMap`, os pedidos mais antigos continuarão a ser executados tal como estão. Como resultado, os resultados dos pedidos mais lentos são apresentados mais tarde, o que leva a problemas com uma IU não natural.
+>
+> - ❌ **mergeMap**: 'Rx' (lento) → 'RxJS' (rápido) → resultados 'RxJS' → resultados 'Rx' (substituídos por resultados antigos)
+> - ✅ **switchMap**: "Rx" (cancelado) → "RxJS" (executado) → apenas os resultados "RxJS" são apresentados
+
+#### Exemplo de execução
+
+```typescript
+// Entrada do utilizador: "R" → "Rx" → "RxJ" → "RxJS" (intervalos de 50ms)
+//
+// Saída (consola):
+// (450ms depois)
+// Execução da pesquisa: RxJS
+//
+// Chamada à API: apenas uma vez (4 caracteres introduzidos, mas apenas uma vez!)
+```
+
+### Exemplo prático: atalho de teclado
+
+```typescript
+import { fromEvent, filter, map } from 'rxjs';
+// Ctrl+S para guardar
+fromEvent<KeyboardEvent>(document, 'keydown').pipe(
+  filter(event => event.ctrlKey && event.key === 's'),
+  map(event => {
+    event.preventDefault();
+    return event;
+  })
+).subscribe(() => {
+  console.log('Processo de guardar executado');
+  saveDocument();
+});
+
+// Ctrl+K para mostrar a paleta de comandos
+fromEvent<KeyboardEvent>(document, 'keydown').pipe(
+  filter(event => event.ctrlKey && event.key === 'k'),
+  map(event => {
+    event.preventDefault();
+    return event;
+  })
+).subscribe(() => {
+  console.log('Apresentação da paleta de comandos');
+  showCommandPalette();
+});
+
+function saveDocument(): void {
+  console.log('A guardar documento...');
+}
+
+function showCommandPalette(): void {
+  console.log('Apresentação da paleta de comandos');
+}
+```
+
+### Combinações múltiplas de teclas
+
+```typescript
+import { fromEvent, buffer, debounceTime, map, filter } from 'rxjs';
+// Escape duplo para fechar o modal
+const keydown$ = fromEvent<KeyboardEvent>(document, 'keydown');
+
+keydown$.pipe(
+  filter(event => event.key === 'Escape'),
+  buffer(keydown$.pipe(debounceTime(300))), // Consolidar entradas contínuas dentro de 300 ms
+  filter(events => events.length >= 2), // Premir duas ou mais vezes
+  map(() => true)
+).subscribe(() => {
+  console.log('Fechar modal com duplo Escape');
+  closeAllModals();
+});
+
+function closeAllModals(): void {
+  console.log('Fechar todos os modais');
+}
+```
+
+> [!TIP] Melhores práticas de atalhos de teclado
+> - Impedir o comportamento predefinido com `preventDefault()`
+> - Utilizar `event.ctrlKey`, `event.shiftKey`, `event.altKey` para determinar as teclas modificadoras
+> - Processar apenas determinadas teclas com `filter`
+> - Dar prioridade aos atalhos de fácil utilização (por exemplo, Ctrl+S)
+
+## Suporte multi-toque
+
+### Problema: gestos de pinch-zoom e multi-toque
+
+Queremos implementar o zoom de pinça e os gestos multi-toque em tablets e smartphones.
+
+### Solução: monitorização de eventos de toque
+
+```typescript
+import { fromEvent, map, pairwise } from 'rxjs';
+const imageElement = document.createElement('img');
+imageElement.id = 'zoomable-image';
+imageElement.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="300"%3E%3Crect width="300" height="300" fill="%234CAF50"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="white" font-size="20"%3EPinçar o zoom%3C/text%3E%3C/svg%3E';
+imageElement.style.width = '300px';
+imageElement.style.height = '300px';
+imageElement.style.margin = '20px';
+imageElement.style.touchAction = 'none';
+imageElement.style.userSelect = 'none';
+imageElement.style.transition = 'transform 0.1s';
+document.body.appendChild(imageElement);
+
+let initialDistance = 0;
+let currentScale = 1;
+
+fromEvent<TouchEvent>(imageElement, 'touchstart').pipe(
+  map(event => {
+    if (event.touches.length === 2) {
+      // Calcular a distância entre os dois pontos
+      const touch1 = event.touches[0];
+      const touch2 = event.touches[1];
+      return getDistance(touch1, touch2);
+    }
+    return 0;
+  })
+).subscribe(distance => {
+  initialDistance = distance;
+});
+
+fromEvent<TouchEvent>(imageElement, 'touchmove').pipe(
+  map(event => {
+    event.preventDefault();
+    if (event.touches.length === 2) {
+      const touch1 = event.touches[0];
+      const touch2 = event.touches[1];
+      return getDistance(touch1, touch2);
+    }
+    return 0;
+  }),
+  pairwise()
+).subscribe(([prev, curr]) => {
+  if (initialDistance > 0 && curr > 0) {
+    // Mudar a escala em função da quantidade de pinça
+    const scaleDelta = curr / initialDistance;
+    const newScale = currentScale * scaleDelta;
+
+    // Limitar a escala (0.5x ~ 3x)
+    const clampedScale = Math.max(0.5, Math.min(3, newScale));
+
+    imageElement.style.transform = `scale(${clampedScale})`;
+  }
+});
+
+fromEvent<TouchEvent>(imageElement, 'touchend').subscribe(() => {
+  // Registar a escala atual
+  const transform = imageElement.style.transform;
+  const match = transform.match(/scale\(([^)]+)\)/);
+  if (match) {
+    currentScale = parseFloat(match[1]);
+  }
+});
+
+// Calcular a distância entre dois pontos
+function getDistance(touch1: Touch, touch2: Touch): number {
+  const dx = touch2.clientX - touch1.clientX;
+  const dy = touch2.clientY - touch1.clientY;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+```
+
+> [!NOTE] Pontos de implementação para o zoom de pinça
+> - Determinar o toque de dois dedos com `touches.length === 2`
+> - Registar a distância inicial com `touchstart`
+> - Calcular a distância atual com `touchmove` e atualizar a escala
+> - Calcular a diferença da última vez com `pairwise()`
+> - Limitar o alcance da escala para melhorar a usabilidade
+
+## Padrões de eventos compostos
+
+### Exemplo prático: deteção de pressão longa
+
+```typescript
+import { fromEvent, race, timer, switchMap, takeUntil, tap } from 'rxjs';
+const button = document.createElement('button');
+button.id = 'long-press-button';
+button.innerText = 'Pressão longa.';
+button.style.padding = '15px 30px';
+button.style.margin = '10px';
+button.style.fontSize = '16px';
+button.style.cursor = 'pointer';
+document.body.appendChild(button);
+
+const mouseDown$ = fromEvent(button, 'mousedown');
+const mouseUp$ = fromEvent(document, 'mouseup');
+
+mouseDown$.pipe(
+  switchMap(() =>
+    // Esperar 500ms ou correr para obter um mouseup
+    race(
+      timer(500).pipe(
+        tap(() => console.log('Deteção de pressão longa!'))
+      ),
+      mouseUp$.pipe(
+        tap(() => console.log('Clique normal'))
+      )
+    ).pipe(
+      takeUntil(mouseUp$)
+    )
+  )
+).subscribe(() => {
+  console.log('Evento concluído');
+});
+```
+
+### Exemplo prático: deteção de duplo clique
+
+```typescript
+import { fromEvent, buffer, debounceTime, map, filter } from 'rxjs';
+const element = document.createElement('div');
+element.id = 'double-click-target';
+element.innerText = 'Duplo clique!';
+element.style.padding = '40px';
+element.style.margin = '10px';
+element.style.background = '#FF9800';
+element.style.color = '#fff';
+element.style.cursor = 'pointer';
+element.style.userSelect = 'none';
+element.style.display = 'inline-block';
+document.body.appendChild(element);
+
+const click$ = fromEvent(element, 'click');
+
+click$.pipe(
+  buffer(click$.pipe(debounceTime(250))), // Resumir os cliques num intervalo de 250 ms
+  map(clicks => clicks.length),
+  filter(count => count === 2) // Apenas duplo clique
+).subscribe(() => {
+  console.log('Deteção de duplo clique!');
+  handleDoubleClick();
+});
+
+function handleDoubleClick(): void {
+  console.log('Processamento de duplo clique');
+}
+```
+
+### Exemplo prático: visualização do atraso de passagem do rato
+
+```typescript
+import { fromEvent, timer, switchMap, takeUntil, map } from 'rxjs';
+// Traditional approach (commented for reference)
+// const tooltip = document.querySelector<HTMLElement>('#tooltip');
+// const target = document.querySelector<HTMLElement>('#hover-target');
+
+// Self-contained: creates tooltip and target dynamically
+const target = document.createElement('div');
+target.id = 'hover-target';
+target.innerText = 'Passar o rato.';
+target.style.padding = '20px';
+target.style.margin = '10px';
+target.style.background = '#9C27B0';
+target.style.color = '#fff';
+target.style.display = 'inline-block';
+target.style.cursor = 'pointer';
+target.style.userSelect = 'none';
+document.body.appendChild(target);
+
+const tooltip = document.createElement('div');
+tooltip.id = 'tooltip';
+tooltip.innerText = 'Sugestão de ferramenta';
+tooltip.style.position = 'absolute';
+tooltip.style.padding = '10px';
+tooltip.style.background = '#333';
+tooltip.style.color = '#fff';
+tooltip.style.borderRadius = '4px';
+tooltip.style.display = 'none';
+tooltip.style.pointerEvents = 'none';
+tooltip.style.marginTop = '50px';
+tooltip.style.marginLeft = '10px';
+document.body.appendChild(tooltip);
+
+const mouseEnter$ = fromEvent(target, 'mouseenter');
+const mouseLeave$ = fromEvent(target, 'mouseleave');
+
+mouseEnter$.pipe(
+  switchMap(() =>
+    // Aguardar 500 ms antes de apresentar a dica de ferramenta
+    timer(500).pipe(
+      map(() => true),
+      takeUntil(mouseLeave$) // Cancelar quando o rato se afasta
+    )
+  )
+).subscribe(() => {
+  tooltip.style.display = 'block';
+  console.log('Dica de ferramenta exibida');
+});
+
+mouseLeave$.subscribe(() => {
+  tooltip.style.display = 'none';
+  console.log('Tooltip oculto');
+});
+```
 
 ## Limpeza do evento
 

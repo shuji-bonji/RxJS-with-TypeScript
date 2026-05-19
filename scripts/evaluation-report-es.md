@@ -5,8 +5,8 @@
 | 項目 | 値 |
 |------|-----|
 | ファイル数 | 181 |
-| 平均スコア | 0.806 |
-| 最小スコア | 0.312 |
+| 平均スコア | 0.808 |
+| 最小スコア | 0.332 |
 | 最大スコア | 0.981 |
 
 ### 品質分布
@@ -15,14 +15,13 @@
 |------|------|------|
 | 🟢 優秀 (≥0.95) | 1 | 0.6% |
 | 🔵 良好 (0.85-0.94) | 51 | 28.2% |
-| 🟡 要改善 (0.70-0.84) | 111 | 61.3% |
-| 🔴 要修正 (<0.70) | 18 | 9.9% |
+| 🟡 要改善 (0.70-0.84) | 112 | 61.9% |
+| 🔴 要修正 (<0.70) | 17 | 9.4% |
 
 ## 🔴 要修正ファイル (スコア < 0.70)
 
 | スコア | ファイル | ペア数 |
 |--------|----------|--------|
-| 🔴 0.312 | `operators/filtering/filter.md` | 4 |
 | 🔴 0.332 | `practical-patterns/index.md` | 15 |
 | 🔴 0.525 | `schedulers/types.md` | 13 |
 | 🔴 0.565 | `operators/filtering/skipLast.md` | 18 |
@@ -182,7 +181,7 @@
 | 🔵 0.901 | operators/filtering/distinctUntilChanged.md | 5 |
 | 🔵 0.868 | operators/filtering/distinctUntilKeyChanged.md | 5 |
 | 🔴 0.619 | operators/filtering/elementAt.md | 15 |
-| 🔴 0.312 | operators/filtering/filter.md | 4 |
+| 🟡 0.773 | operators/filtering/filter.md | 10 |
 | 🔵 0.861 | operators/filtering/find.md | 10 |
 | 🟡 0.801 | operators/filtering/findIndex.md | 16 |
 | 🟡 0.837 | operators/filtering/first.md | 5 |
@@ -313,4 +312,4 @@
 
 ---
 
-最終更新: 2026-05-18T03:58:35Z
+最終更新: 2026-05-19T05:46:01Z

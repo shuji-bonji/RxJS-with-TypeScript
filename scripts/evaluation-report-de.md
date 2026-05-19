@@ -5,7 +5,7 @@
 | 項目 | 値 |
 |------|-----|
 | ファイル数 | 181 |
-| 平均スコア | 0.864 |
+| 平均スコア | 0.863 |
 | 最小スコア | 0.647 |
 | 最大スコア | 0.969 |
 
@@ -166,7 +166,7 @@
 | 🔵 0.885 | operators/filtering/distinctUntilChanged.md | 5 |
 | 🟡 0.849 | operators/filtering/distinctUntilKeyChanged.md | 5 |
 | 🔴 0.693 | operators/filtering/elementAt.md | 15 |
-| 🔵 0.934 | operators/filtering/filter.md | 5 |
+| 🔵 0.888 | operators/filtering/filter.md | 10 |
 | 🔵 0.856 | operators/filtering/find.md | 10 |
 | 🟡 0.831 | operators/filtering/findIndex.md | 16 |
 | 🔵 0.869 | operators/filtering/first.md | 5 |
@@ -297,4 +297,4 @@
 
 ---
 
-最終更新: 2026-05-18T03:18:10Z
+最終更新: 2026-05-19T05:05:36Z

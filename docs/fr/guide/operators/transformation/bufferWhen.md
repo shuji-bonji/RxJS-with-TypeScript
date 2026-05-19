@@ -45,6 +45,62 @@ source$.pipe(
 
 `bufferWhen` et `bufferToggle` sont similaires, mais **leurs méthodes de contrôle et comportements sont très différents**.
 
+### Comportement de bufferWhen
+
+```ts
+import { interval } from 'rxjs';
+import { bufferWhen, take } from 'rxjs';
+
+const source$ = interval(300).pipe(take(12)); // Émet 0-11 toutes les 300ms
+
+// bufferWhen : contrôle uniquement la fin (le buffer suivant démarre immédiatement)
+source$.pipe(
+  bufferWhen(() => interval(1000))
+).subscribe(console.log);
+// Sortie : [0, 1, 2], [3, 4, 5], [6, 7, 8, 9], [10, 11]
+//
+// Chronologie :
+//  0ms   300ms  600ms  900ms  1200ms 1500ms 1800ms 2100ms 2400ms 2700ms 3000ms 3300ms 3600ms
+//  0     1      2      3      4      5      6      7      8      9      10     11
+//  [----------1s----------][----------1s----------][----------1s----------][-----1s-----]
+//   Buffer 1 (0-2)          Buffer 2 (3-5)          Buffer 3 (6-9)          Buffer 4 (10-11)
+//   Continu, sans chevauchement, le buffer suivant démarre immédiatement
+```
+
+### Comportement de bufferToggle
+
+```ts
+import { interval } from 'rxjs';
+import { bufferToggle, take } from 'rxjs';
+
+const source$ = interval(300).pipe(take(12)); // Émet 0-11 toutes les 300ms
+
+// bufferToggle : contrôle indépendant du début et de la fin (chevauchement possible)
+const opening$ = interval(1000); // Démarrage toutes les 1s
+const closing = () => interval(800); // Fin 800ms après le démarrage
+
+source$.pipe(
+  bufferToggle(opening$, closing)
+).subscribe(console.log);
+// Sortie : [3, 4, 5], [6, 7, 8], [9, 10, 11]
+//
+// Chronologie :
+//  0ms   300ms  600ms  900ms  1200ms 1500ms 1800ms 2100ms 2400ms 2700ms 3000ms 3300ms
+//  0     1      2      3      4      5      6      7      8      9      10     11
+//        ----Début 1 (1000ms)----[---fin 800ms plus tard (1800ms)---]
+//                        3      4      5
+//                        └→ [3,4,5]
+//                    ----Début 2 (2000ms)----[---fin 800ms plus tard (2800ms)---]
+//                                            6      7      8
+//                                            └→ [6,7,8]
+//                              ----Début 3 (3000ms)----[---fin 800ms plus tard (3800ms)---]
+//                                                      9      10     11
+//                                                      └→ [9,10,11]
+//  Attend le déclencheur de démarrage, périodes indépendantes (0-2 ne sont pas inclus car avant le premier démarrage)
+```
+
+### Principales différences
+
 | Opérateur | Contrôle de début | Contrôle de fin | Période de buffer | Caractéristique |
 |---|---|---|---|---|
 | `bufferWhen(closing)` | Auto (immédiat après fin) | Dynamique | Continue | Pas d'intervalle entre buffers |
@@ -143,6 +199,129 @@ logs$.pipe(
 ```
 
 
+## 📋 Utilisation type-safe
+
+Un exemple d'implémentation type-safe utilisant les génériques en TypeScript.
+
+```ts
+import { Observable, interval, timer } from 'rxjs';
+import { bufferWhen, map } from 'rxjs';
+
+interface MetricData {
+  value: number;
+  timestamp: Date;
+  source: string;
+}
+
+interface BufferConfig {
+  minDuration: number;
+  maxDuration: number;
+  adaptive: boolean;
+}
+
+class AdaptiveBuffer<T> {
+  constructor(private config: BufferConfig) {}
+
+  private getNextBufferDuration(previousCount: number): number {
+    if (!this.config.adaptive) {
+      return this.config.minDuration;
+    }
+
+    // Ajuste la prochaine période de buffer en fonction du volume de données
+    const ratio = Math.min(previousCount / 10, 1);
+    const duration =
+      this.config.minDuration +
+      (this.config.maxDuration - this.config.minDuration) * (1 - ratio);
+
+    return Math.floor(duration);
+  }
+
+  apply(source$: Observable<T>): Observable<T[]> {
+    let previousCount = 0;
+
+    return source$.pipe(
+      bufferWhen(() => {
+        const duration = this.getNextBufferDuration(previousCount);
+        return timer(duration);
+      }),
+      map(buffer => {
+        previousCount = buffer.length;
+        return buffer;
+      })
+    );
+  }
+}
+
+// Exemple d'utilisation
+const metricsStream$ = interval(300).pipe(
+  map(i => ({
+    value: Math.random() * 100,
+    timestamp: new Date(),
+    source: `sensor-${i % 3}`
+  } as MetricData))
+);
+
+const buffer = new AdaptiveBuffer<MetricData>({
+  minDuration: 1000,  // minimum 1s
+  maxDuration: 5000,  // maximum 5s
+  adaptive: true      // adaptatif
+});
+
+buffer.apply(metricsStream$).subscribe(metrics => {
+  if (metrics.length > 0) {
+    const avg = metrics.reduce((sum, m) => sum + m.value, 0) / metrics.length;
+    console.log(`Taille du buffer : ${metrics.length}, moyenne : ${avg.toFixed(2)}`);
+  }
+});
+```
+
+
+## 🎯 Comparaison avec les autres opérateurs de buffer
+
+```ts
+import { interval, timer, Subject } from 'rxjs';
+import { buffer, bufferTime, bufferCount, bufferWhen, bufferToggle, take } from 'rxjs';
+
+const source$ = interval(300).pipe(take(10)); // 0-9
+
+// 1. buffer : déclencheur fixe
+const trigger$ = new Subject<void>();
+source$.pipe(buffer(trigger$)).subscribe(console.log);
+setInterval(() => trigger$.next(), 1000);
+// Sortie : [0, 1, 2], [3, 4, 5], ... (au moment du déclencheur)
+
+// 2. bufferTime : intervalle de temps fixe
+source$.pipe(bufferTime(1000)).subscribe(console.log);
+// Sortie : [0, 1, 2], [3, 4, 5], [6, 7, 8], [9]
+
+// 3. bufferCount : nombre fixe
+source$.pipe(bufferCount(3)).subscribe(console.log);
+// Sortie : [0, 1, 2], [3, 4, 5], [6, 7, 8], [9]
+
+// 4. bufferWhen : contrôle dynamique de fin (continu)
+source$.pipe(
+  bufferWhen(() => timer(1000))
+).subscribe(console.log);
+// Sortie : [0, 1, 2], [3, 4, 5], [6, 7, 8], [9]
+
+// 5. bufferToggle : contrôle indépendant du début et de la fin (chevauchement possible)
+const opening$ = interval(1000);
+const closing = () => timer(800);
+source$.pipe(
+  bufferToggle(opening$, closing)
+).subscribe(console.log);
+// Sortie : [3, 4, 5], [6, 7, 8]
+```
+
+| Opérateur | Déclencheur | Contrôle dynamique | Chevauchement | Cas d'utilisation |
+|---|---|---|---|---|
+| `buffer` | Observable externe | ❌ | ❌ | Événementiel |
+| `bufferTime` | Temps fixe | ❌ | ❌ | Agrégation périodique |
+| `bufferCount` | Nombre fixe | ❌ | ❌ | Traitement quantitatif |
+| `bufferWhen` | Dynamique (fin uniquement) | ✅ | ❌ | Traitement par lots adaptatif |
+| `bufferToggle` | Dynamique (début et fin) | ✅ | ✅ | Gestion de périodes complexes |
+
+
 ## ⚠️ Erreurs courantes
 
 > [!WARNING]
@@ -182,9 +361,19 @@ source$.pipe(
 - ✅ Lorsque vous voulez ajuster la prochaine période basée sur les résultats précédents
 - ✅ Lorsque vous voulez implémenter un traitement par lots adaptatif
 
+### Quand utiliser bufferToggle
+- ✅ Lorsque vous voulez contrôler le début et la fin de manière indépendante
+- ✅ Lorsque les périodes de buffer peuvent se chevaucher
+- ✅ Lorsque vous avez des événements de début/fin clairs (ex. pendant l'appui sur un bouton)
+
+### Quand utiliser bufferTime
+- ✅ Lorsque la mise en buffer à intervalles de temps fixes est suffisante
+- ✅ Lorsqu'une implémentation simple est requise
+
 ### Points d'attention
 - ⚠️ `closingSelector` doit retourner un nouvel Observable à chaque fois
-- ⚠️ Si les conditions de fin deviennent trop complexes, le débogage devient difficile
+- ⚠️ Des conditions de fin trop complexes rendent le débogage difficile
+- ⚠️ Pour le contrôle adaptatif, les tests sont importants pour éviter les comportements inattendus
 
 
 ## 🚀 Prochaines étapes

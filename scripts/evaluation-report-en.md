@@ -15,14 +15,15 @@
 |------|------|------|
 | 🟢 優秀 (≥0.95) | 41 | 22.7% |
 | 🔵 良好 (0.85-0.94) | 123 | 68.0% |
-| 🟡 要改善 (0.70-0.84) | 16 | 8.8% |
-| 🔴 要修正 (<0.70) | 1 | 0.6% |
+| 🟡 要改善 (0.70-0.84) | 15 | 8.3% |
+| 🔴 要修正 (<0.70) | 2 | 1.1% |
 
 ## 🔴 要修正ファイル (スコア < 0.70)
 
 | スコア | ファイル | ペア数 |
 |--------|----------|--------|
 | 🔴 0.572 | `operators/filtering/filter.md` | 9 |
+| 🔴 0.684 | `operators/combination/raceWith.md` | 10 |
 
 ## ファイル別一覧
 
@@ -148,7 +149,7 @@
 | 🔵 0.930 | operators/combination/mergeAll.md | 7 |
 | 🔵 0.918 | operators/combination/mergeWith.md | 10 |
 | 🔵 0.940 | operators/combination/practical-use-cases.md | 17 |
-| 🟡 0.832 | operators/combination/raceWith.md | 10 |
+| 🔴 0.684 | operators/combination/raceWith.md | 10 |
 | 🔵 0.897 | operators/combination/switchAll.md | 8 |
 | 🟢 0.953 | operators/combination/withLatestFrom.md | 5 |
 | 🔵 0.936 | operators/combination/zipAll.md | 10 |
@@ -296,4 +297,4 @@
 
 ---
 
-最終更新: 2026-05-19T00:58:41Z
+最終更新: 2026-05-19T04:24:46Z
