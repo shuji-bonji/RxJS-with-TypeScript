@@ -68,15 +68,11 @@ Cliques do usuário: ●    ●●●        ●  ●●
 throttleTime(1000): ●              ●
                     |              |
                    Execução do processamento      Execução do processamento
-Cliques do usuário: ●    ●●●        ●  ●●
-                    |    |          |  |
-throttleTime(1000): ●              ●
-                    |              |
-                   Execução do processamento      Execução do processamento
 ```
 
+> [!NOTE] Características de throttleTime
 > - Processa o **primeiro evento** e ignora os eventos subsequentes por um período de tempo
-> Adequado quando o tempo real é importante (rolagem, redimensionamento, etc.)
+> - Adequado quando o tempo real é importante (rolagem, redimensionamento, etc.)
 
 ### Solução 2: controle com debounceTime
 
@@ -117,26 +113,24 @@ function performSearch(query: string): void {
 ```
 Entrada do usuário:  ●●●●●     ●●        ●●●●
                       |            |      |
-debounceTime(300):   300ms       300ms  300msEm espera
+debounceTime(300):   300ms       300ms  300ms Em espera
                       |            |      |
                      Processamento         Processamento   Execução do processamento
-Cliques do usuário: ●    ●●●        ●  ●●
-                    |    |          |  |
-throttleTime(1000): ●              ●
-                    |              |
-                   Execução do processamento      Execução do processamento
 ```
 
+> [!NOTE] Características de debounceTime
 > - Aguarde um determinado tempo após o **último evento** antes de processar
-> - adequado para pesquisa, preenchimento automático e validação em tempo real
+> - Adequado para pesquisa, preenchimento automático e validação em tempo real
 
 ### Como usar o throttleTime vs. debounceTime
 
-Cliques do usuário: ●    ●●●        ●  ●●
-                    |    |          |  |
-throttleTime(1000): ●              ●
-                    |              |
-                   Execução do processamento      Execução do processamento
+| Caso de uso | Operador recomendado | Motivo |
+|-----|-------------------|------|
+| **Entrada de pesquisa** | `debounceTime` | Pesquisar após a parada da entrada |
+| **Autocompletar** | `debounceTime` | Exibir candidatos após a parada da entrada |
+| **Eventos de rolagem** | `throttleTime` | Processar periodicamente durante a rolagem |
+| **Redimensionamento de janela** | `throttleTime` ou `debounceTime` | Depende dos requisitos |
+| **Prevenção de cliques repetidos em botão** | `throttleTime` ou `exhaustMap` | Processar o primeiro clique imediatamente |
 
 ### Solução 3: deduplicação com distinctUntilChanged
 
