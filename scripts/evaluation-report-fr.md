@@ -211,7 +211,7 @@
 | 🔴 0.658 | operators/transformation/bufferCount.md | 5 |
 | 🟡 0.757 | operators/transformation/bufferTime.md | 5 |
 | 🟡 0.735 | operators/transformation/bufferToggle.md | 12 |
-| 🟡 0.762 | operators/transformation/bufferWhen.md | 6 |
+| 🟡 0.736 | operators/transformation/bufferWhen.md | 8 |
 | 🔵 0.867 | operators/transformation/concatMap.md | 5 |
 | 🟡 0.750 | operators/transformation/exhaustMap.md | 5 |
 | 🟡 0.813 | operators/transformation/expand.md | 7 |
@@ -225,7 +225,7 @@
 | 🟡 0.791 | operators/transformation/reduce.md | 11 |
 | 🟡 0.801 | operators/transformation/scan.md | 5 |
 | 🟡 0.825 | operators/transformation/switchMap.md | 5 |
-| 🟡 0.822 | operators/transformation/window.md | 16 |
+| 🟡 0.823 | operators/transformation/window.md | 16 |
 | 🟡 0.741 | operators/transformation/windowCount.md | 12 |
 | 🔵 0.851 | operators/transformation/windowTime.md | 17 |
 | 🟡 0.725 | operators/transformation/windowToggle.md | 13 |
@@ -316,4 +316,4 @@
 
 ---
 
-最終更新: 2026-05-19T04:45:35Z
+最終更新: 2026-05-19T10:38:30Z

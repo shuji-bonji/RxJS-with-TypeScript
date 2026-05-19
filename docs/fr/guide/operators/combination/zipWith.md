@@ -97,7 +97,7 @@ userIds$
 
 ### Exemples spécifiques d'utilisation
 
-**Pour un simple appariement, la Creation Function est recommandée**.
+**Pour un appariement simple, la Creation Function est recommandée**.
 
 ```ts
 import { zip, of } from 'rxjs';

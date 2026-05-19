@@ -321,4 +321,4 @@ of(1, 2, 3, 4, 5)
 
 ## Résumé.
 
-L'opérateur `reduce` accumule toutes les valeurs d'un flux et ne fournit que le résultat final **à la fin**. Cela convient lorsque les résultats intermédiaires ne sont pas nécessaires et que seul le résultat final de l'agrégat est requis. Cependant, aucun résultat n'est disponible si le flux n'est pas terminé, donc vous devez utiliser `scan` pour les flux infinis ou mettre une condition de sortie, par exemple avec `take`.
+L'opérateur `reduce` accumule toutes les valeurs d'un flux et ne fournit que le résultat final **à la fin**. Cela convient lorsque les résultats intermédiaires ne sont pas nécessaires et que seul le résultat final de l'agrégat est requis. Cependant, aucun résultat n'est disponible si le flux n'est pas terminé, donc vous devez utiliser `scan` ou mettre une condition de sortie, par exemple `take`, pour les flux infinis.

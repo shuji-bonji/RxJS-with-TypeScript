@@ -38,7 +38,7 @@ L'oggetto restituito ha la seguente struttura.
 - **Misurazione delle prestazioni**: misurazione dei tempi di elaborazione
 - Analisi dei tempi degli eventi**: misurazione degli intervalli tra le azioni dell'utente
 - **Debug e logging**: registrazione dei valori emessi.
-- **Registrazione di dati in serie temporali**: memorizzazione con data e ora di dati di sensori, ad esempio.
+- **Registrazione di dati in serie temporali**: memorizzazione con data e ora dei dati di un sensore, ad esempio.
 
 ## 🧪 Esempio pratico di codice 1: misurazione degli intervalli di clic
 

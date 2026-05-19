@@ -349,7 +349,7 @@ function generate<T, S>(
 > - **Numeri sequenziali semplici** → `range()`
 > - **Condizioni o fasi complesse** → `generate()`
 > - **Determinati dinamicamente su sottoscrizione** → `defer()`
-> - **Fibonacci, fattoriali, ecc** → `generare()`
+> - **Fibonacci, fattoriale, ecc** → `generare()`
 
 ## Asincronizzazione tramite scheduler
 
@@ -509,7 +509,7 @@ Creation Function è una potente funzione che consente di descrivere in modo dic
 ## Vedi anche.
 
 - [range()](/it/guide/creation-functions/loop/range) - generazione di numeri sequenziali semplici
-- defer()](/it/guide/creation-functions/condizionale/defer) - generazione dinamica su sottoscrizione
+- defer()](/it/guide/creation-functions/conditional/defer) - generazione dinamica su sottoscrizione
 - [expand()](/it/guide/operators/trasformazione/expand) - espansione ricorsiva (operatori di ordine superiore)
 - [scan()](/it/guide/operators/trasformazione/scan) - Calcolo cumulativo
 

@@ -231,13 +231,13 @@ const button = document.querySelector('#start-button'); // null Possibilité d'u
 const clicks$ = fromEvent(button, 'click'); // erreur ou ne se déclenche pas pour toujours
 
 source$.pipe(
-  window(clicks$), // clicks$ne se déclenche pas, la première fenêtre ne se ferme pas
+  window(clicks$), // clicks$La première fenêtre ne se ferme pas tant que la première fenêtre n'est pas déclenchée.
   mergeAll()
 ).subscribe();
 
 // Problème:
 // - clicks$La première fenêtre reste ouverte pour toujours si la valeur de
-// - source$La valeur de0, 1, 2, 3...) continue à s'accumuler dans la mémoire
+// - source$La valeur de0, 1, 2, 3...) continue de s'accumuler dans la mémoire
 // - Provoque des fuites de mémoire
 ```
 
@@ -330,6 +330,6 @@ L'opérateur `window` est un outil puissant qui peut déclencher un Observable e
 
 - ✅ Différents traitements peuvent être appliqués à chaque fenêtre
 - ✅ Contrôle flexible basé sur les événements
-- ✅ Prise en charge des opérations de flux avancées
+- ✅ Prise en charge de la manipulation avancée des flux
 - ⚠️ Gestion des abonnements nécessaire
 - ⚠️ Attention aux fuites de mémoire
