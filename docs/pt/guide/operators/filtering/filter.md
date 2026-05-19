@@ -1,87 +1,86 @@
 ---
-description: O operador filter é um operador básico do RxJS que filtra valores com base em condições especificadas e é usado para controlar fluxos de dados. Como Array.prototype.filter(), ele usa uma função predicado para determinar quais valores passar, permitindo seleção condicional de valores e filtragem type-safe.
+description: "O operador filter classifica os valores em um fluxo com base em uma função condicional especificada, permitindo a passagem apenas dos valores que satisfazem a condição. Ele pode ser utilizado como uma função Type Guard (predicado de tipo) no TypeScript, e também explica a diferença entre ele e o buffer e as ressalvas de transformar uma função de predicado em uma função pura. Esta seção também explica a diferença entre buffers e funções puras."
 ---
 
-# filter - Filtrar Valores com Base em Condições
+# filter - somente passar valores que correspondam às condições
 
-O operador `filter` passa apenas valores que **satisfazem uma condição especificada** (função predicado).
-Este é o mesmo conceito do `Array.prototype.filter()` do JavaScript aplicado a Observables.
+O operador `filter` classifica os valores em um fluxo com base em uma função condicional especificada e só permite a passagem de valores que atendam à condição.
 
-## 🔰 Sintaxe Básica e Uso
+## 🔰 Sintaxe básica e uso
 
 ```ts
-import { of } from 'rxjs';
+import { from } from 'rxjs';
 import { filter } from 'rxjs';
 
-const source$ = of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+const numbers$ = from([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
-source$.pipe(
-  filter(x => x % 2 === 0) // Passa apenas números pares
-).subscribe(value => {
-  console.log('Valor:', value);
-});
-
-// Saída:
-// Valor: 2
-// Valor: 4
-// Valor: 6
-// Valor: 8
-// Valor: 10
+numbers$.pipe(
+  filter(n => n % 2 === 0)
+).subscribe(console.log);
+// Resultados: 2, 4, 6, 8, 10
 ```
 
-- A função predicado `(value) => boolean` determina quais valores passar.
-- Apenas valores que retornam `true` são passados para o próximo operador.
+- Somente os valores que correspondem à condição são transmitidos.
+- Funciona de forma semelhante a `Array.prototype.filter()` em arrays, mas é sequencial no Observable.
 
-## 💡 Padrões de Uso Típicos
+[🌐 Documentação oficial do RxJS - `filter`](https://rxjs.dev/api/operators/filter)
 
-- **Filtragem de dados**: Seleciona apenas valores que satisfazem condições específicas
-- **Validação de entrada**: Permite apenas valores válidos
-- **Processamento condicional**: Processa diferentes streams com base em condições específicas
-- **Type guard**: Restringe tipos TypeScript
+## 💡 Padrão de utilização típico.
 
-## 🧠 Exemplo de Código Prático: Validação de Entrada do Usuário
+- Validação de valores de entrada de formulário
+- Permitir apenas dados de um tipo ou estrutura específica
+- Filtragem de eventos de sensores e dados de fluxo
 
-Este exemplo filtra valores de entrada para permitir apenas caracteres numéricos.
+## Exemplos práticos de código (com UI)
+
+Somente listar em tempo real se o número inserido for par.
 
 ```ts
 import { fromEvent } from 'rxjs';
 import { map, filter } from 'rxjs';
 
-// Criar campo de entrada
+const title = document.createElement('h3');
+title.innerHTML = 'filter Exemplos práticos de:';
+document.body.appendChild(title);
+
+// Criação de campos de entrada
 const input = document.createElement('input');
-input.type = 'text';
-input.placeholder = 'Digite apenas números...';
-input.style.padding = '8px';
-input.style.margin = '10px';
+input.type = 'number';
+input.placeholder = 'Entrada de valores numéricos';
+input.style.marginBottom = '10px';
 document.body.appendChild(input);
 
-// Área de saída
+// Criar área de saída
 const output = document.createElement('div');
-output.style.marginTop = '10px';
-output.style.padding = '10px';
-output.style.border = '1px solid #ccc';
 document.body.appendChild(output);
 
-// Evento de entrada
-const input$ = fromEvent<InputEvent>(input, 'input').pipe(
-  map(event => (event.target as HTMLInputElement).value),
-  filter(value => /^\d*$/.test(value)) // Permite apenas caracteres numéricos
-);
+// Fluxo de eventos de entrada
+fromEvent(input, 'input')
+  .pipe(
+    map((e) => parseInt((e.target as HTMLInputElement).value, 10)),
+    filter((n) => !isNaN(n) && n % 2 === 0)
+  )
+  .subscribe((evenNumber) => {
+    const item = document.createElement('div');
+    item.textContent = `Detecção de números pares: ${evenNumber}`;
+    output.prepend(item);
+  });
 
-input$.subscribe(value => {
-  output.textContent = `Valor válido: ${value}`;
-  console.log('Valor numérico:', value);
-});
-
-// Se caracteres não numéricos forem inseridos, o evento é filtrado
 ```
 
-## 🔍 Diferença em relação ao buffer
+- Somente será exibido na saída se o número for par.
+- Entradas ímpares ou inválidas são ignoradas.
 
-| Operador | Comportamento | Saída |
-|:---|:---|:---|
-| `filter` | Descarta valores que **não correspondem** à condição | Valor individual `T` |
-| `buffer` | **Acumula** valores em um array | Array `T[]` |
+> [!WARNING] 本番コードでの注意
+
+> A amostra acima omite o cancelamento da assinatura fromEvent para simplificar a explicação. No código real, use `takeUntil(destroy$)`, `take(N)` ou `Subscription.unsubscribe()` para gerenciar explicitamente o ciclo de vida. Mais informações: [Superando dificuldades: gerenciamento do ciclo de vida](/pt/guide/overcoming-difficulties/lifecycle-management.md)
+
+## 🔍 Diferenças com o buffer
+
+| Operador | Operação | Saída. |
+|---|---|---|
+| filter. | Descarta valores que não **correspondem** à condição | Valores individuais `T`. |
+| buffer. | Armazena** valores em uma matriz**. | Matriz `T[]` |
 
 ```ts
 import { interval } from 'rxjs';
@@ -89,36 +88,34 @@ import { filter, buffer, take } from 'rxjs';
 
 const source$ = interval(1000).pipe(take(5)); // 0, 1, 2, 3, 4
 
-// filter - Passa apenas valores que correspondem à condição
+// filter - Somente os valores que correspondem às condições são transmitidos
 source$.pipe(
   filter(x => x % 2 === 0)
 ).subscribe(x => {
   console.log('filter:', x);
-  // Saída: filter: 0
-  // Saída: filter: 2
-  // Saída: filter: 4
+  // Resultados: filter: 0
+  // Resultados: filter: 2
+  // Resultados: filter: 4
 });
 
-// buffer - Acumula valores como um array
+// buffer - Armazena valores como uma matriz
 source$.pipe(
   buffer(interval(2500))
 ).subscribe(arr => {
   console.log('buffer:', arr);
-  // Saída: buffer: [0, 1]
-  // Saída: buffer: [2, 3, 4]
+  // Resultados: buffer: [0, 1]
+  // Resultados: buffer: [2, 3, 4]
 });
 ```
 
-[🌐 Documentação Oficial do RxJS - `filter`](https://rxjs.dev/api/operators/filter)
+## ⚠️ Notas.
 
-## ⚠️ Observações
+### 1. As funções de predicado devem ser funções puras.
 
-### 1. Funções Predicado Devem Ser Funções Puras
-
-Evite funções predicado com efeitos colaterais.
+As funções de predicado com efeitos colaterais podem causar um comportamento inesperado quando o fluxo é reinscrito.
 
 ```ts
-// ❌ Exemplo ruim: Com efeitos colaterais
+// ❌ Exemplo ruim: Efeitos colaterais Sim
 let counter = 0;
 source$.pipe(
   filter(x => {
@@ -133,11 +130,13 @@ source$.pipe(
 ).subscribe();
 ```
 
-### 2. Usando Funções Type Guard
+### Use como função de proteção de tipo
 
-Você pode aproveitar a segurança de tipos do TypeScript.
+Você pode escrevê-la para retornar um predicado de tipo TypeScript (`x is T`) para restringir o tipo depois de passar o filtro.
 
 ```ts
+import { Observable, of, filter } from 'rxjs';
+
 interface User {
   id: number;
   name: string;
@@ -149,29 +148,31 @@ const users$: Observable<User> = of(
   { id: 2, name: 'Bob' }
 );
 
-// Usar como função type guard
+// Usada como função de proteção de tipo
 users$.pipe(
   filter((user): user is User & { email: string } => user.email !== undefined)
 ).subscribe(user => {
-  console.log(user.email.toLowerCase()); // email é inferido como tipo string
+  console.log(user.email.toLowerCase()); // email Não é uma função de proteção de tipo string É inferida como um tipo
 });
 ```
 
-## 📚 Operadores Relacionados
+> [!TIP] 型ガードの効果
 
-- [take](/pt/guide/operators/filtering/take) - Obtém apenas os primeiros N valores
-- [first](/pt/guide/operators/filtering/first) - Obtém apenas o primeiro valor (condicionalmente possível)
-- [distinct](/pt/guide/operators/filtering/distinct) - Exclui valores duplicados
-- [distinctUntilChanged](/pt/guide/operators/filtering/distinctUntilChanged) - Exclui valores que são iguais ao anterior
+> Ao retornar o predicado de tipo `user is User & { email: string }`, `user` após `filter` torna `email` uma propriedade obrigatória. Chamadas como `user.email.toLowerCase()` podem ser escritas sem erros de tipo.
 
-## Resumo
+## 📚 Operadores relacionados.
 
-O operador `filter` é a ferramenta de filtragem mais básica no RxJS.
+- [take](/pt/guide/operators/filtering/take) - somente os primeiros N valores são tomados.
+- [first](/pt/guide/operators/filtering/first) - obtém apenas o primeiro valor (também pode ser condicional)
+- [distinct](/pt/guide/operators/filtering/distinct) - exclui valores duplicados
+- distinctUntilChanged](/pt/guide/operators/filtering/distinctUntilChanged) - exclui o mesmo que o último valor
 
-- ✅ Passa apenas valores que correspondem à condição
-- ✅ Pode ser usado da mesma forma que `.filter()` para arrays
-- ✅ Pode ser usado como type guard do TypeScript
-- ⚠️ Funções predicado devem ser funções puras
+## Resumo.
 
-> [!WARNING] Atenção em código de produção
-> O exemplo acima omite o cancelamento da inscrição de `fromEvent` para simplificar a explicação. Em código real, gerencie explicitamente o ciclo de vida com `takeUntil(destroy$)`, `take(N)`, ou `Subscription.unsubscribe()`. Detalhes: [Superar dificuldades: gerenciamento do ciclo de vida](/pt/guide/overcoming-difficulties/lifecycle-management.md)
+O operador `filter` é a ferramenta de filtragem mais básica do RxJS.
+
+- Somente os valores que correspondem às condições são transmitidos.
+- Pode ser usado da mesma forma que `.filter()` para arrays.
+- Também pode ser usado como uma proteção de tipo TypeScript.
+- ⚠️ As funções de predicado devem ser funções puras.
+- ⚠️ Nome semelhante, mas uso diferente de buffer (valores individuais vs. arrays)

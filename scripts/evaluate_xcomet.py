@@ -104,16 +104,27 @@ def evaluate_lang(lang: str, model, batch_size: int, use_gpu: bool, force: bool,
         print(f"❌ {pairs_file} not found. Run extract-translation-pairs-v2.cjs first.")
         return False
 
-    # ペアファイル鮮度チェック: docs/ 内のいずれかの md がペアファイルより新しい場合に警告
-    docs_dir = REPO / 'docs' / ('guide' if lang == 'ja' else f'{lang}/guide')
-    if docs_dir.exists():
-        pairs_mtime = pairs_file.stat().st_mtime
-        newer_files = []
-        for md in docs_dir.rglob('*.md'):
+    # ペアファイル鮮度チェック: JA docs/guide または target lang docs のいずれかの md が
+    # ペアファイルより新しい場合に警告 (JA 原本の修正でも auto-extract が必要)
+    target_dir = REPO / 'docs' / f'{lang}/guide'
+    ja_dir = REPO / 'docs' / 'guide'
+    pairs_mtime = pairs_file.stat().st_mtime
+    newer_files = []
+    for d in [ja_dir, target_dir]:
+        if not d.exists():
+            continue
+        for md in d.rglob('*.md'):
             if md.stat().st_mtime > pairs_mtime:
-                newer_files.append(md.relative_to(docs_dir))
+                # JA か target lang か明示
+                prefix = 'ja:' if d == ja_dir else f'{lang}:'
+                rel = md.relative_to(d)
+                newer_files.append(f'{prefix}{rel}')
                 if len(newer_files) >= 3:
                     break
+        if len(newer_files) >= 3:
+            break
+    if newer_files or False:  # always check below
+        pass
         if newer_files:
             print(f"⚠️  {pairs_file.name} is OLDER than {lang} docs.")
             print(f"   Newer files (sample): {newer_files[:3]}")

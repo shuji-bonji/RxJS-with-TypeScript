@@ -106,6 +106,29 @@ def fix_leading_whitespace(text: str) -> tuple[str, int]:
     return text, (1 if text != original else 0)
 
 
+def fix_empty_code_blocks(text: str) -> tuple[str, int]:
+    """空のコードブロックを除去
+
+    パターン:
+        ```           <- open (no lang)
+                      <- 空行
+        ```           <- close
+                      <- 空行
+        ```ts         <- 次のブロック
+
+    内容が空白のみのコードブロックは表示価値がないので削除する。
+    """
+    # ```[lang?]\n[空白のみ]\n``` を空に置換
+    pattern = re.compile(
+        r'^```[^\n]*\n'        # opening fence (with or without lang)
+        r'(?:[ \t]*\n)*'        # 空白のみの行 (0+ 行)
+        r'```\s*$\n?',          # closing fence
+        re.MULTILINE
+    )
+    new_text, n = pattern.subn('', text)
+    return new_text, n
+
+
 def fix_adjacent_double_close(text: str) -> tuple[str, int]:
     """連続する閉じ ``` のうち余分な方を除去 (見出し直前のみ、厳格)
 
@@ -685,6 +708,11 @@ def process_file(lang: str, rel_path: str, glossary: dict = None) -> tuple[bool,
     text, n13 = fix_adjacent_double_close(text)
     if n13:
         actions.append(f'隣接 close 重複除去 ({n13}箇所)')
+
+    # 14. 空のコードブロック (内容なし) を除去
+    text, n14 = fix_empty_code_blocks(text)
+    if n14:
+        actions.append(f'空コードブロック除去 ({n14}箇所)')
 
     if text != original:
         file.write_text(text, encoding='utf-8')

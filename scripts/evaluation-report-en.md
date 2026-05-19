@@ -5,8 +5,8 @@
 | 項目 | 値 |
 |------|-----|
 | ファイル数 | 181 |
-| 平均スコア | 0.915 |
-| 最小スコア | 0.443 |
+| 平均スコア | 0.917 |
+| 最小スコア | 0.572 |
 | 最大スコア | 0.983 |
 
 ### 品質分布
@@ -14,16 +14,15 @@
 | 品質 | 件数 | 割合 |
 |------|------|------|
 | 🟢 優秀 (≥0.95) | 41 | 22.7% |
-| 🔵 良好 (0.85-0.94) | 122 | 67.4% |
+| 🔵 良好 (0.85-0.94) | 123 | 68.0% |
 | 🟡 要改善 (0.70-0.84) | 16 | 8.8% |
-| 🔴 要修正 (<0.70) | 2 | 1.1% |
+| 🔴 要修正 (<0.70) | 1 | 0.6% |
 
 ## 🔴 要修正ファイル (スコア < 0.70)
 
 | スコア | ファイル | ペア数 |
 |--------|----------|--------|
-| 🔴 0.443 | `operators/filtering/filter.md` | 4 |
-| 🔴 0.672 | `schedulers/types.md` | 13 |
+| 🔴 0.572 | `operators/filtering/filter.md` | 9 |
 
 ## ファイル別一覧
 
@@ -166,7 +165,7 @@
 | 🟢 0.953 | operators/filtering/distinctUntilChanged.md | 5 |
 | 🟢 0.952 | operators/filtering/distinctUntilKeyChanged.md | 5 |
 | 🔵 0.913 | operators/filtering/elementAt.md | 15 |
-| 🔴 0.443 | operators/filtering/filter.md | 4 |
+| 🔴 0.572 | operators/filtering/filter.md | 9 |
 | 🔵 0.916 | operators/filtering/find.md | 10 |
 | 🔵 0.913 | operators/filtering/findIndex.md | 16 |
 | 🔵 0.936 | operators/filtering/first.md | 5 |
@@ -262,7 +261,7 @@
 |--------|----------|--------|
 | 🔵 0.880 | schedulers/async-control.md | 15 |
 | 🟢 0.977 | schedulers/task-and-scheduler-basics.md | 5 |
-| 🔴 0.672 | schedulers/types.md | 13 |
+| 🔵 0.945 | schedulers/types.md | 13 |
 
 ### starter-kid.md
 
@@ -297,4 +296,4 @@
 
 ---
 
-最終更新: 2026-05-18T22:35:54Z
+最終更新: 2026-05-19T00:58:41Z

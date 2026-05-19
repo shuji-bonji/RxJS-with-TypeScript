@@ -1,0 +1,28 @@
+{
+  "category_1_filter_md": [
+    {
+      "file": "operators/filtering/filter.md",
+      "lang": "fr"
+    },
+    {
+      "file": "operators/filtering/filter.md",
+      "lang": "de"
+    },
+    {
+      "file": "operators/filtering/filter.md",
+      "lang": "it"
+    },
+    {
+      "file": "operators/filtering/filter.md",
+      "lang": "es"
+    },
+    {
+      "file": "operators/filtering/filter.md",
+      "lang": "nl"
+    },
+    {
+      "file": "operators/filtering/filter.md",
+      "lang": "pt"
+    }
+  ]
+}

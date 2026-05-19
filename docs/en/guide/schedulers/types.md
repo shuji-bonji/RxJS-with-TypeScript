@@ -140,6 +140,8 @@ console.log('2: End');
 
 ```
 
+```
+
 ```ts
 import { fromEvent, asapScheduler } from 'rxjs';
 import { observeOn, map } from 'rxjs';
@@ -389,6 +391,8 @@ By utilizing the scheduler with the `retry` operator, the timing of retries can 
 #### Basic retry control
 
 The `delay` option of the `retry` operator internally uses the `asyncScheduler` to control the retry interval.
+
+```
 
 ```
 
