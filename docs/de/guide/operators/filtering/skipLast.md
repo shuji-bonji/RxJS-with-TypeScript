@@ -399,19 +399,6 @@ numbers$.pipe(
 Überspringen Sie den Anfang und das Ende und erhalten Sie nur den mittleren Teil
 
 
-```ts
-import { range } from 'rxjs';
-import { skipLast } from 'rxjs';
-
-const numbers$ = range(0, 10); // 0von (bis)9bis
-
-numbers$.pipe(
-  skipLast(3)
-).subscribe(console.log);
-// Ausgabe: 0, 1, 2, 3, 4, 5, 6
-// (7, 8, 9 wird übersprungen)
-```
-
 ### Muster 2: Datenüberprüfung
 
 Wenn eine Überprüfung der nachfolgenden Werte erforderlich ist
@@ -434,19 +421,6 @@ numbers$.pipe(
 
 Fensterverarbeitung mit Daten unter Ausschluss der letzten N Fälle
 
-
-```ts
-import { range } from 'rxjs';
-import { skipLast } from 'rxjs';
-
-const numbers$ = range(0, 10); // 0von (bis)9bis
-
-numbers$.pipe(
-  skipLast(3)
-).subscribe(console.log);
-// Ausgabe: 0, 1, 2, 3, 4, 5, 6
-// (7, 8, 9 wird übersprungen)
-```
 
 ## 📚 Verwandte Operatoren
 

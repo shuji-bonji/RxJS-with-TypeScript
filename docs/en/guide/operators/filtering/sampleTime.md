@@ -356,19 +356,6 @@ clicks$.pipe(
 ```
 
 
-```ts
-import { fromEvent } from 'rxjs';
-import { sampleTime } from 'rxjs';
-
-const clicks$ = fromEvent(document, 'click');
-
-clicks$.pipe(
-  sampleTime(2000)
-).subscribe(() => {
-  console.log('2Second-by-second samples');
-});
-```
-
 ## 📚 Related Operators
 
 - **[sample](https://rxjs.dev/api/operators/sample)** - Sampling another Observable as a trigger (official documentation)

@@ -81,26 +81,6 @@ public interface Processor<T, R> extends Subscriber<T>, Publisher<R> {}
 
 ### Hauptunterschiede: Gegendruckkontrolle
 
-```java
-public interface Publisher<T> {
-    void subscribe(Subscriber<? super T> s);
-}
-
-public interface Subscriber<T> {
-    void onSubscribe(Subscription s);
-    void onNext(T t);
-    void onError(Throwable t);
-    void onComplete();
-}
-
-public interface Subscription {
-    void request(long n);  // Steuerung des Gegendrucks
-    void cancel();
-}
-
-public interface Processor<T, R> extends Subscriber<T>, Publisher<R> {}
-```
-
 #### RxJS Gegendruck (implizit)
 
 
@@ -363,79 +343,13 @@ graph TB
 **Back-End (Spring WebFlux):**
 
 
-```mermaid
-graph TB
-    reactiveX["ReactiveX<br/>(Gemeinsames Designkonzept)"]
-    rxjs["RxJS<br/>(JavaScript/TypeScript)"]
-    rxjava["RxJava<br/>(Java)"]
-    reactor["Reactor<br/>(Java)"]
-    rxcpp["RxCpp<br/>(C++)"]
-    rxswift["RxSwift<br/>(Swift)"]
-
-    reactiveX --> rxjs
-    reactiveX --> rxjava
-    reactiveX --> reactor
-    reactiveX --> rxcpp
-    reactiveX --> rxswift
-
-    classDef core fill:#fff9c4,stroke:#f57f17,stroke-width:3px,color:#333
-    classDef impl fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#333
-
-    class reactiveX core
-    class rxjs,rxjava,reactor,rxcpp,rxswift impl
-```
-
 #### Server-gesendete Ereignisse (Server → Client)
 
 **Front-End (RxJS):***
 
 
-```mermaid
-graph TB
-    reactiveX["ReactiveX<br/>(Gemeinsames Designkonzept)"]
-    rxjs["RxJS<br/>(JavaScript/TypeScript)"]
-    rxjava["RxJava<br/>(Java)"]
-    reactor["Reactor<br/>(Java)"]
-    rxcpp["RxCpp<br/>(C++)"]
-    rxswift["RxSwift<br/>(Swift)"]
-
-    reactiveX --> rxjs
-    reactiveX --> rxjava
-    reactiveX --> reactor
-    reactiveX --> rxcpp
-    reactiveX --> rxswift
-
-    classDef core fill:#fff9c4,stroke:#f57f17,stroke-width:3px,color:#333
-    classDef impl fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#333
-
-    class reactiveX core
-    class rxjs,rxjava,reactor,rxcpp,rxswift impl
-```
-
 **Back-End (Spring WebFlux):**
 
-
-```mermaid
-graph TB
-    reactiveX["ReactiveX<br/>(Gemeinsames Designkonzept)"]
-    rxjs["RxJS<br/>(JavaScript/TypeScript)"]
-    rxjava["RxJava<br/>(Java)"]
-    reactor["Reactor<br/>(Java)"]
-    rxcpp["RxCpp<br/>(C++)"]
-    rxswift["RxSwift<br/>(Swift)"]
-
-    reactiveX --> rxjs
-    reactiveX --> rxjava
-    reactiveX --> reactor
-    reactiveX --> rxcpp
-    reactiveX --> rxswift
-
-    classDef core fill:#fff9c4,stroke:#f57f17,stroke-width:3px,color:#333
-    classDef impl fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#333
-
-    class reactiveX core
-    class rxjs,rxjava,reactor,rxcpp,rxswift impl
-```
 
 ### 2. Server-Schicht ⇄ Datenschicht: Kafka Connect
 
@@ -467,52 +381,8 @@ graph TB
 **Kafka zur Server-Schicht (React):**
 
 
-```mermaid
-graph TB
-    reactiveX["ReactiveX<br/>(Gemeinsames Designkonzept)"]
-    rxjs["RxJS<br/>(JavaScript/TypeScript)"]
-    rxjava["RxJava<br/>(Java)"]
-    reactor["Reactor<br/>(Java)"]
-    rxcpp["RxCpp<br/>(C++)"]
-    rxswift["RxSwift<br/>(Swift)"]
-
-    reactiveX --> rxjs
-    reactiveX --> rxjava
-    reactiveX --> reactor
-    reactiveX --> rxcpp
-    reactiveX --> rxswift
-
-    classDef core fill:#fff9c4,stroke:#f57f17,stroke-width:3px,color:#333
-    classDef impl fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#333
-
-    class reactiveX core
-    class rxjs,rxjava,reactor,rxcpp,rxswift impl
-```
-
 ### 3. End-to-End reaktive Pipeline
 
-
-```mermaid
-graph TB
-    reactiveX["ReactiveX<br/>(Gemeinsames Designkonzept)"]
-    rxjs["RxJS<br/>(JavaScript/TypeScript)"]
-    rxjava["RxJava<br/>(Java)"]
-    reactor["Reactor<br/>(Java)"]
-    rxcpp["RxCpp<br/>(C++)"]
-    rxswift["RxSwift<br/>(Swift)"]
-
-    reactiveX --> rxjs
-    reactiveX --> rxjava
-    reactiveX --> reactor
-    reactiveX --> rxcpp
-    reactiveX --> rxswift
-
-    classDef core fill:#fff9c4,stroke:#f57f17,stroke-width:3px,color:#333
-    classDef impl fill:#e3f2fd,stroke:#1976d2,stroke-width:2px,color:#333
-
-    class reactiveX core
-    class rxjs,rxjava,reactor,rxcpp,rxswift impl
-```
 
 ## Leitlinien für die Technologieauswahl
 
@@ -633,27 +503,6 @@ public interface Subscription {
 public interface Processor<T, R> extends Subscriber<T>, Publisher<R> {}
 ```
 
-
-```java
-public interface Publisher<T> {
-    void subscribe(Subscriber<? super T> s);
-}
-
-public interface Subscriber<T> {
-    void onSubscribe(Subscription s);
-    void onNext(T t);
-    void onError(Throwable t);
-    void onComplete();
-}
-
-public interface Subscription {
-    void request(long n);  // Steuerung des Gegendrucks
-    void cancel();
-}
-
-public interface Processor<T, R> extends Subscriber<T>, Publisher<R> {}
-```
-
 ## Gemeinsamkeiten und Unterschiede in der Operator-Syntax
 
 RxJS, React und Kafka Streams haben eine **ähnliche Syntax** aber unterschiedliche **Semantik**.
@@ -686,71 +535,10 @@ public interface Processor<T, R> extends Subscriber<T>, Publisher<R> {}
 **React (Server-Schicht):**
 
 
-```java
-public interface Publisher<T> {
-    void subscribe(Subscriber<? super T> s);
-}
-
-public interface Subscriber<T> {
-    void onSubscribe(Subscription s);
-    void onNext(T t);
-    void onError(Throwable t);
-    void onComplete();
-}
-
-public interface Subscription {
-    void request(long n);  // Steuerung des Gegendrucks
-    void cancel();
-}
-
-public interface Processor<T, R> extends Subscriber<T>, Publisher<R> {}
-```
-
 **Kafka Streams (Datenschicht):**
 
 
-```java
-public interface Publisher<T> {
-    void subscribe(Subscriber<? super T> s);
-}
-
-public interface Subscriber<T> {
-    void onSubscribe(Subscription s);
-    void onNext(T t);
-    void onError(Throwable t);
-    void onComplete();
-}
-
-public interface Subscription {
-    void request(long n);  // Steuerung des Gegendrucks
-    void cancel();
-}
-
-public interface Processor<T, R> extends Subscriber<T>, Publisher<R> {}
-```
-
 ### Unterschiede: Ausführungsmodell und Semantik
-
-
-```java
-public interface Publisher<T> {
-    void subscribe(Subscriber<? super T> s);
-}
-
-public interface Subscriber<T> {
-    void onSubscribe(Subscription s);
-    void onNext(T t);
-    void onError(Throwable t);
-    void onComplete();
-}
-
-public interface Subscription {
-    void request(long n);  // Steuerung des Gegendrucks
-    void cancel();
-}
-
-public interface Processor<T, R> extends Subscriber<T>, Publisher<R> {}
-```
 
 
 ```typescript

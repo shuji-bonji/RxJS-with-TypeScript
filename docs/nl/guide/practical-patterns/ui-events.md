@@ -609,28 +609,6 @@ De volgende concrete voorbeelden illustreren hoe elke stap van deze code werkt.
 **Tijdlijn van een gebruiker die snel 'RxJS' typt:***.
 
 
-```typescript
-import { fromEvent, throttleTime } from 'rxjs';
-const button = document.createElement('button');
-button.id = 'submit-button';
-button.innerText = 'submit';
-document.body.appendChild(button);
-
-if (button) {
-  fromEvent(button, 'click').pipe(
-    throttleTime(1000) // 1In een seconde.1Slechts eenmaal verwerkt
-  ).subscribe(() => {
-    console.log('Uitvoering van verzendproces');
-    submitForm();
-  });
-}
-
-function submitForm(): void {
-  console.log('Tijdens formulierverzending...');
-  // APIGesprekken, enz.
-}
-```
-
 #### Rol van elke operator
 
 1. DebounceTime(300)**
@@ -711,52 +689,7 @@ function submitForm(): void {
 ### Praktisch voorbeeld: sneltoets
 
 
-```typescript
-import { fromEvent, throttleTime } from 'rxjs';
-const button = document.createElement('button');
-button.id = 'submit-button';
-button.innerText = 'submit';
-document.body.appendChild(button);
-
-if (button) {
-  fromEvent(button, 'click').pipe(
-    throttleTime(1000) // 1In een seconde.1Slechts eenmaal verwerkt
-  ).subscribe(() => {
-    console.log('Uitvoering van verzendproces');
-    submitForm();
-  });
-}
-
-function submitForm(): void {
-  console.log('Tijdens formulierverzending...');
-  // APIGesprekken, enz.
-}
-```
-
 ### Meerdere toetscombinaties
-
-
-```typescript
-import { fromEvent, throttleTime } from 'rxjs';
-const button = document.createElement('button');
-button.id = 'submit-button';
-button.innerText = 'submit';
-document.body.appendChild(button);
-
-if (button) {
-  fromEvent(button, 'click').pipe(
-    throttleTime(1000) // 1In een seconde.1Slechts eenmaal verwerkt
-  ).subscribe(() => {
-    console.log('Uitvoering van verzendproces');
-    submitForm();
-  });
-}
-
-function submitForm(): void {
-  console.log('Tijdens formulierverzending...');
-  // APIGesprekken, enz.
-}
-```
 
 
 ```typescript

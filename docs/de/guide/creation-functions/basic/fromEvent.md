@@ -153,10 +153,6 @@ clicks$.subscribe(() => console.log('AbonnementB'));
 // Ausgabe:
 // AbonnementA
 // AbonnementB
-```
-
-```
-
 ```typescript
 import { fromEvent } from 'rxjs';
 

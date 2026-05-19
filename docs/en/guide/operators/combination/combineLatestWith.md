@@ -217,66 +217,7 @@ combineLatest([
 });
 ```
 
-**If you want to combine multiple settings** ```ts
-import { fromEvent, interval } from 'rxjs';
-import { combineLatestWith, map, startWith, debounceTime } from 'rxjs';
-
-const searchInput = document.createElement('input');
-searchInput.placeholder = 'Search...';
-document.body.appendChild(searchInput);
-
-const categorySelect = document.createElement('select');
-categorySelect.innerHTML = '<option>All</option><option>Books</option><option>DVD</option>';
-document.body.appendChild(categorySelect);
-
-const output = document.createElement('div');
-output.style.marginTop = '10px';
-document.body.appendChild(output);
-
-// Mainstream: Search keywords
-const searchTerm$ = fromEvent(searchInput, 'input').pipe(
-  map(e => (e.target as HTMLInputElement).value),
-  debounceTime(300),  // After input300msWait
-  startWith('')
-);
-
-// Sub Stream: Select category
-const category$ = fromEvent(categorySelect, 'change').pipe(
-  map(e => (e.target as HTMLSelectElement).value),
-  startWith('All')
-);
-
-// ✅ Pipeable OperatorEdition - Complete in one pipeline
-searchTerm$
-  .pipe(
-    map(term => term.toLowerCase()),  // Convert to lower case
-    combineLatestWith(category$),
-    map(([term, category]) => ({
-      term,
-      category,
-      timestamp: new Date().toLocaleTimeString()
-    }))
-  )
-  .subscribe(result => {
-    output.textContent = `Search: "${result.term}" Category: ${result.category} [${result.timestamp}]`;
-  });
-
-// ❌ Creation FunctionEdition - Become redundant
-import { combineLatest } from 'rxjs';
-combineLatest([
-  searchTerm$.pipe(map(term => term.toLowerCase())),
-  category$
-]).pipe(
-  map(([term, category]) => ({
-    term,
-    category,
-    timestamp: new Date().toLocaleTimeString()
-  }))
-).subscribe(result => {
-  output.textContent = `Search: "${result.term}" Category: ${result.category} [${result.timestamp}]`;
-});
-```
-import { fromEvent } from 'rxjs';
+**If you want to combine multiple settings** import { fromEvent } from 'rxjs';
 import { combineLatestWith, map, startWith } from 'rxjs';
 
 // Create slider
@@ -343,8 +284,6 @@ red$
     colorBox.style.color = '#fff';
     colorBox.style.textShadow = '1px 1px 2px #000';
   });
-```
-
 ```ts
 import { fromEvent } from 'rxjs';
 import { combineLatestWith, map, startWith } from 'rxjs';

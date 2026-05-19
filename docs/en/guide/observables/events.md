@@ -164,8 +164,6 @@ allButtonClicks$.subscribe(message => console.log(message));
 #### Execution Result
 ```
 Button 1 was clicked
-```
-```
 Button 2 was clicked
 ```
 

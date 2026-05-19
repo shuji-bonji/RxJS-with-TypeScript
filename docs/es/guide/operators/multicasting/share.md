@@ -321,37 +321,6 @@ setTimeout(() => {
 ### Intercambio periódico de recuperación de datos.
 
 
-```typescript
-import { interval, share, take, tap } from 'rxjs';
-
-// Contar a intervalosObservable
-const source$ = interval(1000).pipe(
-  take(5),
-  tap(value => console.log(`Fuente.: ${value}`)),
-  share() // Activación de la multidifusión
-);
-
-// Primer abonado
-console.log('Observer 1 Inicio de la suscripción');
-const subscription1 = source$.subscribe(value =>
-  console.log(`Observer 1: ${value}`)
-);
-
-// 2.5Segundos después2Añadir segundo abonado
-setTimeout(() => {
-  console.log('Observer 2 Inicio de la suscripción');
-  source$.subscribe(value =>
-    console.log(`Observer 2: ${value}`)
-  );
-
-  // 2.5Abonados segundos después1Darse de baja
-  setTimeout(() => {
-    console.log('Observer 1 Darse de baja');
-    subscription1.unsubscribe();
-  }, 2500);
-}, 2500);
-```
-
 ## ⚠️ Notas.
 
 1.**Tiempo de las notas**: los suscriptores que se incorporen a mitad de camino no recibirán los valores anteriores.

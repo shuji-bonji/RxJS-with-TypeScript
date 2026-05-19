@@ -106,6 +106,56 @@ def fix_leading_whitespace(text: str) -> tuple[str, int]:
     return text, (1 if text != original else 0)
 
 
+def fix_identical_consecutive_code_blocks(text: str) -> tuple[str, int]:
+    """連続して現れる、内容が完全一致するコードブロックの 2 番目を除去
+
+    パターン (DeepL ハルシネーション or 過去パッチの副作用で生まれる):
+        ```
+        timing diagram
+        ```
+                      <- 空行 or 見出し
+        [optional heading]
+                      <- 空行
+        ```
+        timing diagram (完全コピー)
+        ```
+
+    検出条件:
+        - 2 つのコードブロックの中身が完全一致
+        - content が 50 文字以上
+        - 間に挟まる行が 200 文字以下 (短いほど DeepL バグの可能性高い)
+    """
+    # 全てのコードブロックを位置と内容で列挙
+    block_pattern = re.compile(r'```[^\n]*\n(.*?)\n```', re.DOTALL)
+    matches = list(block_pattern.finditer(text))
+
+    # 連続する重複ペアを特定 (除去対象は 2 番目の方)
+    to_remove = []  # (start, end) of the 2nd block in the original text
+    i = 0
+    while i < len(matches) - 1:
+        a = matches[i].group(1).strip()
+        b = matches[i+1].group(1).strip()
+        between = text[matches[i].end():matches[i+1].start()]
+        # 完全一致 + 50 文字以上 + 間が 200 文字以下
+        if a == b and len(a) >= 50 and len(between.strip()) <= 200:
+            # 2 番目を削除対象に
+            # 間 (between) はそのまま残す (見出しなど)
+            to_remove.append((matches[i+1].start(), matches[i+1].end()))
+            i += 2  # スキップ
+        else:
+            i += 1
+
+    if not to_remove:
+        return text, 0
+
+    # 逆順で削除
+    new_text = text
+    for start, end in reversed(to_remove):
+        new_text = new_text[:start] + new_text[end:].lstrip('\n')
+
+    return new_text, len(to_remove)
+
+
 def fix_empty_code_blocks(text: str) -> tuple[str, int]:
     """空のコードブロックを除去
 
@@ -714,6 +764,11 @@ def process_file(lang: str, rel_path: str, glossary: dict = None) -> tuple[bool,
     if n14:
         actions.append(f'空コードブロック除去 ({n14}箇所)')
 
+    # 15. 連続する同一内容のコードブロック (DeepL ハルシネーション) を除去
+    text, n15 = fix_identical_consecutive_code_blocks(text)
+    if n15:
+        actions.append(f'同一連続コードブロック除去 ({n15}箇所)')
+
     if text != original:
         file.write_text(text, encoding='utf-8')
         return True, actions
@@ -799,6 +854,12 @@ def main():
                     text, n13 = fix_adjacent_double_close(text)
                     if n13:
                         actions.append(f'隣接 close 重複除去 ({n13}箇所)')
+                    text, n14 = fix_empty_code_blocks(text)
+                    if n14:
+                        actions.append(f'空コードブロック除去 ({n14}箇所)')
+                    text, n15 = fix_identical_consecutive_code_blocks(text)
+                    if n15:
+                        actions.append(f'同一連続コードブロック除去 ({n15}箇所)')
                 if text != original:
                     md.write_text(text, encoding='utf-8')
                     print(f"  ✅ {lang}/{rel}: {', '.join(actions)}")

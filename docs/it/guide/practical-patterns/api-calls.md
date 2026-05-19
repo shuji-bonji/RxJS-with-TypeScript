@@ -1163,64 +1163,6 @@ fetchUsers().subscribe({
 **Esempio di backoff esponenziale in azione:***
 
 
-```typescript
-import { from, Observable, map, catchError, timeout } from 'rxjs';
-
-// JSONPlaceholder API(dopo un sostantivo) affidandosi a ...Usertipo
-// https://jsonplaceholder.typicode.com/users
-interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  address: {
-    street: string;
-    suite: string;
-    city: string;
-    zipcode: string;
-    geo: {
-      lat: string;
-      lng: string;
-    };
-  };
-  phone: string;
-  website: string;
-  company: {
-    name: string;
-    catchPhrase: string;
-    bs: string;
-  };
-}
-
-// Recupera l'elenco degli utenti
-function fetchUsers(): Observable<User[]> {
-  return from(
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-  ).pipe(
-    timeout(5000), // 5Timeout in secondi
-    catchError((err: unknown) => {
-      console.error('Errore di acquisizione dell'utente:', err);
-      throw err;
-    })
-  );
-}
-
-// Esempio di utilizzo
-fetchUsers().subscribe({
-  next: users => {
-    console.log('Elenco utenti:', users);
-    console.log('Primo utente:', users[0].name); // Esempio: "Leanne Graham"
-  },
-  error: err => console.error('Errore:', err)
-});
-```
-
 > [!TIP] リトライ戦略の選択
 
 > - **Immediate retry**: `retry(3)` - semplice, utile per i guasti alla rete
@@ -1458,64 +1400,6 @@ fetchUsers().subscribe({
 In pratica, timeout e retry vengono utilizzati in combinazione.
 
 
-```typescript
-import { from, Observable, map, catchError, timeout } from 'rxjs';
-
-// JSONPlaceholder API(dopo un sostantivo) affidandosi a ...Usertipo
-// https://jsonplaceholder.typicode.com/users
-interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  address: {
-    street: string;
-    suite: string;
-    city: string;
-    zipcode: string;
-    geo: {
-      lat: string;
-      lng: string;
-    };
-  };
-  phone: string;
-  website: string;
-  company: {
-    name: string;
-    catchPhrase: string;
-    bs: string;
-  };
-}
-
-// Recupera l'elenco degli utenti
-function fetchUsers(): Observable<User[]> {
-  return from(
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-  ).pipe(
-    timeout(5000), // 5Timeout in secondi
-    catchError((err: unknown) => {
-      console.error('Errore di acquisizione dell'utente:', err);
-      throw err;
-    })
-  );
-}
-
-// Esempio di utilizzo
-fetchUsers().subscribe({
-  next: users => {
-    console.log('Elenco utenti:', users);
-    console.log('Primo utente:', users[0].name); // Esempio: "Leanne Graham"
-  },
-  error: err => console.error('Errore:', err)
-});
-```
-
 > [!TIP] タイムアウト値の設定
 
 > - **Api normale**: 5 - 10 secondi
@@ -1596,64 +1480,6 @@ fetchUsers().subscribe({
 
 Questo è un esempio di implementazione di un pulsante di cancellazione esplicito.
 
-
-```typescript
-import { from, Observable, map, catchError, timeout } from 'rxjs';
-
-// JSONPlaceholder API(dopo un sostantivo) affidandosi a ...Usertipo
-// https://jsonplaceholder.typicode.com/users
-interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  address: {
-    street: string;
-    suite: string;
-    city: string;
-    zipcode: string;
-    geo: {
-      lat: string;
-      lng: string;
-    };
-  };
-  phone: string;
-  website: string;
-  company: {
-    name: string;
-    catchPhrase: string;
-    bs: string;
-  };
-}
-
-// Recupera l'elenco degli utenti
-function fetchUsers(): Observable<User[]> {
-  return from(
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-  ).pipe(
-    timeout(5000), // 5Timeout in secondi
-    catchError((err: unknown) => {
-      console.error('Errore di acquisizione dell'utente:', err);
-      throw err;
-    })
-  );
-}
-
-// Esempio di utilizzo
-fetchUsers().subscribe({
-  next: users => {
-    console.log('Elenco utenti:', users);
-    console.log('Primo utente:', users[0].name); // Esempio: "Leanne Graham"
-  },
-  error: err => console.error('Errore:', err)
-});
-```
 
 > [!IMPORTANT] キャンセルのベストプラクティス
 

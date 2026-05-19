@@ -68,8 +68,6 @@ Cliques do usuário: ●    ●●●        ●  ●●
 throttleTime(1000): ●              ●
                     |              |
                    Execução do processamento      Execução do processamento
-```
-
 Cliques do usuário: ●    ●●●        ●  ●●
                     |    |          |  |
 throttleTime(1000): ●              ●
@@ -84,8 +82,6 @@ throttleTime(1000): ●              ●
 
 Processar eventos após um determinado período de tempo depois que eles pararem.
 
-
-```
 
 ```typescript
 import { fromEvent, debounceTime } from 'rxjs';
@@ -124,8 +120,6 @@ Entrada do usuário:  ●●●●●     ●●        ●●●●
 debounceTime(300):   300ms       300ms  300msEm espera
                       |            |      |
                      Processamento         Processamento   Execução do processamento
-```
-
 Cliques do usuário: ●    ●●●        ●  ●●
                     |    |          |  |
 throttleTime(1000): ●              ●
@@ -148,8 +142,6 @@ throttleTime(1000): ●              ●
 
 Compare com o valor anterior e ignore o processamento se o mesmo valor for consecutivo.
 
-
-```
 
 ```typescript
 import { fromEvent, map, debounceTime, distinctUntilChanged } from 'rxjs';
@@ -180,7 +172,7 @@ fromEvent(searchInput, 'input').pipe(
 // distinctUntilChangedSim, se o valor for o mesmo que o anterior.: 1Executar a pesquisa apenas uma vez (mesmo valor, pular a segunda pesquisa)2A segunda busca é ignorada)
 ```
 
-> [!TIP] Melhores práticas
+> [!TIP] ベストプラクティス
 
 > Nas implementações de pesquisa e autocompletar, é recomendável usar os três conjuntos a seguir.
 > 1. `debounceTime()` - espera pela parada da entrada.
@@ -319,7 +311,7 @@ function performSearch(query: string): void {
 }
 ```
 
-> `pairwise()` é um operador conveniente que permite obter os valores anteriores e atuais em pares. Ele pode ser usado para determinar a direção da rolagem, o aumento ou a diminuição de um valor ou para calcular diferenças.
+> `pairwise()` é um operador conveniente que permite obter os valores anteriores e atuais em pares. Ele pode ser usado para determinar a direção da rolagem, aumentar/diminuir valores e calcular diferenças.
 
 ## Implementação de arrastar e soltar
 
@@ -500,7 +492,7 @@ throttleTime(1000): ●              ●
                     |              |
                    Execução do processamento      Execução do processamento
 
-> [!TIP] Utilizando exhaustMap
+> [!TIP] exhaustMapの活用
 
 > O exhaustMap pode ser usado para ignorar novas solicitações até que a solicitação anterior seja concluída. Isso evita solicitações duplicadas devido a uma sequência de rolagem.
 

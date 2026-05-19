@@ -393,34 +393,10 @@ numbers$.pipe(
 Nur Daten nach einer bestimmten Zeit verarbeiten
 
 
-```ts
-import { range } from 'rxjs';
-import { skipWhile } from 'rxjs';
-
-const numbers$ = range(0, 10); // 0von (bis)9bis
-
-numbers$.pipe(
-  skipWhile(n => n < 5)
-).subscribe(console.log);
-// Ausgabe: 5, 6, 7, 8, 9
-```
-
 ### Muster 3: Zustandsbasiertes Überspringen
 
 Überspringen, bis das System bereit ist
 
-
-```ts
-import { range } from 'rxjs';
-import { skipWhile } from 'rxjs';
-
-const numbers$ = range(0, 10); // 0von (bis)9bis
-
-numbers$.pipe(
-  skipWhile(n => n < 5)
-).subscribe(console.log);
-// Ausgabe: 5, 6, 7, 8, 9
-```
 
 ## 📚 Verwandte Operatoren.
 

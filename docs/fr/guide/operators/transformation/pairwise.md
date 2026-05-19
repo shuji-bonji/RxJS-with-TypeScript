@@ -1,11 +1,11 @@
 ---
-description: "L'opérateur pairwise produit deux valeurs consécutives sous la forme d'un tableau de paires [valeur précédente, valeur actuelle]. Utile pour la détection des changements, le calcul des différences, l'analyse des tendances, l'interpolation des animations et la comparaison des valeurs précédentes et actuelles. Explique l'implémentation TypeScript sécurisée."
+description: "L'opérateur pairwise produit deux valeurs consécutives sous la forme d'un tableau de paires [valeur précédente, valeur actuelle]. Il peut être utilisé pour des processus qui comparent des valeurs avant et après, tels que la détection de changement de valeur, le calcul de différence, l'analyse de tendance, l'interpolation animée, etc. Une implémentation à sécurité de type dans TypeScript et des exemples pratiques seront décrits."
 ---
 
-# pairwise - Traiter deux valeurs consécutives par paires
+# pairwise - deux valeurs consécutives sont traitées par paires
 
-L'opérateur `pairwise` **produit deux valeurs consécutives d'un flux sous la forme d'un tableau [valeur précédente, valeur actuelle]**.
-Pratique pour comparer les valeurs précédentes et actuelles ou calculer la quantité de changement.
+L'opérateur `pairwise` **combine deux valeurs consécutives issues d'un flux sous la forme d'un tableau `[valeur précédente, valeur actuelle]` et les restitue ensemble**.
+Ceci est utile pour comparer la valeur précédente avec la valeur actuelle ou pour calculer la quantité de changement.
 
 ## 🔰 Syntaxe de base et utilisation
 
@@ -18,7 +18,7 @@ interval(1000).pipe(
   pairwise()
 ).subscribe(console.log);
 
-// Sortie :
+// Sortie:
 // [0, 1]
 // [1, 2]
 // [2, 3]
@@ -26,27 +26,27 @@ interval(1000).pipe(
 // [4, 5]
 ```
 
-- La première valeur (0) n'est pas émise seule ; lorsque la deuxième valeur (1) arrive, elle est émise sous la forme `[0, 1]`.
-- Produit toujours une paire de **la valeur précédente et la valeur actuelle**.
+- La première valeur (0) n'est jamais affichée seule, mais est affichée sous la forme `[0, 1]` lorsque la deuxième valeur (1) arrive.
+- C'est toujours la paire **valeur précédente et valeur actuelle** qui est éditée.
 
-[🌐 Documentation officielle RxJS - pairwise](https://rxjs.dev/api/operators/pairwise)
+[🌐 Official RxJS documentation - `pairwise`](https://rxjs.dev/api/operators/pairwise)
 
-## 💡 Modes d'utilisation typiques
+## 💡 Modèle d'utilisation typique.
 
-- Calcul de l'amplitude du mouvement de la souris ou du toucher
-- Calcul du montant de variation (différence) des prix ou nombres
-- Détection des changements d'état (comparaison de l'état précédent et actuel)
+- Calcul de la quantité de mouvement de la souris ou du toucher.
+- Calcul de la quantité de changement (différence) dans les prix ou les valeurs.
+- Détection des changements d'état (comparaison de l'état précédent et de l'état actuel)
 - Détermination de la direction de défilement
 
-## 🧠 Exemple de code pratique (avec interface utilisateur)
+## 🧠 Exemples de code pratique (avec interface utilisateur)
 
-Exemple affichant la direction et l'amplitude du mouvement de la souris.
+Exemple d'affichage de la direction et de l'importance du mouvement de la souris.
 
 ```ts
 import { fromEvent } from 'rxjs';
 import { map, pairwise } from 'rxjs';
 
-// Zone de sortie
+// Création d'une zone de sortie
 const output = document.createElement('div');
 output.style.marginTop = '10px';
 output.style.fontFamily = 'monospace';
@@ -59,27 +59,29 @@ fromEvent<MouseEvent>(document, 'mousemove').pipe(
 ).subscribe(([prev, curr]) => {
   const deltaX = curr.x - prev.x;
   const deltaY = curr.y - prev.y;
-  const direction = deltaX > 0 ? 'droite' : deltaX < 0 ? 'gauche' : 'arrêt';
+  const direction = deltaX > 0 ? 'Droite' : deltaX < 0 ? 'Gauche' : 'Arrêt';
 
   output.innerHTML = `
-    Précédent : (${prev.x}, ${prev.y})<br>
-    Actuel : (${curr.x}, ${curr.y})<br>
-    Déplacement : Δx=${deltaX}, Δy=${deltaY}<br>
-    Direction : ${direction}
+    Précédent: (${prev.x}, ${prev.y})<br>
+    Actuel: (${curr.x}, ${curr.y})<br>
+    Quantité de mouvement: Δx=${deltaX}, Δy=${deltaY}<br>
+    Direction: ${direction}
   `;
 });
 ```
 
 - Lorsque la souris est déplacée, les coordonnées précédentes et actuelles ainsi que l'amplitude du mouvement sont affichées.
-- Avec `pairwise`, les coordonnées précédentes et actuelles sont automatiquement obtenues par paire.
+- Avec `pairwise`, les coordonnées précédentes et actuelles peuvent être obtenues automatiquement par paires.
 
-## 🎯 Calcul du montant de variation des nombres
+## 🎯 Exemple de calcul de la variation d'un nombre.
+
+Exemple pratique de calcul de la quantité de changement (différence) dans un flux de valeurs numériques.
 
 ```ts
 import { interval } from 'rxjs';
 import { map, pairwise, take } from 'rxjs';
 
-// 0, 1, 4, 9, 16, 25 (nombres carrés)
+// 0, 1, 4, 9, 16, 25 (Nombre de carrés)
 interval(500).pipe(
   take(6),
   map(n => n * n),
@@ -90,20 +92,110 @@ interval(500).pipe(
     diff: curr - prev
   }))
 ).subscribe(result => {
-  console.log(`${result.prev} → ${result.curr} (différence : +${result.diff})`);
+  console.log(`${result.prev} → ${result.curr} (Différence: +${result.diff})`);
 });
 
-// Sortie :
-// 0 → 1 (différence : +1)
-// 1 → 4 (différence : +3)
-// 4 → 9 (différence : +5)
-// 9 → 16 (différence : +7)
-// 16 → 25 (différence : +9)
+// Sortie:
+// 0 → 1 (Différence: +1)
+// 1 → 4 (Différence: +3)
+// 4 → 9 (Différence: +5)
+// 9 → 16 (Différence: +7)
+// 16 → 25 (Différence: +9)
 ```
 
-## 🔍 Comparaison avec bufferCount(2, 1)
+## 🎯 Détermination de la direction de défilement
 
-`pairwise()` a le même comportement que `bufferCount(2, 1)`.
+Voici un exemple de détermination du sens de défilement (haut/bas).
+
+```ts
+import { fromEvent } from 'rxjs';
+import { map, pairwise, throttleTime } from 'rxjs';
+
+// Création d'une zone de sortie à afficher de manière fixe
+const output = document.createElement('div');
+output.style.position = 'fixed';
+output.style.top = '10px';
+output.style.right = '10px';
+output.style.padding = '15px';
+output.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+output.style.color = 'white';
+output.style.fontFamily = 'monospace';
+output.style.fontSize = '14px';
+output.style.borderRadius = '5px';
+output.style.zIndex = '9999';
+document.body.appendChild(output);
+
+// Contenu fictif à faire défiler
+const content = document.createElement('div');
+content.style.height = '200vh'; // Hauteur de la page2Double
+content.innerHTML = '<h1>Défilement vers le bas</h1>';
+document.body.appendChild(content);
+
+// Obtenir la position de défilement
+fromEvent(window, 'scroll').pipe(
+  throttleTime(100), // 100msRéduire l'épaisseur de chaque
+  map(() => window.scrollY),
+  pairwise()
+).subscribe(([prevY, currY]) => {
+  const diff = currY - prevY;
+  const direction = diff > 0 ? '↓ vers le bas' : '↑ Vers le haut';
+  const arrow = diff > 0 ? '⬇️' : '⬆️';
+
+  output.innerHTML = `
+    ${arrow} Direction du défilement: ${direction}<br>
+    Position précédente: ${prevY.toFixed(0)}px<br>
+    Position actuelle: ${currY.toFixed(0)}px<br>
+    Quantité de mouvement: ${Math.abs(diff).toFixed(0)}px
+  `;
+});
+```
+
+- Lorsque la page défile, les informations relatives à la direction et à la position sont affichées dans une zone fixe située dans le coin supérieur droit.
+- `pairwise` vous permet d'obtenir automatiquement la position de défilement précédente et actuelle par paires.
+
+## 🎯 Utilisation sûre de pairwise
+
+Ceci est un exemple d'utilisation de l'inférence de type TypeScript.
+
+```ts
+import { from } from 'rxjs';
+import { pairwise } from 'rxjs';
+
+interface Stock {
+  symbol: string;
+  price: number;
+  timestamp: number;
+}
+
+const stockPrices: Stock[] = [
+  { symbol: 'AAPL', price: 150, timestamp: 1000 },
+  { symbol: 'AAPL', price: 152, timestamp: 2000 },
+  { symbol: 'AAPL', price: 148, timestamp: 3000 },
+  { symbol: 'AAPL', price: 155, timestamp: 4000 },
+];
+
+from(stockPrices).pipe(
+  pairwise()
+).subscribe(([prev, curr]) => {
+  const change = curr.price - prev.price;
+  const changePercent = ((change / prev.price) * 100).toFixed(2);
+  const trend = change > 0 ? '📈' : change < 0 ? '📉' : '➡️';
+
+  console.log(
+    `${curr.symbol}: $${prev.price} → $${curr.price} ` +
+    `(${changePercent}%) ${trend}`
+  );
+});
+
+// Sortie:
+// AAPL: $150 → $152 (1.33%) 📈
+// AAPL: $152 → $148 (-2.63%) 📉
+// AAPL: $148 → $155 (4.73%) 📈
+```
+
+## 🔍 bufferCount(2, 1) vs.
+
+`pairwise()` est équivalent à `bufferCount(2, 1)`.
 
 ```ts
 import { of } from 'rxjs';
@@ -113,22 +205,22 @@ const source$ = of(1, 2, 3, 4, 5);
 
 console.log('=== pairwise ===');
 source$.pipe(pairwise()).subscribe(console.log);
-// Sortie : [1,2], [2,3], [3,4], [4,5]
+// Sortie: [1,2], [2,3], [3,4], [4,5]
 
 console.log('=== bufferCount(2, 1) ===');
 source$.pipe(bufferCount(2, 1)).subscribe(console.log);
-// Sortie : [1,2], [2,3], [3,4], [4,5]
+// Sortie: [1,2], [2,3], [3,4], [4,5]
 ```
 
-**Utilisation** :
-- `pairwise()` : Explicite pour traiter des paires de deux valeurs consécutives, intention claire du code
-- `bufferCount(2, 1)` : Plus flexible (peut gérer des tailles de fenêtre supérieures à 3)
+**Distinction d'utilisation** :.
+- `pairwise()` : traite explicitement des paires de deux valeurs consécutives, l'intention du code est claire
+- `bufferCount(2, 1)` : plus flexible (peut gérer plus de trois tailles de fenêtres)
 
-## ⚠️ Notes importantes
+## ⚠️ Notes.
 
-### La première valeur n'est pas émise
+### La première valeur n'est pas affichée.
 
-`pairwise` n'émet rien tant que deux valeurs ne sont pas prêtes, donc la première valeur ne peut pas être obtenue seule.
+La première valeur ne peut pas être prise seule, car `pairwise` ne sort rien tant que les deux valeurs ne sont pas alignées.
 
 ```ts
 import { of } from 'rxjs';
@@ -139,12 +231,12 @@ of(1).pipe(pairwise()).subscribe({
   complete: () => console.log('Terminé')
 });
 
-// Sortie :
+// Sortie:
 // Terminé
-// (aucune valeur n'est émise)
+// (Aucune valeur n'est éditée)1(Aucune valeur n'est émise)
 ```
 
-**Solution** : Pour traiter la première valeur, ajoutez une valeur initiale avec `startWith`.
+**Mesures** : si vous voulez traiter la première valeur également, ajoutez une valeur initiale avec `startWith`.
 
 ```ts
 import { of } from 'rxjs';
@@ -155,19 +247,23 @@ of(10, 20, 30).pipe(
   pairwise()
 ).subscribe(console.log);
 
-// Sortie :
+// Sortie:
 // [0, 10]
 // [10, 20]
 // [20, 30]
 ```
 
-## 📚 Opérateurs associés
+### Utilisation de la mémoire.
 
-- [`scan`](./scan) - Traitement d'accumulation plus complexe
-- [`bufferCount`](./bufferCount) - Regrouper des valeurs par nombre spécifié
-- [`distinctUntilChanged`](../filtering/distinctUntilChanged) - Supprimer les valeurs dupliquées consécutives
-- [`startWith`](/fr/guide/operators/utility/startWith) - Ajouter une valeur initiale
+L'efficacité de la mémoire est bonne car `pairwise` ne conserve toujours qu'une seule valeur précédente.
 
-## Résumé
+## 📚 Opérateurs apparentés.
 
-L'opérateur `pairwise` produit deux valeurs consécutives sous forme de paire `[valeur précédente, valeur actuelle]`. Très utile pour **les situations nécessitant une comparaison entre les valeurs précédentes et actuelles**, comme le suivi du mouvement de la souris, le calcul des variations de prix et la détection des transitions d'état.
+- [`scan`](. /scan) - processus d'accumulation plus complexe.
+- [`bufferCount`](. /bufferCount) - résume les valeurs pour chaque nombre spécifié.
+- [`distinctUntilChanged`](. /filtering/distinctUntilChanged) - supprime les valeurs dupliquées consécutives.
+- [`startWith`](. /utility/startWith) - ajoute une valeur initiale.
+
+## Résumé.
+
+L'opérateur `pairwise` produit deux valeurs consécutives sous forme de paires `[valeur précédente, valeur courante]`. Ceci est très utile dans les situations** où une comparaison des valeurs précédentes et actuelles est nécessaire, comme le suivi des mouvements de la souris, le calcul des changements de prix et la détection des transitions d'état. Notez que la première valeur n'est pas affichée tant que la seconde n'est pas arrivée, mais cela peut être géré en ajoutant une valeur initiale avec `startWith`.

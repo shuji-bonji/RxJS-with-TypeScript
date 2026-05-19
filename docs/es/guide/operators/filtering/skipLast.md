@@ -399,19 +399,6 @@ numbers$.pipe(
 Sáltate el principio y el final y obtén sólo la parte intermedia
 
 
-```ts
-import { range } from 'rxjs';
-import { skipLast } from 'rxjs';
-
-const numbers$ = range(0, 10); // 0de (a)9a
-
-numbers$.pipe(
-  skipLast(3)
-).subscribe(console.log);
-// Salida: 0, 1, 2, 3, 4, 5, 6
-// (7, 8, 9 se omite)
-```
-
 ### Patrón 2: Validación de datos
 
 Si se requiere la verificación de valores posteriores
@@ -434,19 +421,6 @@ numbers$.pipe(
 
 Procesamiento de ventana con datos que excluyen los últimos N casos
 
-
-```ts
-import { range } from 'rxjs';
-import { skipLast } from 'rxjs';
-
-const numbers$ = range(0, 10); // 0de (a)9a
-
-numbers$.pipe(
-  skipLast(3)
-).subscribe(console.log);
-// Salida: 0, 1, 2, 3, 4, 5, 6
-// (7, 8, 9 se omite)
-```
 
 ## 📚 Operadores relacionados
 

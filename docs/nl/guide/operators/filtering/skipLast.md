@@ -399,19 +399,6 @@ numbers$.pipe(
 Sla het begin en einde over en krijg alleen het tussenstuk
 
 
-```ts
-import { range } from 'rxjs';
-import { skipLast } from 'rxjs';
-
-const numbers$ = range(0, 10); // 0van (tot)9naar
-
-numbers$.pipe(
-  skipLast(3)
-).subscribe(console.log);
-// Uitgang: 0, 1, 2, 3, 4, 5, 6
-// (7, 8, 9 wordt overgeslagen)
-```
-
 ### Patroon 2: Gegevensvalidatie
 
 Als verificatie vereist is op volgende waarden
@@ -434,19 +421,6 @@ numbers$.pipe(
 
 Vensterverwerking met gegevens exclusief de laatste N gevallen
 
-
-```ts
-import { range } from 'rxjs';
-import { skipLast } from 'rxjs';
-
-const numbers$ = range(0, 10); // 0van (tot)9naar
-
-numbers$.pipe(
-  skipLast(3)
-).subscribe(console.log);
-// Uitgang: 0, 1, 2, 3, 4, 5, 6
-// (7, 8, 9 wordt overgeslagen)
-```
 
 ## Gerelateerde operatoren
 

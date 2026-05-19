@@ -248,14 +248,6 @@ function timer(
 Oculta automáticamente las notificaciones después de un cierto período de tiempo después de que se muestran.
 
 
-```typescript
-function timer(
-  dueTime: number | Date,
-  intervalOrScheduler?: number | SchedulerLike,
-  scheduler?: SchedulerLike
-): Observable<number>
-```
-
 ## Usar en pipeline.
 
 El `timer()` se utiliza como punto de partida para el procesamiento retardado y la ejecución periódica.
@@ -274,24 +266,8 @@ function timer(
 ### 1. olvidar darse de baja con un segundo argumento
 
 
-```typescript
-function timer(
-  dueTime: number | Date,
-  intervalOrScheduler?: number | SchedulerLike,
-  scheduler?: SchedulerLike
-): Observable<number>
-```
-
 ### 2. no entender la diferencia entre interval() y
 
-
-```typescript
-function timer(
-  dueTime: number | Date,
-  intervalOrScheduler?: number | SchedulerLike,
-  scheduler?: SchedulerLike
-): Observable<number>
-```
 
 ## Consideraciones de rendimiento.
 
@@ -316,14 +292,6 @@ function timer(
 
 ## Related Creation Function.
 
-
-```typescript
-function timer(
-  dueTime: number | Date,
-  intervalOrScheduler?: number | SchedulerLike,
-  scheduler?: SchedulerLike
-): Observable<number>
-```
 
 ## Resumen
 

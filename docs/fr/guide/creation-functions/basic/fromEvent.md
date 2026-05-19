@@ -292,14 +292,6 @@ function fromEvent<T>(
 fromEvent()` est idéal pour le traitement en pipeline à partir d'un flux d'événements.
 
 
-```typescript
-function fromEvent<T>(
-  target: any,
-  eventName: string,
-  options?: EventListenerOptions | ((...args: any[]) => T)
-): Observable<T>
-```
-
 ## Erreurs courantes.
 
 ### 1. oublier de se désinscrire
@@ -317,14 +309,6 @@ function fromEvent<T>(
 
 #### ✅ Correct - toujours se désabonner
 
-
-```typescript
-function fromEvent<T>(
-  target: any,
-  eventName: string,
-  options?: EventListenerOptions | ((...args: any[]) => T)
-): Observable<T>
-```
 
 > [!WARNING]
 
@@ -347,14 +331,6 @@ function fromEvent<T>(
 
 #### ✅ Correct - multicast avec share() si nécessaire.
 
-
-```typescript
-function fromEvent<T>(
-  target: any,
-  eventName: string,
-  options?: EventListenerOptions | ((...args: any[]) => T)
-): Observable<T>
-```
 
 ## Considérations sur les performances.
 
@@ -381,24 +357,8 @@ function fromEvent<T>(
 #### ✅ Optimisation - traitement une fois toutes les 200 ms
 
 
-```typescript
-function fromEvent<T>(
-  target: any,
-  eventName: string,
-  options?: EventListenerOptions | ((...args: any[]) => T)
-): Observable<T>
-```
-
 ## Fonctions de Creation Function pertinentes.
 
-
-```typescript
-function fromEvent<T>(
-  target: any,
-  eventName: string,
-  options?: EventListenerOptions | ((...args: any[]) => T)
-): Observable<T>
-```
 
 ## Résumé
 

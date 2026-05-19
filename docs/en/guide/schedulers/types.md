@@ -138,10 +138,6 @@ console.log('2: End');
 
 #### Use Cases
 
-```
-
-```
-
 ```ts
 import { fromEvent, asapScheduler } from 'rxjs';
 import { observeOn, map } from 'rxjs';
@@ -322,67 +318,13 @@ console.log('2: End');
 ### Selection Criteria by Application
 
 
-```ts
-import { of, asyncScheduler } from 'rxjs';
-import { observeOn } from 'rxjs';
-
-console.log('1: Start');
-
-of('Asynchronous processing')
-  .pipe(observeOn(asyncScheduler))
-  .subscribe(value => console.log(`3: ${value}`));
-
-console.log('2: End');
-
-// Output:
-// 1: Start
-// 2: End
-// 3: Asynchronous processing
-```
-
 ## Practical use examples
 
 ### Processing large amounts of data
 
 
-```ts
-import { of, asyncScheduler } from 'rxjs';
-import { observeOn } from 'rxjs';
-
-console.log('1: Start');
-
-of('Asynchronous processing')
-  .pipe(observeOn(asyncScheduler))
-  .subscribe(value => console.log(`3: ${value}`));
-
-console.log('2: End');
-
-// Output:
-// 1: Start
-// 2: End
-// 3: Asynchronous processing
-```
-
 ### WebSocket message processing
 
-
-```ts
-import { of, asyncScheduler } from 'rxjs';
-import { observeOn } from 'rxjs';
-
-console.log('1: Start');
-
-of('Asynchronous processing')
-  .pipe(observeOn(asyncScheduler))
-  .subscribe(value => console.log(`3: ${value}`));
-
-console.log('2: End');
-
-// Output:
-// 1: Start
-// 2: End
-// 3: Asynchronous processing
-```
 
 ### Error retry control
 
@@ -391,10 +333,6 @@ By utilizing the scheduler with the `retry` operator, the timing of retries can 
 #### Basic retry control
 
 The `delay` option of the `retry` operator internally uses the `asyncScheduler` to control the retry interval.
-
-```
-
-```
 
 ```ts
 import { of, asyncScheduler } from 'rxjs';
@@ -419,24 +357,6 @@ console.log('2: End');
 For more advanced control, exponential backoff can be implemented by combining `retryWhen` and `asyncScheduler`.
 
 
-```ts
-import { of, asyncScheduler } from 'rxjs';
-import { observeOn } from 'rxjs';
-
-console.log('1: Start');
-
-of('Asynchronous processing')
-  .pipe(observeOn(asyncScheduler))
-  .subscribe(value => console.log(`3: ${value}`));
-
-console.log('2: End');
-
-// Output:
-// 1: Start
-// 2: End
-// 3: Asynchronous processing
-```
-
 #### When explicitly specifying an asyncScheduler
 
 Explicitly specifying a specific scheduler allows for more flexible control, such as replacing it with `TestScheduler` during testing.
@@ -460,24 +380,6 @@ console.log('2: End');
 // 3: Asynchronous processing
 ```
 
-
-```ts
-import { of, asyncScheduler } from 'rxjs';
-import { observeOn } from 'rxjs';
-
-console.log('1: Start');
-
-of('Asynchronous processing')
-  .pipe(observeOn(asyncScheduler))
-  .subscribe(value => console.log(`3: ${value}`));
-
-console.log('2: End');
-
-// Output:
-// 1: Start
-// 2: End
-// 3: Asynchronous processing
-```
 
 > Detailed implementation patterns and debugging methods for retry processing are described in the [retry and catchError](/en/guide/error-handling/retry-catch) page.
 > - Detailed usage of the retry operator

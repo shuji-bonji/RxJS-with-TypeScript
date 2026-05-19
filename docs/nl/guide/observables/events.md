@@ -166,8 +166,6 @@ allButtonClicks$.subscribe(message => console.log(message));
 #### Uitvoeringsresultaat
 ```
 Knop 1 geklikt
-```
-```
 Knop 2 geklikt
 ```
 

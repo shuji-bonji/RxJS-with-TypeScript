@@ -376,27 +376,6 @@ source$.pipe(
 ## 🆚 Comparaison des opérateurs basés sur les fenêtres
 
 
-```ts
-import { interval } from 'rxjs';
-import { windowTime, mergeAll, take } from 'rxjs';
-
-// 100msPublier la valeur chaque
-const source$ = interval(100);
-
-source$.pipe(
-  windowTime(1000), // 1Fenêtre créée toutes les secondes
-  take(3),          // Première3Une seule fenêtre
-  mergeAll()        // Aplatir chaque fenêtre
-).subscribe(value => {
-  console.log('Valeur:', value);
-});
-
-// Sortie:
-// 1Secondes: 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
-// 2Secondes: 10, 11, 12, 13, 14, 15, 16, 17, 18, 19
-// 3Secondes: 20, 21, 22, 23, 24, 25, 26, 27, 28, 29
-```
-
 ## 📚 Opérateurs apparentés.
 
 - **[bufferTime](. /bufferTime)** - regroupe les valeurs sous forme de tableau (version tableau de windowTime).

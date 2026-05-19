@@ -669,9 +669,6 @@ const a$ = of(1, 2, 3);
 const b$ = of('A', 'B', 'C').pipe(delay(100));
 
 zip(a$, b$).subscribe(console.log);
-```
-
-```
 Marble-Diagramm:
 a$:  (123)|
 b$:  -----(ABC)|

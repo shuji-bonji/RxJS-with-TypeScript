@@ -263,10 +263,6 @@ function interval(period: number = 0, scheduler: SchedulerLike = asyncScheduler)
 `interval()` est utilisé comme point de départ pour les pipelines ou comme déclencheur pour le contrôle du temps.
 
 
-```typescript
-function interval(period: number = 0, scheduler: SchedulerLike = asyncScheduler): Observable<number>
-```
-
 ## Erreurs courantes.
 
 ### 1. oublier de se désinscrire
@@ -278,10 +274,6 @@ function interval(period: number = 0, scheduler: SchedulerLike = asyncScheduler)
 
 ### 2. les abonnements multiples créent des minuteries indépendantes
 
-
-```typescript
-function interval(period: number = 0, scheduler: SchedulerLike = asyncScheduler): Observable<number>
-```
 
 ## Considérations relatives aux performances.
 
@@ -302,10 +294,6 @@ function interval(period: number = 0, scheduler: SchedulerLike = asyncScheduler)
 
 ## Fonctions de Creation Function liées.
 
-
-```typescript
-function interval(period: number = 0, scheduler: SchedulerLike = asyncScheduler): Observable<number>
-```
 
 ## Résumé
 

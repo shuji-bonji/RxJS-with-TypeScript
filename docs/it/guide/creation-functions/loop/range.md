@@ -219,39 +219,15 @@ function range(
 È utile per generare dati finti nei test unitari.
 
 
-```typescript
-function range(
-  start: number,
-  count?: number,
-  scheduler?: SchedulerLike
-): Observable<number>
-```
-
 ### 5. Contatore del processo di ripetizione
 
 Controlla il numero di tentativi in caso di errori.
 
 
-```typescript
-function range(
-  start: number,
-  count?: number,
-  scheduler?: SchedulerLike
-): Observable<number>
-```
-
 ## Asincronizzazione tramite scheduler
 
 Quando si elaborano grandi quantità di dati, è possibile specificare uno scheduler per l'esecuzione asincrona.
 
-
-```typescript
-function range(
-  start: number,
-  count?: number,
-  scheduler?: SchedulerLike
-): Observable<number>
-```
 
 > [!TIP]
 
@@ -278,24 +254,7 @@ function range(
 ## range() vs from()
 
 
-```typescript
-function range(
-  start: number,
-  count?: number,
-  scheduler?: SchedulerLike
-): Observable<number>
-```
-
 ## range() vs generate()
-
-
-```typescript
-function range(
-  start: number,
-  count?: number,
-  scheduler?: SchedulerLike
-): Observable<number>
-```
 
 
 ```typescript

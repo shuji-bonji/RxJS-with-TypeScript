@@ -349,30 +349,6 @@ source$.pipe(
 ## 🆚 Comparaison des opérateurs basés sur les fenêtres
 
 
-```ts
-import { interval } from 'rxjs';
-import { windowToggle, mergeAll } from 'rxjs';
-
-const source$ = interval(500); // 0.5Émission d'une valeur toutes les secondes
-
-// Déclenchement du démarrage: 2Chaque seconde
-const opening$ = interval(2000);
-
-// Déclenchement de fin: Depuis le début1Secondes après
-const closing = () => interval(1000);
-
-source$.pipe(
-  windowToggle(opening$, closing),
-  mergeAll()
-).subscribe(value => {
-  console.log('Valeur dans la fenêtre:', value);
-});
-
-// 2Commence à la seconde,3Fin à la seconde → Valeur: 4, 5
-// 4Commence à la seconde,5Fin à la seconde → Valeur: 8, 9
-// 6Commence à la seconde,7Fin à la seconde → Valeur: 12, 13
-```
-
 ## 🔄 Différences avec windowWhen
 
 

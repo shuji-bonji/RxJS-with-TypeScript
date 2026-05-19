@@ -242,66 +242,7 @@ button.addEventListener('click', () => {
 });
 ```
 
-**Adopt fastest from multiple data sources** ```ts
-import { timer, throwError } from 'rxjs';
-import { raceWith, map, mergeMap, catchError, delay } from 'rxjs';
-import { of } from 'rxjs';
-
-// UICreate
-const output = document.createElement('div');
-output.innerHTML = '<h3>Data acquisition (with fallback)</h3>';
-document.body.appendChild(output);
-
-const button = document.createElement('button');
-button.textContent = 'Start of data acquisition';
-document.body.appendChild(button);
-
-const statusArea = document.createElement('div');
-statusArea.style.marginTop = '10px';
-output.appendChild(statusArea);
-
-button.addEventListener('click', () => {
-  statusArea.textContent = 'Acquisition in progress...';
-
-  // MainAPI(priority)：Time々Failure
-  const mainApi$ = timer(1500).pipe(
-    mergeMap(() => {
-      const success = Math.random() > 0.5;
-      if (success) {
-        return of('✅ MainAPISuccessful acquisition from');
-      } else {
-        return throwError(() => new Error('MainAPIFailure'));
-      }
-    }),
-    catchError((err: unknown) => {
-      console.log('MainAPIFailure, go to fallback...');
-      // Delay on error and yield to fallback
-      return of('').pipe(delay(10000));
-    })
-  );
-
-  // ✅ Pipeable OperatorEdition - MainAPIAdd fallback to
-  mainApi$
-    .pipe(
-      raceWith(
-        // BackupAPI(fallback)：Slightly slower, but reliable
-        timer(2000).pipe(
-          map(() => '🔄 BackupAPIRetrieve from')
-        )
-      )
-    )
-    .subscribe(result => {
-      if (result) {
-        statusArea.textContent = result;
-        statusArea.style.color = result.includes('Main') ? 'green' : 'orange';
-      }
-    });
-});
-```
-
-```
-
-```ts
+**Adopt fastest from multiple data sources** ts
 import { timer, fromEvent } from 'rxjs';
 import { raceWith, map, mergeMap } from 'rxjs';
 
@@ -360,6 +301,8 @@ fromEvent(loadButton, 'click').pipe(
 ### Example timeout implementation
 
 Implementing timeout processing using `raceWith`.
+
+```
 
 ```ts
 import { of, timer, throwError } from 'rxjs';

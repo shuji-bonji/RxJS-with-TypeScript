@@ -584,18 +584,6 @@ of(1).pipe(
 ## Calcoli fattoriali
 
 
-```ts
-import { of } from 'rxjs';
-import { expand, take } from 'rxjs';
-
-// 2Processo ricorsivo di raddoppio
-of(1).pipe(
-  expand(x => of(x * 2)),
-  take(5) // Prevenzione del ciclo infinito
-).subscribe(console.log);
-// Uscita: 1, 2, 4, 8, 16
-```
-
 ## ⚠️ Errori comuni
 
 > [!WARNING]

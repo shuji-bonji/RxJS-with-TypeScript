@@ -310,31 +310,6 @@ source$.pipe(
 ## 🆚 Comparaison des opérateurs basés sur les fenêtres
 
 
-```ts
-import { interval } from 'rxjs';
-import { windowCount, mergeAll } from 'rxjs';
-
-// 100msAttribuer une valeur à chaque fenêtre
-const source$ = interval(100);
-
-source$.pipe(
-  windowCount(5),
-  mergeAll() // Aplatir chaque fenêtre
-).subscribe(value => {
-  console.log('Valeur dans la fenêtre:', value);
-});
-
-// Sortie:
-// Valeur dans la fenêtre: 0
-// Valeur dans la fenêtre: 1
-// Valeur dans la fenêtre: 2
-// Valeur dans la fenêtre: 3
-// Valeur dans la fenêtre: 4
-// (Démarrer une nouvelle fenêtre)
-// Valeur dans la fenêtre: 5
-// ...
-```
-
 ## 📚 Opérateurs apparentés.
 
 - [`bufferCount`](. /bufferCount) - résume les valeurs sous forme de tableau (version tableau de windowCount).

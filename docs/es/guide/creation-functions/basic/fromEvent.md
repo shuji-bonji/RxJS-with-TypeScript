@@ -292,14 +292,6 @@ function fromEvent<T>(
 fromEvent()` es ideal para el procesamiento de tuberías a partir de un flujo de eventos.
 
 
-```typescript
-function fromEvent<T>(
-  target: any,
-  eventName: string,
-  options?: EventListenerOptions | ((...args: any[]) => T)
-): Observable<T>
-```
-
 ## Errores comunes.
 
 ### 1. Olvidar darse de baja
@@ -317,14 +309,6 @@ function fromEvent<T>(
 
 #### ✅ Correcto - darse de baja siempre
 
-
-```typescript
-function fromEvent<T>(
-  target: any,
-  eventName: string,
-  options?: EventListenerOptions | ((...args: any[]) => T)
-): Observable<T>
-```
 
 > [!WARNING]
 
@@ -374,24 +358,8 @@ function fromEvent<T>(
 #### ✅ Optimización - sólo se procesa una vez cada 200ms
 
 
-```typescript
-function fromEvent<T>(
-  target: any,
-  eventName: string,
-  options?: EventListenerOptions | ((...args: any[]) => T)
-): Observable<T>
-```
-
 ## Funciones de Creation Function relevantes.
 
-
-```typescript
-function fromEvent<T>(
-  target: any,
-  eventName: string,
-  options?: EventListenerOptions | ((...args: any[]) => T)
-): Observable<T>
-```
 
 ## Resumen
 

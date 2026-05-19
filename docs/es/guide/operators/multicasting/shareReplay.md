@@ -241,77 +241,11 @@ setTimeout(() => {
 ### 2. compartir información de configuración
 
 
-```typescript
-import { interval } from 'rxjs';
-import { take, shareReplay, tap } from 'rxjs';
-
-// shareReplay(tamaño del búfer2)
-const source$ = interval(1000).pipe(
-  take(5),
-  tap(value => console.log(`Fuente: ${value}`)),
-  shareReplay(2) // Más cercano2Almacenamiento en búfer de dos valores
-);
-
-// Primer abonado
-console.log('Observer 1 Inicio de la suscripción');
-source$.subscribe(value => console.log(`Observer 1: ${value}`));
-
-// 3.5Segundos después2Añadir segundo abonado
-setTimeout(() => {
-  console.log('Observer 2 Inicio de la suscripción - Último2Recibir dos valores');
-  source$.subscribe(value => console.log(`Observer 2: ${value}`));
-}, 3500);
-```
-
 **Resultados de la ejecución**:.
 
 
-```typescript
-import { interval } from 'rxjs';
-import { take, shareReplay, tap } from 'rxjs';
-
-// shareReplay(tamaño del búfer2)
-const source$ = interval(1000).pipe(
-  take(5),
-  tap(value => console.log(`Fuente: ${value}`)),
-  shareReplay(2) // Más cercano2Almacenamiento en búfer de dos valores
-);
-
-// Primer abonado
-console.log('Observer 1 Inicio de la suscripción');
-source$.subscribe(value => console.log(`Observer 1: ${value}`));
-
-// 3.5Segundos después2Añadir segundo abonado
-setTimeout(() => {
-  console.log('Observer 2 Inicio de la suscripción - Último2Recibir dos valores');
-  source$.subscribe(value => console.log(`Observer 2: ${value}`));
-}, 3500);
-```
-
 ### 3. caché de tiempo limitado
 
-
-```typescript
-import { interval } from 'rxjs';
-import { take, shareReplay, tap } from 'rxjs';
-
-// shareReplay(tamaño del búfer2)
-const source$ = interval(1000).pipe(
-  take(5),
-  tap(value => console.log(`Fuente: ${value}`)),
-  shareReplay(2) // Más cercano2Almacenamiento en búfer de dos valores
-);
-
-// Primer abonado
-console.log('Observer 1 Inicio de la suscripción');
-source$.subscribe(value => console.log(`Observer 1: ${value}`));
-
-// 3.5Segundos después2Añadir segundo abonado
-setTimeout(() => {
-  console.log('Observer 2 Inicio de la suscripción - Último2Recibir dos valores');
-  source$.subscribe(value => console.log(`Observer 2: ${value}`));
-}, 3500);
-```
 
 ## ⚠️ Cuidado con las fugas de memoria
 
@@ -345,52 +279,8 @@ setTimeout(() => {
 ### Contramedidas recomendadas
 
 
-```typescript
-import { interval } from 'rxjs';
-import { take, shareReplay, tap } from 'rxjs';
-
-// shareReplay(tamaño del búfer2)
-const source$ = interval(1000).pipe(
-  take(5),
-  tap(value => console.log(`Fuente: ${value}`)),
-  shareReplay(2) // Más cercano2Almacenamiento en búfer de dos valores
-);
-
-// Primer abonado
-console.log('Observer 1 Inicio de la suscripción');
-source$.subscribe(value => console.log(`Observer 1: ${value}`));
-
-// 3.5Segundos después2Añadir segundo abonado
-setTimeout(() => {
-  console.log('Observer 2 Inicio de la suscripción - Último2Recibir dos valores');
-  source$.subscribe(value => console.log(`Observer 2: ${value}`));
-}, 3500);
-```
-
 ## 🎯 Cómo elegir el tamaño del búfer
 
-
-```typescript
-import { interval } from 'rxjs';
-import { take, shareReplay, tap } from 'rxjs';
-
-// shareReplay(tamaño del búfer2)
-const source$ = interval(1000).pipe(
-  take(5),
-  tap(value => console.log(`Fuente: ${value}`)),
-  shareReplay(2) // Más cercano2Almacenamiento en búfer de dos valores
-);
-
-// Primer abonado
-console.log('Observer 1 Inicio de la suscripción');
-source$.subscribe(value => console.log(`Observer 1: ${value}`));
-
-// 3.5Segundos después2Añadir segundo abonado
-setTimeout(() => {
-  console.log('Observer 2 Inicio de la suscripción - Último2Recibir dos valores');
-  source$.subscribe(value => console.log(`Observer 2: ${value}`));
-}, 3500);
-```
 
 ## 🔄 Operadores relacionados
 

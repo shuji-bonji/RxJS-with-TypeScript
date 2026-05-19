@@ -27,19 +27,6 @@ clicks$.pipe(
 2. uitvoer als er op dat moment een recente klikgebeurtenis is
 3. als er geen waarde is tijdens de sample-periode, geen uitvoer
 
-```ts
-import { fromEvent } from 'rxjs';
-import { sampleTime } from 'rxjs';
-
-const clicks$ = fromEvent(document, 'click');
-
-clicks$.pipe(
-  sampleTime(2000)
-).subscribe(() => {
-  console.log('2Monsters van seconde tot seconde');
-});
-```
-
 > In het bovenstaande voorbeeld is het afmelden van `fromEvent` weggelaten voor de eenvoud van de uitleg. Gebruik in echte code `takeUntil(destroy$)`, `take(N)` of `Subscription.unsubscribe()` om de levenscyclus expliciet te beheren. Meer informatie: [Moeilijkheden overwinnen: levenscyclusbeheer](/nl/guide/overcoming-difficulties/lifecycle-management.md)
 
 [🌐 Officiële RxJS documentatie - `sampleTime`](https://rxjs.dev/api/operators/sampleTime)

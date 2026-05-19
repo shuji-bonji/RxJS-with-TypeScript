@@ -393,34 +393,10 @@ numbers$.pipe(
 Sólo procesa datos después de una hora específica
 
 
-```ts
-import { range } from 'rxjs';
-import { skipWhile } from 'rxjs';
-
-const numbers$ = range(0, 10); // 0de (a)9a
-
-numbers$.pipe(
-  skipWhile(n => n < 5)
-).subscribe(console.log);
-// Salida: 5, 6, 7, 8, 9
-```
-
 ### Patrón 3: Omisión basada en el estado
 
 Omitir hasta que el sistema esté listo
 
-
-```ts
-import { range } from 'rxjs';
-import { skipWhile } from 'rxjs';
-
-const numbers$ = range(0, 10); // 0de (a)9a
-
-numbers$.pipe(
-  skipWhile(n => n < 5)
-).subscribe(console.log);
-// Salida: 5, 6, 7, 8, 9
-```
 
 ## 📚 Operadores relacionados.
 

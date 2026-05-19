@@ -418,21 +418,6 @@ source$.pipe(
 ### Pattern 2: Cleanup process
 
 
-```ts
-import { of } from 'rxjs';
-import { ignoreElements } from 'rxjs';
-
-const source$ = of(1, 2, 3, 4, 5);
-
-source$.pipe(
-  ignoreElements()
-).subscribe({
-  next: value => console.log('Value:', value), // Not called
-  complete: () => console.log('Completed')
-});
-// Output: Completed
-```
-
 ## 📚 Related Operators
 
 - **[filter](. /filter)** - filter values based on conditions

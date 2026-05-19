@@ -256,60 +256,6 @@ createPost({
 });
 ```
 
-```typescript
-import { from, Observable, catchError } from 'rxjs';
-
-// JSONPlaceholder API(na een zelfstandig naamwoord) gebaseerd op ...Posttype
-// https://jsonplaceholder.typicode.com/posts
-interface Post {
-  id: number;
-  userId: number;
-  title: string;
-  body: string;
-}
-
-interface CreatePostRequest {
-  userId: number;
-  title: string;
-  body: string;
-}
-
-function createPost(postData: CreatePostRequest): Observable<Post> {
-  return from(
-    fetch('https://jsonplaceholder.typicode.com/posts', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(postData)
-    }).then(response => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      return response.json();
-    })
-  ).pipe(
-    catchError((err: unknown) => {
-      console.error('Fout bij het maken van een bericht:', err);
-      throw err;
-    })
-  );
-}
-
-// Gebruiksvoorbeeld
-createPost({
-  userId: 1,
-  title: 'RxJSLeren van',
-  body: 'RxJShet gebruik van deAPILeren van het patroon van aanroepen naar'
-}).subscribe({
-  next: post => {
-    console.log('Aangemaakte berichten:', post);
-    console.log('Een berichtID:', post.id); // JSONPlaceholderworden automatischIDtoegewezen (bijv.: 101)
-  },
-  error: err => console.error('Fout:', err)
-});
-```
-
 > - **Typeveiligheid**: duidelijk het type antwoord definiëren
 > - **Foutenafhandeling**: HTTP-statuscodes goed controleren
 > - **Time-outs**: lange wachttijden voorkomen
@@ -1270,65 +1216,6 @@ fetchUsers().subscribe({
 
 
 ```typescript
-import { from, Observable, map, catchError, timeout } from 'rxjs';
-
-// JSONPlaceholder API(na een zelfstandig naamwoord) gebaseerd op ...Usertype
-// https://jsonplaceholder.typicode.com/users
-interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  address: {
-    street: string;
-    suite: string;
-    city: string;
-    zipcode: string;
-    geo: {
-      lat: string;
-      lng: string;
-    };
-  };
-  phone: string;
-  website: string;
-  company: {
-    name: string;
-    catchPhrase: string;
-    bs: string;
-  };
-}
-
-// Lijst met gebruikers ophalen
-function fetchUsers(): Observable<User[]> {
-  return from(
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-  ).pipe(
-    timeout(5000), // 5Time-out in seconden
-    catchError((err: unknown) => {
-      console.error('Fout bij overname gebruiker:', err);
-      throw err;
-    })
-  );
-}
-
-// Gebruiksvoorbeeld
-fetchUsers().subscribe({
-  next: users => {
-    console.log('Gebruikerslijst:', users);
-    console.log('Eerste gebruiker:', users[0].name); // Voorbeeld: "Leanne Graham"
-  },
-  error: err => console.error('Fout:', err)
-});
-```
-
-
-```typescript
 import { forkJoin, from, Observable, map } from 'rxjs';
 
 // JSONPlaceholder API(na een zelfstandig naamwoord) gebaseerd op ...Commenttype
@@ -1564,64 +1451,6 @@ fetchUsers().subscribe({
 In de praktijk worden time-outs en herhalingen gecombineerd gebruikt.
 
 
-```typescript
-import { from, Observable, map, catchError, timeout } from 'rxjs';
-
-// JSONPlaceholder API(na een zelfstandig naamwoord) gebaseerd op ...Usertype
-// https://jsonplaceholder.typicode.com/users
-interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  address: {
-    street: string;
-    suite: string;
-    city: string;
-    zipcode: string;
-    geo: {
-      lat: string;
-      lng: string;
-    };
-  };
-  phone: string;
-  website: string;
-  company: {
-    name: string;
-    catchPhrase: string;
-    bs: string;
-  };
-}
-
-// Lijst met gebruikers ophalen
-function fetchUsers(): Observable<User[]> {
-  return from(
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-  ).pipe(
-    timeout(5000), // 5Time-out in seconden
-    catchError((err: unknown) => {
-      console.error('Fout bij overname gebruiker:', err);
-      throw err;
-    })
-  );
-}
-
-// Gebruiksvoorbeeld
-fetchUsers().subscribe({
-  next: users => {
-    console.log('Gebruikerslijst:', users);
-    console.log('Eerste gebruiker:', users[0].name); // Voorbeeld: "Leanne Graham"
-  },
-  error: err => console.error('Fout:', err)
-});
-```
-
 __callout_32___
 
 > - **Normale API**: 5 - 10 seconden
@@ -1702,64 +1531,6 @@ fetchUsers().subscribe({
 
 Dit is een voorbeeld van het implementeren van een expliciete annuleringsknop.
 
-
-```typescript
-import { from, Observable, map, catchError, timeout } from 'rxjs';
-
-// JSONPlaceholder API(na een zelfstandig naamwoord) gebaseerd op ...Usertype
-// https://jsonplaceholder.typicode.com/users
-interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-  address: {
-    street: string;
-    suite: string;
-    city: string;
-    zipcode: string;
-    geo: {
-      lat: string;
-      lng: string;
-    };
-  };
-  phone: string;
-  website: string;
-  company: {
-    name: string;
-    catchPhrase: string;
-    bs: string;
-  };
-}
-
-// Lijst met gebruikers ophalen
-function fetchUsers(): Observable<User[]> {
-  return from(
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-  ).pipe(
-    timeout(5000), // 5Time-out in seconden
-    catchError((err: unknown) => {
-      console.error('Fout bij overname gebruiker:', err);
-      throw err;
-    })
-  );
-}
-
-// Gebruiksvoorbeeld
-fetchUsers().subscribe({
-  next: users => {
-    console.log('Gebruikerslijst:', users);
-    console.log('Eerste gebruiker:', users[0].name); // Voorbeeld: "Leanne Graham"
-  },
-  error: err => console.error('Fout:', err)
-});
-```
 
 __oproep_33___
 

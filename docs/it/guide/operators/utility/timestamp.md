@@ -1,14 +1,14 @@
 ---
-description: L'operatore timestamp aggiunge un timestamp a ogni valore e registra l'ora in cui il valore è stato emesso, che può essere usato per misurazione performance e debugging.
+description: "L'operatore timestamp aggiunge un timestamp a ogni valore, registrando l'ora in cui è stato emesso, che può essere utilizzata per la misurazione delle prestazioni e il debug."
 ---
 
-# timestamp - Aggiungi Timestamp
+# timestamp - timestamping
 
-L'operatore `timestamp` **aggiunge un timestamp** a ogni valore nello stream. Può essere usato per misurazione performance, debugging e analisi di serie temporali degli eventi registrando l'ora esatta in cui il valore è stato emesso.
+L'operatore `timestamp` **assegna un timestamp** a ogni valore nello stream. Registrando l'ora esatta in cui il valore è stato emesso, può essere utilizzato per la misurazione delle prestazioni, il debug e l'analisi delle serie temporali degli eventi.
 
-## 🔰 Sintassi e Operazione Base
+## 🔰 Sintassi e funzionamento di base
 
-Converte ogni valore in un oggetto con timestamp.
+Converte ogni valore in un oggetto con data e ora.
 
 ```ts
 import { interval } from 'rxjs';
@@ -21,43 +21,43 @@ interval(1000)
   )
   .subscribe(console.log);
 
-// Output:
+// Uscita:
 // { value: 0, timestamp: 1640000000000 }
 // { value: 1, timestamp: 1640000001000 }
 // { value: 2, timestamp: 1640000002000 }
 ```
 
-L'oggetto restituito ha la seguente struttura:
-- `value`: Il valore originale
-- `timestamp`: Timestamp (tempo Unix in millisecondi)
+L'oggetto restituito ha la seguente struttura.
+- `valore`: il valore originale
+- `timestamp`: timestamp (tempo Unix in millisecondi)
 
-[🌐 Documentazione Ufficiale RxJS - timestamp](https://rxjs.dev/api/index/function/timestamp)
+[🌐 Documentazione ufficiale RxJS - timestamp](https://rxjs.dev/api/index/function/timestamp)
 
-## 💡 Esempi di Utilizzo Tipici
+## 💡 Caso d'uso tipico.
 
-- **Misurazione performance**: Misura tempo di elaborazione
-- **Analisi timing eventi**: Misura intervalli tra azioni utente
-- **Debugging e logging**: Registrazione del timing di emissione valori
-- **Registrazione dati di serie temporali**: Storage con timestamp di dati sensore, ecc.
+- **Misurazione delle prestazioni**: misurazione dei tempi di elaborazione
+- Analisi dei tempi degli eventi**: misurazione degli intervalli tra le azioni dell'utente
+- **Debug e logging**: registrazione dei valori emessi.
+- **Registrazione di dati in serie temporali**: memorizzazione con data e ora di dati di sensori, ad esempio.
 
-## 🧪 Esempio di Codice Pratico 1: Misurazione Intervalli Click
+## 🧪 Esempio pratico di codice 1: misurazione degli intervalli di clic
 
-Questo è un esempio di misurazione dell'intervallo di click utente.
+Questo esempio mostra come misurare l'intervallo di clic dell'utente.
 
 ```ts
 import { fromEvent } from 'rxjs';
 import { timestamp, pairwise, map } from 'rxjs';
 
-// Creazione UI
+// UICreare
 const container = document.createElement('div');
 document.body.appendChild(container);
 
 const title = document.createElement('h3');
-title.textContent = 'timestamp - Misurazione intervallo click';
+title.textContent = 'timestamp - Fare clic sulla misurazione dell'intervallo';
 container.appendChild(title);
 
 const button = document.createElement('button');
-button.textContent = 'Per favore clicca';
+button.textContent = 'Fare clic su';
 button.style.marginBottom = '10px';
 button.style.padding = '10px 20px';
 button.style.fontSize = '16px';
@@ -78,7 +78,7 @@ function addLog(message: string, color: string = '#e3f2fd') {
   logItem.style.marginBottom = '3px';
   logItem.style.backgroundColor = color;
   logItem.textContent = message;
-  output.insertBefore(logItem, output.firstChild);  // Visualizza il più recente in alto
+  output.insertBefore(logItem, output.firstChild);  // Mostra il più recente in alto
 }
 
 fromEvent(button, 'click')
@@ -90,7 +90,7 @@ fromEvent(button, 'click')
       return {
         clickNumber: clickCount + 1,
         interval: interval,
-        timestamp: new Date(curr.timestamp).toLocaleTimeString('it-IT')
+        timestamp: new Date(curr.timestamp).toLocaleTimeString('ja-JP')
       };
     })
   )
@@ -99,37 +99,37 @@ fromEvent(button, 'click')
     const color = data.interval < 500 ? '#ffcdd2' :
                   data.interval < 1000 ? '#fff9c4' : '#c8e6c9';
 
-    const speed = data.interval < 500 ? 'Click veloce!' :
-                  data.interval < 1000 ? 'Normale' : 'Lento';
+    const speed = data.interval < 500 ? 'Clic più veloce!' :
+                  data.interval < 1000 ? 'Normale' : 'Lentamente';
 
     addLog(
-      `${data.clickNumber}° click: ${data.interval}ms intervallo [${speed}] (${data.timestamp})`,
+      `${data.clickNumber}2° clic: ${data.interval}msIntervallo [${speed}] (${data.timestamp})`,
       color
     );
   });
 
-addLog('Per favore clicca il bottone (intervallo misurato dal 2° click)', '#e3f2fd');
+addLog('Fare clic sul pulsante (2Misura l'intervallo dalla seconda volta)', '#e3f2fd');
 ```
 
-- Misura accurata dell'intervallo click
-- Visualizzazione codificata per colore secondo la velocità
-- Registra l'ora di occorrenza con timestamp
+- Misurazione accurata dell'intervallo di clic
+- Visualizzazione con codice colore in base alla velocità
+- I timbri temporali registrano l'ora in cui si verifica il clic
 
-## 🧪 Esempio di Codice Pratico 2: Misurazione Tempo di Elaborazione
+## 🧪 Esempio pratico di codice 2: Misurazione dei tempi di elaborazione
 
-Questo è un esempio di misurazione del tempo impiegato per ogni processo.
+Questo esempio mostra come misurare il tempo impiegato per ogni processo.
 
 ```ts
 import { interval } from 'rxjs';
 import { timestamp, map, take } from 'rxjs';
 
-// Creazione UI
+// UICreare
 const container2 = document.createElement('div');
 container2.style.marginTop = '20px';
 document.body.appendChild(container2);
 
 const title2 = document.createElement('h3');
-title2.textContent = 'timestamp - Misurazione tempo elaborazione';
+title2.textContent = 'timestamp - Misurazione del tempo di elaborazione';
 container2.appendChild(title2);
 
 const output2 = document.createElement('div');
@@ -146,16 +146,16 @@ function addLog2(message: string) {
   output2.appendChild(logItem);
 }
 
-addLog2('Elaborazione avviata...');
+addLog2('Inizio dell'elaborazione...');
 
 interval(500)
   .pipe(
     take(5),
-    timestamp(),  // Timestamp prima dell'elaborazione
+    timestamp(),  // Tempo prima dell'elaborazione
     map(data => {
       const start = data.timestamp;
 
-      // Simula elaborazione pesante (tempo di elaborazione casuale)
+      // Simulare un'elaborazione pesante (tempi di elaborazione casuali)
       const iterations = Math.floor(Math.random() * 5000000) + 1000000;
       let sum = 0;
       for (let i = 0; i < iterations; i++) {
@@ -167,7 +167,7 @@ interval(500)
 
       return {
         value: data.value,
-        startTime: new Date(start).toLocaleTimeString('it-IT', { hour12: false }) +
+        startTime: new Date(start).toLocaleTimeString('ja-JP', { hour12: false }) +
                    '.' + (start % 1000).toString().padStart(3, '0'),
         duration: duration
       };
@@ -176,20 +176,103 @@ interval(500)
   .subscribe({
     next: result => {
       addLog2(
-        `Valore${result.value}: inizio=${result.startTime}, tempo elaborazione=${result.duration}ms`
+        `Valore${result.value}: Inizio=${result.startTime}, Tempo di elaborazione=${result.duration}ms`
       );
     },
     complete: () => {
-      addLog2('--- Tutta l\'elaborazione completata ---');
+      addLog2('--- Tutta l'elaborazione è stata completata ---');
     }
   });
 ```
 
-- Registra l'ora di inizio di ogni valore
-- Misura il tempo impiegato per l'elaborazione
-- Usa per analisi performance
+- Registrare l'ora di inizio dell'elaborazione per ogni valore
+- Misurazione del tempo impiegato per ogni processo
+- Utilizzato per l'analisi delle prestazioni
 
-## Utilizzo dei Timestamp
+## 🧪 Esempio pratico di codice 3: Registro eventi
+
+Questo è un esempio di registrazione di tutti gli eventi con un timestamp.
+
+```ts
+import { merge, fromEvent, interval } from 'rxjs';
+import { timestamp, map, take } from 'rxjs';
+
+// UICreare
+const container3 = document.createElement('div');
+container3.style.marginTop = '20px';
+document.body.appendChild(container3);
+
+const title3 = document.createElement('h3');
+title3.textContent = 'timestamp - Registro eventi';
+container3.appendChild(title3);
+
+const clickButton = document.createElement('button');
+clickButton.textContent = 'Cliccare';
+clickButton.style.marginRight = '10px';
+container3.appendChild(clickButton);
+
+const hoverDiv = document.createElement('div');
+hoverDiv.textContent = 'Passare il mouse qui';
+hoverDiv.style.display = 'inline-block';
+hoverDiv.style.padding = '10px';
+hoverDiv.style.border = '2px solid #4CAF50';
+hoverDiv.style.cursor = 'pointer';
+container3.appendChild(hoverDiv);
+
+const log3 = document.createElement('div');
+log3.style.marginTop = '10px';
+log3.style.border = '1px solid #ccc';
+log3.style.padding = '10px';
+log3.style.maxHeight = '200px';
+log3.style.overflow = 'auto';
+log3.style.fontFamily = 'monospace';
+log3.style.fontSize = '12px';
+container3.appendChild(log3);
+
+function addLog3(message: string, color: string) {
+  const logItem = document.createElement('div');
+  logItem.style.backgroundColor = color;
+  logItem.style.padding = '2px';
+  logItem.textContent = message;
+  log3.insertBefore(logItem, log3.firstChild);
+}
+
+// Integrare più fonti di eventi
+const events$ = merge(
+  fromEvent(clickButton, 'click').pipe(map(() => 'CLICK')),
+  fromEvent(hoverDiv, 'mouseenter').pipe(map(() => 'HOVER_IN')),
+  fromEvent(hoverDiv, 'mouseleave').pipe(map(() => 'HOVER_OUT')),
+  interval(3000).pipe(take(5), map(i => `TIMER_${i}`))
+);
+
+events$
+  .pipe(
+    timestamp()
+  )
+  .subscribe(data => {
+    const time = new Date(data.timestamp).toLocaleTimeString('ja-JP', { hour12: false }) +
+                 '.' + (data.timestamp % 1000).toString().padStart(3, '0');
+
+    const colors: Record<string, string> = {
+      'CLICK': '#c8e6c9',
+      'HOVER_IN': '#fff9c4',
+      'HOVER_OUT': '#ffccbc',
+    };
+
+    const color = data.value.startsWith('TIMER') ? '#e1bee7' :
+                  (colors[data.value] || '#e3f2fd');
+
+    addLog3(`[${time}] Evento: ${data.value}`, color);
+  });
+
+addLog3('Registro eventi in corso di registrazione...', '#e3f2fd');
+```
+
+- Integrare più fonti di eventi
+- Timestamp di tutti gli eventi
+- Traccia gli eventi in ordine cronologico
+
+## Come possono essere utilizzati i timestamp
 
 ```ts
 import { of } from 'rxjs';
@@ -199,7 +282,7 @@ of('A', 'B', 'C')
   .pipe(
     timestamp(),
     map(data => {
-      // Elaborazione usando timestamp
+      // Elaborazione con timestamp
       const date = new Date(data.timestamp);
       return {
         value: data.value,
@@ -209,22 +292,22 @@ of('A', 'B', 'C')
     })
   )
   .subscribe(console.log);
-// Output:
+// Uscita:
 // { value: 'A', time: '2024-01-01T00:00:00.000Z', unixTime: 1704067200000 }
 // ...
 ```
 
-## ⚠️ Note Importanti
+## ⚠️ Note.
 
-### 1. Precisione del Timestamp
+### 1. precisione del timestamp
 
-Poiché viene usato `Date.now()` di JavaScript, la precisione è in millisecondi.
+Precisione al millisecondo dovuta all'uso di `Date.now()` di JavaScript.
 
 ```ts
 import { interval } from 'rxjs';
 import { timestamp, take } from 'rxjs';
 
-// Eventi ad alta frequenza (intervallo 1ms)
+// Eventi ad alta frequenza (1msintervallo)
 interval(1)
   .pipe(
     take(3),
@@ -233,29 +316,29 @@ interval(1)
   .subscribe(data => {
     console.log(`Valore: ${data.value}, Timestamp: ${data.timestamp}`);
   });
-// Potrebbe avere lo stesso timestamp
+// Può essere lo stesso timestamp
 ```
 
-Se serve maggiore precisione, considera l'utilizzo di `performance.now()`.
+Considerare l'uso di `performance.now()` se è necessaria una maggiore precisione.
 
-### 2. Il Timestamp è al Momento dell'Emissione
+### 2. Il timestamp è al momento dell'emissione.
 
-Il timestamp è l'ora in cui il valore è stato emesso, non quando è stato generato.
+Il timestamp è il momento in cui il valore è stato emesso, non quando è stato generato.
 
 ```ts
 import { of, delay, timestamp } from 'rxjs';
 
 of(1, 2, 3)
   .pipe(
-    delay(1000),      // Ritardo di 1 secondo
+    delay(1000),      // 1Ritardo di 1 secondo
     timestamp()       // Timestamp dopo il ritardo
   )
   .subscribe(console.log);
 ```
 
-### 3. Cambiamento Struttura Oggetto
+### 3. Modifiche alla struttura dell'oggetto
 
-L'utilizzo di `timestamp` wrappa il valore in un oggetto.
+Utilizzando `timestamp`, i valori sono avvolti in oggetti.
 
 ```ts
 import { of, timestamp, map } from 'rxjs';
@@ -263,26 +346,26 @@ import { of, timestamp, map } from 'rxjs';
 of(1, 2, 3)
   .pipe(
     timestamp(),
-    map(data => data.value * 2)  // Accedi al valore originale con .value
+    map(data => data.value * 2)  // .valueAccesso al valore originale con
   )
   .subscribe(console.log);
-// Output: 2, 4, 6
+// Uscita: 2, 4, 6
 ```
 
-## 📚 Operatori Correlati
+## 📚 Operatori correlati.
 
-- **[tap](./tap)** - Esegui effetti collaterali (per debugging)
-- **[delay](./delay)** - Ritardo di tempo fisso
-- **[timeout](./timeout)** - Controllo timeout
+- **[tap](. /tap)** - Esegue effetti collaterali (per il debug).
+- **[delay](. /delay)** - ritardo fisso.
+- **[timeout](. /timeout)** - controllo del timeout.
 
-## ✅ Riepilogo
+## ✅ Sommario.
 
-L'operatore `timestamp` dà un timestamp per ogni valore.
+L'operatore `timestamp` assegna un timestamp a ogni valore.
 
-- ✅ Registra accuratamente l'ora in cui ogni valore viene emesso
-- ✅ Utile per misurazione performance
-- ✅ Permette analisi degli intervalli tra eventi
-- ✅ Utile per debugging e logging
-- ⚠️ Precisione in millisecondi
-- ⚠️ I valori vengono wrappati in oggetti
-- ⚠️ I timestamp sono al momento dell'emissione
+- Registra con precisione l'ora di emissione di ogni valore.
+- ✅ Utile per la misurazione delle prestazioni
+- ✅ Consente l'analisi degli intervalli di eventi
+- ✅ Utile per il debug e il logging
+- ⚠️ Precisione al millisecondo
+- ⚠️ I valori sono avvolti in oggetti
+- ⚠️ I timestamp sono aggiornati al momento della pubblicazione

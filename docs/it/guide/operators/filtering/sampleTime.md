@@ -344,19 +344,6 @@ clicks$.pipe(
 ```
 
 
-```ts
-import { fromEvent } from 'rxjs';
-import { sampleTime } from 'rxjs';
-
-const clicks$ = fromEvent(document, 'click');
-
-clicks$.pipe(
-  sampleTime(2000)
-).subscribe(() => {
-  console.log('2Campioni secondo per secondo');
-});
-```
-
 ## 📚 Operatori correlati.
 
 - **[sample](https://rxjs.dev/api/operators/sample)** - Campionamento di un altro Observable come trigger (documentazione ufficiale).

@@ -584,49 +584,13 @@ of(1).pipe(
 ### Factoriale berekeningen
 
 
-```ts
-import { of } from 'rxjs';
-import { expand, take } from 'rxjs';
-
-// 2Recursief proces van verdubbelen
-of(1).pipe(
-  expand(x => of(x * 2)),
-  take(5) // Preventie van oneindige lus
-).subscribe(console.log);
-// Uitvoer: 1, 2, 4, 8, 16
-```
-
 ## ⚠️ Veelgemaakte fouten
 
-
-```ts
-import { of } from 'rxjs';
-import { expand, take } from 'rxjs';
-
-// 2Recursief proces van verdubbelen
-of(1).pipe(
-  expand(x => of(x * 2)),
-  take(5) // Preventie van oneindige lus
-).subscribe(console.log);
-// Uitvoer: 1, 2, 4, 8, 16
-```
 
 > De meest voorkomende fout met `uitbreiden` is om te vergeten een **exitvoorwaarde** in te stellen en in een oneindige lus** terecht te komen.
 
 ### Fout: geen afsluitvoorwaarde.
 
-
-```ts
-import { of } from 'rxjs';
-import { expand, take } from 'rxjs';
-
-// 2Recursief proces van verdubbelen
-of(1).pipe(
-  expand(x => of(x * 2)),
-  take(5) // Preventie van oneindige lus
-).subscribe(console.log);
-// Uitvoer: 1, 2, 4, 8, 16
-```
 
 ### Positief: met afsluitvoorwaarde
 
@@ -643,18 +607,6 @@ of(1).pipe(
 // Uitvoer: 1, 2, 4, 8, 16
 ```
 
-
-```ts
-import { of } from 'rxjs';
-import { expand, take } from 'rxjs';
-
-// 2Recursief proces van verdubbelen
-of(1).pipe(
-  expand(x => of(x * 2)),
-  take(5) // Preventie van oneindige lus
-).subscribe(console.log);
-// Uitvoer: 1, 2, 4, 8, 16
-```
 
 > Recursieve processen moeten altijd de exitconditie expliciet maken en oneindige lussen voorkomen door `take`, `takeWhile` of `EMPTY` terug te geven, afhankelijk van de conditie.
 
