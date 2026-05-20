@@ -5,7 +5,7 @@
 | 項目 | 値 |
 |------|-----|
 | ファイル数 | 181 |
-| 平均スコア | 0.915 |
+| 平均スコア | 0.916 |
 | 最小スコア | 0.572 |
 | 最大スコア | 0.983 |
 
@@ -165,22 +165,22 @@
 | 🔵 0.933 | operators/filtering/distinct.md | 10 |
 | 🟢 0.953 | operators/filtering/distinctUntilChanged.md | 5 |
 | 🟢 0.952 | operators/filtering/distinctUntilKeyChanged.md | 5 |
-| 🔵 0.913 | operators/filtering/elementAt.md | 15 |
+| 🔵 0.915 | operators/filtering/elementAt.md | 15 |
 | 🔴 0.572 | operators/filtering/filter.md | 9 |
-| 🔵 0.916 | operators/filtering/find.md | 10 |
-| 🔵 0.913 | operators/filtering/findIndex.md | 16 |
+| 🔵 0.917 | operators/filtering/find.md | 10 |
+| 🔵 0.912 | operators/filtering/findIndex.md | 16 |
 | 🔵 0.936 | operators/filtering/first.md | 5 |
 | 🔵 0.901 | operators/filtering/ignoreElements.md | 16 |
 | 🟢 0.970 | operators/filtering/index.md | 3 |
 | 🔵 0.932 | operators/filtering/last.md | 5 |
 | 🔵 0.898 | operators/filtering/practical-use-cases.md | 3 |
-| 🟡 0.802 | operators/filtering/sampleTime.md | 15 |
+| 🟡 0.803 | operators/filtering/sampleTime.md | 15 |
 | 🔵 0.930 | operators/filtering/skip.md | 9 |
 | 🔵 0.886 | operators/filtering/skipLast.md | 18 |
 | 🔵 0.925 | operators/filtering/skipUntil.md | 11 |
 | 🔵 0.920 | operators/filtering/skipWhile.md | 16 |
 | 🔵 0.900 | operators/filtering/take.md | 5 |
-| 🟡 0.764 | operators/filtering/takeLast.md | 13 |
+| 🟡 0.762 | operators/filtering/takeLast.md | 13 |
 | 🔵 0.908 | operators/filtering/takeWhile.md | 13 |
 | 🔵 0.948 | operators/filtering/throttleTime.md | 6 |
 | 🟡 0.823 | operators/index.md | 6 |
@@ -235,7 +235,7 @@
 |--------|----------|--------|
 | 🔵 0.909 | overcoming-difficulties/conceptual-understanding.md | 13 |
 | 🟡 0.819 | overcoming-difficulties/debugging-guide.md | 23 |
-| 🔵 0.942 | overcoming-difficulties/index.md | 26 |
+| 🔵 0.945 | overcoming-difficulties/index.md | 26 |
 | 🔵 0.922 | overcoming-difficulties/lifecycle-management.md | 21 |
 | 🔵 0.937 | overcoming-difficulties/operator-selection.md | 24 |
 | 🔵 0.933 | overcoming-difficulties/state-and-sharing.md | 19 |
@@ -262,7 +262,7 @@
 |--------|----------|--------|
 | 🔵 0.880 | schedulers/async-control.md | 15 |
 | 🟢 0.977 | schedulers/task-and-scheduler-basics.md | 5 |
-| 🟡 0.734 | schedulers/types.md | 13 |
+| 🟡 0.771 | schedulers/types.md | 12 |
 
 ### starter-kid.md
 
@@ -297,4 +297,4 @@
 
 ---
 
-最終更新: 2026-05-20T06:11:42Z
+最終更新: 2026-05-20T09:59:29Z

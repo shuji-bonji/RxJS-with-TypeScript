@@ -5,7 +5,7 @@
 | 項目 | 値 |
 |------|-----|
 | ファイル数 | 181 |
-| 平均スコア | 0.790 |
+| 平均スコア | 0.791 |
 | 最小スコア | 0.561 |
 | 最大スコア | 0.984 |
 
@@ -14,9 +14,9 @@
 | 品質 | 件数 | 割合 |
 |------|------|------|
 | 🟢 優秀 (≥0.95) | 1 | 0.6% |
-| 🔵 良好 (0.85-0.94) | 27 | 14.9% |
+| 🔵 良好 (0.85-0.94) | 28 | 15.5% |
 | 🟡 要改善 (0.70-0.84) | 138 | 76.2% |
-| 🔴 要修正 (<0.70) | 15 | 8.3% |
+| 🔴 要修正 (<0.70) | 14 | 7.7% |
 
 ## 🔴 要修正ファイル (スコア < 0.70)
 
@@ -35,7 +35,6 @@
 | 🔴 0.688 | `overcoming-difficulties/lifecycle-management.md` | 19 |
 | 🔴 0.692 | `operators/utility/startWith.md` | 4 |
 | 🔴 0.695 | `overcoming-difficulties/debugging-guide.md` | 23 |
-| 🔴 0.698 | `practical-patterns/ui-events.md` | 28 |
 | 🔴 0.699 | `operators/conditional/every.md` | 2 |
 
 ## ファイル別一覧
@@ -172,28 +171,28 @@
 | 🟡 0.796 | operators/conditional/index.md | 7 |
 | 🟡 0.730 | operators/conditional/isEmpty.md | 2 |
 | 🟡 0.759 | operators/conditional/practical-use-cases.md | 13 |
-| 🟡 0.760 | operators/filtering/audit.md | 11 |
+| 🟡 0.762 | operators/filtering/audit.md | 11 |
 | 🟡 0.757 | operators/filtering/auditTime.md | 13 |
 | 🟡 0.786 | operators/filtering/debounceTime.md | 5 |
 | 🟡 0.837 | operators/filtering/distinct.md | 10 |
 | 🔵 0.858 | operators/filtering/distinctUntilChanged.md | 5 |
 | 🟡 0.825 | operators/filtering/distinctUntilKeyChanged.md | 5 |
-| 🟡 0.832 | operators/filtering/elementAt.md | 15 |
+| 🟡 0.833 | operators/filtering/elementAt.md | 15 |
 | 🟡 0.744 | operators/filtering/filter.md | 10 |
-| 🟡 0.805 | operators/filtering/find.md | 10 |
-| 🟡 0.826 | operators/filtering/findIndex.md | 16 |
+| 🟡 0.806 | operators/filtering/find.md | 10 |
+| 🟡 0.825 | operators/filtering/findIndex.md | 16 |
 | 🟡 0.839 | operators/filtering/first.md | 5 |
-| 🟡 0.749 | operators/filtering/ignoreElements.md | 16 |
+| 🟡 0.752 | operators/filtering/ignoreElements.md | 16 |
 | 🟡 0.797 | operators/filtering/index.md | 3 |
 | 🟡 0.788 | operators/filtering/last.md | 5 |
 | 🔴 0.686 | operators/filtering/practical-use-cases.md | 3 |
 | 🔴 0.680 | operators/filtering/sampleTime.md | 15 |
 | 🟡 0.808 | operators/filtering/skip.md | 9 |
 | 🔴 0.561 | operators/filtering/skipLast.md | 18 |
-| 🟡 0.789 | operators/filtering/skipUntil.md | 11 |
+| 🟡 0.791 | operators/filtering/skipUntil.md | 11 |
 | 🟡 0.771 | operators/filtering/skipWhile.md | 16 |
 | 🔴 0.660 | operators/filtering/take.md | 5 |
-| 🟡 0.725 | operators/filtering/takeLast.md | 13 |
+| 🟡 0.726 | operators/filtering/takeLast.md | 13 |
 | 🟡 0.838 | operators/filtering/takeWhile.md | 13 |
 | 🟡 0.707 | operators/filtering/throttleTime.md | 6 |
 | 🟡 0.790 | operators/index.md | 6 |
@@ -204,11 +203,11 @@
 | 🟡 0.784 | operators/transformation/buffer.md | 10 |
 | 🟡 0.720 | operators/transformation/bufferCount.md | 5 |
 | 🟡 0.755 | operators/transformation/bufferTime.md | 5 |
-| 🟡 0.830 | operators/transformation/bufferToggle.md | 12 |
+| 🟡 0.840 | operators/transformation/bufferToggle.md | 12 |
 | 🟡 0.800 | operators/transformation/bufferWhen.md | 10 |
 | 🟡 0.803 | operators/transformation/concatMap.md | 5 |
 | 🟡 0.765 | operators/transformation/exhaustMap.md | 5 |
-| 🟡 0.799 | operators/transformation/expand.md | 7 |
+| 🟡 0.801 | operators/transformation/expand.md | 7 |
 | 🟡 0.837 | operators/transformation/groupBy.md | 15 |
 | 🟡 0.778 | operators/transformation/index.md | 6 |
 | 🟡 0.805 | operators/transformation/map.md | 5 |
@@ -260,14 +259,14 @@
 | スコア | ファイル | ペア数 |
 |--------|----------|--------|
 | 🟡 0.827 | practical-patterns/advanced-form-patterns.md | 29 |
-| 🟡 0.777 | practical-patterns/api-calls.md | 27 |
+| 🟡 0.779 | practical-patterns/api-calls.md | 27 |
 | 🟡 0.835 | practical-patterns/caching-strategies.md | 13 |
 | 🔵 0.855 | practical-patterns/error-handling-patterns.md | 17 |
 | 🟡 0.847 | practical-patterns/form-handling.md | 12 |
 | 🟡 0.806 | practical-patterns/index.md | 25 |
 | 🟡 0.703 | practical-patterns/real-time-data.md | 45 |
 | 🔵 0.869 | practical-patterns/subscribe-branching.md | 23 |
-| 🔴 0.698 | practical-patterns/ui-events.md | 28 |
+| 🟡 0.700 | practical-patterns/ui-events.md | 28 |
 
 ### schedulers
 
@@ -275,7 +274,7 @@
 |--------|----------|--------|
 | 🔵 0.868 | schedulers/async-control.md | 15 |
 | 🔵 0.914 | schedulers/task-and-scheduler-basics.md | 5 |
-| 🟡 0.750 | schedulers/types.md | 13 |
+| 🔵 0.855 | schedulers/types.md | 13 |
 
 ### starter-kid.md
 
@@ -310,4 +309,4 @@
 
 ---
 
-最終更新: 2026-05-20T07:54:45Z
+最終更新: 2026-05-20T11:42:04Z

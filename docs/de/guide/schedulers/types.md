@@ -122,18 +122,18 @@ fibonacci(10).subscribe(value => console.log(value));
 import { of, asapScheduler } from 'rxjs';
 import { observeOn } from 'rxjs';
 
-console.log('1: 開始');
+console.log('1: Start');
 
-of('ASAP処理')
+of('ASAPVerarbeitung von')
   .pipe(observeOn(asapScheduler))
   .subscribe(value => console.log(`3: ${value}`));
 
-console.log('2: 終了');
+console.log('2: Ende von');
 
 // Ausgabe:
-// 1: 開始
-// 2: 終了
-// 3: ASAP処理
+// 1: Start
+// 2: Ende von
+// 3: ASAPVerarbeitung von
 ```
 
 #### Anwendungsfall
@@ -379,8 +379,6 @@ Durch die Verwendung des Schedulers mit dem Operator `retry` kann das Timing der
 Die Option `delay` des Operators `retry` verwendet intern den `asyncScheduler` zur Steuerung des Retry-Intervalls.
 
 
-```
-
 ```ts
 import { of, asyncScheduler } from 'rxjs';
 import { observeOn } from 'rxjs';
@@ -421,33 +419,33 @@ function fetchDataWithBackoff(id: number) {
 
 fetchDataWithBackoff(1)
   .pipe(
-    // RxJS 7.3+ 推奨: retry({ count, delay }) 形式
+    // RxJS 7.3+ Empfehlung: retry({ count, delay }) Format
     retry({
-      count: 3, // Max.3回まで再試行
+      count: 3, // Max.3Bis zu dreimaliger Wiederholungsversuch
       delay: (error, retryCount) => {
-        // 指数バックオフ: 1秒, 2秒, 4秒...
+        // Exponentielle Rückstellung: 1Sekunden, 2Sekunden, 4Sekunden...
         const delayTime = Math.pow(2, retryCount - 1) * 1000;
-        console.log(`🔄 リトライ ${retryCount}回目 (${delayTime}ms後)`);
+        console.log(`🔄 Wiederholungen ${retryCount}mal (${delayTime}msNach)`);
 
-        // timer は内部的に asyncScheduler を使用
+        // timer ist intern asyncScheduler Verwendung von
         return timer(delayTime);
       }
     })
   )
   .subscribe({
-    next: result => console.log('✅ 成功:', result),
+    next: result => console.log('✅ Erfolg:', result),
     error: error => {
-      console.log('❌ Max.リトライ数に到達');
-      console.log('❌ 最終Fehler:', error.message);
+      console.log('❌ Max.Anzahl der Wiederholungen erreicht');
+      console.log('❌ FinaleFehler:', error.message);
     }
   });
 
 // AusgabeBsp.:
-// 🔄 リトライ 1回目 (1000ms後)
-// 🔄 リトライ 2回目 (2000ms後)
-// 🔄 リトライ 3回目 (4000ms後)
-// ❌ Max.リトライ数に到達
-// ❌ 最終Fehler: Temporary error
+// 🔄 Wiederholungen 1mal (1000msNach)
+// 🔄 Wiederholungen 2mal (2000msNach)
+// 🔄 Wiederholungen 3mal (4000msNach)
+// ❌ Max.Anzahl der Wiederholungen erreicht
+// ❌ FinaleFehler: Temporary error
 ```
 
 #### Bei expliziter Angabe eines asyncSchedulers

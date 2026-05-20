@@ -25,7 +25,7 @@
 | 🔴 0.629 | `observables/events-list.md` | 2 |
 | 🔴 0.655 | `creation-functions/loop/generate.md` | 21 |
 | 🔴 0.658 | `operators/transformation/bufferCount.md` | 5 |
-| 🔴 0.660 | `operators/filtering/sampleTime.md` | 15 |
+| 🔴 0.662 | `operators/filtering/sampleTime.md` | 15 |
 | 🔴 0.662 | `operators/utility/index.md` | 3 |
 | 🔴 0.663 | `operators/combination/concatWith.md` | 9 |
 | 🔴 0.672 | `operators/filtering/takeLast.md` | 13 |
@@ -84,7 +84,7 @@
 |--------|----------|--------|
 | 🟡 0.838 | creation-functions/basic/from.md | 16 |
 | 🔴 0.681 | creation-functions/basic/fromEvent.md | 15 |
-| 🟡 0.767 | creation-functions/basic/index.md | 14 |
+| 🟡 0.766 | creation-functions/basic/index.md | 14 |
 | 🟡 0.836 | creation-functions/basic/interval.md | 15 |
 | 🔵 0.882 | creation-functions/basic/of.md | 17 |
 | 🟡 0.782 | creation-functions/basic/timer.md | 17 |
@@ -92,7 +92,7 @@
 | 🟡 0.799 | creation-functions/combination/concat.md | 6 |
 | 🔵 0.866 | creation-functions/combination/forkJoin-vs-combineLatest.md | 12 |
 | 🟡 0.802 | creation-functions/combination/forkJoin.md | 5 |
-| 🟡 0.760 | creation-functions/combination/index.md | 12 |
+| 🟡 0.742 | creation-functions/combination/index.md | 12 |
 | 🟡 0.715 | creation-functions/combination/merge.md | 6 |
 | 🔴 0.683 | creation-functions/combination/zip.md | 6 |
 | 🟡 0.754 | creation-functions/conditional/defer.md | 8 |
@@ -106,7 +106,7 @@
 | 🔵 0.851 | creation-functions/http-communication/index.md | 17 |
 | 🟡 0.751 | creation-functions/index.md | 24 |
 | 🔴 0.655 | creation-functions/loop/generate.md | 21 |
-| 🟡 0.795 | creation-functions/loop/index.md | 18 |
+| 🟡 0.790 | creation-functions/loop/index.md | 18 |
 | 🟡 0.823 | creation-functions/loop/range.md | 19 |
 | 🟡 0.730 | creation-functions/selection/index.md | 13 |
 | 🟡 0.807 | creation-functions/selection/partition.md | 14 |
@@ -178,22 +178,22 @@
 | 🟡 0.788 | operators/conditional/index.md | 7 |
 | 🟡 0.844 | operators/conditional/isEmpty.md | 2 |
 | 🟡 0.794 | operators/conditional/practical-use-cases.md | 13 |
-| 🟡 0.757 | operators/filtering/audit.md | 11 |
+| 🟡 0.764 | operators/filtering/audit.md | 11 |
 | 🟡 0.783 | operators/filtering/auditTime.md | 13 |
 | 🟡 0.754 | operators/filtering/debounceTime.md | 5 |
 | 🟡 0.781 | operators/filtering/distinct.md | 10 |
 | 🟡 0.736 | operators/filtering/distinctUntilChanged.md | 5 |
 | 🟡 0.745 | operators/filtering/distinctUntilKeyChanged.md | 5 |
-| 🟡 0.794 | operators/filtering/elementAt.md | 15 |
+| 🟡 0.799 | operators/filtering/elementAt.md | 15 |
 | 🔴 0.699 | operators/filtering/filter.md | 10 |
-| 🟡 0.820 | operators/filtering/find.md | 10 |
+| 🟡 0.819 | operators/filtering/find.md | 10 |
 | 🟡 0.797 | operators/filtering/findIndex.md | 16 |
 | 🔵 0.872 | operators/filtering/first.md | 5 |
 | 🟡 0.773 | operators/filtering/ignoreElements.md | 16 |
 | 🟡 0.841 | operators/filtering/index.md | 3 |
 | 🔵 0.865 | operators/filtering/last.md | 5 |
 | 🔴 0.678 | operators/filtering/practical-use-cases.md | 3 |
-| 🔴 0.660 | operators/filtering/sampleTime.md | 15 |
+| 🔴 0.662 | operators/filtering/sampleTime.md | 15 |
 | 🔵 0.872 | operators/filtering/skip.md | 9 |
 | 🟡 0.727 | operators/filtering/skipLast.md | 18 |
 | 🟡 0.807 | operators/filtering/skipUntil.md | 11 |
@@ -210,7 +210,7 @@
 | 🟡 0.788 | operators/transformation/buffer.md | 10 |
 | 🔴 0.658 | operators/transformation/bufferCount.md | 5 |
 | 🟡 0.757 | operators/transformation/bufferTime.md | 5 |
-| 🟡 0.735 | operators/transformation/bufferToggle.md | 12 |
+| 🟡 0.750 | operators/transformation/bufferToggle.md | 12 |
 | 🟡 0.736 | operators/transformation/bufferWhen.md | 8 |
 | 🔵 0.867 | operators/transformation/concatMap.md | 5 |
 | 🟡 0.750 | operators/transformation/exhaustMap.md | 5 |
@@ -220,22 +220,22 @@
 | 🔵 0.852 | operators/transformation/map.md | 5 |
 | 🟡 0.818 | operators/transformation/mergeMap.md | 5 |
 | 🔵 0.873 | operators/transformation/mergeScan.md | 11 |
-| 🟡 0.839 | operators/transformation/pairwise.md | 16 |
+| 🟡 0.840 | operators/transformation/pairwise.md | 16 |
 | 🔵 0.889 | operators/transformation/practical-use-cases.md | 5 |
-| 🟡 0.791 | operators/transformation/reduce.md | 11 |
+| 🟡 0.792 | operators/transformation/reduce.md | 11 |
 | 🟡 0.801 | operators/transformation/scan.md | 5 |
 | 🟡 0.825 | operators/transformation/switchMap.md | 5 |
-| 🟡 0.823 | operators/transformation/window.md | 16 |
-| 🟡 0.741 | operators/transformation/windowCount.md | 12 |
-| 🔵 0.851 | operators/transformation/windowTime.md | 17 |
-| 🟡 0.725 | operators/transformation/windowToggle.md | 13 |
-| 🟡 0.769 | operators/transformation/windowWhen.md | 13 |
+| 🟡 0.824 | operators/transformation/window.md | 16 |
+| 🟡 0.743 | operators/transformation/windowCount.md | 12 |
+| 🔵 0.852 | operators/transformation/windowTime.md | 17 |
+| 🟡 0.726 | operators/transformation/windowToggle.md | 13 |
+| 🟡 0.770 | operators/transformation/windowWhen.md | 13 |
 | 🔵 0.888 | operators/utility/delay.md | 6 |
 | 🟡 0.749 | operators/utility/delayWhen.md | 13 |
 | 🟡 0.775 | operators/utility/dematerialize.md | 13 |
 | 🔴 0.681 | operators/utility/finalize.md | 4 |
 | 🔴 0.662 | operators/utility/index.md | 3 |
-| 🟡 0.771 | operators/utility/materialize.md | 14 |
+| 🟡 0.770 | operators/utility/materialize.md | 14 |
 | 🟡 0.802 | operators/utility/observeOn.md | 15 |
 | 🔵 0.870 | operators/utility/practical-use-cases.md | 5 |
 | 🟡 0.781 | operators/utility/repeat.md | 5 |
@@ -267,7 +267,7 @@
 |--------|----------|--------|
 | 🟡 0.830 | practical-patterns/advanced-form-patterns.md | 29 |
 | 🔵 0.906 | practical-patterns/api-calls.md | 27 |
-| 🟡 0.808 | practical-patterns/caching-strategies.md | 13 |
+| 🟡 0.812 | practical-patterns/caching-strategies.md | 13 |
 | 🔵 0.863 | practical-patterns/error-handling-patterns.md | 17 |
 | 🟡 0.833 | practical-patterns/form-handling.md | 12 |
 | 🟡 0.837 | practical-patterns/index.md | 25 |
@@ -281,7 +281,7 @@
 |--------|----------|--------|
 | 🔵 0.918 | schedulers/async-control.md | 15 |
 | 🔵 0.916 | schedulers/task-and-scheduler-basics.md | 5 |
-| 🟡 0.713 | schedulers/types.md | 13 |
+| 🟡 0.816 | schedulers/types.md | 13 |
 
 ### starter-kid.md
 
@@ -316,4 +316,4 @@
 
 ---
 
-最終更新: 2026-05-20T06:32:54Z
+最終更新: 2026-05-20T10:20:39Z

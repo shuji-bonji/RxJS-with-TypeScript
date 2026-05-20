@@ -5,7 +5,7 @@
 | 項目 | 値 |
 |------|-----|
 | ファイル数 | 181 |
-| 平均スコア | 0.859 |
+| 平均スコア | 0.860 |
 | 最小スコア | 0.594 |
 | 最大スコア | 0.979 |
 
@@ -26,7 +26,7 @@
 | 🔴 0.648 | `operators/combination/raceWith.md` | 10 |
 | 🔴 0.648 | `testing/test-scheduler.md` | 5 |
 | 🔴 0.667 | `operators/transformation/bufferCount.md` | 5 |
-| 🔴 0.693 | `operators/filtering/sampleTime.md` | 15 |
+| 🔴 0.696 | `operators/filtering/sampleTime.md` | 15 |
 
 ## ファイル別一覧
 
@@ -162,28 +162,28 @@
 | 🔵 0.945 | operators/conditional/index.md | 7 |
 | 🔵 0.921 | operators/conditional/isEmpty.md | 2 |
 | 🔵 0.945 | operators/conditional/practical-use-cases.md | 13 |
-| 🟡 0.761 | operators/filtering/audit.md | 11 |
+| 🟡 0.764 | operators/filtering/audit.md | 11 |
 | 🟡 0.799 | operators/filtering/auditTime.md | 13 |
 | 🟡 0.756 | operators/filtering/debounceTime.md | 5 |
 | 🟡 0.824 | operators/filtering/distinct.md | 10 |
 | 🟡 0.834 | operators/filtering/distinctUntilChanged.md | 5 |
 | 🟡 0.835 | operators/filtering/distinctUntilKeyChanged.md | 5 |
-| 🟡 0.812 | operators/filtering/elementAt.md | 15 |
+| 🟡 0.815 | operators/filtering/elementAt.md | 15 |
 | 🟡 0.765 | operators/filtering/filter.md | 10 |
-| 🟡 0.840 | operators/filtering/find.md | 10 |
-| 🟡 0.822 | operators/filtering/findIndex.md | 16 |
+| 🟡 0.842 | operators/filtering/find.md | 10 |
+| 🟡 0.823 | operators/filtering/findIndex.md | 16 |
 | 🟡 0.827 | operators/filtering/first.md | 5 |
-| 🟡 0.771 | operators/filtering/ignoreElements.md | 16 |
+| 🟡 0.773 | operators/filtering/ignoreElements.md | 16 |
 | 🔵 0.908 | operators/filtering/index.md | 3 |
 | 🟡 0.821 | operators/filtering/last.md | 5 |
 | 🟡 0.711 | operators/filtering/practical-use-cases.md | 3 |
-| 🔴 0.693 | operators/filtering/sampleTime.md | 15 |
+| 🔴 0.696 | operators/filtering/sampleTime.md | 15 |
 | 🔵 0.927 | operators/filtering/skip.md | 9 |
 | 🔵 0.888 | operators/filtering/skipLast.md | 18 |
 | 🔵 0.926 | operators/filtering/skipUntil.md | 11 |
 | 🔵 0.920 | operators/filtering/skipWhile.md | 16 |
 | 🟡 0.744 | operators/filtering/take.md | 5 |
-| 🟡 0.737 | operators/filtering/takeLast.md | 13 |
+| 🟡 0.739 | operators/filtering/takeLast.md | 13 |
 | 🔵 0.909 | operators/filtering/takeWhile.md | 13 |
 | 🟡 0.846 | operators/filtering/throttleTime.md | 6 |
 | 🟡 0.774 | operators/index.md | 6 |
@@ -238,7 +238,7 @@
 |--------|----------|--------|
 | 🔵 0.906 | overcoming-difficulties/conceptual-understanding.md | 13 |
 | 🟡 0.819 | overcoming-difficulties/debugging-guide.md | 23 |
-| 🔵 0.943 | overcoming-difficulties/index.md | 26 |
+| 🔵 0.945 | overcoming-difficulties/index.md | 26 |
 | 🔵 0.922 | overcoming-difficulties/lifecycle-management.md | 21 |
 | 🔵 0.938 | overcoming-difficulties/operator-selection.md | 24 |
 | 🔵 0.932 | overcoming-difficulties/state-and-sharing.md | 19 |
@@ -250,14 +250,14 @@
 | スコア | ファイル | ペア数 |
 |--------|----------|--------|
 | 🟢 0.951 | practical-patterns/advanced-form-patterns.md | 29 |
-| 🟡 0.756 | practical-patterns/api-calls.md | 27 |
+| 🟡 0.758 | practical-patterns/api-calls.md | 27 |
 | 🔵 0.941 | practical-patterns/caching-strategies.md | 13 |
 | 🔵 0.948 | practical-patterns/error-handling-patterns.md | 17 |
 | 🔵 0.942 | practical-patterns/form-handling.md | 12 |
 | 🔵 0.911 | practical-patterns/index.md | 25 |
 | 🔵 0.850 | practical-patterns/real-time-data.md | 45 |
 | 🟢 0.959 | practical-patterns/subscribe-branching.md | 23 |
-| 🟡 0.822 | practical-patterns/ui-events.md | 28 |
+| 🟡 0.824 | practical-patterns/ui-events.md | 28 |
 
 ### schedulers
 
@@ -265,7 +265,7 @@
 |--------|----------|--------|
 | 🟡 0.844 | schedulers/async-control.md | 15 |
 | 🔵 0.928 | schedulers/task-and-scheduler-basics.md | 5 |
-| 🟡 0.730 | schedulers/types.md | 13 |
+| 🟡 0.824 | schedulers/types.md | 13 |
 
 ### starter-kid.md
 
@@ -300,4 +300,4 @@
 
 ---
 
-最終更新: 2026-05-20T08:14:57Z
+最終更新: 2026-05-20T12:02:09Z

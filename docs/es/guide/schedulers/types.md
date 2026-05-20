@@ -330,15 +330,15 @@ import { webSocket } from 'rxjs/webSocket';
 import { asapScheduler } from 'rxjs';
 import { observeOn } from 'rxjs';
 
-// 注: これは概念を示す疑似コードです
+// Nota: Este es un pseudocódigo para ilustrar el concepto
 const socket$ = webSocket<any>({
   url: 'wss://your-websocket-server.com',
-  deserializer: msg => msg.data // 文字列として扱う
+  deserializer: msg => msg.data // Tratar como cadena
 });
 
 socket$
   .pipe(
-    // 高速な応答が必要なメッセージ処理
+    // Procesamiento de mensajes que requiere una respuesta rápida
     observeOn(asapScheduler)
   )
   .subscribe(message => {
@@ -346,7 +346,7 @@ socket$
   });
 
 function handleMessage(msg: any) {
-  console.log('メッセージ受信:', msg);
+  console.log('Mensaje recibido:', msg);
 }
 ```
 
@@ -372,33 +372,33 @@ function fetchDataWithBackoff(id: number) {
 
 fetchDataWithBackoff(1)
   .pipe(
-    // RxJS 7.3+ 推奨: retry({ count, delay }) 形式
+    // RxJS 7.3+ Recomendación: retry({ count, delay }) Formato
     retry({
-      count: 3, // Máx.3回まで再試行
+      count: 3, // Máx.3Reintento hasta tres veces
       delay: (error, retryCount) => {
-        // 指数バックオフ: 1秒, 2秒, 4秒...
+        // Retroceso exponencial: 1segundos, 2segundos, 4segundos...
         const delayTime = Math.pow(2, retryCount - 1) * 1000;
-        console.log(`🔄 リトライ ${retryCount}回目 (${delayTime}ms後)`);
+        console.log(`🔄 Reintentos ${retryCount}la segunda vez (${delayTime}msDespués de)`);
 
-        // timer は内部的に asyncScheduler を使用
+        // timer es interno asyncScheduler utilizando el elemento
         return timer(delayTime);
       }
     })
   )
   .subscribe({
-    next: result => console.log('✅ 成功:', result),
+    next: result => console.log('✅ Éxito:', result),
     error: error => {
-      console.log('❌ Máx.リトライ数に到達');
-      console.log('❌ 最終Error:', error.message);
+      console.log('❌ Máx.Número de reintentos alcanzado');
+      console.log('❌ FinalError:', error.message);
     }
   });
 
 // SalidaEj.:
-// 🔄 リトライ 1回目 (1000ms後)
-// 🔄 リトライ 2回目 (2000ms後)
-// 🔄 リトライ 3回目 (4000ms後)
-// ❌ Máx.リトライ数に到達
-// ❌ 最終Error: Temporary error
+// 🔄 Reintentos 1la segunda vez (1000msDespués de)
+// 🔄 Reintentos 2la segunda vez (2000msDespués de)
+// 🔄 Reintentos 3la segunda vez (4000msDespués de)
+// ❌ Máx.Número de reintentos alcanzado
+// ❌ FinalError: Temporary error
 ```
 
 #### Cuando se especifica explícitamente un Scheduler asíncrono

@@ -5,7 +5,7 @@
 | 項目 | 値 |
 |------|-----|
 | ファイル数 | 181 |
-| 平均スコア | 0.810 |
+| 平均スコア | 0.813 |
 | 最小スコア | 0.332 |
 | 最大スコア | 0.981 |
 
@@ -14,29 +14,26 @@
 | 品質 | 件数 | 割合 |
 |------|------|------|
 | 🟢 優秀 (≥0.95) | 1 | 0.6% |
-| 🔵 良好 (0.85-0.94) | 51 | 28.2% |
-| 🟡 要改善 (0.70-0.84) | 114 | 63.0% |
-| 🔴 要修正 (<0.70) | 15 | 8.3% |
+| 🔵 良好 (0.85-0.94) | 52 | 28.7% |
+| 🟡 要改善 (0.70-0.84) | 116 | 64.1% |
+| 🔴 要修正 (<0.70) | 12 | 6.6% |
 
 ## 🔴 要修正ファイル (スコア < 0.70)
 
 | スコア | ファイル | ペア数 |
 |--------|----------|--------|
 | 🔴 0.332 | `practical-patterns/index.md` | 15 |
-| 🔴 0.565 | `operators/filtering/skipLast.md` | 18 |
-| 🔴 0.634 | `overcoming-difficulties/timing-and-order.md` | 24 |
+| 🔴 0.566 | `operators/filtering/skipLast.md` | 18 |
 | 🔴 0.652 | `testing/test-scheduler.md` | 5 |
-| 🔴 0.660 | `operators/filtering/skip.md` | 9 |
-| 🔴 0.661 | `overcoming-difficulties/debugging-guide.md` | 24 |
-| 🔴 0.664 | `operators/filtering/skipWhile.md` | 16 |
-| 🔴 0.668 | `operators/combination/raceWith.md` | 10 |
-| 🔴 0.672 | `overcoming-difficulties/stream-combination.md` | 18 |
+| 🔴 0.662 | `operators/filtering/skip.md` | 9 |
+| 🔴 0.666 | `operators/filtering/skipWhile.md` | 16 |
+| 🔴 0.671 | `operators/combination/raceWith.md` | 10 |
 | 🔴 0.678 | `operators/multicasting/share.md` | 11 |
 | 🔴 0.681 | `creation-functions/loop/generate.md` | 21 |
-| 🔴 0.683 | `operators/multicasting/shareReplay.md` | 8 |
-| 🔴 0.687 | `operators/filtering/sampleTime.md` | 15 |
+| 🔴 0.690 | `operators/filtering/sampleTime.md` | 15 |
 | 🔴 0.691 | `operators/utility/finalize.md` | 4 |
 | 🔴 0.698 | `creation-functions/basic/fromEvent.md` | 14 |
+| 🔴 0.699 | `operators/multicasting/shareReplay.md` | 8 |
 
 ## ファイル別一覧
 
@@ -78,7 +75,7 @@
 |--------|----------|--------|
 | 🔵 0.863 | creation-functions/basic/from.md | 16 |
 | 🔴 0.698 | creation-functions/basic/fromEvent.md | 14 |
-| 🟡 0.790 | creation-functions/basic/index.md | 14 |
+| 🟡 0.792 | creation-functions/basic/index.md | 14 |
 | 🔵 0.868 | creation-functions/basic/interval.md | 15 |
 | 🔵 0.897 | creation-functions/basic/of.md | 17 |
 | 🟡 0.834 | creation-functions/basic/timer.md | 16 |
@@ -102,7 +99,7 @@
 | 🔴 0.681 | creation-functions/loop/generate.md | 21 |
 | 🟡 0.777 | creation-functions/loop/index.md | 18 |
 | 🟡 0.836 | creation-functions/loop/range.md | 19 |
-| 🟡 0.750 | creation-functions/selection/index.md | 13 |
+| 🟡 0.756 | creation-functions/selection/index.md | 13 |
 | 🔵 0.856 | creation-functions/selection/partition.md | 14 |
 | 🟡 0.727 | creation-functions/selection/race.md | 6 |
 
@@ -122,7 +119,7 @@
 | 🔵 0.861 | error-handling/error-handling-locations.md | 25 |
 | 🟡 0.787 | error-handling/finalize.md | 11 |
 | 🟡 0.835 | error-handling/retry-catch.md | 19 |
-| 🟡 0.842 | error-handling/strategies.md | 13 |
+| 🟡 0.845 | error-handling/strategies.md | 13 |
 | 🔵 0.893 | error-handling/try-catch-integration.md | 15 |
 
 ### index.md
@@ -154,7 +151,7 @@
 | スコア | ファイル | ペア数 |
 |--------|----------|--------|
 | 🟡 0.815 | operators/combination/combineLatestAll.md | 10 |
-| 🟡 0.812 | operators/combination/combineLatestWith.md | 11 |
+| 🟡 0.823 | operators/combination/combineLatestWith.md | 11 |
 | 🟡 0.790 | operators/combination/concatAll.md | 8 |
 | 🟡 0.727 | operators/combination/concatWith.md | 9 |
 | 🟡 0.845 | operators/combination/exhaustAll.md | 7 |
@@ -162,44 +159,44 @@
 | 🟡 0.847 | operators/combination/mergeAll.md | 7 |
 | 🟡 0.842 | operators/combination/mergeWith.md | 10 |
 | 🟡 0.847 | operators/combination/practical-use-cases.md | 17 |
-| 🔴 0.668 | operators/combination/raceWith.md | 10 |
+| 🔴 0.671 | operators/combination/raceWith.md | 10 |
 | 🟡 0.785 | operators/combination/switchAll.md | 8 |
 | 🟡 0.835 | operators/combination/withLatestFrom.md | 5 |
 | 🟡 0.786 | operators/combination/zipAll.md | 10 |
-| 🟡 0.710 | operators/combination/zipWith.md | 10 |
+| 🟡 0.713 | operators/combination/zipWith.md | 10 |
 | 🟡 0.824 | operators/conditional/defaultIfEmpty.md | 4 |
 | 🟡 0.793 | operators/conditional/every.md | 2 |
 | 🟡 0.819 | operators/conditional/index.md | 7 |
 | 🟡 0.820 | operators/conditional/isEmpty.md | 2 |
 | 🟡 0.818 | operators/conditional/practical-use-cases.md | 13 |
-| 🟡 0.806 | operators/filtering/audit.md | 11 |
+| 🟡 0.808 | operators/filtering/audit.md | 11 |
 | 🟡 0.796 | operators/filtering/auditTime.md | 13 |
 | 🟡 0.737 | operators/filtering/debounceTime.md | 5 |
-| 🟡 0.741 | operators/filtering/distinct.md | 10 |
+| 🟡 0.747 | operators/filtering/distinct.md | 10 |
 | 🔵 0.901 | operators/filtering/distinctUntilChanged.md | 5 |
 | 🔵 0.868 | operators/filtering/distinctUntilKeyChanged.md | 5 |
-| 🟡 0.804 | operators/filtering/elementAt.md | 15 |
+| 🟡 0.807 | operators/filtering/elementAt.md | 15 |
 | 🟡 0.773 | operators/filtering/filter.md | 10 |
-| 🔵 0.861 | operators/filtering/find.md | 10 |
+| 🔵 0.863 | operators/filtering/find.md | 10 |
 | 🟡 0.839 | operators/filtering/findIndex.md | 16 |
 | 🟡 0.837 | operators/filtering/first.md | 5 |
-| 🟡 0.769 | operators/filtering/ignoreElements.md | 16 |
+| 🟡 0.770 | operators/filtering/ignoreElements.md | 16 |
 | 🟡 0.834 | operators/filtering/index.md | 3 |
 | 🟡 0.798 | operators/filtering/last.md | 5 |
 | 🟡 0.771 | operators/filtering/practical-use-cases.md | 3 |
-| 🔴 0.687 | operators/filtering/sampleTime.md | 15 |
-| 🔴 0.660 | operators/filtering/skip.md | 9 |
-| 🔴 0.565 | operators/filtering/skipLast.md | 18 |
+| 🔴 0.690 | operators/filtering/sampleTime.md | 15 |
+| 🔴 0.662 | operators/filtering/skip.md | 9 |
+| 🔴 0.566 | operators/filtering/skipLast.md | 18 |
 | 🟡 0.817 | operators/filtering/skipUntil.md | 11 |
-| 🔴 0.664 | operators/filtering/skipWhile.md | 16 |
+| 🔴 0.666 | operators/filtering/skipWhile.md | 16 |
 | 🟡 0.761 | operators/filtering/take.md | 5 |
 | 🟡 0.708 | operators/filtering/takeLast.md | 13 |
-| 🟡 0.756 | operators/filtering/takeWhile.md | 13 |
+| 🟡 0.754 | operators/filtering/takeWhile.md | 13 |
 | 🔵 0.856 | operators/filtering/throttleTime.md | 6 |
 | 🟡 0.797 | operators/index.md | 6 |
 | 🟡 0.728 | operators/multicasting/index.md | 4 |
 | 🔴 0.678 | operators/multicasting/share.md | 11 |
-| 🔴 0.683 | operators/multicasting/shareReplay.md | 8 |
+| 🔴 0.699 | operators/multicasting/shareReplay.md | 8 |
 | 🔵 0.912 | operators/pipeline.md | 14 |
 | 🟡 0.839 | operators/transformation/buffer.md | 10 |
 | 🟡 0.807 | operators/transformation/bufferCount.md | 5 |
@@ -246,21 +243,21 @@
 
 | スコア | ファイル | ペア数 |
 |--------|----------|--------|
-| 🟡 0.790 | overcoming-difficulties/conceptual-understanding.md | 13 |
-| 🔴 0.661 | overcoming-difficulties/debugging-guide.md | 24 |
-| 🔵 0.872 | overcoming-difficulties/index.md | 26 |
-| 🟡 0.714 | overcoming-difficulties/lifecycle-management.md | 20 |
+| 🟡 0.837 | overcoming-difficulties/conceptual-understanding.md | 13 |
+| 🟡 0.730 | overcoming-difficulties/debugging-guide.md | 24 |
+| 🔵 0.876 | overcoming-difficulties/index.md | 26 |
+| 🟡 0.812 | overcoming-difficulties/lifecycle-management.md | 20 |
 | 🔵 0.875 | overcoming-difficulties/operator-selection.md | 24 |
-| 🟡 0.788 | overcoming-difficulties/state-and-sharing.md | 19 |
-| 🔴 0.672 | overcoming-difficulties/stream-combination.md | 18 |
-| 🔴 0.634 | overcoming-difficulties/timing-and-order.md | 24 |
+| 🔵 0.864 | overcoming-difficulties/state-and-sharing.md | 19 |
+| 🟡 0.733 | overcoming-difficulties/stream-combination.md | 18 |
+| 🟡 0.726 | overcoming-difficulties/timing-and-order.md | 24 |
 
 ### practical-patterns
 
 | スコア | ファイル | ペア数 |
 |--------|----------|--------|
 | 🔵 0.882 | practical-patterns/advanced-form-patterns.md | 29 |
-| 🟡 0.762 | practical-patterns/api-calls.md | 27 |
+| 🟡 0.760 | practical-patterns/api-calls.md | 27 |
 | 🔵 0.864 | practical-patterns/caching-strategies.md | 13 |
 | 🔵 0.855 | practical-patterns/error-handling-patterns.md | 17 |
 | 🟡 0.835 | practical-patterns/form-handling.md | 12 |
@@ -275,7 +272,7 @@
 |--------|----------|--------|
 | 🟡 0.818 | schedulers/async-control.md | 15 |
 | 🔵 0.892 | schedulers/task-and-scheduler-basics.md | 5 |
-| 🟡 0.703 | schedulers/types.md | 12 |
+| 🟡 0.705 | schedulers/types.md | 12 |
 
 ### starter-kid.md
 
@@ -310,4 +307,4 @@
 
 ---
 
-最終更新: 2026-05-20T07:34:13Z
+最終更新: 2026-05-20T11:21:32Z

@@ -6,7 +6,7 @@
 |------|-----|
 | ファイル数 | 181 |
 | 平均スコア | 0.862 |
-| 最小スコア | 0.615 |
+| 最小スコア | 0.622 |
 | 最大スコア | 0.969 |
 
 ### 品質分布
@@ -22,8 +22,8 @@
 
 | スコア | ファイル | ペア数 |
 |--------|----------|--------|
-| 🔴 0.615 | `schedulers/types.md` | 7 |
-| 🔴 0.647 | `operators/filtering/skipLast.md` | 18 |
+| 🔴 0.622 | `schedulers/types.md` | 7 |
+| 🔴 0.648 | `operators/filtering/skipLast.md` | 18 |
 
 ## ファイル別一覧
 
@@ -159,28 +159,28 @@
 | 🔵 0.884 | operators/conditional/index.md | 7 |
 | 🟡 0.787 | operators/conditional/isEmpty.md | 2 |
 | 🔵 0.855 | operators/conditional/practical-use-cases.md | 13 |
-| 🟡 0.750 | operators/filtering/audit.md | 11 |
+| 🟡 0.751 | operators/filtering/audit.md | 11 |
 | 🔵 0.874 | operators/filtering/auditTime.md | 13 |
 | 🟡 0.828 | operators/filtering/debounceTime.md | 5 |
 | 🔵 0.895 | operators/filtering/distinct.md | 10 |
 | 🔵 0.885 | operators/filtering/distinctUntilChanged.md | 5 |
 | 🟡 0.849 | operators/filtering/distinctUntilKeyChanged.md | 5 |
-| 🔵 0.890 | operators/filtering/elementAt.md | 15 |
+| 🔵 0.891 | operators/filtering/elementAt.md | 15 |
 | 🔵 0.888 | operators/filtering/filter.md | 10 |
-| 🔵 0.854 | operators/filtering/find.md | 10 |
+| 🔵 0.856 | operators/filtering/find.md | 10 |
 | 🔵 0.874 | operators/filtering/findIndex.md | 16 |
 | 🔵 0.869 | operators/filtering/first.md | 5 |
-| 🟡 0.847 | operators/filtering/ignoreElements.md | 16 |
+| 🟡 0.845 | operators/filtering/ignoreElements.md | 16 |
 | 🔵 0.884 | operators/filtering/index.md | 3 |
 | 🔵 0.873 | operators/filtering/last.md | 5 |
 | 🟡 0.841 | operators/filtering/practical-use-cases.md | 3 |
-| 🟡 0.750 | operators/filtering/sampleTime.md | 15 |
+| 🟡 0.751 | operators/filtering/sampleTime.md | 15 |
 | 🔵 0.930 | operators/filtering/skip.md | 9 |
-| 🔴 0.647 | operators/filtering/skipLast.md | 18 |
-| 🔵 0.886 | operators/filtering/skipUntil.md | 11 |
-| 🟡 0.728 | operators/filtering/skipWhile.md | 16 |
+| 🔴 0.648 | operators/filtering/skipLast.md | 18 |
+| 🔵 0.888 | operators/filtering/skipUntil.md | 11 |
+| 🟡 0.730 | operators/filtering/skipWhile.md | 16 |
 | 🔵 0.882 | operators/filtering/take.md | 5 |
-| 🟡 0.845 | operators/filtering/takeLast.md | 13 |
+| 🟡 0.843 | operators/filtering/takeLast.md | 13 |
 | 🔵 0.881 | operators/filtering/takeWhile.md | 13 |
 | 🔵 0.879 | operators/filtering/throttleTime.md | 6 |
 | 🟡 0.799 | operators/index.md | 6 |
@@ -262,7 +262,7 @@
 |--------|----------|--------|
 | 🔵 0.916 | schedulers/async-control.md | 15 |
 | 🔵 0.930 | schedulers/task-and-scheduler-basics.md | 5 |
-| 🔴 0.615 | schedulers/types.md | 7 |
+| 🔴 0.622 | schedulers/types.md | 7 |
 
 ### starter-kid.md
 
@@ -297,4 +297,4 @@
 
 ---
 
-最終更新: 2026-05-20T06:53:13Z
+最終更新: 2026-05-20T10:41:01Z

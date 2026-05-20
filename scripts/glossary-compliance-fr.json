@@ -2,18 +2,12 @@
   "language": "fr",
   "totalFiles": 181,
   "filesWithViolations": 6,
-  "totalViolations": 18,
+  "totalViolations": 36,
   "files": [
     {
       "file": "schedulers/types.md",
       "violations": {
         "no_translate": [
-          {
-            "term": "timer",
-            "ja_count": 3,
-            "trans_count": 0,
-            "ratio": 0
-          },
           {
             "term": "range",
             "ja_count": 3,
@@ -21,19 +15,7 @@
             "ratio": 0
           },
           {
-            "term": "mergeMap",
-            "ja_count": 8,
-            "trans_count": 0,
-            "ratio": 0
-          },
-          {
             "term": "tap",
-            "ja_count": 5,
-            "trans_count": 0,
-            "ratio": 0
-          },
-          {
-            "term": "count",
             "ja_count": 5,
             "trans_count": 0,
             "ratio": 0
@@ -48,28 +30,112 @@
         "callouts_ja_residual": [],
         "code_jp_residual": [
           {
-            "fragment": "注",
-            "lineNo": 331
+            "fragment": "推奨",
+            "lineNo": 402
           },
           {
-            "fragment": "これは概念を示す疑似コードです",
-            "lineNo": 333
+            "fragment": "形式",
+            "lineNo": 402
           },
           {
-            "fragment": "文字列として扱う",
-            "lineNo": 336
+            "fragment": "回まで再試行",
+            "lineNo": 404
           },
           {
-            "fragment": "高速な応答が必要なメッセージ処理",
-            "lineNo": 341
+            "fragment": "指数バックオフ",
+            "lineNo": 406
           },
           {
-            "fragment": "メッセージ受信",
-            "lineNo": 349
+            "fragment": "秒",
+            "lineNo": 406
+          },
+          {
+            "fragment": "秒",
+            "lineNo": 406
+          },
+          {
+            "fragment": "秒",
+            "lineNo": 406
+          },
+          {
+            "fragment": "リトライ",
+            "lineNo": 408
+          },
+          {
+            "fragment": "回目",
+            "lineNo": 408
+          },
+          {
+            "fragment": "後",
+            "lineNo": 408
+          },
+          {
+            "fragment": "は内部的に",
+            "lineNo": 410
+          },
+          {
+            "fragment": "を使用",
+            "lineNo": 410
+          },
+          {
+            "fragment": "成功",
+            "lineNo": 416
+          },
+          {
+            "fragment": "リトライ数に到達",
+            "lineNo": 418
+          },
+          {
+            "fragment": "最終",
+            "lineNo": 419
+          },
+          {
+            "fragment": "リトライ",
+            "lineNo": 424
+          },
+          {
+            "fragment": "回目",
+            "lineNo": 424
+          },
+          {
+            "fragment": "後",
+            "lineNo": 424
+          },
+          {
+            "fragment": "リトライ",
+            "lineNo": 425
+          },
+          {
+            "fragment": "回目",
+            "lineNo": 425
+          },
+          {
+            "fragment": "後",
+            "lineNo": 425
+          },
+          {
+            "fragment": "リトライ",
+            "lineNo": 426
+          },
+          {
+            "fragment": "回目",
+            "lineNo": 426
+          },
+          {
+            "fragment": "後",
+            "lineNo": 426
+          },
+          {
+            "fragment": "リトライ数に到達",
+            "lineNo": 427
+          },
+          {
+            "fragment": "最終",
+            "lineNo": 427
           }
         ]
       },
-      "total": 11
+      "total": 29
     },
     {
       "file": "creation-functions/basic/fromEvent.md",

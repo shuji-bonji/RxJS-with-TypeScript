@@ -330,15 +330,15 @@ import { webSocket } from 'rxjs/webSocket';
 import { asapScheduler } from 'rxjs';
 import { observeOn } from 'rxjs';
 
-// 注: これは概念を示す疑似コードです
+// Remarque: Voici un pseudo-code pour illustrer le concept
 const socket$ = webSocket<any>({
   url: 'wss://your-websocket-server.com',
-  deserializer: msg => msg.data // 文字列として扱う
+  deserializer: msg => msg.data // Traiter comme une chaîne
 });
 
 socket$
   .pipe(
-    // 高速な応答が必要なメッセージ処理
+    // Traitement des messages nécessitant une réponse rapide
     observeOn(asapScheduler)
   )
   .subscribe(message => {
@@ -346,7 +346,7 @@ socket$
   });
 
 function handleMessage(msg: any) {
-  console.log('メッセージ受信:', msg);
+  console.log('Message reçu:', msg);
 }
 ```
 
@@ -358,8 +358,6 @@ En utilisant l'ordonnanceur avec l'opérateur `retry`, le timing des retry peut 
 
 L'option `delay` de l'opérateur `retry` utilise le `asyncScheduler` en interne pour contrôler l'intervalle de retry.
 
-
-```
 
 ```ts
 import { of, asyncScheduler } from 'rxjs';

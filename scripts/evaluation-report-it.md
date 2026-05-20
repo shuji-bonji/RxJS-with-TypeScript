@@ -5,7 +5,7 @@
 | 項目 | 値 |
 |------|-----|
 | ファイル数 | 181 |
-| 平均スコア | 0.775 |
+| 平均スコア | 0.776 |
 | 最小スコア | 0.297 |
 | 最大スコア | 0.986 |
 
@@ -15,40 +15,37 @@
 |------|------|------|
 | 🟢 優秀 (≥0.95) | 1 | 0.6% |
 | 🔵 良好 (0.85-0.94) | 28 | 15.5% |
-| 🟡 要改善 (0.70-0.84) | 122 | 67.4% |
-| 🔴 要修正 (<0.70) | 30 | 16.6% |
+| 🟡 要改善 (0.70-0.84) | 125 | 69.1% |
+| 🔴 要修正 (<0.70) | 27 | 14.9% |
 
 ## 🔴 要修正ファイル (スコア < 0.70)
 
 | スコア | ファイル | ペア数 |
 |--------|----------|--------|
 | 🔴 0.297 | `operators/transformation/mergeScan.md` | 8 |
-| 🔴 0.551 | `creation-functions/loop/generate.md` | 19 |
+| 🔴 0.562 | `creation-functions/loop/generate.md` | 19 |
 | 🔴 0.625 | `operators/utility/finalize.md` | 4 |
 | 🔴 0.628 | `operators/conditional/every.md` | 2 |
-| 🔴 0.636 | `operators/filtering/sampleTime.md` | 15 |
 | 🔴 0.637 | `operators/utility/startWith.md` | 4 |
-| 🔴 0.641 | `operators/combination/raceWith.md` | 10 |
-| 🔴 0.651 | `operators/combination/concatWith.md` | 9 |
-| 🔴 0.653 | `schedulers/types.md` | 10 |
+| 🔴 0.638 | `operators/filtering/sampleTime.md` | 15 |
+| 🔴 0.648 | `schedulers/types.md` | 10 |
 | 🔴 0.655 | `operators/utility/retry.md` | 6 |
+| 🔴 0.657 | `operators/combination/raceWith.md` | 10 |
 | 🔴 0.660 | `operators/transformation/bufferCount.md` | 5 |
 | 🔴 0.662 | `operators/combination/concatAll.md` | 8 |
 | 🔴 0.665 | `operators/multicasting/index.md` | 4 |
+| 🔴 0.669 | `operators/combination/concatWith.md` | 9 |
 | 🔴 0.670 | `overcoming-difficulties/debugging-guide.md` | 23 |
 | 🔴 0.671 | `operators/combination/switchAll.md` | 8 |
 | 🔴 0.673 | `operators/utility/index.md` | 3 |
 | 🔴 0.675 | `creation-functions/conditional/defer.md` | 8 |
 | 🔴 0.677 | `creation-functions/selection/race.md` | 6 |
 | 🔴 0.682 | `overcoming-difficulties/timing-and-order.md` | 24 |
-| 🔴 0.686 | `creation-functions/selection/index.md` | 13 |
 | 🔴 0.687 | `operators/transformation/windowCount.md` | 12 |
 | 🔴 0.692 | `overcoming-difficulties/stream-combination.md` | 18 |
 | 🔴 0.693 | `creation-functions/combination/combineLatest.md` | 6 |
 | 🔴 0.694 | `creation-functions/conditional/iif.md` | 6 |
-| 🔴 0.695 | `operators/combination/zipWith.md` | 10 |
 | 🔴 0.695 | `operators/conditional/isEmpty.md` | 2 |
-| 🔴 0.697 | `operators/filtering/audit.md` | 11 |
 | 🔴 0.699 | `creation-functions/combination/zip.md` | 6 |
 | 🔴 0.699 | `operators/filtering/filter.md` | 10 |
 | 🔴 0.699 | `operators/filtering/skipLast.md` | 18 |
@@ -101,7 +98,7 @@
 | 🟡 0.761 | creation-functions/combination/concat.md | 6 |
 | 🟡 0.704 | creation-functions/combination/forkJoin-vs-combineLatest.md | 12 |
 | 🟡 0.772 | creation-functions/combination/forkJoin.md | 5 |
-| 🟡 0.706 | creation-functions/combination/index.md | 12 |
+| 🟡 0.700 | creation-functions/combination/index.md | 12 |
 | 🟡 0.728 | creation-functions/combination/merge.md | 6 |
 | 🔴 0.699 | creation-functions/combination/zip.md | 6 |
 | 🔴 0.675 | creation-functions/conditional/defer.md | 8 |
@@ -114,10 +111,10 @@
 | 🟡 0.838 | creation-functions/http-communication/fromFetch.md | 13 |
 | 🔵 0.890 | creation-functions/http-communication/index.md | 17 |
 | 🔵 0.854 | creation-functions/index.md | 24 |
-| 🔴 0.551 | creation-functions/loop/generate.md | 19 |
-| 🟡 0.723 | creation-functions/loop/index.md | 18 |
+| 🔴 0.562 | creation-functions/loop/generate.md | 19 |
+| 🟡 0.725 | creation-functions/loop/index.md | 18 |
 | 🟡 0.783 | creation-functions/loop/range.md | 18 |
-| 🔴 0.686 | creation-functions/selection/index.md | 13 |
+| 🟡 0.707 | creation-functions/selection/index.md | 13 |
 | 🟡 0.776 | creation-functions/selection/partition.md | 14 |
 | 🔴 0.677 | creation-functions/selection/race.md | 6 |
 
@@ -168,26 +165,26 @@
 
 | スコア | ファイル | ペア数 |
 |--------|----------|--------|
-| 🟡 0.738 | operators/combination/combineLatestAll.md | 10 |
-| 🟡 0.756 | operators/combination/combineLatestWith.md | 11 |
+| 🟡 0.757 | operators/combination/combineLatestAll.md | 10 |
+| 🟡 0.771 | operators/combination/combineLatestWith.md | 11 |
 | 🔴 0.662 | operators/combination/concatAll.md | 8 |
-| 🔴 0.651 | operators/combination/concatWith.md | 9 |
+| 🔴 0.669 | operators/combination/concatWith.md | 9 |
 | 🟡 0.760 | operators/combination/exhaustAll.md | 7 |
 | 🔵 0.870 | operators/combination/index.md | 7 |
 | 🟡 0.708 | operators/combination/mergeAll.md | 7 |
 | 🟡 0.728 | operators/combination/mergeWith.md | 10 |
 | 🔵 0.852 | operators/combination/practical-use-cases.md | 17 |
-| 🔴 0.641 | operators/combination/raceWith.md | 10 |
+| 🔴 0.657 | operators/combination/raceWith.md | 10 |
 | 🔴 0.671 | operators/combination/switchAll.md | 8 |
 | 🟡 0.777 | operators/combination/withLatestFrom.md | 5 |
 | 🟡 0.716 | operators/combination/zipAll.md | 10 |
-| 🔴 0.695 | operators/combination/zipWith.md | 10 |
+| 🟡 0.713 | operators/combination/zipWith.md | 10 |
 | 🟡 0.736 | operators/conditional/defaultIfEmpty.md | 4 |
 | 🔴 0.628 | operators/conditional/every.md | 2 |
 | 🟡 0.734 | operators/conditional/index.md | 7 |
 | 🔴 0.695 | operators/conditional/isEmpty.md | 2 |
 | 🟡 0.704 | operators/conditional/practical-use-cases.md | 13 |
-| 🔴 0.697 | operators/filtering/audit.md | 11 |
+| 🟡 0.700 | operators/filtering/audit.md | 11 |
 | 🟡 0.781 | operators/filtering/auditTime.md | 13 |
 | 🟡 0.713 | operators/filtering/debounceTime.md | 5 |
 | 🟡 0.798 | operators/filtering/distinct.md | 10 |
@@ -195,14 +192,14 @@
 | 🟡 0.759 | operators/filtering/distinctUntilKeyChanged.md | 5 |
 | 🟡 0.775 | operators/filtering/elementAt.md | 15 |
 | 🔴 0.699 | operators/filtering/filter.md | 10 |
-| 🟡 0.826 | operators/filtering/find.md | 10 |
-| 🟡 0.769 | operators/filtering/findIndex.md | 16 |
+| 🟡 0.824 | operators/filtering/find.md | 10 |
+| 🟡 0.778 | operators/filtering/findIndex.md | 16 |
 | 🟡 0.836 | operators/filtering/first.md | 5 |
-| 🟡 0.744 | operators/filtering/ignoreElements.md | 16 |
+| 🟡 0.745 | operators/filtering/ignoreElements.md | 16 |
 | 🟡 0.750 | operators/filtering/index.md | 3 |
 | 🟡 0.804 | operators/filtering/last.md | 5 |
 | 🟡 0.703 | operators/filtering/practical-use-cases.md | 3 |
-| 🔴 0.636 | operators/filtering/sampleTime.md | 15 |
+| 🔴 0.638 | operators/filtering/sampleTime.md | 15 |
 | 🟡 0.776 | operators/filtering/skip.md | 9 |
 | 🔴 0.699 | operators/filtering/skipLast.md | 18 |
 | 🟡 0.768 | operators/filtering/skipUntil.md | 11 |
@@ -224,7 +221,7 @@
 | 🟡 0.832 | operators/transformation/concatMap.md | 5 |
 | 🟡 0.778 | operators/transformation/exhaustMap.md | 5 |
 | 🟡 0.774 | operators/transformation/expand.md | 6 |
-| 🟡 0.777 | operators/transformation/groupBy.md | 15 |
+| 🟡 0.779 | operators/transformation/groupBy.md | 15 |
 | 🟡 0.794 | operators/transformation/index.md | 6 |
 | 🟡 0.810 | operators/transformation/map.md | 5 |
 | 🟡 0.722 | operators/transformation/mergeMap.md | 5 |
@@ -254,7 +251,7 @@
 | 🟡 0.701 | operators/utility/takeUntil.md | 5 |
 | 🟡 0.769 | operators/utility/tap.md | 7 |
 | 🟡 0.828 | operators/utility/timeout.md | 6 |
-| 🟡 0.845 | operators/utility/timestamp.md | 17 |
+| 🟡 0.846 | operators/utility/timestamp.md | 17 |
 | 🟡 0.779 | operators/utility/toArray.md | 4 |
 
 ### overcoming-difficulties
@@ -275,7 +272,7 @@
 | スコア | ファイル | ペア数 |
 |--------|----------|--------|
 | 🟡 0.831 | practical-patterns/advanced-form-patterns.md | 29 |
-| 🟡 0.772 | practical-patterns/api-calls.md | 27 |
+| 🟡 0.774 | practical-patterns/api-calls.md | 27 |
 | 🔵 0.856 | practical-patterns/caching-strategies.md | 13 |
 | 🟡 0.847 | practical-patterns/error-handling-patterns.md | 17 |
 | 🟡 0.834 | practical-patterns/form-handling.md | 12 |
@@ -290,7 +287,7 @@
 |--------|----------|--------|
 | 🔵 0.852 | schedulers/async-control.md | 15 |
 | 🟡 0.845 | schedulers/task-and-scheduler-basics.md | 5 |
-| 🔴 0.653 | schedulers/types.md | 10 |
+| 🔴 0.648 | schedulers/types.md | 10 |
 
 ### starter-kid.md
 
@@ -325,4 +322,4 @@
 
 ---
 
-最終更新: 2026-05-20T07:13:52Z
+最終更新: 2026-05-20T11:01:22Z

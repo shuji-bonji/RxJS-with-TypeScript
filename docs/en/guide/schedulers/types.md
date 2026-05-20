@@ -337,17 +337,17 @@ const requests: ApiRequest[] = [
   { endpoint: '/comments', id: 1 },
 ];
 
-// リクエストをキューに入れて順番に処理
+// Queue requests and process them in order
 from(requests)
   .pipe(
     observeOn(queueScheduler),
-    tap((req) => console.log(`キューに追加: ${req.endpoint}`)),
+    tap((req) => console.log(`Add to queue: ${req.endpoint}`)),
     mergeMap(
       (req) =>
-        // 実際のAPIリクエストのシミュレーション
+        // Uses actualAPIRequest simulation
         new Promise((resolve) => {
           setTimeout(() => {
-            resolve(`${req.endpoint}/${req.id} のresult`);
+            resolve(`${req.endpoint}/${req.id} ofresult`);
           }, 1000);
         })
     )
@@ -377,41 +377,39 @@ function fetchDataWithBackoff(id: number) {
 
 fetchDataWithBackoff(1)
   .pipe(
-    // RxJS 7.3+ 推奨: retry({ count, delay }) 形式
+    // RxJS 7.3+ Recommended: retry({ count, delay }) Format
     retry({
-      count: 3, // Max.3回まで再試行
+      count: 3, // Max.3Retry up to 3 times
       delay: (error, retryCount) => {
-        // 指数バックオフ: 1秒, 2秒, 4秒...
+        // Exponential backoff: 1seconds, 2seconds, 4seconds...
         const delayTime = Math.pow(2, retryCount - 1) * 1000;
-        console.log(`🔄 リトライ ${retryCount}回目 (${delayTime}ms後)`);
+        console.log(`🔄 Retries ${retryCount}times (${delayTime}msAfter)`);
 
-        // timer は内部的に asyncScheduler を使用
+        // timer is internally asyncScheduler Use of
         return timer(delayTime);
       }
     })
   )
   .subscribe({
-    next: result => console.log('✅ 成功:', result),
+    next: result => console.log('✅ Success:', result),
     error: error => {
-      console.log('❌ Max.リトライ数に到達');
-      console.log('❌ 最終Error:', error.message);
+      console.log('❌ Max.Number of retries reached');
+      console.log('❌ FinalError:', error.message);
     }
   });
 
 // OutputEx.:
-// 🔄 リトライ 1回目 (1000ms後)
-// 🔄 リトライ 2回目 (2000ms後)
-// 🔄 リトライ 3回目 (4000ms後)
-// ❌ Max.リトライ数に到達
-// ❌ 最終Error: Temporary error
+// 🔄 Retries 1times (1000msAfter)
+// 🔄 Retries 2times (2000msAfter)
+// 🔄 Retries 3times (4000msAfter)
+// ❌ Max.Number of retries reached
+// ❌ FinalError: Temporary error
 ```
 
 #### When explicitly specifying an asyncScheduler
 
 Explicitly specifying a specific scheduler allows for more flexible control, such as replacing it with `TestScheduler` during testing.
 
-
-```
 
 ```ts
 import { of, asyncScheduler } from 'rxjs';
