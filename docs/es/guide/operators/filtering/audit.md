@@ -300,10 +300,10 @@ clicks$.pipe(
 
 ## 📚 Operadores relacionados.
 
-- **[auditTime](. /auditTime)** - controlado por tiempo fijo (versión simplificada de `audit`).
-- **[throttle](. /throttleTime)** - primer valor emitido al inicio del periodo.
-- **[debounce](. /debounceTime)** - emite un valor tras un periodo de inactividad.
-- sample](. /sampleTime)** - muestreo en el momento de otro Observable.
+- **[auditTime](./auditTime)** - controlado por tiempo fijo (versión simplificada de `audit`).
+- **[throttle](./throttleTime)** - primer valor emitido al inicio del periodo.
+- **[debounce](./debounceTime)** - emite un valor tras un periodo de inactividad.
+- sample](./sampleTime)** - muestreo en el momento de otro Observable.
 
 ## Resumen.
 

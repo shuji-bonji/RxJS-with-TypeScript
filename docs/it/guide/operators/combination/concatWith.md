@@ -222,6 +222,6 @@ throwError(() => new Error('Si è verificato un errore'))
 
 ## 📚 Operatori correlati.
 
-- **[concat](/it/guide/creation-functions/combinazione/concat)** - Versione di Creation Function
-- **[mergeWith](/it/guide/operators/combinazione/mergeWith)** - Versione per unire in parallelo
-- **[concatMap](/it/guide/operators/trasformazione/concatMap)** - mappatura sequenziale di singoli valori
+- **[concat](/it/guide/creation-functions/combination/concat)** - Versione di Creation Function
+- **[mergeWith](/it/guide/operators/combination/mergeWith)** - Versione per unire in parallelo
+- **[concatMap](/it/guide/operators/transformation/concatMap)** - mappatura sequenziale di singoli valori

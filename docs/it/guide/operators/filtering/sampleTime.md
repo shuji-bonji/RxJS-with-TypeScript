@@ -347,9 +347,9 @@ clicks$.pipe(
 ## 📚 Operatori correlati.
 
 - **[sample](https://rxjs.dev/api/operators/sample)** - Campionamento di un altro Observable come trigger (documentazione ufficiale).
-- **[throttleTime](. /throttleTime)** - Ottiene il primo valore all'inizio del periodo.
-- **[auditTime](. /auditTime)** - ottiene l'ultimo valore alla fine del periodo.
-- **[debounceTime](. /debounceTime)** - emette il valore dopo la quiescenza.
+- **[throttleTime](./throttleTime)** - Ottiene il primo valore all'inizio del periodo.
+- **[auditTime](./auditTime)** - ottiene l'ultimo valore alla fine del periodo.
+- **[debounceTime](./debounceTime)** - emette il valore dopo la quiescenza.
 
 ## Riepilogo.
 

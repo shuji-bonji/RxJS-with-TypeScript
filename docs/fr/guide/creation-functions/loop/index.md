@@ -268,4 +268,4 @@ range(1, 1000000).pipe(
 
 Pour en savoir plus sur le comportement détaillé et les exemples pratiques de chaque fonction de création, cliquez sur les liens du tableau ci-dessus.
 
-Vous pouvez également comprendre l'ensemble des fonctions de création en apprenant les [Fonctions de création de base](/fr/guide/creation-functions/basic/), les [Fonctions de création de combinaison](/fr/guide/creation-functions/combination/), les [Fonctions de création de sélection/partition](/fr/guide/creation-functions/selection/) et les [Fonctions de création conditionnelles](/fr/guide/creation-functions/conditional/).
+Vous pouvez également comprendre l'ensemble des fonctions de création en apprenant les [Fonctions de création de base](/fr/guide/creation-functions/basic/), les [Fonctions de création de combinaison](/fr/guide/creation-functions/combination/), les [Fonctions de création de selection/partition](/fr/guide/creation-functions/selection/) et les [Fonctions de création conditionnelles](/fr/guide/creation-functions/conditional/).

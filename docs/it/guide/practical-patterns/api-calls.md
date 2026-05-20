@@ -72,7 +72,7 @@ createPost({
 });
 ```
 
-> Questo articolo fa parte del [Capitolo 4: Operatori](. /operatori/index.md) e [Capitolo 6: Gestione degli errori](. /error-handling/strategies.md).
+> Questo articolo fa parte del [Capitolo 4: Operatori](../operators/index.md) e [Capitolo 6: Gestione degli errori](../error-handling/strategies.md).
 
 ## Chiamate API di base.
 
@@ -1821,17 +1821,17 @@ fetchDashboard(1).subscribe({
 
 Una volta acquisita la padronanza dello schema delle chiamate API, si può passare agli schemi seguenti.
 
-- [form-handling](. /form-handling.md) - validazione in tempo reale, salvataggio automatico.
-- [Gestione degli eventi dell'interfaccia utente](. /ui-events.md) - integrazione di eventi UI e chiamate API.
-- [elaborazione dei dati in tempo reale](. /real-time-data.md)) - WebSocket, SSE.
-- [strategie di caching] (. /caching-strategies.md) - Caching delle risposte API.
+- [form-handling](./form-handling.md) - validazione in tempo reale, salvataggio automatico.
+- [Gestione degli eventi dell'interfaccia utente](./ui-events.md) - integrazione di eventi UI e chiamate API.
+- [elaborazione dei dati in tempo reale](./real-time-data.md)) - WebSocket, SSE.
+- [strategie di caching](./caching-strategies.md) - Caching delle risposte API.
 - Pratiche di gestione degli errori (in preparazione) - Strategie di gestione degli errori più avanzate
 
 ## Sezioni correlate.
 
-- Capitolo 4: Operatori](. /operatori/index.md) - approfondimenti su switchMap, mergeMap e concatMap.
-- Capitolo 6: Gestione degli errori](. /error-handling/strategies.md)) - nozioni di base su catchError e retry.
-- [Capitolo 2: Observable freddi/caldi](. /observables/cold-and-hot-observables.md)) - Comprensione di shareReplay
+- Capitolo 4: Operatori](../operators/index.md) - approfondimenti su switchMap, mergeMap e concatMap.
+- Capitolo 6: Gestione degli errori](../error-handling/strategies.md)) - nozioni di base su catchError e retry.
+- [Capitolo 2: Observable freddi/caldi](../observables/cold-and-hot-observables.md)) - Comprensione di shareReplay
 
 ## Risorse di riferimento
 

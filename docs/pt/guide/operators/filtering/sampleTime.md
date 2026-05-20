@@ -347,9 +347,9 @@ clicks$.pipe(
 ## 📚 Operadores relacionados.
 
 - **[sample](https://rxjs.dev/api/operators/sample)** - Sampling de outro Observable como um acionador (documentação oficial).
-- **[throttleTime](. /throttleTime)** - Obtém o primeiro valor no início do período.
-- **[auditTime](. /auditTime)** - obtém o último valor no final do período.
-- **[debounceTime](. /debounceTime)** - emite o valor após a quiescência
+- **[throttleTime](./throttleTime)** - Obtém o primeiro valor no início do período.
+- **[auditTime](./auditTime)** - obtém o último valor no final do período.
+- **[debounceTime](./debounceTime)** - emite o valor após a quiescência
 
 ## Resumo.
 

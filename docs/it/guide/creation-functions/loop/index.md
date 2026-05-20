@@ -301,4 +301,4 @@ range(1, 1000000).pipe(
 
 Per saperne di più sul funzionamento di Creation Function e sugli esempi pratici, fate clic sui link della tabella precedente.
 
-È inoltre possibile conoscere [Funzioni di creazione di base](/it/guide/creation-functions/basic/), [Funzioni di creazione combinate](/it/guide/creation-functions/combination/), [selezione e Creation Function](/it/guide/creation-functions/selezione/) e [Creation Function](/it/guide/creation-functions/conditional/). Questo vi aiuterà a capire l'intero quadro delle Creation Function.
+È inoltre possibile conoscere [Funzioni di creazione di base](/it/guide/creation-functions/basic/), [Funzioni di creazione combinate](/it/guide/creation-functions/combination/), [selezione e Creation Function](/it/guide/creation-functions/selection/) e [Creation Function](/it/guide/creation-functions/conditional/). Questo vi aiuterà a capire l'intero quadro delle Creation Function.

@@ -368,6 +368,6 @@ interval(1000).pipe(
 
 ## 📚 Operatori correlati.
 
-- **[combineLatest](/it/guide/creation-functions/combinazione/combineLatest)** - versione della Creation Function.
-- **[withLatestFrom](/it/guide/operators/combinazione/withLatestFrom)** - attivato solo da mainstream.
-- **[zipWith](/it/guide/operators/combinazione/zipWith)** - Coppia di valori corrispondenti
+- **[combineLatest](/it/guide/creation-functions/combination/combineLatest)** - versione della Creation Function.
+- **[withLatestFrom](/it/guide/operators/combination/withLatestFrom)** - attivato solo da mainstream.
+- **[zipWith](/it/guide/operators/combination/zipWith)** - Coppia di valori corrispondenti

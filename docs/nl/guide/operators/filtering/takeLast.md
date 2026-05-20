@@ -396,8 +396,8 @@ getallen$.pipe(
 
 ## Volgende stap.
 
-- **[take](. /take)** - leer hoe je de eerste n waarden krijgt.
-- **[last](. /last)** - leer hoe je de laatste 1 waarde krijgt.
-- **[skip](. /skip)** - leer de eerste N waarden over te slaan
-- Filter](. /filter)** - leer filteren op basis van voorwaarden
-- **[filtering-operator-praktische-gebruiksgevallen](. /practical-use-cases)** - leer hoe u echte use-cases kunt gebruiken
+- **[take](./take)** - leer hoe je de eerste n waarden krijgt.
+- **[last](./last)** - leer hoe je de laatste 1 waarde krijgt.
+- **[skip](./skip)** - leer de eerste N waarden over te slaan
+- Filter](./filter)** - leer filteren op basis van voorwaarden
+- **[filtering-operator-praktische-gebruiksgevallen](./practical-use-cases)** - leer hoe u echte use-cases kunt gebruiken

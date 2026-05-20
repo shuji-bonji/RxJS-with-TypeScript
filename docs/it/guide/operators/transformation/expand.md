@@ -563,7 +563,7 @@ console.log('AsincronoexpandFine');
 
 > [!TIP]
 
-> Quando si elaborano grandi quantità di dati, lo Scheduler può essere usato per mantenere l'interfaccia utente reattiva senza bloccare il thread principale. Per maggiori informazioni, vedere [Tipi di scheduler e loro utilizzo] (/it/guide/scheduler/tipi).
+> Quando si elaborano grandi quantità di dati, lo Scheduler può essere usato per mantenere l'interfaccia utente reattiva senza bloccare il thread principale. Per maggiori informazioni, vedere [Tipi di scheduler e loro utilizzo] (/it/guide/schedulers/types).
 
 ## 🔄 Esempio di calcolo ricorsivo
 
@@ -654,8 +654,8 @@ of(1).pipe(
 
 ## 🚀 Prossimi passi.
 
-- **[mergeMap](. /mergeMap)** - imparare le solite trasformazioni asincrone.
-- **[switchMap](. /switchMap)** - impara la conversione per passare all'ultimo processo.
-- **[concatMap](. /concatMap)** - impara le trasformazioni che vengono eseguite in modo sequenziale.
-- **[Tipi di scheduler e loro utilizzo](/it/guide/scheduler/tipi)** - imparare a combinare expand e scheduler.
-- **[Esempi pratici di operatori di conversione](/it/guide/schedulatori/tipi)** - imparare a combinare expand e scheduler /casi d'uso pratici)** - imparare a conoscere casi d'uso reali
+- **[mergeMap](./mergeMap)** - imparare le solite trasformazioni asincrone.
+- **[switchMap](./switchMap)** - impara la conversione per passare all'ultimo processo.
+- **[concatMap](./concatMap)** - impara le trasformazioni che vengono eseguite in modo sequenziale.
+- **[Tipi di scheduler e loro utilizzo](/it/guide/schedulers/types)** - imparare a combinare expand e scheduler.
+- **[Esempi pratici di operatori di conversione](/it/guide/schedulers/types)** - imparare a combinare expand e scheduler /casi d'uso pratici)** - imparare a conoscere casi d'uso reali

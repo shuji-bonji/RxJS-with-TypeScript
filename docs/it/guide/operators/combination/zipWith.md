@@ -298,6 +298,6 @@ source1$.pipe(combineLatestWith(source2$)).subscribe(console.log);
 
 ## 📚 Operatori correlati.
 
-- **[zip](/it/guide/creation-functions/combinazione/zip)** - Versione della Creation Function.
-- **[combineLatestWith](/it/guide/operators/combinazione/combineLatestWith)** - Combina l'ultimo valore.
-- **[withLatestFrom](/it/guide/operators/combinazione/withLatestFrom)** - Solo trigger mainstream
+- **[zip](/it/guide/creation-functions/combination/zip)** - Versione della Creation Function.
+- **[combineLatestWith](/it/guide/operators/combination/combineLatestWith)** - Combina l'ultimo valore.
+- **[withLatestFrom](/it/guide/operators/combination/withLatestFrom)** - Solo trigger mainstream

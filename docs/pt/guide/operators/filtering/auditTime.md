@@ -423,7 +423,7 @@ fromEvent(input, 'input').pipe(
 
 ## 🚀 Próximas etapas.
 
-- **[throttleTime](. /throttleTime)** - aprender como passar o primeiro valor.
-- **[debounceTime](. /debounceTime)** - aprenda a emitir valores após a parada da entrada.
-- **[filter](. /filter)** - aprenda a filtrar com base em condições.
-- **[filtering-operator-practical-use-cases](. /practical-use-cases)** - aprenda a usar casos de uso reais
+- **[throttleTime](./throttleTime)** - aprender como passar o primeiro valor.
+- **[debounceTime](./debounceTime)** - aprenda a emitir valores após a parada da entrada.
+- **[filter](./filter)** - aprenda a filtrar com base em condições.
+- **[filtering-operator-practical-use-cases](./practical-use-cases)** - aprenda a usar casos de uso reais

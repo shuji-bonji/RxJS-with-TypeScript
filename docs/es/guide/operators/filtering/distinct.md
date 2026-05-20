@@ -320,7 +320,7 @@ getUniqueCategories(products$).subscribe(categoryId => {
 
 ## 🚀 Próximos pasos.
 
-- **[distinctUntilChanged](. /distinctUntilChanged)** - Aprende a eliminar sólo los duplicados consecutivos.
-- **[distinctUntilKeyChanged](. /distinctUntilKeyChanged)** - Aprende a comparar por clave de objeto.
-- **[filter](. /filter)** - aprende a filtrar por condiciones
-- **[filtering-operator-practical-use-cases](. /practical-use-cases)** - aprende a utilizar casos de uso reales
+- **[distinctUntilChanged](./distinctUntilChanged)** - Aprende a eliminar sólo los duplicados consecutivos.
+- **[distinctUntilKeyChanged](./distinctUntilKeyChanged)** - Aprende a comparar por clave de objeto.
+- **[filter](./filter)** - aprende a filtrar por condiciones
+- **[filtering-operator-practical-use-cases](./practical-use-cases)** - aprende a utilizar casos de uso reales

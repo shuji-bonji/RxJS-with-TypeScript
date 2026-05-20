@@ -14,7 +14,7 @@ RxJS schedulers fall into three main categories.
 2. **Micro-task**: executed immediately after the current task is completed and before the next task starts
 3. **Synchronous processing**: immediate execution
 
-For more information, please refer to [Task and Scheduler Basics](. /task-and-scheduler-basics.md) for details.
+For more information, please refer to [Task and Scheduler Basics](./task-and-scheduler-basics.md) for details.
 
 ## Major schedulers
 

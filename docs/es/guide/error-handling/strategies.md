@@ -348,4 +348,4 @@ El manejo de errores en RxJS es una parte importante para asegurar la robustez d
 ## 🔗 Secciones relacionadas.
 
 - **[Errores comunes y cómo tratarlos](/es/guide/anti-patterns/common-mistakes#9-error-grasping)** - Revisa los anti-patrones sobre el manejo de errores.
-- **[retry y catchError](/es/guide/manejo-de-errores/retry-catch)** - Explica más detalladamente su utilización.
+- **[retry y catchError](/es/guide/error-handling/retry-catch)** - Explica más detalladamente su utilización.

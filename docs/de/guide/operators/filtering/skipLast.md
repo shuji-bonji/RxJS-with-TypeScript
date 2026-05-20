@@ -424,11 +424,11 @@ Fensterverarbeitung mit Daten unter Ausschluss der letzten N Fälle
 
 ## 📚 Verwandte Operatoren
 
-- **[skip](. /skip)** - überspringt die ersten N Werte.
-- **[takeLast](. /takeLast)** - nimmt nur die letzten N Werte.
-- **[take](. /take)** - holt nur die ersten N Werte.
-- **[skipUntil](. /skipUntil)** - überspringt, bis ein anderes Observable auslöst
-- **[skipWhile](. /skipWhile)** - Überspringen, solange die Bedingung erfüllt ist
+- **[skip](./skip)** - überspringt die ersten N Werte.
+- **[takeLast](./takeLast)** - nimmt nur die letzten N Werte.
+- **[take](./take)** - holt nur die ersten N Werte.
+- **[skipUntil](./skipUntil)** - überspringt, bis ein anderes Observable auslöst
+- **[skipWhile](./skipWhile)** - Überspringen, solange die Bedingung erfüllt ist
 
 ## Zusammenfassung.
 

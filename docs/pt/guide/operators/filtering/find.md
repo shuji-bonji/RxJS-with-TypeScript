@@ -441,7 +441,7 @@ numbers$.pipe(
 
 ## Próxima etapa.
 
-- **[first](. /first)** - saiba como obter o primeiro valor.
-- **[filter](. /filter)** - saiba como filtrar com base em condições.
+- **[first](./first)** - saiba como obter o primeiro valor.
+- **[filter](./filter)** - saiba como filtrar com base em condições.
 - **[findIndex](https://rxjs.dev/api/operators/findIndex)** - saiba como obter o índice do primeiro valor que satisfaz uma condição (documentação oficial)
-- **[filtering-operator-practical-use-cases](. /practical-use-cases)** - aprenda casos de uso reais
+- **[filtering-operator-practical-use-cases](./practical-use-cases)** - aprenda casos de uso reais

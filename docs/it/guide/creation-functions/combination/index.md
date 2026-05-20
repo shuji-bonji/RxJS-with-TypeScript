@@ -100,4 +100,4 @@ Per le Creation Functions di combinazione esistono Pipeable Operator corrisponde
 
 Per apprendere il funzionamento dettagliato e esempi pratici di ciascuna Creation Function, fare clic sui link nella tabella sopra.
 
-Inoltre, studiando anche [Creation Functions di selezione/partizione](/it/guide/creation-functions/selection/) e [Creation Functions di branching condizionale](/it/guide/creation-functions/conditional/), è possibile comprendere il quadro generale delle Creation Functions.
+Inoltre, studiando anche [Creation Functions di selection/partizione](/it/guide/creation-functions/selection/) e [Creation Functions di branching condizionale](/it/guide/creation-functions/conditional/), è possibile comprendere il quadro generale delle Creation Functions.

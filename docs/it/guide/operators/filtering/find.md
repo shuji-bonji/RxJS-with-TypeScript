@@ -424,7 +424,7 @@ numbers$.pipe(
 
 ## 🚀 Passo successivo.
 
-- **[first](. /first)** - imparare a ottenere il primo valore.
-- **[filter](. /filter)** - imparare a filtrare in base alle condizioni.
+- **[first](./first)** - imparare a ottenere il primo valore.
+- **[filter](./filter)** - imparare a filtrare in base alle condizioni.
 - **[findIndex](https://rxjs.dev/api/operators/findIndex)** - per imparare a ottenere l'indice del primo valore che soddisfa una condizione (documentazione ufficiale).
-- **[filtering-operator-practical-use-cases](. /practical-use-cases)** - per imparare casi d'uso reali.
+- **[filtering-operator-practical-use-cases](./practical-use-cases)** - per imparare casi d'uso reali.

@@ -284,9 +284,9 @@ setTimeout(() => {
 
 ## 🔄 Operadores relacionados
 
-- **[share()](/es/guide/operators/multicast/share)** - multicast simple (sin buffer)
-- **[publish()](/es/guide/sujetos/multicast)** - control multicast de bajo nivel
-- ReplaySubject](/es/guide/subjects/types-of-subjects)** - Subject subyacente de shareReplay
+- **[share()](/es/guide/operators/multicasting/share)** - multicast simple (sin buffer)
+- **[publish()](/es/guide/subjects/multicasting)** - control multicast de bajo nivel
+- ReplaySubject](/es/guide/subjects/types-of-subject)** - Subject subyacente de shareReplay
 
 ## Resumen.
 
@@ -300,6 +300,6 @@ Si necesita compartir o almacenar en caché el estado, shareReplay()` es una her
 
 ## 🔗 Secciones relacionadas.
 
-- **[Errores comunes y soluciones](mal uso de /guide/anti-patterns/common-mistakes#4-sharereplay-)** - Uso adecuado de shareReplay y prevención de fugas de memoria.
+- **[Errores comunes y soluciones](/es/guide/anti-patterns/common-mistakes#4-sharereplay-の誤用)** - Uso adecuado de shareReplay y prevención de fugas de memoria.
 - **[share()](/es/guide/operators/multicasting/share)** - multicast simple
-- ReplaySubject](/es/guide/subjects/types-of-subjects)** - el Subject subyacente de shareReplay
+- ReplaySubject](/es/guide/subjects/types-of-subject)** - el Subject subyacente de shareReplay

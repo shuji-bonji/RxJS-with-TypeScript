@@ -415,7 +415,7 @@ fromEvent(input, 'input').pipe(
 
 ## Volgende stappen.
 
-- **[throttleTime](. /throttleTime)** - leer hoe je de eerste waarde doorgeeft.
-- **[debounceTime](. /debounceTime)** - leer hoe je waarden doorgeeft nadat de invoer stopt.
-- Filter](. /filter)** - leer filteren op basis van voorwaarden.
-- **[filtering-operator-praktische-gebruiksgevallen](. /practical-use-cases)** - leer echte use-cases gebruiken
+- **[throttleTime](./throttleTime)** - leer hoe je de eerste waarde doorgeeft.
+- **[debounceTime](./debounceTime)** - leer hoe je waarden doorgeeft nadat de invoer stopt.
+- Filter](./filter)** - leer filteren op basis van voorwaarden.
+- **[filtering-operator-praktische-gebruiksgevallen](./practical-use-cases)** - leer echte use-cases gebruiken

@@ -299,9 +299,9 @@ La génération d'objets de notification entraîne des frais généraux. A n'uti
 
 ## 📚 Opérateurs associés.
 
-- **[dematerialize](. /dematerialize)** - ramène l'objet Notification à une notification normale.
-- **[tap](. /tap)** - Effectue un effet de bord (à des fins de débogage).
-- **[catchError](. /... /error-handling/retry-catch)** - Gestion des erreurs.
+- **[dematerialize](./dematerialize)** - ramène l'objet Notification à une notification normale.
+- **[tap](./tap)** - Effectue un effet de bord (à des fins de débogage).
+- **[catchError](../../error-handling/retry-catch)** - Gestion des erreurs.
 
 ## ✅ Résumé
 

@@ -100,4 +100,4 @@ Pour les fonctions de création de combinaison, il existe un opérateur Pipeable
 
 Pour connaître le comportement détaillé et les exemples pratiques de chaque fonction de création, cliquez sur les liens du tableau ci-dessus.
 
-Apprenez également les [Fonctions de création de sélection/partition](/fr/guide/creation-functions/selection/) et les [Fonctions de création conditionnelles](/fr/guide/creation-functions/conditional/), vous comprendrez ainsi l'ensemble des fonctions de création.
+Apprenez également les [Fonctions de création de selection/partition](/fr/guide/creation-functions/selection/) et les [Fonctions de création conditionnelles](/fr/guide/creation-functions/conditional/), vous comprendrez ainsi l'ensemble des fonctions de création.

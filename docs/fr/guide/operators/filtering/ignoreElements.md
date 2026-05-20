@@ -420,10 +420,10 @@ source$.pipe(
 
 ## 📚 Opérateurs apparentés.
 
-- **[filter](. /filter)** - filtre les valeurs en fonction de conditions.
-- **[take](. /take)** - seules les N premières valeurs sont prises en compte.
-- **[skip](. /skip)** - les N premières valeurs sont ignorées.
-- **[tap](. /utility/tap)** - effectuer une action latérale
+- **[filter](./filter)** - filtre les valeurs en fonction de conditions.
+- **[take](./take)** - seules les N premières valeurs sont prises en compte.
+- **[skip](./skip)** - les N premières valeurs sont ignorées.
+- **[tap](../utility/tap)** - effectuer une action latérale
 
 ## Résumé.
 

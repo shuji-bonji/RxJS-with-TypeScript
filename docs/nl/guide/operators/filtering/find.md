@@ -437,7 +437,7 @@ getallen$.pipe(
 
 ## Volgende stap.
 
-- **[first](. /first)** - leer hoe je de eerste waarde krijgt.
-- **[filter](. /filter)** - leer filteren op basis van voorwaarden.
+- **[first](./first)** - leer hoe je de eerste waarde krijgt.
+- **[filter](./filter)** - leer filteren op basis van voorwaarden.
 - **[findIndex](https://rxjs.dev/api/operators/findIndex)** - leer hoe je de index krijgt van de eerste waarde die voldoet aan een voorwaarde (officiële documentatie)
-- **[filtering-operator-praktische-gebruik-cases](. /practical-use-cases)** - leer echte gebruikssituaties
+- **[filtering-operator-praktische-gebruik-cases](./practical-use-cases)** - leer echte gebruikssituaties

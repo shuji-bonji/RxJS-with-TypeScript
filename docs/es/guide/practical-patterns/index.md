@@ -177,8 +177,8 @@ Cada patrón práctico se basa en conocimientos fundamentales de capítulos ante
 - **[Capítulo 2: Observables](../observables/what-is-observable.md)** - Entender Observables fríos vs. calientes
 - **[Capítulo 3: Creation Functions](../creation-functions/index.md)** - Saber cuándo usar `fromEvent`, `interval`, `merge`
 - **[Capítulo 4: Operadores](../operators/index.md)** - Dominar operadores de transformación, filtrado y combinación
-- **[Capítulo 5: Subject](../subjects/index.md)** - Usar Subjects para gestión de estado
-- **[Capítulo 6: Manejo de Errores](../error-handling/index.md)** - Aplicar `catchError`, `retry`, `retryWhen`
+- **[Capítulo 5: Subject](../subjects/what-is-subject.md)** - Usar Subjects para gestión de estado
+- **[Capítulo 6: Manejo de Errores](../error-handling/strategies.md)** - Aplicar `catchError`, `retry`, `retryWhen`
 - **[Capítulo 9: Pruebas](../testing/unit-tests.md)** - Probar pipelines RxJS con TestScheduler
 
 ## Principios de Código Ejecutable

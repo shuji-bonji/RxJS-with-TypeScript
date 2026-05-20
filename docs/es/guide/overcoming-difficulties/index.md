@@ -178,7 +178,7 @@ Cada sección tiene la siguiente estructura:
 ### 3. Experimentar con Starter Kit
 
 Todos los ejemplos de código pueden ejecutarse en un entorno de desarrollo local.
-<!-- TODO: Agregar enlace al starter kit cuando esté disponible: [entorno de ejecución de aprendizaje](/es/guide/starter-kit) -->
+<!-- TODO: Agregar enlace al starter kit cuando esté disponible: [entorno de ejecución de aprendizaje](/es/guide/starter-kid) -->
 
 #### Flujo de Aprendizaje Recomendado
 1. Copiar y ejecutar ejemplo malo → Experimentar el problema

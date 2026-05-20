@@ -25,7 +25,7 @@ throttleTime(1000): ●              ●
                    Verwerking uitvoeren      Verwerking uitvoeren
 ```
 
-> Dit artikel gaat uit van kennis van [Hoofdstuk 4: Operatoren](. /operators/index.md) en veronderstelt kennis van het volgende. In het bijzonder is een begrip van `debounceTime`, `throttleTime` en `distinctUntilChanged` belangrijk.
+> Dit artikel gaat uit van kennis van [Hoofdstuk 4: Operatoren](../operators/index.md) en veronderstelt kennis van het volgende. In het bijzonder is een begrip van `debounceTime`, `throttleTime` en `distinctUntilChanged` belangrijk.
 
 ## Afhandeling van klikgebeurtenissen.
 
@@ -989,16 +989,16 @@ function performSearch(query: string): void {
 
 Als je het UI event handling patroon onder de knie hebt, kun je verder met de volgende patronen.
 
-- form-handling](. /form-handling.md) - real-time validatie, integratie van meerdere velden.
-- API-oproepen](. /api-calls.md) - integratie van UI-gebeurtenissen en API-oproepen.
-- real-time gegevensverwerking](. /real-time-data.md) - WebSocket, SSE.
-- caching-strategieën](. /caching-strategies.md) - event data caching
+- form-handling](./form-handling.md) - real-time validatie, integratie van meerdere velden.
+- API-oproepen](./api-calls.md) - integratie van UI-gebeurtenissen en API-oproepen.
+- real-time gegevensverwerking](./real-time-data.md) - WebSocket, SSE.
+- caching-strategieën](./caching-strategies.md) - event data caching
 
 ## Gerelateerde secties.
 
-- Hoofdstuk 4: Operatoren filteren](. /operators/filtering/) - debounceTime, throttleTime details.
-- Hoofdstuk 4: Transformatie operatoren](. /operators/transformation/) - meer over switchMap, exhaustMap.
-- Hoofdstuk 2: Observable](. /observables/what-is-observable.md)) - basis van fromEvent
+- Hoofdstuk 4: Operatoren filteren](../operators/filtering/) - debounceTime, throttleTime details.
+- Hoofdstuk 4: Transformatie operatoren](../operators/transformation/) - meer over switchMap, exhaustMap.
+- Hoofdstuk 2: Observable](../observables/what-is-observable.md)) - basis van fromEvent
 
 ## Verwijzingsbronnen
 

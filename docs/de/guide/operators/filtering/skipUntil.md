@@ -399,8 +399,8 @@ setTimeout(() => {
 
 ## 🚀 Nächste Schritte.
 
-- **[skip](. /skip)** - lernen Sie, wie man die ersten N Werte überspringt.
-- **[take](. /take)** - lerne, wie man die ersten N Werte erhält.
-- **[takeUntil](. /utility/takeUntil)** - lerne, wie man Werte nimmt, bis ein anderes Observable feuert
-- **[filter](. /filter)** - lernen Sie, wie man auf der Grundlage von Bedingungen filtert
-- **[filtering-operator-practical-use-cases](. /practical-use-cases)** - lernen Sie echte Anwendungsfälle
+- **[skip](./skip)** - lernen Sie, wie man die ersten N Werte überspringt.
+- **[take](./take)** - lerne, wie man die ersten N Werte erhält.
+- **[takeUntil](../utility/takeUntil)** - lerne, wie man Werte nimmt, bis ein anderes Observable feuert
+- **[filter](./filter)** - lernen Sie, wie man auf der Grundlage von Bedingungen filtert
+- **[filtering-operator-practical-use-cases](./practical-use-cases)** - lernen Sie echte Anwendungsfälle

@@ -286,10 +286,10 @@ clicks$.pipe(
 
 ## 📚 Verwante operatoren.
 
-- **[auditTime](. /auditTime)** - gecontroleerd door vaste tijd (vereenvoudigde versie van `audit`).
-- **[throttle](. /throttleTime)** - eerste waarde afgegeven aan het begin van de periode.
-- **[debounce](. /debounceTime)** - een waarde geven na een periode van inactiviteit.
-- **[sample](. /sampleTime)** - sample op het tijdstip van een andere Observable.
+- **[auditTime](./auditTime)** - gecontroleerd door vaste tijd (vereenvoudigde versie van `audit`).
+- **[throttle](./throttleTime)** - eerste waarde afgegeven aan het begin van de periode.
+- **[debounce](./debounceTime)** - een waarde geven na een periode van inactiviteit.
+- **[sample](./sampleTime)** - sample op het tijdstip van een andere Observable.
 
 ## Samenvatting.
 

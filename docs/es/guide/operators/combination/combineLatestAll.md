@@ -114,10 +114,10 @@ Ver [Capítulo 3 Funciones de Creación - combineLatest](/es/guide/creation-func
 
 | Operador. | Descripción. |
 |---|---|
-| [mergeAll](. /mergeAll) | Suscribe todos los Observable internos en paralelo. |
-| [concatAll](. /concatAll) | Suscribirse a Observable internos en secuencia. |
-| [switchAll](. /switchAll) | Cambiar a un nuevo Observable interno. |
-| [zipAll](. /zipAll) | Empareja los valores de cada Observable interno en el orden correspondiente |
+| [mergeAll](./mergeAll) | Suscribe todos los Observable internos en paralelo. |
+| [concatAll](./concatAll) | Suscribirse a Observable internos en secuencia. |
+| [switchAll](./switchAll) | Cambiar a un nuevo Observable interno. |
+| [zipAll](./zipAll) | Empareja los valores de cada Observable interno en el orden correspondiente |
 
 ## ⚠️ Notas.
 

@@ -1,5 +1,5 @@
 ---
-description: Una explicación completa de las Creation Functions de RxJS (funciones de creación de Observable), incluyendo diferencias con los Pipeable Operators, uso básico y siete categorías (creación básica, generación de bucles, comunicación HTTP, combinación, selección/partición, ramificación condicional y sistemas de control).
+description: Una explicación completa de las Creation Functions de RxJS (funciones de creación de Observable), incluyendo diferencias con los Pipeable Operators, uso básico y siete categorías (creación básica, generación de bucles, comunicación HTTP, combinación, selection/partition, ramificación condicional y sistemas de control).
 ---
 
 # Creation Functions
@@ -198,7 +198,7 @@ Para obtener más información sobre cada categoría, siga los enlaces a continu
 2. **[Funciones de generación de bucles](/es/guide/creation-functions/loop/)** - range, generate
 3. **[Funciones de comunicación HTTP](/es/guide/creation-functions/http-communication/)** - ajax, fromFetch
 4. **[Funciones de combinación](/es/guide/creation-functions/combination/)** - concat, merge, combineLatest, zip, forkJoin
-5. **[Funciones de selección/partición](/es/guide/creation-functions/selection/)** - race, partition
+5. **[Funciones de selection/partition](/es/guide/creation-functions/selection/)** - race, partition
 6. **[Funciones condicionales](/es/guide/creation-functions/conditional/)** - iif, defer
 7. **[Funciones de control](/es/guide/creation-functions/control/)** - scheduled, using
 

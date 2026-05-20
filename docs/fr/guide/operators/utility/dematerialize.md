@@ -319,9 +319,9 @@ interval(500)
 
 ## 📚 Opérateurs apparentés
 
-- **[materialize](. /materialize)** - Convertit une notification en un objet Notification.
-- **[catchError](. /... /error-handling/retry-catch)** - Gestion des erreurs.
-- **[retry](. /retry)** - Réessai en cas d'erreur.
+- **[materialize](./materialize)** - Convertit une notification en un objet Notification.
+- **[catchError](../../error-handling/retry-catch)** - Gestion des erreurs.
+- **[retry](./retry)** - Réessai en cas d'erreur.
 
 ## ✅ Résumé.
 

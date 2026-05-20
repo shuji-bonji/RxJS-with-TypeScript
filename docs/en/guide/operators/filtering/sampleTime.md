@@ -359,9 +359,9 @@ clicks$.pipe(
 ## 📚 Related Operators
 
 - **[sample](https://rxjs.dev/api/operators/sample)** - Sampling another Observable as a trigger (official documentation)
-- **[throttleTime](. /throttleTime)** - Get the first value at the start of the period.
-- **[auditTime](. /auditTime)** - get the last value at the end of the period
-- **[debounceTime](. /debounceTime)** - issue value after a pause
+- **[throttleTime](./throttleTime)** - Get the first value at the start of the period.
+- **[auditTime](./auditTime)** - get the last value at the end of the period
+- **[debounceTime](./debounceTime)** - issue value after a pause
 
 ## Summary
 

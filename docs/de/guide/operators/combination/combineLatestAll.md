@@ -114,10 +114,10 @@ Siehe [Kapitel 3 Creation Function - combineLatest](/de/guide/creation-functions
 
 | Bediener. | Beschreibung. |
 |---|---|
-| [mergeAll](. /mergeAll) | Alle internen Observable parallel abonnieren. |
-| [concatAll](. /concatAll) | Interne Observable nacheinander abonnieren. |
-| [switchAll](. /switchAll) | Zu einem neuen internen Observable wechseln. |
-| [zipAll](. /zipAll) | Paarung der Werte jedes internen Observable in der entsprechenden Reihenfolge |
+| [mergeAll](./mergeAll) | Alle internen Observable parallel abonnieren. |
+| [concatAll](./concatAll) | Interne Observable nacheinander abonnieren. |
+| [switchAll](./switchAll) | Zu einem neuen internen Observable wechseln. |
+| [zipAll](./zipAll) | Paarung der Werte jedes internen Observable in der entsprechenden Reihenfolge |
 
 ## ⚠️ Anmerkungen.
 

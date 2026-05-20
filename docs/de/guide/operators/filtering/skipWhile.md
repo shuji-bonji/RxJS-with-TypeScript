@@ -400,11 +400,11 @@ Nur Daten nach einer bestimmten Zeit verarbeiten
 
 ## 📚 Verwandte Operatoren.
 
-- **[takeWhile](. /takeWhile)** - nimmt den Wert nur, wenn die Bedingung erfüllt ist.
-- **[skip](. /skip)** - überspringt die ersten N Werte.
-- **[skipLast](. /skipLast)** - überspringt die letzten N Werte
-- **[skipUntil](. /skipUntil)** - überspringt, bis ein anderes Observable auslöst
-- **[filter](. /filter)** - nur Werte durchlassen, die die Bedingung erfüllen
+- **[takeWhile](./takeWhile)** - nimmt den Wert nur, wenn die Bedingung erfüllt ist.
+- **[skip](./skip)** - überspringt die ersten N Werte.
+- **[skipLast](./skipLast)** - überspringt die letzten N Werte
+- **[skipUntil](./skipUntil)** - überspringt, bis ein anderes Observable auslöst
+- **[filter](./filter)** - nur Werte durchlassen, die die Bedingung erfüllen
 
 ## Zusammenfassung.
 

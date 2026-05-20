@@ -1,54 +1,54 @@
 ---
-description: "Explicación integral de técnicas de depuración de RxJS. Identifica causas cuando los valores no fluyen, rastrea con tap(), utiliza RxJS DevTools, detecta fugas de memoria, diagnostica problemas de rendimiento y crea operadores de depuración personalizados con TypeScript."
+description: "ExplicaciÃ³n integral de tÃ©cnicas de depuraciÃ³n de RxJS. Identifica causas cuando los valores no fluyen, rastrea con tap(), utiliza RxJS DevTools, detecta fugas de memoria, diagnostica problemas de rendimiento y crea operadores de depuraciÃ³n personalizados con TypeScript."
 ---
 
-# La barrera de la depuración
+# La barrera de la depuraciÃ³n
 
-Cuando te enfrentas a problemas en RxJS como **"los valores no fluyen"**, **"aparecen valores diferentes a los esperados"** o **"podría haber una fuga de memoria"**, resolverlos puede llevar mucho tiempo si no conoces los métodos de depuración adecuados. Esta página explica de manera integral las técnicas de depuración específicas de RxJS.
+Cuando te enfrentas a problemas en RxJS como **"los valores no fluyen"**, **"aparecen valores diferentes a los esperados"** o **"podrÃ­a haber una fuga de memoria"**, resolverlos puede llevar mucho tiempo si no conoces los mÃ©todos de depuraciÃ³n adecuados. Esta pÃ¡gina explica de manera integral las tÃ©cnicas de depuraciÃ³n especÃ­ficas de RxJS.
 
-## Estrategia básica de depuración en RxJS
+## Estrategia bÃ¡sica de depuraciÃ³n en RxJS
 
-### Los 5 pasos de la depuración
+### Los 5 pasos de la depuraciÃ³n
 
 ```mermaid
 graph LR
-    A["1. Identificar el problema"] --> B["2. Formular hipótesis"]
+    A["1. Identificar el problema"] --> B["2. Formular hipÃ³tesis"]
     B --> C["3. Verificar con tap"]
     C --> D["4. Identificar la causa"]
     D --> E["5. Corregir y verificar"]
-    E --> F{¿Resuelto?}
+    E --> F{Â¿Resuelto?}
     F -->|No| B
-    F -->|Sí| G[Completado]
+    F -->|SÃ­| G[Completado]
 ```
 
 ### Paso 1: Identificar el problema
 
-Primero, **clarifica qué es el problema**.
+Primero, **clarifica quÃ© es el problema**.
 
-| Síntoma | Posibles causas |
+| SÃ­ntoma | Posibles causas |
 |---|---|
 | No fluyen valores | Olvidaste subscribe, termina antes de complete, excluido por filter |
-| No aparece el primer valor | combineLatest no cumple condición inicial, BehaviorSubject no configurado |
-| El orden es extraño | Uso de mergeMap, timing asíncrono |
-| Aparecen valores duplicados | Múltiples subscribe sin share, mal uso de shareReplay |
+| No aparece el primer valor | combineLatest no cumple condiciÃ³n inicial, BehaviorSubject no configurado |
+| El orden es extraÃ±o | Uso de mergeMap, timing asÃ­ncrono |
+| Aparecen valores duplicados | MÃºltiples subscribe sin share, mal uso de shareReplay |
 | Hay fuga de memoria | Olvidaste unsubscribe, shareReplay con refCount: false |
-| Los valores se retrasan | debounceTime, throttleTime, procesamiento asíncrono |
+| Los valores se retrasan | debounceTime, throttleTime, procesamiento asÃ­ncrono |
 
-### Paso 2: Formular hipótesis
+### Paso 2: Formular hipÃ³tesis
 
-**Supón** la causa del problema.
+**SupÃ³n** la causa del problema.
 
 ```typescript
 // Ejemplo: Problema de "no aparecen valores"
-// Hipótesis 1: ¿No hay subscribe?
-// Hipótesis 2: ¿complete/error demasiado temprano?
-// Hipótesis 3: ¿Excluido por filter?
-// Hipótesis 4: ¿Demora por procesamiento asíncrono?
+// HipÃ³tesis 1: Â¿No hay subscribe?
+// HipÃ³tesis 2: Â¿complete/error demasiado temprano?
+// HipÃ³tesis 3: Â¿Excluido por filter?
+// HipÃ³tesis 4: Â¿Demora por procesamiento asÃ­ncrono?
 ```
 
 ### Paso 3: Verificar con tap
 
-Inserta `tap` en cada etapa para confirmar **qué está ocurriendo realmente**.
+Inserta `tap` en cada etapa para confirmar **quÃ© estÃ¡ ocurriendo realmente**.
 
 ```typescript
 import { of } from 'rxjs';
@@ -57,11 +57,11 @@ import { map, filter, tap } from 'rxjs';
 of(1, 2, 3, 4, 5).pipe(
   tap(v => console.log('=5 Entrada:', v)),
   filter(x => x > 10), // L Todos son excluidos
-  tap(v => console.log(' Pasó filter:', v)),
+  tap(v => console.log(' PasÃ³ filter:', v)),
   map(x => x * 10),
-  tap(v => console.log('=â Después de map:', v))
+  tap(v => console.log('=Ã¢ DespuÃ©s de map:', v))
 ).subscribe(result => {
-  console.log('=æ Resultado:', result);
+  console.log('=Ã¦ Resultado:', result);
 });
 
 // Salida:
@@ -70,10 +70,10 @@ of(1, 2, 3, 4, 5).pipe(
 // =5 Entrada: 3
 // =5 Entrada: 4
 // =5 Entrada: 5
-// (Ninguno pasó filter ’ filter es la causa)
+// (Ninguno pasÃ³ filter Â’ filter es la causa)
 ```
 
-## Escenarios comunes de depuración
+## Escenarios comunes de depuraciÃ³n
 
 ### Escenario 1: Los valores no fluyen
 
@@ -114,7 +114,7 @@ console.log('Completado');
 // Completado
 ```
 
-> [!IMPORTANT] Puntos de verificación
+> [!IMPORTANT] Puntos de verificaciÃ³n
 > - Definir un Observable no hace nada
 > - **Debes hacer subscribe obligatoriamente**
 > - Si usas async pipe, subscribe no es necesario (Angular, etc.)
@@ -135,7 +135,7 @@ EMPTY.pipe( // L complete inmediatamente
 
 // Salida:
 // Completado
-// (No fluye ningún valor)
+// (No fluye ningÃºn valor)
 ```
 
 ####  Buen ejemplo: Verificar con tap
@@ -144,7 +144,7 @@ import { EMPTY } from 'rxjs';
 import { map, tap } from 'rxjs';
 
 EMPTY.pipe(
-  tap(() => console.log('=A Llegó valor')), // Esto no se imprime
+  tap(() => console.log('=A LlegÃ³ valor')), // Esto no se imprime
   map(x => x * 10)
 ).subscribe({
   next: value => console.log('Valor:', value),
@@ -153,7 +153,7 @@ EMPTY.pipe(
 
 // Salida:
 // Completado
-// (tap tampoco se ejecuta ’ EMPTY es la causa)
+// (tap tampoco se ejecuta Â’ EMPTY es la causa)
 ```
 
 #### Problema 1-3: Excluido por filter
@@ -178,7 +178,7 @@ import { filter, tap } from 'rxjs';
 of(1, 2, 3, 4, 5).pipe(
   tap(v => console.log('Antes de filter:', v)),
   filter(x => x > 100),
-  tap(v => console.log('Después de filter:', v)) // No se imprime ninguno
+  tap(v => console.log('DespuÃ©s de filter:', v)) // No se imprime ninguno
 ).subscribe(value => {
   console.log('Valor:', value);
 });
@@ -189,14 +189,14 @@ of(1, 2, 3, 4, 5).pipe(
 // Antes de filter: 3
 // Antes de filter: 4
 // Antes de filter: 5
-// (No hay ninguno después de filter ’ filter es demasiado estricto)
+// (No hay ninguno despuÃ©s de filter Â’ filter es demasiado estricto)
 ```
 
 ### Escenario 2: Aparecen valores diferentes a los esperados
 
-#### Problema 2-1: Error de conversión de tipo
+#### Problema 2-1: Error de conversiÃ³n de tipo
 
-#### L Mal ejemplo: Confusión entre string y número
+#### L Mal ejemplo: ConfusiÃ³n entre string y nÃºmero
 ```typescript
 import { of } from 'rxjs';
 import { map } from 'rxjs';
@@ -204,7 +204,7 @@ import { map } from 'rxjs';
 const input = '5'; // string
 
 of(input).pipe(
-  map(x => x + 10) // L '5' + 10 = '510' (concatenación de strings)
+  map(x => x + 10) // L '5' + 10 = '510' (concatenaciÃ³n de strings)
 ).subscribe(result => {
   console.log('Resultado:', result); // Resultado: 510
   console.log('Tipo:', typeof result); // Tipo: string
@@ -220,15 +220,15 @@ const input = '5';
 
 of(input).pipe(
   tap(x => console.log('Entrada:', x, typeof x)),
-  map(x => Number(x)), // Convertir a número
-  tap(x => console.log('Después de conversión:', x, typeof x)),
+  map(x => Number(x)), // Convertir a nÃºmero
+  tap(x => console.log('DespuÃ©s de conversiÃ³n:', x, typeof x)),
   map(x => x + 10)
 ).subscribe(result => {
   console.log('Resultado:', result); // Resultado: 15
 });
 ```
 
-#### Problema 2-2: Orden asíncrono
+#### Problema 2-2: Orden asÃ­ncrono
 
 #### L Mal ejemplo: El orden se desordena con mergeMap
 ```typescript
@@ -245,7 +245,7 @@ of(1, 2, 3).pipe(
   console.log('Valor:', value);
 });
 
-// Ejemplo de salida (el orden no está garantizado):
+// Ejemplo de salida (el orden no estÃ¡ garantizado):
 // Valor: 20
 // Valor: 10
 // Valor: 30
@@ -280,7 +280,7 @@ of(1, 2, 3).pipe(
 // Valor: 30
 ```
 
-### Escenario 3: Detección de fugas de memoria
+### Escenario 3: DetecciÃ³n de fugas de memoria
 
 #### Problema 3-1: Olvidaste unsubscribe
 
@@ -296,12 +296,12 @@ class Component {
   }
 
   ngOnDestroy() {
-    // No hay unsubscribe ’ Fuga de memoria
+    // No hay unsubscribe Â’ Fuga de memoria
   }
 }
 ```
 
-####  Buen ejemplo: Cancelación automática con takeUntil
+####  Buen ejemplo: CancelaciÃ³n automÃ¡tica con takeUntil
 ```typescript
 import { interval, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs';
@@ -336,18 +336,18 @@ const data$ = interval(1000).pipe(
   take(100),
   tap(n => console.log('Generando:', n)),
   shareReplay({ bufferSize: 1, refCount: false })
-  // L refCount: false ’ Continúa ejecutándose eternamente
+  // L refCount: false Â’ ContinÃºa ejecutÃ¡ndose eternamente
 );
 
-const sub = data$.subscribe(n => console.log('Suscripción 1:', n));
+const sub = data$.subscribe(n => console.log('SuscripciÃ³n 1:', n));
 
 setTimeout(() => {
   sub.unsubscribe();
-  console.log('Unsubscribe hecho, pero continúa ejecutándose internamente');
+  console.log('Unsubscribe hecho, pero continÃºa ejecutÃ¡ndose internamente');
 }, 5000);
 ```
 
-####  Buen ejemplo: Detención automática con refCount: true
+####  Buen ejemplo: DetenciÃ³n automÃ¡tica con refCount: true
 ```typescript
 import { interval } from 'rxjs';
 import { shareReplay, take, tap } from 'rxjs';
@@ -356,20 +356,20 @@ const data$ = interval(1000).pipe(
   take(100),
   tap(n => console.log('Generando:', n)),
   shareReplay({ bufferSize: 1, refCount: true })
-  //  refCount: true ’ Se detiene al cancelar todas las suscripciones
+  //  refCount: true Â’ Se detiene al cancelar todas las suscripciones
 );
 
-const sub = data$.subscribe(n => console.log('Suscripción 1:', n));
+const sub = data$.subscribe(n => console.log('SuscripciÃ³n 1:', n));
 
 setTimeout(() => {
   sub.unsubscribe();
-  console.log('Unsubscribe ’ El stream también se detiene');
+  console.log('Unsubscribe Â’ El stream tambiÃ©n se detiene');
 }, 5000);
 ```
 
-## Herramientas y técnicas de depuración
+## Herramientas y tÃ©cnicas de depuraciÃ³n
 
-### 1. Depuración gradual con tap
+### 1. DepuraciÃ³n gradual con tap
 
 ```typescript
 import { of } from 'rxjs';
@@ -385,16 +385,16 @@ const debugTap = <T>(label: string, color: string = '=5') =>
 of(1, 2, 3, 4, 5).pipe(
   debugTap('Entrada'),
   filter(x => x % 2 === 0),
-  debugTap('Después de filter', '=â'),
+  debugTap('DespuÃ©s de filter', '=Ã¢'),
   map(x => x * 10),
-  debugTap('Después de map', '=á')
+  debugTap('DespuÃ©s de map', '=Ã¡')
 ).subscribe({
-  next: value => console.log('=æ Resultado final:', value),
-  complete: () => console.log('<Á Completado')
+  next: value => console.log('=Ã¦ Resultado final:', value),
+  complete: () => console.log('<Ã Completado')
 });
 ```
 
-### 2. Operador de depuración personalizado
+### 2. Operador de depuraciÃ³n personalizado
 
 ```typescript
 import { tap, timestamp, map } from 'rxjs';
@@ -440,29 +440,29 @@ interval(500).pipe(
   take(5),
   debug({ label: 'Temporizador' }),
   map(x => x * 10),
-  debug({ label: 'Después de transformación', showDiff: false })
+  debug({ label: 'DespuÃ©s de transformaciÃ³n', showDiff: false })
 ).subscribe();
 ```
 
-### 3. RxJS DevTools (extensión de navegador)
+### 3. RxJS DevTools (extensiÃ³n de navegador)
 
-**Método de instalación:**
+**MÃ©todo de instalaciÃ³n:**
 1. Busca "RxJS DevTools" en Chrome/Edge Web Store
-2. Añade la extensión
-3. Abre DevTools y haz clic en la pestaña "RxJS"
+2. AÃ±ade la extensiÃ³n
+3. Abre DevTools y haz clic en la pestaÃ±a "RxJS"
 
 **Funciones principales:**
 - Monitoreo en tiempo real de todos los Observables
-- Visualización con diagramas de mármol
+- VisualizaciÃ³n con diagramas de mÃ¡rmol
 - Seguimiento de subscribe/unsubscribe
-- Análisis de rendimiento
+- AnÃ¡lisis de rendimiento
 
 **Ejemplo de uso:**
 ```typescript
 import { interval } from 'rxjs';
 import { map, take } from 'rxjs';
 
-// Se detecta automáticamente en DevTools
+// Se detecta automÃ¡ticamente en DevTools
 const timer$ = interval(1000).pipe(
   take(10),
   map(x => x * 2)
@@ -471,9 +471,9 @@ const timer$ = interval(1000).pipe(
 timer$.subscribe(value => console.log(value));
 ```
 
-### 4. Depuración de errores
+### 4. DepuraciÃ³n de errores
 
-#### Identificar dónde ocurre el error
+#### Identificar dÃ³nde ocurre el error
 
 ```typescript
 import { of, throwError } from 'rxjs';
@@ -487,34 +487,34 @@ of(1, 2, 3).pipe(
     }
     return x * 10;
   }),
-  tap(v => console.log('2. Después de map:', v)), // No se ejecuta en caso de error
+  tap(v => console.log('2. DespuÃ©s de map:', v)), // No se ejecuta en caso de error
   catchError(error => {
     console.error('3. Error capturado:', error.message);
     return of(-1); // Devolver valor por defecto
   }),
-  tap(v => console.log('4. Después de catchError:', v))
+  tap(v => console.log('4. DespuÃ©s de catchError:', v))
 ).subscribe({
   next: value => console.log('5. Resultado:', value),
-  error: error => console.error('Error de suscripción:', error),
+  error: error => console.error('Error de suscripciÃ³n:', error),
   complete: () => console.log('6. Completado')
 });
 
 // Salida:
 // 1. Entrada: 1
-// 2. Después de map: 10
+// 2. DespuÃ©s de map: 10
 // 5. Resultado: 10
 // 1. Entrada: 2
 // 3. Error capturado: No se puede usar 2
-// 4. Después de catchError: -1
+// 4. DespuÃ©s de catchError: -1
 // 5. Resultado: -1
 // 6. Completado
 ```
 
-## Depuración de rendimiento
+## DepuraciÃ³n de rendimiento
 
-### Problema 1: Recalculación excesiva
+### Problema 1: RecalculaciÃ³n excesiva
 
-#### L Mal ejemplo: Recalculación frecuente con combineLatest
+#### L Mal ejemplo: RecalculaciÃ³n frecuente con combineLatest
 ```typescript
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs';
@@ -525,12 +525,12 @@ const c$ = new BehaviorSubject(3);
 
 combineLatest([a$, b$, c$]).pipe(
   map(([a, b, c]) => {
-    console.log('Ejecutando cálculo pesado'); // Se ejecuta frecuentemente
+    console.log('Ejecutando cÃ¡lculo pesado'); // Se ejecuta frecuentemente
     return a + b + c;
   })
 ).subscribe(result => console.log('Resultado:', result));
 
-// Actualización frecuente
+// ActualizaciÃ³n frecuente
 setInterval(() => {
   a$.next(Math.random());
 }, 100);
@@ -549,7 +549,7 @@ combineLatest([a$, b$, c$]).pipe(
   map(([a, b, c]) => Math.floor(a) + Math.floor(b) + Math.floor(c)),
   distinctUntilChanged(), // Pasa solo cuando el valor cambia
   map(sum => {
-    console.log('Ejecutando cálculo pesado'); // Solo cuando el valor cambia
+    console.log('Ejecutando cÃ¡lculo pesado'); // Solo cuando el valor cambia
     return sum * 2;
   })
 ).subscribe(result => console.log('Resultado:', result));
@@ -575,16 +575,16 @@ interval(100).pipe(
   }, [] as number[]),
   tap(() => {
     if (itemCount % 100 === 0) {
-      console.log(`Número de elementos: ${itemCount}`);
+      console.log(`NÃºmero de elementos: ${itemCount}`);
       if (itemCount > 10000) {
-        console.warn('  Uso de memoria demasiado alto');
+        console.warn('Â  Uso de memoria demasiado alto');
       }
     }
   })
 ).subscribe();
 ```
 
-### Problema 3: Monitoreo del número de suscripciones
+### Problema 3: Monitoreo del nÃºmero de suscripciones
 
 ```typescript
 import { Observable, Subject } from 'rxjs';
@@ -594,14 +594,14 @@ class MonitoredSubject<T> extends Subject<T> {
 
   subscribe(...args: any[]): any {
     this.subscriptionCount++;
-    console.log(`Número de suscripciones: ${this.subscriptionCount}`);
+    console.log(`NÃºmero de suscripciones: ${this.subscriptionCount}`);
 
     const subscription = super.subscribe(...args);
 
     const originalUnsubscribe = subscription.unsubscribe.bind(subscription);
     subscription.unsubscribe = () => {
       this.subscriptionCount--;
-      console.log(`Número de suscripciones: ${this.subscriptionCount}`);
+      console.log(`NÃºmero de suscripciones: ${this.subscriptionCount}`);
       originalUnsubscribe();
     };
 
@@ -612,90 +612,90 @@ class MonitoredSubject<T> extends Subject<T> {
 // Uso
 const data$ = new MonitoredSubject<number>();
 
-const sub1 = data$.subscribe(v => console.log('Suscripción 1:', v));
-const sub2 = data$.subscribe(v => console.log('Suscripción 2:', v));
+const sub1 = data$.subscribe(v => console.log('SuscripciÃ³n 1:', v));
+const sub2 = data$.subscribe(v => console.log('SuscripciÃ³n 2:', v));
 
 sub1.unsubscribe();
 sub2.unsubscribe();
 
 // Salida:
-// Número de suscripciones: 1
-// Número de suscripciones: 2
-// Número de suscripciones: 1
-// Número de suscripciones: 0
+// NÃºmero de suscripciones: 1
+// NÃºmero de suscripciones: 2
+// NÃºmero de suscripciones: 1
+// NÃºmero de suscripciones: 0
 ```
 
-## Lista de verificación de depuración
+## Lista de verificaciÃ³n de depuraciÃ³n
 
 Si surge un problema, verifica lo siguiente en orden.
 
 ```markdown
-## Verificación básica
-- [ ] ¿Estás llamando a `subscribe()`?
-- [ ] ¿`complete` o `error` no llegan demasiado pronto?
-- [ ] ¿Los valores no están siendo excluidos por `filter` o `take`?
-- [ ] ¿Estás esperando la finalización del procesamiento asíncrono?
+## VerificaciÃ³n bÃ¡sica
+- [ ] Â¿EstÃ¡s llamando a `subscribe()`?
+- [ ] Â¿`complete` o `error` no llegan demasiado pronto?
+- [ ] Â¿Los valores no estÃ¡n siendo excluidos por `filter` o `take`?
+- [ ] Â¿EstÃ¡s esperando la finalizaciÃ³n del procesamiento asÃ­ncrono?
 
-## Verificación de timing
-- [ ] ¿Entiendes sincronía/asincronía?
-- [ ] ¿Verificaste el impacto de `delay`, `debounceTime`, `throttleTime`?
-- [ ] ¿Se cumple la condición de primera emisión de `combineLatest`?
+## VerificaciÃ³n de timing
+- [ ] Â¿Entiendes sincronÃ­a/asincronÃ­a?
+- [ ] Â¿Verificaste el impacto de `delay`, `debounceTime`, `throttleTime`?
+- [ ] Â¿Se cumple la condiciÃ³n de primera emisiÃ³n de `combineLatest`?
 
-## Verificación de memoria
-- [ ] ¿Estás usando `unsubscribe` o `takeUntil`?
-- [ ] ¿Configuraste `refCount: true` en `shareReplay`?
-- [ ] ¿Estás delimitando adecuadamente los Observables infinitos?
+## VerificaciÃ³n de memoria
+- [ ] Â¿EstÃ¡s usando `unsubscribe` o `takeUntil`?
+- [ ] Â¿Configuraste `refCount: true` en `shareReplay`?
+- [ ] Â¿EstÃ¡s delimitando adecuadamente los Observables infinitos?
 
-## Verificación de rendimiento
-- [ ] ¿No hay recalculación excesiva? (considera `distinctUntilChanged`)
-- [ ] ¿El número de suscripciones no aumenta demasiado?
-- [ ] ¿Asincronizan los procesos pesados con `observeOn(asyncScheduler)`?
+## VerificaciÃ³n de rendimiento
+- [ ] Â¿No hay recalculaciÃ³n excesiva? (considera `distinctUntilChanged`)
+- [ ] Â¿El nÃºmero de suscripciones no aumenta demasiado?
+- [ ] Â¿Asincronizan los procesos pesados con `observeOn(asyncScheduler)`?
 ```
 
-## Lista de verificación de comprensión
+## Lista de verificaciÃ³n de comprensiÃ³n
 
 Verifica si puedes responder a las siguientes preguntas.
 
 ```markdown
-## Depuración básica
+## DepuraciÃ³n bÃ¡sica
 - [ ] Puedo depurar el flujo de valores usando tap
-- [ ] Puedo identificar dónde ocurren los errores
+- [ ] Puedo identificar dÃ³nde ocurren los errores
 - [ ] Puedo verificar el timing de complete/error
 
 ## Uso de herramientas
-- [ ] Conozco el uso básico de RxJS DevTools
-- [ ] Puedo crear operadores de depuración personalizados
+- [ ] Conozco el uso bÃ¡sico de RxJS DevTools
+- [ ] Puedo crear operadores de depuraciÃ³n personalizados
 - [ ] Puedo medir el timing usando timestamp
 
-## Resolución de problemas
+## ResoluciÃ³n de problemas
 - [ ] Puedo identificar la causa cuando no fluyen valores
-- [ ] Puedo encontrar señales de fugas de memoria
+- [ ] Puedo encontrar seÃ±ales de fugas de memoria
 - [ ] Puedo identificar problemas de rendimiento
 
-## Prevención
-- [ ] Tengo el hábito de depuración gradual usando tap
+## PrevenciÃ³n
+- [ ] Tengo el hÃ¡bito de depuraciÃ³n gradual usando tap
 - [ ] Implemento manejo de errores adecuadamente
 - [ ] Conozco medidas contra fugas de memoria
 ```
 
-## Próximos pasos
+## PrÃ³ximos pasos
 
-Una vez que entiendas las técnicas de depuración, integra todo el conocimiento aprendido hasta ahora y aprende **patrones prácticos**.
+Una vez que entiendas las tÃ©cnicas de depuraciÃ³n, integra todo el conocimiento aprendido hasta ahora y aprende **patrones prÃ¡cticos**.
 
-’ **Chapter 13: Colección de patrones prácticos** (en preparación) - Colección de patrones utilizables en el trabajo
+Â’ **Chapter 13: ColecciÃ³n de patrones prÃ¡cticos** (en preparaciÃ³n) - ColecciÃ³n de patrones utilizables en el trabajo
 
-## Páginas relacionadas
+## PÃ¡ginas relacionadas
 
-- **[Chapter 8: Técnicas de depuración de RxJS](/es/guide/debugging/)** - Visión general de técnicas de depuración
-- **[Chapter 9: Pruebas de mármol](/es/guide/testing/marble-testing)** - Depuración con TestScheduler
-- **[Comprensión del timing y orden](/es/guide/overcoming-difficulties/timing-and-order)** - Depuración usando tap
+- **[Chapter 8: TÃ©cnicas de depuraciÃ³n de RxJS](/es/guide/debugging/)** - VisiÃ³n general de tÃ©cnicas de depuraciÃ³n
+- **[Chapter 9: Pruebas de mÃ¡rmol](/es/guide/testing/marble-testing)** - DepuraciÃ³n con TestScheduler
+- **[ComprensiÃ³n del timing y orden](/es/guide/overcoming-difficulties/timing-and-order)** - DepuraciÃ³n usando tap
 - **[Chapter 10: Errores comunes y soluciones](/es/guide/anti-patterns/common-mistakes)** - Evitar antipatrones
 
-## <¯ Ejercicios de práctica
+## <Â¯ Ejercicios de prÃ¡ctica
 
 ### Problema 1: Identificar la causa cuando no fluyen valores
 
-En el siguiente código, identifica por qué no se imprimen valores.
+En el siguiente cÃ³digo, identifica por quÃ© no se imprimen valores.
 
 ```typescript
 import { Subject, combineLatest } from 'rxjs';
@@ -717,9 +717,9 @@ console.log('Completado');
 > [!NOTE] Causa
 > `combineLatest` no emite hasta que todos los streams emitan al menos un valor
 >
-> Como `b$` aún no ha emitido un valor, solo `a$.next(1)` no provoca la emisión.
+> Como `b$` aÃºn no ha emitido un valor, solo `a$.next(1)` no provoca la emisiÃ³n.
 
-#### Método de corrección 1: Emitir valor también en b$
+#### MÃ©todo de correcciÃ³n 1: Emitir valor tambiÃ©n en b$
 ```typescript
 import { Subject, combineLatest } from 'rxjs';
 
@@ -731,7 +731,7 @@ combineLatest([a$, b$]).subscribe(([a, b]) => {
 });
 
 a$.next(1);
-b$.next(2); //  Aquí se emite
+b$.next(2); // Â AquÃ­ se emite
 console.log('Completado');
 
 // Salida:
@@ -739,7 +739,7 @@ console.log('Completado');
 // Completado
 ```
 
-#### Método de corrección 2: Usar BehaviorSubject
+#### MÃ©todo de correcciÃ³n 2: Usar BehaviorSubject
 ```typescript
 import { BehaviorSubject, combineLatest } from 'rxjs';
 
@@ -756,8 +756,8 @@ a$.next(1);
 // Salida: Valores: 1 0
 ```
 
-> [!NOTE] Técnica de depuración
-> Usando tap para verificar los valores de cada stream, puedes saber dónde se detiene.
+> [!NOTE] TÃ©cnica de depuraciÃ³n
+> Usando tap para verificar los valores de cada stream, puedes saber dÃ³nde se detiene.
 > ```typescript
 > a$.pipe(tap(v => console.log('a$:', v)))
 > b$.pipe(tap(v => console.log('b$:', v)))
@@ -767,7 +767,7 @@ a$.next(1);
 
 ### Problema 2: Corregir la fuga de memoria
 
-El siguiente código tiene una fuga de memoria. Corrígelo.
+El siguiente cÃ³digo tiene una fuga de memoria. CorrÃ­gelo.
 
 ```typescript
 import { interval } from 'rxjs';
@@ -790,9 +790,9 @@ class MyComponent implements Component {
 <summary>Ejemplo de respuesta</summary>
 
 > [!NOTE] Problema
-> Al no hacer unsubscribe en `ngOnDestroy`, interval continúa ejecutándose incluso después de destruir el componente**
+> Al no hacer unsubscribe en `ngOnDestroy`, interval continÃºa ejecutÃ¡ndose incluso despuÃ©s de destruir el componente**
 
-#### Método de corrección 1: Guardar Subscription y hacer unsubscribe
+#### MÃ©todo de correcciÃ³n 1: Guardar Subscription y hacer unsubscribe
 ```typescript
 import { interval, Subscription } from 'rxjs';
 
@@ -812,7 +812,7 @@ class MyComponent {
 }
 ```
 
-#### Método de corrección 2: Usar takeUntil (recomendado)
+#### MÃ©todo de correcciÃ³n 2: Usar takeUntil (recomendado)
 ```typescript
 import { interval, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs';
@@ -838,14 +838,14 @@ class MyComponent {
 
 > [!IMPORTANT] Puntos
 > - Los Observables infinitos como interval requieren unsubscribe obligatoriamente
-> - Se recomienda el patrón takeUntil (permite gestionar múltiples suscripciones de forma unificada)
-> - En Angular, si usas async pipe, unsubscribe se hace automáticamente
+> - Se recomienda el patrÃ³n takeUntil (permite gestionar mÃºltiples suscripciones de forma unificada)
+> - En Angular, si usas async pipe, unsubscribe se hace automÃ¡ticamente
 
 </details>
 
 ### Problema 3: Problema de orden
 
-En el siguiente código, explica por qué el orden no está garantizado y corrígelo.
+En el siguiente cÃ³digo, explica por quÃ© el orden no estÃ¡ garantizado y corrÃ­gelo.
 
 ```typescript
 import { from, of } from 'rxjs';
@@ -859,16 +859,16 @@ from([1, 2, 3]).pipe(
   )
 ).subscribe(value => console.log(value));
 
-// Ejemplo de salida: 2, 1, 3 (el orden no está garantizado)
+// Ejemplo de salida: 2, 1, 3 (el orden no estÃ¡ garantizado)
 ```
 
 <details>
 <summary>Respuesta</summary>
 
 > [!NOTE] Problema
-> `mergeMap` ejecuta en paralelo, por lo que el orden de finalización depende del tiempo de ejecución**
+> `mergeMap` ejecuta en paralelo, por lo que el orden de finalizaciÃ³n depende del tiempo de ejecuciÃ³n**
 
-#### Método de corrección: Usar concatMap
+#### MÃ©todo de correcciÃ³n: Usar concatMap
 ```typescript
 import { from, of } from 'rxjs';
 import { concatMap, delay, tap } from 'rxjs';
@@ -895,17 +895,17 @@ from([1, 2, 3]).pipe(
 // Resultado: 3
 ```
 
-> [!NOTE] Razón
-> - **mergeMap**: Ejecución paralela, el orden de finalización no está garantizado
-> - **concatMap**: Ejecución secuencial, siempre emite en el mismo orden que la entrada
-> - **switchMap**: Solo el más reciente, procesos antiguos se cancelan
-> - **exhaustMap**: Ignora nuevos procesos durante la ejecución
+> [!NOTE] RazÃ³n
+> - **mergeMap**: EjecuciÃ³n paralela, el orden de finalizaciÃ³n no estÃ¡ garantizado
+> - **concatMap**: EjecuciÃ³n secuencial, siempre emite en el mismo orden que la entrada
+> - **switchMap**: Solo el mÃ¡s reciente, procesos antiguos se cancelan
+> - **exhaustMap**: Ignora nuevos procesos durante la ejecuciÃ³n
 
-#### Comparación con diagramas de mármol
+#### ComparaciÃ³n con diagramas de mÃ¡rmol
 ```
 Entrada:  --1--2--3----|
 
-mergeMap: --2--1--3--|  (orden de finalización)
+mergeMap: --2--1--3--|  (orden de finalizaciÃ³n)
 concatMap: --1--2--3-| (orden de entrada)
 ```
 
@@ -913,7 +913,7 @@ concatMap: --1--2--3-| (orden de entrada)
 
 ### Problema 4: Mejora de rendimiento
 
-El siguiente código recalcula frecuentemente. Mejora el rendimiento.
+El siguiente cÃ³digo recalcula frecuentemente. Mejora el rendimiento.
 
 ```typescript
 import { fromEvent } from 'rxjs';
@@ -924,23 +924,23 @@ const input = document.querySelector('input')!;
 fromEvent(input, 'input').pipe(
   map(e => (e.target as HTMLInputElement).value),
   map(value => {
-    console.log('Ejecutando cálculo pesado');
+    console.log('Ejecutando cÃ¡lculo pesado');
     return value.toUpperCase();
   })
 ).subscribe(result => console.log(result));
 
 // Usuario escribe "hello"
-// Ejecutando cálculo pesado (h)
-// Ejecutando cálculo pesado (he)
-// Ejecutando cálculo pesado (hel)
-// Ejecutando cálculo pesado (hell)
-// Ejecutando cálculo pesado (hello)
+// Ejecutando cÃ¡lculo pesado (h)
+// Ejecutando cÃ¡lculo pesado (he)
+// Ejecutando cÃ¡lculo pesado (hel)
+// Ejecutando cÃ¡lculo pesado (hell)
+// Ejecutando cÃ¡lculo pesado (hello)
 ```
 
 <details>
 <summary>Respuesta</summary>
 
-#### Método de mejora 1: Esperar finalización de entrada con debounceTime
+#### MÃ©todo de mejora 1: Esperar finalizaciÃ³n de entrada con debounceTime
 ```typescript
 import { fromEvent } from 'rxjs';
 import { map, debounceTime } from 'rxjs';
@@ -951,15 +951,15 @@ fromEvent(input, 'input').pipe(
   debounceTime(300), // Ejecuta si no hay entrada durante 300ms
   map(e => (e.target as HTMLInputElement).value),
   map(value => {
-    console.log('Ejecutando cálculo pesado');
+    console.log('Ejecutando cÃ¡lculo pesado');
     return value.toUpperCase();
   })
 ).subscribe(result => console.log(result));
 
-// Se ejecuta solo una vez después de escribir "hello" y esperar 300ms
+// Se ejecuta solo una vez despuÃ©s de escribir "hello" y esperar 300ms
 ```
 
-#### Método de mejora 2: Excluir duplicados con distinctUntilChanged
+#### MÃ©todo de mejora 2: Excluir duplicados con distinctUntilChanged
 ```typescript
 import { fromEvent } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged } from 'rxjs';
@@ -971,14 +971,14 @@ fromEvent(input, 'input').pipe(
   map(e => (e.target as HTMLInputElement).value),
   distinctUntilChanged(), // Ignorar si es el mismo valor que la vez anterior
   map(value => {
-    console.log('Ejecutando cálculo pesado');
+    console.log('Ejecutando cÃ¡lculo pesado');
     return value.toUpperCase();
   })
 ).subscribe(result => console.log(result));
 ```
 
-> [!TIP] Técnicas de mejora de rendimiento
-> - **debounceTime**: Esperar finalización de entrada
+> [!TIP] TÃ©cnicas de mejora de rendimiento
+> - **debounceTime**: Esperar finalizaciÃ³n de entrada
 > - **throttleTime**: Reducir a intervalos regulares
 > - **distinctUntilChanged**: Excluir duplicados
 > - **observeOn(asyncScheduler)**: Asincronizar procesos pesados

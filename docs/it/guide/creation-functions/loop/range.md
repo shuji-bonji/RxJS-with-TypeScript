@@ -236,7 +236,7 @@ Quando si elaborano grandi quantità di dati, è possibile specificare uno sched
 > - Controllo del tempo nei test (Scheduler)
 > Controllo dei cicli di eventi in ambienti Node.js
 
-Per ulteriori informazioni, vedere [Tipi di scheduler e loro utilizzo] (/it/guide/scheduler/tipi).
+Per ulteriori informazioni, vedere [Tipi di scheduler e loro utilizzo] (/it/guide/schedulers/types).
 
 ## Confronto con altre Creation Function
 

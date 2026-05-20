@@ -301,11 +301,11 @@ numbers$.pipe(
 
 ## 📚 Operatori correlati.
 
-- **[take](. /take)** - N preso dall'inizio.
-- **[first](. /first)** - ottiene il primo valore.
-- **[last](. /last)** - ottiene l'ultimo valore.
-- **[skip](. /skip)** - salta i primi N valori.
-- **[takeLast](. /takeLast)** - ottiene gli ultimi N valori
+- **[take](./take)** - N preso dall'inizio.
+- **[first](./first)** - ottiene il primo valore.
+- **[last](./last)** - ottiene l'ultimo valore.
+- **[skip](./skip)** - salta i primi N valori.
+- **[takeLast](./takeLast)** - ottiene gli ultimi N valori
 
 ## Riepilogo.
 

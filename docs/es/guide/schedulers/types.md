@@ -14,7 +14,7 @@ Los planificadores de RxJS se dividen en tres categorías principales.
 2. **Micro-tareas**: ejecutadas inmediatamente después de que la tarea actual se complete y antes de que comience la siguiente tarea
 3.**Procesamiento síncrono**: ejecución inmediata
 
-Para más información, consulte [Conceptos básicos de tareas y programadores](. /task-and-scheduler-basics.md).
+Para más información, consulte [Conceptos básicos de tareas y programadores](./task-and-scheduler-basics.md).
 
 ## Planificadores principales.
 

@@ -14,7 +14,7 @@ Les ordonnanceurs de RxJS se répartissent en trois catégories principales.
 2. **Micro-tâche** : exécutée immédiatement après la fin de la tâche en cours et avant le début de la tâche suivante
 3. **Traitement synchrone** : exécution immédiate
 
-Pour plus d'informations, voir [Notions de base sur les tâches et les planificateurs] (. /task-and-scheduler-basics.md).
+Pour plus d'informations, voir [Notions de base sur les tâches et les planificateurs](./task-and-scheduler-basics.md).
 
 ## Ordonnanceurs principaux.
 

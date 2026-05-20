@@ -420,10 +420,10 @@ source$.pipe(
 
 ## 📚 Related Operators
 
-- **[filter](. /filter)** - filter values based on conditions
-- **[take](. /take)** - take only the first N values
-- **[skip](. /skip)** - skip the first N values
-- **[tap](. /utility/tap)** - perform side action
+- **[filter](./filter)** - filter values based on conditions
+- **[take](./take)** - take only the first N values
+- **[skip](./skip)** - skip the first N values
+- **[tap](../utility/tap)** - perform side action
 
 ## Summary
 

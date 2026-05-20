@@ -400,11 +400,11 @@ Omitir hasta que el sistema esté listo
 
 ## 📚 Operadores relacionados.
 
-- takeWhile](. /takeWhile)** - toma valor sólo mientras se cumple la condición.
-- skip](. /skip)** - salta los N primeros valores.
-- skipLast](. /skipLast)** - salta los N últimos valores.
-- skipUntil](. /skipUntil)** - omitir hasta que se dispare otro Observable
-- filter](. /filter)** - sólo pasa los valores que cumplen la condición
+- takeWhile](./takeWhile)** - toma valor sólo mientras se cumple la condición.
+- skip](./skip)** - salta los N primeros valores.
+- skipLast](./skipLast)** - salta los N últimos valores.
+- skipUntil](./skipUntil)** - omitir hasta que se dispare otro Observable
+- filter](./filter)** - sólo pasa los valores que cumplen la condición
 
 ## Resumen.
 

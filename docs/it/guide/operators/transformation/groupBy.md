@@ -361,9 +361,9 @@ fromEvent(document, 'click').pipe(
 ## 📚 Operatori correlati.
 
 - [`partition`](https://rxjs.dev/api/index/function/partition) - divide in due Observable per condizione.
-- [`reduce`](. /reduce) - Ottiene il risultato finale aggregato.
-- [`scan`](. /scan) - Aggregazione cumulativa.
-- [`toArray`](. /utility/toArray) - Combina tutti i valori in un array.
+- [`reduce`](./reduce) - Ottiene il risultato finale aggregato.
+- [`scan`](./scan) - Aggregazione cumulativa.
+- [`toArray`](../utility/toArray) - Combina tutti i valori in un array.
 
 ## Riepilogo.
 

@@ -108,16 +108,16 @@ const combined$ = combineLatest([
 combined$.subscribe(console.log);
 ```
 
-Vedere [Capitolo 3 Creation Function - combineLatest](/it/guide/creation-functions/combinazione/combineLatest).
+Vedere [Capitolo 3 Creation Function - combineLatest](/it/guide/creation-functions/combination/combineLatest).
 
 ## 🔄 Operatori correlati.
 
 | Operatore. | Descrizione. |
 |---|---|
-| [mergeAll](. /mergeAll) | Sottoscrive tutti gli Observable interni in parallelo. |
-| [concatAll](. /concatAll) | Sottoscrivere gli Observable interni in sequenza. |
-| [switchAll](. /switchAll) | Passa a un nuovo Observable interno. |
-| [zipAll](. /zipAll) | Accoppia i valori di ogni Observable interno nell'ordine corrispondente |
+| [mergeAll](./mergeAll) | Sottoscrive tutti gli Observable interni in parallelo. |
+| [concatAll](./concatAll) | Sottoscrivere gli Observable interni in sequenza. |
+| [switchAll](./switchAll) | Passa a un nuovo Observable interno. |
+| [zipAll](./zipAll) | Accoppia i valori di ogni Observable interno nell'ordine corrispondente |
 
 ## ⚠️ Note.
 

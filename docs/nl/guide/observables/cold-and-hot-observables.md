@@ -105,7 +105,7 @@ Voor alle belangrijke Creation Functions classificeren we Cold/Hot. Hierdoor zie
 | | `combineLatest()` | ❄️ Cold | Erft karakter van originele Observable [^combination] |
 | | `zip()` | ❄️ Cold | Erft karakter van originele Observable [^combination] |
 | | `forkJoin()` | ❄️ Cold | Erft karakter van originele Observable [^combination] |
-| **Selectie/partitie** | `race()` | ❄️ Cold | Erft karakter van originele Observable [^combination] |
+| **Selectie/partition** | `race()` | ❄️ Cold | Erft karakter van originele Observable [^combination] |
 | | `partition()` | ❄️ Cold | Erft karakter van originele Observable [^combination] |
 | **Conditionele vertakking** | `iif()` | ❄️ Cold | Erft karakter van conditioneel geselecteerde Observable |
 | | `defer()` | ❄️ Cold | Voert factory functie uit per abonnement |

@@ -301,6 +301,6 @@ function interval(period: number = 0, scheduler: SchedulerLike = asyncScheduler)
 
 ## Próximos pasos.
 
-- timer() - iniciar la publicación tras un retardo](/es/guide/creation-functions/basico/timer)
-- fromEvent() - convertir evento en Observable](/es/guide/creation-functions/básico/fromEvent)
+- timer() - iniciar la publicación tras un retardo](/es/guide/creation-functions/basic/timer)
+- fromEvent() - convertir evento en Observable](/es/guide/creation-functions/basic/fromEvent)
 - Volver al sistema básico de creación](/es/guide/creation-functions/basic/)

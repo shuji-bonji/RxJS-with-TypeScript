@@ -446,10 +446,10 @@ from(resources).pipe(
 
 ## 📚 Operatori correlati.
 
-- **[filter](. /filter)** - filtra i valori in base a condizioni.
-- **[take](. /take)** - prende solo i primi N valori.
-- **[skip](. /skip)** - salta i primi N valori.
-- **[tap](. /utility/tap)** - esegue un'azione secondaria.
+- **[filter](./filter)** - filtra i valori in base a condizioni.
+- **[take](./take)** - prende solo i primi N valori.
+- **[skip](./skip)** - salta i primi N valori.
+- **[tap](../utility/tap)** - esegue un'azione secondaria.
 
 ## Riepilogo.
 

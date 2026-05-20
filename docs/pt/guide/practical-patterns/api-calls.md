@@ -72,7 +72,7 @@ createPost({
 });
 ```
 
-> Este artigo faz parte do [Capítulo 4: Operadores](. /operators/index.md) e [Capítulo 6: Tratamento de erros](. /error-handling/strategies.md).
+> Este artigo faz parte do [Capítulo 4: Operadores](../operators/index.md) e [Capítulo 6: Tratamento de erros](../error-handling/strategies.md).
 
 ## Chamadas básicas de API.
 
@@ -1821,17 +1821,17 @@ fetchDashboard(1).subscribe({
 
 Depois de dominar o padrão de chamada de API, você poderá passar para os padrões a seguir.
 
-- [form-handling](. /form-handling.md) - validação em tempo real, salvamento automático.
-- [UI event handling](. /ui-events.md) - integração de eventos de UI e chamadas de API.
-- [processamento de dados em tempo real](. /real-time-data.md)) - WebSocket, SSE.
-- [estratégias de cache] (. /caching-strategies.md) - Cache de respostas de API
+- [form-handling](./form-handling.md) - validação em tempo real, salvamento automático.
+- [UI event handling](./ui-events.md) - integração de eventos de UI e chamadas de API.
+- [processamento de dados em tempo real](./real-time-data.md)) - WebSocket, SSE.
+- [estratégias de cache](./caching-strategies.md) - Cache de respostas de API
 - Práticas de tratamento de erros (em preparação) - Estratégias mais avançadas de tratamento de erros
 
 ## Seções relacionadas.
 
-- Capítulo 4: Operadores](. /operators/index.md) - mais sobre switchMap, mergeMap e concatMap.
-- Capítulo 6: Tratamento de erros](. /error-handling/strategies.md)) - noções básicas de catchError, retry
-- Capítulo 2: Observable frio/quente](. /observables/cold-and-hot-observables.md)) - Entendendo o shareReplay
+- Capítulo 4: Operadores](../operators/index.md) - mais sobre switchMap, mergeMap e concatMap.
+- Capítulo 6: Tratamento de erros](../error-handling/strategies.md)) - noções básicas de catchError, retry
+- Capítulo 2: Observable frio/quente](../observables/cold-and-hot-observables.md)) - Entendendo o shareReplay
 
 ## Recursos de referência
 

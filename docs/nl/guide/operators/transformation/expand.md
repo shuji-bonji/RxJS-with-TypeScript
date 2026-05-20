@@ -631,8 +631,8 @@ of(1).pipe(
 
 ## Volgende stappen.
 
-- **[mergeMap](. /mergeMap)** - leer de gebruikelijke asynchrone transformaties.
-- **[switchMap](. /switchMap)** - leer de conversie om over te schakelen naar het nieuwste proces.
-- **[concatMap](. /concatMap)** - leer transformaties die sequentieel worden uitgevoerd.
+- **[mergeMap](./mergeMap)** - leer de gebruikelijke asynchrone transformaties.
+- **[switchMap](./switchMap)** - leer de conversie om over te schakelen naar het nieuwste proces.
+- **[concatMap](./concatMap)** - leer transformaties die sequentieel worden uitgevoerd.
 - **[Scheduler-types en hun gebruik](/nl/guide/schedulers/types)** - leer hoe u expand en schedulers kunt combineren.
 - **[Praktische voorbeelden van conversie operatoren](/nl/guide/schedulers/types)** - leer hoe je expand en schedulers kunt combineren /praktische-gebruiksgevallen)** - leer over echte gebruiksgevallen

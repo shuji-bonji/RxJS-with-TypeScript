@@ -1,18 +1,18 @@
 ---
-description: "Explica cuándo fluyen valores en RxJS, diferencias entre síncrono vs asíncrono, cómo leer Marble Diagrams y el rol del Scheduler. Métodos para identificar causas de valores que no fluyen, técnicas de depuración y uso de asyncScheduler con ejemplos de código TypeScript."
+description: "Explica cuÃ¡ndo fluyen valores en RxJS, diferencias entre sÃ­ncrono vs asÃ­ncrono, cÃ³mo leer Marble Diagrams y el rol del Scheduler. MÃ©todos para identificar causas de valores que no fluyen, tÃ©cnicas de depuraciÃ³n y uso de asyncScheduler con ejemplos de cÃ³digo TypeScript."
 ---
 
-# Comprensión de timing y orden
+# ComprensiÃ³n de timing y orden
 
-En RxJS, enfrentarse a problemas como **"¿Por qué no sale el valor?" o "¿El orden está mal?"** es muy común. Esta página explica conocimientos fundamentales y técnicas prácticas de depuración para entender correctamente el timing y el orden.
+En RxJS, enfrentarse a problemas como **"Â¿Por quÃ© no sale el valor?" o "Â¿El orden estÃ¡ mal?"** es muy comÃºn. Esta pÃ¡gina explica conocimientos fundamentales y tÃ©cnicas prÃ¡cticas de depuraciÃ³n para entender correctamente el timing y el orden.
 
-## Cuándo fluyen los valores
+## CuÃ¡ndo fluyen los valores
 
-### Problema: Pensar que los valores salen inmediatamente después de subscribe
+### Problema: Pensar que los valores salen inmediatamente despuÃ©s de subscribe
 
-Un error común de los principiantes es pensar que "si hago subscribe, puedo obtener el valor inmediatamente".
+Un error comÃºn de los principiantes es pensar que "si hago subscribe, puedo obtener el valor inmediatamente".
 
-#### L Mal ejemplo: Esperar que el valor esté disponible inmediatamente
+#### L Mal ejemplo: Esperar que el valor estÃ© disponible inmediatamente
 ```typescript
 import { of } from 'rxjs';
 import { delay } from 'rxjs';
@@ -25,7 +25,7 @@ of(42).pipe(
   result = value;
 });
 
-console.log(result); // undefined (el valor aún no llegó)
+console.log(result); // undefined (el valor aÃºn no llegÃ³)
 ```
 
 ####  Buen ejemplo: Procesar dentro de subscribe
@@ -36,22 +36,22 @@ import { delay } from 'rxjs';
 of(42).pipe(
   delay(100)
 ).subscribe(value => {
-  console.log(value); // 42 se imprime después de 100ms
+  console.log(value); // 42 se imprime despuÃ©s de 100ms
 });
 ```
 
 > [!IMPORTANT] Principio importante
-> - Observable puede ser **asíncrono**
+> - Observable puede ser **asÃ­ncrono**
 > - El procesamiento que usa valores debe hacerse **dentro de subscribe**
 > - No esperar valores fuera de subscribe
 
-## Comprensión de síncrono vs asíncrono
+## ComprensiÃ³n de sÃ­ncrono vs asÃ­ncrono
 
-### Observable síncrono vs Observable asíncrono
+### Observable sÃ­ncrono vs Observable asÃ­ncrono
 
-En RxJS hay **Observables que fluyen valores síncronamente** y **Observables que fluyen valores asíncronamente**.
+En RxJS hay **Observables que fluyen valores sÃ­ncronamente** y **Observables que fluyen valores asÃ­ncronamente**.
 
-#### Ejemplo de Observable síncrono
+#### Ejemplo de Observable sÃ­ncrono
 
 ```typescript
 import { of } from 'rxjs';
@@ -72,7 +72,7 @@ console.log('Fin');
 // Fin
 ```
 
-#### Ejemplo de Observable asíncrono
+#### Ejemplo de Observable asÃ­ncrono
 
 ```typescript
 import { interval } from 'rxjs';
@@ -91,23 +91,23 @@ console.log('Fin');
 // Salida:
 // Inicio
 // Fin
-// Valor: 0  (después de 100ms)
-// Valor: 1  (después de 200ms)
-// Valor: 2  (después de 300ms)
+// Valor: 0  (despuÃ©s de 100ms)
+// Valor: 1  (despuÃ©s de 200ms)
+// Valor: 2  (despuÃ©s de 300ms)
 ```
 
-### Visualización del flujo de ejecución síncrono vs asíncrono
+### VisualizaciÃ³n del flujo de ejecuciÃ³n sÃ­ncrono vs asÃ­ncrono
 
-El siguiente diagrama de secuencia muestra las diferencias de timing de ejecución entre Observable síncrono y asíncrono.
+El siguiente diagrama de secuencia muestra las diferencias de timing de ejecuciÃ³n entre Observable sÃ­ncrono y asÃ­ncrono.
 
 ```mermaid
 sequenceDiagram
-    participant Code as Código
-    participant Sync as Observable síncrono
-    participant Async as Observable asíncrono
+    participant Code as CÃ³digo
+    participant Sync as Observable sÃ­ncrono
+    participant Async as Observable asÃ­ncrono
     participant Console
 
-    Note over Code,Console: Caso de Observable síncrono
+    Note over Code,Console: Caso de Observable sÃ­ncrono
     Code->>Console: console.log('Inicio')
     Code->>Sync: of(1, 2, 3).subscribe()
     activate Sync
@@ -118,7 +118,7 @@ sequenceDiagram
     deactivate Sync
     Code->>Console: console.log('Fin')
 
-    Note over Code,Console: Caso de Observable asíncrono
+    Note over Code,Console: Caso de Observable asÃ­ncrono
     Code->>Console: console.log('Inicio')
     Code->>Async: interval(100).subscribe()
     activate Async
@@ -133,22 +133,22 @@ sequenceDiagram
 ```
 
 > [!TIP] Diferencias de timing
-> - **Observable síncrono**: Avanza a la siguiente línea después de completar el procesamiento dentro de subscribe
-> - **Observable asíncrono**: subscribe retorna inmediatamente, valores fluyen después
+> - **Observable sÃ­ncrono**: Avanza a la siguiente lÃ­nea despuÃ©s de completar el procesamiento dentro de subscribe
+> - **Observable asÃ­ncrono**: subscribe retorna inmediatamente, valores fluyen despuÃ©s
 
-### Criterios de juicio síncrono/asíncrono
+### Criterios de juicio sÃ­ncrono/asÃ­ncrono
 
-| Observable | Síncrono/Asíncrono | Razón |
+| Observable | SÃ­ncrono/AsÃ­ncrono | RazÃ³n |
 |---|---|---|
-| `of(1, 2, 3)` | Síncrono | Valores determinados inmediatamente |
-| `from([1, 2, 3])` | Síncrono | Se puede obtener inmediatamente del array |
-| `interval(1000)` | Asíncrono | Toma tiempo con temporizador |
-| `fromEvent(button, 'click')` | Asíncrono | Espera acción del usuario |
-| `ajax('/api/data')` | Asíncrono | Espera petición HTTP |
-| `timer(1000)` | Asíncrono | Emite después de 1 segundo |
-| `of(1).pipe(delay(100))` | Asíncrono | Se retrasa con delay |
+| `of(1, 2, 3)` | SÃ­ncrono | Valores determinados inmediatamente |
+| `from([1, 2, 3])` | SÃ­ncrono | Se puede obtener inmediatamente del array |
+| `interval(1000)` | AsÃ­ncrono | Toma tiempo con temporizador |
+| `fromEvent(button, 'click')` | AsÃ­ncrono | Espera acciÃ³n del usuario |
+| `ajax('/api/data')` | AsÃ­ncrono | Espera peticiÃ³n HTTP |
+| `timer(1000)` | AsÃ­ncrono | Emite despuÃ©s de 1 segundo |
+| `of(1).pipe(delay(100))` | AsÃ­ncrono | Se retrasa con delay |
 
-### Problema común: Mezcla de síncrono y asíncrono
+### Problema comÃºn: Mezcla de sÃ­ncrono y asÃ­ncrono
 
 #### L Mal ejemplo: Orden no garantizado
 ```typescript
@@ -157,12 +157,12 @@ import { delay } from 'rxjs';
 
 console.log('1: Inicio');
 
-of('Síncrono').subscribe(value => {
+of('SÃ­ncrono').subscribe(value => {
   console.log('2:', value);
 });
 
-of('Asíncrono').pipe(
-  delay(0) // Incluso con 0ms se vuelve asíncrono
+of('AsÃ­ncrono').pipe(
+  delay(0) // Incluso con 0ms se vuelve asÃ­ncrono
 ).subscribe(value => {
   console.log('3:', value);
 });
@@ -171,12 +171,12 @@ console.log('4: Fin');
 
 // Salida:
 // 1: Inicio
-// 2: Síncrono
+// 2: SÃ­ncrono
 // 4: Fin
-// 3: Asíncrono   Incluso delay(0) entra en cola asíncrona
+// 3: AsÃ­ncrono  Â Incluso delay(0) entra en cola asÃ­ncrona
 ```
 
-####  Buen ejemplo: Aclarar intención
+####  Buen ejemplo: Aclarar intenciÃ³n
 ```typescript
 import { of, concat } from 'rxjs';
 import { delay } from 'rxjs';
@@ -185,37 +185,37 @@ import { delay } from 'rxjs';
 concat(
   of('Primero'),
   of('Siguiente').pipe(delay(100)),
-  of('Último')
+  of('Ãšltimo')
 ).subscribe(value => {
   console.log(value);
 });
 
 // Salida:
 // Primero
-// Siguiente    (después de 100ms)
-// Último  (después de 100ms)
+// Siguiente    (despuÃ©s de 100ms)
+// Ãšltimo  (despuÃ©s de 100ms)
 ```
 
-## Cómo leer Marble Diagrams
+## CÃ³mo leer Marble Diagrams
 
 Un Marble Diagram es una figura que visualiza el comportamiento de Observable en el **eje temporal**.
 
-### Notación básica
+### NotaciÃ³n bÃ¡sica
 
 ```
 Eje temporal:  ------a----b----c----|
-               ‘     ‘    ‘    ‘    ‘
+               Â‘     Â‘    Â‘    Â‘    Â‘
                Inicio  Valor a  Valor b  Valor c  Completo
 
-Significado de símbolos:
+Significado de sÃ­mbolos:
 -  : Paso del tiempo (aprox. 10ms)
-a  : Emisión de valor (next)
+a  : EmisiÃ³n de valor (next)
 |  : Completado (complete)
 #  : Error (error)
-() : Emisión simultánea (a,b)
+() : EmisiÃ³n simultÃ¡nea (a,b)
 ```
 
-### Ejemplo práctico 1: Operador map
+### Ejemplo prÃ¡ctico 1: Operador map
 
 ```
 Entrada:  ----1----2----3----|
@@ -237,7 +237,7 @@ of(1, 2, 3).pipe(
 // 300ms: 30
 ```
 
-### Ejemplo práctico 2: merge
+### Ejemplo prÃ¡ctico 2: merge
 
 ```
 A:     ----a----b----|
@@ -269,7 +269,7 @@ merge(a$, b$).subscribe(value => console.log(value));
 // 450ms: B2
 ```
 
-### Ejemplo práctico 3: switchMap (cancelación)
+### Ejemplo prÃ¡ctico 3: switchMap (cancelaciÃ³n)
 
 ```
 Externo:  ----A------B----C----|
@@ -295,26 +295,26 @@ fromEvent(button, 'click').pipe(
   )
 ).subscribe(value => console.log(value));
 
-// Clic1 ’ Valor0 ’ Valor1 ’ (siguiente cancelado por Clic2)
-// Clic2 ’ Valor0 ’ Valor1 ’ Valor2 ’ Completo
+// Clic1 Â’ Valor0 Â’ Valor1 Â’ (siguiente cancelado por Clic2)
+// Clic2 Â’ Valor0 Â’ Valor1 Â’ Valor2 Â’ Completo
 ```
 
 ## Rol del Scheduler
 
-El Scheduler controla **cuándo y cómo emite valores** el Observable.
+El Scheduler controla **cuÃ¡ndo y cÃ³mo emite valores** el Observable.
 
 ### Tipos de Scheduler
 
-| Scheduler | Uso | Explicación |
+| Scheduler | Uso | ExplicaciÃ³n |
 |---|---|---|
-| **queueScheduler** | Procesamiento síncrono | Ejecuta inmediatamente en el event loop actual |
+| **queueScheduler** | Procesamiento sÃ­ncrono | Ejecuta inmediatamente en el event loop actual |
 | **asapScheduler** | Microtarea | Mismo timing que Promise.then() |
 | **asyncScheduler** | Macrotarea | Mismo timing que setTimeout() |
-| **animationFrameScheduler** | Animación | Mismo timing que requestAnimationFrame() |
+| **animationFrameScheduler** | AnimaciÃ³n | Mismo timing que requestAnimationFrame() |
 
-### Ejemplo práctico: Controlar timing con observeOn
+### Ejemplo prÃ¡ctico: Controlar timing con observeOn
 
-#### L Mal ejemplo: Procesamiento síncrono bloquea UI
+#### L Mal ejemplo: Procesamiento sÃ­ncrono bloquea UI
 ```typescript
 import { range } from 'rxjs';
 import { map } from 'rxjs';
@@ -324,13 +324,13 @@ console.log('Inicio');
 range(1, 1000000).pipe(
   map(x => x * x)
 ).subscribe(value => {
-  // 1 millón de cálculos ejecutados síncronamente ’ UI congelada
+  // 1 millÃ³n de cÃ¡lculos ejecutados sÃ­ncronamente Â’ UI congelada
 });
 
-console.log('Fin'); // Se imprime después de terminar el cálculo
+console.log('Fin'); // Se imprime despuÃ©s de terminar el cÃ¡lculo
 ```
 
-####  Buen ejemplo: Hacerlo asíncrono con asyncScheduler
+####  Buen ejemplo: Hacerlo asÃ­ncrono con asyncScheduler
 ```typescript
 import { range, asyncScheduler } from 'rxjs';
 import { map, observeOn } from 'rxjs';
@@ -339,41 +339,41 @@ console.log('Inicio');
 
 range(1, 1000000).pipe(
   map(x => x * x),
-  observeOn(asyncScheduler) // Poner en cola asíncrona
+  observeOn(asyncScheduler) // Poner en cola asÃ­ncrona
 ).subscribe(value => {
-  // Se ejecuta asíncronamente ’ UI no se bloquea
+  // Se ejecuta asÃ­ncronamente Â’ UI no se bloquea
 });
 
 console.log('Fin'); // Se imprime inmediatamente
 ```
 
-> [!TIP] Cuándo usar Scheduler
-> - **Cálculos pesados**: Hacerlo asíncrono con asyncScheduler para no bloquear UI
+> [!TIP] CuÃ¡ndo usar Scheduler
+> - **CÃ¡lculos pesados**: Hacerlo asÃ­ncrono con asyncScheduler para no bloquear UI
 > - **Animaciones**: Renderizado suave con animationFrameScheduler
 > - **Tests**: Virtualizar tiempo con TestScheduler
 
 Ver detalles en **[Chapter 7: Uso de Schedulers](/es/guide/schedulers/async-control)**.
 
-## Problemas comunes y métodos de depuración
+## Problemas comunes y mÃ©todos de depuraciÃ³n
 
 ### Problema 1: Valores no fluyen
 
-#### Lista de verificación
+#### Lista de verificaciÃ³n
 
 ```mermaid
 graph TD
-    A[Valores no fluyen] --> B{¿Hiciste subscribe?}
+    A[Valores no fluyen] --> B{Â¿Hiciste subscribe?}
     B -->|No| C[Nada sucede sin subscribe]
-    B -->|Sí| D{¿complete/error llegó primero?}
-    D -->|Sí| E[No llegan valores después de completar/error]
-    D -->|No| F{¿Observable es asíncrono?}
-    F -->|Sí| G[Posibilidad de que esté tomando tiempo]
-    F -->|No| H{¿Filtrado por operador?}
-    H -->|Sí| I[Excluido por filter, take, etc.]
+    B -->|SÃ­| D{Â¿complete/error llegÃ³ primero?}
+    D -->|SÃ­| E[No llegan valores despuÃ©s de completar/error]
+    D -->|No| F{Â¿Observable es asÃ­ncrono?}
+    F -->|SÃ­| G[Posibilidad de que estÃ© tomando tiempo]
+    F -->|No| H{Â¿Filtrado por operador?}
+    H -->|SÃ­| I[Excluido por filter, take, etc.]
     H -->|No| J[Depurar con tap]
 ```
 
-#### Técnica de depuración: Usar tap
+#### TÃ©cnica de depuraciÃ³n: Usar tap
 
 ```typescript
 import { of } from 'rxjs';
@@ -384,11 +384,11 @@ console.log('Inicio');
 of(1, 2, 3, 4, 5).pipe(
   tap(v => console.log('=A Valor original:', v)),
   filter(x => x % 2 === 0),
-  tap(v => console.log(' Pasó filter:', v)),
+  tap(v => console.log(' PasÃ³ filter:', v)),
   map(x => x * 10),
-  tap(v => console.log('= Después de map:', v))
+  tap(v => console.log('= DespuÃ©s de map:', v))
 ).subscribe(result => {
-  console.log('=æ Resultado final:', result);
+  console.log('=Ã¦ Resultado final:', result);
 });
 
 console.log('Fin');
@@ -397,20 +397,20 @@ console.log('Fin');
 // Inicio
 // =A Valor original: 1
 // =A Valor original: 2
-//  Pasó filter: 2
-// = Después de map: 20
-// =æ Resultado final: 20
+//  PasÃ³ filter: 2
+// = DespuÃ©s de map: 20
+// =Ã¦ Resultado final: 20
 // =A Valor original: 3
 // =A Valor original: 4
-//  Pasó filter: 4
-// = Después de map: 40
-// =æ Resultado final: 40
+//  PasÃ³ filter: 4
+// = DespuÃ©s de map: 40
+// =Ã¦ Resultado final: 40
 // =A Valor original: 5
 // Fin
 ```
 
 > [!NOTE] Punto clave
-> Como `of()` es Observable síncrono, "Fin" se imprime después de completar todo el procesamiento dentro de subscribe. Intercalando tap en cada etapa, se puede rastrear el flujo de valores.
+> Como `of()` es Observable sÃ­ncrono, "Fin" se imprime despuÃ©s de completar todo el procesamiento dentro de subscribe. Intercalando tap en cada etapa, se puede rastrear el flujo de valores.
 
 ### Problema 2: Orden diferente al esperado
 
@@ -456,7 +456,7 @@ import { reduce } from 'rxjs';
 interval(1000).pipe(
   reduce((acc, val) => acc + val, 0) // Nunca completa
 ).subscribe(total => {
-  console.log(total); // Esta línea no se ejecuta
+  console.log(total); // Esta lÃ­nea no se ejecuta
 });
 ```
 
@@ -467,13 +467,13 @@ import { reduce, take } from 'rxjs';
 
 interval(1000).pipe(
   take(5),                            // Obtener solo 5
-  reduce((acc, val) => acc + val, 0) // Sumar después de completar
+  reduce((acc, val) => acc + val, 0) // Sumar despuÃ©s de completar
 ).subscribe(total => {
-  console.log('Total:', total); // "Total: 10" se imprime después de 5 segundos
+  console.log('Total:', total); // "Total: 10" se imprime despuÃ©s de 5 segundos
 });
 ```
 
-## Herramientas y técnicas de depuración
+## Herramientas y tÃ©cnicas de depuraciÃ³n
 
 ### 1. Salida de logs con tap
 
@@ -488,38 +488,38 @@ const debug = <T>(label: string) => tap<T>(value =>
 of(1, 2, 3, 4, 5).pipe(
   debug('=5 Entrada'),
   filter(x => x > 2),
-  debug('=â Después de filter'),
+  debug('=Ã¢ DespuÃ©s de filter'),
   map(x => x * 10),
-  debug('=á Después de map')
+  debug('=Ã¡ DespuÃ©s de map')
 ).subscribe();
 
 // [=5 Entrada] 1
 // [=5 Entrada] 2
 // [=5 Entrada] 3
-// [=â Después de filter] 3
-// [=á Después de map] 30
+// [=Ã¢ DespuÃ©s de filter] 3
+// [=Ã¡ DespuÃ©s de map] 30
 // [=5 Entrada] 4
-// [=â Después de filter] 4
-// [=á Después de map] 40
+// [=Ã¢ DespuÃ©s de filter] 4
+// [=Ã¡ DespuÃ©s de map] 40
 // [=5 Entrada] 5
-// [=â Después de filter] 5
-// [=á Después de map] 50
+// [=Ã¢ DespuÃ©s de filter] 5
+// [=Ã¡ DespuÃ©s de map] 50
 ```
 
-### 2. RxJS DevTools (extensión de navegador)
+### 2. RxJS DevTools (extensiÃ³n de navegador)
 
-Con la extensión de Chrome/Edge "RxJS DevTools", se puede:
+Con la extensiÃ³n de Chrome/Edge "RxJS DevTools", se puede:
 
 - Monitorear todos los Observables en tiempo real
-- Visualización con Marble Diagram
+- VisualizaciÃ³n con Marble Diagram
 - Rastreo de subscribe/unsubscribe
 
-#### Método de instalación
+#### MÃ©todo de instalaciÃ³n
 1. Buscar "RxJS DevTools" en Chrome Web Store
-2. Agregar extensión
-3. Abrir pestaña "RxJS" de DevTools
+2. Agregar extensiÃ³n
+3. Abrir pestaÃ±a "RxJS" de DevTools
 
-### 3. Operador de depuración personalizado
+### 3. Operador de depuraciÃ³n personalizado
 
 ```typescript
 import { interval, map, take, tap, timestamp } from "rxjs";
@@ -539,20 +539,20 @@ function debugWithTime<T>(label: string): MonoTypeOperatorFunction<T> {
 // Uso
 interval(500).pipe(
   take(3),
-  debugWithTime('ğ Temporizador'),
+  debugWithTime('Ã° Temporizador'),
   map(x => x * 10),
-  debugWithTime('= Después de conversión')
+  debugWithTime('= DespuÃ©s de conversiÃ³n')
 ).subscribe();
 
-// [ğ Temporizador] 2025-10-19T10:20:59.467Z: 0
-// [= Después de conversión] 2025-10-19T10:20:59.467Z: 0
-// [ğ Temporizador] 2025-10-19T10:20:59.967Z: 1
-// [= Después de conversión] 2025-10-19T10:20:59.967Z: 10
-// [ğ Temporizador] 2025-10-19T10:21:00.467Z: 2
-// [= Después de conversión] 2025-10-19T10:21:00.468Z: 20
+// [Ã° Temporizador] 2025-10-19T10:20:59.467Z: 0
+// [= DespuÃ©s de conversiÃ³n] 2025-10-19T10:20:59.467Z: 0
+// [Ã° Temporizador] 2025-10-19T10:20:59.967Z: 1
+// [= DespuÃ©s de conversiÃ³n] 2025-10-19T10:20:59.967Z: 10
+// [Ã° Temporizador] 2025-10-19T10:21:00.467Z: 2
+// [= DespuÃ©s de conversiÃ³n] 2025-10-19T10:21:00.468Z: 20
 ```
 
-### 4. Marble Testing (verificación en tests)
+### 4. Marble Testing (verificaciÃ³n en tests)
 
 ```typescript
 import { TestScheduler } from 'rxjs/testing';
@@ -581,14 +581,14 @@ describe('Test de timing', () => {
 
 Ver detalles en **[Chapter 9: Marble Testing](/es/guide/testing/marble-testing)**.
 
-## Lista de verificación de comprensión
+## Lista de verificaciÃ³n de comprensiÃ³n
 
 Verifique si puede responder las siguientes preguntas.
 
 ```markdown
-## Comprensión básica
-- [ ] Explicar las diferencias entre Observable síncrono y asíncrono
-- [ ] Leer notación básica de Marble Diagram (-, a, |, #)
+## ComprensiÃ³n bÃ¡sica
+- [ ] Explicar las diferencias entre Observable sÃ­ncrono y asÃ­ncrono
+- [ ] Leer notaciÃ³n bÃ¡sica de Marble Diagram (-, a, |, #)
 - [ ] Entender que valores no fluyen sin subscribe
 
 ## Control de timing
@@ -596,12 +596,12 @@ Verifique si puede responder las siguientes preguntas.
 - [ ] Entender el rol del Scheduler
 - [ ] Explicar las diferencias entre observeOn y subscribeOn
 
-## Depuración
+## DepuraciÃ³n
 - [ ] Depurar flujo de valores con tap
 - [ ] Identificar causas de valores que no fluyen
-- [ ] Saber cómo manejar orden diferente al esperado
+- [ ] Saber cÃ³mo manejar orden diferente al esperado
 
-## Práctica
+## PrÃ¡ctica
 - [ ] Delimitar Observable infinito con take
 - [ ] Implementar diferencias de orden entre mergeMap y concatMap
 - [ ] Controlar timing de error con catchError
@@ -609,22 +609,22 @@ Verifique si puede responder las siguientes preguntas.
 
 ## Siguientes pasos
 
-Después de entender timing y orden, aprenda sobre **gestión de estado y compartición**.
+DespuÃ©s de entender timing y orden, aprenda sobre **gestiÃ³n de estado y comparticiÃ³n**.
 
-’ **[Dificultad de gestión de estado](/es/guide/overcoming-difficulties/state-and-sharing)** - Diferencias entre Subject, share/shareReplay
+Â’ **[Dificultad de gestiÃ³n de estado](/es/guide/overcoming-difficulties/state-and-sharing)** - Diferencias entre Subject, share/shareReplay
 
-## Páginas relacionadas
+## PÃ¡ginas relacionadas
 
 - **[Chapter 7: Uso de Schedulers](/es/guide/schedulers/async-control)** - Detalles del Scheduler
 - **[Chapter 9: Marble Testing](/es/guide/testing/marble-testing)** - Probar timing con TestScheduler
-- **[Chapter 8: Técnicas de depuración de RxJS](/es/guide/debugging/)** - Vista general de depuración
-- **[Selección de operadores](/es/guide/overcoming-difficulties/operator-selection)** - Cómo elegir el operador apropiado
+- **[Chapter 8: TÃ©cnicas de depuraciÃ³n de RxJS](/es/guide/debugging/)** - Vista general de depuraciÃ³n
+- **[SelecciÃ³n de operadores](/es/guide/overcoming-difficulties/operator-selection)** - CÃ³mo elegir el operador apropiado
 
-## <¯ Ejercicios prácticos
+## <Â¯ Ejercicios prÃ¡cticos
 
-### Problema 1: Identificación de síncrono y asíncrono
+### Problema 1: IdentificaciÃ³n de sÃ­ncrono y asÃ­ncrono
 
-¿Los siguientes Observables son síncronos o asíncronos?
+Â¿Los siguientes Observables son sÃ­ncronos o asÃ­ncronos?
 
 ```typescript
 // A
@@ -646,14 +646,14 @@ interval(1000).pipe(take(3))
 <details>
 <summary>Respuesta</summary>
 
-- **A: Síncrono** - `of` emite valores inmediatamente
-- **B: Síncrono** - `from` expande array inmediatamente
-- **C: Asíncrono** - Incluso `delay(0)` entra en cola asíncrona
-- **D: Asíncrono** - Promise siempre es asíncrono
-- **E: Asíncrono** - `interval` es basado en temporizador
+- **A: SÃ­ncrono** - `of` emite valores inmediatamente
+- **B: SÃ­ncrono** - `from` expande array inmediatamente
+- **C: AsÃ­ncrono** - Incluso `delay(0)` entra en cola asÃ­ncrona
+- **D: AsÃ­ncrono** - Promise siempre es asÃ­ncrono
+- **E: AsÃ­ncrono** - `interval` es basado en temporizador
 
 > [!NOTE] Punto clave
-> `delay(0)` y `Promise`, aunque el retraso sea 0 milisegundos, se tratan como asíncronos.
+> `delay(0)` y `Promise`, aunque el retraso sea 0 milisegundos, se tratan como asÃ­ncronos.
 
 </details>
 
@@ -683,20 +683,20 @@ Salida: ?
 <summary>Respuesta</summary>
 
 ```typescript
-// Después de 100ms, se imprime todo a la vez:
+// DespuÃ©s de 100ms, se imprime todo a la vez:
 [1, 'A']
 [2, 'B']
 [3, 'C']
 ```
 
-> [!NOTE] Razón
-> Como `zip` espera hasta que valores de ambos streams estén listos, no se imprime hasta que se libere el delay(100) de `b$`. `a$` emite valores síncronamente, pero espera a `b$` para formar pares.
+> [!NOTE] RazÃ³n
+> Como `zip` espera hasta que valores de ambos streams estÃ©n listos, no se imprime hasta que se libere el delay(100) de `b$`. `a$` emite valores sÃ­ncronamente, pero espera a `b$` para formar pares.
 
 </details>
 
-### Problema 3: Garantía de orden
+### Problema 3: GarantÃ­a de orden
 
-¿Qué operador usar si se quiere garantizar el orden de salida en el siguiente código?
+Â¿QuÃ© operador usar si se quiere garantizar el orden de salida en el siguiente cÃ³digo?
 
 ```typescript
 import { of } from 'rxjs';
@@ -717,13 +717,13 @@ of('A', 'B', 'C').pipe(
 <details>
 <summary>Respuesta</summary>
 
-**Código corregido:**
+**CÃ³digo corregido:**
 ```typescript
 import { of } from 'rxjs';
 import { concatMap, delay } from 'rxjs';
 
 of('A', 'B', 'C').pipe(
-  concatMap(letter =>  // mergeMap ’ concatMap
+  concatMap(letter =>  // mergeMap Â’ concatMap
     of(`${letter}Completo`).pipe(
       delay(Math.random() * 100)
     )
@@ -733,7 +733,7 @@ of('A', 'B', 'C').pipe(
 // Salida: ACompleto, BCompleto, CCompleto (siempre este orden)
 ```
 
-> [!NOTE] Razón
+> [!NOTE] RazÃ³n
 > - `mergeMap`: Ejecuta en paralelo, orden de completado no garantizado
 > - `concatMap`: Ejecuta secuencialmente, salida en el mismo orden que entrada
 
@@ -741,7 +741,7 @@ of('A', 'B', 'C').pipe(
 
 ### Problema 4: Manejo de stream infinito
 
-Señale el problema del siguiente código y corríjalo.
+SeÃ±ale el problema del siguiente cÃ³digo y corrÃ­jalo.
 
 ```typescript
 import { interval } from 'rxjs';
@@ -751,7 +751,7 @@ interval(1000).pipe(
   map(x => x * 2),
   toArray()
 ).subscribe(arr => {
-  console.log('Array:', arr); // ¿Se ejecuta esta línea?
+  console.log('Array:', arr); // Â¿Se ejecuta esta lÃ­nea?
 });
 ```
 
@@ -760,9 +760,9 @@ interval(1000).pipe(
 
 **Problema:**
 - `interval` emite valores infinitamente, por lo que no completa
-- `toArray()` espera señal de completado, por lo que nunca sale el valor
+- `toArray()` espera seÃ±al de completado, por lo que nunca sale el valor
 
-**Código corregido:**
+**CÃ³digo corregido:**
 ```typescript
 import { interval } from 'rxjs';
 import { map, take, toArray } from 'rxjs';

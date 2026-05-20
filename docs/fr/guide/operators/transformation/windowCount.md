@@ -312,11 +312,11 @@ source$.pipe(
 
 ## 📚 Opérateurs apparentés.
 
-- [`bufferCount`](. /bufferCount) - résume les valeurs sous forme de tableau (version tableau de windowCount).
-- [`window`](. /window) - fractionnement de la fenêtre à différents moments de l'Observable.
-- [`windowTime`](. /windowTime) - fractionnement de la fenêtre en fonction du temps.
-- [`windowToggle`](. /windowToggle) - contrôle de la fenêtre avec un Observable de début et de fin.
-- [`windowWhen`](. /windowWhen) - fractionnement de fenêtre avec conditions de fermeture dynamiques.
+- [`bufferCount`](./bufferCount) - résume les valeurs sous forme de tableau (version tableau de windowCount).
+- [`window`](./window) - fractionnement de la fenêtre à différents moments de l'Observable.
+- [`windowTime`](./windowTime) - fractionnement de la fenêtre en fonction du temps.
+- [`windowToggle`](./windowToggle) - contrôle de la fenêtre avec un Observable de début et de fin.
+- [`windowWhen`](./windowWhen) - fractionnement de fenêtre avec conditions de fermeture dynamiques.
 
 ## Résumé.
 

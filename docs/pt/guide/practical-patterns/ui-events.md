@@ -25,7 +25,7 @@ throttleTime(1000): ●              ●
                    Execução do processamento      Execução do processamento
 ```
 
-> Este artigo pressupõe o conhecimento do [Capítulo 4: Operadores](. /operators/index.md) e pressupõe o conhecimento do seguinte. Em particular, é importante compreender os conceitos de `debounceTime`, `throttleTime` e `distinctUntilChanged`.
+> Este artigo pressupõe o conhecimento do [Capítulo 4: Operadores](../operators/index.md) e pressupõe o conhecimento do seguinte. Em particular, é importante compreender os conceitos de `debounceTime`, `throttleTime` e `distinctUntilChanged`.
 
 ## Manipulação de eventos de clique.
 
@@ -1116,16 +1116,16 @@ function performSearch(query: string): void {
 
 Depois de dominar o padrão de tratamento de eventos da interface do usuário, você poderá passar para os padrões a seguir.
 
-- [form-handling](. /form-handling.md) - validação em tempo real, integração de vários campos.
-- [Chamadas de API](. /api-calls.md) - integração de eventos da interface do usuário e chamadas de API
-- processamento de dados em tempo real](. /real-time-data.md)) - WebSocket, SSE.
-- [estratégias de cache](. /caching-strategies.md) - cache de dados de eventos
+- [form-handling](./form-handling.md) - validação em tempo real, integração de vários campos.
+- [Chamadas de API](./api-calls.md) - integração de eventos da interface do usuário e chamadas de API
+- processamento de dados em tempo real](./real-time-data.md)) - WebSocket, SSE.
+- [estratégias de cache](./caching-strategies.md) - cache de dados de eventos
 
 ## Seções relacionadas.
 
-- [Capítulo 4: Operadores de filtragem](. /operators/filtering/) - debounceTime, throttleTime detalhes.
-- [Capítulo 4: Operadores de transformação](. /operators/transformation/) - mais sobre switchMap, exhaustMap
-- Capítulo 2: Observable](. /observables/what-is-observable.md)) - noções básicas de fromEvent
+- [Capítulo 4: Operadores de filtragem](../operators/filtering/) - debounceTime, throttleTime detalhes.
+- [Capítulo 4: Operadores de transformação](../operators/transformation/) - mais sobre switchMap, exhaustMap
+- Capítulo 2: Observable](../observables/what-is-observable.md)) - noções básicas de fromEvent
 
 ## Recursos de referência
 

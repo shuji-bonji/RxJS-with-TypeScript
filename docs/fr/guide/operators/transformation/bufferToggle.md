@@ -95,7 +95,7 @@ source$.pipe(
 // [11, 12, 13]  (6Début à la seconde,7(début à la seconde, fin à la seconde)
 ```
 
-> Pour plus d'informations sur chaque opérateur, voir [buffer](. /buffer), [bufferTime](. /bufferTime), [bufferCount](. /bufferCount).
+> Pour plus d'informations sur chaque opérateur, voir [buffer](./buffer), [bufferTime](./bufferTime), [bufferCount](./bufferCount).
 
 ## 💡 Modèles d'utilisation typiques.
 
@@ -501,8 +501,8 @@ source$.pipe(
 
 ## 🚀 Prochaines étapes.
 
-- **[buffer](. /buffer)** - apprendre les bases de la mise en mémoire tampon.
-- **[bufferTime](. /bufferTime)** - apprendre la mise en mémoire tampon basée sur le temps.
-- **[bufferCount](. /bufferCount)** - apprendre la mise en mémoire tampon par morceaux **[bufferCount](.
+- **[buffer](./buffer)** - apprendre les bases de la mise en mémoire tampon.
+- **[bufferTime](./bufferTime)** - apprendre la mise en mémoire tampon basée sur le temps.
+- **[bufferCount](./bufferCount)** - apprendre la mise en mémoire tampon par morceaux
 - **[bufferWhen](https://rxjs.dev/api/operators/bufferWhen)** - apprendre le contrôle dynamique de sortie (documentation officielle)
-- **[conversion-operator-practical-use-cases](. /practical-use-cases)** - apprendre des cas d'utilisation réels
+- **[conversion-operator-practical-use-cases](./practical-use-cases)** - apprendre des cas d'utilisation réels

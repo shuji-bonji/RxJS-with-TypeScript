@@ -510,8 +510,8 @@ Creation Function è una potente funzione che consente di descrivere in modo dic
 
 - [range()](/it/guide/creation-functions/loop/range) - generazione di numeri sequenziali semplici
 - defer()](/it/guide/creation-functions/conditional/defer) - generazione dinamica su sottoscrizione
-- [expand()](/it/guide/operators/trasformazione/expand) - espansione ricorsiva (operatori di ordine superiore)
-- [scan()](/it/guide/operators/trasformazione/scan) - Calcolo cumulativo
+- [expand()](/it/guide/operators/transformation/expand) - espansione ricorsiva (operatori di ordine superiore)
+- [scan()](/it/guide/operators/transformation/scan) - Calcolo cumulativo
 
 ## Risorse di riferimento
 

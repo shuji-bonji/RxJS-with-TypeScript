@@ -407,8 +407,8 @@ números$.pipe(
 
 ## 🚀 Siguiente paso.
 
-- **[take](. /take)** - aprende a obtener los primeros n valores.
-- **[last](. /last)** - aprende a obtener el último 1 valor.
-- skip](. /skip)** - aprende a saltar los N primeros valores.
-- filter](. /filter)** - aprende a filtrar en función de condiciones
-- **[filtro-operador-casos-prácticos](. /practical-use-cases)** - aprende a utilizar casos de uso reales
+- **[take](./take)** - aprende a obtener los primeros n valores.
+- **[last](./last)** - aprende a obtener el último 1 valor.
+- skip](./skip)** - aprende a saltar los N primeros valores.
+- filter](./filter)** - aprende a filtrar en función de condiciones
+- **[filtro-operador-casos-prácticos](./practical-use-cases)** - aprende a utilizar casos de uso reales

@@ -1,5 +1,5 @@
 ---
-description: "Le Creation Functions di RxJS (funzioni di creazione di Observable) spiegate sistematicamente: differenze con i Pipeable Operator, utilizzo di base e 7 categorie (creazione di base, generazione loop, comunicazione HTTP, combinazione, selezione/partizione, condizionale, controllo). Fornisce guida per la selezione in base alle caratteristiche e agli usi di ciascuna funzione."
+description: "Le Creation Functions di RxJS (funzioni di creazione di Observable) spiegate sistematicamente: differenze con i Pipeable Operator, utilizzo di base e 7 categorie (creazione di base, generazione loop, comunicazione HTTP, combinazione, selection/partizione, condizionale, controllo). Fornisce guida per la selezione in base alle caratteristiche e agli usi di ciascuna funzione."
 ---
 
 # Creation Functions

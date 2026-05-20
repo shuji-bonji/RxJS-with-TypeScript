@@ -1,37 +1,37 @@
 ---
-description: "Diferencias esenciales entre Observable vs Promise, comprensión intuitiva de Cold y Hot, cambio de pensamiento hacia programación declarativa, y otros puntos difíciles en la comprensión conceptual de RxJS con patrones de transición de imperativo a declarativo e implementación type-safe con TypeScript."
+description: "Diferencias esenciales entre Observable vs Promise, comprensiÃ³n intuitiva de Cold y Hot, cambio de pensamiento hacia programaciÃ³n declarativa, y otros puntos difÃ­ciles en la comprensiÃ³n conceptual de RxJS con patrones de transiciÃ³n de imperativo a declarativo e implementaciÃ³n type-safe con TypeScript."
 ---
 
-# El Muro de la Comprensión Conceptual
+# El Muro de la ComprensiÃ³n Conceptual
 
-El primer muro de RxJS es **la comprensión de conceptos**. Especialmente para desarrolladores acostumbrados a Promises, el comportamiento de Observable puede ser contraintuitivo.
+El primer muro de RxJS es **la comprensiÃ³n de conceptos**. Especialmente para desarrolladores acostumbrados a Promises, el comportamiento de Observable puede ser contraintuitivo.
 
 ## Diferencias Esenciales entre Observable vs Promise
 
-### Promise: Procesamiento Asíncrono de Una Sola Vez
+### Promise: Procesamiento AsÃ­ncrono de Una Sola Vez
 
 ```typescript
 // Promise: retorna un valor solo una vez
 const userPromise = fetch('/api/user/1').then(res => res.json());
 
-userPromise.then(user => console.log(user)); // Obtiene información del usuario solo una vez
-userPromise.then(user => console.log(user)); // Mismo resultado en caché
+userPromise.then(user => console.log(user)); // Obtiene informaciÃ³n del usuario solo una vez
+userPromise.then(user => console.log(user)); // Mismo resultado en cachÃ©
 ```
 
-> [!TIP] Características
-> - **Eager (ejecución inmediata)** - El procesamiento comienza en el momento de creación de Promise
-> - **Completa solo una vez** - Éxito o fallo, solo una vez
+> [!TIP] CaracterÃ­sticas
+> - **Eager (ejecuciÃ³n inmediata)** - El procesamiento comienza en el momento de creaciÃ³n de Promise
+> - **Completa solo una vez** - Ã‰xito o fallo, solo una vez
 > - **No cancelable** - Una vez iniciado, no se puede detener
-> - **Siempre Hot** - Múltiples then comparten el mismo resultado
+> - **Siempre Hot** - MÃºltiples then comparten el mismo resultado
 
 ### Observable: Stream (Flujo de Datos con Eje Temporal)
 
 ```typescript
 import { Observable } from 'rxjs';
 
-// Observable: fluye múltiples valores a lo largo del eje temporal
+// Observable: fluye mÃºltiples valores a lo largo del eje temporal
 const user$ = new Observable<User>(subscriber => {
-  console.log('¡Inicio de ejecución de Observable!');
+  console.log('Â¡Inicio de ejecuciÃ³n de Observable!');
   fetch('/api/user/1')
     .then(res => res.json())
     .then(user => {
@@ -40,43 +40,43 @@ const user$ = new Observable<User>(subscriber => {
     });
 });
 
-// L Nada sucede aún en este punto (Lazy)
-console.log('Creación de Observable completada');
+// L Nada sucede aÃºn en este punto (Lazy)
+console.log('CreaciÃ³n de Observable completada');
 
 //  Se ejecuta solo cuando se suscribe
-user$.subscribe(user => console.log('Suscripción1:', user));
-user$.subscribe(user => console.log('Suscripción2:', user));
-// ’ La llamada API se ejecuta 2 veces (Cold Observable)
+user$.subscribe(user => console.log('SuscripciÃ³n1:', user));
+user$.subscribe(user => console.log('SuscripciÃ³n2:', user));
+// Â’ La llamada API se ejecuta 2 veces (Cold Observable)
 ```
 
 #### Salida
 ```
-Creación de Observable completada
-¡Inicio de ejecución de Observable!
-Suscripción1: { id: 1, name: 'Alice' }
-¡Inicio de ejecución de Observable!
-Suscripción2: { id: 1, name: 'Alice' }
+CreaciÃ³n de Observable completada
+Â¡Inicio de ejecuciÃ³n de Observable!
+SuscripciÃ³n1: { id: 1, name: 'Alice' }
+Â¡Inicio de ejecuciÃ³n de Observable!
+SuscripciÃ³n2: { id: 1, name: 'Alice' }
 ```
 
-> [!TIP] Características
-> - **Lazy (ejecución diferida)** - Nada sucede hasta que se suscribe
-> - **Puede fluir múltiples valores** - Se puede llamar next() múltiples veces
+> [!TIP] CaracterÃ­sticas
+> - **Lazy (ejecuciÃ³n diferida)** - Nada sucede hasta que se suscribe
+> - **Puede fluir mÃºltiples valores** - Se puede llamar next() mÃºltiples veces
 > - **Cancelable** - Se puede detener con unsubscribe
-> - **Cold o Hot** - Se puede elegir si ejecutar por suscripción o compartir
+> - **Cold o Hot** - Se puede elegir si ejecutar por suscripciÃ³n o compartir
 
-### Tabla de Comparación
+### Tabla de ComparaciÃ³n
 
-| Característica | Promise | Observable |
+| CaracterÃ­stica | Promise | Observable |
 |---|---|---|
-| **Momento de ejecución** | Inmediato (Eager) | Al suscribirse (Lazy) |
-| **Número de valores** | Solo 1 vez | 0 o más veces (múltiples posibles) |
-| **Cancelación** | No posible | Posible (unsubscribe) |
-| **Reutilización** | Resultado en caché | Re-ejecución por suscripción (Cold) |
-| **Después de error** | Termina | Termina (retry posible) |
+| **Momento de ejecuciÃ³n** | Inmediato (Eager) | Al suscribirse (Lazy) |
+| **NÃºmero de valores** | Solo 1 vez | 0 o mÃ¡s veces (mÃºltiples posibles) |
+| **CancelaciÃ³n** | No posible | Posible (unsubscribe) |
+| **ReutilizaciÃ³n** | Resultado en cachÃ© | Re-ejecuciÃ³n por suscripciÃ³n (Cold) |
+| **DespuÃ©s de error** | Termina | Termina (retry posible) |
 
-### Visualización de las Diferencias de Comportamiento
+### VisualizaciÃ³n de las Diferencias de Comportamiento
 
-El siguiente diagrama de secuencia muestra las diferencias en el flujo de ejecución entre Promise y Observable.
+El siguiente diagrama de secuencia muestra las diferencias en el flujo de ejecuciÃ³n entre Promise y Observable.
 
 ```mermaid
 sequenceDiagram
@@ -85,24 +85,24 @@ sequenceDiagram
     participant Observable
 
     Note over User,Promise: Caso de Promise
-    User->>Promise: Creación (inicio inmediato de ejecución)
+    User->>Promise: CreaciÃ³n (inicio inmediato de ejecuciÃ³n)
     activate Promise
-    Promise-->>Promise: Llamada API en ejecución...
+    Promise-->>Promise: Llamada API en ejecuciÃ³n...
     Promise-->>User: Retorna un valor
     deactivate Promise
     Note over Promise: Completa (no re-ejecutable)
 
     Note over User,Observable: Caso de Observable
-    User->>Observable: Creación (nada sucede)
+    User->>Observable: CreaciÃ³n (nada sucede)
     Note over Observable: Estado de espera (Lazy)
 
     User->>Observable: subscribe()
     activate Observable
-    Observable-->>Observable: Llamada API en ejecución...
+    Observable-->>Observable: Llamada API en ejecuciÃ³n...
     Observable-->>User: Valor1
     Observable-->>User: Valor2
     Observable-->>User: Valor3
-    Note over Observable: Múltiples valores a lo largo del eje temporal
+    Note over Observable: MÃºltiples valores a lo largo del eje temporal
     Observable-->>User: complete()
     deactivate Observable
 
@@ -118,10 +118,10 @@ sequenceDiagram
 
 ### Malentendidos Comunes
 
-#### L Malentendido 1: "Observable es solo para asincronía"
+#### L Malentendido 1: "Observable es solo para asincronÃ­a"
 
 ```typescript
-// Observable también puede manejar procesamiento síncrono
+// Observable tambiÃ©n puede manejar procesamiento sÃ­ncrono
 import { of } from 'rxjs';
 
 const sync$ = of(1, 2, 3);
@@ -130,7 +130,7 @@ console.log('Before subscribe');
 sync$.subscribe(value => console.log(value));
 console.log('After subscribe');
 
-// Salida (se ejecuta síncronamente):
+// Salida (se ejecuta sÃ­ncronamente):
 // Before subscribe
 // 1
 // 2
@@ -147,19 +147,19 @@ const observable$ = of(1, 2, 3);
 
 // L Ejemplo malo: Pensamiento tipo Promise
 const value = observable$.subscribe(x => x); // value es un objeto Subscription
-console.log(value); // Subscription { ... }  No es el valor esperado
+console.log(value); // Subscription { ... } Â No es el valor esperado
 
 //  Ejemplo bueno: Pensamiento tipo Observable
 observable$.pipe(
   map(x => x * 2)
 ).subscribe(value => {
-  console.log(value); // Usar el valor aquí
+  console.log(value); // Usar el valor aquÃ­
 });
 ```
 
-## Comprensión Intuitiva de Cold vs Hot
+## ComprensiÃ³n Intuitiva de Cold vs Hot
 
-### Cold Observable: Stream Independiente por Suscripción
+### Cold Observable: Stream Independiente por SuscripciÃ³n
 
 ```typescript
 import { interval } from 'rxjs';
@@ -168,27 +168,27 @@ import { take } from 'rxjs';
 // Cold: cada suscriptor tiene su propio temporizador independiente
 const cold$ = interval(1000).pipe(take(3));
 
-console.log('Inicio Suscripción1');
-cold$.subscribe(x => console.log('Suscripción1:', x));
+console.log('Inicio SuscripciÃ³n1');
+cold$.subscribe(x => console.log('SuscripciÃ³n1:', x));
 
 setTimeout(() => {
-  console.log('Inicio Suscripción2 (después de 2s)');
-  cold$.subscribe(x => console.log('Suscripción2:', x));
+  console.log('Inicio SuscripciÃ³n2 (despuÃ©s de 2s)');
+  cold$.subscribe(x => console.log('SuscripciÃ³n2:', x));
 }, 2000);
 
 // Salida:
-// Inicio Suscripción1
-// Suscripción1: 0        (después de 1s)
-// Suscripción1: 1        (después de 2s)
-// Inicio Suscripción2 (después de 2s)
-// Suscripción1: 2        (después de 3s)
-// Suscripción2: 0        (después de 3s)  Suscripción2 comienza desde el principio
-// Suscripción2: 1        (después de 4s)
-// Suscripción2: 2        (después de 5s)
+// Inicio SuscripciÃ³n1
+// SuscripciÃ³n1: 0        (despuÃ©s de 1s)
+// SuscripciÃ³n1: 1        (despuÃ©s de 2s)
+// Inicio SuscripciÃ³n2 (despuÃ©s de 2s)
+// SuscripciÃ³n1: 2        (despuÃ©s de 3s)
+// SuscripciÃ³n2: 0        (despuÃ©s de 3s) Â SuscripciÃ³n2 comienza desde el principio
+// SuscripciÃ³n2: 1        (despuÃ©s de 4s)
+// SuscripciÃ³n2: 2        (despuÃ©s de 5s)
 ```
 
-> [!TIP] Características de Cold
-> - **Ejecución independiente** por suscripción
+> [!TIP] CaracterÃ­sticas de Cold
+> - **EjecuciÃ³n independiente** por suscripciÃ³n
 > - Mantiene el "plano" de los datos
 > - Ejemplos: Llamadas HTTP API, temporizadores, lectura de archivos
 
@@ -204,35 +204,35 @@ const hot$ = interval(1000).pipe(
   share() // Esto lo hace Hot
 );
 
-console.log('Inicio Suscripción1');
-hot$.subscribe(x => console.log('Suscripción1:', x));
+console.log('Inicio SuscripciÃ³n1');
+hot$.subscribe(x => console.log('SuscripciÃ³n1:', x));
 
 setTimeout(() => {
-  console.log('Inicio Suscripción2 (después de 2s)');
-  hot$.subscribe(x => console.log('Suscripción2:', x));
+  console.log('Inicio SuscripciÃ³n2 (despuÃ©s de 2s)');
+  hot$.subscribe(x => console.log('SuscripciÃ³n2:', x));
 }, 2000);
 
 // Salida:
-// Inicio Suscripción1
-// Suscripción1: 0        (después de 1s)
-// Suscripción1: 1        (después de 2s)
-// Inicio Suscripción2 (después de 2s)
-// Suscripción1: 2        (después de 3s)
-// Suscripción2: 2        (después de 3s)  Suscripción2 se une a mitad de camino
+// Inicio SuscripciÃ³n1
+// SuscripciÃ³n1: 0        (despuÃ©s de 1s)
+// SuscripciÃ³n1: 1        (despuÃ©s de 2s)
+// Inicio SuscripciÃ³n2 (despuÃ©s de 2s)
+// SuscripciÃ³n1: 2        (despuÃ©s de 3s)
+// SuscripciÃ³n2: 2        (despuÃ©s de 3s) Â SuscripciÃ³n2 se une a mitad de camino
 ```
 
-> [!TIP] Características de Hot
-> - Todos los suscriptores **comparten la misma ejecución**
-> - Los datos están siendo "transmitidos"
+> [!TIP] CaracterÃ­sticas de Hot
+> - Todos los suscriptores **comparten la misma ejecuciÃ³n**
+> - Los datos estÃ¡n siendo "transmitidos"
 > - Ejemplos: Eventos de clic, WebSocket, Subject
 
-### Cómo Distinguir Cold/Hot
+### CÃ³mo Distinguir Cold/Hot
 
 ```typescript
 import { fromEvent, interval, of, Subject } from 'rxjs';
 import { share } from 'rxjs';
 
-// Cold (ejecución independiente por suscripción)
+// Cold (ejecuciÃ³n independiente por suscripciÃ³n)
 const cold1$ = of(1, 2, 3);
 const cold2$ = interval(1000);
 const cold3$ = ajax('/api/data');
@@ -243,21 +243,21 @@ const hot1$ = new Subject<number>();
 const hot2$ = interval(1000).pipe(share()); // Convierte Cold a Hot
 ```
 
-> [!IMPORTANT] Cómo Distinguirlos
-> - **Creation Functions (of, from, fromEvent, interval, ajax, etc.)** ’ Cold
-> - **Familia Subject** ’ Hot
-> - **Uso de share(), shareReplay()** ’ Convierte Cold a Hot
+> [!IMPORTANT] CÃ³mo Distinguirlos
+> - **Creation Functions (of, from, fromEvent, interval, ajax, etc.)** Â’ Cold
+> - **Familia Subject** Â’ Hot
+> - **Uso de share(), shareReplay()** Â’ Convierte Cold a Hot
 
-## Cambio de Pensamiento hacia Programación Declarativa
+## Cambio de Pensamiento hacia ProgramaciÃ³n Declarativa
 
 ### Imperativo vs Declarativo
 
-RxJS es un paradigma de **programación declarativa**.
+RxJS es un paradigma de **programaciÃ³n declarativa**.
 
 #### L Pensamiento Imperativo (Promise/async-await)
 
 ```typescript
-// Imperativo: describe "cómo" procesar
+// Imperativo: describe "cÃ³mo" procesar
 async function processUsers() {
   const response = await fetch('/api/users');
   const users = await response.json();
@@ -284,7 +284,7 @@ async function processUsers() {
 import { from } from 'rxjs';
 import { mergeMap, filter, map, toArray } from 'rxjs';
 
-// Declarativo: describe "qué" transformar
+// Declarativo: describe "quÃ©" transformar
 const processUsers$ = from(fetch('/api/users')).pipe(
   mergeMap(res => res.json()),
   mergeMap(users => users), // Expande el array
@@ -298,8 +298,8 @@ processUsers$.subscribe(userNames => console.log(userNames));
 
 
 ::: tip Diferencia
-- **Imperativo**: Describe procedimientos (bucles, condicionales, asignación de variables)
-- **Declarativo**: Describe pipeline de transformación (flujo de datos)
+- **Imperativo**: Describe procedimientos (bucles, condicionales, asignaciÃ³n de variables)
+- **Declarativo**: Describe pipeline de transformaciÃ³n (flujo de datos)
 :::
 
 ### Puntos Clave para el Cambio de Pensamiento
@@ -314,7 +314,7 @@ import { filter, map, of } from "rxjs";
 const observable$ = of(1, 2, 3);
 // L Ejemplo malo: procesar dentro de subscribe
 observable$.subscribe(value => {
-  const doubled = value * 2;           // =H Cálculo dentro de subscribe
+  const doubled = value * 2;           // =H CÃ¡lculo dentro de subscribe
   const filtered = doubled > 4 ? doubled : null;  // =H Condicional dentro de subscribe
   if (filtered) {                      // =H Sentencia if dentro de subscribe
     console.log(filtered);
@@ -323,8 +323,8 @@ observable$.subscribe(value => {
 
 //  Ejemplo bueno: transformar dentro de pipe
 observable$.pipe(
-  map(value => value * 2),       // Cálculo dentro de pipe
-  filter(value => value > 4)     // Filtrado también dentro de pipe
+  map(value => value * 2),       // CÃ¡lculo dentro de pipe
+  filter(value => value > 4)     // Filtrado tambiÃ©n dentro de pipe
 ).subscribe(value => console.log(value));  // subscribe solo para efectos secundarios
 ```
 
@@ -357,7 +357,7 @@ source$.pipe(
 getUser$(userId).subscribe(user => {
   getOrders$(user.id).subscribe(orders => {  // =H subscribe adicional dentro de subscribe (anidado)
     console.log(user, orders);
-  });  // =H La cancelación de suscripción se vuelve compleja
+  });  // =H La cancelaciÃ³n de suscripciÃ³n se vuelve compleja
 });
 
 //  Ejemplo bueno: aplanar con mergeMap
@@ -367,12 +367,12 @@ getUser$(userId).pipe(
       map(orders => ({ user, orders }))
     )
   )
-).subscribe(({ user, orders }) => console.log(user, orders));  // Solo una suscripción
+).subscribe(({ user, orders }) => console.log(user, orders));  // Solo una suscripciÃ³n
 ```
 
-#### Punto 4: Organizar con sintaxis de separación en 3 etapas
+#### Punto 4: Organizar con sintaxis de separaciÃ³n en 3 etapas
 
-Una técnica importante para mejorar drásticamente la legibilidad y mantenibilidad del código RxJS es la **sintaxis de separación por etapas**.
+Una tÃ©cnica importante para mejorar drÃ¡sticamente la legibilidad y mantenibilidad del cÃ³digo RxJS es la **sintaxis de separaciÃ³n por etapas**.
 
 ```typescript
 // L Ejemplo malo: one-liner con todo mezclado
@@ -381,15 +381,15 @@ fromEvent(document, 'click').pipe(
   filter(x => x > 100),
   throttleTime(200)
 ).subscribe({
-  next: x => console.log('Posición del clic:', x),
+  next: x => console.log('PosiciÃ³n del clic:', x),
   error: err => console.error(err)
 });
 ```
 
 > [!IMPORTANT] Problemas
-> - Definición de stream, transformación y suscripción mezcladas
-> - Depuración difícil (no se sabe dónde ocurre el problema)
-> - Difícil de probar
+> - DefiniciÃ³n de stream, transformaciÃ³n y suscripciÃ³n mezcladas
+> - DepuraciÃ³n difÃ­cil (no se sabe dÃ³nde ocurre el problema)
+> - DifÃ­cil de probar
 > - No reutilizable
 
 ```typescript
@@ -397,33 +397,33 @@ fromEvent(document, 'click').pipe(
 
 import { filter, fromEvent, map, throttleTime } from "rxjs";
 
-// 1. Definición de Observable (fuente del stream)
+// 1. DefiniciÃ³n de Observable (fuente del stream)
 const clicks$ = fromEvent(document, 'click');
 
-// 2. Definición de pipeline (procesamiento de transformación de datos)
+// 2. DefiniciÃ³n de pipeline (procesamiento de transformaciÃ³n de datos)
 const processed$ = clicks$.pipe(
   map(event => (event as MouseEvent).clientX),
   filter(x => x > 100),
   throttleTime(200)
 );
 
-// 3. Procesamiento de suscripción (ejecución de efectos secundarios)
+// 3. Procesamiento de suscripciÃ³n (ejecuciÃ³n de efectos secundarios)
 const subscription = processed$.subscribe({
-  next: x => console.log('Posición del clic:', x),
+  next: x => console.log('PosiciÃ³n del clic:', x),
   error: err => console.error(err),
   complete: () => console.log('Completado')
 });
 ```
 
 #### Beneficios
-- **Depuración fácil** - Se puede insertar `console.log` o `tap` en cada etapa
+- **DepuraciÃ³n fÃ¡cil** - Se puede insertar `console.log` o `tap` en cada etapa
 - **Testeable** - `processed$` se puede probar independientemente
 - **Reutilizable** - `clicks$` y `processed$` se pueden usar en otros lugares
-- **Mejora la legibilidad** - La intención del código se vuelve clara
+- **Mejora la legibilidad** - La intenciÃ³n del cÃ³digo se vuelve clara
 
-**La sintaxis de separación por etapas es una de las técnicas más prácticas para superar las dificultades de RxJS.**
+**La sintaxis de separaciÃ³n por etapas es una de las tÃ©cnicas mÃ¡s prÃ¡cticas para superar las dificultades de RxJS.**
 
-Para más detalles, consulta **[Capítulo 10: Infierno de One-liners y Sintaxis de Separación por Etapas](/es/guide/anti-patterns/one-liner-hell)**.
+Para mÃ¡s detalles, consulta **[CapÃ­tulo 10: Infierno de One-liners y Sintaxis de SeparaciÃ³n por Etapas](/es/guide/anti-patterns/one-liner-hell)**.
 
 ## Experimentar para Comprender (Utilizar Starter Kit)
 
@@ -434,30 +434,30 @@ import { Observable } from 'rxjs';
 
 console.log('=== Promise (Eager) ===');
 const promise = new Promise((resolve) => {
-  console.log('¡Ejecución de Promise!');
+  console.log('Â¡EjecuciÃ³n de Promise!');
   resolve(42);
 });
-console.log('Creación de Promise completada');
+console.log('CreaciÃ³n de Promise completada');
 promise.then(value => console.log('Resultado de Promise:', value));
 
 console.log('\n=== Observable (Lazy) ===');
 const observable$ = new Observable(subscriber => {
-  console.log('¡Ejecución de Observable!');
+  console.log('Â¡EjecuciÃ³n de Observable!');
   subscriber.next(42);
   subscriber.complete();
 });
-console.log('Creación de Observable completada');
+console.log('CreaciÃ³n de Observable completada');
 observable$.subscribe(value => console.log('Resultado de Observable:', value));
 
 // Salida:
 // === Promise (Eager) ===
-// ¡Ejecución de Promise!
-// Creación de Promise completada
+// Â¡EjecuciÃ³n de Promise!
+// CreaciÃ³n de Promise completada
 // Resultado de Promise: 42
 //
 // === Observable (Lazy) ===
-// Creación de Observable completada
-// ¡Ejecución de Observable!
+// CreaciÃ³n de Observable completada
+// Â¡EjecuciÃ³n de Observable!
 // Resultado de Observable: 42
 ```
 
@@ -467,13 +467,13 @@ observable$.subscribe(value => console.log('Resultado de Observable:', value));
 import { interval } from 'rxjs';
 import { take, share } from 'rxjs';
 
-// Cold: independiente por suscripción
+// Cold: independiente por suscripciÃ³n
 const cold$ = interval(1000).pipe(take(3));
 
 console.log('Cold Observable:');
-cold$.subscribe(x => console.log('Cold Suscripción1:', x));
+cold$.subscribe(x => console.log('Cold SuscripciÃ³n1:', x));
 setTimeout(() => {
-  cold$.subscribe(x => console.log('Cold Suscripción2:', x));
+  cold$.subscribe(x => console.log('Cold SuscripciÃ³n2:', x));
 }, 2000);
 
 // Hot: compartido
@@ -481,14 +481,14 @@ const hot$ = interval(1000).pipe(take(3), share());
 
 setTimeout(() => {
   console.log('\nHot Observable:');
-  hot$.subscribe(x => console.log('Hot Suscripción1:', x));
+  hot$.subscribe(x => console.log('Hot SuscripciÃ³n1:', x));
   setTimeout(() => {
-    hot$.subscribe(x => console.log('Hot Suscripción2:', x));
+    hot$.subscribe(x => console.log('Hot SuscripciÃ³n2:', x));
   }, 2000);
 }, 6000);
 ```
 
-**Ejecuta esto en el [entorno de ejecución de aprendizaje](/es/guide/starter-kid) para experimentar la diferencia.**
+**Ejecuta esto en el [entorno de ejecuciÃ³n de aprendizaje](/es/guide/starter-kid) para experimentar la diferencia.**
 
 ### Experimento 3: Declarativo vs Imperativo
 
@@ -517,35 +517,35 @@ of(...numbers).pipe(
 ).subscribe(num => console.log(num));
 ```
 
-## Verificación de Comprensión
+## VerificaciÃ³n de ComprensiÃ³n
 
 Verifica si puedes responder las siguientes preguntas.
 
 ```markdown
-## Conceptos Básicos
+## Conceptos BÃ¡sicos
 - [ ] Puedes enumerar 3 diferencias entre Promise y Observable
 - [ ] Puedes explicar la diferencia entre Lazy y Eager
 - [ ] Puedes explicar la diferencia entre Cold y Hot con ejemplos
 
-## Práctica
-- [ ] Puedes explicar por qué no se debe completar el procesamiento dentro de subscribe
-- [ ] Sabes cómo corregir subscribe anidados
-- [ ] Conoces cómo convertir un Cold Observable a Hot
+## PrÃ¡ctica
+- [ ] Puedes explicar por quÃ© no se debe completar el procesamiento dentro de subscribe
+- [ ] Sabes cÃ³mo corregir subscribe anidados
+- [ ] Conoces cÃ³mo convertir un Cold Observable a Hot
 
-## Depuración
+## DepuraciÃ³n
 - [ ] Puedes identificar la causa cuando un Observable no se ejecuta
-- [ ] Comprendes la causa de que la suscripción se ejecute múltiples veces
+- [ ] Comprendes la causa de que la suscripciÃ³n se ejecute mÃºltiples veces
 ```
 
 ## Siguientes Pasos
 
-Una vez que comprendas los conceptos, avanza a los muros más prácticos.
+Una vez que comprendas los conceptos, avanza a los muros mÃ¡s prÃ¡cticos.
 
-- **El Muro de la Gestión del Ciclo de Vida** (En preparación) - Cuándo hacer subscribe/unsubscribe
-- **La Indecisión de Selección de Operadores** (En preparación) - Criterios para elegir entre más de 100 operadores
+- **El Muro de la GestiÃ³n del Ciclo de Vida** (En preparaciÃ³n) - CuÃ¡ndo hacer subscribe/unsubscribe
+- **La IndecisiÃ³n de SelecciÃ³n de Operadores** (En preparaciÃ³n) - Criterios para elegir entre mÃ¡s de 100 operadores
 
 ## Secciones Relacionadas
 
-- **[¿Qué es RxJS?](/es/guide/basics/what-is-rxjs)** - Conceptos básicos de RxJS
+- **[Â¿QuÃ© es RxJS?](/es/guide/basics/what-is-rxjs)** - Conceptos bÃ¡sicos de RxJS
 - **[Diferencias entre Promise y RxJS](/es/guide/basics/promise-vs-rxjs)** - Promise vs Observable
-- **[Cold and Hot Observables](/es/guide/observables/cold-and-hot-observables)** - Explicación detallada de Cold/Hot
+- **[Cold and Hot Observables](/es/guide/observables/cold-and-hot-observables)** - ExplicaciÃ³n detallada de Cold/Hot

@@ -14,7 +14,7 @@ Os agendadores do RxJS se enquadram em três categorias principais.
 2. **Micro-tarefa**: executada imediatamente após a conclusão da tarefa atual e antes do início da próxima tarefa
 3. **Processamento síncrono**: execução imediata
 
-Para obter mais informações, consulte [Task and Scheduler Basics](. /task-and-scheduler-basics.md).
+Para obter mais informações, consulte [Task and Scheduler Basics](./task-and-scheduler-basics.md).
 
 ## Agendadores principais.
 

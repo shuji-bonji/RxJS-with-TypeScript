@@ -369,5 +369,5 @@ interval(1000).pipe(
 ## 📚 Operadores relacionados.
 
 - **[combineLatest](/es/guide/creation-functions/combination/combineLatest)** - versión de Creation Function.
-- **[withLatestFrom](/es/guide/operators/combinación/withLatestFrom)** - Activado sólo por la corriente principal.
-- **[zipWith](/es/guide/operators/combinación/zipWith)** - Empareja los valores correspondientes
+- **[withLatestFrom](/es/guide/operators/combination/withLatestFrom)** - Activado sólo por la corriente principal.
+- **[zipWith](/es/guide/operators/combination/zipWith)** - Empareja los valores correspondientes

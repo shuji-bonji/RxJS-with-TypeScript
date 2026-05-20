@@ -326,11 +326,11 @@ numbers$.pipe(
 
 ## 📚 Operadores relacionados.
 
-- **[take](. /take)** - N tomado desde el principio.
-- **[first](. /first)** - obtiene el primer valor.
-- **[last](. /last)** - obtiene el último valor.
-- **[skip](. /skip)** - salta los N primeros valores
-- takeLast](. /takeLast)** - obtiene los N últimos valores
+- **[take](./take)** - N tomado desde el principio.
+- **[first](./first)** - obtiene el primer valor.
+- **[last](./last)** - obtiene el último valor.
+- **[skip](./skip)** - salta los N primeros valores
+- takeLast](./takeLast)** - obtiene los N últimos valores
 
 ## Resumen.
 

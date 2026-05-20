@@ -395,8 +395,8 @@ range(0, 10).pipe(
 
 ## 🚀 Siguiente paso.
 
-- **[take](. /take)** - aprende a obtener los N primeros valores.
-- **[takeLast](. /takeLast)** - aprende a obtener los últimos N valores.
-- takeUntil](. /utility/takeUntil)** - aprende a tomar valores hasta que se dispara otro Observable.
-- filter](. /filter)** - aprende a filtrar en base a condiciones
-- **[filtering-operator-practical-use-cases](. /practical-use-cases)** - aprende casos de uso reales
+- **[take](./take)** - aprende a obtener los N primeros valores.
+- **[takeLast](./takeLast)** - aprende a obtener los últimos N valores.
+- takeUntil](../utility/takeUntil)** - aprende a tomar valores hasta que se dispara otro Observable.
+- filter](./filter)** - aprende a filtrar en base a condiciones
+- **[filtering-operator-practical-use-cases](./practical-use-cases)** - aprende casos de uso reales

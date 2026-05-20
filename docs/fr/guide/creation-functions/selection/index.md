@@ -19,7 +19,7 @@ Ces fonctions fonctionnent dans la direction opposée ou d'un point de vue diff�
 
 | Fonction | Description de la fonction | Cas d'utilisation. |
 |---|---|---|
-| **[race](/fr/guide/création-fonctions/sélection/race)** | Adopter le premier publié | Compétition de sources de données multiples |
+| **[race](/fr/guide/creation-functions/selection/race)** | Adopter le premier publié | Compétition de sources de données multiples |
 | **[partition](/fr/guide/creation-functions/selection/partition)** | Séparer en deux avec des conditions | Processus de ramification en cas de succès ou d'échec |
 
 ## Critères d'utilisation

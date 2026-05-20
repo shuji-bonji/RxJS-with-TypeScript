@@ -1,14 +1,14 @@
 ---
-description: "Explica las dificultades de la gestión del ciclo de vida de RxJS (subscribe/unsubscribe) y cómo superarlas. Prevención de fugas de memoria, patrón takeUntil, gestión de Subscription, patrones de limpieza en Angular/React con ejemplos de código TypeScript."
+description: "Explica las dificultades de la gestiÃ³n del ciclo de vida de RxJS (subscribe/unsubscribe) y cÃ³mo superarlas. PrevenciÃ³n de fugas de memoria, patrÃ³n takeUntil, gestiÃ³n de Subscription, patrones de limpieza en Angular/React con ejemplos de cÃ³digo TypeScript."
 ---
 
-# La barrera de la gestión del ciclo de vida
+# La barrera de la gestiÃ³n del ciclo de vida
 
-Una de las mayores trampas de RxJS es la **gestión del ciclo de vida**. Equivocarse en "cuándo hacer subscribe" y "cuándo hacer unsubscribe" puede causar fugas de memoria y bugs.
+Una de las mayores trampas de RxJS es la **gestiÃ³n del ciclo de vida**. Equivocarse en "cuÃ¡ndo hacer subscribe" y "cuÃ¡ndo hacer unsubscribe" puede causar fugas de memoria y bugs.
 
-## ¿Cuándo se debe hacer subscribe?
+## Â¿CuÃ¡ndo se debe hacer subscribe?
 
-### Principio básico: No hacer subscribe hasta el último momento
+### Principio bÃ¡sico: No hacer subscribe hasta el Ãºltimo momento
 
 #### L Mal ejemplo: Hacer subscribe en el medio
 ```typescript
@@ -20,7 +20,7 @@ function getEvenNumbers() {
   // Hacer subscribe dentro de esto
   numbers$.subscribe(n => {
     if (n % 2 === 0) {
-      console.log(n); // ¿Cómo pasar esto al exterior?
+      console.log(n); // Â¿CÃ³mo pasar esto al exterior?
     }
   });
 }
@@ -44,14 +44,14 @@ const subscription = getEvenNumbers().subscribe(n => {
 });
 ```
 
-::: tip =¡ Explicación
-- **Mal ejemplo**: Al hacer subscribe dentro de la función, se pierde el control (no se puede cancelar, no se puede componer)
+::: tip =Â¡ ExplicaciÃ³n
+- **Mal ejemplo**: Al hacer subscribe dentro de la funciÃ³n, se pierde el control (no se puede cancelar, no se puede componer)
 - **Buen ejemplo**: Al devolver un Observable, el lado que llama puede controlarlo
 :::
 
 ### subscribe es el disparador de "efectos secundarios"
 
-#### L Mal ejemplo: Ejecutar múltiples efectos secundarios dentro de subscribe
+#### L Mal ejemplo: Ejecutar mÃºltiples efectos secundarios dentro de subscribe
 ```typescript
 import { fromEvent } from 'rxjs';
 import { map } from 'rxjs';
@@ -61,7 +61,7 @@ const button = document.querySelector('button')!;
 fromEvent(button, 'click')
   .pipe(map(() => Math.random()))
   .subscribe(randomValue => {
-    // Efecto secundario 1: Operación DOM
+    // Efecto secundario 1: OperaciÃ³n DOM
     document.querySelector('#result')!.textContent = randomValue.toString();
 
     // Efecto secundario 2: Llamada a API
@@ -86,7 +86,7 @@ const randomClicks$ = fromEvent(button, 'click').pipe(
   map(() => Math.random())
 );
 
-// Si solo necesitas actualización DOM
+// Si solo necesitas actualizaciÃ³n DOM
 randomClicks$.subscribe(value => {
   document.querySelector('#result')!.textContent = value.toString();
 });
@@ -100,32 +100,32 @@ randomClicks$.subscribe(value => {
 });
 ```
 
-::: tip =¡ Explicación
-- **subscribe = punto de ejecución de efectos secundarios**
-- **Si los efectos secundarios son independientes**: Separar en múltiples subscribe (se puede controlar individualmente)
+::: tip =Â¡ ExplicaciÃ³n
+- **subscribe = punto de ejecuciÃ³n de efectos secundarios**
+- **Si los efectos secundarios son independientes**: Separar en mÃºltiples subscribe (se puede controlar individualmente)
 - **Si los efectos secundarios siempre se ejecutan juntos**: OK agruparlos en un solo subscribe
 - **Si se necesitan efectos secundarios dentro del pipeline**: Usar el operador `tap`
 :::
 
-### ¿Cuándo se debe hacer subscribe?: Diagrama de flujo de decisión
+### Â¿CuÃ¡ndo se debe hacer subscribe?: Diagrama de flujo de decisiÃ³n
 
 ```mermaid
 graph LR
-    A[Quiero ejecutar procesamiento Observable] --> B{¿Necesitas pasar valor al exterior?}
-    B -->|Sí| C[Devolver Observable<br/>No hacer subscribe]
-    B -->|No| D{¿Necesitas efectos secundarios?}
-    D -->|Sí| E[Hacer subscribe]
-    D -->|No| F[Solo devolver Observable<br/>Usar/componer después]
+    A[Quiero ejecutar procesamiento Observable] --> B{Â¿Necesitas pasar valor al exterior?}
+    B -->|SÃ­| C[Devolver Observable<br/>No hacer subscribe]
+    B -->|No| D{Â¿Necesitas efectos secundarios?}
+    D -->|SÃ­| E[Hacer subscribe]
+    D -->|No| F[Solo devolver Observable<br/>Usar/componer despuÃ©s]
 
     C --> G[Hacer subscribe en el lado que llama]
-    E --> H{¿Múltiples efectos secundarios?}
-    H -->|Sí| I[Separar con tap o<br/>múltiples subscribe]
+    E --> H{Â¿MÃºltiples efectos secundarios?}
+    H -->|SÃ­| I[Separar con tap o<br/>mÃºltiples subscribe]
     H -->|No| J[Ejecutar en un solo subscribe]
 ```
 
-### Visión general del ciclo de vida de suscripción
+### VisiÃ³n general del ciclo de vida de suscripciÃ³n
 
-El siguiente diagrama de transición de estados muestra qué estados atraviesa una suscripción a Observable antes de terminar.
+El siguiente diagrama de transiciÃ³n de estados muestra quÃ© estados atraviesa una suscripciÃ³n a Observable antes de terminar.
 
 ```mermaid
 stateDiagram-v2
@@ -142,17 +142,17 @@ stateDiagram-v2
 
     note right of Suscrito
         En este estado consume memoria
-        ¡unsubscribe es obligatorio!
+        Â¡unsubscribe es obligatorio!
     end note
 
     note right of Completado
-        Después de complete()
-        limpieza automática
+        DespuÃ©s de complete()
+        limpieza automÃ¡tica
     end note
 
     note right of Error
-        Después de error()
-        también limpieza automática
+        DespuÃ©s de error()
+        tambiÃ©n limpieza automÃ¡tica
     end note
 
     note right of Cancelado
@@ -161,16 +161,16 @@ stateDiagram-v2
     end note
 ```
 
-> [!IMPORTANT] Puntos de gestión del ciclo de vida
+> [!IMPORTANT] Puntos de gestiÃ³n del ciclo de vida
 > - **Suscrito**: Estado con peligro de fuga de memoria
-> - **complete/error**: Se limpia automáticamente (no necesita unsubscribe)
+> - **complete/error**: Se limpia automÃ¡ticamente (no necesita unsubscribe)
 > - **unsubscribe**: Necesita limpieza manual (especialmente streams infinitos)
 
-## ¿Cuándo se debe hacer unsubscribe?
+## Â¿CuÃ¡ndo se debe hacer unsubscribe?
 
-### Principio básico: Si te suscribes, siempre cancela
+### Principio bÃ¡sico: Si te suscribes, siempre cancela
 
-#### L Mal ejemplo: No hacer unsubscribe ’ Fuga de memoria
+#### L Mal ejemplo: No hacer unsubscribe Â’ Fuga de memoria
 ```typescript
 import { interval } from 'rxjs';
 
@@ -180,12 +180,12 @@ function startTimer() {
   interval(1000).subscribe(n => {
     console.log(n);
   });
-  // ¡Esta suscripción continúa eternamente!
+  // Â¡Esta suscripciÃ³n continÃºa eternamente!
 }
 
-// Se añade una nueva suscripción con cada clic del botón
+// Se aÃ±ade una nueva suscripciÃ³n con cada clic del botÃ³n
 button.addEventListener('click', startTimer);
-// 10 clics = ¡10 suscripciones funcionando simultáneamente!
+// 10 clics = Â¡10 suscripciones funcionando simultÃ¡neamente!
 ```
 
 ####  Buen ejemplo: Cancelar con unsubscribe
@@ -197,36 +197,36 @@ function startTimer() {
     console.log(n);
   });
 
-  // Cancelar después de 5 segundos
+  // Cancelar despuÃ©s de 5 segundos
   setTimeout(() => {
     subscription.unsubscribe();
-    console.log('Suscripción cancelada');
+    console.log('SuscripciÃ³n cancelada');
   }, 5000);
 }
 ```
 
-::: tip =¡ Explicación
+::: tip =Â¡ ExplicaciÃ³n
 - Los **streams infinitos** (interval, fromEvent, etc.) siempre necesitan unsubscribe
-- Sin unsubscribe, fuga de memoria + procesamiento innecesario continúa
+- Sin unsubscribe, fuga de memoria + procesamiento innecesario continÃºa
 :::
 
 ### Casos donde unsubscribe no es necesario
 
 
-####  Observables que completan automáticamente
+####  Observables que completan automÃ¡ticamente
 
 ```typescript
 of(1, 2, 3).subscribe(n => console.log(n));
-// Después de complete, se limpia automáticamente
+// DespuÃ©s de complete, se limpia automÃ¡ticamente
 
 from([1, 2, 3]).subscribe(n => console.log(n));
-// Después de complete, se limpia automáticamente
+// DespuÃ©s de complete, se limpia automÃ¡ticamente
 ```
 
-####  Cuando la finalización está garantizada con take, etc.
+####  Cuando la finalizaciÃ³n estÃ¡ garantizada con take, etc.
 ```typescript
 interval(1000).pipe(
-  take(5) // complete automáticamente después de 5 veces
+  take(5) // complete automÃ¡ticamente despuÃ©s de 5 veces
 ).subscribe(n => console.log(n));
 ```
 
@@ -242,32 +242,32 @@ throwError(() => new Error('Error')).subscribe({
 EMPTY.subscribe(() => console.log('No se ejecuta'));
 ```
 
-> [!TIP] =¡ Explicación
+> [!TIP] =Â¡ ExplicaciÃ³n
 > unsubscribe no es necesario en los siguientes casos
-> 1. **Observables que llaman a complete()** - Se limpian automáticamente
-> 2. **Cuando se llama a error()** - También limpieza automática
-> 3. **Cuando la finalización está garantizada con take(n), etc.** - Se completa explícitamente
+> 1. **Observables que llaman a complete()** - Se limpian automÃ¡ticamente
+> 2. **Cuando se llama a error()** - TambiÃ©n limpieza automÃ¡tica
+> 3. **Cuando la finalizaciÃ³n estÃ¡ garantizada con take(n), etc.** - Se completa explÃ­citamente
 > > [!IMPORTANT] Importante
-> > ¡Streams infinitos (interval, fromEvent, Subject, etc.) siempre necesitan unsubscribe!
+> > Â¡Streams infinitos (interval, fromEvent, Subject, etc.) siempre necesitan unsubscribe!
 
 ### Diagrama de flujo para decidir si unsubscribe es necesario
 
 ```mermaid
 graph LR
-    A[Hiciste subscribe a Observable] --> B{¿Completa automáticamente?}
-    B -->|Sí<br/>of, from, petición HTTP| C[unsubscribe no necesario]
-    B -->|No| D{¿Garantía de finalización con<br/>take/first/takeUntil?}
-    D -->|Sí| C
-    D -->|No| E{¿Stream infinito?<br/>interval, fromEvent, Subject}
-    E -->|Sí| F[unsubscribe obligatorio]
+    A[Hiciste subscribe a Observable] --> B{Â¿Completa automÃ¡ticamente?}
+    B -->|SÃ­<br/>of, from, peticiÃ³n HTTP| C[unsubscribe no necesario]
+    B -->|No| D{Â¿GarantÃ­a de finalizaciÃ³n con<br/>take/first/takeUntil?}
+    D -->|SÃ­| C
+    D -->|No| E{Â¿Stream infinito?<br/>interval, fromEvent, Subject}
+    E -->|SÃ­| F[unsubscribe obligatorio]
     E -->|Desconocido| F
 ```
 
-**¡Si tienes dudas, hacer unsubscribe es seguro!**
+**Â¡Si tienes dudas, hacer unsubscribe es seguro!**
 
 ## Patrones para prevenir fugas de memoria
 
-### Patrón 1: Gestión con objeto Subscription
+### PatrÃ³n 1: GestiÃ³n con objeto Subscription
 
 ```typescript
 import { interval, fromEvent } from 'rxjs';
@@ -277,7 +277,7 @@ class MyComponent {
   private subscription = new Subscription();
 
   ngOnInit() {
-    // Añadir múltiples suscripciones a un solo Subscription
+    // AÃ±adir mÃºltiples suscripciones a un solo Subscription
     this.subscription.add(
       interval(1000).subscribe(n => console.log('Timer:', n))
     );
@@ -298,13 +298,13 @@ class MyComponent {
 }
 ```
 
-#### =¡ Ventajas
+#### =Â¡ Ventajas
 
-- Gestionar múltiples suscripciones con un solo objeto
-- Cancelación en lote en `ngOnDestroy`
-- Fácil añadir y eliminar
+- Gestionar mÃºltiples suscripciones con un solo objeto
+- CancelaciÃ³n en lote en `ngOnDestroy`
+- FÃ¡cil aÃ±adir y eliminar
 
-### Patrón 2: Gestión con array
+### PatrÃ³n 2: GestiÃ³n con array
 
 ```typescript
 import { interval, fromEvent } from 'rxjs';
@@ -330,13 +330,13 @@ class MyComponent {
 }
 ```
 
-#### =¡ Ventajas
+#### =Â¡ Ventajas
 
-- Gestión flexible con operaciones de array
-- También se puede cancelar individualmente
-- Fácil de depurar (verificar array con console.log)
+- GestiÃ³n flexible con operaciones de array
+- TambiÃ©n se puede cancelar individualmente
+- FÃ¡cil de depurar (verificar array con console.log)
 
-### Patrón 3: Patrón takeUntil (recomendado)
+### PatrÃ³n 3: PatrÃ³n takeUntil (recomendado)
 
 ```typescript
 import { interval, fromEvent, Subject } from 'rxjs';
@@ -346,7 +346,7 @@ class MyComponent {
   private destroy$ = new Subject<void>();
 
   ngOnInit() {
-    // Añadir takeUntil(this.destroy$) a todas las suscripciones
+    // AÃ±adir takeUntil(this.destroy$) a todas las suscripciones
     interval(1000).pipe(
       takeUntil(this.destroy$)
     ).subscribe(n => console.log('Timer:', n));
@@ -368,15 +368,15 @@ class MyComponent {
 }
 ```
 
-#### =¡ Ventajas
+#### =Â¡ Ventajas
 
-- **Más declarativo** - Especifica explícitamente la condición de finalización en el pipeline
+- **MÃ¡s declarativo** - Especifica explÃ­citamente la condiciÃ³n de finalizaciÃ³n en el pipeline
 - **No necesita objeto Subscription** - Eficiente en memoria
-- **Fácil de leer** - Al ver el código, se entiende "completa con destroy$"
+- **FÃ¡cil de leer** - Al ver el cÃ³digo, se entiende "completa con destroy$"
 
-## Guía completa del patrón takeUntil
+## GuÃ­a completa del patrÃ³n takeUntil
 
-### Patrón básico
+### PatrÃ³n bÃ¡sico
 
 ```typescript
 import { interval, Subject } from 'rxjs';
@@ -384,32 +384,32 @@ import { takeUntil } from 'rxjs';
 
 const destroy$ = new Subject<void>();
 
-// Esta suscripción continúa hasta que destroy$ haga next()
+// Esta suscripciÃ³n continÃºa hasta que destroy$ haga next()
 interval(1000).pipe(
   takeUntil(destroy$)
 ).subscribe(n => console.log(n));
 
-// Detener todas las suscripciones después de 5 segundos
+// Detener todas las suscripciones despuÃ©s de 5 segundos
 setTimeout(() => {
   destroy$.next();
   destroy$.complete();
 }, 5000);
 ```
 
-#### Diagrama de mármol
+#### Diagrama de mÃ¡rmol
 
 ```
 interval(1000):  --0--1--2--3--4--5--6--7-->
 destroy$:        ----------X
-                          ‘
+                          Â‘
                        llamada a next()
 
 Resultado takeUntil:   --0--1--2|
-                          ‘
+                          Â‘
                        complete
 ```
 
-### Aplicar a múltiples Observables
+### Aplicar a mÃºltiples Observables
 
 ```typescript
 import { interval, fromEvent, timer, Subject } from 'rxjs';
@@ -417,7 +417,7 @@ import { takeUntil, map } from 'rxjs';
 
 const destroy$ = new Subject<void>();
 
-// Patrón: usar el mismo destroy$ para todos los streams
+// PatrÃ³n: usar el mismo destroy$ para todos los streams
 interval(1000).pipe(
   takeUntil(destroy$),
   map(n => `Timer: ${n}`)
@@ -439,13 +439,13 @@ function cleanup() {
   destroy$.complete();
 }
 
-// Ejemplo: llamar cleanup() en la transición de página
+// Ejemplo: llamar cleanup() en la transiciÃ³n de pÃ¡gina
 window.addEventListener('beforeunload', cleanup);
 ```
 
-## Errores comunes del patrón takeUntil
+## Errores comunes del patrÃ³n takeUntil
 
-### Error 1: La posición de takeUntil es incorrecta
+### Error 1: La posiciÃ³n de takeUntil es incorrecta
 
 #### L Mal ejemplo: map antes de takeUntil
 ```typescript
@@ -455,7 +455,7 @@ import { map, takeUntil } from 'rxjs';
 const destroy$ = new Subject<void>();
 
 interval(1000).pipe(
-  takeUntil(destroy$),  // Aunque complete aquí...
+  takeUntil(destroy$),  // Aunque complete aquÃ­...
   map(n => n * 2)       // map puede ejecutarse
 ).subscribe(console.log);
 ```
@@ -469,13 +469,13 @@ const destroy$ = new Subject<void>();
 
 interval(1000).pipe(
   map(n => n * 2),
-  takeUntil(destroy$)  // Después de todos los operadores
+  takeUntil(destroy$)  // DespuÃ©s de todos los operadores
 ).subscribe(console.log);
 ```
 
-> [!TIP]=¡ Explicación
+> [!TIP]=Â¡ ExplicaciÃ³n
 > - **takeUntil se coloca al final** en la medida de lo posible
-> - Excepción: A veces se coloca antes de operadores multicast como shareReplay
+> - ExcepciÃ³n: A veces se coloca antes de operadores multicast como shareReplay
 
 ### Error 2: No completar destroy$
 
@@ -505,9 +505,9 @@ function cleanup() {
 }
 ```
 
-> [!TIP]=¡ Explicación
+> [!TIP]=Â¡ ExplicaciÃ³n
 > - Solo con `next()`, destroy$ permanece suscrito
-> - **Siempre llamar también a `complete()`**
+> - **Siempre llamar tambiÃ©n a `complete()`**
 
 ### Error 3: Intentar reutilizar
 
@@ -532,7 +532,7 @@ function stop() {
 start();
 setTimeout(stop, 3000);
 
-// L Problema: destroy$ ya está completado, por lo que si haces start() de nuevo, termina inmediatamente
+// L Problema: destroy$ ya estÃ¡ completado, por lo que si haces start() de nuevo, termina inmediatamente
 setTimeout(start, 5000); // Esto no funciona
 ```
 
@@ -545,7 +545,7 @@ class MyComponent {
   private destroy$ = new Subject<void>();
 
   start() {
-    // Si ya está completado, regenerar
+    // Si ya estÃ¡ completado, regenerar
     if (this.destroy$.closed) {
       this.destroy$ = new Subject<void>();
     }
@@ -562,13 +562,13 @@ class MyComponent {
 }
 ```
 
-> [!TIP] =¡ Explicación
+> [!TIP] =Â¡ ExplicaciÃ³n
 > - **Un Subject no se puede reutilizar una vez completado**
 > - Si necesitas reiniciar, crear un nuevo Subject
 
-## Mejores prácticas de gestión de Subscription
+## Mejores prÃ¡cticas de gestiÃ³n de Subscription
 
-### Mejor práctica 1: Tener destroy$ por unidad de componente/clase
+### Mejor prÃ¡ctica 1: Tener destroy$ por unidad de componente/clase
 
 ```typescript
 import { Subject } from 'rxjs';
@@ -600,13 +600,13 @@ class UserProfileComponent {
 }
 ```
 
-#### =¡ Ventajas
+#### =Â¡ Ventajas
 
-- **Consistencia** - Mismo patrón en todos los componentes
-- **Mantenibilidad** - Al añadir nuevas suscripciones, no hay cambios en ngOnDestroy
+- **Consistencia** - Mismo patrÃ³n en todos los componentes
+- **Mantenibilidad** - Al aÃ±adir nuevas suscripciones, no hay cambios en ngOnDestroy
 - **Seguridad** - No hay olvidos de unsubscribe
 
-### Mejor práctica 2: Utilizar AsyncPipe (en caso de Angular)
+### Mejor prÃ¡ctica 2: Utilizar AsyncPipe (en caso de Angular)
 
 ```typescript
 import { Component } from '@angular/core';
@@ -615,7 +615,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-user-profile',
   template: `
-    <!-- AsyncPipe hace subscribe/unsubscribe automáticamente -->
+    <!-- AsyncPipe hace subscribe/unsubscribe automÃ¡ticamente -->
     <div *ngIf="user$ | async as user">
       <h1>{{ user.name }}</h1>
       <p>{{ user.email }}</p>
@@ -637,18 +637,18 @@ export class UserProfileComponent {
     this.user$ = this.userService.getUser();
     this.posts$ = this.userService.getUserPosts();
 
-    // ¡No necesita ngOnDestroy! AsyncPipe cancela automáticamente
+    // Â¡No necesita ngOnDestroy! AsyncPipe cancela automÃ¡ticamente
   }
 }
 ```
 
-#### =¡ Ventajas
+#### =Â¡ Ventajas
 
-- **unsubscribe automático** - Cancelación automática al destruir el componente
-- **Compatibilidad OnPush** - Detección de cambios optimizada
-- **Código conciso** - No necesita boilerplate de subscribe/unsubscribe
+- **unsubscribe automÃ¡tico** - CancelaciÃ³n automÃ¡tica al destruir el componente
+- **Compatibilidad OnPush** - DetecciÃ³n de cambios optimizada
+- **CÃ³digo conciso** - No necesita boilerplate de subscribe/unsubscribe
 
-### Mejor práctica 3: Cambiar estrategia según larga vida vs corta vida
+### Mejor prÃ¡ctica 3: Cambiar estrategia segÃºn larga vida vs corta vida
 
 ```typescript
 import { Injectable } from '@angular/core';
@@ -658,7 +658,7 @@ import { takeUntil } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class DataService {
   //  Estado compartido en todo el servicio (larga vida)
-  // ’ Mantener suscripción hasta finalización de aplicación
+  // Â’ Mantener suscripciÃ³n hasta finalizaciÃ³n de aplicaciÃ³n
   private userState$ = new BehaviorSubject<User | null>(null);
 
   getUser() {
@@ -673,8 +673,8 @@ class MyComponent {
   private destroy$ = new Subject<void>();
 
   ngOnInit() {
-    //  Suscripción vinculada al ciclo de vida del componente (corta vida)
-    // ’ Cancelar siempre en ngOnDestroy
+    //  SuscripciÃ³n vinculada al ciclo de vida del componente (corta vida)
+    // Â’ Cancelar siempre en ngOnDestroy
     interval(1000).pipe(
       takeUntil(this.destroy$)
     ).subscribe(n => console.log(n));
@@ -691,17 +691,17 @@ class MyComponent {
 }
 ```
 
-> [!IMPORTANT] =¡ Principios
-> | Tipo de suscripción | Ciclo de vida | Método de gestión |
+> [!IMPORTANT] =Â¡ Principios
+> | Tipo de suscripciÃ³n | Ciclo de vida | MÃ©todo de gestiÃ³n |
 > |---|---|---|
-> | **Estado global** | Toda la aplicación | BehaviorSubject + AsyncPipe |
-> | **Específico de página/ruta** | Mientras la ruta es válida | takeUntil(routeDestroy$) |
-> | **Específico de componente** | Mientras existe el componente | takeUntil(destroy$) or AsyncPipe |
-> | **Llamada API única** | Hasta completar | take(1) or first() |
+> | **Estado global** | Toda la aplicaciÃ³n | BehaviorSubject + AsyncPipe |
+> | **EspecÃ­fico de pÃ¡gina/ruta** | Mientras la ruta es vÃ¡lida | takeUntil(routeDestroy$) |
+> | **EspecÃ­fico de componente** | Mientras existe el componente | takeUntil(destroy$) or AsyncPipe |
+> | **Llamada API Ãºnica** | Hasta completar | take(1) or first() |
 
-### Mejor práctica 4: Establecer condiciones de finalización explícitas
+### Mejor prÃ¡ctica 4: Establecer condiciones de finalizaciÃ³n explÃ­citas
 
-#### L Mal ejemplo: No está claro cuándo termina
+#### L Mal ejemplo: No estÃ¡ claro cuÃ¡ndo termina
 ```typescript
 import { fromEvent } from 'rxjs';
 
@@ -710,24 +710,24 @@ fromEvent(document, 'click').subscribe(() => {
 });
 ```
 
-####  Buen ejemplo 1: Límite de veces
+####  Buen ejemplo 1: LÃ­mite de veces
 ```typescript
 import { fromEvent } from 'rxjs';
 import { take } from 'rxjs';
 
 fromEvent(document, 'click').pipe(
-  take(5) // Termina automáticamente después de 5 veces
+  take(5) // Termina automÃ¡ticamente despuÃ©s de 5 veces
 ).subscribe(() => {
-  console.log('Click (máximo 5 veces)');
+  console.log('Click (mÃ¡ximo 5 veces)');
 });
 ```
 
-####  Buen ejemplo 2: Límite de tiempo
+####  Buen ejemplo 2: LÃ­mite de tiempo
 ```typescript
 import { fromEvent, timer } from 'rxjs';
 import { takeUntil } from 'rxjs';
 
-const timeout$ = timer(10000); // Después de 10 segundos
+const timeout$ = timer(10000); // DespuÃ©s de 10 segundos
 fromEvent(document, 'click').pipe(
   takeUntil(timeout$)
 ).subscribe(() => {
@@ -735,7 +735,7 @@ fromEvent(document, 'click').pipe(
 });
 ```
 
-####  Buen ejemplo 3: Múltiples condiciones de finalización
+####  Buen ejemplo 3: MÃºltiples condiciones de finalizaciÃ³n
 ```typescript
 import { fromEvent, Subject, merge } from 'rxjs';
 import { takeUntil, take } from 'rxjs';
@@ -750,55 +750,55 @@ fromEvent(document, 'mousemove').pipe(
 });
 ```
 
-> [!IMPORTANT] =¡ Principios
-> - **Especificar "cuándo termina" explícitamente** - Evitar streams infinitos
-> - Establecer condiciones de finalización con take, first, takeWhile, takeUntil, etc.
+> [!IMPORTANT] =Â¡ Principios
+> - **Especificar "cuÃ¡ndo termina" explÃ­citamente** - Evitar streams infinitos
+> - Establecer condiciones de finalizaciÃ³n con take, first, takeWhile, takeUntil, etc.
 > - Vincular al ciclo de vida (destroy$, timeout$, etc.)
 
-## Lista de verificación de comprensión
+## Lista de verificaciÃ³n de comprensiÃ³n
 
 Verifica si puedes responder a las siguientes preguntas.
 
 ```markdown
-## Comprensión básica
-- [ ] Puedo explicar qué sucede al hacer subscribe a un Observable
+## ComprensiÃ³n bÃ¡sica
+- [ ] Puedo explicar quÃ© sucede al hacer subscribe a un Observable
 - [ ] Puedo distinguir casos donde unsubscribe es necesario y no necesario
 - [ ] Puedo explicar las causas de fugas de memoria
 
-## Aplicación de patrones
-- [ ] Puedo gestionar múltiples suscripciones con objeto Subscription
-- [ ] Puedo implementar el patrón takeUntil
-- [ ] Puedo colocar destroy$ adecuadamente (último operador)
+## AplicaciÃ³n de patrones
+- [ ] Puedo gestionar mÃºltiples suscripciones con objeto Subscription
+- [ ] Puedo implementar el patrÃ³n takeUntil
+- [ ] Puedo colocar destroy$ adecuadamente (Ãºltimo operador)
 
-## Mejores prácticas
-- [ ] Sé cuándo usar AsyncPipe
+## Mejores prÃ¡cticas
+- [ ] SÃ© cuÃ¡ndo usar AsyncPipe
 - [ ] Puedo distinguir y gestionar suscripciones de larga y corta vida
-- [ ] Puedo establecer condiciones de finalización explícitas
+- [ ] Puedo establecer condiciones de finalizaciÃ³n explÃ­citas
 
-## Depuración
-- [ ] Conozco métodos para detectar fugas de memoria
+## DepuraciÃ³n
+- [ ] Conozco mÃ©todos para detectar fugas de memoria
 - [ ] Puedo encontrar olvidos de unsubscribe
-- [ ] Puedo verificar el número de suscripciones con DevTools del navegador
+- [ ] Puedo verificar el nÃºmero de suscripciones con DevTools del navegador
 ```
 
-## Próximos pasos
+## PrÃ³ximos pasos
 
-Una vez que entiendas la gestión del ciclo de vida, aprende sobre **selección de operadores**.
+Una vez que entiendas la gestiÃ³n del ciclo de vida, aprende sobre **selecciÃ³n de operadores**.
 
-’ **[La confusión de selección de operadores](/es/guide/overcoming-difficulties/operator-selection)** - Criterios para elegir el apropiado entre más de 100 operadores
+Â’ **[La confusiÃ³n de selecciÃ³n de operadores](/es/guide/overcoming-difficulties/operator-selection)** - Criterios para elegir el apropiado entre mÃ¡s de 100 operadores
 
-## Páginas relacionadas
+## PÃ¡ginas relacionadas
 
 - **[Chapter 2: Ciclo de vida de Observable](/es/guide/observables/observable-lifecycle)** - Fundamentos de subscribe/unsubscribe
 - **[Chapter 10: Errores comunes y soluciones](/es/guide/anti-patterns/common-mistakes)** - Subscribe anidado, fugas de memoria, etc.
-- **[Chapter 13: Patrones de manejo de formularios](/es/guide/)** - Aplicación práctica (en preparación)
-- **[Chapter 8: Depuración de fugas de memoria](/es/guide/debugging/)** - Métodos de depuración
+- **[Chapter 13: Patrones de manejo de formularios](/es/guide/)** - AplicaciÃ³n prÃ¡ctica (en preparaciÃ³n)
+- **[Chapter 8: DepuraciÃ³n de fugas de memoria](/es/guide/debugging/)** - MÃ©todos de depuraciÃ³n
 
-## <¯ Ejercicios de práctica
+## <Â¯ Ejercicios de prÃ¡ctica
 
 ### Problema 1: Corregir fuga de memoria
 
-El siguiente código tiene una fuga de memoria. Corrígelo.
+El siguiente cÃ³digo tiene una fuga de memoria. CorrÃ­gelo.
 
 ```typescript
 class ChatComponent {
@@ -835,28 +835,28 @@ class ChatComponent {
 }
 ```
 
-> [!NOTE] Puntos de corrección
-> 1. Añadir Subject `destroy$`
+> [!NOTE] Puntos de correcciÃ³n
+> 1. AÃ±adir Subject `destroy$`
 > 2. Detener interval con `takeUntil(this.destroy$)`
 > 3. Resolver subscribe anidado con `switchMap`
 > 4. Hacer cleanup en `ngOnDestroy`
 
 </details>
 
-### Problema 2: Selección de patrón adecuado
+### Problema 2: SelecciÃ³n de patrÃ³n adecuado
 
-Para los siguientes escenarios, elige el patrón de gestión de suscripción más óptimo.
+Para los siguientes escenarios, elige el patrÃ³n de gestiÃ³n de suscripciÃ³n mÃ¡s Ã³ptimo.
 
-1. Petición HTTP (solo una vez)
-2. Conexión WebSocket (durante la existencia del componente)
-3. Estado global de usuario (toda la aplicación)
+1. PeticiÃ³n HTTP (solo una vez)
+2. ConexiÃ³n WebSocket (durante la existencia del componente)
+3. Estado global de usuario (toda la aplicaciÃ³n)
 
 <details>
 <summary>Ejemplo de respuesta</summary>
 
-**1. Petición HTTP (solo una vez)**
+**1. PeticiÃ³n HTTP (solo una vez)**
 ```typescript
-//  take(1) o first() - complete automático después de una vez
+//  take(1) o first() - complete automÃ¡tico despuÃ©s de una vez
 this.http.get('/api/user').pipe(
   take(1)
 ).subscribe(user => console.log(user));
@@ -865,9 +865,9 @@ this.http.get('/api/user').pipe(
 user$ = this.http.get('/api/user');
 ```
 
-**2. Conexión WebSocket (durante la existencia del componente)**
+**2. ConexiÃ³n WebSocket (durante la existencia del componente)**
 ```typescript
-//  Patrón takeUntil - Desconectar al destruir componente
+//  PatrÃ³n takeUntil - Desconectar al destruir componente
 private destroy$ = new Subject<void>();
 
 ngOnInit() {
@@ -882,7 +882,7 @@ ngOnDestroy() {
 }
 ```
 
-**3. Estado global de usuario (toda la aplicación)**
+**3. Estado global de usuario (toda la aplicaciÃ³n)**
 ```typescript
 //  BehaviorSubject + AsyncPipe - No necesita unsubscribe
 @Injectable({ providedIn: 'root' })

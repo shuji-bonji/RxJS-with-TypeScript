@@ -171,4 +171,4 @@ hotIif$.subscribe(val => console.log('Abonné 2:', val));
 
 Pour connaître le comportement détaillé et les exemples pratiques de chaque fonction de création, cliquez sur les liens du tableau ci-dessus.
 
-De plus, en apprenant les [Fonctions de création de combinaison](/fr/guide/creation-functions/combination/) et les [Fonctions de création de sélection/partition](/fr/guide/creation-functions/selection/), vous comprendrez l'ensemble des fonctions de création.
+De plus, en apprenant les [Fonctions de création de combinaison](/fr/guide/creation-functions/combination/) et les [Fonctions de création de selection/partition](/fr/guide/creation-functions/selection/), vous comprendrez l'ensemble des fonctions de création.

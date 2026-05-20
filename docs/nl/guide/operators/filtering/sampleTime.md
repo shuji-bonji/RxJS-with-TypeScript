@@ -347,9 +347,9 @@ TABEL 12
 ## 📚 Gerelateerde operatoren.
 
 - **[sample](https://rxjs.dev/api/operators/sample)** - Een andere Observable samplen als trigger (officiële documentatie).
-- **[throttleTime](. /throttleTime)** - Verkrijg de eerste waarde aan het begin van de periode.
-- **[auditTime](. /auditTime)** - Verkrijg de laatste waarde aan het einde van de periode.
-- **[debounceTime](. /debounceTime)** - waarde uitgeven na stilstand
+- **[throttleTime](./throttleTime)** - Verkrijg de eerste waarde aan het begin van de periode.
+- **[auditTime](./auditTime)** - Verkrijg de laatste waarde aan het einde van de periode.
+- **[debounceTime](./debounceTime)** - waarde uitgeven na stilstand
 
 ## Samenvatting.
 

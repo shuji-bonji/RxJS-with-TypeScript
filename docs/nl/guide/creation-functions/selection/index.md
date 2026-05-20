@@ -19,8 +19,8 @@ Deze werken in de tegenovergestelde richting of vanuit een ander perspectief dan
 
 | Functie | Beschrijving | Gebruikscasus. |
 |---|---|---|
-| **Race](/gids/creatiefuncties/selectie/race)** | Eerst gepubliceerde aannemen | Wedstrijd met meerdere gegevensbronnen |
-| **[partition](/gids/creatie-functie/selectie/partitie)** | In tweeën splitsen met voorwaarden | Vertakkingsproces voor succes/falen |
+| **Race](/nl/guide/creation-functions/selection/race)** | Eerst gepubliceerde aannemen | Wedstrijd met meerdere gegevensbronnen |
+| **[partition](/nl/guide/creation-functions/selection/partition)** | In tweeën splitsen met voorwaarden | Vertakkingsproces voor succes/falen |
 
 ## Criteria voor gebruik
 
@@ -117,10 +117,10 @@ Selection en division Creation Functions hebben ook een overeenkomstige Pipeable
 
 __oproep_7___
 
-> Er is geen Pipeable Operator versie van `partition`. Als een partitie nodig is, kan deze worden gebruikt als een Creation Function of twee keer handmatig worden gesplitst met `filter`.
+> Er is geen Pipeable Operator versie van `partition`. Als een partition nodig is, kan deze worden gebruikt als een Creation Function of twee keer handmatig worden gesplitst met `filter`.
 
 ## Volgende stappen.
 
 Klik op de links in de bovenstaande tabel voor meer informatie over de gedetailleerde werking en praktische voorbeelden van elke Creation Function.
 
-U kunt ook de [Combinatie Creation Functies](/gids/creation-functions/combination/) en [Voorwaardelijke Creation Functies](/gids/creation-functions/conditional/) leren. Samen bieden ze een holistisch begrip van Creation Function.
+U kunt ook de [Combinatie Creation Functies](/nl/guide/creation-functions/combination/) en [Voorwaardelijke Creation Functies](/nl/guide/creation-functions/conditional/) leren. Samen bieden ze een holistisch begrip van Creation Function.

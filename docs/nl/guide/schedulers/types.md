@@ -14,7 +14,7 @@ RxJS schedulers vallen uiteen in drie hoofdcategorieën.
 2. **Microtaak**: onmiddellijk uitgevoerd nadat de huidige taak is voltooid en voordat de volgende taak begint
 3. **Synchrone verwerking**: onmiddellijke uitvoering
 
-Voor meer informatie, zie [Task and Scheduler Basics](. /task-and-scheduler-basics.md).
+Voor meer informatie, zie [Task and Scheduler Basics](./task-and-scheduler-basics.md).
 
 ## Belangrijkste schedulers.
 

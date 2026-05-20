@@ -16,8 +16,8 @@ Consulte la siguiente tabla para ver las características y el uso de cada Creat
 
 | Función | Descripción | Caso de uso. |
 |---|---|---|
-| **[range](/es/guide/funciones-creación/loop/range)** | Generar un rango de números (para sentencias) | Generación de números secuenciales, procesamiento por lotes. |
-| **[generate](/es/guide/función de creación/lazo/generate)** | Generación de bucles genéricos (tipo while) | Repetición condicional, transiciones de estado complejas |
+| **[range](/es/guide/creation-functions/loop/range)** | Generar un rango de números (para sentencias) | Generación de números secuenciales, procesamiento por lotes. |
+| **[generate](/es/guide/creation-functions/loop/generate)** | Generación de bucles genéricos (tipo while) | Repetición condicional, transiciones de estado complejas |
 
 ## Criterios de utilización
 

@@ -420,10 +420,10 @@ source$.pipe(
 
 ## 📚 Verwandte Operatoren.
 
-- **[filter](. /filter)** - filtert Werte auf der Grundlage von Bedingungen.
-- **[take](. /take)** - es werden nur die ersten N Werte genommen.
-- **[skip](. /skip)** - überspringt die ersten N Werte
-- **[tap](. /utility/tap)** - führt eine Nebenaktion aus
+- **[filter](./filter)** - filtert Werte auf der Grundlage von Bedingungen.
+- **[take](./take)** - es werden nur die ersten N Werte genommen.
+- **[skip](./skip)** - überspringt die ersten N Werte
+- **[tap](../utility/tap)** - führt eine Nebenaktion aus
 
 ## Zusammenfassung.
 

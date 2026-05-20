@@ -1,12 +1,12 @@
 ---
-description: "Se explican las Creation Function (race y partition) que seleccionan uno de múltiples Observable o dividen un Observable en múltiples. Se presentan casos prácticos de uso e implementaciones de tipo seguro en TypeScript, como la gestión de conflictos, la adquisición de respuesta más rápida y la partición de flujos mediante bifurcación condicional."
+description: "Se explican las Creation Function (race y partition) que seleccionan uno de múltiples Observable o dividen un Observable en múltiples. Se presentan casos prácticos de uso e implementaciones de tipo seguro en TypeScript, como la gestión de conflictos, la adquisición de respuesta más rápida y la partition de flujos mediante bifurcación condicional."
 ---
 
-# Sistemas de selección y partición Creation Function
+# Sistemas de selección y partition Creation Function
 
 Creation Function that select one Observable from multiple Observables or split one Observable into multiple Observables according to conditions.
 
-## Sistema de selección y partición ¿Qué son las Creation Function?
+## Sistema de selección y partition ¿Qué son las Creation Function?
 
 Las Creation Function para sistemas de selección y división son diferentes de las de los sistemas de combinación y tienen las siguientes funciones.
 
@@ -19,8 +19,8 @@ Funcionan en sentido opuesto o desde una perspectiva diferente a la unión "comb
 
 | Función | Descripción | Caso de uso. |
 |---|---|---|
-| **[race](/es/guide/funciones-creación/selección/race)** | Adoptar el primero publicado | Competencia de múltiples fuentes de datos |
-| **[partition](/es/guide/creation-functions/selección/partición)** | Dividir en dos con condiciones | Proceso de bifurcación para éxito/fracaso |
+| **[race](/es/guide/creation-functions/selection/race)** | Adoptar el primero publicado | Competencia de múltiples fuentes de datos |
+| **[partition](/es/guide/creation-functions/selection/partition)** | Dividir en dos con condiciones | Proceso de bifurcación para éxito/fracaso |
 
 ## Criterios de utilización
 
@@ -117,10 +117,10 @@ Las Creation Function de selección y división también tienen su correspondien
 
 > [!NOTE]
 
-> No existe una versión Pipeable Operator de `partition`. Si se requiere una partición, se puede utilizar como Creation Function o dividir manualmente utilizando `filter` dos veces.
+> No existe una versión Pipeable Operator de `partition`. Si se requiere una partition, se puede utilizar como Creation Function o dividir manualmente utilizando `filter` dos veces.
 
 ## Próximos Pasos.
 
 Para obtener más información sobre el funcionamiento detallado y ejemplos prácticos de cada Creation Function, haga clic en los enlaces de la tabla anterior.
 
-También puede aprender [Funciones de creación combinadas](/es/guide/funciones-de-creación/combinación/) y [Funciones de creación condicionales](/es/guide/funciones-de-creación/condicionales/). Juntas, proporcionan una comprensión holística de las Creation Function.
+También puede aprender [Funciones de creación combinadas](/es/guide/creation-functions/combination/) y [Funciones de creación condicionales](/es/guide/creation-functions/conditional/). Juntas, proporcionan una comprensión holística de las Creation Function.

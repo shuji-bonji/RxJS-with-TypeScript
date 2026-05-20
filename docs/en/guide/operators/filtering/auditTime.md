@@ -423,7 +423,7 @@ fromEvent(input, 'input').pipe(
 
 ## 🚀 Next Steps
 
-- **[throttleTime](. /throttleTime)** - learn how to pass the first value through
-- **[debounceTime](. /debounceTime)** - learn how to issue a value after input stops
-- **[filter](. /filter)** - learn how to filter based on conditions
-- **[filtering-operator-practical-use-cases](. /practical-use-cases)** - learn how to use real use cases
+- **[throttleTime](./throttleTime)** - learn how to pass the first value through
+- **[debounceTime](./debounceTime)** - learn how to issue a value after input stops
+- **[filter](./filter)** - learn how to filter based on conditions
+- **[filtering-operator-practical-use-cases](./practical-use-cases)** - learn how to use real use cases

@@ -174,7 +174,7 @@ interval(100).pipe(
 ```
 
 :: : conseil.
-Lorsque vous construisez des tableaux, pensez à utiliser l'opérateur plus concis [`toArray`](. /utility/toArray).
+Lorsque vous construisez des tableaux, pensez à utiliser l'opérateur plus concis [`toArray`](../utility/toArray).
 
 ```ts
 interval(100).pipe(
@@ -303,8 +303,8 @@ of(1, 2, 3, 4, 5)
 
 ## 📚 Opérateurs apparentés.
 
-- [`scan`](. /scan) - produit un résultat intermédiaire pour chaque valeur.
-- [`toArray`](. /utility/toArray) - regroupe toutes les valeurs dans un tableau.
+- [`scan`](./scan) - produit un résultat intermédiaire pour chaque valeur.
+- [`toArray`](../utility/toArray) - regroupe toutes les valeurs dans un tableau.
 - [`count`](https://rxjs.dev/api/operators/count) - compte le nombre de valeurs.
 - [`min`](https://rxjs.dev/api/operators/min) / [`max`](https://rxjs.dev/api/operators/max) - obtient les valeurs minimales et maximales.
 

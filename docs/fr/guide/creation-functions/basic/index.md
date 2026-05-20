@@ -214,4 +214,4 @@ fromEvent(input, 'input').pipe(
 
 Pour en savoir plus sur le fonctionnement de chaque fonction de création et des exemples pratiques, cliquez sur les liens du tableau ci-dessus.
 
-De plus, en apprenant les [Fonctions de création de combinaison](/fr/guide/creation-functions/combination/), les [Fonctions de création de sélection/partition](/fr/guide/creation-functions/selection/) et les [Fonctions de création conditionnelles](/fr/guide/creation-functions/conditional/), vous pourrez comprendre l'ensemble des fonctions de création.
+De plus, en apprenant les [Fonctions de création de combinaison](/fr/guide/creation-functions/combination/), les [Fonctions de création de selection/partition](/fr/guide/creation-functions/selection/) et les [Fonctions de création conditionnelles](/fr/guide/creation-functions/conditional/), vous pourrez comprendre l'ensemble des fonctions de création.

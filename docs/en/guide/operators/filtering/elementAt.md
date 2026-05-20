@@ -326,11 +326,11 @@ numbers$.pipe(
 
 ## 📚 Related Operators
 
-- **[take](. /take)** - take N from the beginning
-- **[first](. /first)** - get the first value
-- **[last](. /last)** - get the last value
-- **[skip](. /skip)** - skip the first N values
-- **[takeLast](. /takeLast)** - get the last N values
+- **[take](./take)** - take N from the beginning
+- **[first](./first)** - get the first value
+- **[last](./last)** - get the last value
+- **[skip](./skip)** - skip the first N values
+- **[takeLast](./takeLast)** - get the last N values
 
 ## Summary
 

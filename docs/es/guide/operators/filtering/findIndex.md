@@ -399,10 +399,10 @@ items$.pipe(
 
 ## 📚 Operadores relacionados.
 
-- **[find](. /find)** - Obtiene el primer valor que satisface la condición.
-- elementAt](. /elementAt)** - Obtiene el valor en el índice especificado.
-- **[first](. /first)** - Obtener el primer valor.
-- filter](. /filter)** - Obtener todos los valores que cumplan la condición.
+- **[find](./find)** - Obtiene el primer valor que satisface la condición.
+- elementAt](./elementAt)** - Obtiene el valor en el índice especificado.
+- **[first](./first)** - Obtener el primer valor.
+- filter](./filter)** - Obtener todos los valores que cumplan la condición.
 
 ## Resumen.
 

@@ -378,11 +378,11 @@ source$.pipe(
 
 ## 📚 Opérateurs apparentés.
 
-- **[bufferTime](. /bufferTime)** - regroupe les valeurs sous forme de tableau (version tableau de windowTime).
-- **[window](. /window)** - divise la fenêtre en émettant un Observable.
-- **[windowCount](. /windowCount)** - partitionnement de la fenêtre sur la base d'un nombre de pièces.
-- **[windowToggle](. /windowToggle)** - contrôle de la fenêtre avec Observable de début et de fin.
-- **[windowWhen](. /windowWhen)** - découpage de fenêtres avec conditions de fermeture dynamiques
+- **[bufferTime](./bufferTime)** - regroupe les valeurs sous forme de tableau (version tableau de windowTime).
+- **[window](./window)** - divise la fenêtre en émettant un Observable.
+- **[windowCount](./windowCount)** - partitionnement de la fenêtre sur la base d'un nombre de pièces.
+- **[windowToggle](./windowToggle)** - contrôle de la fenêtre avec Observable de début et de fin.
+- **[windowWhen](./windowWhen)** - découpage de fenêtres avec conditions de fermeture dynamiques
 
 ## Résumé.
 

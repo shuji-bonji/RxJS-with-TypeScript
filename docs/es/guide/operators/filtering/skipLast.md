@@ -424,11 +424,11 @@ Procesamiento de ventana con datos que excluyen los últimos N casos
 
 ## 📚 Operadores relacionados
 
-- skip](. /skip)** - salta los N primeros valores.
-- **[takeLast](. /takeLast)** - toma sólo los N últimos valores.
-- **[take](. /take)** - obtener sólo los N primeros valores.
-- skipUntil](. /skipUntil)** - salta hasta que se dispara otro Observable.
-- skipWhile](. /skipWhile)** - saltar mientras se cumple la condición
+- skip](./skip)** - salta los N primeros valores.
+- **[takeLast](./takeLast)** - toma sólo los N últimos valores.
+- **[take](./take)** - obtener sólo los N primeros valores.
+- skipUntil](./skipUntil)** - salta hasta que se dispara otro Observable.
+- skipWhile](./skipWhile)** - saltar mientras se cumple la condición
 
 ## Resumen.
 

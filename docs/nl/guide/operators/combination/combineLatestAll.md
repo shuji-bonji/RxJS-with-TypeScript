@@ -114,10 +114,10 @@ Zie [Hoofdstuk 3 Creation Function - combineLatest] (/guide/creation-functions/c
 
 | Exploitant. | Beschrijving. |
 |---|---|
-| [mergeAll](. /mergeAll) | Abonneer alle interne Observable parallel. |
-| [concatAll](. /concatAll) | Abonneer op interne Observable in volgorde. |
-| [switchAll](. /switchAll) | Schakel naar een nieuwe interne Observable. |
-| [zipAll](. /zipAll) | Koppel de waarden van elke interne Observable in de overeenkomstige volgorde |
+| [mergeAll](./mergeAll) | Abonneer alle interne Observable parallel. |
+| [concatAll](./concatAll) | Abonneer op interne Observable in volgorde. |
+| [switchAll](./switchAll) | Schakel naar een nieuwe interne Observable. |
+| [zipAll](./zipAll) | Koppel de waarden van elke interne Observable in de overeenkomstige volgorde |
 
 ## ⚠️ Opmerkingen.
 

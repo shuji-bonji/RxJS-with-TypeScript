@@ -410,8 +410,8 @@ setTimeout(() => {
 
 ## 🚀 Próximos pasos.
 
-- **[skip](. /skip)** - aprende a saltar los N primeros valores.
-- **[take](. /take)** - aprende a obtener los N primeros valores.
-- **[takeUntil](. /utility/takeUntil)** - aprende a tomar valores hasta que se dispara otro Observable.
-- filter](. /filter)** - aprende a filtrar en base a condiciones
-- **[filtering-operator-practical-use-cases](. /practical-use-cases)** - aprende casos de uso reales
+- **[skip](./skip)** - aprende a saltar los N primeros valores.
+- **[take](./take)** - aprende a obtener los N primeros valores.
+- **[takeUntil](../utility/takeUntil)** - aprende a tomar valores hasta que se dispara otro Observable.
+- filter](./filter)** - aprende a filtrar en base a condiciones
+- **[filtering-operator-practical-use-cases](./practical-use-cases)** - aprende casos de uso reales

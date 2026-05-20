@@ -259,10 +259,10 @@ L'efficacité de la mémoire est bonne car `pairwise` ne conserve toujours qu'un
 
 ## 📚 Opérateurs apparentés.
 
-- [`scan`](. /scan) - processus d'accumulation plus complexe.
-- [`bufferCount`](. /bufferCount) - résume les valeurs pour chaque nombre spécifié.
-- [`distinctUntilChanged`](. /filtering/distinctUntilChanged) - supprime les valeurs dupliquées consécutives.
-- [`startWith`](. /utility/startWith) - ajoute une valeur initiale.
+- [`scan`](./scan) - processus d'accumulation plus complexe.
+- [`bufferCount`](./bufferCount) - résume les valeurs pour chaque nombre spécifié.
+- [`distinctUntilChanged`](../filtering/distinctUntilChanged) - supprime les valeurs dupliquées consécutives.
+- [`startWith`](../utility/startWith) - ajoute une valeur initiale.
 
 ## Résumé.
 

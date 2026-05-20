@@ -367,6 +367,6 @@ of('A').pipe(
 
 ## 📚 Operatori correlati.
 
-- **[race](/it/guide/creation-functions/selezione/race)** - Versione di Creation Function
-- **[timeout](/it/guide/operators/utilità/timeout)** - Operatore di solo timeout.
-- **[mergeWith](/it/guide/operators/combinazione/mergeWith)** - Unisce tutti i flussi.
+- **[race](/it/guide/creation-functions/selection/race)** - Versione di Creation Function
+- **[timeout](/it/guide/operators/utility/timeout)** - Operatore di solo timeout.
+- **[mergeWith](/it/guide/operators/combination/mergeWith)** - Unisce tutti i flussi.

@@ -19,8 +19,8 @@ Queste funzioni operano nella direzione opposta o da una prospettiva diversa ris
 
 | Funzione | Descrizione | Caso d'uso. |
 |---|---|---|
-| **[race](/it/guide/creation-functions/selezione/race)** | Adotta il primo pubblicato | Gara con più fonti di dati |
-| **[partition](/it/guide/creation-functions/selezione/partition)** | Dividere in due con condizioni | Processo di ramificazione per successo/fallimento |
+| **[race](/it/guide/creation-functions/selection/race)** | Adotta il primo pubblicato | Gara con più fonti di dati |
+| **[partition](/it/guide/creation-functions/selection/partition)** | Dividere in due con condizioni | Processo di ramificazione per successo/fallimento |
 
 ## Criteri di utilizzo
 
@@ -123,4 +123,4 @@ Le funzioni di selezione e di divisione Creation Function hanno anche un corrisp
 
 Per saperne di più sul funzionamento dettagliato e sugli esempi pratici di Creation Function, fare clic sui collegamenti della tabella precedente.
 
-È inoltre possibile imparare [Funzioni di creazione combinate](/it/guide/creation-functions/combinazione/) e [Funzioni di creazione condizionali](/it/guide/creation-functions/condizionali/). Insieme, forniscono una comprensione olistica delle Creation Function.
+È inoltre possibile imparare [Funzioni di creazione combinate](/it/guide/creation-functions/combination/) e [Funzioni di creazione condizionali](/it/guide/creation-functions/conditional/). Insieme, forniscono una comprensione olistica delle Creation Function.

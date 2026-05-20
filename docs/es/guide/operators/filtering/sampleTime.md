@@ -347,9 +347,9 @@ clicks$.pipe(
 ## 📚 Operadores relacionados.
 
 - **[sample](https://rxjs.dev/api/operators/sample)** - Muestreo de otro Observable como disparador (documentación oficial).
-- **[throttleTime](. /throttleTime)** - Obtener el primer valor al inicio del periodo.
-- **[auditTime](. /auditTime)** - Obtener el último valor al final del periodo.
-- **[debounceTime](. /debounceTime)** - obtener el valor después de la inactividad
+- **[throttleTime](./throttleTime)** - Obtener el primer valor al inicio del periodo.
+- **[auditTime](./auditTime)** - Obtener el último valor al final del periodo.
+- **[debounceTime](./debounceTime)** - obtener el valor después de la inactividad
 
 ## Resumen.
 

@@ -72,7 +72,7 @@ createPost({
 });
 ```
 
-> Este artículo forma parte del [Capítulo 4: Operadores](. /operators/index.md) y [Capítulo 6: Tratamiento de errores](. /manejo de errores/estrategias.md).
+> Este artículo forma parte del [Capítulo 4: Operadores](../operators/index.md) y [Capítulo 6: Tratamiento de errores](../error-handling/strategies.md).
 
 ## Llamadas básicas a la API.
 
@@ -1821,17 +1821,17 @@ fetchDashboard(1).subscribe({
 
 Una vez que domines el patrón de llamadas a la API, puedes pasar a los siguientes patrones.
 
-- [form-handling](. /form-handling.md) - validación en tiempo real, autoguardado.
-- [Manejo de eventos de interfaz de usuario](. /ui-events.md) - integración de eventos de interfaz de usuario y llamadas a la API.
-- Procesamiento de datos en tiempo real](. /real-time-data.md)) - WebSocket, SSE.
-- [estrategias de almacenamiento en caché] (. /caching-strategies.md) - Almacenamiento en caché de las respuestas de la API.
+- [form-handling](./form-handling.md) - validación en tiempo real, autoguardado.
+- [Manejo de eventos de interfaz de usuario](./ui-events.md) - integración de eventos de interfaz de usuario y llamadas a la API.
+- Procesamiento de datos en tiempo real](./real-time-data.md)) - WebSocket, SSE.
+- [estrategias de almacenamiento en caché](./caching-strategies.md) - Almacenamiento en caché de las respuestas de la API.
 - Prácticas de gestión de errores (en preparación) - Estrategias más avanzadas de gestión de errores
 
 ## Secciones relacionadas.
 
-- Capítulo 4: Operadores](. /operators/index.md) - más sobre switchMap, mergeMap y concatMap.
-- Capítulo 6: Tratamiento de errores](. /error-handling/strategies.md)) - conceptos básicos de catchError, retry
-- Capítulo 2: Cold/Hot Observable](. /observables/cold-and-hot-observables.md)) - Entendiendo shareReplay
+- Capítulo 4: Operadores](../operators/index.md) - más sobre switchMap, mergeMap y concatMap.
+- Capítulo 6: Tratamiento de errores](../error-handling/strategies.md)) - conceptos básicos de catchError, retry
+- Capítulo 2: Cold/Hot Observable](../observables/cold-and-hot-observables.md)) - Entendiendo shareReplay
 
 ## Recursos de referencia
 

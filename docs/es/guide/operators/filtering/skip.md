@@ -310,8 +310,8 @@ interval(1000).pipe(
 
 ## 🚀 Próximos pasos.
 
-- **[take](. /take)** - aprende a obtener los N primeros valores.
-- **[first](. /first)** - aprende a obtener el primer valor o el primer valor que satisface la condición.
-- last](. /last)** - aprende a obtener el último valor.
-- filter](. /filter)** - aprende a filtrar en base a condiciones
-- **[filtro-operador-casos-prácticos](. /practical-use-cases)** - aprende a utilizar casos de uso reales
+- **[take](./take)** - aprende a obtener los N primeros valores.
+- **[first](./first)** - aprende a obtener el primer valor o el primer valor que satisface la condición.
+- last](./last)** - aprende a obtener el último valor.
+- filter](./filter)** - aprende a filtrar en base a condiciones
+- **[filtro-operador-casos-prácticos](./practical-use-cases)** - aprende a utilizar casos de uso reales

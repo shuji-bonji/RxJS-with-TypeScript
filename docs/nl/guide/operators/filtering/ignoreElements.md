@@ -406,10 +406,10 @@ source$.pipe(
 
 ## 📚 Gerelateerde operatoren.
 
-- **[filter](. /filter)** - waarden filteren op basis van voorwaarden.
-- **[take](. /take)** - alleen de eerste N waarden worden meegenomen.
-- **[skip](. /skip)** - de eerste N waarden overslaan.
-- **[tap](. /utility/tap)** - een zijwaartse actie uitvoeren
+- **[filter](./filter)** - waarden filteren op basis van voorwaarden.
+- **[take](./take)** - alleen de eerste N waarden worden meegenomen.
+- **[skip](./skip)** - de eerste N waarden overslaan.
+- **[tap](../utility/tap)** - een zijwaartse actie uitvoeren
 
 ## Samenvatting.
 

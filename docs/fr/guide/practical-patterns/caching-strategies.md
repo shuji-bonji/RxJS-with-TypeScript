@@ -19,7 +19,7 @@ Cet article décrit des modèles spécifiques de stratégies de cache nécessair
 
 APPEL_12___.
 
-> Cet article fait partie du [Chapitre 2 : Observables froids/chauds](. /observables/cold-and-hot-observables.md) et [Chapitre 4 : Opérateurs](. /operators/index.md). Une compréhension de `shareReplay` et de `share` est particulièrement importante.
+> Cet article fait partie du [Chapitre 2 : Observables froids/chauds](../observables/cold-and-hot-observables.md) et [Chapitre 4 : Opérateurs](../operators/index.md). Une compréhension de `shareReplay` et de `share` est particulièrement importante.
 
 ## Cache de base (shareReplay)
 
@@ -934,16 +934,16 @@ La maîtrise du modèle de stratégie de mise en cache peut améliorer de maniè
 
 Une fois que vous aurez maîtrisé le modèle de stratégie de cache, vous pourrez passer aux modèles suivants.
 
-- [traitement des données en temps réel](. /real-time-data.md) - Mettre en cache les données en temps réel.
-- [appels API](. /api-calls.md) - mettre en cache les réponses de l'API
-- [Traitement des événements de l'interface utilisateur](. /ui-events.md) - mise en cache des données d'événements
+- [traitement des données en temps réel](./real-time-data.md) - Mettre en cache les données en temps réel.
+- [appels API](./api-calls.md) - mettre en cache les réponses de l'API
+- [Traitement des événements de l'interface utilisateur](./ui-events.md) - mise en cache des données d'événements
 - Pratique de gestion des erreurs (en préparation) - Gestion des erreurs de cache
 
 ## Sections connexes.
 
-- [Chapitre 2 : Observable froid/chaud](. /observables/cold-and-hot-observables.md) - détails de shareReplay.
-- [Chapitre 4 : Opérateurs](. /operators/multicasting/shareReplay.md) - Comment utiliser shareReplay.
-- Chapitre 10 : Anti-patterns](. /anti-patterns/common-mistakes.md)) - Mauvaise utilisation de shareReplay
+- [Chapitre 2 : Observable froid/chaud](../observables/cold-and-hot-observables.md) - détails de shareReplay.
+- [Chapitre 4 : Opérateurs](../operators/multicasting/shareReplay.md) - Comment utiliser shareReplay.
+- Chapitre 10 : Anti-patterns](../anti-patterns/common-mistakes.md)) - Mauvaise utilisation de shareReplay
 
 ## Ressource de référence.
 

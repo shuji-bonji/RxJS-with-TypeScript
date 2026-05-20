@@ -114,10 +114,10 @@ See [Chapter 3 Creation Functions - combineLatest](/en/guide/creation-functions/
 
 | Operator | Description. |
 |---|---|
-| [mergeAll](. /mergeAll) | Subscribe all internal Observables in parallel |
-| [concatAll](. /concatAll) | Subscribe to internal Observables in order |
-| [switchAll](. /switchAll) | Switch to a new internal Observable |
-| [zipAll](. /zipAll) | Pair the values of each internal Observable in the corresponding order |
+| [mergeAll](./mergeAll) | Subscribe all internal Observables in parallel |
+| [concatAll](./concatAll) | Subscribe to internal Observables in order |
+| [switchAll](./switchAll) | Switch to a new internal Observable |
+| [zipAll](./zipAll) | Pair the values of each internal Observable in the corresponding order |
 
 ## ⚠️ Notes.
 

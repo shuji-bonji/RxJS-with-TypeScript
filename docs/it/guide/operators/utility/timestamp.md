@@ -354,9 +354,9 @@ of(1, 2, 3)
 
 ## 📚 Operatori correlati.
 
-- **[tap](. /tap)** - Esegue effetti collaterali (per il debug).
-- **[delay](. /delay)** - ritardo fisso.
-- **[timeout](. /timeout)** - controllo del timeout.
+- **[tap](./tap)** - Esegue effetti collaterali (per il debug).
+- **[delay](./delay)** - ritardo fisso.
+- **[timeout](./timeout)** - controllo del timeout.
 
 ## ✅ Sommario.
 

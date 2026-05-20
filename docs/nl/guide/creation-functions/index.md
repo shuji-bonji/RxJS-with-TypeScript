@@ -1,5 +1,5 @@
 ---
-description: Een uitgebreide uitleg van RxJS Creation Functions (Observable-creatiefuncties), inclusief de verschillen met Pipeable Operators, basisgebruik en zeven categorieën (basis creatie, lus generatie, HTTP-communicatie, combinatie, selectie/partitie, conditionele vertakking en controlesystemen).
+description: Een uitgebreide uitleg van RxJS Creation Functions (Observable-creatiefuncties), inclusief de verschillen met Pipeable Operators, basisgebruik en zeven categorieën (basis creatie, lus generatie, HTTP-communicatie, combinatie, selection/partition, conditionele vertakking en controlesystemen).
 ---
 
 # Creation Functions

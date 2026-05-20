@@ -347,9 +347,9 @@ clicks$.pipe(
 ## 📚 Opérateurs apparentés.
 
 - **[sample](https://rxjs.dev/api/operators/sample)** - Echantillonnage d'un autre Observable comme déclencheur (documentation officielle).
-- **[throttleTime](. /throttleTime)** - Obtenir la première valeur au début de la période.
-- **[auditTime](. /auditTime)** - Récupère la dernière valeur à la fin de la période.
-- **[debounceTime](. /debounceTime)** - délivre la valeur après la quiescence
+- **[throttleTime](./throttleTime)** - Obtenir la première valeur au début de la période.
+- **[auditTime](./auditTime)** - Récupère la dernière valeur à la fin de la période.
+- **[debounceTime](./debounceTime)** - délivre la valeur après la quiescence
 
 ## Résumé.
 

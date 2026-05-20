@@ -72,7 +72,7 @@ createPost({
 });
 ```
 
-> Dit artikel maakt deel uit van de [Hoofdstuk 4: Operators](. /operators/index.md) en [Hoofdstuk 6: Foutafhandeling](. /error-handling/strategies.md).
+> Dit artikel maakt deel uit van de [Hoofdstuk 4: Operators](../operators/index.md) en [Hoofdstuk 6: Foutafhandeling](../error-handling/strategies.md).
 
 ## Basis API-aanroepen.
 
@@ -1872,17 +1872,17 @@ fetchDashboard(1).subscribe({
 
 Als je het API aanroeppatroon onder de knie hebt, kun je verder met de volgende patronen.
 
-- form-handling](. /form-handling.md) - real-time validatie, automatisch opslaan.
-- UI-gebeurtenis-afhandeling](. /ui-events.md) - integratie van UI-events en API-oproepen.
-- real-time gegevensverwerking](. /real-time-data.md) - WebSocket, SSE.
-- caching-strategieën] (. /caching-strategies.md) - Cachen van API-reacties
+- form-handling](./form-handling.md) - real-time validatie, automatisch opslaan.
+- UI-gebeurtenis-afhandeling](./ui-events.md) - integratie van UI-events en API-oproepen.
+- real-time gegevensverwerking](./real-time-data.md) - WebSocket, SSE.
+- caching-strategieën](./caching-strategies.md) - Cachen van API-reacties
 - Foutbehandelingspraktijken (in voorbereiding) - Meer geavanceerde foutbehandelingsstrategieën
 
 ## Gerelateerde secties.
 
-- Hoofdstuk 4: Operatoren](. /operators/index.md) - meer over switchMap, mergeMap en concatMap.
-- Hoofdstuk 6: Foutafhandeling](. /error-handling/strategies.md)) - basis van catchError, retry.
-- Hoofdstuk 2: Cold/Hot Observable](. /observables/cold-and-hot-observables.md)) - shareReplay begrijpen
+- Hoofdstuk 4: Operatoren](../operators/index.md) - meer over switchMap, mergeMap en concatMap.
+- Hoofdstuk 6: Foutafhandeling](../error-handling/strategies.md)) - basis van catchError, retry.
+- Hoofdstuk 2: Cold/Hot Observable](../observables/cold-and-hot-observables.md)) - shareReplay begrijpen
 
 ## Referentiebronnen
 

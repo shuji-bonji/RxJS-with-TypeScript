@@ -14,7 +14,7 @@ Gli scheduler di RxJS rientrano in tre categorie principali.
 2. **Micro-task**: eseguiti immediatamente dopo il completamento del task corrente e prima dell'inizio del task successivo
 3.**Elaborazione sincrona**: esecuzione immediata
 
-Per ulteriori informazioni, vedere [Fondamenti di task e scheduler](. /task-and-scheduler-basics.md).
+Per ulteriori informazioni, vedere [Fondamenti di task e scheduler](./task-and-scheduler-basics.md).
 
 ## Schedulatori principali.
 

@@ -1,5 +1,5 @@
 ---
-description: Explica operadores relacionados con multicasting de RxJS, incluyendo estrategias prácticas de multicast como usar share, shareReplay, publish y multicast, conversión de cold a hot, entrega eficiente de valores a múltiples suscriptores y prevención de fugas de memoria. Aprende patrones de implementación para optimización de rendimiento con inferencia de tipos TypeScript para compartición de flujos con seguridad de tipos.
+description: Explica operadores relacionados con multicasting de RxJS, incluyendo estrategias prácticas de multicast como usar share, shareReplay, publish y multicast, conversión de cold a hot, entrega eficiente de valores a múltiples suscriptores y prevención de fugas de memoria. Aprende patrones de implementación para optimización de rendimiento con inferencia de tipos TypeScript para compartition de flujos con seguridad de tipos.
 ---
 
 # Operadores Usados en Multicasting
@@ -26,7 +26,7 @@ y organiza su uso y puntos a tener en cuenta.
 | Operador | Características | Caso de Uso |
 |------------|------|-------------|
 | **[share()](/es/guide/operators/multicasting/share)** | Multicast básico | Uso simultáneo en múltiples componentes |
-| **[shareReplay(n)](/es/guide/operators/multicasting/shareReplay)** | Almacena en búfer los últimos n valores | Suscripción tardía/compartición de estado |
+| **[shareReplay(n)](/es/guide/operators/multicasting/shareReplay)** | Almacena en búfer los últimos n valores | Suscripción tardía/compartition de estado |
 | `publish() + refCount()` | Posible control más detallado | Cuando se necesita control avanzado |
 | `multicast(() => new Subject())` | Personalización completa | Cuando se necesitan tipos especiales de Subject |
 

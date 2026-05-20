@@ -115,7 +115,7 @@ source$.pipe(
 // [11, 12, 13]  (6Begin bij seconde,7(begin bij seconde, einde bij seconde)
 ```
 
-> Voor meer informatie over elke operator, zie [buffer](. /buffer), [bufferTime](. /bufferTime), [bufferCount](. /bufferCount).
+> Voor meer informatie over elke operator, zie [buffer](./buffer), [bufferTime](./bufferTime), [bufferCount](./bufferCount).
 
 ## Typische gebruikspatronen.
 
@@ -521,8 +521,8 @@ bron$.pipe(
 
 ## Volgende stappen.
 
-- **[buffer](. /buffer)** - basisbuffering leren.
-- **[bufferTime](. /bufferTime)** - tijdgebaseerd bufferen leren.
-- **[bufferCount](. /bufferCount)** - leer bufferen per stuk **[bufferCount](.
+- **[buffer](./buffer)** - basisbuffering leren.
+- **[bufferTime](./bufferTime)** - tijdgebaseerd bufferen leren.
+- **[bufferCount](./bufferCount)** - leer bufferen per stuk
 - **[bufferWhen](https://rxjs.dev/api/operators/bufferWhen)** - leer dynamische exitcontrole (officiële documentatie)
-- **[conversion-operator-practical-use-cases](. /practical-use-cases)** - leer praktijkvoorbeelden
+- **[conversion-operator-practical-use-cases](./practical-use-cases)** - leer praktijkvoorbeelden

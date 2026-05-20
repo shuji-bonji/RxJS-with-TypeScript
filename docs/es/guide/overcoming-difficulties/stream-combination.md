@@ -1,23 +1,23 @@
 ---
-description: "Explica cómo combinar múltiples Observables en RxJS. Diferencias entre combineLatest, zip, withLatestFrom y forkJoin, adición dinámica de streams, control de propagación de errores y patrones de implementación type-safe con TypeScript con ejemplos de código prácticos."
+description: "Explica cÃ³mo combinar mÃºltiples Observables en RxJS. Diferencias entre combineLatest, zip, withLatestFrom y forkJoin, adiciÃ³n dinÃ¡mica de streams, control de propagaciÃ³n de errores y patrones de implementaciÃ³n type-safe con TypeScript con ejemplos de cÃ³digo prÃ¡cticos."
 ---
 
-# Combinación de múltiples streams
+# CombinaciÃ³n de mÃºltiples streams
 
-En RxJS, requisitos como **"combinar resultados de 2 APIs" o "monitorear todos los campos de un formulario"** son muy comunes, pero elegir el operador apropiado es difícil. Esta página explica patrones prácticos para combinar múltiples streams.
+En RxJS, requisitos como **"combinar resultados de 2 APIs" o "monitorear todos los campos de un formulario"** son muy comunes, pero elegir el operador apropiado es difÃ­cil. Esta pÃ¡gina explica patrones prÃ¡cticos para combinar mÃºltiples streams.
 
 ## combineLatest vs zip vs withLatestFrom vs forkJoin
 
-### Comparación de los 4 operadores de combinación principales
+### ComparaciÃ³n de los 4 operadores de combinaciÃ³n principales
 
-| Operador | Momento de emisión | Cómo combina valores | Condición de completado | Casos de uso comunes |
+| Operador | Momento de emisiÃ³n | CÃ³mo combina valores | CondiciÃ³n de completado | Casos de uso comunes |
 |---|---|---|---|---|
-| **combineLatest** | Cuando cualquiera cambia | Últimos valores de cada stream | Todos los streams completan | Validación de formularios, combinación de configuración |
-| **zip** | Cuando todos los streams emiten valor | Emparejar valores en posiciones correspondientes | Cualquiera completa | Paginación, sincronización de procesamiento paralelo |
-| **withLatestFrom** | Cuando el stream principal cambia | Principal + último valor auxiliar | Stream principal completa | Evento + estado actual |
-| **forkJoin** | Todos los streams completan | Valores finales de cada stream | Todos los streams completan | Llamadas paralelas a múltiples APIs |
+| **combineLatest** | Cuando cualquiera cambia | Ãšltimos valores de cada stream | Todos los streams completan | ValidaciÃ³n de formularios, combinaciÃ³n de configuraciÃ³n |
+| **zip** | Cuando todos los streams emiten valor | Emparejar valores en posiciones correspondientes | Cualquiera completa | PaginaciÃ³n, sincronizaciÃ³n de procesamiento paralelo |
+| **withLatestFrom** | Cuando el stream principal cambia | Principal + Ãºltimo valor auxiliar | Stream principal completa | Evento + estado actual |
+| **forkJoin** | Todos los streams completan | Valores finales de cada stream | Todos los streams completan | Llamadas paralelas a mÃºltiples APIs |
 
-### Comparación con Marble Diagrams
+### ComparaciÃ³n con Marble Diagrams
 
 ```
 A:  --1--2--------3----|
@@ -37,12 +37,12 @@ A.pipe(withLatestFrom(B)):
 
 forkJoin({ a: A, b: B }):
     ---------------------------{ a: 3, b: c }|
-    (Emite después de que ambos completen)
+    (Emite despuÃ©s de que ambos completen)
 ```
 
-### Visualización del momento de emisión
+### VisualizaciÃ³n del momento de emisiÃ³n
 
-El siguiente diagrama muestra cuándo cada operador de combinación emite valores.
+El siguiente diagrama muestra cuÃ¡ndo cada operador de combinaciÃ³n emite valores.
 
 ```mermaid
 sequenceDiagram
@@ -53,15 +53,15 @@ sequenceDiagram
     participant WL as withLatestFrom
     participant FJ as forkJoin
 
-    Note over A,FJ: Progreso del tiempo ’
+    Note over A,FJ: Progreso del tiempo Â’
 
     A->>A: Emite valor1
-    Note over CL: Aún no emite<br/>(B no emitió)
+    Note over CL: AÃºn no emite<br/>(B no emitiÃ³)
 
     B->>B: Emite valor a
     A->>CL: [1, a]
-    Note over Z: Aún no emite<br/>(Esperando siguiente de A)
-    Note over FJ: Aún no emite<br/>(No completado)
+    Note over Z: AÃºn no emite<br/>(Esperando siguiente de A)
+    Note over FJ: AÃºn no emite<br/>(No completado)
 
     A->>A: Emite valor2
     A->>CL: [2, a]
@@ -71,7 +71,7 @@ sequenceDiagram
     B->>B: Emite valor b
     B->>CL: [2, b]
     A->>Z: [1, a], [2, b]
-    Note over FJ: Aún no emite<br/>(No completado)
+    Note over FJ: AÃºn no emite<br/>(No completado)
 
     A->>A: Emite valor3
     A->>CL: [3, b]
@@ -88,23 +88,23 @@ sequenceDiagram
     Note right of CL: Emite cada vez<br/>que cualquiera cambia
     Note right of Z: Empareja en posiciones<br/>correspondientes
     Note right of WL: Solo emite cuando<br/>A cambia
-    Note right of FJ: Emite una vez después<br/>de que ambos completen
+    Note right of FJ: Emite una vez despuÃ©s<br/>de que ambos completen
 ```
 
-> [!TIP] Criterios de selección
-> - **combineLatest**: Combinación reactiva de estados (formularios, configuración)
-> - **zip**: Emparejar valores correspondientes (paginación, procesamiento paralelo)
-> - **withLatestFrom**: Evento + estado actual (obtener configuración al hacer clic)
-> - **forkJoin**: Ejecutar múltiples procesos asíncronos en paralelo y obtener todos los resultados (múltiples APIs)
+> [!TIP] Criterios de selecciÃ³n
+> - **combineLatest**: CombinaciÃ³n reactiva de estados (formularios, configuraciÃ³n)
+> - **zip**: Emparejar valores correspondientes (paginaciÃ³n, procesamiento paralelo)
+> - **withLatestFrom**: Evento + estado actual (obtener configuraciÃ³n al hacer clic)
+> - **forkJoin**: Ejecutar mÃºltiples procesos asÃ­ncronos en paralelo y obtener todos los resultados (mÃºltiples APIs)
 
-## combineLatest: Combinación de últimos valores
+## combineLatest: CombinaciÃ³n de Ãºltimos valores
 
-### Características
-- **Después de que todos los streams emitan al menos una vez**, emite cada vez que cualquiera cambia
-- Combina los **últimos valores** de cada stream
-- Continúa hasta que todos los streams completen
+### CaracterÃ­sticas
+- **DespuÃ©s de que todos los streams emitan al menos una vez**, emite cada vez que cualquiera cambia
+- Combina los **Ãºltimos valores** de cada stream
+- ContinÃºa hasta que todos los streams completen
 
-### Ejemplo práctico 1: Validación de formularios
+### Ejemplo prÃ¡ctico 1: ValidaciÃ³n de formularios
 
 #### L Mal ejemplo: Suscribirse individualmente y combinar manualmente
 ```typescript
@@ -124,7 +124,7 @@ password$.subscribe(password => {
 });
 ```
 
-####  Buen ejemplo: Combinación automática con combineLatest
+####  Buen ejemplo: CombinaciÃ³n automÃ¡tica con combineLatest
 ```typescript
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs';
@@ -141,15 +141,15 @@ const isFormValid$ = combineLatest([email$, password$]).pipe(
 );
 
 isFormValid$.subscribe(isValid => {
-  console.log('Formulario válido:', isValid);
+  console.log('Formulario vÃ¡lido:', isValid);
 });
 
 // Cambio de valores
-email$.next('user@example.com');  // Formulario válido: false (contraseña corta)
-password$.next('pass1234');       // Formulario válido: true
+email$.next('user@example.com');  // Formulario vÃ¡lido: false (contraseÃ±a corta)
+password$.next('pass1234');       // Formulario vÃ¡lido: true
 ```
 
-### Ejemplo práctico 2: Combinación de múltiples valores de configuración
+### Ejemplo prÃ¡ctico 2: CombinaciÃ³n de mÃºltiples valores de configuraciÃ³n
 
 ```typescript
 import { BehaviorSubject, combineLatest } from 'rxjs';
@@ -174,57 +174,57 @@ const config$ = combineLatest([theme$, language$, fontSize$]).pipe(
 );
 
 config$.subscribe(config => {
-  console.log('Configuración actualizada:', config);
+  console.log('ConfiguraciÃ³n actualizada:', config);
   // Proceso para actualizar UI
 });
 
-theme$.next('dark');      // Configuración actualizada: { theme: 'dark', language: 'ja', fontSize: 14 }
-fontSize$.next(16);       // Configuración actualizada: { theme: 'dark', language: 'ja', fontSize: 16 }
+theme$.next('dark');      // ConfiguraciÃ³n actualizada: { theme: 'dark', language: 'ja', fontSize: 14 }
+fontSize$.next(16);       // ConfiguraciÃ³n actualizada: { theme: 'dark', language: 'ja', fontSize: 16 }
 ```
 
-> [!TIP] Cuándo usar combineLatest
-> - **Validación de formularios**: Combinar últimos valores de todos los campos
-> - **Monitoreo de configuración**: Reaccionar cuando cambian múltiples configuraciones
-> - **Visualización dependiente**: Actualizar UI según múltiples estados
-> - **Filtrado**: Combinar múltiples condiciones
+> [!TIP] CuÃ¡ndo usar combineLatest
+> - **ValidaciÃ³n de formularios**: Combinar Ãºltimos valores de todos los campos
+> - **Monitoreo de configuraciÃ³n**: Reaccionar cuando cambian mÃºltiples configuraciones
+> - **VisualizaciÃ³n dependiente**: Actualizar UI segÃºn mÃºltiples estados
+> - **Filtrado**: Combinar mÃºltiples condiciones
 
 ## zip: Emparejar en posiciones correspondientes
 
-### Características
+### CaracterÃ­sticas
 - Empareja **valores en posiciones correspondientes** de cada stream
-- Espera hasta que valores de todos los streams estén listos
+- Espera hasta que valores de todos los streams estÃ©n listos
 - Completa cuando cualquier stream completa
 
-### Ejemplo práctico 1: Emparejar datos y metadatos en paginación
+### Ejemplo prÃ¡ctico 1: Emparejar datos y metadatos en paginaciÃ³n
 
 #### L Mal ejemplo: El timing se desincroniza
 ```typescript
 import { interval } from 'rxjs';
 import { map, take } from 'rxjs';
 
-// Obtención de datos de página (lento)
+// ObtenciÃ³n de datos de pÃ¡gina (lento)
 const pages$ = interval(1000).pipe(
-  map(i => `Datos de página ${i + 1}`),
+  map(i => `Datos de pÃ¡gina ${i + 1}`),
   take(3)
 );
 
-// Obtención de metadatos (rápido)
+// ObtenciÃ³n de metadatos (rÃ¡pido)
 const metadata$ = interval(100).pipe(
   map(i => `Metadatos ${i + 1}`),
   take(3)
 );
 
 // Suscribirse individualmente rompe la correspondencia
-pages$.subscribe(page => console.log('Página:', page));
+pages$.subscribe(page => console.log('PÃ¡gina:', page));
 metadata$.subscribe(meta => console.log('Meta:', meta));
 
 // Salida:
 // Meta: Metadatos 1
 // Meta: Metadatos 2
 // Meta: Metadatos 3
-// Página: Datos de página 1
-// Página: Datos de página 2
-// Página: Datos de página 3
+// PÃ¡gina: Datos de pÃ¡gina 1
+// PÃ¡gina: Datos de pÃ¡gina 2
+// PÃ¡gina: Datos de pÃ¡gina 3
 // (Correspondencia desordenada)
 ```
 
@@ -234,7 +234,7 @@ import { interval, zip } from 'rxjs';
 import { map, take } from 'rxjs';
 
 const pages$ = interval(1000).pipe(
-  map(i => `Datos de página ${i + 1}`),
+  map(i => `Datos de pÃ¡gina ${i + 1}`),
   take(3)
 );
 
@@ -248,20 +248,20 @@ zip(pages$, metadata$).subscribe(([page, meta]) => {
 });
 
 // Salida (cada segundo):
-// Datos de página 1 - Metadatos 1
-// Datos de página 2 - Metadatos 2
-// Datos de página 3 - Metadatos 3
+// Datos de pÃ¡gina 1 - Metadatos 1
+// Datos de pÃ¡gina 2 - Metadatos 2
+// Datos de pÃ¡gina 3 - Metadatos 3
 ```
 
-### Ejemplo práctico 2: Obtener resultados de procesamiento paralelo en orden
+### Ejemplo prÃ¡ctico 2: Obtener resultados de procesamiento paralelo en orden
 
 ```typescript
 import { of, zip } from 'rxjs';
 import { delay, map } from 'rxjs';
 
-// Llamar 3 APIs en paralelo, pero tiempos de completado varían
+// Llamar 3 APIs en paralelo, pero tiempos de completado varÃ­an
 const api1$ = of('Resultado 1').pipe(delay(300));
-const api2$ = of('Resultado 2').pipe(delay(100)); // Más rápido
+const api2$ = of('Resultado 2').pipe(delay(100)); // MÃ¡s rÃ¡pido
 const api3$ = of('Resultado 3').pipe(delay(200));
 
 zip(api1$, api2$, api3$).pipe(
@@ -270,27 +270,27 @@ zip(api1$, api2$, api3$).pipe(
   console.log('Todos los resultados:', results);
 });
 
-// Salida (después de 300ms, cuando todos estén listos):
+// Salida (despuÃ©s de 300ms, cuando todos estÃ©n listos):
 // Todos los resultados: { r1: 'Resultado 1', r2: 'Resultado 2', r3: 'Resultado 3' }
 ```
 
-> [!TIP] Cuándo usar zip
-> - **El orden es importante**: Emparejar 1º con 1º, 2º con 2º
-> - **Emparejar datos y metadatos**: Datos de página con número de página
-> - **Sincronización de procesamiento paralelo**: Ejecutar múltiples procesos en paralelo garantizando el orden
+> [!TIP] CuÃ¡ndo usar zip
+> - **El orden es importante**: Emparejar 1Âº con 1Âº, 2Âº con 2Âº
+> - **Emparejar datos y metadatos**: Datos de pÃ¡gina con nÃºmero de pÃ¡gina
+> - **SincronizaciÃ³n de procesamiento paralelo**: Ejecutar mÃºltiples procesos en paralelo garantizando el orden
 
 > [!WARNING] Advertencia sobre zip
-> - Espera al stream más lento, por lo que **puede acumular búfer**
-> - Con streams infinitos, puede causar memory leaks al arrastrarse por el más lento
+> - Espera al stream mÃ¡s lento, por lo que **puede acumular bÃºfer**
+> - Con streams infinitos, puede causar memory leaks al arrastrarse por el mÃ¡s lento
 
 ## withLatestFrom: Obtener valor principal + auxiliar
 
-### Características
+### CaracterÃ­sticas
 - Solo emite **cuando el stream principal emite un valor**
-- Obtiene el **último valor** del stream auxiliar y lo combina
+- Obtiene el **Ãºltimo valor** del stream auxiliar y lo combina
 - Completa cuando el stream principal completa
 
-### Ejemplo práctico 1: Evento de clic + estado actual
+### Ejemplo prÃ¡ctico 1: Evento de clic + estado actual
 
 #### L Mal ejemplo: combineLatest emite innecesariamente
 ```typescript
@@ -300,14 +300,14 @@ const button = document.querySelector('button')!;
 const clicks$ = fromEvent(button, 'click');
 const counter$ = new BehaviorSubject(0);
 
-// L combineLatest también emite cada vez que counter$ cambia
+// L combineLatest tambiÃ©n emite cada vez que counter$ cambia
 combineLatest([clicks$, counter$]).subscribe(([event, count]) => {
   console.log('Contador al hacer clic:', count);
 });
 
 // Emite cada vez que counter$ cambia
 setInterval(() => {
-  counter$.next(counter$.value + 1); // Emisión innecesaria
+  counter$.next(counter$.value + 1); // EmisiÃ³n innecesaria
 }, 1000);
 ```
 
@@ -332,7 +332,7 @@ setInterval(() => {
 }, 1000);
 ```
 
-### Ejemplo práctico 2: Envío de formulario + información de usuario actual
+### Ejemplo prÃ¡ctico 2: EnvÃ­o de formulario + informaciÃ³n de usuario actual
 
 ```typescript
 import { fromEvent, BehaviorSubject } from 'rxjs';
@@ -353,26 +353,26 @@ submit$.pipe(
     timestamp: Date.now()
   }))
 ).subscribe(payload => {
-  console.log('Datos de envío:', payload);
+  console.log('Datos de envÃ­o:', payload);
   // Enviar a API...
 });
 ```
 
-> [!TIP] Cuándo usar withLatestFrom
+> [!TIP] CuÃ¡ndo usar withLatestFrom
 > - **Evento + estado**: Obtener estado actual al hacer clic
-> - **Proceso principal + datos auxiliares**: Información de usuario al enviar formulario
-> - **Trigger + configuración**: Valores de configuración actuales al hacer clic en botón
+> - **Proceso principal + datos auxiliares**: InformaciÃ³n de usuario al enviar formulario
+> - **Trigger + configuraciÃ³n**: Valores de configuraciÃ³n actuales al hacer clic en botÃ³n
 
 ## forkJoin: Esperar completado de todos
 
-### Características
+### CaracterÃ­sticas
 - Espera hasta que **todos los streams completen**
 - Obtiene el **valor final** de cada stream
 - Equivalente a `Promise.all()` de Promise
 
-### Ejemplo práctico 1: Llamadas paralelas a múltiples APIs
+### Ejemplo prÃ¡ctico 1: Llamadas paralelas a mÃºltiples APIs
 
-#### L Mal ejemplo: Ejecución secuencial lenta
+#### L Mal ejemplo: EjecuciÃ³n secuencial lenta
 ```typescript
 import { ajax } from 'rxjs/ajax';
 
@@ -390,7 +390,7 @@ ajax.getJSON('/api/user').subscribe(user => {
 });
 ```
 
-####  Buen ejemplo: Ejecución paralela con forkJoin
+####  Buen ejemplo: EjecuciÃ³n paralela con forkJoin
 ```typescript
 import { forkJoin } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
@@ -405,7 +405,7 @@ forkJoin({
 });
 ```
 
-### Ejemplo práctico 2: Subida de múltiples archivos
+### Ejemplo prÃ¡ctico 2: Subida de mÃºltiples archivos
 
 ```typescript
 import { forkJoin, Observable, of } from 'rxjs';
@@ -425,43 +425,43 @@ const files = [
 
 forkJoin(files.map(file => uploadFile(file))).subscribe(results => {
   console.log('Subida de todos los archivos completa:', results);
-  // Se muestra después de que todas las subidas completen
+  // Se muestra despuÃ©s de que todas las subidas completen
 });
 ```
 
-> [!TIP] Cuándo usar forkJoin
-> - **Llamadas paralelas a múltiples APIs**: Obtención masiva de datos iniciales
+> [!TIP] CuÃ¡ndo usar forkJoin
+> - **Llamadas paralelas a mÃºltiples APIs**: ObtenciÃ³n masiva de datos iniciales
 > - **Procesamiento por lotes**: Completar todas las tareas
-> - **Ejecución paralela de procesos independientes**: Cuando cada proceso es independiente
+> - **EjecuciÃ³n paralela de procesos independientes**: Cuando cada proceso es independiente
 
 > [!WARNING] Advertencia sobre forkJoin
 > - **No se puede usar con streams que no completan** (como interval)
 > - Si uno falla, todo falla
 > - No se pueden obtener valores intermedios (solo valores finales)
 
-## Diagrama de flujo de selección
+## Diagrama de flujo de selecciÃ³n
 
 ```mermaid
 graph TD
-    A[Combinar múltiples streams] --> B{¿Cuándo emitir?}
-    B -->|Cuando cualquiera cambia| C{¿Se necesitan valores de todos?}
-    C -->|Sí| D[combineLatest]
+    A[Combinar mÃºltiples streams] --> B{Â¿CuÃ¡ndo emitir?}
+    B -->|Cuando cualquiera cambia| C{Â¿Se necesitan valores de todos?}
+    C -->|SÃ­| D[combineLatest]
     C -->|No, principal + auxiliar| E[withLatestFrom]
     B -->|Emparejar en posiciones correspondientes| F[zip]
-    B -->|Después de que todos completen| G{¿Manejo de errores?}
+    B -->|DespuÃ©s de que todos completen| G{Â¿Manejo de errores?}
     G -->|Procesar individualmente| H[Manejo de errores en cada Observable + forkJoin]
     G -->|Todo junto| I[forkJoin + catchError]
 
-    D --> D1[Validación de formularios<br/>Combinación de configuración]
+    D --> D1[ValidaciÃ³n de formularios<br/>CombinaciÃ³n de configuraciÃ³n]
     E --> E1[Obtener estado al hacer clic<br/>Evento + datos]
-    F --> F1[Datos y metadatos<br/>Garantía de orden]
-    H --> H1[Llamadas paralelas a múltiples APIs<br/>Procesamiento por lotes]
+    F --> F1[Datos y metadatos<br/>GarantÃ­a de orden]
+    H --> H1[Llamadas paralelas a mÃºltiples APIs<br/>Procesamiento por lotes]
     I --> I1[Proceso que no permite fallos]
 ```
 
-## Patrones prácticos
+## Patrones prÃ¡cticos
 
-### Patrón 1: Validación de formularios
+### PatrÃ³n 1: ValidaciÃ³n de formularios
 
 ```typescript
 import { BehaviorSubject, combineLatest } from 'rxjs';
@@ -519,7 +519,7 @@ class RegistrationForm {
 const form = new RegistrationForm();
 
 form.isValid$.subscribe(isValid => {
-  console.log('Formulario válido:', isValid);
+  console.log('Formulario vÃ¡lido:', isValid);
 });
 
 form.updateEmail('user@example.com');
@@ -527,7 +527,7 @@ form.updatePassword('password123');
 form.toggleTerms();
 ```
 
-### Patrón 2: Llamadas API con dependencias
+### PatrÃ³n 2: Llamadas API con dependencias
 
 ```typescript
 import { forkJoin, of } from 'rxjs';
@@ -578,7 +578,7 @@ getUserData(1).subscribe(({ user, posts, comments }) => {
 });
 ```
 
-### Patrón 3: Filtrado en tiempo real
+### PatrÃ³n 3: Filtrado en tiempo real
 
 ```typescript
 import { BehaviorSubject, combineLatest } from 'rxjs';
@@ -593,7 +593,7 @@ interface Product {
 
 class ProductFilter {
   private products$ = new BehaviorSubject<Product[]>([
-    { id: 1, name: 'Portátil', category: 'electronics', price: 100000 },
+    { id: 1, name: 'PortÃ¡til', category: 'electronics', price: 100000 },
     { id: 2, name: 'Mouse', category: 'electronics', price: 2000 },
     { id: 3, name: 'Libro', category: 'books', price: 1500 }
   ]);
@@ -645,7 +645,7 @@ filter.updateMaxPrice(50000);
 
 ## Trampas comunes
 
-### Trampa 1: Primera emisión de combineLatest
+### Trampa 1: Primera emisiÃ³n de combineLatest
 
 #### L Mal ejemplo: Stream sin valor inicial
 ```typescript
@@ -658,8 +658,8 @@ combineLatest([a$, b$]).subscribe(([a, b]) => {
   console.log('Valores:', a, b);
 });
 
-a$.next(1); // No se imprime nada (b$ aún no emitió valor)
-b$.next(2); // Aquí se imprime por primera vez: Valores: 1 2
+a$.next(1); // No se imprime nada (b$ aÃºn no emitiÃ³ valor)
+b$.next(2); // AquÃ­ se imprime por primera vez: Valores: 1 2
 ```
 
 ####  Buen ejemplo: Configurar valor inicial con BehaviorSubject
@@ -679,21 +679,21 @@ a$.next(1); // Salida: Valores: 1 0
 b$.next(2); // Salida: Valores: 1 2
 ```
 
-### Trampa 2: Acumulación de búfer con zip
+### Trampa 2: AcumulaciÃ³n de bÃºfer con zip
 
-#### L Mal ejemplo: Búfer se acumula con stream lento
+#### L Mal ejemplo: BÃºfer se acumula con stream lento
 ```typescript
 import { interval, zip } from 'rxjs';
 import { take } from 'rxjs';
 
-const fast$ = interval(100).pipe(take(100));  // Rápido
+const fast$ = interval(100).pipe(take(100));  // RÃ¡pido
 const slow$ = interval(1000).pipe(take(10));  // Lento
 
 zip(fast$, slow$).subscribe(([f, s]) => {
   console.log('Par:', f, s);
 });
 
-// Problema: valores de fast$ se acumulan en el búfer
+// Problema: valores de fast$ se acumulan en el bÃºfer
 // Hasta que slow$ emita 10, fast$ consume 100 espacios de memoria
 ```
 
@@ -707,7 +707,7 @@ const slow$ = interval(1000).pipe(take(10));
 
 // Usar combineLatest en lugar de zip
 combineLatest([fast$, slow$]).subscribe(([f, s]) => {
-  console.log('Última combinación:', f, s);
+  console.log('Ãšltima combinaciÃ³n:', f, s);
 });
 
 // O ajustar fast$ con throttleTime
@@ -735,68 +735,68 @@ import { ajax } from 'rxjs/ajax';
 import { take } from 'rxjs';
 
 forkJoin({
-  timer: interval(1000).pipe(take(5)), //  Completa después de 5
+  timer: interval(1000).pipe(take(5)), //  Completa despuÃ©s de 5
   user: ajax.getJSON('/api/user')
 }).subscribe(result => {
-  console.log('Resultado:', result); // Se ejecuta después de 5 segundos
+  console.log('Resultado:', result); // Se ejecuta despuÃ©s de 5 segundos
 });
 ```
 
-## Lista de verificación de comprensión
+## Lista de verificaciÃ³n de comprensiÃ³n
 
 Verifique si puede responder las siguientes preguntas.
 
 ```markdown
-## Comprensión básica
+## ComprensiÃ³n bÃ¡sica
 - [ ] Explicar las diferencias entre combineLatest, zip, withLatestFrom y forkJoin
-- [ ] Entender el momento de emisión de cada uno
-- [ ] Explicar cuándo completa cada operador
+- [ ] Entender el momento de emisiÃ³n de cada uno
+- [ ] Explicar cuÃ¡ndo completa cada operador
 
-## Selección
-- [ ] Elegir el operador apropiado para validación de formularios
-- [ ] Elegir el operador apropiado para llamadas paralelas a múltiples APIs
-- [ ] Elegir el operador apropiado para combinación de evento + estado
+## SelecciÃ³n
+- [ ] Elegir el operador apropiado para validaciÃ³n de formularios
+- [ ] Elegir el operador apropiado para llamadas paralelas a mÃºltiples APIs
+- [ ] Elegir el operador apropiado para combinaciÃ³n de evento + estado
 
 ## Advertencias
-- [ ] Entender condiciones de primera emisión de combineLatest
-- [ ] Explicar el problema de acumulación de búfer con zip
-- [ ] Entender por qué no se puede usar forkJoin con streams infinitos
+- [ ] Entender condiciones de primera emisiÃ³n de combineLatest
+- [ ] Explicar el problema de acumulaciÃ³n de bÃºfer con zip
+- [ ] Entender por quÃ© no se puede usar forkJoin con streams infinitos
 
-## Práctica
-- [ ] Implementar patrón de validación de formularios
-- [ ] Implementar llamadas paralelas a múltiples APIs
+## PrÃ¡ctica
+- [ ] Implementar patrÃ³n de validaciÃ³n de formularios
+- [ ] Implementar llamadas paralelas a mÃºltiples APIs
 - [ ] Implementar filtrado en tiempo real
 ```
 
 ## Siguientes pasos
 
-Después de entender la combinación de múltiples streams, aprenda sobre **técnicas de depuración**.
+DespuÃ©s de entender la combinaciÃ³n de mÃºltiples streams, aprenda sobre **tÃ©cnicas de depuraciÃ³n**.
 
-’ **[Técnicas de depuración](/es/guide/overcoming-difficulties/debugging-guide)** - Cómo depurar streams complejos
+Â’ **[TÃ©cnicas de depuraciÃ³n](/es/guide/overcoming-difficulties/debugging-guide)** - CÃ³mo depurar streams complejos
 
-## Páginas relacionadas
+## PÃ¡ginas relacionadas
 
 - **[Chapter 3: combineLatest](/es/guide/creation-functions/combination/combineLatest)** - Detalles de combineLatest
 - **[Chapter 3: zip](/es/guide/creation-functions/combination/zip)** - Detalles de zip
 - **[Chapter 3: forkJoin](/es/guide/creation-functions/combination/forkJoin)** - Detalles de forkJoin
 - **[withLatestFrom](/es/guide/operators/combination/withLatestFrom)** - Detalles de withLatestFrom
-- **[Chapter 4: Selección de operadores](/es/guide/overcoming-difficulties/operator-selection)** - Criterios de selección de operadores
+- **[Chapter 4: SelecciÃ³n de operadores](/es/guide/overcoming-difficulties/operator-selection)** - Criterios de selecciÃ³n de operadores
 
-## <¯ Ejercicios prácticos
+## <Â¯ Ejercicios prÃ¡cticos
 
-### Problema 1: Selección apropiada de operador
+### Problema 1: SelecciÃ³n apropiada de operador
 
-Elija el operador más adecuado para los siguientes escenarios.
+Elija el operador mÃ¡s adecuado para los siguientes escenarios.
 
-1. **Habilitar botón submit cuando se ingresen nombre de usuario y correo electrónico**
-2. **Enviar contenido actual del carrito al hacer clic en botón**
+1. **Habilitar botÃ³n submit cuando se ingresen nombre de usuario y correo electrÃ³nico**
+2. **Enviar contenido actual del carrito al hacer clic en botÃ³n**
 3. **Llamar 3 APIs en paralelo y mostrar datos cuando todas completen**
-4. **Emparejar número de página con items por página**
+4. **Emparejar nÃºmero de pÃ¡gina con items por pÃ¡gina**
 
 <details>
 <summary>Ejemplo de respuesta</summary>
 
-**1. Habilitar botón submit cuando se ingresen nombre de usuario y correo electrónico**
+**1. Habilitar botÃ³n submit cuando se ingresen nombre de usuario y correo electrÃ³nico**
 ```typescript
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs';
@@ -813,12 +813,12 @@ isSubmitEnabled$.subscribe(enabled => {
 });
 ```
 
-> [!NOTE] Razón
-> Como se necesita re-evaluar cuando cualquiera cambia, **combineLatest** es óptimo.
+> [!NOTE] RazÃ³n
+> Como se necesita re-evaluar cuando cualquiera cambia, **combineLatest** es Ã³ptimo.
 
 ---
 
-**2. Enviar contenido actual del carrito al hacer clic en botón**
+**2. Enviar contenido actual del carrito al hacer clic en botÃ³n**
 ```typescript
 import { fromEvent, BehaviorSubject } from 'rxjs';
 import { withLatestFrom } from 'rxjs';
@@ -835,8 +835,8 @@ submit$.pipe(
 });
 ```
 
-> [!NOTE] Razón
-> Como solo se emite al hacer clic (stream principal) y se quiere obtener el último valor del carrito, **withLatestFrom** es óptimo.
+> [!NOTE] RazÃ³n
+> Como solo se emite al hacer clic (stream principal) y se quiere obtener el Ãºltimo valor del carrito, **withLatestFrom** es Ã³ptimo.
 
 ---
 
@@ -854,12 +854,12 @@ forkJoin({
 });
 ```
 
-> [!NOTE] Razón
-> Para ejecutar múltiples llamadas API en paralelo y esperar hasta que todas completen, **forkJoin** es óptimo.
+> [!NOTE] RazÃ³n
+> Para ejecutar mÃºltiples llamadas API en paralelo y esperar hasta que todas completen, **forkJoin** es Ã³ptimo.
 
 ---
 
-**4. Emparejar número de página con items por página**
+**4. Emparejar nÃºmero de pÃ¡gina con items por pÃ¡gina**
 ```typescript
 import { BehaviorSubject, zip } from 'rxjs';
 
@@ -867,21 +867,21 @@ const pageNumber$ = new BehaviorSubject(1);
 const itemsPerPage$ = new BehaviorSubject(10);
 
 zip(pageNumber$, itemsPerPage$).subscribe(([page, items]) => {
-  console.log(`Página ${page}: ${items} items/página`);
+  console.log(`PÃ¡gina ${page}: ${items} items/pÃ¡gina`);
 });
 
 pageNumber$.next(2);
 itemsPerPage$.next(20);
 ```
 
-> [!NOTE] Razón
-> Para emparejar número de página con items en posiciones correspondientes, **zip** es óptimo.
+> [!NOTE] RazÃ³n
+> Para emparejar nÃºmero de pÃ¡gina con items en posiciones correspondientes, **zip** es Ã³ptimo.
 
 </details>
 
-### Problema 2: Primera emisión de combineLatest
+### Problema 2: Primera emisiÃ³n de combineLatest
 
-¿Cuándo se imprime el primer valor en el siguiente código?
+Â¿CuÃ¡ndo se imprime el primer valor en el siguiente cÃ³digo?
 
 ```typescript
 import { Subject, BehaviorSubject, combineLatest } from 'rxjs';
@@ -905,13 +905,13 @@ c$.next(3);
 
 Salida: `Valores: 1 0 3`
 
-> [!NOTE] Razón
-> `combineLatest` emite **después de que todos los streams emitan al menos una vez**.
-> - `a$` es `Subject` sin valor inicial ’ valor sale con `a$.next(1)`
-> - `b$` es `BehaviorSubject` con valor inicial `0` ’ ya tiene valor
-> - `c$` es `Subject` sin valor inicial ’ valor sale con `c$.next(3)`
+> [!NOTE] RazÃ³n
+> `combineLatest` emite **despuÃ©s de que todos los streams emitan al menos una vez**.
+> - `a$` es `Subject` sin valor inicial Â’ valor sale con `a$.next(1)`
+> - `b$` es `BehaviorSubject` con valor inicial `0` Â’ ya tiene valor
+> - `c$` es `Subject` sin valor inicial Â’ valor sale con `c$.next(3)`
 >
-> Cuando se ejecuta `c$.next(3)`, todos los streams tienen valores, por lo que emite ahí.
+> Cuando se ejecuta `c$.next(3)`, todos los streams tienen valores, por lo que emite ahÃ­.
 
 </details>
 
@@ -923,8 +923,8 @@ Prediga la salida de zip y combineLatest en el siguiente Marble Diagram.
 A:  --1--2----3----|
 B:  ----a----b-----|
 
-¿Salida de zip(A, B)?
-¿Salida de combineLatest(A, B)?
+Â¿Salida de zip(A, B)?
+Â¿Salida de combineLatest(A, B)?
 ```
 
 <details>
@@ -940,20 +940,20 @@ B:  ----a----b-----|
 ----[1,a]-[2,a]-[2,b]-[3,b]|
 ```
 
-> [!NOTE] Razón
+> [!NOTE] RazÃ³n
 > - **zip**: Empareja en posiciones correspondientes
 >   - 1 con a, 2 con b, 3 no tiene par, completa
-> - **combineLatest**: Emite última combinación cada vez que cualquiera cambia
->   - Sale a ’ [1,a]
->   - Sale 2 ’ [2,a]
->   - Sale b ’ [2,b]
->   - Sale 3 ’ [3,b]
+> - **combineLatest**: Emite Ãºltima combinaciÃ³n cada vez que cualquiera cambia
+>   - Sale a Â’ [1,a]
+>   - Sale 2 Â’ [2,a]
+>   - Sale b Â’ [2,b]
+>   - Sale 3 Â’ [3,b]
 
 </details>
 
 ### Problema 4: forkJoin con manejo de errores
 
-Escriba código para cuando, en múltiples llamadas API, algunas fallen pero se quieran obtener otros datos.
+Escriba cÃ³digo para cuando, en mÃºltiples llamadas API, algunas fallen pero se quieran obtener otros datos.
 
 <details>
 <summary>Ejemplo de respuesta</summary>
@@ -967,7 +967,7 @@ forkJoin({
   users: ajax.getJSON('/api/users').pipe(
     catchError(error => {
       console.error('Fallo al obtener usuarios:', error);
-      return of([]); // Devolver array vacío
+      return of([]); // Devolver array vacÃ­o
     })
   ),
   products: ajax.getJSON('/api/products').pipe(
@@ -978,19 +978,19 @@ forkJoin({
   ),
   orders: ajax.getJSON('/api/orders').pipe(
     catchError(error => {
-      console.error('Fallo al obtener órdenes:', error);
+      console.error('Fallo al obtener Ã³rdenes:', error);
       return of([]);
     })
   )
 }).subscribe(({ users, products, orders }) => {
   console.log('Datos obtenidos:', { users, products, orders });
-  // API fallida será array vacío, pero otros datos se obtienen
+  // API fallida serÃ¡ array vacÃ­o, pero otros datos se obtienen
 });
 ```
 
 > [!IMPORTANT] Puntos clave
 > - Agregar `catchError` a cada Observable
-> - Devolver valor por defecto (array vacío, etc.) en caso de error
+> - Devolver valor por defecto (array vacÃ­o, etc.) en caso de error
 > - Con esto, aunque algunos fallen, el total completa
 > - Posible imprimir error en log y notificar al usuario
 

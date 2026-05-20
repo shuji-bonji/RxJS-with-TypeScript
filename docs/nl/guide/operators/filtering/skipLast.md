@@ -424,11 +424,11 @@ Vensterverwerking met gegevens exclusief de laatste N gevallen
 
 ## Gerelateerde operatoren
 
-- **[skip](. /skip)** - eerste N waarden overslaan.
-- **[takeLast](. /takeLast)** - alleen de laatste N waarden nemen.
-- **[take](. /take)** - alleen de eerste N waarden ophalen.
-- **[skipUntil](. /skipUntil)** - overslaan tot een andere Observable afgaat.
-- **[skipWhile](. /skipWhile)** - overslaan terwijl aan voorwaarde is voldaan
+- **[skip](./skip)** - eerste N waarden overslaan.
+- **[takeLast](./takeLast)** - alleen de laatste N waarden nemen.
+- **[take](./take)** - alleen de eerste N waarden ophalen.
+- **[skipUntil](./skipUntil)** - overslaan tot een andere Observable afgaat.
+- **[skipWhile](./skipWhile)** - overslaan terwijl aan voorwaarde is voldaan
 
 ## Samenvatting.
 
