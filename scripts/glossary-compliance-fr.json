@@ -2,7 +2,7 @@
   "language": "fr",
   "totalFiles": 181,
   "filesWithViolations": 6,
-  "totalViolations": 36,
+  "totalViolations": 10,
   "files": [
     {
       "file": "schedulers/types.md",
@@ -28,114 +28,9 @@
           }
         ],
         "callouts_ja_residual": [],
-        "code_jp_residual": [
-          {
-            "fragment": "推奨",
-            "lineNo": 402
-          },
-          {
-            "fragment": "形式",
-            "lineNo": 402
-          },
-          {
-            "fragment": "回まで再試行",
-            "lineNo": 404
-          },
-          {
-            "fragment": "指数バックオフ",
-            "lineNo": 406
-          },
-          {
-            "fragment": "秒",
-            "lineNo": 406
-          },
-          {
-            "fragment": "秒",
-            "lineNo": 406
-          },
-          {
-            "fragment": "秒",
-            "lineNo": 406
-          },
-          {
-            "fragment": "リトライ",
-            "lineNo": 408
-          },
-          {
-            "fragment": "回目",
-            "lineNo": 408
-          },
-          {
-            "fragment": "後",
-            "lineNo": 408
-          },
-          {
-            "fragment": "は内部的に",
-            "lineNo": 410
-          },
-          {
-            "fragment": "を使用",
-            "lineNo": 410
-          },
-          {
-            "fragment": "成功",
-            "lineNo": 416
-          },
-          {
-            "fragment": "リトライ数に到達",
-            "lineNo": 418
-          },
-          {
-            "fragment": "最終",
-            "lineNo": 419
-          },
-          {
-            "fragment": "リトライ",
-            "lineNo": 424
-          },
-          {
-            "fragment": "回目",
-            "lineNo": 424
-          },
-          {
-            "fragment": "後",
-            "lineNo": 424
-          },
-          {
-            "fragment": "リトライ",
-            "lineNo": 425
-          },
-          {
-            "fragment": "回目",
-            "lineNo": 425
-          },
-          {
-            "fragment": "後",
-            "lineNo": 425
-          },
-          {
-            "fragment": "リトライ",
-            "lineNo": 426
-          },
-          {
-            "fragment": "回目",
-            "lineNo": 426
-          },
-          {
-            "fragment": "後",
-            "lineNo": 426
-          },
-          {
-            "fragment": "リトライ数に到達",
-            "lineNo": 427
-          },
-          {
-            "fragment": "最終",
-            "lineNo": 427
-          }
-        ]
+        "code_jp_residual": []
       },
-      "total": 29
+      "total": 3
     },
     {
       "file": "creation-functions/basic/fromEvent.md",

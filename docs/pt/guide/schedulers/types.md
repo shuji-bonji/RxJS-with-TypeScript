@@ -399,33 +399,33 @@ function fetchDataWithBackoff(id: number) {
 
 fetchDataWithBackoff(1)
   .pipe(
-    // RxJS 7.3+ 推奨: retry({ count, delay }) 形式
+    // RxJS 7.3+ Recomendação: retry({ count, delay }) Formato
     retry({
-      count: 3, // Máx.3回まで再試行
+      count: 3, // Máx.3Tentar novamente até três vezes
       delay: (error, retryCount) => {
-        // 指数バックオフ: 1秒, 2秒, 4秒...
+        // Recuo exponencial: 1Segundos, 2Segundos, 4Segundos...
         const delayTime = Math.pow(2, retryCount - 1) * 1000;
-        console.log(`🔄 リトライ ${retryCount}回目 (${delayTime}ms後)`);
+        console.log(`🔄 Novas tentativas ${retryCount}Segundo tempo (${delayTime}msDepois de)`);
 
-        // timer は内部的に asyncScheduler を使用
+        // timer seja interno asyncScheduler Uso
         return timer(delayTime);
       }
     })
   )
   .subscribe({
-    next: result => console.log('✅ 成功:', result),
+    next: result => console.log('✅ Sucesso:', result),
     error: error => {
-      console.log('❌ Máx.リトライ数に到達');
-      console.log('❌ 最終Erro:', error.message);
+      console.log('❌ Máx.Número de tentativas alcançado');
+      console.log('❌ FinalErro:', error.message);
     }
   });
 
 // SaídaEx.:
-// 🔄 リトライ 1回目 (1000ms後)
-// 🔄 リトライ 2回目 (2000ms後)
-// 🔄 リトライ 3回目 (4000ms後)
-// ❌ Máx.リトライ数に到達
-// ❌ 最終Erro: Temporary error
+// 🔄 Novas tentativas 1Segundo tempo (1000msDepois de)
+// 🔄 Novas tentativas 2Segundo tempo (2000msDepois de)
+// 🔄 Novas tentativas 3Segundo tempo (4000msDepois de)
+// ❌ Máx.Número de tentativas alcançado
+// ❌ FinalErro: Temporary error
 ```
 
 #### Ao especificar explicitamente um Scheduler

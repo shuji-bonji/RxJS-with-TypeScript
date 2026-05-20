@@ -399,33 +399,33 @@ function fetchDataWithBackoff(id: number) {
 
 fetchDataWithBackoff(1)
   .pipe(
-    // RxJS 7.3+ 推奨: retry({ count, delay }) 形式
+    // RxJS 7.3+ Aanbeveling: retry({ count, delay }) Formaat
     retry({
-      count: 3, // Max.3回まで再試行
+      count: 3, // Max.3Tot drie keer opnieuw proberen
       delay: (error, retryCount) => {
-        // 指数バックオフ: 1秒, 2秒, 4秒...
+        // Exponentiële back-off: 1Seconden, 2Seconden, 4Seconden...
         const delayTime = Math.pow(2, retryCount - 1) * 1000;
-        console.log(`🔄 リトライ ${retryCount}回目 (${delayTime}ms後)`);
+        console.log(`🔄 Herhalingen ${retryCount}Tweede tijd (${delayTime}msNa)`);
 
-        // timer は内部的に asyncScheduler を使用
+        // timer intern is asyncScheduler Gebruik
         return timer(delayTime);
       }
     })
   )
   .subscribe({
-    next: result => console.log('✅ 成功:', result),
+    next: result => console.log('✅ Succes:', result),
     error: error => {
-      console.log('❌ Max.リトライ数に到達');
-      console.log('❌ 最終Fout:', error.message);
+      console.log('❌ Max.Aantal pogingen bereikt');
+      console.log('❌ EindFout:', error.message);
     }
   });
 
 // UitvoerBv.:
-// 🔄 リトライ 1回目 (1000ms後)
-// 🔄 リトライ 2回目 (2000ms後)
-// 🔄 リトライ 3回目 (4000ms後)
-// ❌ Max.リトライ数に到達
-// ❌ 最終Fout: Temporary error
+// 🔄 Herhalingen 1Tweede tijd (1000msNa)
+// 🔄 Herhalingen 2Tweede tijd (2000msNa)
+// 🔄 Herhalingen 3Tweede tijd (4000msNa)
+// ❌ Max.Aantal pogingen bereikt
+// ❌ EindFout: Temporary error
 ```
 
 #### Wanneer expliciet een Scheduler wordt opgegeven
