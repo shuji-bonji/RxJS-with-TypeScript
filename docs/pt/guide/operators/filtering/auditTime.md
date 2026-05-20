@@ -14,7 +14,7 @@ import { auditTime } from 'rxjs';
 
 fromEvent(document, 'click').pipe(
   auditTime(1000)
-).subscribe(() => console.log('Clique em.！'));
+).subscribe(() => console.log('Clique!'));
 ```
 
 **Fluxo de operação**:.
@@ -66,12 +66,13 @@ import { auditTime } from 'rxjs';
 
 fromEvent(document, 'click').pipe(
   auditTime(1000)
-).subscribe(() => console.log('Clique em.！'));
+).subscribe(() => console.log('Clique!'));
 ```
 
 ## 💡 Padrão de utilização típico
 
 1. **Otimizar o redimensionamento da janela**.
+
 
 ```ts
    import { fromEvent } from 'rxjs';
@@ -349,7 +350,8 @@ import { auditTime } from 'rxjs';
 
 fromEvent(document, 'click').pipe(
   auditTime(1000)
-).subscribe(() => console.log('Clique em.！'));
+).subscribe(() => console.log('Clique!'));
+```
 
 ts.
 import { fromEvent } from 'rxjs';
@@ -368,16 +370,6 @@ fromEvent(input, 'input').pipe(
   console.log('Pesquisa executada');
 });
 
-```
-
-```ts
-import { fromEvent } from 'rxjs';
-import { auditTime } from 'rxjs';
-
-fromEvent(document, 'click').pipe(
-  auditTime(1000)
-).subscribe(() => console.log('Clique em.！'));
-```
 
 ```ts
 import { fromEvent } from 'rxjs';
@@ -398,13 +390,13 @@ input.type = 'text';
 input.placeholder = 'Search...' ;
 document.body.appendChild(input);
 
-// ✅ Bom exemplo: usar debounceTime para a entrada de pesquisa
+// ✅ Bom exemplo: usar debounceTime para entrada de pesquisa
 fromEvent(input, 'input').pipe(
   debounceTime(300) // Aguarde 300 ms após a parada da entrada antes de pesquisar
 ).subscribe(() => {
   console.log('Pesquisa executada', input.value);
 });
-```
+
 
 ## 🎓 Resumo
 

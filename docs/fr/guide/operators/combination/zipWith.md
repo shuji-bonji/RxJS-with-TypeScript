@@ -57,7 +57,7 @@ const output = document.createElement('div');
 output.innerHTML = '<h3>zipWith Exemples pratiques de:</h3>';
 document.body.appendChild(output);
 
-// L'utilisateurIDStream (publié immédiatement)
+// L'utilisateurID(publié immédiatement)
 const userIds$ = from([101, 102, 103, 104]);
 
 // Flux de noms d'utilisateurs (publié toutes les1(publié toutes les secondes)
@@ -97,7 +97,7 @@ userIds$
 
 ### Exemples spécifiques d'utilisation
 
-**Pour un appariement simple, la Creation Function est recommandée**.
+**Pour un simple appariement, la Creation Function est recommandée**.
 
 ```ts
 import { zip, of } from 'rxjs';

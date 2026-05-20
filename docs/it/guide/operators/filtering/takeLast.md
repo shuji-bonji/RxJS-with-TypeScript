@@ -21,7 +21,7 @@ numbers$.pipe(
 ```
 
 **Flusso operativo**:.
-1. il flusso emette 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+1. il flusso emette i numeri 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 2. mantenere internamente gli ultimi 3 nel buffer
 3. flusso completato 4. valori del buffer 7, 8, 9
 4. uscita dei valori del buffer 7, 8, 9 in sequenza
@@ -61,12 +61,12 @@ numbers$.pipe(
   takeLast(3)
 ).subscribe(console.log);
 // Uscita: 7, 8, 9
+```
 
 ## 💡 Modello tipico di utilizzo
 
 1. **Raccogliere le ultime N voci di registro**.
 
-```
 
 ```ts
    import { from } from 'rxjs';
@@ -224,14 +224,14 @@ fromEvent(submitButton, 'click').subscribe(() => {
 
 > [!IMPORTANT]
 > **Punti chiave**:
-> - `takeLast(3)` Sottoscrivere il**Prima di tutto.**deve essere impostato prima
-> - Quando si fa clic sul pulsante, viene emesso l'ultimo valore ricevuto fino a quel punto `complete()` viene emesso l'ultimo dei valori ricevuti fino a quel momento.3L'ultimo dei valori ricevuti fino a quel momento viene emesso.
-> - `complete()` Dopo la chiamata**Dopo aver chiamato**a `subscribe` nessun valore fluirà se si chiama
+> - `takeLast(3)` Sottoscrivere il**prima.**deve essere impostato per primo
+> - quando si fa clic sul pulsante `complete()` l'ultimo dei valori ricevuti fino a quel momento viene emesso.3Viene emesso l'ultimo dei valori ricevuti fino a quel momento.
+> - `complete()` Dopo la chiamata**Dopo aver chiamato**a `subscribe` i valori non scorrono.
 
 ## ⚠️ Un punto importante da notare
 
 > [!WARNING]
-> `takeLast` è di attendere che il flusso**Attendere fino al completamento**Pertanto, non funziona con flussi infiniti. Inoltre, l'opzione`takeLast(n)` del metodonè grande e consuma molta memoria.
+> `takeLast` è attendere che il flusso**Attendere fino al completamento**Pertanto, non funziona con flussi infiniti. Inoltre, il`takeLast(n)` del metodonè grande e consuma molta memoria.
 
 ### 1. Non può essere utilizzato con flussi infiniti.
 
@@ -348,7 +348,7 @@ function getRecentTransactions(
 
 // Esempio di utilizzo
 const transazioni$ = from([.
-  { id: '1', importo: 100, timestamp: new Date('2025-01-01'), status: 'completato' as const}
+  { id: '1', importo: 100, timestamp: new Date('2025-01-01'), stato: 'completato' as const}
   { id: '2', importo: 200, timestamp: new Date('2025-01-02'), status: 'completed' as const }.
   { id: '3', importo: 150, timestamp: new Date('2025-01-03'), status: 'pending' as const }
   { id: '4', importo: 300, timestamp: new Date('2025-01-04'), status: 'completed' as const }

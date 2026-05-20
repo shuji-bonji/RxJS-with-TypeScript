@@ -6,7 +6,7 @@ description: "find è un operatore di filtraggio di RxJS che trova il primo valo
 
 L'operatore find trova ed emette il **primo valore che soddisfa la condizione** e completa immediatamente il flusso. Se non viene trovato alcun valore, viene emesso `undefined`.
 
-## 🔰 Sintassi e utilizzo di base
+## 🔰 Sintassi e uso di base
 
 ```ts
 import { from } from 'rxjs';
@@ -343,7 +343,7 @@ numbers$.pipe(
 | `find(predicate)` | Valore stesso | `undefined` |
 | `findIndex(predicate)` | Indice (valore numerico) | `-1` |
 
-## ⚠️ Un errore comune
+## ⚠️ Errori comuni
 
 > [!NOTE]
 > `find` se il valore non viene trovato. `undefined` viene emesso. Questo non comporta un errore. Se è richiesto un errore, utilizzare `first` da utilizzare.
@@ -403,15 +403,15 @@ numbers$.pipe(
 
 ## 🎓 Sommario
 
-### Quando usare find.
-- ✅ Se si vuole trovare il primo valore che soddisfa una condizione
+### Quando si dovrebbe usare find.
+- ✅ Quando si vuole trovare il primo valore che soddisfa una condizione
 - ✅ Quando si vuole verificare l'esistenza di un valore
-- ✅ Quando si vuole trattare un valore come `undefined` se non viene trovato.
-- ✅ Quando si vuole trovare un elemento specifico in un array o in un elenco
+- ✅ Quando si vuole trattare un valore come "non definito" se non viene trovato.
+- ✅ Quando si desidera trovare un elemento specifico in una matrice o in un elenco
 
 ### Quando si dovrebbe usare first
 - ✅ Se si vuole ottenere il primo valore
-- ✅ Se si vuole emettere un errore se il valore non viene trovato
+- ✅ Se si vuole emettere un errore se il valore non è trovato
 
 ### Quando si dovrebbe usare il filtro?
 - ✅ Se si ha bisogno di tutti i valori che corrispondono a una condizione

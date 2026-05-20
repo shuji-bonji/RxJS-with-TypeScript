@@ -14,7 +14,7 @@ import { auditTime } from 'rxjs';
 
 fromEvent(document, 'click').pipe(
   auditTime(1000)
-).subscribe(() => console.log('Cliquez.！'));
+).subscribe(() => console.log('Cliquez !'));
 ```
 
 **Flux des opérations** :.
@@ -66,12 +66,13 @@ import { auditTime } from 'rxjs';
 
 fromEvent(document, 'click').pipe(
   auditTime(1000)
-).subscribe(() => console.log('Cliquez.！'));
+).subscribe(() => console.log('Cliquez !'));
 ```
 
 ## 💡 Modèle d'utilisation typique
 
 1. **Optimiser le redimensionnement des fenêtres**.
+
 
 ```ts
    import { fromEvent } from 'rxjs';
@@ -349,7 +350,8 @@ import { auditTime } from 'rxjs';
 
 fromEvent(document, 'click').pipe(
   auditTime(1000)
-).subscribe(() => console.log('Cliquez.！'));
+).subscribe(() => console.log('Cliquez !'));
+```
 
 ts.
 import { fromEvent } from 'rxjs' ;
@@ -368,16 +370,6 @@ fromEvent(input, 'input').pipe(
   console.log('Search executed') ;
 }) ;
 
-```
-
-```ts
-import { fromEvent } from 'rxjs';
-import { auditTime } from 'rxjs';
-
-fromEvent(document, 'click').pipe(
-  auditTime(1000)
-).subscribe(() => console.log('Cliquez.！'));
-```
 
 ```ts
 import { fromEvent } from 'rxjs';
@@ -404,7 +396,7 @@ fromEvent(input, 'input').pipe(
 ).subscribe(() => {
   console.log('Search executed', input.value) ;
 }) ;
-```
+
 
 ## 🎓 Résumé
 
@@ -415,7 +407,7 @@ fromEvent(input, 'input').pipe(
 - lorsque vous souhaitez refléter l'état le plus récent.
 
 ### Quand throttleTime doit être utilisé .
-- ✅ Lorsqu'une réponse immédiate est nécessaire
+- ✅ Lorsqu'une réponse immédiate est requise
 - ✅ Si vous voulez commencer le traitement avec la première valeur
 - ✅ Prévention de l'enfoncement des boutons
 

@@ -27,7 +27,7 @@ clicks$.pipe(
 2. salida si hay un evento de clic reciente en ese momento
 3. si no hay ningún valor durante el periodo de muestreo, no hay salida
 
-> [!WARNING] Atención en código de producción
+> [!WARNING] 本番コードでの注意
 
 > El ejemplo anterior omite la desuscripción de `fromEvent` para simplificar la explicación. En código real, utilice `takeUntil(destroy$)`, `take(N)` o `Subscription.unsubscribe()` para gestionar explícitamente el ciclo de vida. Más información: [Superando dificultades: gestión del ciclo de vida](/es/guide/overcoming-difficulties/lifecycle-management.md)
 
@@ -221,11 +221,11 @@ source$.pipe(
 ).subscribe(val => console.log('throttleTime:', val));
 // Ejemplos de salida: 0, 3, 6, 9(primer valor de cada periodo)
 
-// auditTime: Se emite el último valor del periodo1segundos después del primer valor, se emite el último valor del periodo
+// auditTime: Se emite el último valor del periodo1segundos después del primer valor, se emite el último valor del período
 source$.pipe(
   auditTime(1000)
 ).subscribe(val => console.log('auditTime:', val));
-// Ejemplos de salida: 2, 5, 8(último valor de cada periodo)
+// Ejemplos de salida: 2, 5, 8(último valor de cada período)
 ```
 
 ```ts
@@ -241,22 +241,8 @@ clicks$.pipe(
 });
 ```
 
-```ts
-import { fromEvent } from 'rxjs';
-import { sampleTime } from 'rxjs';
-
-const clicks$ = fromEvent(document, 'click');
-
-clicks$.pipe(
-  sampleTime(2000)
-).subscribe(() => {
-  console.log('2Muestra por segundo');
-});
-```
-
 **diferencias visuales**:.
 
-```
 Entrada: --|1|2|3|---|4|5|6|---|7|8|9|
       0s  1s      2s      3s
 
@@ -276,6 +262,8 @@ auditTime(1s):    -------|3|-------|6|-------|9|
 
 Si no hay nuevos valores en el tiempo de muestreo, no se produce ninguna salida.
 
+```
+
 ```ts
 import { fromEvent } from 'rxjs';
 import { sampleTime } from 'rxjs';
@@ -290,7 +278,7 @@ clicks$.pipe(
 // 2Durante segundos1No hay salida si no hay pulsaciones
 ```
 
-### 2. Esperar a la primera temporización de muestreo
+### 2. Esperar hasta la primera temporización de muestreo
 
 El `sampleTime` no emitirá nada hasta que haya transcurrido el tiempo especificado.
 
@@ -353,8 +341,8 @@ clicks$.pipe(
 ).subscribe(() => {
   console.log('2Muestras segundo a segundo');
 });
-
 ```
+
 
 ## 📚 Operadores relacionados.
 
@@ -369,7 +357,7 @@ El operador `sampleTime` muestrea periódicamente el último valor en el interva
 
 - ✅ Ideal para tomar instantáneas periódicas.
 - ✅ Útil para adelgazar flujos de alta frecuencia.
-- ✅ Memoria eficiente (sólo se conserva un último valor)
+- ✅ Uso eficiente de la memoria (sólo se conserva un último valor)
 - ✅ Ideal para cuadros de mando y supervisión
 - ⚠️ Si no hay valores disponibles durante el periodo de muestreo, no se emite nada
 - ⚠️ Hay un periodo de espera hasta la primera muestra

@@ -54,7 +54,7 @@ document.body.appendChild(button);
 
 const counter = document.createElement('div');
 counter.style.marginTop = '10px';
-counter.textContent = 'mais5Clique uma vez';
+counter.textContent = 'mais5Clicar uma vez';
 output.appendChild(counter);
 
 const result = document.createElement('div');
@@ -73,7 +73,7 @@ clicks$.subscribe(() => {
   clickCount++;
   const remaining = 5 - clickCount;
   if (remaining > 0) {
-    counter.textContent = `mais${remaining}Clique uma vez`;
+    counter.textContent = `mais${remaining}Clicar uma vez`;
   } else {
     counter.textContent = '';
   }
@@ -194,13 +194,13 @@ import { elementAt, take, first, skip } from 'rxjs';
 
 const numbers$ = from([10, 20, 30, 40, 50]);
 
-// elementAt: Somente os valores em um índice específico são recuperados
+// elementAt: Recuperar apenas valores para um índice específico
 numbers$.pipe(
   elementAt(2)
 ).subscribe(console.log);
 // Saída.: 30
 
-// take: Desde o inícioNObter um valor desde o início
+// take: Desde o inícioNObter um valor
 numbers$.pipe(
   take(3)
 ).subscribe(console.log);
@@ -224,6 +224,7 @@ numbers$.pipe(
   elementAt(2)
 ).subscribe(console.log);
 // Saída.: 30(Índice2Value)
+```
 
 ## ⚠️ Notas.
 
@@ -231,7 +232,6 @@ numbers$.pipe(
 
 Se o índice especificado não for alcançado antes da conclusão do fluxo, será gerado um erro.
 
-```
 
 ```ts
 import { from } from 'rxjs';

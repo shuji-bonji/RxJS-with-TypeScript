@@ -1,9 +1,76 @@
 {
   "language": "it",
   "totalFiles": 181,
-  "filesWithViolations": 5,
-  "totalViolations": 14,
+  "filesWithViolations": 7,
+  "totalViolations": 27,
   "files": [
+    {
+      "file": "schedulers/types.md",
+      "violations": {
+        "no_translate": [
+          {
+            "term": "timer",
+            "ja_count": 3,
+            "trans_count": 0,
+            "ratio": 0
+          },
+          {
+            "term": "range",
+            "ja_count": 3,
+            "trans_count": 0,
+            "ratio": 0
+          },
+          {
+            "term": "mergeMap",
+            "ja_count": 8,
+            "trans_count": 0,
+            "ratio": 0
+          },
+          {
+            "term": "tap",
+            "ja_count": 5,
+            "trans_count": 0,
+            "ratio": 0
+          },
+          {
+            "term": "count",
+            "ja_count": 5,
+            "trans_count": 0,
+            "ratio": 0
+          },
+          {
+            "term": "Promise",
+            "ja_count": 4,
+            "trans_count": 0,
+            "ratio": 0
+          }
+        ],
+        "callouts_ja_residual": [],
+        "code_jp_residual": [
+          {
+            "fragment": "注",
+            "lineNo": 331
+          },
+          {
+            "fragment": "これは概念を示す疑似コードです",
+            "lineNo": 333
+          },
+          {
+            "fragment": "文字列として扱う",
+            "lineNo": 336
+          },
+          {
+            "fragment": "高速な応答が必要なメッセージ処理",
+            "lineNo": 341
+          },
+          {
+            "fragment": "メッセージ受信",
+            "lineNo": 349
+          }
+        ]
+      },
+      "total": 11
+    },
     {
       "file": "practical-patterns/api-calls.md",
       "violations": {
@@ -101,6 +168,28 @@
       "total": 2
     },
     {
+      "file": "operators/filtering/sampleTime.md",
+      "violations": {
+        "no_translate": [
+          {
+            "term": "sample",
+            "ja_count": 6,
+            "trans_count": 0,
+            "ratio": 0
+          }
+        ],
+        "callouts_ja_residual": [
+          {
+            "phrase": "本番コードでの注意",
+            "lineNo": 30,
+            "line": "> [!WARNING] 本番コードでの注意"
+          }
+        ],
+        "code_jp_residual": []
+      },
+      "total": 2
+    },
+    {
       "file": "subjects/use-cases.md",
       "violations": {
         "no_translate": [
@@ -123,17 +212,16 @@
       "total": 2
     },
     {
-      "file": "operators/filtering/sampleTime.md",
+      "file": "operators/filtering/filter.md",
       "violations": {
-        "no_translate": [
+        "no_translate": [],
+        "callouts_ja_residual": [
           {
-            "term": "sample",
-            "ja_count": 6,
-            "trans_count": 0,
-            "ratio": 0
+            "phrase": "本番コードでの注意",
+            "lineNo": 74,
+            "line": "> [!WARNING] 本番コードでの注意"
           }
         ],
-        "callouts_ja_residual": [],
         "code_jp_residual": []
       },
       "total": 1
@@ -922,15 +1010,6 @@
       "total": 0
     },
     {
-      "file": "operators/filtering/filter.md",
-      "violations": {
-        "no_translate": [],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 0
-    },
-    {
       "file": "operators/filtering/find.md",
       "violations": {
         "no_translate": [],
@@ -1625,15 +1704,6 @@
     },
     {
       "file": "schedulers/task-and-scheduler-basics.md",
-      "violations": {
-        "no_translate": [],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 0
-    },
-    {
-      "file": "schedulers/types.md",
       "violations": {
         "no_translate": [],
         "callouts_ja_residual": [],

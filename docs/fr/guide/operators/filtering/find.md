@@ -53,7 +53,7 @@ numbers$.pipe(
 | Opérateur. | Spécification de la condition | Si aucune valeur n'est trouvée | Cas d'utilisation. |
 |---|---|---|---|
 | `premier()` | Option | Erreur (`EmptyError`) | Obtenir la première valeur |
-| first(predicate)` | Option | Erreur (`EmptyError`) | Obtention conditionnelle. |
+| `first(predicate)` | Option | Erreur (`EmptyError`) | Obtention conditionnelle. |
 | `find(predicate)` | Obligatoire. | Sortie `undefined`. | Recherche et vérification de l'existence |
 
 ## 💡 Modèle d'utilisation typique
@@ -421,7 +421,7 @@ numbers$.pipe(
 ## 🎓 Résumé
 
 ### Quand utiliser find.
-- ✅ Lorsque vous voulez trouver la première valeur qui satisfait une condition.
+- ✅ Si vous voulez trouver la première valeur qui satisfait une condition.
 - ✅ Lorsque vous voulez vérifier l'existence d'une valeur
 - ✅ Lorsque vous voulez traiter une valeur comme `undefined` si elle n'est pas trouvée.
 - ✅ Lorsque vous voulez trouver un élément spécifique dans un tableau ou une liste

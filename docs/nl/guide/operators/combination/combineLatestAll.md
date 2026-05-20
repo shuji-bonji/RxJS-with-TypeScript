@@ -27,8 +27,8 @@ higherOrder$
 
 // Uitgang:
 // [1, 3, 0] ← Als alles minstens één keer is afgevuurd1Als alles minstens één keer is afgevuurd (na2seconden later)
-// [2, 3, 0] ← 1Wanneer de tweedeObservablewordt afgevuurd (na 2 seconden), wordt de tweede2vuurt (na3seconden later)
-// [2, 3, 1] ← 3Wanneer de tweedeObservablewordt afgevuurd (na 2 seconden), wordt de tweede1vuurt (na4seconden later)
+// [2, 3, 0] ← 1Wanneer de tweedeObservablewordt afgevuurd (na 2 seconden)2vuurt (na3seconden later)
+// [2, 3, 1] ← 3Wanneer de tweedeObservablewordt afgevuurd (na 2 seconden)1vuurt (na4seconden later)
 ```
 
 - Verzamel interne Observables wanneer Observable van hogere orde **compleet** is.

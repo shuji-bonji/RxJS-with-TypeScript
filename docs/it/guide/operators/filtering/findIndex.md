@@ -6,7 +6,7 @@ description: "L'operatore findIndex è un operatore di filtraggio di RxJS che re
 
 L'operatore findIndex restituisce **l'indice del primo valore che corrisponde alla condizione** e completa immediatamente il flusso. Restituisce `-1` se non viene trovato alcun valore.
 
-## 🔰 Sintassi e utilizzo di base
+## 🔰 Sintassi e uso di base
 
 ```ts
 import { from } from 'rxjs';
@@ -271,12 +271,12 @@ numbers$.pipe(
   findIndex(n => n % 2 === 0)
 ).subscribe(console.log);
 // Uscita.: 4(primo pari8indice del primo pari)
+```
 
 ## 🔄 Confronto con Array.findIndex( di JavaScript)
 
 RxJS `findIndex` si comporta in modo simile al metodo array di JavaScript `Array.prototype.findIndex()`.
 
-```
 
 ```ts
 // JavaScript Array di
@@ -383,7 +383,7 @@ findFirstInactiveUserIndex(users$).subscribe(index => {
 
 ### 4. l'indice parte da 0
 
-Come per gli array, gli indici iniziano da 0.
+Come per gli array, gli indici partono da 0.
 
 ```ts
 import { from } from 'rxjs';
@@ -413,4 +413,4 @@ L'operatore findIndex restituisce l'indice del primo valore che soddisfa la cond
 - ✅ Restituisce `-1' se non viene trovato (non è un errore)
 - ✅ Completa immediatamente quando viene trovato
 - ⚠️ Il valore restituito è sempre di tipo `number` (-1 o un intero maggiore o uguale a 0)
-- ⚠️ Utilizza `find` se è necessario il valore stesso
+- ⚠️ Usare `find' se è richiesto il valore stesso

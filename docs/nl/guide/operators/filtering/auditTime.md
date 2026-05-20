@@ -14,7 +14,7 @@ import { auditTime } from 'rxjs';
 
 fromEvent(document, 'click').pipe(
   auditTime(1000)
-).subscribe(() => console.log('Klik.！'));
+).subscribe(() => console.log('Klik!'));
 ```
 
 **Bedieningsstroom**:.
@@ -203,7 +203,7 @@ Deze code zal alleen de laatste positie ophalen en weergeven telkens als de muis
 
 | Operator | operatie | gebruik van het systeem op verschillende manieren |
 |---|---|---|
-| `auditTime(ms)` | Wanneer een waarde binnenkomt**msAltijd uitvoer na**(zelfs als de invoer doorgaat) | Periodieke bemonstering |
+| `auditTime(ms)` | Wanneer een waarde binnenkomt**msAltijd uitvoer na**(zelfs als de invoer doorgaat) | Bemonstering met regelmatige tussenpozen |
 | `debounceTime(ms)` | **Nadat de invoer is gestopt**msUitvoeren na | Wachten op voltooiing van invoer |
 
 ### Specifieke voorbeelden：Verschillen in zoekinvoer
@@ -342,13 +342,14 @@ import { auditTime } from 'rxjs';
 
 fromEvent(document, 'click').pipe(
   auditTime(1000)
-).subscribe(() => console.log('Klik.！'));
+).subscribe(() => console.log('Klik!'));
+```
 
 ts.
 import { fromEvent } from 'rxjs';
 import { auditTime } from 'rxjs';
 
-// Maak een invoerveld voor zoeken
+// Maak een zoekinvoerveld
 const input = document.createElement('input');.
 input.type = 'tekst';
 input.placeholder = "Zoeken... ;
@@ -361,16 +362,6 @@ fromEvent(input, 'input').pipe(
   console.log('Zoekopdracht uitgevoerd');
 });
 
-```
-
-```ts
-import { fromEvent } from 'rxjs';
-import { auditTime } from 'rxjs';
-
-fromEvent(document, 'click').pipe(
-  auditTime(1000)
-).subscribe(() => console.log('Klik.！'));
-```
 
 ```ts
 import { fromEvent } from 'rxjs';
@@ -395,9 +386,9 @@ document.body.appendChild(input);
 fromEvent(input, 'input').pipe(
   debounceTime(300) // Wacht 300ms nadat invoer stopt voordat je gaat zoeken
 ).subscribe() => {
-  console.log('Zoeken uitgevoerd', input.value);
+  console.log('Zoekopdracht uitgevoerd', input.value);
 });
-```
+
 
 ## Samenvatting
 
@@ -409,7 +400,7 @@ fromEvent(input, 'input').pipe(
 
 ### Wanneer throttleTime moet worden gebruikt.
 - ✅ Als een onmiddellijke respons vereist is
-- ✅ Als je de verwerking wilt starten met de eerste waarde
+- ✅ Als u de verwerking wilt starten met de eerste waarde
 - ✅ Voorkomen van knoppen indrukken
 
 ### Wanneer debounceTime gebruiken.

@@ -1,32 +1,24 @@
 {
-  "category_2_other_langs": [
-    {
-      "file": "operators/transformation/window.md",
-      "lang": "fr"
-    },
-    {
-      "file": "operators/utility/materialize.md",
-      "lang": "fr"
-    },
-    {
-      "file": "operators/transformation/pairwise.md",
-      "lang": "fr"
-    },
-    {
-      "file": "operators/transformation/reduce.md",
-      "lang": "fr"
-    },
-    {
-      "file": "operators/combination/zipWith.md",
-      "lang": "fr"
-    },
-    {
-      "file": "creation-functions/loop/generate.md",
-      "lang": "it"
-    },
-    {
-      "file": "operators/utility/timestamp.md",
-      "lang": "it"
-    }
+  "category_2_other_langs_coverage": [
+    { "file": "operators/filtering/elementAt.md", "lang": "de" },
+    { "file": "operators/filtering/elementAt.md", "lang": "fr" },
+    { "file": "operators/filtering/elementAt.md", "lang": "it" },
+    { "file": "operators/filtering/elementAt.md", "lang": "es" },
+    { "file": "operators/filtering/elementAt.md", "lang": "nl" },
+    { "file": "operators/filtering/elementAt.md", "lang": "pt" },
+
+    { "file": "operators/combination/raceWith.md", "lang": "de" },
+    { "file": "operators/combination/raceWith.md", "lang": "fr" },
+    { "file": "operators/combination/raceWith.md", "lang": "it" },
+    { "file": "operators/combination/raceWith.md", "lang": "es" },
+    { "file": "operators/combination/raceWith.md", "lang": "nl" },
+    { "file": "operators/combination/raceWith.md", "lang": "pt" },
+
+    { "file": "operators/filtering/takeLast.md", "lang": "de" },
+    { "file": "operators/filtering/takeLast.md", "lang": "fr" },
+    { "file": "operators/filtering/takeLast.md", "lang": "it" },
+    { "file": "operators/filtering/takeLast.md", "lang": "es" },
+    { "file": "operators/filtering/takeLast.md", "lang": "nl" },
+    { "file": "operators/filtering/takeLast.md", "lang": "pt" }
   ]
 }

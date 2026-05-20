@@ -14,7 +14,7 @@ import { auditTime } from 'rxjs';
 
 fromEvent(document, 'click').pipe(
   auditTime(1000)
-).subscribe(() => console.log('Anklicken.！'));
+).subscribe(() => console.log('Klick!'));
 ```
 
 **Ablauf der Operation**:.
@@ -66,12 +66,13 @@ import { auditTime } from 'rxjs';
 
 fromEvent(document, 'click').pipe(
   auditTime(1000)
-).subscribe(() => console.log('Anklicken.！'));
+).subscribe(() => console.log('Klick!'));
 ```
 
 ## 💡 Typisches Nutzungsmuster
 
 1. **Optimierung der Fenstergröße**.
+
 
 ```ts
    import { fromEvent } from 'rxjs';
@@ -210,7 +211,7 @@ Dieser Code ruft nur bei jeder Mausbewegung die letzte Position ab und zeigt sie
 
 | Bediener | Betrieb | die unterschiedliche Nutzung des Systems |
 |---|---|---|
-| `auditTime(ms)` | Wenn ein Wert eintrifft**msAusgabe immer nach**(auch wenn die Eingabe fortgesetzt wird) | Periodische Abtastung |
+| `auditTime(ms)` | Wenn ein Wert eintrifft**msAusgabe immer nach**(auch wenn die Eingabe fortgesetzt wird) | Abtastung in regelmäßigen Abständen |
 | `debounceTime(ms)` | **Nachdem die Eingabe gestoppt wurde**msAusgabe danach | Warten auf Abschluss der Eingabe |
 
 ### Spezifische Beispiele：Unterschiede in der Sucheingabe
@@ -349,7 +350,8 @@ import { auditTime } from 'rxjs';
 
 fromEvent(document, 'click').pipe(
   auditTime(1000)
-).subscribe(() => console.log('Anklicken.！'));
+).subscribe(() => console.log('Klick!'));
+```
 
 ts.
 import { fromEvent } from 'rxjs';
@@ -368,16 +370,6 @@ fromEvent(input, 'input').pipe(
   console.log('Suche ausgeführt');
 });
 
-```
-
-```ts
-import { fromEvent } from 'rxjs';
-import { auditTime } from 'rxjs';
-
-fromEvent(document, 'click').pipe(
-  auditTime(1000)
-).subscribe(() => console.log('Anklicken.！'));
-```
 
 ```ts
 import { fromEvent } from 'rxjs';
@@ -404,7 +396,7 @@ fromEvent(input, 'input').pipe(
 ).subscribe(() => {
   console.log('Suche ausgeführt', input.value);
 });
-```
+
 
 ## 🎓 Zusammenfassung
 

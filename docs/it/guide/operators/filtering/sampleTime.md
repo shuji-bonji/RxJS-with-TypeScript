@@ -7,7 +7,7 @@ description: "L'operatore sampleTime è un operatore di filtraggio di RxJS che c
 L'operatore sampleTime periodicamente **campiona** il valore più recente dell'Observable di origine a **specificati intervalli di tempo** e lo restituisce.
 Come un'istantanea periodica, recupera il valore più recente in quel momento.
 
-## 🔰 Sintassi e uso di base
+## 🔰 Sintassi e utilizzo di base
 
 ```ts
 import { fromEvent } from 'rxjs';
@@ -27,7 +27,7 @@ clicks$.pipe(
 2. uscita se c'è un evento click recente in quel momento
 3. se non c'è alcun valore durante il periodo di campionamento, non viene emesso alcun risultato.
 
-> [!WARNING] Attenzione in codice di produzione
+> [!WARNING] 本番コードでの注意
 
 > L'esempio precedente omette la sottoscrizione di fromEvent per semplicità di spiegazione. Nel codice reale, usare takeUntil(destroy$)`, take(N)` o `Subscription.unsubscribe()` per gestire esplicitamente il ciclo di vita. Ulteriori informazioni: [Superare le difficoltà: la gestione del ciclo di vita] (/it/guide/ Superare le difficoltà/gestione del ciclo di vita.md)
 
@@ -108,9 +108,9 @@ fromEvent<MouseEvent>(area, 'mousemove').pipe(
 - Se il mouse viene spostato continuamente, ogni secondo viene campionata solo l'ultima posizione corrente.
 - Se il mouse non viene spostato per un secondo, non viene emesso nulla per quel periodo.
 
-## 🎯 Esempio pratico di codice 2: Cruscotto di dati in tempo reale
+## 🎯 Esempio pratico di codice 2: cruscotto di dati in tempo reale
 
-Questo esempio mostra come i dati dei sensori possano essere campionati periodicamente e visualizzati su un cruscotto.
+Questo esempio mostra come i dati del sensore possano essere campionati periodicamente e visualizzati su un cruscotto.
 
 ```ts
 import { interval } from 'rxjs';
@@ -278,7 +278,7 @@ clicks$.pipe(
 // 2Durante i secondi1Nessuna uscita se non vengono effettuati clic
 ```
 
-### 2. Attendere fino al primo tempo di campionamento
+### 2. Attendere il primo tempo di campionamento
 
 Il parametro sampleTime non emetterà nulla finché non sarà trascorso il tempo specificato.
 

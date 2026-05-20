@@ -46,7 +46,7 @@ source1$
 
 - **Convalida in tempo reale degli input di un modulo**: monitoraggio costante dello stato più recente di più campi.
 - **Sincronizzazione di più stati dipendenti**: combinazione di valori di configurazione e input dell'utente
-- **Aggiornamento in tempo reale dei risultati dei calcoli**: calcolo immediato dei risultati a partire da più valori di input
+- **Aggiornamento in tempo reale dei risultati dei calcoli**: calcolo immediato dei risultati da più valori di input
 
 ## 🧠 Esempi pratici di codice (con UI)
 

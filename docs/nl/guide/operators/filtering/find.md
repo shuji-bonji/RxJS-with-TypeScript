@@ -4,7 +4,7 @@ description: "find is een RxJS filteroperator die de eerste waarde vindt die aan
 
 # find - vind de eerste waarde die aan de voorwaarde voldoet
 
-De `find` operator vindt en voert de **eerste waarde uit die aan de voorwaarde voldoet** en voltooit de stroom onmiddellijk. Als er geen waarde wordt gevonden, wordt `onbepaald` uitgevoerd.
+De `find` operator vindt en voert de **eerste waarde uit die aan de voorwaarde voldoet** en voltooit de stroom onmiddellijk. Als er geen waarde wordt gevonden, wordt `undefined` uitgevoerd.
 
 ## 🔰 Basis syntaxis en gebruik
 
@@ -419,7 +419,7 @@ getallen$.pipe(
 ### Wanneer je find moet gebruiken.
 - ✅ Als je de eerste waarde wilt vinden die aan een voorwaarde voldoet
 - ✅ Als je het bestaan van een waarde wilt controleren
-- ✅ Als je een waarde als `undefined` wilt behandelen als deze niet wordt gevonden.
+- ✅ Wanneer je een waarde als `undefined` wilt behandelen als deze niet wordt gevonden.
 - ✅ Wanneer je een specifiek element in een array of lijst wilt vinden
 
 ### Wanneer je first moet gebruiken
@@ -438,6 +438,6 @@ getallen$.pipe(
 ## Volgende stap.
 
 - **[first](. /first)** - leer hoe je de eerste waarde krijgt.
-- **[filter](. /filter)** - leren hoe te filteren op basis van voorwaarden.
+- **[filter](. /filter)** - leer filteren op basis van voorwaarden.
 - **[findIndex](https://rxjs.dev/api/operators/findIndex)** - leer hoe je de index krijgt van de eerste waarde die voldoet aan een voorwaarde (officiële documentatie)
 - **[filtering-operator-praktische-gebruik-cases](. /practical-use-cases)** - leer echte gebruikssituaties

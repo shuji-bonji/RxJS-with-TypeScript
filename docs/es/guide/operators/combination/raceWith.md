@@ -151,7 +151,7 @@ const userSearch$ = fromEvent(searchButton, 'click').pipe(
 
     // APISimular una llamada (3(tarda segundos)
     return timer(3000).pipe(
-      map(() => '🔍 Resultados de la búsqueda: 100Visitas por página'),
+      map(() => '🔍 Resultados de la búsqueda: 100Resultados'),
       catchError((err: unknown) => of('❌ Se ha producido un error'))
     );
   })
@@ -348,7 +348,7 @@ slow$.pipe(raceWith(fast$)).subscribe(console.log);
 // Salida:
 // fast$ Disparo
 // fast
-// (slow$es1desabonado al segundo3no se dispara al final del segundo período.)
+// (slow$es1desabonado al segundo3no se dispara al final del segundo período)
 ```
 
 ### Para Observable síncrono.
@@ -362,7 +362,7 @@ import { raceWith } from 'rxjs';
 of('A').pipe(
   raceWith(of('B'), of('C'))
 ).subscribe(console.log);
-// Salida: A (como se suscribió por primera vez.)
+// Salida: A (porque se suscribió por primera vez a)
 ```
 
 ## 📚 Operadores relacionados.

@@ -55,6 +55,7 @@ clicks$.pipe(
 
 Dieses Beispiel zeigt, wie die Mausposition jede Sekunde abgetastet wird.
 
+
 ```ts
 import { fromEvent } from 'rxjs';
 import { sampleTime, map } from 'rxjs';
@@ -64,7 +65,7 @@ const container = document.createElement('div');
 document.body.appendChild(container);
 
 const title = document.createElement('h3');
-title.textContent = 'Abtasten der Mausposition (1(jede Sekunde)';
+title.textContent = 'Abtastung der Mausposition (1(jede Sekunde)';
 container.appendChild(title);
 
 const area = document.createElement('div');
@@ -252,22 +253,8 @@ clicks$.pipe(
 });
 ```
 
-```ts
-import { fromEvent } from 'rxjs';
-import { sampleTime } from 'rxjs';
-
-const clicks$ = fromEvent(document, 'click');
-
-clicks$.pipe(
-  sampleTime(2000)
-).subscribe(() => {
-  console.log('2Stichprobe pro Sekunde');
-});
-```
-
 **visuelle Unterschiede**:.
 
-```
 Eingabe: --|1|2|3|---|4|5|6|---|7|8|9|
       0s  1s      2s      3s
 
@@ -286,6 +273,8 @@ auditTime(1s):    -------|3|-------|6|-------|9|
 ### 1. kein Wert während des Stichprobenzeitraums
 
 Wenn zum Zeitpunkt der Abtastung keine neuen Werte vorhanden sind, wird keine Ausgabe erzeugt.
+
+```
 
 ```ts
 import { fromEvent } from 'rxjs';
@@ -364,69 +353,8 @@ clicks$.pipe(
 ).subscribe(() => {
   console.log('2Stichproben im Sekundentakt');
 });
-
 ```
 
-```ts
-import { fromEvent } from 'rxjs';
-import { sampleTime, map } from 'rxjs';
-
-// UIErstellen
-const container = document.createElement('div');
-document.body.appendChild(container);
-
-const title = document.createElement('h3');
-title.textContent = 'Mauspositions-Abtastung（1Pro Sekunde）';
-container.appendChild(title);
-
-const area = document.createElement('div');
-area.style.width = '100%';
-area.style.height = '300px';
-area.style.border = '2px solid #4CAF50';
-area.style.backgroundColor = '#f5f5f5';
-area.style.display = 'flex';
-area.style.alignItems = 'center';
-area.style.justifyContent = 'center';
-area.style.fontSize = '18px';
-area.textContent = 'Bewegen Sie die Maus in diesem Bereich';
-container.appendChild(area);
-
-const output = document.createElement('div');
-output.style.marginTop = '10px';
-output.style.maxHeight = '150px';
-output.style.overflow = 'auto';
-output.style.border = '1px solid #ccc';
-output.style.padding = '10px';
-container.appendChild(output);
-
-let sampleCount = 0;
-
-// Mausbewegungs-Ereignis
-fromEvent<MouseEvent>(area, 'mousemove').pipe(
-  map(event => ({
-    x: event.offsetX,
-    y: event.offsetY,
-    timestamp: Date.now()
-  })),
-  sampleTime(1000) // 1Alle N Sekunden abtasten
-).subscribe(pos => {
-  sampleCount++;
-  const log = document.createElement('div');
-  log.style.padding = '5px';
-  log.style.borderBottom = '1px solid #eee';
-  log.innerHTML = `
-    <strong>Stichprobe #${sampleCount}</strong>
-    [${new Date(pos.timestamp).toLocaleTimeString()}]
-    Position: (${pos.x}, ${pos.y})
-  `;
-  output.insertBefore(log, output.firstChild);
-
-  // Max.10Bis zu N Einträge anzeigen
-  while (output.children.length > 10) {
-    output.removeChild(output.lastChild!);
-  }
-});
-```
 
 ## 📚 Verwandte Operatoren.
 

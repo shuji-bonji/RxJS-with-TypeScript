@@ -300,4 +300,4 @@ source1$.pipe(combineLatestWith(source2$)).subscribe(console.log);
 
 - **[zip](/it/guide/creation-functions/combinazione/zip)** - Versione della Creation Function.
 - **[combineLatestWith](/it/guide/operators/combinazione/combineLatestWith)** - Combina l'ultimo valore.
-- **[withLatestFrom](/it/guide/operatori/combinazione/withLatestFrom)** - Solo trigger mainstream
+- **[withLatestFrom](/it/guide/operators/combinazione/withLatestFrom)** - Solo trigger mainstream

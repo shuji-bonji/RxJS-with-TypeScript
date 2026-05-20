@@ -322,45 +322,96 @@ console.log('2: End');
 
 ### Processing large amounts of data
 
-
-### WebSocket message processing
-
-
-### Error retry control
-
-By utilizing the scheduler with the `retry` operator, the timing of retries can be finely controlled.
-
-#### Basic retry control
-
-The `delay` option of the `retry` operator internally uses the `asyncScheduler` to control the retry interval.
-
 ```ts
-import { of, asyncScheduler } from 'rxjs';
-import { observeOn } from 'rxjs';
+import { from, queueScheduler } from 'rxjs';
+import { mergeMap, observeOn, tap } from 'rxjs';
 
-console.log('1: Start');
+interface ApiRequest {
+  endpoint: string;
+  id: number;
+}
 
-of('Asynchronous processing')
-  .pipe(observeOn(asyncScheduler))
-  .subscribe(value => console.log(`3: ${value}`));
+const requests: ApiRequest[] = [
+  { endpoint: '/users', id: 1 },
+  { endpoint: '/posts', id: 1 },
+  { endpoint: '/comments', id: 1 },
+];
 
-console.log('2: End');
-
-// Output:
-// 1: Start
-// 2: End
-// 3: Asynchronous processing
+// リクエストをキューに入れて順番に処理
+from(requests)
+  .pipe(
+    observeOn(queueScheduler),
+    tap((req) => console.log(`キューに追加: ${req.endpoint}`)),
+    mergeMap(
+      (req) =>
+        // 実際のAPIリクエストのシミュレーション
+        new Promise((resolve) => {
+          setTimeout(() => {
+            resolve(`${req.endpoint}/${req.id} のresult`);
+          }, 1000);
+        })
+    )
+  )
+  .subscribe((result) => console.log(`completed: ${result}`));
 ```
 
 #### Scheduler utilization with exponential backoff
 
 For more advanced control, exponential backoff can be implemented by combining `retryWhen` and `asyncScheduler`.
 
+```ts
+import { throwError, timer, of } from 'rxjs';
+import { retry, mergeMap } from 'rxjs';
+
+function fetchDataWithBackoff(id: number) {
+  return of(id).pipe(
+    mergeMap(() => {
+      const random = Math.random();
+      if (random > 0.9) {
+        return of({ id, data: 'success' });
+      }
+      return throwError(() => new Error('Temporary error'));
+    })
+  );
+}
+
+fetchDataWithBackoff(1)
+  .pipe(
+    // RxJS 7.3+ 推奨: retry({ count, delay }) 形式
+    retry({
+      count: 3, // Max.3回まで再試行
+      delay: (error, retryCount) => {
+        // 指数バックオフ: 1秒, 2秒, 4秒...
+        const delayTime = Math.pow(2, retryCount - 1) * 1000;
+        console.log(`🔄 リトライ ${retryCount}回目 (${delayTime}ms後)`);
+
+        // timer は内部的に asyncScheduler を使用
+        return timer(delayTime);
+      }
+    })
+  )
+  .subscribe({
+    next: result => console.log('✅ 成功:', result),
+    error: error => {
+      console.log('❌ Max.リトライ数に到達');
+      console.log('❌ 最終Error:', error.message);
+    }
+  });
+
+// OutputEx.:
+// 🔄 リトライ 1回目 (1000ms後)
+// 🔄 リトライ 2回目 (2000ms後)
+// 🔄 リトライ 3回目 (4000ms後)
+// ❌ Max.リトライ数に到達
+// ❌ 最終Error: Temporary error
+```
 
 #### When explicitly specifying an asyncScheduler
 
 Explicitly specifying a specific scheduler allows for more flexible control, such as replacing it with `TestScheduler` during testing.
 
+
+```
 
 ```ts
 import { of, asyncScheduler } from 'rxjs';

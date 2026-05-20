@@ -1,138 +1,126 @@
 ---
-description: "Cette section présente une vue d'ensemble des fonctions de création de sélection et de partition qui permettent de sélectionner un Observable parmi plusieurs Observables ou de diviser un Observable en plusieurs Observables. Elle explique comment utiliser race et partition, ainsi que des exemples pratiques."
+description: "Les Creation Function (race et partition) qui sélectionnent un observable parmi plusieurs ou divisent un observable en plusieurs sont expliquées. Des cas d'utilisation pratiques et des implémentations à sécurité de type dans TypeScript, tels que la gestion des conflits, l'acquisition de la réponse la plus rapide et le partitionnement de flux par branchement conditionnel sont présentés."
 ---
 
-# Fonctions de création de sélection/partition
+# Systèmes de sélection et de partitionnement Creation Function
 
-Il s'agit de fonctions de création permettant de sélectionner un Observable parmi plusieurs Observables ou de diviser un Observable en plusieurs Observables.
+Fonctions de Creation Function qui sélectionnent un Observable à partir de plusieurs Observables ou divisent un Observable en plusieurs Observables selon des conditions.
 
-## Que sont les fonctions de création de sélection/partition ?
+## Système de sélection et de partitionnement Que sont les Creation Function ?
 
-Les fonctions de création de sélection/partition sont un ensemble de fonctions qui mettent en concurrence plusieurs Observables afin de sélectionner le plus rapide ou de diviser un Observable en deux flux en fonction de conditions. Cette fonction est utile pour mettre en concurrence des sources de données ou pour allouer des traitements en fonction de conditions.
+Les fonctions de Creation Function pour les systèmes de sélection et de division sont différentes de celles pour les systèmes de combinaison et ont les rôles suivants.
 
-Consultez le tableau ci-dessous pour connaître les caractéristiques et l'utilisation de chaque fonction de création.
+- Sélection** : sélection d'un Observable satisfaisant à certaines conditions parmi plusieurs Observables.
+- Fractionnement** : fractionnement d'un Observable en plusieurs Observables conformément à une condition.
 
-## Principales fonctions de création de sélection/partition
+Ces fonctions fonctionnent dans la direction opposée ou d'un point de vue différent de celui de la jointure "combiner plusieurs observables en un seul".
 
-| Fonction | Description | Cas d'utilisation |
-|----------|-------------|-------------------|
-| **[race](/fr/guide/creation-functions/selection/race)** | Sélectionner l'Observable le plus rapide (celui qui émet en premier) | Concurrence entre plusieurs sources de données, traitement de repli |
-| **[partition](/fr/guide/creation-functions/selection/partition)** | Diviser en deux Observables selon une condition | Gestion des succès/échecs, branchement selon les conditions |
+## Principaux systèmes de sélection et de division Creation Function
+
+| Fonction | Description de la fonction | Cas d'utilisation. |
+|---|---|---|
+| **[race](/fr/guide/création-fonctions/sélection/race)** | Adopter le premier publié | Compétition de sources de données multiples |
+| **[partition](/fr/guide/creation-functions/selection/partition)** | Séparer en deux avec des conditions | Processus de ramification en cas de succès ou d'échec |
 
 ## Critères d'utilisation
 
-La sélection des fonctions de création de sélection/partition est déterminée selon les perspectives suivantes.
+### race - sélectionner l'Observable le plus rapide
 
-### 1. Objectif
+`race` s'abonne à plusieurs Observables simultanément et adopte le **premier Observable qui émet une valeur. Les Observables qui ne sont pas adoptés sont automatiquement unsubscribe.
 
-- **Sélectionner le plus rapide parmi plusieurs sources** : `race` - Sélectionner le premier qui émet une valeur parmi plusieurs sources de données
-- **Diviser selon une condition** : `partition` - Diviser un Observable en deux flux selon une condition
-
-### 2. Moment d'émission
-
-- **Seulement le plus rapide** : `race` - Une fois sélectionné, les autres valeurs d'Observable sont ignorées
-- **Classer toutes les valeurs** : `partition` - Toutes les valeurs sont triées en deux flux selon les conditions
-
-### 3. Moment de l'achèvement
-
-- **Dépend de l'Observable sélectionné** : `race` - Suit l'achèvement de l'Observable qui a émis le premier
-- **Dépend de l'Observable original** : `partition` - Les deux flux s'achèvent lorsque l'Observable original s'achève
-
-## Exemples d'utilisation pratique
-
-### race() - Sélectionner le plus rapide parmi plusieurs sources de données
-
-Si vous avez plusieurs sources de données et que vous souhaitez utiliser celle qui répond le plus rapidement, utilisez `race()`.
+**Cas d'utilisation** :.
+- Adopter la réponse la plus rapide à partir de plusieurs points d'extrémité de l'API
+- Gestion des délais d'attente (processus d'origine ou temporisation)
+- Concurrence entre le cache et les appels réels à l'API
 
 ```typescript
 import { race, timer } from 'rxjs';
 import { map } from 'rxjs';
 
-// Simuler plusieurs APIs
-const api1$ = timer(1000).pipe(map(() => 'Réponse API1'));
-const api2$ = timer(500).pipe(map(() => 'Réponse API2'));
-const api3$ = timer(1500).pipe(map(() => 'Réponse API3'));
+// Adopter les données les plus rapides à partir de sources multiples
+const fast$ = timer(1000).pipe(map(() => 'Fast API'));
+const slow$ = timer(3000).pipe(map(() => 'Slow API'));
 
-// Utiliser la réponse la plus rapide
-race(api1$, api2$, api3$).subscribe(console.log);
-// Sortie: Réponse API2 (la plus rapide à 500ms)
+race(fast$, slow$).subscribe(console.log);
+// Sortie.: 'Fast API' (1La sortie est effectuée après une seconde,slow$est annulée)
 ```
 
-### partition() - Diviser en deux selon une condition
+### partition - divisée par condition
 
-Si vous souhaitez diviser un Observable en deux flux selon une condition, utilisez `partition()`.
+La `partition` divise une Observable en **deux Observables** en se basant sur une fonction conditionnelle. La valeur de retour est un tableau `[if true, if false]`.
+
+**Cas d'utilisation** :.
+- Séparation du succès et de l'échec.
+- Séparation des nombres pairs et impairs.
+- Séparation des données valides et invalides
 
 ```typescript
-import { of } from 'rxjs';
-import { partition } from 'rxjs';
+import { of, partition } from 'rxjs';
 
-const numbers$ = of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+const source$ = of(1, 2, 3, 4, 5, 6);
 
 // Diviser en nombres pairs et impairs
-const [evens$, odds$] = partition(numbers$, n => n % 2 === 0);
+const [even$, odd$] = partition(source$, n => n % 2 === 0);
 
-evens$.subscribe(n => console.log('Pair:', n));
-// Sortie: Pair: 2, Pair: 4, Pair: 6, Pair: 8, Pair: 10
+even$.subscribe(val => console.log('Even:', val));
+// Sortie.: Even: 2, Even: 4, Even: 6
 
-odds$.subscribe(n => console.log('Impair:', n));
-// Sortie: Impair: 1, Impair: 3, Impair: 5, Impair: 7, Impair: 9
+odd$.subscribe(val => console.log('Odd:', val));
+// Sortie.: Odd: 1, Odd: 3, Odd: 5
 ```
 
-## Conversion de Cold en Hot
+## Conversion du froid au chaud
 
-Comme le montre le tableau ci-dessus, **toutes les fonctions de création de sélection/partition génèrent des Observables Cold**. Une exécution indépendante est lancée pour chaque abonnement.
+Comme le montre le tableau ci-dessus, **Toutes les fonctions de sélection et de Creation Function génèrent un Observable à froid**. Chaque abonnement déclenche une exécution indépendante.
 
-Cependant, en utilisant les opérateurs de multidiffusion (`share()`, `shareReplay()`, etc.), vous pouvez **convertir un Observable Cold en Observable Hot**.
+Les Observable froids peuvent être convertis en Observable chauds en utilisant des opérateurs basés sur la multidiffusion (`share()`, `shareReplay()`, etc.).
 
-### Exemple pratique : Partage de l'exécution
+### Exemple pratique : partage de demandes d'API conflictuelles
 
 ```typescript
-import { race, timer, share } from 'rxjs';
-import { map } from 'rxjs';
+import { race, timer } from 'rxjs';
+import { map, share } from 'rxjs';
 
-// ❄️ Cold - Exécution indépendante pour chaque abonnement
+// ❄️ Cold - Relancer la compétition pour chaque abonnement
 const coldRace$ = race(
-  timer(1000).pipe(map(() => 'API1')),
-  timer(500).pipe(map(() => 'API2'))
+  timer(1000).pipe(map(() => 'Fast API')),
+  timer(3000).pipe(map(() => 'Slow API'))
 );
 
-coldRace$.subscribe(val => console.log('Abonné 1:', val));
-coldRace$.subscribe(val => console.log('Abonné 2:', val));
-// → Chaque abonné exécute une course indépendante (2x requêtes)
+coldRace$.subscribe(val => console.log('Abonné1:', val));
+coldRace$.subscribe(val => console.log('Abonné2:', val));
+// → Chaque abonné organise un concours indépendant (un2concours une fois)
 
-// 🔥 Hot - Partager l'exécution entre les abonnés
+// 🔥 Hot - Partager les résultats des concours entre les abonnés
 const hotRace$ = race(
-  timer(1000).pipe(map(() => 'API1')),
-  timer(500).pipe(map(() => 'API2'))
+  timer(1000).pipe(map(() => 'Fast API')),
+  timer(3000).pipe(map(() => 'Slow API'))
 ).pipe(share());
 
-hotRace$.subscribe(val => console.log('Abonné 1:', val));
-hotRace$.subscribe(val => console.log('Abonné 2:', val));
-// → Partager l'exécution de la course (requêtes une seule fois)
+hotRace$.subscribe(val => console.log('Abonné1:', val));
+hotRace$.subscribe(val => console.log('Abonné2:', val));
+// → 1Partager les résultats d'un concours
 ```
 
 > [!TIP]
-> **Cas où la conversion Hot est nécessaire** :
-> - Partager le résultat de `race()` entre plusieurs composants
-> - Utiliser le résultat de `partition()` à plusieurs endroits
-> - Exécuter une seule fois un traitement coûteux
->
-> Pour plus d'informations, voir [Création de base - Conversion de Cold en Hot](/fr/guide/creation-functions/basic/#conversion-de-cold-en-hot).
 
-## Correspondance avec l'opérateur Pipeable
+> Pour plus d'informations, voir [Système de création de base - Conversion de froid à chaud] (/guide/creation-functions/basic/#cold- to -hot-).
 
-Pour les fonctions de création de sélection/partition, il existe un opérateur Pipeable correspondant. Lorsqu'il est utilisé dans un pipeline, l'opérateur de type `~With` est utilisé.
+## Correspondance avec Pipeable Operator
 
-| Fonction de création | Opérateur Pipeable |
-|----------------------|--------------------|
+Les fonctions de création de sélection et de division ont également un Pipeable Operator correspondant.
+
+| Creation Function | Pipeable Operator |
+|---|---|
 | `race(a$, b$)` | `a$.pipe(raceWith(b$))` |
-| `partition(source$, predicate)` | Pas de correspondance directe (utiliser comme fonction de création) |
+| `partition(source$, predicate)` | Ne peut pas être utilisé dans un pipeline (Creation Function uniquement). |
 
 > [!NOTE]
-> `partition()` est typiquement utilisée comme fonction de création. Pour diviser un flux dans un pipeline, utilisez des opérateurs tels que `filter()` en combinaison.
 
-## Prochaines étapes
+> Il n'y a pas de version Pipeable Operator de `partition`. Si une partition est nécessaire, elle peut être utilisée comme Creation Function ou découpée manuellement en utilisant deux fois `filter`.
 
-Pour connaître le comportement détaillé et les exemples pratiques de chaque fonction de création, cliquez sur les liens du tableau ci-dessus.
+## Prochaines étapes.
 
-En apprenant les [Fonctions de création de base](/fr/guide/creation-functions/basic/), les [Fonctions de création de combinaison](/fr/guide/creation-functions/combination/) et les [Fonctions de création conditionnelles](/fr/guide/creation-functions/conditional/), vous comprendrez l'ensemble des fonctions de création.
+Pour en savoir plus sur le fonctionnement détaillé et les exemples pratiques de chaque Creation Function, cliquez sur les liens du tableau ci-dessus.
+
+Vous pouvez également vous familiariser avec les [Fonctions de création combinées] (/guide/creation-functions/combination/) et les [Fonctions de création conditionnelles] (/guide/creation-functions/conditionnelles/). Ensemble, elles permettent une compréhension globale des Creation Function.

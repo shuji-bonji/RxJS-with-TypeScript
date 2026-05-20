@@ -6,7 +6,7 @@ description: "combineLatestWith es un operador de combinación de RxJS que combi
 
 El operador combineLatestWith combina todos los **últimos valores** del Observable original y de cualquier otro Observable especificado.
 Cada vez que se emite un nuevo valor desde uno de los Observable, se emite un resultado que combina todos los últimos valores.
-Esta es la versión del operador Pipeable Operator del operador combineLatest de Creation Function.
+Se trata de la versión Pipeable Operator de "combineLatest" de Creation Function.
 
 ## 🔰 Sintaxis básica y uso
 

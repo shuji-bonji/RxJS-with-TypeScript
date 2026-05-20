@@ -1,5 +1,5 @@
 ---
-description: "auditTime es un operador de filtrado RxJS que espera un tiempo especificado cuando se emite un valor y emite el último valor dentro de ese período. Se utiliza mejor cuando se desea muestrear periódicamente el último estado en eventos de alta frecuencia, como el seguimiento de la posición de desplazamiento, el cambio de tamaño de la ventana, el movimiento del ratón, etc. Es importante entender la diferencia entre este y throttleTime y debounceTime y utilizarlos adecuadamente."
+description: "auditTime es un operador de filtrado de RxJS que espera un tiempo especificado cuando se emite un valor y emite el último valor dentro de ese periodo. Se utiliza mejor cuando se desea muestrear periódicamente el último estado en eventos de alta frecuencia, como el seguimiento de la posición de desplazamiento, el cambio de tamaño de la ventana, el movimiento del ratón, etc. Es importante entender la diferencia entre este y throttleTime y debounceTime y utilizarlos adecuadamente."
 ---
 
 # auditTime - último valor emitido después del tiempo especificado
@@ -14,7 +14,7 @@ import { auditTime } from 'rxjs';
 
 fromEvent(document, 'click').pipe(
   auditTime(1000)
-).subscribe(() => console.log('Pulsar.！'));
+).subscribe(() => console.log('¡Clic!'));
 ```
 
 **Flujo de operación**:.
@@ -66,12 +66,13 @@ import { auditTime } from 'rxjs';
 
 fromEvent(document, 'click').pipe(
   auditTime(1000)
-).subscribe(() => console.log('Pulsar.！'));
+).subscribe(() => console.log('¡Clic!'));
 ```
 
 ## 💡 Patrón típico de utilización
 
 1. **Optimizar el cambio de tamaño de las ventanas**.
+
 
 ```ts
    import { fromEvent } from 'rxjs';
@@ -210,7 +211,7 @@ Este código sólo recuperará y mostrará la última posición cada vez que se 
 
 | Operador | operación | utilización del sistema de forma diferente |
 |---|---|---|
-| `auditTime(ms)` | Cuando entra un valor**msSiempre sale después de**(incluso si la entrada continúa) | Muestreo a intervalos regulares |
+| `auditTime(ms)` | Cuando entra un valor**msSiempre sale después de**(incluso si la entrada continúa) | Muestreo periódico |
 | `debounceTime(ms)` | **Después de que la entrada se haya detenido**msSalida después | Esperar a que finalice la entrada |
 
 ### Ejemplos concretos：Diferencias en la entrada de búsqueda
@@ -349,7 +350,8 @@ import { auditTime } from 'rxjs';
 
 fromEvent(document, 'click').pipe(
   auditTime(1000)
-).subscribe(() => console.log('Pulsar.！'));
+).subscribe(() => console.log('¡Clic!'));
+```
 
 ts.
 import { fromEvent } from 'rxjs';
@@ -363,21 +365,11 @@ document.body.appendChild(input);
 
 // ❌ Mal ejemplo: utilizar auditTime para la entrada de búsqueda
 fromEvent(input, 'input').pipe(
-  auditTime(300) // la búsqueda se realiza cada 300ms mientras se introduce la entrada
+  auditTime(300) // la búsqueda se realiza cada 300 ms mientras se introduce la entrada
 ).subscribe(() => {
   console.log('Búsqueda ejecutada');
 });
 
-```
-
-```ts
-import { fromEvent } from 'rxjs';
-import { auditTime } from 'rxjs';
-
-fromEvent(document, 'click').pipe(
-  auditTime(1000)
-).subscribe(() => console.log('Pulsar.！'));
-```
 
 ```ts
 import { fromEvent } from 'rxjs';
@@ -404,7 +396,7 @@ fromEvent(entrada, 'entrada').pipe(
 ).subscribe(() => {
   console.log('Búsqueda ejecutada', input.value);
 });
-```
+
 
 ## 🎓 Resumen
 

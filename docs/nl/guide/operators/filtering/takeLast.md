@@ -75,7 +75,7 @@ TABEL 10
      { timestamp: 5, level: 'info' as const, message: 'Retry successful' },
    ] as LogEntry[]);
 
-   // Haal de laatste3Haal de laatste logs
+   // De laatste3Logs ophalen van de
    logs$.pipe(
      takeLast(3)
    ).subscribe(log => {
@@ -213,14 +213,14 @@ fromEvent(submitButton, 'click').subscribe() => {
 
 > [!IMPORTANT]
 > **Belangrijke punten**:
-> - `takeLast(3)` Abonneren op de**eerste.**moet eerst worden ingesteld
-> - wanneer op de knop wordt geklikt. `complete()` de laatste van de tot dan toe ontvangen waarden wordt uitgevoerd.3De laatste tot dan toe ontvangen waarde wordt uitgevoerd.
-> - `complete()` Na oproepen**Na het oproepen van**naar `subscribe` stromen de waarden niet.
+> - `takeLast(3)` Abonneer je op de**Vooraf.**moet eerst worden ingesteld
+> - Wanneer op de knop wordt geklikt, wordt de laatste waarde die tot dat moment is ontvangen `complete()` de laatste van de tot dan toe ontvangen waarden worden uitgevoerd.3De laatste van de tot op dat moment ontvangen waarden wordt uitgevoerd.
+> - `complete()` Na het oproepen van**Na het oproepen van**naar `subscribe` zullen er geen waarden stromen als je
 
 ## ⚠️ Een belangrijk punt om op te merken
 
 > [!WARNING]
-> `takeLast` is om te wachten tot de stroom**Wachten tot voltooiing**Daarom werkt het niet met oneindige streams. Ook moet de`takeLast(n)` van dengroot is, verbruikt het veel geheugen.
+> `takeLast` is om te wachten tot de stroom**Wacht tot voltooiing**Daarom werkt het niet met oneindige streams. Ook moet de`takeLast(n)` van dengroot is, verbruikt het veel geheugen.
 
 ### 1. Kan niet gebruikt worden met oneindige streams.
 

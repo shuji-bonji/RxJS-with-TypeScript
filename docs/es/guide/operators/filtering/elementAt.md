@@ -68,7 +68,7 @@ let clickCount = 0;
 // Evento de clic
 const clicks$ = fromEvent(button, 'click');
 
-// Para mostrar el recuento
+// Para visualizar el recuento
 clicks$.subscribe(() => {
   clickCount++;
   const remaining = 5 - clickCount;
@@ -224,6 +224,7 @@ numbers$.pipe(
   elementAt(2)
 ).subscribe(console.log);
 // Salida.: 30(Índice2Valor)
+```
 
 ## ⚠️ Notas.
 
@@ -231,7 +232,6 @@ numbers$.pipe(
 
 Si no se alcanza el índice especificado antes de que se complete el flujo, se genera un error.
 
-```
 
 ```ts
 import { from } from 'rxjs';

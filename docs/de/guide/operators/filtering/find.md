@@ -360,10 +360,10 @@ numbers$.pipe(
 | `find(predicate)` | Wert selbst | `undefined` |
 | `findIndex(predicate)` | Index (numerischer Wert) | `-1` |
 
-## ⚠️ Ein häufiger Fehler
+## ⚠️ Häufige Fehler
 
 > [!NOTE]
-> `find` wenn der Wert nicht gefunden wird. `undefined` ausgegeben wird. Dies führt nicht zu einem Fehler. Wenn ein Fehler erforderlich ist, sollte `first` verwendet werden.
+> `find` wenn der Wert nicht gefunden wird. `undefined` ausgegeben wird. Dies führt nicht zu einem Fehler. Wenn ein Fehler erforderlich ist, muss `first` verwendet werden.
 
 ### Fehler.: Erwartete Fehlerbehandlung, wenn der Wert nicht gefunden wird.
 
@@ -441,7 +441,7 @@ numbers$.pipe(
 
 ## 🚀 Nächster Schritt.
 
-- **[first](. /first)** - lernen Sie, wie Sie den ersten Wert erhalten.
+- **[first](. /first)** - lernen Sie, wie man den ersten Wert erhält.
 - **[filter](. /filter)** - lernen Sie, wie man auf der Grundlage von Bedingungen filtert.
 - **[findIndex](https://rxjs.dev/api/operators/findIndex)** - lernen Sie, wie man den Index des ersten Wertes, der eine Bedingung erfüllt, ermittelt (offizielle Dokumentation)
 - **[filtering-operator-practical-use-cases](. /practical-use-cases)** - lernen Sie echte Anwendungsfälle kennen

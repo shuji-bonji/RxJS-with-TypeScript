@@ -6,7 +6,7 @@ description: "auditTime è un operatore di filtraggio di RxJS che attende un tem
 
 L'operatore `auditTime` attende un **tempo specificato** dopo l'emissione di un valore e produce l'**ultimo valore** entro tale periodo. Quindi attende l'arrivo del valore successivo.
 
-## 🔰 Sintassi e utilizzo di base
+## 🔰 Sintassi di base e utilizzo
 
 ```ts
 import { fromEvent } from 'rxjs';
@@ -14,7 +14,7 @@ import { auditTime } from 'rxjs';
 
 fromEvent(document, 'click').pipe(
   auditTime(1000)
-).subscribe(() => console.log('Fare clic.！'));
+).subscribe(() => console.log('Clic!'));
 ```
 
 **Flusso delle operazioni**:.
@@ -66,12 +66,13 @@ import { auditTime } from 'rxjs';
 
 fromEvent(document, 'click').pipe(
   auditTime(1000)
-).subscribe(() => console.log('Fare clic.！'));
+).subscribe(() => console.log('Clic!'));
 ```
 
 ## 💡 Modello di utilizzo tipico
 
 1. **Ottimizzare il ridimensionamento della finestra**.
+
 
 ```ts
    import { fromEvent } from 'rxjs';
@@ -348,7 +349,8 @@ import { auditTime } from 'rxjs';
 
 fromEvent(document, 'click').pipe(
   auditTime(1000)
-).subscribe(() => console.log('Fare clic.！'));
+).subscribe(() => console.log('Clic!'));
+```
 
 ts.
 import { fromEvent } da 'rxjs';
@@ -367,16 +369,6 @@ fromEvent(input, 'input').pipe(
   console.log('Ricerca eseguita');
 });
 
-```
-
-```ts
-import { fromEvent } from 'rxjs';
-import { auditTime } from 'rxjs';
-
-fromEvent(document, 'click').pipe(
-  auditTime(1000)
-).subscribe(() => console.log('Fare clic.！'));
-```
 
 ```ts
 import { fromEvent } from 'rxjs';
@@ -403,9 +395,9 @@ fromEvent(input, 'input').pipe(
 ).subscribe(() => {
   console.log('Ricerca eseguita', input.value);
 });
-```
 
-## 🎓 Riepilogo
+
+## 🎓 Sommario
 
 ### Quando si dovrebbe usare auditTime.
 - ✅ Quando sono richiesti valori aggiornati a intervalli regolari
@@ -418,7 +410,7 @@ fromEvent(input, 'input').pipe(
 - ✅ Se si vuole iniziare l'elaborazione con il primo valore
 - ✅ Prevenzione dello schiacciamento dei tasti
 
-### Quando utilizzare debounceTime.
+### Quando usare il debounceTime.
 - ✅ Se si desidera attendere il completamento dell'input
 - ✅ Ricerca, completamento automatico
 - ✅ Aspettare che l'utente smetta di digitare.

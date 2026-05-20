@@ -52,7 +52,7 @@ numbers$.pipe(
 
 | Operador. | Especificação da condição | Se nenhum valor for encontrado | Caso de uso. |
 |---|---|---|---|
-| `first()` | Opção | Erro (`EmptyError`) | Obter o primeiro valor |
+| first()` | Opção | Erro (`EmptyError`) | Obter o primeiro valor |
 | `first(predicate)` | Opcional | Erro (`EmptyError`) | Obtenção condicional. |
 | find(predicate)` | Obrigatório. | Saída `undefined`. | Pesquisa e verificação de existência |
 
@@ -196,7 +196,7 @@ result.style.marginTop = '10px';
 contêiner.appendChild(result);
 
 // Processamento de pesquisa
-// Observação: originalmente, o padrão recomendado é achatar com um switchMap, mas,
+// Observação: originalmente o padrão recomendado é achatar com um switchMap, mas,
 // Observação: embora o padrão recomendado seja nivelar com um switchMap, // aqui aninhamos o subscribe para facilitar a leitura, // porque ele inclui a validação da IU (retorno antecipado).
 // Considere uma implementação plana usando switchMap no código de produção.
 fromEvent(searchButton, 'click').subscribe(() => {
@@ -360,7 +360,7 @@ numbers$.pipe(
 | `find(predicate)` | O próprio valor | `undefined` |
 | `findIndex(predicate)` | Índice (valor numérico) | `-1` |
 
-## ⚠️ Um erro comum
+## ⚠️ Erros comuns
 
 > [!NOTE]
 > `find` se o valor não for encontrado. `undefined` é emitido. Isso não resulta em um erro. Se for necessário um erro, use `first` para ser usado.

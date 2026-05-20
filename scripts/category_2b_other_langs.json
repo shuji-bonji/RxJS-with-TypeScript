@@ -1,0 +1,17 @@
+{
+  "category_2b_other_langs_coverage": [
+    { "file": "operators/filtering/find.md", "lang": "de" },
+    { "file": "operators/filtering/find.md", "lang": "fr" },
+    { "file": "operators/filtering/find.md", "lang": "it" },
+    { "file": "operators/filtering/find.md", "lang": "es" },
+    { "file": "operators/filtering/find.md", "lang": "nl" },
+    { "file": "operators/filtering/find.md", "lang": "pt" },
+
+    { "file": "operators/filtering/findIndex.md", "lang": "de" },
+    { "file": "operators/filtering/findIndex.md", "lang": "fr" },
+    { "file": "operators/filtering/findIndex.md", "lang": "it" },
+    { "file": "operators/filtering/findIndex.md", "lang": "es" },
+    { "file": "operators/filtering/findIndex.md", "lang": "nl" },
+    { "file": "operators/filtering/findIndex.md", "lang": "pt" }
+  ]
+}

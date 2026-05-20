@@ -1,35 +1,35 @@
 ---
-description: Spiega in dettaglio le caratteristiche, l'implementazione e l'utilizzo dei principali scheduler in RxJS, come asyncScheduler e queueScheduler. Comprendi le differenze tra macro task, micro task ed elaborazione sincrona e apprendi i tempi di esecuzione e le caratteristiche di ciascuno scheduler. La scelta appropriata ottimizza le prestazioni e il comportamento dell'applicazione.
+description: "Conoscere le caratteristiche, l'implementazione e l'uso dei principali scheduler di RxJS, come asyncScheduler e queueScheduler. Comprendete le differenze tra macro task, micro task ed elaborazione sincrona e imparate i tempi di esecuzione e le caratteristiche di ogni scheduler. Utilizzandoli in modo appropriato, è possibile ottimizzare le prestazioni e il comportamento dell'applicazione."
 ---
 
-# Tipi di Scheduler e Come Utilizzarli
+# Tipi di scheduler e come utilizzarli
 
-RxJS fornisce diversi scheduler per scopi differenti. Ogni scheduler ha tempi di esecuzione e caratteristiche uniche e, utilizzandoli in modo appropriato, è possibile ottimizzare le prestazioni e il comportamento dell'applicazione.
+RxJS fornisce diversi scheduler per diverse applicazioni. Ogni scheduler ha i suoi tempi di esecuzione e le sue caratteristiche specifiche e può essere utilizzato in modo appropriato per ottimizzare le prestazioni e il comportamento dell'applicazione.
 
-## Classificazione degli Scheduler
+## Classificazione degli scheduler
 
-Gli scheduler di RxJS sono classificati in tre grandi categorie:
+Gli scheduler di RxJS rientrano in tre categorie principali.
 
-1. **Macro Task**: Eseguiti nella successiva coda di task dell'event loop
-2. **Micro Task**: Eseguiti immediatamente dopo il completamento del task corrente, prima dell'inizio del task successivo
-3. **Elaborazione Sincrona**: Esecuzione immediata
+1. **Macro task**: eseguiti nella coda di task successiva nel ciclo degli eventi
+2. **Micro-task**: eseguiti immediatamente dopo il completamento del task corrente e prima dell'inizio del task successivo
+3.**Elaborazione sincrona**: esecuzione immediata
 
-Per maggiori dettagli, consultare anche [Concetti Base di Task e Scheduler](./task-and-scheduler-basics.md).
+Per ulteriori informazioni, vedere [Fondamenti di task e scheduler](. /task-and-scheduler-basics.md).
 
-## Scheduler Principali
+## Schedulatori principali.
 
 ### asyncScheduler
 
-#### Caratteristiche
-- **Implementazione Interna**: Utilizza setTimeout
-- **Timing di Esecuzione**: Macro task
-- **Utilizzo**: Elaborazione asincrona generale, elaborazione che comporta il passare del tempo
+#### Caratteristiche.
+- **Implementazione interna**: usa setTimeout.
+- **Tempistiche di esecuzione**: macro attività
+- **Uso**: elaborazione asincrona generale, elaborazione time-lapse.
 
 ```ts
 import { of, asyncScheduler } from 'rxjs';
 import { observeOn } from 'rxjs';
 
-console.log('1: Inizio');
+console.log('1: Avvio');
 
 of('Elaborazione asincrona')
   .pipe(observeOn(asyncScheduler))
@@ -37,19 +37,19 @@ of('Elaborazione asincrona')
 
 console.log('2: Fine');
 
-// Output:
-// 1: Inizio
+// Uscita:
+// 1: Avvio
 // 2: Fine
 // 3: Elaborazione asincrona
 ```
 
-#### Casi d'Uso
+#### Caso d'uso
 
 ```ts
 import { asyncScheduler, map, observeOn, of } from "rxjs";
 
 function heavyComputation(value: number): number {
-  // Simula calcoli pesanti
+  // Simulazione di un calcolo pesante
   let result = value;
   for (let i = 0; i < 1000000; i++) {
     result = Math.sin(result);
@@ -63,42 +63,42 @@ of(1, 2, 3)
     map(value => heavyComputation(value))
   )
   .subscribe(result => {
-    console.log(`Risultato calcolo: ${result}`);
+    console.log(`Risultati del calcolo: ${result}`);
   });
 ```
 
-### queueScheduler
+### Scheduler delle code
 
-#### Caratteristiche
-- **Implementazione Interna**: Coda di micro task
-- **Timing di Esecuzione**: All'interno del task corrente (appare sincrono)
-- **Utilizzo**: Accodamento di task, ottimizzazione di elaborazioni ricorsive
+#### Caratteristiche.
+- **Implementazione interna**: micro coda di task
+- **Tempistiche di esecuzione**: all'interno del task corrente (sembra sincrono)
+- **Usi**: accodamento di task, ottimizzazione della ricorsione
 
 ```ts
 import { of, queueScheduler } from 'rxjs';
 import { observeOn } from 'rxjs';
 
-console.log('1: Inizio');
+console.log('1: Avvio');
 
-of('Elaborazione coda')
+of('Elaborazione in coda')
   .pipe(observeOn(queueScheduler))
   .subscribe(value => console.log(`2: ${value}`));
 
 console.log('3: Fine');
 
-// Output:
-// 1: Inizio
-// 2: Elaborazione coda
+// Uscita:
+// 1: Avvio
+// 2: Elaborazione in coda
 // 3: Fine
 ```
 
-#### Casi d'Uso
+#### Caso d'uso
 
 ```ts
 import { Observable, of, queueScheduler } from 'rxjs';
 import { observeOn, expand, take, map } from 'rxjs';
 
-// Ottimizzazione di elaborazioni ricorsive
+// Ottimizzazione dell'elaborazione ricorsiva
 function fibonacci(n: number): Observable<number> {
   return of([0, 1]).pipe(
     observeOn(queueScheduler),
@@ -113,30 +113,30 @@ fibonacci(10).subscribe(value => console.log(value));
 
 ### asapScheduler
 
-#### Caratteristiche
-- **Implementazione Interna**: Promise.resolve().then() o setImmediate
-- **Timing di Esecuzione**: Micro task
-- **Utilizzo**: Quando si desidera eseguire in modo asincrono il prima possibile
+#### Caratteristiche.
+- **Implementazione interna**: Promise.resolve().then() o setImmediate
+- **Tempistiche di esecuzione**: microtasks
+- **Utilizzo**: per l'esecuzione asincrona il più rapidamente possibile
 
 ```ts
 import { of, asapScheduler } from 'rxjs';
 import { observeOn } from 'rxjs';
 
-console.log('1: Inizio');
+console.log('1: Avvio');
 
-of('Elaborazione ASAP')
+of('ASAPElaborazione')
   .pipe(observeOn(asapScheduler))
   .subscribe(value => console.log(`3: ${value}`));
 
 console.log('2: Fine');
 
-// Output:
-// 1: Inizio
+// Uscita:
+// 1: Avvio
 // 2: Fine
-// 3: Elaborazione ASAP
+// 3: ASAPElaborazione
 ```
 
-#### Casi d'Uso
+#### Caso d'uso
 
 ```ts
 import { fromEvent, asapScheduler } from 'rxjs';
@@ -152,25 +152,25 @@ fromEvent(document, 'mousemove')
     }))
   )
   .subscribe(position => {
-    // Elaborazione aggiornamento UI
+    // UIElaborazione degli aggiornamenti di
     updateCursor(position);
   });
 ```
 
 ### animationFrameScheduler
 
-#### Caratteristiche
-- **Implementazione Interna**: requestAnimationFrame
-- **Timing di Esecuzione**: Prima del prossimo rendering dello schermo
-- **Utilizzo**: Animazioni, elaborazione rendering per 60fps
+#### Caratteristiche.
+- **Implementazione interna**: requestAnimationFrame
+- **Tempistiche di esecuzione**: prima del successivo rendering dello schermo
+- **Utilizzo**: Animazione, processo di disegno per 60fps.
 
-#### Esempio di Animazione di Rotazione Semplice
+#### Esempio di una semplice animazione di rotazione
 
 ```ts
 import { animationFrameScheduler, interval } from 'rxjs';
 import { take, map } from 'rxjs';
 
-// Crea elemento HTML
+// HTMLCreazione di elementi
 const box = document.createElement('div');
 box.style.width = '100px';
 box.style.height = '100px';
@@ -180,50 +180,50 @@ box.style.top = '100px';
 box.style.left = '100px';
 document.body.appendChild(box);
 
-// Configurazione animazione
+// Impostazione delle animazioni
 let rotation = 0;
 
-// Animazione di 2 secondi a 60fps
+// 60fpsNei2Secondi di animazione
 interval(0, animationFrameScheduler)
   .pipe(
-    take(120),  // 60fps × 2 secondi = 120 frame
+    take(120),  // 60fps × 2Secondi = 120Fotogramma
     map(() => {
-      rotation += 3;  // Ruota di 3 gradi per frame
+      rotation += 3;  // 1Ogni fotogramma3Grado di rotazione
       return rotation;
     })
   )
   .subscribe(angle => {
-    // Ruota effettivamente l'elemento DOM
+    // DOMRotazione effettiva dell'elemento
     box.style.transform = `rotate(${angle}deg)`;
   });
 ```
 
-#### Perché è Necessario animationFrameScheduler
+#### Perché abbiamo bisogno di Scheduler?
 
-`animationFrameScheduler` esegue l'elaborazione sincronizzandola con il ciclo di rendering del browser, offrendo i seguenti vantaggi:
+Lo Scheduler dell'animazione esegue le sue operazioni in modo sincrono con il ciclo di disegno del browser, con i seguenti vantaggi.
 
-1. **Animazioni Fluide**: Poiché l'elaborazione viene eseguita in sincronia con il timing di rendering del browser (normalmente 60fps), si ottengono animazioni fluide senza scatti.
-2. **Utilizzo Efficiente delle Risorse**: Quando il browser rende una scheda inattiva, l'esecuzione di requestAnimationFrame viene automaticamente sospesa, prevenendo l'uso inutile della CPU.
-3. **Prevenzione dello Sfarfallio dello Schermo**: Poiché i calcoli vengono completati sicuramente prima del rendering dello schermo, si previene lo sfarfallio e la visualizzazione di frame incompleti.
+1.**Animazioni fluide**: poiché l'elaborazione è sincronizzata con i tempi di rendering del browser (in genere 60 fps), è possibile ottenere animazioni fluide e senza interruzioni.
+2.**Uso efficiente delle risorse**: quando il browser disattiva la scheda, l'esecuzione di requestAnimationFrame viene automaticamente messa in pausa, evitando un uso non necessario della CPU.
+3, **Prevenzione dello sfarfallio dello schermo**: lo sfarfallio dello schermo e i fotogrammi incompleti vengono evitati perché il calcolo viene completato in modo affidabile prima che lo schermo venga disegnato.
 
-Di seguito un confronto tra `setInterval` e `animationFrameScheduler`:
+Ecco un confronto tra `setInterval` e `animationFrameScheduler`.
 
 ```ts
 import { animationFrameScheduler, interval, map } from "rxjs";
 
-// ❌ Animazione inefficiente usando setInterval
+// ❌ setIntervalAnimazione inefficiente che utilizza
 let position = 0;
 const intervalId = setInterval(() => {
   position += 1;
   element.style.transform = `translateX(${position}px)`;
-}, 16);  // Circa 60fps
+}, 16);  // approssimativamente60fps
 
 // Problemi:
-// - Non sincronizzato con il timing di rendering del browser
-// - Continua ad essere eseguito anche nelle schede in background
-// - Non può garantire 60fps precisi
+// - Non sincronizzato con i tempi di rendering del browser
+// - Continua ad essere eseguita anche nelle schede in background
+// - Accurato60fpsnon può essere garantita
 
-// ✅ Animazione efficiente usando animationFrameScheduler
+// ✅ animationFrameSchedulerAnimazione efficiente con l'utilizzo di
 interval(0, animationFrameScheduler)
   .pipe(
     map(() => {
@@ -236,35 +236,34 @@ interval(0, animationFrameScheduler)
   });
 
 // Vantaggi
-// - Sincronizzato con il timing di rendering del browser
-// - Automaticamente sospeso nelle schede in background
-// - Realizza 60fps stabili
+// - Sincronizzato con i tempi di disegno del browser
+// - Pausa automatica nelle schede in background
+// - Stabile60fpsConsente
 ```
 
-
-#### Esempio di Animazione di Inseguimento del Mouse
+#### Esempio di animazione che segue il mouse
 
 ```ts
 import { fromEvent, animationFrameScheduler, interval } from 'rxjs';
 import { withLatestFrom, observeOn, map } from 'rxjs';
 
-// Crea cerchio che segue
+// Creazione di un cerchio da seguire
 const circle = document.createElement('div');
 circle.style.width = '30px';
 circle.style.height = '30px';
 circle.style.borderRadius = '50%';
 circle.style.backgroundColor = 'red';
 circle.style.position = 'fixed';
-circle.style.pointerEvents = 'none';  // Rende trasparenti gli eventi del mouse
+circle.style.pointerEvents = 'none';  // Trasparente agli eventi del mouse
 document.body.appendChild(circle);
 
-// Posizione corrente e posizione obiettivo
+// Posizione corrente e di destinazione
 let currentX = 0;
 let currentY = 0;
 let targetX = 0;
 let targetY = 0;
 
-// Monitora eventi di movimento del mouse
+// Monitoraggio degli eventi di movimento del mouse
 const mouseMove$ = fromEvent<MouseEvent>(document, 'mousemove')
   .pipe(
     map(event => ({
@@ -273,131 +272,73 @@ const mouseMove$ = fromEvent<MouseEvent>(document, 'mousemove')
     }))
   );
 
-// Loop di animazione
+// Ciclo di animazione
 interval(0, animationFrameScheduler)
   .pipe(
     withLatestFrom(mouseMove$),
     map(([_, mousePos]) => mousePos)
   )
   .subscribe(({ x, y }) => {
-    // Imposta la posizione del mouse come obiettivo
+    // Impostare la posizione del mouse come target
     targetX = x;
     targetY = y;
-
-    // Muove gradualmente dalla posizione corrente alla posizione obiettivo (easing)
+    
+    // Movimento graduale dalla posizione corrente verso la posizione di destinazione々Movimento graduale (easing) dalla posizione corrente alla posizione di destinazione
     currentX += (targetX - currentX) * 0.1;
     currentY += (targetY - currentY) * 0.1;
-
-    // Aggiorna elemento DOM
-    circle.style.left = `${currentX - 15}px`;  // Aggiusta alla posizione centrale
+    
+    // DOMAggiornamento dell'elemento
+    circle.style.left = `${currentX - 15}px`;  // Adattamento alla posizione centrale
     circle.style.top = `${currentY - 15}px`;
   });
 ```
 
-## Guida alla Scelta degli Scheduler
+## Guida all'utilizzo di diversi scheduler
 
-### Confronto per Timing di Esecuzione
+### Confronto per tempi di esecuzione
 
 ```ts
-import { of, asyncScheduler, queueScheduler, asapScheduler } from 'rxjs';
+import { of, asyncScheduler } from 'rxjs';
 import { observeOn } from 'rxjs';
 
-console.log('1: Inizio');
+console.log('1: Avvio');
 
-// Elaborazione sincrona
-of('sync').subscribe(v => console.log(`2: ${v}`));
-
-// queueScheduler (micro task)
-of('queue')
-  .pipe(observeOn(queueScheduler))
-  .subscribe(v => console.log(`3: ${v}`));
-
-// asapScheduler (micro task)
-of('asap')
-  .pipe(observeOn(asapScheduler))
-  .subscribe(v => console.log(`4: ${v}`));
-
-// asyncScheduler (macro task)
-of('async')
+of('Elaborazione asincrona')
   .pipe(observeOn(asyncScheduler))
-  .subscribe(v => console.log(`5: ${v}`));
+  .subscribe(value => console.log(`3: ${value}`));
 
-Promise.resolve().then(() => console.log('6: Promise'));
+console.log('2: Fine');
 
-console.log('7: Fine');
-
-// Ordine di esecuzione:
-// 1: Inizio
-// 2: sync
-// 7: Fine
-// 3: queue
-// 4: asap
-// 6: Promise
-// 5: async
+// Uscita:
+// 1: Avvio
+// 2: Fine
+// 3: Elaborazione asincrona
 ```
 
-### Criteri di Selezione per Scopo
+### Criteri di selezione per applicazione
 
-| Scheduler | Caratteristiche | Utilizzo Appropriato |
-|--------------|------|----------|
-| asyncScheduler | Usa setTimeout, completamente asincrono | Elaborazioni che richiedono tempo, esecuzione ritardata |
-| queueScheduler | Sincrono ma ottimizza la ricorsione | Elaborazioni ricorsive, gestione coda task |
-| asapScheduler | Esecuzione asincrona il prima possibile | Gestione eventi, elaborazioni che richiedono risposta veloce |
-| animationFrameScheduler | Sincronizzato con rendering schermo | Animazioni, aggiornamenti UI, sviluppo giochi |
 
-## Esempi di Uso Pratico
+## Casi d'uso pratici
 
-### Elaborazione di Grandi Quantità di Dati
+### Elaborazione di grandi quantità di dati
 
-```ts
-import { from, queueScheduler } from 'rxjs';
-import { mergeMap, observeOn, tap } from 'rxjs';
 
-interface ApiRequest {
-  endpoint: string;
-  id: number;
-}
-
-const requests: ApiRequest[] = [
-  { endpoint: '/users', id: 1 },
-  { endpoint: '/posts', id: 1 },
-  { endpoint: '/comments', id: 1 },
-];
-
-// Mette le richieste in coda ed elabora in ordine
-from(requests)
-  .pipe(
-    observeOn(queueScheduler),
-    tap((req) => console.log(`Aggiunto alla coda: ${req.endpoint}`)),
-    mergeMap(
-      (req) =>
-        // Simulazione richiesta API reale
-        new Promise((resolve) => {
-          setTimeout(() => {
-            resolve(`Risultato di ${req.endpoint}/${req.id}`);
-          }, 1000);
-        })
-    )
-  )
-  .subscribe((result) => console.log(`Completato: ${result}`));
-```
-
-### Elaborazione Messaggi WebSocket
+## Elaborazione di messaggi WebSocket
 
 ```ts
 import { webSocket } from 'rxjs/webSocket';
 import { asapScheduler } from 'rxjs';
 import { observeOn } from 'rxjs';
 
-// Nota: Questo è pseudo-codice che mostra il concetto
+// 注: これは概念を示す疑似コードです
 const socket$ = webSocket<any>({
   url: 'wss://your-websocket-server.com',
-  deserializer: msg => msg.data // Tratta come stringa
+  deserializer: msg => msg.data // 文字列として扱う
 });
 
 socket$
   .pipe(
-    // Elaborazione messaggi che richiedono risposta veloce
+    // 高速な応答が必要なメッセージ処理
     observeOn(asapScheduler)
   )
   .subscribe(message => {
@@ -405,55 +346,46 @@ socket$
   });
 
 function handleMessage(msg: any) {
-  console.log('Messaggio ricevuto:', msg);
+  console.log('メッセージ受信:', msg);
 }
 ```
 
-### Controllo del Retry degli Errori
+## Controllo degli errori
 
-Utilizzando gli scheduler con l'operatore `retry`, è possibile controllare finemente il timing dei retry.
+Utilizzando lo scheduler con l'operatore retry, è possibile controllare con precisione la tempistica dei tentativi.
 
-#### Controllo Base del Retry
+#### Controllo di base dei tentativi
 
-L'opzione `delay` dell'operatore `retry` utilizza internamente `asyncScheduler` per controllare l'intervallo tra i retry.
+L'opzione `delay` dell'operatore `retry` utilizza internamente lo Scheduler per controllare l'intervallo di retry.
+
+
+```
 
 ```ts
-import { throwError, of } from 'rxjs';
-import { retry, mergeMap } from 'rxjs';
+import { of, asyncScheduler } from 'rxjs';
+import { observeOn } from 'rxjs';
 
-// Simulazione chiamata API
-function fetchData(id: number) {
-  return of(id).pipe(
-    mergeMap(() => {
-      const random = Math.random();
-      if (random > 0.7) {
-        return of({ id, data: 'success' });
-      }
-      return throwError(() => new Error('Network error'));
-    })
-  );
-}
+console.log('1: Avvio');
 
-fetchData(1)
-  .pipe(
-    retry({
-      count: 3,
-      delay: 1000  // Attende 1 secondo con asyncScheduler prima del retry
-    })
-  )
-  .subscribe({
-    next: result => console.log('✅ Successo:', result),
-    error: error => console.log('❌ Errore finale:', error.message)
-  });
+of('Elaborazione asincrona')
+  .pipe(observeOn(asyncScheduler))
+  .subscribe(value => console.log(`3: ${value}`));
+
+console.log('2: Fine');
+
+// Uscita:
+// 1: Avvio
+// 2: Fine
+// 3: Elaborazione asincrona
 ```
 
-#### Utilizzo dello Scheduler con Exponential Backoff
+#### Utilizzo dello scheduler con back-off esponenziale
 
-Come controllo più avanzato, è possibile implementare l'exponential backoff combinando `retryWhen` e `asyncScheduler`.
+Come controllo più avanzato, il backoff esponenziale può essere implementato combinando `retryWhen` e `asyncScheduler`.
 
 ```ts
 import { throwError, timer, of } from 'rxjs';
-import { retryWhen, mergeMap, tap } from 'rxjs';
+import { retry, mergeMap } from 'rxjs';
 
 function fetchDataWithBackoff(id: number) {
   return of(id).pipe(
@@ -469,113 +401,94 @@ function fetchDataWithBackoff(id: number) {
 
 fetchDataWithBackoff(1)
   .pipe(
-    retryWhen(errors =>
-      errors.pipe(
-        mergeMap((error, index) => {
-          const retryCount = index + 1;
+    // RxJS 7.3+ 推奨: retry({ count, delay }) 形式
+    retry({
+      count: 3, // Max.3回まで再試行
+      delay: (error, retryCount) => {
+        // 指数バックオフ: 1秒, 2秒, 4秒...
+        const delayTime = Math.pow(2, retryCount - 1) * 1000;
+        console.log(`🔄 リトライ ${retryCount}回目 (${delayTime}ms後)`);
 
-          // Controllo numero massimo retry
-          if (retryCount > 3) {
-            console.log('❌ Raggiunto numero massimo di retry');
-            throw error;
-          }
-
-          // Exponential backoff: 1 secondo, 2 secondi, 4 secondi...
-          const delayTime = Math.pow(2, index) * 1000;
-          console.log(`🔄 Retry ${retryCount}° (dopo ${delayTime}ms)`);
-
-          // timer utilizza internamente asyncScheduler
-          return timer(delayTime);
-        })
-      )
-    )
+        // timer は内部的に asyncScheduler を使用
+        return timer(delayTime);
+      }
+    })
   )
   .subscribe({
-    next: result => console.log('✅ Successo:', result),
-    error: error => console.log('❌ Errore finale:', error.message)
+    next: result => console.log('✅ 成功:', result),
+    error: error => {
+      console.log('❌ Max.リトライ数に到達');
+      console.log('❌ 最終Errore:', error.message);
+    }
   });
 
-// Esempio di output:
-// 🔄 Retry 1° (dopo 1000ms)
-// 🔄 Retry 2° (dopo 2000ms)
-// 🔄 Retry 3° (dopo 4000ms)
-// ❌ Raggiunto numero massimo di retry
-// ❌ Errore finale: Temporary error
+// OutputEs.:
+// 🔄 リトライ 1回目 (1000ms後)
+// 🔄 リトライ 2回目 (2000ms後)
+// 🔄 リトライ 3回目 (4000ms後)
+// ❌ Max.リトライ数に到達
+// ❌ 最終Errore: Temporary error
 ```
 
-#### Quando Specificare Esplicitamente asyncScheduler
+#### Quando si specifica esplicitamente uno Scheduler
 
-Specificando esplicitamente uno scheduler specifico, è possibile un controllo più flessibile, come la sostituzione con `TestScheduler` durante i test.
+Specificare esplicitamente uno scheduler specifico consente un controllo più flessibile, come la sostituzione con Scheduler durante i test.
+
 
 ```ts
-import { throwError, asyncScheduler, of } from 'rxjs';
-import { retryWhen, mergeMap, delay } from 'rxjs';
+import { of, asyncScheduler } from 'rxjs';
+import { observeOn } from 'rxjs';
 
-function fetchDataWithScheduler(id: number, scheduler = asyncScheduler) {
-  return of(id).pipe(
-    mergeMap(() => throwError(() => new Error('Error'))),
-    retryWhen(errors =>
-      errors.pipe(
-        mergeMap((error, index) => {
-          if (index >= 2) throw error;
+console.log('1: Avvio');
 
-          // Specifica esplicitamente lo scheduler
-          return of(null).pipe(
-            delay(1000, scheduler)
-          );
-        })
-      )
-    )
-  );
-}
+of('Elaborazione asincrona')
+  .pipe(observeOn(asyncScheduler))
+  .subscribe(value => console.log(`3: ${value}`));
 
-// Ambiente di produzione: usa asyncScheduler
-fetchDataWithScheduler(1).subscribe({
-  error: err => console.log('Errore:', err.message)
-});
+console.log('2: Fine');
 
-// Ambiente di test: sostituibile con TestScheduler
+// Uscita:
+// 1: Avvio
+// 2: Fine
+// 3: Elaborazione asincrona
 ```
 
-> [!TIP]
-> Per pattern di implementazione dettagliati e metodi di debug dell'elaborazione retry, consulta la pagina [retry e catchError](/it/guide/error-handling/retry-catch).
-> - Uso dettagliato dell'operatore retry
-> - Pattern di combinazione con catchError
-> - Tecniche di debug del retry (tracciamento numero di tentativi, registrazione log, ecc.)
 
-## Impatto sulle Prestazioni
+> - Modelli di implementazione dettagliati e metodi di debug per la gestione dei retry sono descritti nella pagina [retry e catchError](/it/guide/error-handling/retry-catch).
+> Uso dettagliato dell'operatore retry.
+> Modelli di combinazione con catchError.
+> Tecniche di debug per i tentativi (ad esempio, monitoraggio del numero di tentativi, registrazione, ecc.)
 
-### Overhead degli Scheduler
+## Impatto sulle prestazioni.
+
+### Sovraccarico dello schedulatore
+
 
 ```ts
-import { range, asyncScheduler, pipe } from 'rxjs';
-import { bufferCount, map, observeOn, tap } from 'rxjs';
+import { of, asyncScheduler } from 'rxjs';
+import { observeOn } from 'rxjs';
 
-// ❌ Uso eccessivo dello scheduler
-range(1, 1000)
-  .pipe(
-    observeOn(asyncScheduler),  // 1000 setTimeout
-    map(x => x * 2),
-    // tap(console.log)
-  )
-  .subscribe();
+console.log('1: Avvio');
 
-// ✅ Ottimizzazione con elaborazione batch
-range(1, 1000)
-  .pipe(
-    bufferCount(100),
-    observeOn(asyncScheduler),  // 10 setTimeout
-    map(batch => batch.map(x => x * 2)),
-    // tap(console.log)
-  )
-  .subscribe();
+of('Elaborazione asincrona')
+  .pipe(observeOn(asyncScheduler))
+  .subscribe(value => console.log(`3: ${value}`));
+
+console.log('2: Fine');
+
+// Uscita:
+// 1: Avvio
+// 2: Fine
+// 3: Elaborazione asincrona
 ```
 
-## Riepilogo
+## Riepilogo.
 
-La scelta dello scheduler ha un grande impatto sulle prestazioni e sulla reattività dell'applicazione. Comprendendo le caratteristiche di ogni scheduler e usandoli appropriatamente nelle situazioni giuste, è possibile realizzare un funzionamento efficiente e fluido. Come linee guida generali, si raccomanda di utilizzare:
+La scelta dello scheduler ha un impatto significativo sulle prestazioni e sulla reattività di un'applicazione. La comprensione delle caratteristiche di ogni scheduler e il loro utilizzo nelle giuste situazioni garantiranno un funzionamento efficiente e senza intoppi. Come linea guida generale,
 
-- `asyncScheduler` per elaborazioni asincrone generali
-- `queueScheduler` per elaborazioni ricorsive o accodamento sincrono
-- `asapScheduler` quando è necessaria una risposta veloce
-- `animationFrameScheduler` per animazioni
+- Scheduler` per l'elaborazione asincrona generale.
+- Scheduler` per l'elaborazione ricorsiva e l'accodamento sincrono.
+- Scheduler` per tempi di risposta rapidi
+- Scheduler per le animazioni
+
+per l'animazione.

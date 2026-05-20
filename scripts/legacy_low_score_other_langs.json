@@ -1,0 +1,32 @@
+{
+  "category_2_other_langs": [
+    {
+      "file": "operators/transformation/window.md",
+      "lang": "fr"
+    },
+    {
+      "file": "operators/utility/materialize.md",
+      "lang": "fr"
+    },
+    {
+      "file": "operators/transformation/pairwise.md",
+      "lang": "fr"
+    },
+    {
+      "file": "operators/transformation/reduce.md",
+      "lang": "fr"
+    },
+    {
+      "file": "operators/combination/zipWith.md",
+      "lang": "fr"
+    },
+    {
+      "file": "creation-functions/loop/generate.md",
+      "lang": "it"
+    },
+    {
+      "file": "operators/utility/timestamp.md",
+      "lang": "it"
+    }
+  ]
+}

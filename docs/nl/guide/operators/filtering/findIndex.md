@@ -271,12 +271,12 @@ numbers$.pipe(
   findIndex(n => n % 2 === 0)
 ).subscribe(console.log);
 // Uitgang.: 4(eerste even8index van de eerste even)
+```
 
 ## Vergelijking met Array.findIndex() in JavaScript
 
 RxJS `findIndex` gedraagt zich vergelijkbaar met de array-methode `Array.prototype.findIndex()` van JavaScript.
 
-```
 
 ```ts
 // JavaScript Matrix van

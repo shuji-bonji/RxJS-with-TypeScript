@@ -250,7 +250,7 @@ números$.pipe(
   next: console.log,.
   complete: () => console.log('filtro complete')
 });
-// Salida: 7, 8, 9, 10, filter completo
+// Salida: 7, 8, 9, 10, filter complete
 
 // find: salida sólo el primer valor que coincida con la condición
 números$.pipe(
@@ -288,7 +288,7 @@ interfaz Task {
 function findTaskById(
   tareas$: Observable\<Tarea>,.
   id: número
-): Observable<Tarea | undefined> {
+): Observable | undefined> {
   return tareas$.pipe(
     find(tarea => tarea.id === id)
   );
@@ -421,7 +421,7 @@ numbers$.pipe(
 ## 🎓 Resumen
 
 ### Cuándo debes usar find.
-- ✅ Si quieres encontrar el primer valor que satisface una condición.
+- ✅ Cuando se quiere encontrar el primer valor que satisface una condición.
 - ✅ Cuando quieras comprobar la existencia de un valor.
 - ✅ Cuando se desea tratar un valor como `undefined` si no se encuentra.
 - ✅ Cuando se desea encontrar un elemento concreto en una matriz o lista.

@@ -197,7 +197,7 @@ button.addEventListener('click', () => {
       result.style.color = 'green';
       result.innerHTML = `
         <strong>✅ Chargement terminé</strong><br>
-        ${files.length}Un fichier a été téléchargé
+        ${files.length}Un fichier a été téléchargé...
       `;
       button.disabled = false;
     },
@@ -273,6 +273,7 @@ source$.pipe(
 ## 🔄 Gestion des notifications d'erreur.
 
 `ignoreElements` ignore les valeurs, mais **passe les notifications d'erreur**.
+
 
 ```ts
 import { throwError, of, concat } from 'rxjs';
@@ -412,10 +413,10 @@ source$.pipe(
   complete: () => console.log('Terminé')
 });
 // Sortie: Terminé
+```
 
 ### Schéma 2 : Processus de nettoyage
 
-```
 
 ## 📚 Opérateurs apparentés.
 

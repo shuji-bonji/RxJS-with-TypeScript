@@ -271,12 +271,12 @@ numbers$.pipe(
   findIndex(n => n % 2 === 0)
 ).subscribe(console.log);
 // Saída.: 4(primeiro par8índice do primeiro par)
+```
 
 ## 🔄 Comparação com Array.findIndex() do JavaScript
 
 O `findIndex` do RxJS se comporta de forma semelhante ao método de array do JavaScript `Array.prototype.findIndex()`.
 
-```
 
 ```ts
 // JavaScript Matriz de

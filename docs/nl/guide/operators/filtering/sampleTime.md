@@ -42,6 +42,7 @@ clicks$.pipe(
 
 Dit is een voorbeeld van het elke seconde samplen van de muispositie.
 
+
 ```ts
 import { fromEvent } from 'rxjs';
 import { sampleTime, map } from 'rxjs';
@@ -239,22 +240,8 @@ clicks$.pipe(
 });
 ```
 
-```ts
-import { fromEvent } from 'rxjs';
-import { sampleTime } from 'rxjs';
-
-const clicks$ = fromEvent(document, 'click');
-
-clicks$.pipe(
-  sampleTime(2000)
-).subscribe(() => {
-  console.log('2Monster per seconde');
-});
-```
-
 **visuele verschillen**:.
 
-```
 Ingang: --|1|2|3|---|4|5|6|---|7|8|9|
       0s  1s      2s      3s
 
@@ -273,6 +260,8 @@ auditTime(1s):    -------|3|-------|6|-------|9|
 ### 1. geen waarde tijdens de steekproefperiode
 
 Als er geen nieuwe waarden zijn tijdens de bemonsteringstijd, wordt er geen uitvoer geproduceerd.
+
+```
 
 ```ts
 import { fromEvent } from 'rxjs';
@@ -351,6 +340,7 @@ clicks$.pipe(
 ).subscribe(() => {
   console.log('2Monsters van seconde tot seconde');
 });
+```
 
 TABEL 12
 

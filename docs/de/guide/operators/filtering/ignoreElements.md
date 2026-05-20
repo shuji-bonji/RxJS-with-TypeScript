@@ -274,6 +274,7 @@ source$.pipe(
 
 ignoreElements" ignoriert die Werte, lässt aber **Fehlerbenachrichtigungen durch**.
 
+
 ```ts
 import { throwError, of, concat } from 'rxjs';
 import { ignoreElements, delay } from 'rxjs';
@@ -412,10 +413,10 @@ source$.pipe(
   complete: () => console.log('Erledigt')
 });
 // Ausgabe: Erledigt
+```
 
 ### Muster 2: Aufräumvorgang
 
-```
 
 ## 📚 Verwandte Operatoren.
 

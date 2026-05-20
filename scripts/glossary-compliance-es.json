@@ -1,9 +1,162 @@
 {
   "language": "es",
   "totalFiles": 181,
-  "filesWithViolations": 5,
-  "totalViolations": 11,
+  "filesWithViolations": 8,
+  "totalViolations": 47,
   "files": [
+    {
+      "file": "schedulers/types.md",
+      "violations": {
+        "no_translate": [
+          {
+            "term": "range",
+            "ja_count": 3,
+            "trans_count": 0,
+            "ratio": 0
+          },
+          {
+            "term": "tap",
+            "ja_count": 5,
+            "trans_count": 0,
+            "ratio": 0
+          },
+          {
+            "term": "Promise",
+            "ja_count": 4,
+            "trans_count": 0,
+            "ratio": 0
+          }
+        ],
+        "callouts_ja_residual": [],
+        "code_jp_residual": [
+          {
+            "fragment": "注",
+            "lineNo": 331
+          },
+          {
+            "fragment": "これは概念を示す疑似コードです",
+            "lineNo": 333
+          },
+          {
+            "fragment": "文字列として扱う",
+            "lineNo": 336
+          },
+          {
+            "fragment": "高速な応答が必要なメッセージ処理",
+            "lineNo": 341
+          },
+          {
+            "fragment": "メッセージ受信",
+            "lineNo": 349
+          },
+          {
+            "fragment": "推奨",
+            "lineNo": 375
+          },
+          {
+            "fragment": "形式",
+            "lineNo": 375
+          },
+          {
+            "fragment": "回まで再試行",
+            "lineNo": 377
+          },
+          {
+            "fragment": "指数バックオフ",
+            "lineNo": 379
+          },
+          {
+            "fragment": "秒",
+            "lineNo": 379
+          },
+          {
+            "fragment": "秒",
+            "lineNo": 379
+          },
+          {
+            "fragment": "秒",
+            "lineNo": 379
+          },
+          {
+            "fragment": "リトライ",
+            "lineNo": 381
+          },
+          {
+            "fragment": "回目",
+            "lineNo": 381
+          },
+          {
+            "fragment": "後",
+            "lineNo": 381
+          },
+          {
+            "fragment": "は内部的に",
+            "lineNo": 383
+          },
+          {
+            "fragment": "を使用",
+            "lineNo": 383
+          },
+          {
+            "fragment": "成功",
+            "lineNo": 389
+          },
+          {
+            "fragment": "リトライ数に到達",
+            "lineNo": 391
+          },
+          {
+            "fragment": "最終",
+            "lineNo": 392
+          },
+          {
+            "fragment": "リトライ",
+            "lineNo": 397
+          },
+          {
+            "fragment": "回目",
+            "lineNo": 397
+          },
+          {
+            "fragment": "後",
+            "lineNo": 397
+          },
+          {
+            "fragment": "リトライ",
+            "lineNo": 398
+          },
+          {
+            "fragment": "回目",
+            "lineNo": 398
+          },
+          {
+            "fragment": "後",
+            "lineNo": 398
+          },
+          {
+            "fragment": "リトライ",
+            "lineNo": 399
+          },
+          {
+            "fragment": "回目",
+            "lineNo": 399
+          },
+          {
+            "fragment": "後",
+            "lineNo": 399
+          },
+          {
+            "fragment": "リトライ数に到達",
+            "lineNo": 400
+          },
+          {
+            "fragment": "最終",
+            "lineNo": 400
+          }
+        ]
+      },
+      "total": 34
+    },
     {
       "file": "practical-patterns/api-calls.md",
       "violations": {
@@ -87,6 +240,36 @@
         "code_jp_residual": []
       },
       "total": 2
+    },
+    {
+      "file": "operators/filtering/filter.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [
+          {
+            "phrase": "本番コードでの注意",
+            "lineNo": 74,
+            "line": "> [!WARNING] 本番コードでの注意"
+          }
+        ],
+        "code_jp_residual": []
+      },
+      "total": 1
+    },
+    {
+      "file": "operators/filtering/sampleTime.md",
+      "violations": {
+        "no_translate": [],
+        "callouts_ja_residual": [
+          {
+            "phrase": "本番コードでの注意",
+            "lineNo": 30,
+            "line": "> [!WARNING] 本番コードでの注意"
+          }
+        ],
+        "code_jp_residual": []
+      },
+      "total": 1
     },
     {
       "file": "operators/filtering/skipUntil.md",
@@ -904,15 +1087,6 @@
       "total": 0
     },
     {
-      "file": "operators/filtering/filter.md",
-      "violations": {
-        "no_translate": [],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 0
-    },
-    {
       "file": "operators/filtering/find.md",
       "violations": {
         "no_translate": [],
@@ -968,15 +1142,6 @@
     },
     {
       "file": "operators/filtering/practical-use-cases.md",
-      "violations": {
-        "no_translate": [],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 0
-    },
-    {
-      "file": "operators/filtering/sampleTime.md",
       "violations": {
         "no_translate": [],
         "callouts_ja_residual": [],
@@ -1598,15 +1763,6 @@
     },
     {
       "file": "schedulers/task-and-scheduler-basics.md",
-      "violations": {
-        "no_translate": [],
-        "callouts_ja_residual": [],
-        "code_jp_residual": []
-      },
-      "total": 0
-    },
-    {
-      "file": "schedulers/types.md",
       "violations": {
         "no_translate": [],
         "callouts_ja_residual": [],

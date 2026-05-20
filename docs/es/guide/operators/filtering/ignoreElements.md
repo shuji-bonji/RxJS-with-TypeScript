@@ -24,7 +24,7 @@ source$.pipe(
 ```
 
 **Flujo de operación**:.
-1. todos 1, 2, 3, 4 y 5 son ignorados
+1. todos los 1, 2, 3, 4 y 5 son ignorados
 2. sólo se transmiten las notificaciones de finalización
 
 [🌐 Documentación oficial de RxJS - `ignoreElements`](https://rxjs.dev/api/operators/ignoreElements)
@@ -274,6 +274,7 @@ source$.pipe(
 
 ignoreElements` ignora los valores, pero **pasa las notificaciones de error**.
 
+
 ```ts
 import { throwError, of, concat } from 'rxjs';
 import { ignoreElements, delay } from 'rxjs';
@@ -412,10 +413,10 @@ source$.pipe(
   complete: () => console.log('Completado')
 });
 // Salida: Completado
+```
 
 ### Patrón 2: Proceso de limpieza
 
-```
 
 ## 📚 Operadores relacionados.
 

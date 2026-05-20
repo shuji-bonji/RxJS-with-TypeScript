@@ -1,0 +1,59 @@
+{
+  "category_2c_other_langs_coverage": [
+    { "file": "operators/filtering/auditTime.md", "lang": "de" },
+    { "file": "operators/filtering/auditTime.md", "lang": "fr" },
+    { "file": "operators/filtering/auditTime.md", "lang": "it" },
+    { "file": "operators/filtering/auditTime.md", "lang": "es" },
+    { "file": "operators/filtering/auditTime.md", "lang": "nl" },
+    { "file": "operators/filtering/auditTime.md", "lang": "pt" },
+
+    { "file": "operators/filtering/ignoreElements.md", "lang": "de" },
+    { "file": "operators/filtering/ignoreElements.md", "lang": "fr" },
+    { "file": "operators/filtering/ignoreElements.md", "lang": "it" },
+    { "file": "operators/filtering/ignoreElements.md", "lang": "es" },
+    { "file": "operators/filtering/ignoreElements.md", "lang": "nl" },
+    { "file": "operators/filtering/ignoreElements.md", "lang": "pt" },
+
+    { "file": "operators/filtering/sampleTime.md", "lang": "de" },
+    { "file": "operators/filtering/sampleTime.md", "lang": "fr" },
+    { "file": "operators/filtering/sampleTime.md", "lang": "it" },
+    { "file": "operators/filtering/sampleTime.md", "lang": "es" },
+    { "file": "operators/filtering/sampleTime.md", "lang": "nl" },
+    { "file": "operators/filtering/sampleTime.md", "lang": "pt" },
+
+    { "file": "schedulers/types.md", "lang": "de" },
+    { "file": "schedulers/types.md", "lang": "fr" },
+    { "file": "schedulers/types.md", "lang": "it" },
+    { "file": "schedulers/types.md", "lang": "es" },
+    { "file": "schedulers/types.md", "lang": "nl" },
+    { "file": "schedulers/types.md", "lang": "pt" },
+
+    { "file": "operators/combination/combineLatestWith.md", "lang": "de" },
+    { "file": "operators/combination/combineLatestWith.md", "lang": "fr" },
+    { "file": "operators/combination/combineLatestWith.md", "lang": "it" },
+    { "file": "operators/combination/combineLatestWith.md", "lang": "es" },
+    { "file": "operators/combination/combineLatestWith.md", "lang": "nl" },
+    { "file": "operators/combination/combineLatestWith.md", "lang": "pt" },
+
+    { "file": "operators/combination/zipWith.md", "lang": "de" },
+    { "file": "operators/combination/zipWith.md", "lang": "fr" },
+    { "file": "operators/combination/zipWith.md", "lang": "it" },
+    { "file": "operators/combination/zipWith.md", "lang": "es" },
+    { "file": "operators/combination/zipWith.md", "lang": "nl" },
+    { "file": "operators/combination/zipWith.md", "lang": "pt" },
+
+    { "file": "operators/combination/combineLatestAll.md", "lang": "de" },
+    { "file": "operators/combination/combineLatestAll.md", "lang": "fr" },
+    { "file": "operators/combination/combineLatestAll.md", "lang": "it" },
+    { "file": "operators/combination/combineLatestAll.md", "lang": "es" },
+    { "file": "operators/combination/combineLatestAll.md", "lang": "nl" },
+    { "file": "operators/combination/combineLatestAll.md", "lang": "pt" },
+
+    { "file": "creation-functions/selection/index.md", "lang": "de" },
+    { "file": "creation-functions/selection/index.md", "lang": "fr" },
+    { "file": "creation-functions/selection/index.md", "lang": "it" },
+    { "file": "creation-functions/selection/index.md", "lang": "es" },
+    { "file": "creation-functions/selection/index.md", "lang": "nl" },
+    { "file": "creation-functions/selection/index.md", "lang": "pt" }
+  ]
+}

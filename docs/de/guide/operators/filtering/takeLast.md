@@ -61,12 +61,12 @@ numbers$.pipe(
   takeLast(3)
 ).subscribe(console.log);
 // Ausgabe: 7, 8, 9
+```
 
 ## 💡 Typisches Nutzungsmuster
 
 1. **Die letzten N Protokolleinträge abrufen**.
 
-```
 
 ```ts
    import { from } from 'rxjs';
@@ -86,7 +86,7 @@ numbers$.pipe(
      { timestamp: 5, level: 'info' as const, message: 'Retry successful' },
    ] as LogEntry[]);
 
-   // Holt die letzten3Die letzten Protokolle abrufen
+   // Abrufen der letzten3Abrufen von Protokollen der
    logs$.pipe(
      takeLast(3)
    ).subscribe(log => {
@@ -226,7 +226,7 @@ fromEvent(submitButton, 'click').subscribe(() => {
 > **Wichtige Punkte**:
 > - `takeLast(3)` Abonnieren Sie die**zuerst.**muss zuerst eingerichtet werden
 > - wenn die Schaltfläche angeklickt wird. `complete()` wird der letzte der bis dahin empfangenen Werte ausgegeben.3Der letzte bis zu diesem Zeitpunkt empfangene Wert wird ausgegeben.
-> - `complete()` Nach dem Aufruf**Nach dem Aufruf von**an `subscribe` fließen die Werte nicht mehr.
+> - `complete()` Nach dem Aufruf**Nach dem Aufruf von**an `subscribe` fließen keine Werte, wenn Sie
 
 ## ⚠️ Ein wichtiger Punkt, der zu beachten ist
 
@@ -391,7 +391,7 @@ numbers$.pipe(
 ### Wann sollte takeLast verwendet werden.
 - ✅ Wenn Sie die letzten N Daten in einem Stream benötigen
 - ✅ Wenn Sie die letzten N Logs oder Transaktionen abrufen wollen
-- ✅ Wenn der Datenstrom garantiert abgeschlossen ist
+- ✅ Wenn der Stream garantiert abgeschlossen ist
 - ✅ Wenn Sie eine Zusammenfassung oder die ersten N Datensätze anzeigen wollen
 
 ### Wann Sie take verwenden sollten.

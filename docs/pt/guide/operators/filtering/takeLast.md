@@ -61,12 +61,12 @@ numbers$.pipe(
   takeLast(3)
 ).subscribe(console.log);
 // Saída: 7, 8, 9
+```
 
 ## 💡 Padrão de utilização típico
 
 1. **Obter as N entradas de registro mais recentes**.
 
-```
 
 ```ts
    import { from } from 'rxjs';
@@ -86,7 +86,7 @@ numbers$.pipe(
      { timestamp: 5, level: 'info' as const, message: 'Retry successful' },
    ] as LogEntry[]);
 
-   // Obter o mais recente3Obter os registros mais recentes
+   // Obter o mais recente3Recuperar os registros do
    logs$.pipe(
      takeLast(3)
    ).subscribe(log => {
@@ -225,8 +225,8 @@ fromEvent(submitButton, 'click').subscribe(() => {
 > [!IMPORTANT]
 > **Pontos principais**:
 > - `takeLast(3)` Assine o**primeiro.**deve ser configurado primeiro
-> - quando o botão for clicado. `complete()` o último dos valores recebidos até aquele momento será emitido.3O último valor recebido até aquele momento é emitido.
-> - `complete()` Após a chamada**Depois de chamar**para `subscribe` os valores não fluem.
+> - quando o botão for clicado. `complete()` o último dos valores recebidos até aquele momento será emitido.3O último dos valores recebidos até aquele momento é emitido.
+> - `complete()` Após a chamada**Depois de chamar**para `subscribe` nenhum valor fluirá se você chamar
 
 ## ⚠️ Um ponto importante a ser observado
 

@@ -27,7 +27,7 @@ clicks$.pipe(
 2. sortie s'il y a un clic récent à ce moment-là
 3. s'il n'y a pas de valeur pendant la période d'échantillonnage, pas de sortie
 
-> [!WARNING] Attention en code de production
+> [!WARNING] 本番コードでの注意
 
 > L'exemple ci-dessus omet la désinscription de `fromEvent` pour simplifier l'explication. Dans le code réel, utilisez `takeUntil(destroy$)`, `take(N)` ou `Subscription.unsubscribe()` pour gérer explicitement le cycle de vie. Plus d'informations : [Surmonter les difficultés : gestion du cycle de vie](/fr/guide/overcoming-difficulties/lifecycle-management.md)
 
@@ -241,22 +241,8 @@ clicks$.pipe(
 });
 ```
 
-```ts
-import { fromEvent } from 'rxjs';
-import { sampleTime } from 'rxjs';
-
-const clicks$ = fromEvent(document, 'click');
-
-clicks$.pipe(
-  sampleTime(2000)
-).subscribe(() => {
-  console.log('2Échantillon par seconde');
-});
-```
-
 **différences visuelles** :.
 
-```
 Entrée: --|1|2|3|---|4|5|6|---|7|8|9|
       0s  1s      2s      3s
 
@@ -275,6 +261,8 @@ auditTime(1s):    -------|3|-------|6|-------|9|
 ### 1. pas de valeur pendant la période d'échantillonnage
 
 S'il n'y a pas de nouvelles valeurs pendant la période d'échantillonnage, aucune sortie n'est produite.
+
+```
 
 ```ts
 import { fromEvent } from 'rxjs';
@@ -353,8 +341,8 @@ clicks$.pipe(
 ).subscribe(() => {
   console.log('2Échantillons seconde par seconde');
 });
-
 ```
+
 
 ## 📚 Opérateurs apparentés.
 

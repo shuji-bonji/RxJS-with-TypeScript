@@ -23,7 +23,7 @@ numbers$.pipe(
 **Flux d'opérations** :.
 1. 10 (index 0) → sauter
 2. 20 (index 1) → saut
-3. 30 (index 2) → sortie et complet
+3. 30 (index 2) → sortie et terminé
 4. 40, 50 non évalués
 
 [🌐 Official RxJS documentation - `elementAt`](https://rxjs.dev/api/operators/elementAt)
@@ -224,6 +224,7 @@ numbers$.pipe(
   elementAt(2)
 ).subscribe(console.log);
 // Sortie.: 30(Valeur2Valeur)
+```
 
 ## ⚠️ Notes.
 
@@ -231,7 +232,6 @@ numbers$.pipe(
 
 Si l'index spécifié n'est pas atteint avant la fin du flux, une erreur est générée.
 
-```
 
 ```ts
 import { from } from 'rxjs';

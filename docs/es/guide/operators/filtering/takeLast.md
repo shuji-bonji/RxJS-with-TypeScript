@@ -22,7 +22,7 @@ numbers$.pipe(
 
 **Flujo de operación**:.
 1. stream emite 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
-2. internamente mantener últimos 3 en buffer
+2. internamente retener últimos 3 en buffer
 3. flujo completado 4. valores del buffer 7, 8, 9
 4. salida de los valores 7, 8, 9 del búfer en secuencia
 
@@ -61,12 +61,12 @@ numbers$.pipe(
   takeLast(3)
 ).subscribe(console.log);
 // Salida: 7, 8, 9
+```
 
 ## 💡 Patrón típico de utilización
 
 1. **Obtener las últimas N entradas de registro**.
 
-```
 
 ```ts
    import { from } from 'rxjs';
@@ -86,7 +86,7 @@ numbers$.pipe(
      { timestamp: 5, level: 'info' as const, message: 'Retry successful' },
    ] as LogEntry[]);
 
-   // Obtener el último3Obtener los últimos registros
+   // Obtener el último3Recuperar los registros de
    logs$.pipe(
      takeLast(3)
    ).subscribe(log => {
@@ -98,7 +98,7 @@ numbers$.pipe(
    // [info] Retry successful
    ```
 
-2. **Top de la clasificaciónNRecuperar la parte superior**
+2. **Top de la tabla de clasificaciónNRecuperar la parte superior**
    ```ts
    import { from } from 'rxjs';
    import { takeLast } from 'rxjs';
@@ -225,13 +225,13 @@ fromEvent(submitButton, 'click').subscribe(() => {
 > [!IMPORTANT]
 > **Puntos clave**:
 > - `takeLast(3)` Suscribirse al**primero.**debe configurarse primero
-> - cuando se pulse el botón `complete()` se dará salida al último de los valores recibidos hasta ese momento.3Se dará salida al último de los valores recibidos hasta ese momento.
-> - `complete()` Después de llamar**Después de llamar**a `subscribe` los valores no fluyen.
+> - cuando se pulse el botón `complete()` se dará salida al último de los valores recibidos hasta ese momento.3Se emite el último de los valores recibidos hasta ese momento.
+> - `complete()` Después de llamar**Después de llamar**a `subscribe` no saldrá ningún valor si llama a
 
 ## ⚠️ Un punto importante a tener en cuenta
 
 > [!WARNING]
-> `takeLast` es esperar a que el flujo**Esperar hasta que se complete**Por lo tanto, no funciona con flujos infinitos. Además, la`takeLast(n)` delnes grande, consume mucha memoria.
+> `takeLast` es esperar hasta que el flujo**Espere hasta que se complete**Por lo tanto, no funciona con flujos infinitos. Además, la`takeLast(n)` delnes grande, consume mucha memoria.
 
 ### 1. No se puede utilizar con flujos infinitos.
 

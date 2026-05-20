@@ -271,12 +271,12 @@ numbers$.pipe(
   findIndex(n => n % 2 === 0)
 ).subscribe(console.log);
 // Ausgabe.: 4(erste Gerade8Index der ersten Geraden)
+```
 
 ## 🔄 Vergleich mit JavaScript's Array.findIndex()
 
 RxJS `findIndex` verhält sich ähnlich wie die JavaScript Array-Methode `Array.prototype.findIndex()`.
 
-```
 
 ```ts
 // JavaScript Array von
@@ -413,4 +413,4 @@ Der Operator `findIndex` gibt den Index des ersten Wertes zurück, der die Bedin
 - ✅ Gibt `-1` zurück, wenn nicht gefunden (kein Fehler)
 - ✅ Wird sofort abgeschlossen, wenn gefunden
 - ⚠️ Rückgabewert ist immer vom Typ `Zahl` (-1 oder eine ganze Zahl größer oder gleich 0)
-- ⚠️ Use `find` if the value itself is required
+- ⚠️ Use `find` if the value itself is needed

@@ -66,7 +66,7 @@ const manualClick$ = fromEvent(button, 'click').pipe(
   map(() => '👆 O clique manual foi selecionado！')
 );
 
-// Temporizador de progresso automático (5(após 2 segundos)
+// Temporizador de progresso automático (5(após 2,5 segundos)
 const autoProgress$ = timer(5000).pipe(
   map(() => '⏰ O progresso automático foi selecionado！')
 );
@@ -327,7 +327,7 @@ slowRequest$
 
 ### Todos os fluxos estão inscritos em
 
-O raceWith inscreve todos os Observable até que um vencedor seja decidido.
+O raceWith inscreve todos os Observable até que o vencedor seja decidido.
 Depois que o vencedor é decidido, o Observable perdedor é automaticamente cancelado.
 
 ```ts

@@ -200,7 +200,7 @@ numbers$.pipe(
 ).subscribe(console.log);
 // Uitvoer.: 30
 
-// take: Vanaf het beginNEén waarde vanaf het begin ophalen
+// take: Vanaf het beginNEén waarde verkrijgen
 numbers$.pipe(
   take(3)
 ).subscribe(console.log);
@@ -224,6 +224,7 @@ numbers$.pipe(
   elementAt(2)
 ).subscribe(console.log);
 // Uitvoer.: 30(Index2Waarde)
+```
 
 ## ⚠️ Opmerkingen.
 
@@ -231,7 +232,6 @@ numbers$.pipe(
 
 Als de opgegeven index niet is bereikt voordat de stream is voltooid, wordt er een fout gegenereerd.
 
-```
 
 ```ts
 import { from } from 'rxjs';

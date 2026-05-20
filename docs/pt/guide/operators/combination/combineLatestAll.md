@@ -27,13 +27,13 @@ higherOrder$
 
 // Saída:
 // [1, 3, 0] ← Quando todos tiverem disparado pelo menos1Quando todos tiverem disparado pelo menos uma vez (após2segundos depois)
-// [2, 3, 0] ← 1Quando o segundoObservableé disparado (após 2 segundos), o segundo2dispara (após3segundos depois)
-// [2, 3, 1] ← 3Quando o segundoObservableé disparado (após 2 segundos), o segundo1dispara (após4segundos depois)
+// [2, 3, 0] ← 1Quando o segundoObservableé disparado (após 2 segundos)2dispara (após3segundos depois)
+// [2, 3, 1] ← 3Quando o segundoObservableé disparado (após 2 segundos)1dispara (após4segundos depois)
 ```
 
 - Coletar Observables internos quando o Observable de ordem superior estiver **completo**.
 - Comece a combinar quando todos os Observable internos tiverem disparado** pelo menos uma vez
-- Sempre que qualquer Observable interno emitir um valor, **combine** todos os últimos valores e **output**.
+- Sempre que qualquer Observable interno emitir um valor, **combine** todos os valores mais recentes e **output**.
 
 [🌐 Documentação oficial do RxJS - `combineLatestAll`](https://rxjs.dev/api/index/function/combineLatestAll)
 
@@ -149,7 +149,7 @@ interval(1000).pipe(
 Nenhum valor é gerado até que todos os Observable internos tenham sido acionados **pelo menos uma vez**.
 
 ```ts
-// 1Se qualquer um dos status internosObservableNada será emitido se houver
+// 1Se qualquer um dos status internosObservableNada é emitido se houver
 of(
   of(1, 2, 3),
   NEVER // Nunca dispara para sempre.
@@ -160,4 +160,4 @@ of(
 
 ### Uso de memória.
 
-Observe o uso da memória se houver muitos Observable internos, pois os **valores mais recentes de todos os Observable internos são mantidos na memória**.
+Observe o uso de memória se houver muitos Observable internos, pois os **valores mais recentes de todos os Observable internos são mantidos na memória**.

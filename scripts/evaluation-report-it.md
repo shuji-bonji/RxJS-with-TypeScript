@@ -5,7 +5,7 @@
 | 項目 | 値 |
 |------|-----|
 | ファイル数 | 181 |
-| 平均スコア | 0.774 |
+| 平均スコア | 0.775 |
 | 最小スコア | 0.297 |
 | 最大スコア | 0.986 |
 
@@ -23,15 +23,14 @@
 | スコア | ファイル | ペア数 |
 |--------|----------|--------|
 | 🔴 0.297 | `operators/transformation/mergeScan.md` | 8 |
-| 🔴 0.298 | `creation-functions/selection/index.md` | 11 |
 | 🔴 0.551 | `creation-functions/loop/generate.md` | 19 |
 | 🔴 0.625 | `operators/utility/finalize.md` | 4 |
 | 🔴 0.628 | `operators/conditional/every.md` | 2 |
+| 🔴 0.636 | `operators/filtering/sampleTime.md` | 15 |
 | 🔴 0.637 | `operators/utility/startWith.md` | 4 |
-| 🔴 0.638 | `operators/filtering/sampleTime.md` | 15 |
 | 🔴 0.641 | `operators/combination/raceWith.md` | 10 |
-| 🔴 0.648 | `operators/filtering/takeLast.md` | 13 |
 | 🔴 0.651 | `operators/combination/concatWith.md` | 9 |
+| 🔴 0.653 | `schedulers/types.md` | 10 |
 | 🔴 0.655 | `operators/utility/retry.md` | 6 |
 | 🔴 0.660 | `operators/transformation/bufferCount.md` | 5 |
 | 🔴 0.662 | `operators/combination/concatAll.md` | 8 |
@@ -42,11 +41,12 @@
 | 🔴 0.675 | `creation-functions/conditional/defer.md` | 8 |
 | 🔴 0.677 | `creation-functions/selection/race.md` | 6 |
 | 🔴 0.682 | `overcoming-difficulties/timing-and-order.md` | 24 |
-| 🔴 0.685 | `operators/combination/zipWith.md` | 10 |
+| 🔴 0.686 | `creation-functions/selection/index.md` | 13 |
 | 🔴 0.687 | `operators/transformation/windowCount.md` | 12 |
 | 🔴 0.692 | `overcoming-difficulties/stream-combination.md` | 18 |
 | 🔴 0.693 | `creation-functions/combination/combineLatest.md` | 6 |
 | 🔴 0.694 | `creation-functions/conditional/iif.md` | 6 |
+| 🔴 0.695 | `operators/combination/zipWith.md` | 10 |
 | 🔴 0.695 | `operators/conditional/isEmpty.md` | 2 |
 | 🔴 0.697 | `operators/filtering/audit.md` | 11 |
 | 🔴 0.699 | `creation-functions/combination/zip.md` | 6 |
@@ -117,7 +117,7 @@
 | 🔴 0.551 | creation-functions/loop/generate.md | 19 |
 | 🟡 0.723 | creation-functions/loop/index.md | 18 |
 | 🟡 0.783 | creation-functions/loop/range.md | 18 |
-| 🔴 0.298 | creation-functions/selection/index.md | 11 |
+| 🔴 0.686 | creation-functions/selection/index.md | 13 |
 | 🟡 0.776 | creation-functions/selection/partition.md | 14 |
 | 🔴 0.677 | creation-functions/selection/race.md | 6 |
 
@@ -169,7 +169,7 @@
 | スコア | ファイル | ペア数 |
 |--------|----------|--------|
 | 🟡 0.738 | operators/combination/combineLatestAll.md | 10 |
-| 🟡 0.757 | operators/combination/combineLatestWith.md | 11 |
+| 🟡 0.756 | operators/combination/combineLatestWith.md | 11 |
 | 🔴 0.662 | operators/combination/concatAll.md | 8 |
 | 🔴 0.651 | operators/combination/concatWith.md | 9 |
 | 🟡 0.760 | operators/combination/exhaustAll.md | 7 |
@@ -181,7 +181,7 @@
 | 🔴 0.671 | operators/combination/switchAll.md | 8 |
 | 🟡 0.777 | operators/combination/withLatestFrom.md | 5 |
 | 🟡 0.716 | operators/combination/zipAll.md | 10 |
-| 🔴 0.685 | operators/combination/zipWith.md | 10 |
+| 🔴 0.695 | operators/combination/zipWith.md | 10 |
 | 🟡 0.736 | operators/conditional/defaultIfEmpty.md | 4 |
 | 🔴 0.628 | operators/conditional/every.md | 2 |
 | 🟡 0.734 | operators/conditional/index.md | 7 |
@@ -196,19 +196,19 @@
 | 🟡 0.775 | operators/filtering/elementAt.md | 15 |
 | 🔴 0.699 | operators/filtering/filter.md | 10 |
 | 🟡 0.826 | operators/filtering/find.md | 10 |
-| 🟡 0.737 | operators/filtering/findIndex.md | 16 |
+| 🟡 0.769 | operators/filtering/findIndex.md | 16 |
 | 🟡 0.836 | operators/filtering/first.md | 5 |
 | 🟡 0.744 | operators/filtering/ignoreElements.md | 16 |
 | 🟡 0.750 | operators/filtering/index.md | 3 |
 | 🟡 0.804 | operators/filtering/last.md | 5 |
 | 🟡 0.703 | operators/filtering/practical-use-cases.md | 3 |
-| 🔴 0.638 | operators/filtering/sampleTime.md | 15 |
+| 🔴 0.636 | operators/filtering/sampleTime.md | 15 |
 | 🟡 0.776 | operators/filtering/skip.md | 9 |
 | 🔴 0.699 | operators/filtering/skipLast.md | 18 |
 | 🟡 0.768 | operators/filtering/skipUntil.md | 11 |
 | 🟡 0.755 | operators/filtering/skipWhile.md | 16 |
 | 🟡 0.726 | operators/filtering/take.md | 5 |
-| 🔴 0.648 | operators/filtering/takeLast.md | 13 |
+| 🟡 0.710 | operators/filtering/takeLast.md | 13 |
 | 🟡 0.812 | operators/filtering/takeWhile.md | 13 |
 | 🟡 0.825 | operators/filtering/throttleTime.md | 6 |
 | 🟡 0.797 | operators/index.md | 6 |
@@ -290,7 +290,7 @@
 |--------|----------|--------|
 | 🔵 0.852 | schedulers/async-control.md | 15 |
 | 🟡 0.845 | schedulers/task-and-scheduler-basics.md | 5 |
-| 🟡 0.844 | schedulers/types.md | 13 |
+| 🔴 0.653 | schedulers/types.md | 10 |
 
 ### starter-kid.md
 
@@ -325,4 +325,4 @@
 
 ---
 
-最終更新: 2026-05-19T11:01:07Z
+最終更新: 2026-05-20T07:13:52Z

@@ -61,12 +61,12 @@ numbers$.pipe(
   takeLast(3)
 ).subscribe(console.log);
 // Sortie: 7, 8, 9
+```
 
 ## 💡 Modèle d'utilisation typique
 
 1. **Obtenir les N dernières entrées du journal**.
 
-```
 
 ```ts
    import { from } from 'rxjs';
@@ -183,7 +183,7 @@ container.appendChild(historyDisplay) ;
 // Subject pour contenir les valeurs d'entrée
 const inputs$ = new Subject() ;.
 
-// **IMPORTANT** : définir l'abonnement takeLast en premier
+// **IMPORTANT** : définir l'abonnement takeLast first
 inputs$.pipe(
   takeLast(3)
 ).subscribe({
@@ -225,7 +225,7 @@ fromEvent(submitButton, 'click').subscribe(() => {
 > [!IMPORTANT]
 > **Points clés**:
 > - `takeLast(3)` S'abonner à la**d'abord.**doit être mis en place en premier
-> - lorsque l'on clique sur le bouton. `complete()` la dernière des valeurs reçues jusqu'à ce point sera éditée.3La dernière valeur reçue jusqu'à ce point est éditée.
+> - lorsque l'on clique sur le bouton. `complete()` la dernière des valeurs reçues jusqu'à ce point sera éditée.3La dernière des valeurs reçues jusqu'à ce point est éditée.
 > - `complete()` Après l'appel**Après avoir appelé**à `subscribe` les valeurs ne circulent pas.
 
 ## ⚠️ Un point important à noter
@@ -270,7 +270,7 @@ interval(1000).pipe(
 
 ### 2. Attention à l'utilisation de la mémoire
 
-`takeLast(n)` ne fonctionne pas avec les flux finis car il retient la dernière pièce dans la mémoire tampon, ce qui peut entraîner une perte de mémoire.npièce à conserver dans la mémoire tampon,nest grand, il consomme plus de mémoire.
+`takeLast(n)` ne fonctionne pas avec les flux finis car il retient la dernière pièce dans la mémoire tampon, ce qui a pour effet de réduire le temps d'attente.npièce à conserver dans la mémoire tampon,nest grand, il consomme plus de mémoire.
 
 ```
 
@@ -322,7 +322,7 @@ numbers$.pipe(
 
 ## 📋 Utilisation sûre du point de vue du type
 
-TypeScript Il s'agit d'un exemple d'implémentation sûre du point de vue du type, qui utilise les génériques en
+TypeScript Il s'agit d'un exemple d'implémentation sûre du point de vue du type, qui utilise les éléments génériques en
 
 ```
 
@@ -381,7 +381,7 @@ const numbers$ = range(0, 10) ; // 0 à 9
 // sauter les 5 premiers et prendre les 3 derniers restants
 numbers$.pipe(
   skip(5), // skip 0, 1, 2, 3, 4
-  takeLast(3) // prend les 3 derniers parmi les 5, 6, 7, 8, 9 restants
+  takeLast(3) // prend les 3 derniers des 5, 6, 7, 8, 9 restants
 ).subscribe(console.log) ;.
 // Sortie : 7, 8, 9
 ```
@@ -403,7 +403,7 @@ numbers$.pipe(
 - ⚠️ Ne peut pas être utilisé avec des flux infinis (car ils ne se terminent pas).
 - ⚠️ Un grand n dans `takeLast(n)` consomme de la mémoire
 - ⚠️ La sortie est compilée après achèvement (pas immédiatement)
-- ⚠️ Doit souvent être combiné avec `take(n)` pour obtenir un flux fini.
+- ⚠️ Doit souvent être combiné avec `take(n)` pour faire un flux fini
 
 ## 🚀 Prochaine étape.
 

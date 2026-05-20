@@ -362,7 +362,7 @@ import { raceWith } from 'rxjs';
 of('A').pipe(
   raceWith(of('B'), of('C'))
 ).subscribe(console.log);
-// Uscita: A (perché è stato sottoscritto per primo)
+// Uscita: A (perché è stato sottoscritto per la prima volta)
 ```
 
 ## 📚 Operatori correlati.

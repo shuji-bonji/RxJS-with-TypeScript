@@ -27,9 +27,9 @@ clicks$.pipe(
 2. gera saída se houver um evento de clique recente naquele momento
 3. se não houver nenhum valor durante o período de amostragem, não haverá saída
 
-> [!WARNING] Atenção em código de produção
+> [!WARNING] 本番コードでの注意
 
-> O exemplo acima omite o cancelamento da assinatura fromEvent para simplificar a explicação. No código real, use `takeUntil(destroy$)`, `take(N)` ou `Subscription.unsubscribe()` para gerenciar explicitamente o ciclo de vida. Mais informações: [Superando dificuldades: gerenciamento do ciclo de vida](/pt/guide/overcoming-difficulties/lifecycle-management.md)
+> O exemplo acima omite o cancelamento da assinatura fromEvent para simplificar a explicação. No código real, use `takeUntil(destroy$)`, `take(N)` ou `Subscription.unsubscribe()` para gerenciar explicitamente o ciclo de vida. Mais informações: [Superando dificuldades: gerenciamento de ciclo de vida](/pt/guide/overcoming-difficulties/lifecycle-management.md)
 
 [🌐 Documentação oficial do RxJS - `sampleTime`](https://rxjs.dev/api/operators/sampleTime)
 
@@ -106,7 +106,7 @@ fromEvent<MouseEvent>(area, 'mousemove').pipe(
 ```
 
 - Se o mouse for movido continuamente, somente a última posição atual será amostrada a cada segundo.
-- Se o mouse não for movido por um segundo, nada será gerado durante esse período.
+- Se o mouse não for movido por um segundo, nada será emitido durante esse período.
 
 ## Exemplo prático de código 2: painel de dados em tempo real
 
@@ -241,22 +241,8 @@ clicks$.pipe(
 });
 ```
 
-```ts
-import { fromEvent } from 'rxjs';
-import { sampleTime } from 'rxjs';
-
-const clicks$ = fromEvent(document, 'click');
-
-clicks$.pipe(
-  sampleTime(2000)
-).subscribe(() => {
-  console.log('2Amostra por segundo');
-});
-```
-
 **diferenças visuais**:.
 
-```
 Entrada: --|1|2|3|---|4|5|6|---|7|8|9|
       0s  1s      2s      3s
 
@@ -275,6 +261,8 @@ auditTime(1s):    -------|3|-------|6|-------|9|
 ### 1. nenhum valor durante o período da amostra
 
 Se não houver novos valores no período de amostragem, nenhuma saída será produzida.
+
+```
 
 ```ts
 import { fromEvent } from 'rxjs';
@@ -353,8 +341,8 @@ clicks$.pipe(
 ).subscribe(() => {
   console.log('2Amostras segundo a segundo');
 });
-
 ```
+
 
 ## 📚 Operadores relacionados.
 

@@ -246,7 +246,7 @@ const numbers$ = from([10, 20, 30, 40, 50]);
 numbers$.pipe(
   findIndex(n => n > 25)
 ).subscribe(console.log);
-// Sortie.: 2Renvoie l'index de la première valeur qui remplit la condition30indice du premier pair)
+// Sortie.: 2Renvoie l'index de la première valeur qui satisfait à la condition30indice du premier pair)
 
 // find: Renvoie la première valeur qui remplit la condition
 numbers$.pipe(
@@ -271,12 +271,12 @@ numbers$.pipe(
   findIndex(n => n % 2 === 0)
 ).subscribe(console.log);
 // Sortie.: 4(premier pair8indice du premier pair)
+```
 
 ## 🔄 Comparaison avec la fonction Array.findIndex() de JavaScript
 
 RxJS `findIndex` se comporte de manière similaire à la méthode de tableau JavaScript `Array.prototype.findIndex()`.
 
-```
 
 ```ts
 // JavaScript Tableau de

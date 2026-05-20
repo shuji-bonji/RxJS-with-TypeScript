@@ -197,7 +197,7 @@ button.addEventListener('click', () => {
       result.style.color = 'green';
       result.innerHTML = `
         <strong>✅ Upload concluído</strong><br>
-        ${files.length}Um arquivo foi carregado...
+        ${files.length}Um arquivo foi carregado
       `;
       button.disabled = false;
     },
@@ -225,7 +225,7 @@ import { ignoreElements, filter, take } from 'rxjs';
 
 const source$ = of(1, 2, 3);
 
-// ignoreElements: Ignorar todos os valores, a conclusão é transmitida
+// ignoreElements: Ignorar todos os valores, a conclusão é passada adiante
 source$.pipe(
   ignoreElements()
 ).subscribe({
@@ -273,6 +273,7 @@ source$.pipe(
 ## 🔄 Manipulação de notificações de erro.
 
 O `ignoreElements` ignora os valores, mas **passa as notificações de erro**.
+
 
 ```ts
 import { throwError, of, concat } from 'rxjs';
@@ -412,10 +413,10 @@ source$.pipe(
   complete: () => console.log('Concluído')
 });
 // Saída: Concluído
+```
 
 ### Padrão 2: processo de limpeza
 
-```
 
 ## 📚 Operadores relacionados.
 

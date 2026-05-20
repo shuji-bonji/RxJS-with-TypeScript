@@ -1,124 +1,126 @@
 ---
-description: "Explicamos las Funciones de Creación que seleccionan un Observable de múltiples o dividen un Observable en múltiples (race y partition). Procesamiento de competencia, obtención de la respuesta más rápida, división de streams por condiciones, y casos de uso prácticos con implementación segura de tipos en TypeScript."
+description: "Se explican las Creation Function (race y partition) que seleccionan uno de múltiples Observable o dividen un Observable en múltiples. Se presentan casos prácticos de uso e implementaciones de tipo seguro en TypeScript, como la gestión de conflictos, la adquisición de respuesta más rápida y la partición de flujos mediante bifurcación condicional."
 ---
 
-# Funciones de Creación de Selección/División
+# Sistemas de selección y partición Creation Function
 
-Funciones de Creación que seleccionan un Observable de múltiples o dividen un Observable en múltiples según condiciones.
+Creation Function that select one Observable from multiple Observables or split one Observable into multiple Observables according to conditions.
 
-## ¿Qué son las Funciones de Creación de Selección/División?
+## Sistema de selección y partición ¿Qué son las Creation Function?
 
-Las Funciones de Creación de Selección/División, a diferencia de las de combinación, tienen los siguientes roles:
+Las Creation Function para sistemas de selección y división son diferentes de las de los sistemas de combinación y tienen las siguientes funciones.
 
-- **Selección**: Elegir uno que cumpla condiciones específicas entre múltiples Observables
-- **División**: Dividir un Observable en múltiples Observables según condiciones
+- **Selección**: selecciona un Observable que satisface ciertas condiciones de entre múltiples Observables.
+- **Dividir**: divide un Observable en múltiples Observables de acuerdo con una condición.
 
-Estas realizan operaciones en dirección opuesta o desde una perspectiva diferente a la combinación que "une múltiples en uno".
+Funcionan en sentido opuesto o desde una perspectiva diferente a la unión "combinar varios en uno".
 
-## Principales Funciones de Creación de Selección/División
+## Principales sistemas de selección y división Creation Function
 
-| Función | Descripción | Caso de Uso |
-|----------|------|-------------|
-| **[race](/es/guide/creation-functions/selection/race)** | Adopta el primero que emite | Competencia de múltiples fuentes de datos |
-| **[partition](/es/guide/creation-functions/selection/partition)** | Divide en dos por condición | Procesamiento de bifurcación éxito/fallo |
+| Función | Descripción | Caso de uso. |
+|---|---|---|
+| **[race](/es/guide/funciones-creación/selección/race)** | Adoptar el primero publicado | Competencia de múltiples fuentes de datos |
+| **[partition](/es/guide/creation-functions/selección/partición)** | Dividir en dos con condiciones | Proceso de bifurcación para éxito/fracaso |
 
-## Criterios de Selección
+## Criterios de utilización
 
-### race - Seleccionar el Observable más rápido
+### race - seleccionar el Observable más rápido
 
-`race` se suscribe a múltiples Observables simultáneamente y adopta **el Observable que emite el valor primero**. Los Observables no adoptados se desuscriben automáticamente.
+race` se suscribe a varios Observables simultáneamente y adopta el **primer Observable que emite un valor. Los Observables que no se adoptan se unsubscriben automáticamente.
 
-**Casos de uso**:
-- Adoptar la respuesta más rápida de múltiples endpoints API
-- Procesamiento de timeout (procesamiento original vs temporizador)
-- Competencia entre caché y llamada API real
+**Caso de uso**:.
+- Adoptar la respuesta más rápida de varios puntos finales de API
+- Gestión de tiempos de espera (proceso original vs. temporizador)
+- Competencia entre la caché y las llamadas reales a la API
 
 ```typescript
 import { race, timer } from 'rxjs';
-import { apTo } from 'rxjs'; } from 'rxjs';
+import { map } from 'rxjs';
 
 // Adoptar el más rápido de múltiples fuentes de datos
-const fast$ = timer(1000).pipe(map(() => 'API Rápida'));
-const slow$ = timer(3000).pipe(map(() => 'API Lenta'));
+const fast$ = timer(1000).pipe(map(() => 'Fast API'));
+const slow$ = timer(3000).pipe(map(() => 'Slow API'));
 
 race(fast$, slow$).subscribe(console.log);
-// Salida: 'API Rápida' (se emite después de 1 segundo, slow$ se cancela)
+// Salida.: 'Fast API' (1La salida seslow$se anula)
 ```
 
-### partition - Dividir por condición
+### partition - split by condition
 
-`partition` divide un Observable en **dos Observables** basándose en una función de condición. El valor de retorno es un array `[caso true, caso false]`.
+La función `partition` divide un Observable en **dos Observables** basándose en una función condicional. El valor de retorno es un array `[si es verdadero, si es falso]`.
 
-**Casos de uso**:
-- Separación de éxito y fallo
-- Separación de pares e impares
-- Separación de datos válidos e inválidos
+**Caso de uso**:.
+- Separación de éxito y fracaso.
+- Separación de números pares e impares.
+- Separación de datos válidos e inválidos.
 
 ```typescript
 import { of, partition } from 'rxjs';
 
 const source$ = of(1, 2, 3, 4, 5, 6);
 
-// Dividir en pares e impares
+// Dividir en números pares e impares
 const [even$, odd$] = partition(source$, n => n % 2 === 0);
 
-even$.subscribe(val => console.log('Par:', val));
-// Salida: Par: 2, Par: 4, Par: 6
+even$.subscribe(val => console.log('Even:', val));
+// Salida.: Even: 2, Even: 4, Even: 6
 
-odd$.subscribe(val => console.log('Impar:', val));
-// Salida: Impar: 1, Impar: 3, Impar: 5
+odd$.subscribe(val => console.log('Odd:', val));
+// Salida.: Odd: 1, Odd: 3, Odd: 5
 ```
 
-## Conversión de Cold a Hot
+## Conversión de frío a caliente
 
-Como se muestra en la tabla anterior, **todas las Funciones de Creación de Selección/División generan Cold Observables**. Cada suscripción inicia una ejecución independiente.
+Como se muestra en la tabla anterior, **Todas las Funciones de Creación de Sistemas de Selección y Partición generan un Observable en Frío**. Cada suscripción inicia una ejecución independiente.
 
-Usando operadores de multicast (`share()`, `shareReplay()`, etc.), puedes convertir un Cold Observable en un Hot Observable.
+Los Observable Fríos pueden convertirse en Observable Calientes utilizando operadores basados en multidifusión (`share()`, `shareReplay()`, etc.).
 
-### Ejemplo Práctico: Compartir Solicitudes API en Competencia
+### Ejemplo práctico: compartir solicitudes de API en conflicto
 
 ```typescript
 import { race, timer } from 'rxjs';
-import { apTo, share } from 'rxjs'; } from 'rxjs';
+import { map, share } from 'rxjs';
 
-// ❄️ Cold - Re-ejecuta la competencia por cada suscripción
+// ❄️ Cold - Concurso de repetición para cada abonado
 const coldRace$ = race(
-  timer(1000).pipe(map(() => 'API Rápida')),
-  timer(3000).pipe(map(() => 'API Lenta'))
+  timer(1000).pipe(map(() => 'Fast API')),
+  timer(3000).pipe(map(() => 'Slow API'))
 );
 
-coldRace$.subscribe(val => console.log('Suscriptor 1:', val));
-coldRace$.subscribe(val => console.log('Suscriptor 2:', val));
-// → Cada suscriptor ejecuta una competencia independiente (2 competencias)
+coldRace$.subscribe(val => console.log('Abonado1:', val));
+coldRace$.subscribe(val => console.log('Abonado2:', val));
+// → Cada abonado ejecuta una competición independiente (una2competición una vez)
 
-// 🔥 Hot - Comparte el resultado de la competencia entre suscriptores
+// 🔥 Hot - Compartir los resultados entre abonados
 const hotRace$ = race(
-  timer(1000).pipe(map(() => 'API Rápida')),
-  timer(3000).pipe(map(() => 'API Lenta'))
+  timer(1000).pipe(map(() => 'Fast API')),
+  timer(3000).pipe(map(() => 'Slow API'))
 ).pipe(share());
 
-hotRace$.subscribe(val => console.log('Suscriptor 1:', val));
-hotRace$.subscribe(val => console.log('Suscriptor 2:', val));
-// → Comparte el resultado de una competencia
+hotRace$.subscribe(val => console.log('Abonado1:', val));
+hotRace$.subscribe(val => console.log('Abonado2:', val));
+// → 1Compartir los resultados de una competición
 ```
 
 > [!TIP]
-> Para más información, consulta [Creación Básica - Conversión de Cold a Hot](/es/guide/creation-functions/basic/#conversion-de-cold-a-hot).
+
+> Para más información, véase [Sistema básico de creación - Conversión de frío a caliente](/es/guide/creation-functions/basic/#cold- to -hot-).
 
 ## Correspondencia con Pipeable Operator
 
-Las Funciones de Creación de Selección/División también tienen Pipeable Operators correspondientes.
+Las Creation Function de selección y división también tienen su correspondiente Pipeable Operator.
 
-| Función de Creación | Pipeable Operator |
-|-------------------|-------------------|
-| `race(a$, b$)` | `a$.pipe(raceWith(b$))` |
-| `partition(source$, predicate)` | No se puede usar en pipeline (solo Función de Creación) |
+| Función Creation Function | Operador Pipeable |
+|---|---|
+| carrera(a$, b$)` | a$.pipe(raceWith(b$))` |
+| partition(fuente$, predicado)`. | No puede utilizarse dentro de una tubería (Creation Function solamente). |
 
 > [!NOTE]
-> No existe una versión Pipeable Operator de `partition`. Cuando se necesita división, úsala como Función de Creación o divide manualmente usando `filter` dos veces.
 
-## Próximos Pasos
+> No existe una versión Pipeable Operator de `partition`. Si se requiere una partición, se puede utilizar como Creation Function o dividir manualmente utilizando `filter` dos veces.
 
-Para aprender el comportamiento detallado y ejemplos prácticos de cada Función de Creación, haz clic en los enlaces de la tabla anterior.
+## Próximos Pasos.
 
-Además, aprendiendo también [Funciones de Creación de Combinación](/es/guide/creation-functions/combination/) y [Funciones de Creación Condicionales](/es/guide/creation-functions/conditional/), podrás entender el panorama completo de las Funciones de Creación.
+Para obtener más información sobre el funcionamiento detallado y ejemplos prácticos de cada Creation Function, haga clic en los enlaces de la tabla anterior.
+
+También puede aprender [Funciones de creación combinadas](/es/guide/funciones-de-creación/combinación/) y [Funciones de creación condicionales](/es/guide/funciones-de-creación/condicionales/). Juntas, proporcionan una comprensión holística de las Creation Function.

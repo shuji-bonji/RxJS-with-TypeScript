@@ -194,13 +194,13 @@ import { elementAt, take, first, skip } from 'rxjs';
 
 const numbers$ = from([10, 20, 30, 40, 50]);
 
-// elementAt: Nur Werte für einen bestimmten Index abrufen
+// elementAt: Es werden nur Werte mit einem bestimmten Index abgerufen
 numbers$.pipe(
   elementAt(2)
 ).subscribe(console.log);
 // Ausgabe.: 30
 
-// take: Von Anfang anNEinen Wert abrufen
+// take: Vom Anfang anNAbrufen eines Wertes vom Anfang an
 numbers$.pipe(
   take(3)
 ).subscribe(console.log);
@@ -224,6 +224,7 @@ numbers$.pipe(
   elementAt(2)
 ).subscribe(console.log);
 // Ausgabe.: 30(Index2Wert)
+```
 
 ## ⚠️ Anmerkungen.
 
@@ -231,7 +232,6 @@ numbers$.pipe(
 
 Wenn der angegebene Index nicht erreicht wird, bevor der Stream abgeschlossen ist, wird ein Fehler erzeugt.
 
-```
 
 ```ts
 import { from } from 'rxjs';
@@ -240,7 +240,7 @@ import { elementAt } from 'rxjs';
 const numbers$ = from([10, 20, 30]); // 3Nur einen
 
 numbers$.pipe(
-  elementAt(5) // Index5Anfrage
+  elementAt(5) // Index5anfordern
 ).subscribe({
   next: console.log,
   error: err => console.error('Fehler:', err.message)
@@ -341,4 +341,4 @@ Der Operator "elementAt" ruft nur den Wert an der angegebenen Indexposition ab.
 - ✅ Es können Standardwerte angegeben werden, um Fehler zu vermeiden
 - ⚠️ Fehler, wenn der Index außerhalb des Bereichs liegt (kein Standardwert)
 - ⚠️ Negative Indizes sind nicht erlaubt
-- ⚠️ Asynchrone Streams warten, bis der Wert erreicht ist
+- ⚠️ Asynchrone Ströme warten, bis der Wert erreicht ist

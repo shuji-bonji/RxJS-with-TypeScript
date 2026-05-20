@@ -5,8 +5,8 @@
 | 項目 | 値 |
 |------|-----|
 | ファイル数 | 181 |
-| 平均スコア | 0.863 |
-| 最小スコア | 0.647 |
+| 平均スコア | 0.862 |
+| 最小スコア | 0.615 |
 | 最大スコア | 0.969 |
 
 ### 品質分布
@@ -14,16 +14,16 @@
 | 品質 | 件数 | 割合 |
 |------|------|------|
 | 🟢 優秀 (≥0.95) | 1 | 0.6% |
-| 🔵 良好 (0.85-0.94) | 121 | 66.9% |
-| 🟡 要改善 (0.70-0.84) | 57 | 31.5% |
+| 🔵 良好 (0.85-0.94) | 120 | 66.3% |
+| 🟡 要改善 (0.70-0.84) | 58 | 32.0% |
 | 🔴 要修正 (<0.70) | 2 | 1.1% |
 
 ## 🔴 要修正ファイル (スコア < 0.70)
 
 | スコア | ファイル | ペア数 |
 |--------|----------|--------|
+| 🔴 0.615 | `schedulers/types.md` | 7 |
 | 🔴 0.647 | `operators/filtering/skipLast.md` | 18 |
-| 🔴 0.693 | `operators/filtering/elementAt.md` | 15 |
 
 ## ファイル別一覧
 
@@ -89,7 +89,7 @@
 | 🟡 0.768 | creation-functions/loop/generate.md | 21 |
 | 🟡 0.808 | creation-functions/loop/index.md | 18 |
 | 🟡 0.845 | creation-functions/loop/range.md | 19 |
-| 🟡 0.830 | creation-functions/selection/index.md | 13 |
+| 🔵 0.857 | creation-functions/selection/index.md | 13 |
 | 🔵 0.877 | creation-functions/selection/partition.md | 14 |
 | 🟡 0.808 | creation-functions/selection/race.md | 6 |
 
@@ -140,8 +140,8 @@
 
 | スコア | ファイル | ペア数 |
 |--------|----------|--------|
-| 🟡 0.848 | operators/combination/combineLatestAll.md | 10 |
-| 🔵 0.899 | operators/combination/combineLatestWith.md | 11 |
+| 🟡 0.840 | operators/combination/combineLatestAll.md | 10 |
+| 🟡 0.807 | operators/combination/combineLatestWith.md | 11 |
 | 🔵 0.856 | operators/combination/concatAll.md | 8 |
 | 🟡 0.830 | operators/combination/concatWith.md | 9 |
 | 🔵 0.909 | operators/combination/exhaustAll.md | 7 |
@@ -149,11 +149,11 @@
 | 🔵 0.906 | operators/combination/mergeAll.md | 7 |
 | 🔵 0.862 | operators/combination/mergeWith.md | 10 |
 | 🔵 0.899 | operators/combination/practical-use-cases.md | 17 |
-| 🔵 0.866 | operators/combination/raceWith.md | 10 |
+| 🟡 0.816 | operators/combination/raceWith.md | 10 |
 | 🔵 0.860 | operators/combination/switchAll.md | 8 |
 | 🔵 0.893 | operators/combination/withLatestFrom.md | 5 |
 | 🟡 0.836 | operators/combination/zipAll.md | 10 |
-| 🟡 0.842 | operators/combination/zipWith.md | 10 |
+| 🟡 0.814 | operators/combination/zipWith.md | 10 |
 | 🔵 0.898 | operators/conditional/defaultIfEmpty.md | 4 |
 | 🟡 0.827 | operators/conditional/every.md | 2 |
 | 🔵 0.884 | operators/conditional/index.md | 7 |
@@ -165,22 +165,22 @@
 | 🔵 0.895 | operators/filtering/distinct.md | 10 |
 | 🔵 0.885 | operators/filtering/distinctUntilChanged.md | 5 |
 | 🟡 0.849 | operators/filtering/distinctUntilKeyChanged.md | 5 |
-| 🔴 0.693 | operators/filtering/elementAt.md | 15 |
+| 🔵 0.890 | operators/filtering/elementAt.md | 15 |
 | 🔵 0.888 | operators/filtering/filter.md | 10 |
-| 🔵 0.856 | operators/filtering/find.md | 10 |
-| 🟡 0.831 | operators/filtering/findIndex.md | 16 |
+| 🔵 0.854 | operators/filtering/find.md | 10 |
+| 🔵 0.874 | operators/filtering/findIndex.md | 16 |
 | 🔵 0.869 | operators/filtering/first.md | 5 |
 | 🟡 0.847 | operators/filtering/ignoreElements.md | 16 |
 | 🔵 0.884 | operators/filtering/index.md | 3 |
 | 🔵 0.873 | operators/filtering/last.md | 5 |
 | 🟡 0.841 | operators/filtering/practical-use-cases.md | 3 |
-| 🔵 0.873 | operators/filtering/sampleTime.md | 15 |
+| 🟡 0.750 | operators/filtering/sampleTime.md | 15 |
 | 🔵 0.930 | operators/filtering/skip.md | 9 |
 | 🔴 0.647 | operators/filtering/skipLast.md | 18 |
 | 🔵 0.886 | operators/filtering/skipUntil.md | 11 |
 | 🟡 0.728 | operators/filtering/skipWhile.md | 16 |
 | 🔵 0.882 | operators/filtering/take.md | 5 |
-| 🟡 0.754 | operators/filtering/takeLast.md | 13 |
+| 🟡 0.845 | operators/filtering/takeLast.md | 13 |
 | 🔵 0.881 | operators/filtering/takeWhile.md | 13 |
 | 🔵 0.879 | operators/filtering/throttleTime.md | 6 |
 | 🟡 0.799 | operators/index.md | 6 |
@@ -262,7 +262,7 @@
 |--------|----------|--------|
 | 🔵 0.916 | schedulers/async-control.md | 15 |
 | 🔵 0.930 | schedulers/task-and-scheduler-basics.md | 5 |
-| 🔵 0.874 | schedulers/types.md | 13 |
+| 🔴 0.615 | schedulers/types.md | 7 |
 
 ### starter-kid.md
 
@@ -297,4 +297,4 @@
 
 ---
 
-最終更新: 2026-05-19T05:05:36Z
+最終更新: 2026-05-20T06:53:13Z

@@ -197,7 +197,7 @@ button.addEventListener('click', () => {
       result.style.color = 'green';
       result.innerHTML = `
         <strong>✅ Caricamento completato</strong><br>
-        ${files.length}Un file è stato caricato
+        ${files.length}Un file è stato caricato...
       `;
       button.disabled = false;
     },
@@ -225,7 +225,7 @@ import { ignoreElements, filter, take } from 'rxjs';
 
 const source$ = of(1, 2, 3);
 
-// ignoreElements: Ignorare tutti i valori, il completamento viene superato
+// ignoreElements: Ignorare tutti i valori, il completamento viene passato attraverso
 source$.pipe(
   ignoreElements()
 ).subscribe({
@@ -273,6 +273,7 @@ source$.pipe(
 ## 🔄 Gestione delle notifiche di errore.
 
 ignoreElements` ignora i valori, ma **passa le notifiche di errore**.
+
 
 ```ts
 import { throwError, of, concat } from 'rxjs';
@@ -412,6 +413,7 @@ source$.pipe(
   complete: () => console.log('Completato')
 });
 // Uscita: Completato
+```
 
 ### Schema 2: Processo di pulizia
 
@@ -440,7 +442,7 @@ from(resources).pipe(
 ).subscribe({
   complete: () => console.log('✅ Tutte le risorse sono state ripulite')
 });
-```
+
 
 ## 📚 Operatori correlati.
 

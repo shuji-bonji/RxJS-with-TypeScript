@@ -197,7 +197,7 @@ button.addEventListener('click', () => {
       result.style.color = 'green';
       result.innerHTML = `
         <strong>✅ Uploaden voltooid</strong><br>
-        ${files.length}Eén bestand is geüpload
+        ${files.length}Eén bestand is geüpload...
       `;
       button.disabled = false;
     },
@@ -399,40 +399,10 @@ source$.pipe(
   complete: () => console.log('Voltooid')
 });
 // Uitvoer: Voltooid
+```
 
 ### Patroon 2: Opschoonproces
 
-```
-
-```ts
-import { of } from 'rxjs';
-import { ignoreElements } from 'rxjs';
-
-const source$ = of(1, 2, 3, 4, 5);
-
-source$.pipe(
-  ignoreElements()
-).subscribe({
-  next: value => console.log('Waarde:', value), // Niet opgeroepen
-  complete: () => console.log('Voltooid')
-});
-// Uitvoer: Voltooid
-```
-
-```ts
-import { of } from 'rxjs';
-import { ignoreElements } from 'rxjs';
-
-const source$ = of(1, 2, 3, 4, 5);
-
-source$.pipe(
-  ignoreElements()
-).subscribe({
-  next: value => console.log('waarde:', value), // niet aangeroepen
-  complete: () => console.log('voltooid')
-});
-// Uitvoer: voltooid
-```
 
 ## 📚 Gerelateerde operatoren.
 

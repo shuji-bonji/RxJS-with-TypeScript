@@ -280,17 +280,6 @@ of(1, 2, 3, 4, 5)
 **Contre-mesure 3 : Utilisez `take` pour rendre la condition de fin explicite**.
 
 
-```ts
-import { of } from 'rxjs';
-import { reduce } from 'rxjs';
-
-of(1, 2, 3, 4, 5)
-  .pipe(reduce((acc, curr) => acc + curr, 0))
-  .subscribe(console.log);
-
-// Résultats.: 15(résultats finaux uniquement)
-```
-
 > **Critères de sélection** :.
 > - résultats intermédiaires requis → `scan`.
 > - seul le résultat final est nécessaire & l'achèvement du flux est garanti → `reduce`.
